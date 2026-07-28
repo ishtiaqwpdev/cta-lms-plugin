@@ -2914,7 +2914,15 @@
           action: "cta_submit_attestation",
           nonce: ctaAjax.nonce,
           course_id: courseId,
-          agree: 1
+          agree: 1,
+          attestation_text: (function () {
+            var field = document.getElementById("cta-attestation-text");
+            if (field && field.value) {
+              return field.value;
+            }
+            var statement = document.getElementById("cta-attestation-statement");
+            return statement ? (statement.textContent || "").trim() : "";
+          })()
         })
           .done(function (response) {
             if (!response.success || !response.data) {

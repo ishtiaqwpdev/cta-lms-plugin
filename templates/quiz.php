@@ -239,9 +239,15 @@ if ( empty( $evaluation_questions ) || ! is_array( $evaluation_questions ) ) {
 			<h2><?php echo esc_html__( 'Course-Completion Attestation', 'cta-lms' ); ?></h2>
 			<p><?php echo esc_html__( 'Confirm that you personally completed this asynchronous distance-learning course. A CE certificate cannot be issued until this attestation is submitted.', 'cta-lms' ); ?></p>
 			<form id="cta-attestation-form" class="cta-attestation-form" novalidate>
-				<div class="cta-attestation-text">
+				<div class="cta-attestation-text" id="cta-attestation-statement">
 					<?php echo esc_html( ! empty( $attestation_text ) ? $attestation_text : ( class_exists( 'CTA_Course_Attestation' ) ? CTA_Course_Attestation::default_attestation_text() : '' ) ); ?>
 				</div>
+				<input
+					type="hidden"
+					id="cta-attestation-text"
+					name="attestation_text"
+					value="<?php echo esc_attr( ! empty( $attestation_text ) ? $attestation_text : ( class_exists( 'CTA_Course_Attestation' ) ? CTA_Course_Attestation::default_attestation_text() : '' ) ); ?>"
+				>
 				<label class="cta-attestation-agree">
 					<input type="checkbox" id="cta-attestation-agree" name="agree" value="1" required>
 					<span><?php echo esc_html__( 'I have read and agree to this attestation.', 'cta-lms' ); ?></span>

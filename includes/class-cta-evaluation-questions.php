@@ -226,6 +226,24 @@ class CTA_Evaluation_Questions {
 
 		return array(
 			array(
+				'id'       => 'course_appropriateness',
+				'section'  => __( 'Course Content', 'cta-lms' ),
+				'label'    => __( 'How appropriate was this course for your professional level and needs?', 'cta-lms' ),
+				'type'     => 'rating',
+				'required' => true,
+				'options'  => $likert,
+				'summary'  => '',
+			),
+			array(
+				'id'       => 'relevance_to_practice',
+				'section'  => __( 'Course Content', 'cta-lms' ),
+				'label'    => __( 'How relevant was the course content to your clinical practice?', 'cta-lms' ),
+				'type'     => 'rating',
+				'required' => true,
+				'options'  => $likert,
+				'summary'  => '',
+			),
+			array(
 				'id'       => 'content_quality',
 				'section'  => __( 'Course Content', 'cta-lms' ),
 				'label'    => __( 'How would you rate the overall quality of the course content?', 'cta-lms' ),
@@ -244,6 +262,33 @@ class CTA_Evaluation_Questions {
 				'summary'  => 'rating',
 			),
 			array(
+				'id'       => 'materials_usefulness',
+				'section'  => __( 'Course Content', 'cta-lms' ),
+				'label'    => __( 'How useful were the course materials and resources?', 'cta-lms' ),
+				'type'     => 'rating',
+				'required' => true,
+				'options'  => $likert,
+				'summary'  => '',
+			),
+			array(
+				'id'       => 'currency_accuracy',
+				'section'  => __( 'Course Content', 'cta-lms' ),
+				'label'    => __( 'How current and accurate was the course content?', 'cta-lms' ),
+				'type'     => 'rating',
+				'required' => true,
+				'options'  => $likert,
+				'summary'  => '',
+			),
+			array(
+				'id'       => 'presentation_effectiveness',
+				'section'  => __( 'Instruction', 'cta-lms' ),
+				'label'    => __( 'How effective was the presentation and use of active learning?', 'cta-lms' ),
+				'type'     => 'rating',
+				'required' => true,
+				'options'  => $likert,
+				'summary'  => '',
+			),
+			array(
 				'id'       => 'instructor_clarity',
 				'section'  => __( 'Instruction', 'cta-lms' ),
 				'label'    => __( 'How would you rate the clarity of the instructor / presentation?', 'cta-lms' ),
@@ -251,6 +296,60 @@ class CTA_Evaluation_Questions {
 				'required' => true,
 				'options'  => $likert,
 				'summary'  => 'instructor_rating',
+			),
+			array(
+				'id'       => 'instructor_knowledge',
+				'section'  => __( 'Instruction', 'cta-lms' ),
+				'label'    => __( 'How would you rate the instructor\'s knowledge of the subject?', 'cta-lms' ),
+				'type'     => 'rating',
+				'required' => true,
+				'options'  => $likert,
+				'summary'  => '',
+			),
+			array(
+				'id'       => 'instructor_responsiveness',
+				'section'  => __( 'Instruction', 'cta-lms' ),
+				'label'    => __( 'How would you rate the instructor\'s responsiveness to learner needs?', 'cta-lms' ),
+				'type'     => 'rating',
+				'required' => true,
+				'options'  => $likert,
+				'summary'  => '',
+			),
+			array(
+				'id'       => 'program_administration',
+				'section'  => __( 'Program Administration', 'cta-lms' ),
+				'label'    => __( 'How would you rate the overall program administration?', 'cta-lms' ),
+				'type'     => 'rating',
+				'required' => true,
+				'options'  => $likert,
+				'summary'  => '',
+			),
+			array(
+				'id'       => 'technology_support',
+				'section'  => __( 'Technology', 'cta-lms' ),
+				'label'    => __( 'How would you rate the technology support available for this course?', 'cta-lms' ),
+				'type'     => 'rating',
+				'required' => true,
+				'options'  => $likert,
+				'summary'  => '',
+			),
+			array(
+				'id'       => 'technology_contribution',
+				'section'  => __( 'Technology', 'cta-lms' ),
+				'label'    => __( 'How much did the technology contribute to your learning?', 'cta-lms' ),
+				'type'     => 'rating',
+				'required' => true,
+				'options'  => $likert,
+				'summary'  => '',
+			),
+			array(
+				'id'       => 'technology_usability',
+				'section'  => __( 'Technology', 'cta-lms' ),
+				'label'    => __( 'How user-friendly was the course technology?', 'cta-lms' ),
+				'type'     => 'rating',
+				'required' => true,
+				'options'  => $likert,
+				'summary'  => '',
 			),
 			array(
 				'id'       => 'would_recommend',
@@ -440,10 +539,12 @@ class CTA_Evaluation_Questions {
 	}
 
 	/**
-	 * Copy shared CAMFT templates (course_id = 0) into a course.
+	 * Copy / upsert shared CAMFT templates (course_id = 0) into a course.
+	 *
+	 * Adds any missing template questions; does not delete existing course questions.
 	 *
 	 * @param int $course_id Course ID.
-	 * @return int Number of questions copied.
+	 * @return int Number of questions newly copied.
 	 */
 	public static function copy_camft_templates_to_course( $course_id ) {
 		$course_id = absint( $course_id );
@@ -451,33 +552,34 @@ class CTA_Evaluation_Questions {
 			return 0;
 		}
 
-		$existing_camft = self::get_questions_by_source( $course_id, 'camft' );
-		if ( ! empty( $existing_camft ) ) {
-			return 0;
-		}
-
 		self::seed_defaults_if_empty();
+
+		// Refresh shared library rows so new CAMFT questions are available for copy.
+		foreach ( self::get_camft_template_questions() as $index => $tpl ) {
+			$existing_tpl = self::get_question_by_key( 0, $tpl['id'] );
+			$data         = array(
+				'course_id'     => 0,
+				'question_key'  => $tpl['id'],
+				'section_label' => $tpl['section'],
+				'label'         => $tpl['label'],
+				'question_type' => self::normalize_type( $tpl['type'] ),
+				'options'       => isset( $tpl['options'] ) ? $tpl['options'] : array(),
+				'is_required'   => ! empty( $tpl['required'] ) ? 1 : 0,
+				'summary_field' => isset( $tpl['summary'] ) ? $tpl['summary'] : '',
+				'order_index'   => 100 + (int) $index,
+				'source_type'   => 'camft',
+				'status'        => 'active',
+			);
+			if ( $existing_tpl ) {
+				self::update_question( (int) $existing_tpl->id, $data );
+			} else {
+				self::insert_question( $data );
+			}
+		}
 
 		$templates = self::get_questions( 'active', 0 );
 		if ( empty( $templates ) ) {
-			foreach ( self::get_camft_template_questions() as $tpl ) {
-				self::insert_question(
-					array(
-						'course_id'     => 0,
-						'question_key'  => $tpl['id'],
-						'section_label' => $tpl['section'],
-						'label'         => $tpl['label'],
-						'question_type' => self::normalize_type( $tpl['type'] ),
-						'options'       => isset( $tpl['options'] ) ? $tpl['options'] : array(),
-						'is_required'   => ! empty( $tpl['required'] ) ? 1 : 0,
-						'summary_field' => isset( $tpl['summary'] ) ? $tpl['summary'] : '',
-						'order_index'   => 100,
-						'source_type'   => 'camft',
-						'status'        => 'active',
-					)
-				);
-			}
-			$templates = self::get_questions( 'active', 0 );
+			return 0;
 		}
 
 		$lo_count   = count( self::get_questions_by_source( $course_id, 'learning_objective' ) );
@@ -485,10 +587,6 @@ class CTA_Evaluation_Questions {
 		$copied     = 0;
 
 		foreach ( $templates as $template ) {
-			if ( isset( $template->source_type ) && 'camft' !== $template->source_type && 0 !== (int) $template->course_id ) {
-				continue;
-			}
-
 			$new_key = 'camft_' . $template->question_key;
 			if ( self::get_question_by_key( $course_id, $new_key ) ) {
 				continue;

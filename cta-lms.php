@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.78' );
+	define( 'CTA_VERSION', '1.0.79' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -356,6 +356,21 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 					CTA_Syllabus_Sync::sync_all( true );
 				}
 				CTA_Course_Catalog::restore_all();
+			}
+
+			// Official revised syllabi: Law & Ethics modules/LOs, full CAMFT eval set, attestation fix deploy.
+			if ( version_compare( $installed, '1.0.79', '<' ) ) {
+				if ( class_exists( 'CTA_Evaluation_Questions' ) ) {
+					CTA_Evaluation_Questions::install();
+				}
+				if ( class_exists( 'CTA_Syllabus_Sync' ) ) {
+					CTA_Database::maybe_add_syllabus_columns();
+					delete_option( 'cta_syllabus_synced_1_0_75' );
+					CTA_Syllabus_Sync::sync_all( true );
+				}
+				if ( class_exists( 'CTA_Course_Catalog' ) ) {
+					CTA_Course_Catalog::restore_all();
+				}
 			}
 		} catch ( Throwable $e ) {
 			if ( defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ) {

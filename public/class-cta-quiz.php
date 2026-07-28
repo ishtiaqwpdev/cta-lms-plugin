@@ -530,7 +530,10 @@ class CTA_Quiz {
 		}
 
 		$custom_text = sanitize_textarea_field( wp_unslash( $_POST['attestation_text'] ?? '' ) );
-		$result      = CTA_Course_Attestation::submit( $user_id, $course_id, $custom_text );
+		if ( '' === trim( $custom_text ) ) {
+			$custom_text = CTA_Course_Attestation::default_attestation_text();
+		}
+		$result = CTA_Course_Attestation::submit( $user_id, $course_id, $custom_text );
 
 		if ( is_wp_error( $result ) ) {
 			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
