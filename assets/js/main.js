@@ -3531,9 +3531,23 @@
 
       user.appendChild(toggle);
       user.appendChild(menu);
-      wrap.appendChild(guest);
+      // Never leave both guest + account visible (theme CSS often ignores [hidden]).
+      if (!loggedIn) {
+        wrap.appendChild(guest);
+      }
       wrap.appendChild(user);
       return wrap;
+    }
+
+    function setAuthNodeVisible(node, visible) {
+      if (!node) return;
+      node.hidden = !visible;
+      node.classList.toggle("cta-auth-is-hidden", !visible);
+      if (!visible) {
+        node.setAttribute("aria-hidden", "true");
+      } else {
+        node.removeAttribute("aria-hidden");
+      }
     }
 
     function syncAuthRoot(root) {
@@ -3545,13 +3559,16 @@
       var user = root.querySelector("[data-cta-auth-user]");
       var label = root.querySelector("[data-cta-auth-label]");
 
-      if (guest && user) {
-        guest.hidden = !!loggedIn;
-        user.hidden = !loggedIn;
+      if (guest) {
+        setAuthNodeVisible(guest, !loggedIn);
+      }
+      if (user) {
+        setAuthNodeVisible(user, !!loggedIn);
         user.classList.toggle("is-openable", !!loggedIn);
       }
 
       root.setAttribute("data-logged-in", loggedIn ? "yes" : "no");
+      root.classList.toggle("cta-auth-button-wrap--logged-in", !!loggedIn);
 
       if (loggedIn && label) {
         var name =
@@ -3633,11 +3650,35 @@
         var wrap = buildAuthRoot(true);
         wrap.setAttribute("data-cta-auth-upgraded-from", normalizeAuthLabel(text));
         anchor.setAttribute("data-cta-auth-upgraded", "1");
-        if (anchor.parentNode) {
-          anchor.parentNode.replaceChild(wrap, anchor);
+        var target =
+          anchor.closest(".elementor-widget-button") ||
+          anchor.closest(".elementor-button-wrapper") ||
+          anchor;
+        if (target.parentNode) {
+          target.parentNode.replaceChild(wrap, target);
           syncAuthRoot(wrap);
         }
       });
+
+      // Hide any leftover guest login CTAs once an account control exists.
+      if (loggedIn) {
+        document
+          .querySelectorAll(
+            "header a, footer a, nav a, .elementor-location-header a, .elementor-location-footer a, .site-header a"
+          )
+          .forEach(function (anchor) {
+            if (!anchor || anchor.closest("[data-cta-auth-root]")) return;
+            if (!isGuestAuthLabel(anchor.textContent || "")) return;
+            var leftover =
+              anchor.closest(".elementor-widget-button") ||
+              anchor.closest(".elementor-button-wrapper") ||
+              anchor;
+            leftover.classList.add("cta-auth-is-hidden");
+            leftover.setAttribute("hidden", "");
+            leftover.setAttribute("aria-hidden", "true");
+            leftover.style.setProperty("display", "none", "important");
+          });
+      }
 
       // Fix remaining logged-in menu items titled My Dashboard that still hit supervision.
       if (loggedIn && dashUrl) {

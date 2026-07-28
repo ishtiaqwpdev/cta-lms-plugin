@@ -606,6 +606,17 @@
   position: relative;
   display: inline-flex;
   align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.cta-auth-button-wrap .cta-auth-is-hidden,
+.cta-auth-button-wrap [data-cta-auth-guest][hidden],
+.cta-auth-button-wrap [data-cta-auth-user][hidden],
+.cta-auth-button-wrap [hidden].cta-auth-link--guest,
+.cta-auth-is-hidden {
+  display: none !important;
 }
 
 .cta-auth-account {

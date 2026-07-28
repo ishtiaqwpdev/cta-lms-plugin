@@ -1192,6 +1192,28 @@ body:not(.cta-lms-page--no-chrome) {
   overflow: visible !important;
 }
 
+/* Keep header auth CTA group on the far right with clear spacing. */
+.elementor-location-header .cta-auth-button-wrap,
+.elementor-location-header .elementor-widget-button:has(.cta-auth-button-wrap),
+.elementor-location-header .elementor-widget-wrap:has(.cta-auth-button-wrap) {
+  margin-left: auto !important;
+  justify-content: flex-end !important;
+}
+
+.elementor-location-header .elementor-widget-wrap:has(.cta-auth-button-wrap),
+.elementor-location-header .e-con:has(> .cta-auth-button-wrap),
+.elementor-location-header .e-con:has(.cta-auth-button-wrap) {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 10px !important;
+}
+
+.elementor-location-header .cta-auth-is-hidden,
+.elementor-location-header .elementor-widget-button.cta-auth-is-hidden {
+  display: none !important;
+}
+
 .elementor-location-header .elementor-button-link,
 .elementor-location-header .elementor-button {
   white-space: nowrap !important;

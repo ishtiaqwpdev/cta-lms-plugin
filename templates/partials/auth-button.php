@@ -51,14 +51,14 @@ $courses_panel_url = $dashboard_url ? $dashboard_url . '#courses' : $dashboard_u
 >
 	<a
 		href="<?php echo esc_url( $login_url ? $login_url : '#' ); ?>"
-		class="<?php echo esc_attr( $button_class ); ?> cta-auth-link cta-auth-link--guest"
+		class="<?php echo esc_attr( $button_class ); ?> cta-auth-link cta-auth-link--guest<?php echo $is_logged_in ? ' cta-auth-is-hidden' : ''; ?>"
 		data-cta-auth-guest
-		<?php echo $is_logged_in ? 'hidden' : ''; ?>
+		<?php echo $is_logged_in ? 'hidden aria-hidden="true"' : ''; ?>
 	>
 		<?php echo esc_html( $login_text ); ?>
 	</a>
 
-	<div class="cta-auth-account<?php echo $is_logged_in ? ' is-openable' : ''; ?>" data-cta-auth-user <?php echo $is_logged_in ? '' : 'hidden'; ?>>
+	<div class="cta-auth-account<?php echo $is_logged_in ? ' is-openable' : ' cta-auth-is-hidden'; ?>" data-cta-auth-user <?php echo $is_logged_in ? '' : 'hidden aria-hidden="true"'; ?>>
 		<button
 			type="button"
 			class="<?php echo esc_attr( $button_class ); ?> cta-auth-account__toggle"
@@ -120,11 +120,19 @@ $courses_panel_url = $dashboard_url ? $dashboard_url . '#courses' : $dashboard_u
       if (!guest || !user) return;
       if (loggedIn) {
         guest.hidden = true;
+        guest.classList.add("cta-auth-is-hidden");
+        guest.setAttribute("aria-hidden", "true");
         user.hidden = false;
+        user.classList.remove("cta-auth-is-hidden");
+        user.removeAttribute("aria-hidden");
         root.setAttribute("data-logged-in", "yes");
       } else {
         guest.hidden = false;
+        guest.classList.remove("cta-auth-is-hidden");
+        guest.removeAttribute("aria-hidden");
         user.hidden = true;
+        user.classList.add("cta-auth-is-hidden");
+        user.setAttribute("aria-hidden", "true");
         root.setAttribute("data-logged-in", "no");
       }
     });
