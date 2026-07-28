@@ -1,12 +1,13 @@
 <?php
-/**
- * Sync client syllabus content into existing CTA courses/modules.
- *
- * Updates by title match only — never creates duplicate courses.
- * Preserves enrollments, pricing, videos, quizzes, certificates, and resources.
- *
- * @package CTA_LMS
- */
+	/**
+	 * Sync client syllabus content into CTA courses/modules.
+	 *
+	 * Matches existing courses by title; creates a course only when no match exists.
+	 * Never deletes courses/modules. Preserves enrollments, pricing, videos,
+	 * quizzes, certificates, and resources on existing rows.
+	 *
+	 * @package CTA_LMS
+	 */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -148,6 +149,7 @@ class CTA_Syllabus_Sync {
 
 		$report = array(
 			'courses_updated'   => array(),
+			'courses_created'   => array(),
 			'courses_missing'   => array(),
 			'modules_updated'   => 0,
 			'modules_created'   => 0,
@@ -162,13 +164,21 @@ class CTA_Syllabus_Sync {
 				continue;
 			}
 
-			$report['courses_updated'][] = array(
-				'id'              => $result['course_id'],
-				'title'           => $result['title'],
-				'modules_updated' => $result['modules_updated'],
-				'modules_created' => $result['modules_created'],
+			$entry = array(
+				'id'                => $result['course_id'],
+				'title'             => $result['title'],
+				'modules_updated'   => $result['modules_updated'],
+				'modules_created'   => $result['modules_created'],
 				'development_draft' => ! empty( $syllabus['development_draft'] ),
+				'created'           => ! empty( $result['created'] ),
 			);
+
+			if ( ! empty( $result['created'] ) ) {
+				$report['courses_created'][] = $entry;
+			} else {
+				$report['courses_updated'][] = $entry;
+			}
+
 			$report['modules_updated'] += (int) $result['modules_updated'];
 			$report['modules_created'] += (int) $result['modules_created'];
 
@@ -286,7 +296,106 @@ class CTA_Syllabus_Sync {
 	}
 
 	/**
-	 * Sync one syllabus into its matching course.
+	 * Build a unique course slug from a title.
+	 *
+	 * @param string $title Course title.
+	 * @return string
+	 */
+	private static function unique_slug( $title ) {
+		global $wpdb;
+
+		$base = sanitize_title( (string) $title );
+		if ( '' === $base ) {
+			$base = 'cta-course';
+		}
+
+		$table = $wpdb->prefix . 'cta_courses';
+		$slug  = $base;
+		$i     = 2;
+
+		while ( true ) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$exists = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT id FROM {$table} WHERE slug = %s LIMIT 1",
+					$slug
+				)
+			);
+
+			if ( ! $exists ) {
+				return $slug;
+			}
+
+			$slug = $base . '-' . $i;
+			++$i;
+
+			if ( $i > 200 ) {
+				return $base . '-' . wp_generate_password( 6, false, false );
+			}
+		}
+	}
+
+	/**
+	 * Create a new CE course from a syllabus definition (only when no match exists).
+	 *
+	 * Does not touch enrollments/payments. Uses safe defaults; price starts at 0.
+	 *
+	 * @param array $syllabus Syllabus definition.
+	 * @return object|null Course row.
+	 */
+	private static function create_course( array $syllabus ) {
+		global $wpdb;
+
+		$title = sanitize_text_field( (string) ( $syllabus['title'] ?? '' ) );
+		if ( '' === $title ) {
+			return null;
+		}
+
+		// Final guard against race / duplicate title.
+		$existing = self::find_course( $syllabus );
+		if ( $existing ) {
+			return $existing;
+		}
+
+		$table = $wpdb->prefix . 'cta_courses';
+		$slug  = self::unique_slug( $title );
+		$ce    = isset( $syllabus['ce_hours'] ) ? (float) $syllabus['ce_hours'] : 0.0;
+
+		$description = ! empty( $syllabus['description'] )
+			? wp_kses_post( '<p>' . esc_html( (string) $syllabus['description'] ) . '</p>' )
+			: '';
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$inserted = $wpdb->insert(
+			$table,
+			array(
+				'title'                => $title,
+				'slug'                 => $slug,
+				'description'          => $description,
+				'ce_hours'             => $ce,
+				'price'                => 0.00,
+				'category'             => sanitize_text_field( (string) ( $syllabus['category'] ?? '' ) ),
+				'learning_objectives'  => '[]',
+				'syllabus_meta'        => '',
+				'modules_count'        => 0,
+				'status'               => 'published',
+				'product_type'         => 'ce',
+				'access_period_months' => 6,
+				'awards_ce_hours'      => 1,
+				'has_ce_certificate'   => 1,
+			),
+			array( '%s', '%s', '%s', '%f', '%f', '%s', '%s', '%s', '%d', '%s', '%s', '%d', '%d', '%d' )
+		);
+
+		if ( ! $inserted ) {
+			return null;
+		}
+
+		return CTA_Database::get_course( (int) $wpdb->insert_id );
+	}
+
+	/**
+	 * Sync one syllabus into its matching course (create only if missing).
 	 *
 	 * @param array $syllabus Syllabus definition.
 	 * @return array
@@ -294,7 +403,14 @@ class CTA_Syllabus_Sync {
 	private static function sync_one( array $syllabus ) {
 		global $wpdb;
 
-		$course = self::find_course( $syllabus );
+		$created = false;
+		$course  = self::find_course( $syllabus );
+
+		if ( ! $course ) {
+			$course = self::create_course( $syllabus );
+			$created = (bool) $course;
+		}
+
 		if ( ! $course ) {
 			return array( 'course_id' => 0 );
 		}
@@ -352,16 +468,23 @@ class CTA_Syllabus_Sync {
 
 		$mod_result = self::sync_modules( $course_id, (array) ( $syllabus['modules'] ?? array() ) );
 
+		// Keep course-specific evaluation LO + CAMFT questions aligned after syllabus upsert.
+		if ( class_exists( 'CTA_Evaluation_Questions' ) ) {
+			CTA_Evaluation_Questions::sync_learning_objective_questions( $course_id );
+			CTA_Evaluation_Questions::copy_camft_templates_to_course( $course_id );
+		}
+
 		return array(
 			'course_id'       => $course_id,
 			'title'           => $data['title'],
 			'modules_updated' => $mod_result['updated'],
 			'modules_created' => $mod_result['created'],
+			'created'         => $created,
 		);
 	}
 
 	/**
-	 * Upsert modules by order_index. Never deletes existing modules.
+	 * Upsert modules by title / order. Never deletes existing modules.
 	 *
 	 * @param int   $course_id Course ID.
 	 * @param array $modules   Syllabus modules.
@@ -374,13 +497,19 @@ class CTA_Syllabus_Sync {
 		$table     = $wpdb->prefix . 'cta_course_modules';
 		$existing  = CTA_Database::get_course_modules( $course_id );
 		$by_index  = array();
+		$by_title  = array();
 
 		foreach ( $existing as $row ) {
 			$by_index[ (int) $row->order_index ] = $row;
+			$title_key = strtolower( trim( (string) $row->title ) );
+			if ( '' !== $title_key && ! isset( $by_title[ $title_key ] ) ) {
+				$by_title[ $title_key ] = $row;
+			}
 		}
 
 		// If order_index values are sparse/zero-heavy, also map by sequence position.
 		$by_position = array_values( $existing );
+		$used_ids    = array();
 
 		$updated = 0;
 		$created = 0;
@@ -398,16 +527,23 @@ class CTA_Syllabus_Sync {
 				continue;
 			}
 
-			$target = null;
-			if ( isset( $by_index[ $order ] ) ) {
+			$target    = null;
+			$title_key = strtolower( trim( $title ) );
+
+			// Prefer exact title match so renumbering does not duplicate modules.
+			if ( isset( $by_title[ $title_key ] ) && ! isset( $used_ids[ (int) $by_title[ $title_key ]->id ] ) ) {
+				$target = $by_title[ $title_key ];
+			} elseif ( isset( $by_index[ $order ] ) && ! isset( $used_ids[ (int) $by_index[ $order ]->id ] ) ) {
 				$target = $by_index[ $order ];
-			} elseif ( isset( $by_index[ $i ] ) ) {
+			} elseif ( isset( $by_index[ $i ] ) && ! isset( $used_ids[ (int) $by_index[ $i ]->id ] ) ) {
 				$target = $by_index[ $i ];
-			} elseif ( isset( $by_position[ $i ] ) ) {
+			} elseif ( isset( $by_position[ $i ] ) && ! isset( $used_ids[ (int) $by_position[ $i ]->id ] ) ) {
 				$target = $by_position[ $i ];
 			}
 
 			if ( $target ) {
+				$used_ids[ (int) $target->id ] = true;
+
 				// Preserve video_url and is_locked; update title/description/duration/order.
 				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 				$wpdb->update(

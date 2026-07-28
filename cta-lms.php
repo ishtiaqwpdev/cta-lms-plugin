@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.76' );
+	define( 'CTA_VERSION', '1.0.77' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -339,6 +339,13 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				if ( class_exists( 'CTA_Database' ) ) {
 					CTA_Database::maybe_add_evaluation_submission_columns();
 				}
+			}
+
+			// Safe syllabus seed/upsert for all 7 CE courses (create missing, update existing).
+			if ( version_compare( $installed, '1.0.77', '<' ) && class_exists( 'CTA_Syllabus_Sync' ) ) {
+				CTA_Database::maybe_add_syllabus_columns();
+				delete_option( 'cta_syllabus_synced_1_0_75' );
+				CTA_Syllabus_Sync::sync_all( true );
 			}
 		} catch ( Throwable $e ) {
 			if ( defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ) {

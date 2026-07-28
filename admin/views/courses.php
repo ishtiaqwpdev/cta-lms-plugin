@@ -20,10 +20,36 @@ $access_counts = isset( $access_counts ) ? $access_counts : array();
 		<a class="page-title-action" href="<?php echo esc_url( admin_url( 'admin.php?page=cta-lms-course-edit&product_type=' . ( $is_exam ? 'exam_prep' : 'ce' ) ) ); ?>">
 			<?php echo $is_exam ? esc_html__( 'Add Exam Prep Program', 'cta-lms' ) : esc_html__( 'Add New Course', 'cta-lms' ); ?>
 		</a>
+		<?php if ( ! $is_exam ) : ?>
+			<a class="page-title-action" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=cta_sync_syllabus' ), 'cta_sync_syllabus' ) ); ?>">
+				<?php esc_html_e( 'Sync Syllabus Data', 'cta-lms' ); ?>
+			</a>
+		<?php endif; ?>
 	</div>
 
 	<?php if ( in_array( $notice, array( 'course_deleted', 'status_updated' ), true ) ) : ?>
 		<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Course updated.', 'cta-lms' ); ?></p></div>
+	<?php elseif ( 'syllabus_synced' === $notice ) : ?>
+		<div class="notice notice-success is-dismissible">
+			<p>
+				<?php
+				$created = absint( wp_unslash( $_GET['created'] ?? 0 ) );
+				$updated = absint( wp_unslash( $_GET['updated'] ?? 0 ) );
+				$mods_c  = absint( wp_unslash( $_GET['modules_created'] ?? 0 ) );
+				$mods_u  = absint( wp_unslash( $_GET['modules_updated'] ?? 0 ) );
+				printf(
+					/* translators: 1: courses created, 2: courses updated, 3: modules created, 4: modules updated */
+					esc_html__( 'Syllabus sync complete. Courses created: %1$d. Courses updated: %2$d. Modules created: %3$d. Modules updated: %4$d. Enrollments, pricing, quizzes, and certificates were preserved.', 'cta-lms' ),
+					$created,
+					$updated,
+					$mods_c,
+					$mods_u
+				);
+				?>
+			</p>
+		</div>
+	<?php elseif ( 'syllabus_sync_failed' === $notice ) : ?>
+		<div class="notice notice-error is-dismissible"><p><?php esc_html_e( 'Syllabus sync could not run. Confirm CTA syllabus files are installed.', 'cta-lms' ); ?></p></div>
 	<?php endif; ?>
 
 	<h2 class="nav-tab-wrapper cta-product-type-tabs">

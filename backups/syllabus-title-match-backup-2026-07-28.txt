@@ -1,0 +1,28 @@
+Backup snapshot created before updating syllabus title matching.
+
+Source file:
+includes/syllabus/cta-syllabus-data.php
+
+Pre-change match_titles:
+
+Alcoholism:
+- Alcoholism & Other Chemical Substance Dependency
+
+Child Abuse:
+- Child Abuse Assessment & Mandated Reporting
+
+HIV/AIDS:
+- HIV/AIDS and Mental Health
+
+Human Sexuality:
+- Human Sexuality & Clinical Practice: Biological, Psychological, and Cultural Perspectives
+- Human Sexuality & Clinical Practice
+
+California Law & Ethics:
+- California Law & Ethics for Mental Health Professionals
+
+Advanced Suicide Risk Assessment:
+- Advanced Suicide Risk Assessment
+
+Telehealth:
+- Clinical and Ethical Excellence in Telehealth

@@ -36,6 +36,7 @@ class CTA_Admin {
 		add_action( 'admin_post_cta_save_course', array( $this, 'save_course' ) );
 		add_action( 'admin_post_cta_delete_course', array( $this, 'delete_course' ) );
 		add_action( 'admin_post_cta_toggle_course', array( $this, 'toggle_course_status' ) );
+		add_action( 'admin_post_cta_sync_syllabus', array( $this, 'sync_syllabus' ) );
 		add_action( 'admin_post_cta_save_settings', array( $this, 'save_settings' ) );
 		add_action( 'admin_post_cta_save_email_settings', array( $this, 'save_email_settings' ) );
 		add_action( 'admin_post_cta_extend_exam_access', array( $this, 'extend_exam_access' ) );
@@ -1812,6 +1813,62 @@ class CTA_Admin {
 				array(
 					'page'       => 'cta-lms-courses',
 					'cta_notice' => 'status_updated',
+				),
+				admin_url( 'admin.php' )
+			)
+		);
+		exit;
+	}
+
+	/**
+	 * Safely sync all CE syllabus definitions into courses/modules.
+	 *
+	 * Creates missing courses, updates existing ones, never deletes enrollments
+	 * or existing modules/videos/pricing.
+	 */
+	public function sync_syllabus() {
+		$this->verify_admin_request( 'cta_sync_syllabus' );
+
+		if ( ! class_exists( 'CTA_Syllabus_Sync' ) || ! class_exists( 'CTA_Database' ) ) {
+			wp_safe_redirect(
+				add_query_arg(
+					array(
+						'page'       => 'cta-lms-courses',
+						'cta_notice' => 'syllabus_sync_failed',
+					),
+					admin_url( 'admin.php' )
+				)
+			);
+			exit;
+		}
+
+		CTA_Database::ensure_tables();
+		CTA_Database::maybe_add_syllabus_columns();
+
+		$report = CTA_Syllabus_Sync::sync_all( true );
+
+		if ( ! empty( $report['error'] ) ) {
+			wp_safe_redirect(
+				add_query_arg(
+					array(
+						'page'       => 'cta-lms-courses',
+						'cta_notice' => 'syllabus_sync_failed',
+					),
+					admin_url( 'admin.php' )
+				)
+			);
+			exit;
+		}
+
+		wp_safe_redirect(
+			add_query_arg(
+				array(
+					'page'             => 'cta-lms-courses',
+					'cta_notice'       => 'syllabus_synced',
+					'created'          => count( $report['courses_created'] ?? array() ),
+					'updated'          => count( $report['courses_updated'] ?? array() ),
+					'modules_created'  => (int) ( $report['modules_created'] ?? 0 ),
+					'modules_updated'  => (int) ( $report['modules_updated'] ?? 0 ),
 				),
 				admin_url( 'admin.php' )
 			)

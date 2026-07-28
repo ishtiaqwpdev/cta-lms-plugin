@@ -5,7 +5,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 return array(
 	array(
-		'match_titles'            => array( 'Alcoholism & Other Chemical Substance Dependency' ),
+		'match_titles'            => array(
+			'Alcoholism & Other Chemical Substance Dependency: Assessment, Treatment, Recovery, & Clinical Practice',
+			'Alcoholism & Other Chemical Substance Dependency',
+		),
 		'title'                   => 'Alcoholism & Other Chemical Substance Dependency: Assessment, Treatment, Recovery, & Clinical Practice',
 		'ce_hours'                => 15.0,
 		'category'                => 'Alcoholism & Other Chemical Substance Dependency',
@@ -387,7 +390,10 @@ return array(
 		),
 	),
 	array(
-		'match_titles'            => array( 'HIV/AIDS and Mental Health' ),
+		'match_titles'            => array(
+			'HIV/AIDS and Mental Health: Clinical Implications, Stigma, and Ethical Practice',
+			'HIV/AIDS and Mental Health',
+		),
 		'title'                   => 'HIV/AIDS and Mental Health: Clinical Implications, Stigma, and Ethical Practice',
 		'ce_hours'                => 7.0,
 		'category'                => '',
@@ -703,7 +709,10 @@ return array(
 		),
 	),
 	array(
-		'match_titles'            => array( 'California Law & Ethics for Mental Health Professionals' ),
+		'match_titles'            => array(
+			'California Law & Ethics for Mental Health Professionals: Navigating the Evolving Clinical Landscape',
+			'California Law & Ethics for Mental Health Professionals',
+		),
 		'title'                   => 'California Law & Ethics for Mental Health Professionals: Navigating the Evolving Clinical Landscape',
 		'ce_hours'                => 6.0,
 		'category'                => '',
@@ -822,7 +831,10 @@ return array(
 		),
 	),
 	array(
-		'match_titles'            => array( 'Advanced Suicide Risk Assessment' ),
+		'match_titles'            => array(
+			'Advanced Suicide Risk Assessment: Evidence-Based Intervention and Ethical Documentation',
+			'Advanced Suicide Risk Assessment',
+		),
 		'title'                   => 'Advanced Suicide Risk Assessment: Evidence-Based Intervention and Ethical Documentation',
 		'ce_hours'                => 6.0,
 		'category'                => '',
@@ -942,7 +954,10 @@ return array(
 		),
 	),
 	array(
-		'match_titles'            => array( 'Clinical and Ethical Excellence in Telehealth' ),
+		'match_titles'            => array(
+			'Clinical and Ethical Excellence in Telehealth: The Essential California Framework',
+			'Clinical and Ethical Excellence in Telehealth',
+		),
 		'title'                   => 'Clinical and Ethical Excellence in Telehealth: The Essential California Framework',
 		'ce_hours'                => 3.0,
 		'category'                => '',
