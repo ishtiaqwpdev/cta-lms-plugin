@@ -315,6 +315,7 @@ class CTA_Auth {
 					)
 				);
 			}
+			CTA_Associate_Access::heal_decoupled_statuses( $user_id );
 		}
 
 		// Refresh user so role/meta are available to email helpers.

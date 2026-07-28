@@ -120,6 +120,8 @@ class CTA_Supervision_Dashboard {
 		// Refresh cancel-at-period-end / period dates from Stripe.
 		$this->maybe_sync_subscription_from_stripe( $user_id );
 
+		CTA_Associate_Access::heal_decoupled_statuses( $user_id );
+
 		$supervision_status = (string) get_user_meta( $user_id, 'cta_supervision_status', true );
 		$subscription_id    = (string) get_user_meta( $user_id, 'cta_supervision_subscription_id', true );
 		$supervision_payment = CTA_Database::get_user_supervision_payment( $user_id, 'completed' );
@@ -147,20 +149,19 @@ class CTA_Supervision_Dashboard {
 
 		$is_active         = ( 'active' === $supervision_status );
 		$is_locked         = in_array( $supervision_status, array( 'locked', 'past_due' ), true );
-		$is_pending_plan   = ( 'pending_approval' === $supervision_status );
-		$approval_status   = CTA_Associate_Access::get_approval_status( $user_id );
+		$is_pending_plan   = CTA_Associate_Access::is_plan_awaiting_application_approval( $user_id );
 		$can_access_supervision = CTA_Associate_Access::can_access_supervision_features( $user_id );
 		$is_supervision_pending = CTA_Associate_Access::is_supervision_pending( $user_id );
 		$is_approved_awaiting_plan = CTA_Associate_Access::is_approved_awaiting_plan( $user_id );
 		$is_pending_approval    = ( ! $is_approved_awaiting_plan ) && (
-			CTA_Associate_Access::STATUS_PENDING === $approval_status
-			|| $is_supervision_pending
+			$is_supervision_pending
+			|| $is_pending_plan
 		);
 
 		// Paid / pending purchase should never fall through to "No active plan".
 		$no_plan = ! $is_active && ! $is_locked && ! $is_pending_plan && ! $has_supervision_purchase && ! $is_pending_approval && ! $is_approved_awaiting_plan;
 
-		if ( CTA_Associate_Access::STATUS_PENDING === $approval_status || $is_pending_plan || $is_supervision_pending ) {
+		if ( $is_supervision_pending || $is_pending_plan ) {
 			$onboarding_status_label = __( 'Supervision Application Pending', 'cta-lms' );
 			$onboarding_status_class = 'badge--warning';
 			$onboarding_message      = CTA_Associate_Access::get_pending_message();

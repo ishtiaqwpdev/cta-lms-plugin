@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.89' );
+	define( 'CTA_VERSION', '1.0.90' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -389,6 +389,21 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 			// Force-sync every CE + Exam Prep price to the approved catalog (before/after logged).
 			if ( version_compare( $installed, '1.0.86', '<' ) && class_exists( 'CTA_Course_Catalog' ) ) {
 				CTA_Course_Catalog::sync_approved_prices();
+			}
+
+			// Decouple supervision application pending from general account / CE access.
+			if ( version_compare( $installed, '1.0.90', '<' ) && class_exists( 'CTA_Associate_Access' ) ) {
+				$query = new WP_User_Query(
+					array(
+						'role'   => 'cta_associate',
+						'number' => 1000,
+						'fields' => 'ID',
+					)
+				);
+
+				foreach ( (array) $query->get_results() as $user_id ) {
+					CTA_Associate_Access::heal_decoupled_statuses( absint( $user_id ) );
+				}
 			}
 		} catch ( Throwable $e ) {
 			if ( defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ) {

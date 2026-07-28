@@ -528,7 +528,7 @@
   }
 
   /**
-   * Refresh an open Pending Approval dashboard as soon as an admin approves it.
+   * Refresh an open Supervision Application Pending dashboard as soon as an admin approves it.
    */
   function initCtaSupervisionApprovalWatcher() {
     var pending = document.querySelector(

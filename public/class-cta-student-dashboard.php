@@ -815,6 +815,13 @@ class CTA_Student_Dashboard {
 		) {
 			if (
 				class_exists( 'CTA_Associate_Access' )
+				&& in_array( 'cta_associate', $roles, true )
+			) {
+				CTA_Associate_Access::heal_decoupled_statuses( (int) $user->ID );
+			}
+
+			if (
+				class_exists( 'CTA_Associate_Access' )
 				&& ! CTA_Associate_Access::can_access_ce_and_exam_prep( (int) $user->ID )
 			) {
 				return $this->redirect_markup( home_url( '/' ) );

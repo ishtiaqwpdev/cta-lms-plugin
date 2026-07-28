@@ -54,11 +54,14 @@ class CTA_Supervision {
 			$approval    = CTA_Associate_Access::get_approval_status( $user_id );
 
 			if ( ! CTA_Associate_Access::can_access_supervision_features( $user_id ) ) {
-				if ( CTA_Associate_Access::STATUS_REJECTED === $approval || 'rejected' === $meta_status ) {
+				if ( CTA_Associate_Access::STATUS_REJECTED === $approval ) {
 					$user_status = 'rejected';
 				} elseif ( CTA_Associate_Access::is_approved_awaiting_plan( $user_id ) ) {
 					$user_status = 'awaiting_plan';
-				} elseif ( CTA_Associate_Access::is_supervision_pending( $user_id ) || 'pending_approval' === $meta_status ) {
+				} elseif (
+					CTA_Associate_Access::is_supervision_pending( $user_id )
+					|| CTA_Associate_Access::is_plan_awaiting_application_approval( $user_id )
+				) {
 					$user_status = 'pending_approval';
 				} elseif ( 'locked' === $meta_status || 'past_due' === $meta_status ) {
 					$user_status = 'locked';

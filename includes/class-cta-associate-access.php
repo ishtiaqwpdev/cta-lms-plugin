@@ -36,11 +36,22 @@ class CTA_Associate_Access {
 	const ACCOUNT_ACTIVE   = 'active';
 	const ACCOUNT_INACTIVE = 'inactive';
 
-	const META_ACCOUNT_STATUS      = 'cta_account_status';
-	const META_ADMIN_ASSIGNED_PLAN = 'cta_admin_assigned_plan';
-	const META_ADMIN_ASSIGNED_NOTE = 'cta_admin_assigned_plan_note';
-	const META_ADMIN_ASSIGNED_AT   = 'cta_admin_assigned_plan_at';
-	const META_ADMIN_ASSIGNED_BY   = 'cta_admin_assigned_plan_by';
+	/** Plan lifecycle values for `cta_supervision_status` (axis 4). */
+	const PLAN_NONE        = 'none';
+	const PLAN_ACTIVE      = 'active';
+	const PLAN_PAUSED      = 'paused';
+	const PLAN_PAST_DUE    = 'past_due';
+	const PLAN_LOCKED      = 'locked';
+	const PLAN_CANCELLED   = 'cancelled';
+	const PLAN_AWAITING    = 'pending_approval'; // Purchased/assigned; waiting on application approval.
+
+	const META_ACCOUNT_STATUS                 = 'cta_account_status';
+	const META_SUPERVISION_APPLICATION_STATUS = 'cta_approval_status';
+	const META_SUPERVISION_PLAN_STATUS        = 'cta_supervision_status';
+	const META_ADMIN_ASSIGNED_PLAN            = 'cta_admin_assigned_plan';
+	const META_ADMIN_ASSIGNED_NOTE            = 'cta_admin_assigned_plan_note';
+	const META_ADMIN_ASSIGNED_AT              = 'cta_admin_assigned_plan_at';
+	const META_ADMIN_ASSIGNED_BY              = 'cta_admin_assigned_plan_by';
 
 	/**
 	 * General account status (active/inactive) — independent of supervision vetting.
@@ -225,7 +236,7 @@ class CTA_Associate_Access {
 	 * Get supervision application status meta for a user.
 	 *
 	 * @param int $user_id User ID.
-	 * @return string
+	 * @return string pending_approval|approved|rejected|''
 	 */
 	public static function get_approval_status( $user_id = 0 ) {
 		$user_id = $user_id ? absint( $user_id ) : get_current_user_id();
@@ -234,7 +245,42 @@ class CTA_Associate_Access {
 			return '';
 		}
 
-		return (string) get_user_meta( $user_id, 'cta_approval_status', true );
+		return (string) get_user_meta( $user_id, self::META_SUPERVISION_APPLICATION_STATUS, true );
+	}
+
+	/**
+	 * Alias: supervision application status (axis 3).
+	 *
+	 * @param int $user_id User ID.
+	 * @return string pending_approval|approved|rejected|''
+	 */
+	public static function get_supervision_application_status( $user_id = 0 ) {
+		return self::get_approval_status( $user_id );
+	}
+
+	/**
+	 * Snapshot of the four independent status axes for a user.
+	 *
+	 * CE / Exam Prep access here means the account may purchase/use those products;
+	 * individual course access still depends on enrollment/payment elsewhere.
+	 *
+	 * @param int $user_id User ID.
+	 * @return array{
+	 *   account_status:string,
+	 *   ce_exam_prep_access:bool,
+	 *   supervision_application_status:string,
+	 *   supervision_plan_status:string
+	 * }
+	 */
+	public static function get_independent_statuses( $user_id = 0 ) {
+		$user_id = $user_id ? absint( $user_id ) : get_current_user_id();
+
+		return array(
+			'account_status'                   => self::get_account_status( $user_id ),
+			'ce_exam_prep_access'              => self::can_access_ce_and_exam_prep( $user_id ),
+			'supervision_application_status'   => self::get_supervision_application_status( $user_id ),
+			'supervision_plan_status'          => self::get_supervision_plan_status( $user_id ),
+		);
 	}
 
 	/**
@@ -375,19 +421,20 @@ class CTA_Associate_Access {
 		update_user_meta( $user_id, 'cta_supervision_plan_name', $plan_name );
 
 		if ( '' === self::get_approval_status( $user_id ) ) {
-			update_user_meta( $user_id, 'cta_approval_status', self::STATUS_PENDING );
+			update_user_meta( $user_id, self::META_SUPERVISION_APPLICATION_STATUS, self::STATUS_PENDING );
 		}
 
 		// Approved + assigned plan → activate access immediately.
 		if ( self::is_approved( $user_id ) ) {
-			update_user_meta( $user_id, 'cta_supervision_status', 'active' );
+			update_user_meta( $user_id, self::META_SUPERVISION_PLAN_STATUS, self::PLAN_ACTIVE );
 		} else {
 			$status = self::get_supervision_status( $user_id );
-			if ( ! in_array( $status, array( 'active', 'pending_approval' ), true ) ) {
-				update_user_meta( $user_id, 'cta_supervision_status', self::STATUS_PENDING );
+			if ( ! in_array( $status, array( self::PLAN_ACTIVE, self::PLAN_AWAITING ), true ) ) {
+				update_user_meta( $user_id, self::META_SUPERVISION_PLAN_STATUS, self::PLAN_AWAITING );
 			}
 		}
 
+		self::ensure_account_active( $user_id );
 		clean_user_cache( $user_id );
 
 		return true;
@@ -557,9 +604,11 @@ class CTA_Associate_Access {
 
 		$approval = self::get_approval_status( $user_id );
 		if ( '' === $approval || self::STATUS_PENDING === $approval ) {
-			update_user_meta( $user_id, 'cta_approval_status', self::STATUS_PENDING );
+			update_user_meta( $user_id, self::META_SUPERVISION_APPLICATION_STATUS, self::STATUS_PENDING );
 		}
 
+		// Application pending must never touch plan status or deactivate CE.
+		self::ensure_account_active( $user_id );
 		clean_user_cache( $user_id );
 
 		if ( $notify && class_exists( 'CTA_Emails' ) ) {
@@ -622,8 +671,9 @@ class CTA_Associate_Access {
 			// Ensure pending status is set if they already provided agency info earlier.
 			$approval = self::get_approval_status( $user_id );
 			if ( '' === $approval ) {
-				update_user_meta( $user_id, 'cta_approval_status', self::STATUS_PENDING );
+				update_user_meta( $user_id, self::META_SUPERVISION_APPLICATION_STATUS, self::STATUS_PENDING );
 			}
+			self::ensure_account_active( $user_id );
 			return true;
 		}
 
@@ -695,7 +745,7 @@ class CTA_Associate_Access {
 	}
 
 	/**
-	 * Get supervision plan status meta for a user.
+	 * Raw supervision plan lifecycle meta (axis 4).
 	 *
 	 * @param int $user_id User ID.
 	 * @return string
@@ -707,7 +757,19 @@ class CTA_Associate_Access {
 			return '';
 		}
 
-		return (string) get_user_meta( $user_id, 'cta_supervision_status', true );
+		return (string) get_user_meta( $user_id, self::META_SUPERVISION_PLAN_STATUS, true );
+	}
+
+	/**
+	 * Supervision plan status with empty normalized to `none`.
+	 *
+	 * @param int $user_id User ID.
+	 * @return string none|active|paused|past_due|locked|cancelled|pending_approval|rejected|…
+	 */
+	public static function get_supervision_plan_status( $user_id = 0 ) {
+		$status = self::get_supervision_status( $user_id );
+
+		return '' === $status ? self::PLAN_NONE : $status;
 	}
 
 	/**
@@ -717,14 +779,25 @@ class CTA_Associate_Access {
 	 * @return bool
 	 */
 	public static function has_active_supervision( $user_id = 0 ) {
-		return 'active' === self::get_supervision_status( $user_id );
+		return self::PLAN_ACTIVE === self::get_supervision_status( $user_id );
 	}
 
 	/**
-	 * Whether the supervision application (vetting) is still pending.
+	 * Whether a purchased/assigned plan is waiting on application approval.
 	 *
-	 * Independent of general account status and CE/Exam Prep access.
-	 * Also true when a purchased plan is waiting on that same vetting step.
+	 * Separate from axis 3 (application pending). Does not affect CE access.
+	 *
+	 * @param int $user_id User ID.
+	 * @return bool
+	 */
+	public static function is_plan_awaiting_application_approval( $user_id = 0 ) {
+		return self::PLAN_AWAITING === self::get_supervision_status( $user_id );
+	}
+
+	/**
+	 * Whether the supervision application (vetting) is still pending (axis 3 only).
+	 *
+	 * Independent of general account status, CE/Exam Prep access, and plan status.
 	 *
 	 * @param int $user_id User ID.
 	 * @return bool
@@ -746,17 +819,52 @@ class CTA_Associate_Access {
 			return false;
 		}
 
-		$approval = self::get_approval_status( $user_id );
-		$plan     = self::get_supervision_status( $user_id );
+		return self::STATUS_PENDING === self::get_approval_status( $user_id );
+	}
 
-		return self::STATUS_PENDING === $approval || self::STATUS_PENDING === $plan;
+	/**
+	 * Heal incorrect coupling between account / application / plan metas.
+	 *
+	 * - Keeps general accounts active while a supervision application is pending.
+	 * - Clears orphaned plan `pending_approval` when there is no qualifying plan.
+	 * Never writes inactive from supervision vetting.
+	 *
+	 * @param int $user_id User ID.
+	 * @return void
+	 */
+	public static function heal_decoupled_statuses( $user_id ) {
+		$user_id = absint( $user_id );
+
+		if ( ! $user_id || ! self::is_associate( $user_id ) ) {
+			return;
+		}
+
+		// Supervision vetting must never deactivate the general account.
+		$account = (string) get_user_meta( $user_id, self::META_ACCOUNT_STATUS, true );
+		if ( self::ACCOUNT_INACTIVE !== $account ) {
+			self::ensure_account_active( $user_id );
+		} else {
+			// Legacy bug: inactive was sometimes set because application was pending.
+			$application = self::get_approval_status( $user_id );
+			if ( in_array( $application, array( self::STATUS_PENDING, self::STATUS_APPROVED, self::STATUS_REJECTED ), true ) ) {
+				update_user_meta( $user_id, self::META_ACCOUNT_STATUS, self::ACCOUNT_ACTIVE );
+			}
+		}
+
+		// Plan axis should not say "pending approval" without a real plan.
+		if (
+			self::is_plan_awaiting_application_approval( $user_id )
+			&& ! self::has_qualifying_plan( $user_id )
+		) {
+			delete_user_meta( $user_id, self::META_SUPERVISION_PLAN_STATUS );
+		}
 	}
 
 	/**
 	 * Whether the user may use any unlocked supervision features.
 	 *
-	 * Requires: Approved account + qualifying plan (purchase or agency-assigned)
-	 * + Active supervision status. Administrators always pass.
+	 * Requires: Approved application + qualifying plan (purchase or agency-assigned)
+	 * + Active supervision plan status. Administrators always pass.
 	 *
 	 * @param int $user_id User ID.
 	 * @return bool
@@ -824,7 +932,7 @@ class CTA_Associate_Access {
 	 */
 	public static function get_pending_message() {
 		return __(
-			'Your supervision application is under review. You can still purchase and access CE courses and Exam Preparation Programs while you wait. You will be notified once supervision is approved.',
+			'Supervision Application Pending: your application is under review. You can still purchase and access CE courses and Exam Preparation Programs. Supervision booking, meeting links, and materials stay locked until approved.',
 			'cta-lms'
 		);
 	}
@@ -893,10 +1001,13 @@ class CTA_Associate_Access {
 			return false;
 		}
 
-		update_user_meta( $user_id, 'cta_approval_status', $status );
+		update_user_meta( $user_id, self::META_SUPERVISION_APPLICATION_STATUS, $status );
 		update_user_meta( $user_id, 'cta_approval_reviewed_at', current_time( 'mysql' ) );
 		update_user_meta( $user_id, 'cta_approval_reviewed_by', get_current_user_id() );
 		clean_user_cache( $user_id );
+
+		// Application status changes must never deactivate the general account.
+		self::ensure_account_active( $user_id );
 
 		return true;
 	}
@@ -954,15 +1065,15 @@ class CTA_Associate_Access {
 			return;
 		}
 
-		update_user_meta( $user_id, 'cta_supervision_status', 'active' );
+		update_user_meta( $user_id, self::META_SUPERVISION_PLAN_STATUS, self::PLAN_ACTIVE );
 	}
 
 	/**
 	 * Pure decision helper for tests: may this associate use supervision features?
 	 *
-	 * @param bool $is_approved         Account approval flag.
+	 * @param bool $is_approved         Supervision application approved.
 	 * @param bool $has_qualifying_plan Purchase or agency-assigned plan.
-	 * @param bool $has_active_plan     Supervision status is active.
+	 * @param bool $has_active_plan     Supervision plan status is active.
 	 * @return bool
 	 */
 	public static function evaluate_feature_access( $is_approved, $has_qualifying_plan, $has_active_plan ) {
@@ -1090,7 +1201,10 @@ class CTA_Associate_Access {
 	}
 
 	/**
-	 * Reject an Associate account (keeps privileges locked).
+	 * Reject a supervision application (keeps supervision features locked).
+	 *
+	 * Does not deactivate the general account or CE / Exam Prep access.
+	 * Plan lifecycle meta is left alone except clearing a plan-awaiting flag.
 	 *
 	 * @param int    $user_id User ID.
 	 * @param string $reason  Optional rejection reason.
@@ -1111,7 +1225,12 @@ class CTA_Associate_Access {
 			update_user_meta( $user_id, 'cta_approval_rejection_reason', $reason );
 		}
 
-		update_user_meta( $user_id, 'cta_supervision_status', 'rejected' );
+		// Do not overwrite payment lifecycle with "rejected" — application axis owns that.
+		if ( self::is_plan_awaiting_application_approval( $user_id ) ) {
+			delete_user_meta( $user_id, self::META_SUPERVISION_PLAN_STATUS );
+		}
+
+		self::ensure_account_active( $user_id );
 		clean_user_cache( $user_id );
 
 		return true;

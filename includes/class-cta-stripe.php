@@ -639,6 +639,10 @@ class CTA_Stripe {
 
 		$user_id = get_current_user_id();
 
+		if ( class_exists( 'CTA_Associate_Access' ) ) {
+			CTA_Associate_Access::heal_decoupled_statuses( $user_id );
+		}
+
 		if (
 			class_exists( 'CTA_Associate_Access' )
 			&& ! CTA_Associate_Access::can_access_ce_and_exam_prep( $user_id )
@@ -1789,9 +1793,10 @@ class CTA_Stripe {
 
 		update_user_meta( $user_id, 'cta_supervision_plan', $plan_slug );
 		update_user_meta( $user_id, 'cta_supervision_plan_name', $plan_name );
+		// Plan axis only — application pending lives on cta_approval_status.
 		update_user_meta( $user_id, 'cta_supervision_status', 'pending_approval' );
 
-		// Keep Associate account approval in sync when still awaiting review.
+		// Keep Associate supervision application in sync when still awaiting review.
 		if ( class_exists( 'CTA_Associate_Access' ) && CTA_Associate_Access::is_associate( $user_id ) ) {
 			$approval = CTA_Associate_Access::get_approval_status( $user_id );
 
@@ -1801,6 +1806,9 @@ class CTA_Stripe {
 				// Already-approved Associates unlock immediately after purchase.
 				update_user_meta( $user_id, 'cta_supervision_status', 'active' );
 			}
+
+			// Never let a supervision purchase deactivate CE / Exam Prep.
+			CTA_Associate_Access::ensure_account_active( $user_id );
 		}
 
 		if ( ! empty( $args['send_receipt'] ) ) {
