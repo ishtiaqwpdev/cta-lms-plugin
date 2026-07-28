@@ -3083,16 +3083,6 @@ button.pagination__item:disabled {
   margin-bottom: var(--space-lg);
 }
 
-.cta-plugin-wrapper .cta-register-agency-fields {
-  margin-top: var(--space-sm);
-  padding-top: var(--space-md);
-  border-top: 1px solid var(--color-border-light, #e5e7eb);
-}
-
-.cta-plugin-wrapper .cta-register-agency-fields[hidden] {
-  display: none !important;
-}
-
 .cta-plugin-wrapper .auth-form__divider {
   display: flex;
   align-items: center;

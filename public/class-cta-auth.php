@@ -215,30 +215,6 @@ class CTA_Auth {
 			);
 		}
 
-		$agency_fields = array();
-		if ( 'cta_associate' === $user_type && class_exists( 'CTA_Associate_Access' ) ) {
-			$agency_fields = CTA_Associate_Access::parse_agency_fields_from_request( $_POST ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
-			$employer      = $agency_fields['employer_agency_name'] ?? '';
-			$rep_name      = $agency_fields['agency_representative_name'] ?? '';
-			$rep_email     = $agency_fields['agency_representative_email'] ?? '';
-
-			if ( '' === $employer || '' === $rep_name || '' === $rep_email ) {
-				wp_send_json_error(
-					array(
-						'message' => __( 'Please provide Employer/Agency Name, Agency Representative Name, and Agency Representative Email for your supervision application.', 'cta-lms' ),
-					)
-				);
-			}
-
-			if ( ! is_email( $rep_email ) ) {
-				wp_send_json_error(
-					array(
-						'message' => __( 'Please enter a valid agency representative email.', 'cta-lms' ),
-					)
-				);
-			}
-		}
-
 		if ( email_exists( $email ) ) {
 			wp_send_json_error(
 				array(
@@ -292,30 +268,12 @@ class CTA_Auth {
 		$user_obj->set_role( $user_type );
 
 		// General account is active immediately for CE / Exam Prep (all roles).
+		// Agency fields + pending supervision application are collected later,
+		// only when the Associate applies for / purchases supervision.
 		if ( class_exists( 'CTA_Associate_Access' ) ) {
 			CTA_Associate_Access::ensure_account_active( $user_id );
 		} else {
 			update_user_meta( $user_id, 'cta_account_status', 'active' );
-		}
-
-		// Associates: open supervision application at registration so Admin Approvals
-		// receives the request immediately (CE stays usable while pending).
-		if ( 'cta_associate' === $user_type && class_exists( 'CTA_Associate_Access' ) ) {
-			$saved = CTA_Associate_Access::save_supervision_application_agency( $user_id, $agency_fields, true );
-			if ( is_wp_error( $saved ) ) {
-				if ( ! function_exists( 'wp_delete_user' ) ) {
-					require_once ABSPATH . 'wp-admin/includes/user.php';
-				}
-				if ( function_exists( 'wp_delete_user' ) ) {
-					wp_delete_user( $user_id );
-				}
-				wp_send_json_error(
-					array(
-						'message' => $saved->get_error_message(),
-					)
-				);
-			}
-			CTA_Associate_Access::heal_decoupled_statuses( $user_id );
 		}
 
 		// Refresh user so role/meta are available to email helpers.
@@ -340,7 +298,7 @@ class CTA_Auth {
 		$success_message = __( 'Account created successfully! Redirecting...', 'cta-lms' );
 		if ( 'cta_associate' === $user_type ) {
 			$success_message = __(
-				'Account created. Your supervision application was sent to CTA admin for approval. You can use CE courses while you wait. Redirecting...',
+				'Account created. You can use CE courses and Exam Preparation now. Employer/agency details are only needed later if you apply for supervision. Redirecting...',
 				'cta-lms'
 			);
 		}
