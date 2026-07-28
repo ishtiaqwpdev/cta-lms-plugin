@@ -3714,6 +3714,32 @@
     var userTypeSelect = registerForm
       ? registerForm.querySelector('[name="cta_user_type"]')
       : null;
+    var agencyFieldsWrap = document.getElementById("cta-register-agency-fields");
+    var agencyEmployer = document.getElementById("cta-register-employer");
+    var agencyRepName = document.getElementById("cta-register-agency-rep-name");
+    var agencyRepEmail = document.getElementById("cta-register-agency-rep-email");
+
+    function syncRegisterAgencyFields() {
+      var isAssociate = userTypeSelect && userTypeSelect.value === "cta_associate";
+      if (agencyFieldsWrap) {
+        agencyFieldsWrap.hidden = !isAssociate;
+      }
+      [agencyEmployer, agencyRepName, agencyRepEmail].forEach(function (field) {
+        if (!field) {
+          return;
+        }
+        if (isAssociate) {
+          field.setAttribute("required", "required");
+        } else {
+          field.removeAttribute("required");
+        }
+      });
+    }
+
+    if (userTypeSelect) {
+      userTypeSelect.addEventListener("change", syncRegisterAgencyFields);
+      syncRegisterAgencyFields();
+    }
 
     try {
       var authParams = new URLSearchParams(window.location.search);
@@ -3721,6 +3747,7 @@
         toggleAuthForm("register");
         if (userTypeSelect) {
           userTypeSelect.value = "cta_associate";
+          syncRegisterAgencyFields();
         }
       }
     } catch (e) {}
@@ -3742,6 +3769,9 @@
         var confirmPassword = registerForm.querySelector('[name="cta_reg_confirm_password"]').value;
         var userType = registerForm.querySelector('[name="cta_user_type"]').value;
         var nonceField = registerForm.querySelector('[name="cta_register_nonce"]');
+        var employerAgencyName = agencyEmployer ? agencyEmployer.value.trim() : "";
+        var agencyRepresentativeName = agencyRepName ? agencyRepName.value.trim() : "";
+        var agencyRepresentativeEmail = agencyRepEmail ? agencyRepEmail.value.trim() : "";
 
         if (password !== confirmPassword) {
           showMessage(registerError, "Passwords do not match.", false);
@@ -3758,6 +3788,22 @@
           return;
         }
 
+        if (userType === "cta_associate") {
+          if (!employerAgencyName || !agencyRepresentativeName || !agencyRepresentativeEmail) {
+            showMessage(
+              registerError,
+              "Please provide Employer/Agency Name, Agency Representative Name, and Agency Representative Email.",
+              false
+            );
+            syncRegisterAgencyFields();
+            return;
+          }
+          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(agencyRepresentativeEmail)) {
+            showMessage(registerError, "Please enter a valid agency representative email.", false);
+            return;
+          }
+        }
+
         registerBtn.textContent = "Creating account...";
         registerBtn.disabled = true;
 
@@ -3771,6 +3817,12 @@
           confirm_password: confirmPassword,
           user_type: userType
         };
+
+        if (userType === "cta_associate") {
+          registerPayloadBase.employer_agency_name = employerAgencyName;
+          registerPayloadBase.agency_representative_name = agencyRepresentativeName;
+          registerPayloadBase.agency_representative_email = agencyRepresentativeEmail;
+        }
 
         resolveAuthNonce("register", fallbackNonce)
           .then(function (nonce) {

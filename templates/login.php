@@ -206,8 +206,44 @@ if ( ! defined( 'ABSPATH' ) ) {
 									<?php echo esc_html__( 'Registered Associate (AMFT, ASW, APCC)', 'cta-lms' ); ?>
 								</option>
 							</select>
-							<p class="form-hint" style="margin-top:0.35rem;font-size:0.85em;opacity:0.85;">
-								<?php echo esc_html__( 'Employer/agency details are collected later only if you apply for clinical supervision.', 'cta-lms' ); ?>
+							<p class="form-hint" id="cta-register-role-hint" style="margin-top:0.35rem;font-size:0.85em;opacity:0.85;">
+								<?php echo esc_html__( 'Registered Associates: your account is created immediately for CE courses. Your supervision application is sent to CTA admin for approval.', 'cta-lms' ); ?>
+							</p>
+						</div>
+
+						<div id="cta-register-agency-fields" class="cta-register-agency-fields" hidden>
+							<div class="form-group">
+								<label class="form-label" for="cta-register-employer"><?php echo esc_html__( 'Employer/Agency Name', 'cta-lms' ); ?></label>
+								<input
+									type="text"
+									id="cta-register-employer"
+									name="employer_agency_name"
+									class="form-input"
+									autocomplete="organization"
+								>
+							</div>
+							<div class="form-group">
+								<label class="form-label" for="cta-register-agency-rep-name"><?php echo esc_html__( 'Agency Representative Name', 'cta-lms' ); ?></label>
+								<input
+									type="text"
+									id="cta-register-agency-rep-name"
+									name="agency_representative_name"
+									class="form-input"
+									autocomplete="name"
+								>
+							</div>
+							<div class="form-group">
+								<label class="form-label" for="cta-register-agency-rep-email"><?php echo esc_html__( 'Agency Representative Email', 'cta-lms' ); ?></label>
+								<input
+									type="email"
+									id="cta-register-agency-rep-email"
+									name="agency_representative_email"
+									class="form-input"
+									autocomplete="email"
+								>
+							</div>
+							<p class="form-hint" style="margin-top:0;font-size:0.85em;opacity:0.85;">
+								<?php echo esc_html__( 'These details are required so CTA admin can review your supervision application. Your agency representative will also receive notification by email.', 'cta-lms' ); ?>
 							</p>
 						</div>
 
