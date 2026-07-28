@@ -5749,19 +5749,19 @@ button.pagination__item:disabled {
   right: var(--space-md);
 }
 
-/* Banner fills content width; absolute cover kills side letterboxing from square assets. */
+/* Full banner visible at content width — no crop, no side letterboxing. */
 .cta-plugin-wrapper .dashboard-course-card__thumb {
   position: relative;
   display: block;
   width: 100%;
   max-width: none;
-  aspect-ratio: 16 / 9;
   height: auto;
+  aspect-ratio: auto;
   margin: 0 0 var(--space-md);
   padding: 0;
   overflow: hidden;
   border-radius: var(--radius-md, 8px);
-  background: var(--color-bg-light, #f3f4f6);
+  background: transparent;
   line-height: 0;
   flex: 0 0 auto;
   align-self: stretch;
@@ -5769,25 +5769,22 @@ button.pagination__item:disabled {
 }
 
 .cta-plugin-wrapper .dashboard-course-card__thumb img {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  position: static;
   display: block;
   width: 100%;
-  height: 100%;
-  max-width: none;
+  max-width: 100%;
+  height: auto;
   max-height: none;
   margin: 0;
   padding: 0;
   border: 0;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center center;
   background-repeat: no-repeat;
 }
 
 .cta-plugin-wrapper .dashboard-course-card__thumb--placeholder {
+  aspect-ratio: 16 / 9;
   min-height: 0;
   background: var(--color-bg-light, #f3f4f6);
 }
