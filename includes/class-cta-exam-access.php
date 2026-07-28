@@ -371,7 +371,7 @@ class CTA_Exam_Access {
 				'title'       => 'California Law & Ethics Exam Preparation',
 				'slug'        => 'california-law-ethics-exam-preparation',
 				'description' => '<p>Comprehensive preparation for the California Law &amp; Ethics exam. Includes online instructional content, printable workbooks, practice tests, and mock examinations with answer rationales. Access is valid for 6 months from purchase. This program does not award CE hours or a CE certificate.</p>',
-				'price'       => 249.00,
+				'price'       => 199.00,
 				'category'    => 'Exam Preparation',
 			),
 			array(

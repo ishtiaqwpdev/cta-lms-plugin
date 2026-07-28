@@ -22,7 +22,7 @@ $access_counts = isset( $access_counts ) ? $access_counts : array();
 		</a>
 		<?php if ( ! $is_exam ) : ?>
 			<a class="page-title-action" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=cta_sync_syllabus' ), 'cta_sync_syllabus' ) ); ?>">
-				<?php esc_html_e( 'Sync Syllabus Data', 'cta-lms' ); ?>
+				<?php esc_html_e( 'Restore Prices + Sync Syllabus', 'cta-lms' ); ?>
 			</a>
 		<?php endif; ?>
 	</div>
@@ -37,14 +37,27 @@ $access_counts = isset( $access_counts ) ? $access_counts : array();
 				$updated = absint( wp_unslash( $_GET['updated'] ?? 0 ) );
 				$mods_c  = absint( wp_unslash( $_GET['modules_created'] ?? 0 ) );
 				$mods_u  = absint( wp_unslash( $_GET['modules_updated'] ?? 0 ) );
+				$exam_u  = absint( wp_unslash( $_GET['exam_updated'] ?? 0 ) );
+				$miss_m  = absint( wp_unslash( $_GET['missing_modules'] ?? 0 ) );
+				$miss_q  = absint( wp_unslash( $_GET['missing_quiz'] ?? 0 ) );
 				printf(
-					/* translators: 1: courses created, 2: courses updated, 3: modules created, 4: modules updated */
-					esc_html__( 'Syllabus sync complete. Courses created: %1$d. Courses updated: %2$d. Modules created: %3$d. Modules updated: %4$d. Enrollments, pricing, quizzes, and certificates were preserved.', 'cta-lms' ),
+					/* translators: 1: courses created, 2: courses updated, 3: modules created, 4: modules updated, 5: exam prep updated */
+					esc_html__( 'Catalog restore complete. CE created: %1$d. CE updated: %2$d. Modules created: %3$d. Modules updated: %4$d. Exam Prep updated: %5$d. Prices/categories restored from the client catalog. Enrollments and certificates were preserved.', 'cta-lms' ),
 					$created,
 					$updated,
 					$mods_c,
-					$mods_u
+					$mods_u,
+					$exam_u
 				);
+				if ( $miss_m > 0 || $miss_q > 0 ) {
+					echo ' ';
+					printf(
+						/* translators: 1: courses missing modules, 2: courses missing quiz */
+						esc_html__( 'Needs content: %1$d course(s) missing modules, %2$d course(s) missing quiz.', 'cta-lms' ),
+						$miss_m,
+						$miss_q
+					);
+				}
 				?>
 			</p>
 		</div>

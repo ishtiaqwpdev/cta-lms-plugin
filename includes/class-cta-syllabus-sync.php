@@ -338,7 +338,7 @@ class CTA_Syllabus_Sync {
 	/**
 	 * Create a new CE course from a syllabus definition (only when no match exists).
 	 *
-	 * Does not touch enrollments/payments. Uses safe defaults; price starts at 0.
+	 * Does not touch enrollments/payments. Uses syllabus price when provided.
 	 *
 	 * @param array $syllabus Syllabus definition.
 	 * @return object|null Course row.
@@ -373,7 +373,7 @@ class CTA_Syllabus_Sync {
 				'slug'                 => $slug,
 				'description'          => $description,
 				'ce_hours'             => $ce,
-				'price'                => 0.00,
+				'price'                => isset( $syllabus['price'] ) ? (float) $syllabus['price'] : 0.00,
 				'category'             => sanitize_text_field( (string) ( $syllabus['category'] ?? '' ) ),
 				'learning_objectives'  => '[]',
 				'syllabus_meta'        => '',
@@ -458,9 +458,22 @@ class CTA_Syllabus_Sync {
 			$data['category'] = sanitize_text_field( (string) $syllabus['category'] );
 		}
 
+		// Apply catalog price when provided. Never overwrite an existing price with 0.
+		if ( isset( $syllabus['price'] ) && is_numeric( $syllabus['price'] ) ) {
+			$syllabus_price = (float) $syllabus['price'];
+			$existing_price = isset( $course->price ) ? (float) $course->price : 0.0;
+			if ( $syllabus_price > 0 || $existing_price <= 0 ) {
+				$data['price'] = $syllabus_price;
+			}
+		}
+
 		$formats = array();
 		foreach ( array_keys( $data ) as $key ) {
-			$formats[] = ( 'ce_hours' === $key ) ? '%f' : '%s';
+			if ( 'ce_hours' === $key || 'price' === $key ) {
+				$formats[] = '%f';
+			} else {
+				$formats[] = '%s';
+			}
 		}
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching

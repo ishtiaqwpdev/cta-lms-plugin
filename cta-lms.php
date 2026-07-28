@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.77' );
+	define( 'CTA_VERSION', '1.0.78' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -86,6 +86,7 @@ $cta_required_files = array(
 	'includes/class-cta-course-attestation.php',
 	'includes/class-cta-database.php',
 	'includes/class-cta-syllabus-sync.php',
+	'includes/class-cta-course-catalog.php',
 	'includes/class-cta-supervision-plans.php',
 	'includes/class-cta-emails.php',
 	'includes/class-cta-pages.php',
@@ -346,6 +347,15 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				CTA_Database::maybe_add_syllabus_columns();
 				delete_option( 'cta_syllabus_synced_1_0_75' );
 				CTA_Syllabus_Sync::sync_all( true );
+			}
+
+			// Restore exact client CE/Exam Prep prices + categories; never wipe tables.
+			if ( version_compare( $installed, '1.0.78', '<' ) && class_exists( 'CTA_Course_Catalog' ) ) {
+				if ( class_exists( 'CTA_Syllabus_Sync' ) ) {
+					CTA_Database::maybe_add_syllabus_columns();
+					CTA_Syllabus_Sync::sync_all( true );
+				}
+				CTA_Course_Catalog::restore_all();
 			}
 		} catch ( Throwable $e ) {
 			if ( defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ) {

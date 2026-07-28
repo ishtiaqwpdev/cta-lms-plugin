@@ -1847,7 +1847,12 @@ class CTA_Admin {
 
 		$report = CTA_Syllabus_Sync::sync_all( true );
 
-		if ( ! empty( $report['error'] ) ) {
+		$catalog_report = array();
+		if ( class_exists( 'CTA_Course_Catalog' ) ) {
+			$catalog_report = CTA_Course_Catalog::restore_all();
+		}
+
+		if ( ! empty( $report['error'] ) && empty( $catalog_report ) ) {
 			wp_safe_redirect(
 				add_query_arg(
 					array(
@@ -1860,15 +1865,30 @@ class CTA_Admin {
 			exit;
 		}
 
+		$audit = isset( $catalog_report['audit'] ) ? $catalog_report['audit'] : array();
+		$missing_modules = 0;
+		$missing_quiz    = 0;
+		foreach ( (array) $audit as $row ) {
+			if ( empty( $row['found'] ) || (int) ( $row['modules_count'] ?? 0 ) < 1 ) {
+				++$missing_modules;
+			}
+			if ( empty( $row['found'] ) || empty( $row['has_quiz'] ) ) {
+				++$missing_quiz;
+			}
+		}
+
 		wp_safe_redirect(
 			add_query_arg(
 				array(
 					'page'             => 'cta-lms-courses',
 					'cta_notice'       => 'syllabus_synced',
-					'created'          => count( $report['courses_created'] ?? array() ),
-					'updated'          => count( $report['courses_updated'] ?? array() ),
+					'created'          => count( $report['courses_created'] ?? array() ) + count( $catalog_report['ce']['created'] ?? array() ),
+					'updated'          => count( $report['courses_updated'] ?? array() ) + count( $catalog_report['ce']['updated'] ?? array() ),
 					'modules_created'  => (int) ( $report['modules_created'] ?? 0 ),
 					'modules_updated'  => (int) ( $report['modules_updated'] ?? 0 ),
+					'exam_updated'     => count( $catalog_report['exam_prep']['updated'] ?? array() ),
+					'missing_modules'  => $missing_modules,
+					'missing_quiz'     => $missing_quiz,
 				),
 				admin_url( 'admin.php' )
 			)
