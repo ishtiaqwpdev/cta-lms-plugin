@@ -23,6 +23,7 @@ class CTA_Pages {
 		add_action( 'init', array( __CLASS__, 'maybe_sync_pages' ), 20 );
 		add_action( 'template_redirect', array( __CLASS__, 'redirect_legacy_marketing_urls' ), 5 );
 		add_filter( 'wp_nav_menu_objects', array( __CLASS__, 'exclude_internal_pages_from_menus' ), 20 );
+		add_filter( 'wp_nav_menu_objects', array( __CLASS__, 'rewrite_logged_in_auth_nav_items' ), 25 );
 		add_filter( 'wp_list_pages_excludes', array( __CLASS__, 'exclude_internal_pages_from_list' ) );
 	}
 
@@ -390,6 +391,78 @@ class CTA_Pages {
 				)
 			);
 		}
+	}
+
+	/**
+	 * When logged in, turn Login / Learner Login menu items into My Dashboard
+	 * pointing at the CE student dashboard (never the supervision portal).
+	 *
+	 * @param array $items Menu items.
+	 * @return array
+	 */
+	public static function rewrite_logged_in_auth_nav_items( $items ) {
+		if ( is_admin() || ! is_user_logged_in() || empty( $items ) ) {
+			return $items;
+		}
+
+		$dashboard_url = class_exists( 'CTA_Associate_Access' )
+			? CTA_Associate_Access::get_general_dashboard_url( get_current_user_id() )
+			: ( function_exists( 'cta_lms_get_linked_page_url' )
+				? cta_lms_get_linked_page_url( 'cta_student_dashboard_page_id' )
+				: '' );
+
+		if ( ! $dashboard_url ) {
+			return $items;
+		}
+
+		$login_page_id = absint( get_option( 'cta_login_page_id', 0 ) );
+		$login_url     = $login_page_id ? (string) get_permalink( $login_page_id ) : '';
+		$dash_page_id  = absint( get_option( 'cta_student_dashboard_page_id', 0 ) );
+		$dashboard_label = __( 'My Dashboard', 'cta-lms' );
+
+		foreach ( $items as $item ) {
+			$title = strtolower( trim( wp_strip_all_tags( (string) $item->title ) ) );
+			$title = preg_replace( '/[→➞»]+$/u', '', $title );
+			$title = trim( (string) $title );
+			$url   = isset( $item->url ) ? (string) $item->url : '';
+			$object_id = isset( $item->object_id ) ? absint( $item->object_id ) : 0;
+
+			$is_login_title = in_array(
+				$title,
+				array( 'login', 'log in', 'learner login', 'sign in', 'learner log in' ),
+				true
+			);
+			$is_dashboard_title = in_array(
+				$title,
+				array( 'my dashboard', 'learner dashboard', 'my account', 'dashboard' ),
+				true
+			);
+			$points_to_login = (
+				( $login_page_id && $object_id === $login_page_id )
+				|| ( $login_url && untrailingslashit( $url ) === untrailingslashit( $login_url ) )
+			);
+
+			// Rewrite guest login CTAs, and "Learner Dashboard" links that still point at /login/.
+			if ( ! $is_login_title && ! ( $is_dashboard_title && $points_to_login ) ) {
+				continue;
+			}
+
+			$item->title     = $dashboard_label;
+			$item->url       = $dashboard_url;
+			$item->object    = 'custom';
+			$item->type      = 'custom';
+			$item->object_id = $dash_page_id ? $dash_page_id : 0;
+			$item->classes   = array_values(
+				array_unique(
+					array_merge(
+						(array) $item->classes,
+						array( 'cta-nav-my-dashboard' )
+					)
+				)
+			);
+		}
+
+		return $items;
 	}
 
 	/**

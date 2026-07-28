@@ -306,6 +306,12 @@ class CTA_Loader {
 			return false;
 		}
 
+		// Always load for logged-in visitors so Elementor/theme "Learner Login"
+		// chrome can flip to My Account on every page.
+		if ( is_user_logged_in() ) {
+			return true;
+		}
+
 		if ( self::is_registered_plugin_page() ) {
 			return true;
 		}

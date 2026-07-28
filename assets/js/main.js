@@ -3406,19 +3406,141 @@
 
   /**
    * Header / Elementor auth button: keep logged-in chrome in sync and open account menu.
+   * Also upgrades hardcoded "Learner Login" / "Login" theme links into My Account controls.
    */
   function initCtaAuthChrome() {
     function hasWpLoginCookie() {
       return /(?:^|;\s*)wordpress_logged_in_/.test(document.cookie);
     }
 
+    function normalizeAuthLabel(text) {
+      return String(text || "")
+        .replace(/\s+/g, " ")
+        .replace(/[→➞»]+/g, "")
+        .trim()
+        .toLowerCase();
+    }
+
+    function isGuestAuthLabel(text) {
+      var t = normalizeAuthLabel(text);
+      return (
+        t === "login" ||
+        t === "log in" ||
+        t === "learner login" ||
+        t === "learner log in" ||
+        t === "sign in"
+      );
+    }
+
+    function isDashboardAuthLabel(text) {
+      var t = normalizeAuthLabel(text);
+      return (
+        t === "my dashboard" ||
+        t === "learner dashboard" ||
+        t === "my account" ||
+        t === "dashboard"
+      );
+    }
+
+    function stripTrailingSlash(url) {
+      return String(url || "").replace(/\/+$/, "");
+    }
+
+    function isLoggedInState() {
+      var ajaxLoggedIn =
+        typeof ctaAjax !== "undefined" && ctaAjax.isLoggedIn === "yes";
+      return ajaxLoggedIn || hasWpLoginCookie();
+    }
+
+    function buildAuthRoot(loggedIn) {
+      var dashUrl =
+        (typeof ctaAjax !== "undefined" && ctaAjax.dashboardUrl) || "#";
+      var loginUrl =
+        (typeof ctaAjax !== "undefined" && ctaAjax.loginUrl) || "#";
+      var logoutUrl =
+        (typeof ctaAjax !== "undefined" && ctaAjax.logoutUrl) || "#";
+      var coursesUrl =
+        (typeof ctaAjax !== "undefined" && ctaAjax.coursesUrl) || "";
+      var examPrepUrl =
+        (typeof ctaAjax !== "undefined" && ctaAjax.examPrepUrl) || "";
+      var name =
+        (typeof ctaAjax !== "undefined" && ctaAjax.currentUser) || "";
+      var label = name ? "Hi, " + name : "My Dashboard";
+
+      var wrap = document.createElement("div");
+      wrap.className = "cta-plugin-wrapper cta-auth-button-wrap";
+      wrap.setAttribute("data-cta-auth-root", "");
+      wrap.setAttribute("data-logged-in", loggedIn ? "yes" : "no");
+      wrap.setAttribute("data-login-url", loginUrl);
+      wrap.setAttribute("data-dashboard-url", dashUrl);
+      wrap.setAttribute("data-logout-url", logoutUrl);
+      wrap.setAttribute("data-dashboard-text", "My Dashboard");
+      wrap.setAttribute("data-display-name", name);
+
+      var guest = document.createElement("a");
+      guest.href = loginUrl;
+      guest.className = "btn btn-outline btn--sm cta-auth-button cta-auth-link cta-auth-link--guest";
+      guest.setAttribute("data-cta-auth-guest", "");
+      guest.textContent = "Learner Login";
+      if (loggedIn) guest.hidden = true;
+
+      var user = document.createElement("div");
+      user.className = "cta-auth-account" + (loggedIn ? " is-openable" : "");
+      user.setAttribute("data-cta-auth-user", "");
+      if (!loggedIn) user.hidden = true;
+
+      var toggle = document.createElement("button");
+      toggle.type = "button";
+      toggle.className = "btn btn-outline btn--sm cta-auth-button cta-auth-account__toggle";
+      toggle.setAttribute("data-cta-auth-toggle", "");
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.setAttribute("aria-haspopup", "true");
+      toggle.innerHTML =
+        '<span class="cta-auth-account__label" data-cta-auth-label></span>' +
+        '<span class="cta-auth-account__caret" aria-hidden="true">▾</span>';
+      toggle.querySelector("[data-cta-auth-label]").textContent = label;
+
+      var menu = document.createElement("div");
+      menu.className = "cta-auth-account__menu";
+      menu.setAttribute("data-cta-auth-menu", "");
+      menu.setAttribute("hidden", "");
+
+      var links = [
+        { href: dashUrl, text: "My Dashboard" },
+        { href: dashUrl + "#courses", text: "My Courses" },
+        { href: dashUrl + "#certificates", text: "My Certificates" },
+        { href: dashUrl + "#settings", text: "Account Settings" }
+      ];
+      if (coursesUrl) {
+        links.push({ href: coursesUrl, text: "Browse CE Courses" });
+      }
+      if (examPrepUrl) {
+        links.push({ href: examPrepUrl, text: "Browse Exam Preparation" });
+      }
+      if (logoutUrl) {
+        links.push({ href: logoutUrl, text: "Log Out", logout: true });
+      }
+
+      links.forEach(function (item) {
+        var a = document.createElement("a");
+        a.href = item.href;
+        a.textContent = item.text;
+        if (item.logout) a.className = "cta-auth-account__logout";
+        menu.appendChild(a);
+      });
+
+      user.appendChild(toggle);
+      user.appendChild(menu);
+      wrap.appendChild(guest);
+      wrap.appendChild(user);
+      return wrap;
+    }
+
     function syncAuthRoot(root) {
       if (!root) return;
 
       var serverLoggedIn = root.getAttribute("data-logged-in") === "yes";
-      var ajaxLoggedIn =
-        typeof ctaAjax !== "undefined" && ctaAjax.isLoggedIn === "yes";
-      var loggedIn = serverLoggedIn || ajaxLoggedIn || hasWpLoginCookie();
+      var loggedIn = serverLoggedIn || isLoggedInState();
       var guest = root.querySelector("[data-cta-auth-guest]");
       var user = root.querySelector("[data-cta-auth-user]");
       var label = root.querySelector("[data-cta-auth-label]");
@@ -3426,6 +3548,7 @@
       if (guest && user) {
         guest.hidden = !!loggedIn;
         user.hidden = !loggedIn;
+        user.classList.toggle("is-openable", !!loggedIn);
       }
 
       root.setAttribute("data-logged-in", loggedIn ? "yes" : "no");
@@ -3444,23 +3567,95 @@
       }
 
       if (loggedIn && typeof ctaAjax !== "undefined" && ctaAjax.dashboardUrl) {
-        root.setAttribute("data-dashboard-url", ctaAjax.dashboardUrl);
+        // Never let account links point at the supervision portal.
+        var dashUrl = ctaAjax.dashboardUrl;
+        var supUrl = stripTrailingSlash(ctaAjax.supervisionDashboardUrl || "");
+        if (supUrl && stripTrailingSlash(dashUrl) === supUrl) {
+          dashUrl = ctaAjax.studentDashboardUrl || dashUrl;
+        }
+        root.setAttribute("data-dashboard-url", dashUrl);
         root.querySelectorAll("[href]").forEach(function (link) {
           var href = link.getAttribute("href") || "";
-          var text = (link.textContent || "").trim().toLowerCase();
+          var text = normalizeAuthLabel(link.textContent);
           if (href.indexOf("#certificates") !== -1) {
-            link.setAttribute("href", ctaAjax.dashboardUrl + "#certificates");
+            link.setAttribute("href", dashUrl + "#certificates");
           } else if (href.indexOf("#settings") !== -1) {
-            link.setAttribute("href", ctaAjax.dashboardUrl + "#settings");
+            link.setAttribute("href", dashUrl + "#settings");
           } else if (href.indexOf("#courses") !== -1) {
-            link.setAttribute("href", ctaAjax.dashboardUrl + "#courses");
+            link.setAttribute("href", dashUrl + "#courses");
           } else if (text === "my dashboard") {
-            link.setAttribute("href", ctaAjax.dashboardUrl);
+            link.setAttribute("href", dashUrl);
           }
         });
       }
     }
 
+    function upgradeLegacyAuthLinks() {
+      if (typeof ctaAjax === "undefined") return;
+
+      var loggedIn = isLoggedInState();
+      var loginUrl = stripTrailingSlash(ctaAjax.loginUrl || "");
+      var dashUrl = stripTrailingSlash(ctaAjax.dashboardUrl || "");
+      var supUrl = stripTrailingSlash(ctaAjax.supervisionDashboardUrl || "");
+
+      // If localize accidentally equals supervision portal, prefer studentDashboardUrl.
+      if (dashUrl && supUrl && dashUrl === supUrl && ctaAjax.studentDashboardUrl) {
+        dashUrl = stripTrailingSlash(ctaAjax.studentDashboardUrl);
+        ctaAjax.dashboardUrl = ctaAjax.studentDashboardUrl;
+      }
+
+      var candidates = document.querySelectorAll(
+        "header a, footer a, nav a, .elementor-location-header a, .elementor-location-footer a, .site-header a"
+      );
+
+      candidates.forEach(function (anchor) {
+        if (!anchor || anchor.closest("[data-cta-auth-root]")) return;
+        if (anchor.getAttribute("data-cta-auth-upgraded") === "1") return;
+
+        var text = anchor.textContent || "";
+        var href = stripTrailingSlash(anchor.href || "");
+        var pointsToLogin = loginUrl && href === loginUrl;
+        var pointsToSup =
+          supUrl && href === supUrl && isDashboardAuthLabel(text);
+        var shouldUpgrade =
+          isGuestAuthLabel(text) ||
+          (isDashboardAuthLabel(text) && (pointsToLogin || pointsToSup));
+
+        if (!shouldUpgrade) {
+          return;
+        }
+
+        if (!loggedIn) {
+          return;
+        }
+
+        // Logged-in: replace Elementor/theme login CTAs with account menu.
+        var wrap = buildAuthRoot(true);
+        wrap.setAttribute("data-cta-auth-upgraded-from", normalizeAuthLabel(text));
+        anchor.setAttribute("data-cta-auth-upgraded", "1");
+        if (anchor.parentNode) {
+          anchor.parentNode.replaceChild(wrap, anchor);
+          syncAuthRoot(wrap);
+        }
+      });
+
+      // Fix remaining logged-in menu items titled My Dashboard that still hit supervision.
+      if (loggedIn && dashUrl) {
+        document.querySelectorAll("a.cta-nav-my-dashboard, a").forEach(function (a) {
+          if (!a || a.closest("[data-cta-auth-root]")) return;
+          if (!isDashboardAuthLabel(a.textContent || "")) return;
+          var href = stripTrailingSlash(a.href || "");
+          if (supUrl && href === supUrl) {
+            a.setAttribute("href", ctaAjax.dashboardUrl);
+          }
+          if (loginUrl && href === loginUrl) {
+            a.setAttribute("href", ctaAjax.dashboardUrl);
+          }
+        });
+      }
+    }
+
+    upgradeLegacyAuthLinks();
     document.querySelectorAll("[data-cta-auth-root]").forEach(syncAuthRoot);
 
     document.addEventListener("click", function (e) {

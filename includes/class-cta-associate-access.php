@@ -169,28 +169,44 @@ class CTA_Associate_Access {
 		// Guard against misconfigured identical page IDs (would dump users onto
 		// the supervision pending screen instead of My Courses).
 		if ( $ce_page_id && $sup_page_id && $ce_page_id === $sup_page_id ) {
-			if ( function_exists( 'cta_lms_find_page_id_by_shortcode' ) ) {
-				$found = absint( cta_lms_find_page_id_by_shortcode( 'cta_student_dashboard' ) );
-				if ( $found && $found !== $sup_page_id ) {
-					$ce_page_id = $found;
+			$ce_page_id = 0;
+		}
+
+		// If the configured CE page is actually the supervision portal, ignore it.
+		if ( $ce_page_id && function_exists( 'has_shortcode' ) ) {
+			$post = get_post( $ce_page_id );
+			if ( $post instanceof WP_Post ) {
+				$content = (string) $post->post_content;
+				$is_sup  = has_shortcode( $content, 'cta_supervision_dashboard' );
+				$is_ce   = has_shortcode( $content, 'cta_student_dashboard' );
+				if ( $is_sup && ! $is_ce ) {
+					$ce_page_id = 0;
 				}
 			}
 		}
 
+		if ( ( ! $ce_page_id || ( $sup_page_id && $ce_page_id === $sup_page_id ) )
+			&& function_exists( 'cta_lms_find_page_id_by_shortcode' )
+		) {
+			$found = absint( cta_lms_find_page_id_by_shortcode( 'cta_student_dashboard' ) );
+			if ( $found && $found !== $sup_page_id ) {
+				$ce_page_id = $found;
+			}
+		}
+
+		$sup_url = self::get_supervision_dashboard_url();
+
 		if ( $ce_page_id ) {
 			$url = get_permalink( $ce_page_id );
-			if ( $url ) {
+			if ( $url && ( ! $sup_url || untrailingslashit( $url ) !== untrailingslashit( $sup_url ) ) ) {
 				return $url;
 			}
 		}
 
 		if ( function_exists( 'cta_lms_get_linked_page_url' ) ) {
 			$url = cta_lms_get_linked_page_url( 'cta_student_dashboard_page_id' );
-			if ( $url ) {
-				$sup_url = self::get_supervision_dashboard_url();
-				if ( ! $sup_url || untrailingslashit( $url ) !== untrailingslashit( $sup_url ) ) {
-					return $url;
-				}
+			if ( $url && ( ! $sup_url || untrailingslashit( $url ) !== untrailingslashit( $sup_url ) ) ) {
+				return $url;
 			}
 		}
 
