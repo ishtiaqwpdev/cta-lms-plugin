@@ -590,25 +590,28 @@ body.cta-lms-page .elementor-shortcode {
    Desktop rules are scoped so they do not break portrait mobile.
    -------------------------------------------------------------------------- */
 
-/* Dashboard course banners: show full image, no crop/stretch; theme must not force cover. */
+/* Dashboard banners match player placeholder size (16:9); full image, no stretch/crop. */
 .cta-plugin-wrapper .dashboard-course-card__thumb {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   width: 100% !important;
+  aspect-ratio: 16 / 9 !important;
   height: auto !important;
   max-height: none !important;
   overflow: hidden !important;
-  border-radius: var(--radius-md, 8px) !important;
+  border-radius: var(--radius-lg, 12px) !important;
+  background: var(--color-bg-light, #f3f4f6) !important;
 }
 
 .cta-plugin-wrapper .dashboard-course-card__thumb img {
   display: block !important;
   width: 100% !important;
+  height: 100% !important;
   max-width: 100% !important;
-  height: auto !important;
+  max-height: 100% !important;
   object-fit: contain !important;
-  object-position: center !important;
+  object-position: center center !important;
   background-repeat: no-repeat !important;
 }
 

@@ -5708,17 +5708,20 @@ button.pagination__item:disabled {
   right: var(--space-md);
 }
 
+/* Match course-player "Video coming soon" frame: fixed 16:9 box, image fully inside. */
 .cta-plugin-wrapper .dashboard-course-card__thumb {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: auto;
   max-width: 100%;
+  aspect-ratio: 16 / 9;
+  height: auto;
   margin: 0 0 var(--space-md);
   padding: 0;
   overflow: hidden;
-  border-radius: var(--radius-md, 8px);
+  border-radius: var(--radius-lg, 12px);
   background: var(--color-bg-light, #f3f4f6);
   line-height: 0;
 }
@@ -5726,25 +5729,18 @@ button.pagination__item:disabled {
 .cta-plugin-wrapper .dashboard-course-card__thumb img {
   display: block;
   width: 100%;
+  height: 100%;
   max-width: 100%;
-  height: auto;
-  margin: 0 auto;
+  max-height: 100%;
+  margin: 0;
   object-fit: contain;
-  object-position: center;
+  object-position: center center;
   background-repeat: no-repeat;
 }
 
 .cta-plugin-wrapper .dashboard-course-card__thumb--placeholder {
-  height: 140px;
-  min-height: 140px;
-  background: linear-gradient(135deg, var(--color-bg-muted), var(--color-bg-light));
-}
-
-@media (max-width: 640px) {
-  .cta-plugin-wrapper .dashboard-course-card__thumb--placeholder {
-    height: 120px;
-    min-height: 120px;
-  }
+  min-height: 0;
+  background: var(--color-bg-light, #f3f4f6);
 }
 
 .cta-plugin-wrapper .course-player__iframe {
