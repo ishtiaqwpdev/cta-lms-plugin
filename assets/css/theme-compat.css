@@ -590,17 +590,22 @@ body.cta-lms-page .elementor-shortcode {
    Desktop rules are scoped so they do not break portrait mobile.
    -------------------------------------------------------------------------- */
 
-/* Dashboard banners match player placeholder size (16:9); full image, no stretch/crop. */
+/* Full-bleed dashboard banners: cover width edge-to-edge, no side letterboxing. */
+.cta-plugin-wrapper .dashboard-course-card {
+  overflow: hidden !important;
+}
+
 .cta-plugin-wrapper .dashboard-course-card__thumb {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: 100% !important;
+  display: block !important;
+  width: calc(100% + (2 * var(--space-lg))) !important;
+  max-width: none !important;
   aspect-ratio: 16 / 9 !important;
   height: auto !important;
   max-height: none !important;
+  margin: calc(-1 * var(--space-lg)) calc(-1 * var(--space-lg)) var(--space-md) !important;
+  padding: 0 !important;
   overflow: hidden !important;
-  border-radius: var(--radius-lg, 12px) !important;
+  border-radius: 0 !important;
   background: var(--color-bg-light, #f3f4f6) !important;
   flex: 0 0 auto !important;
 }
@@ -609,9 +614,11 @@ body.cta-lms-page .elementor-shortcode {
   display: block !important;
   width: 100% !important;
   height: 100% !important;
-  max-width: 100% !important;
-  max-height: 100% !important;
-  object-fit: contain !important;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  object-fit: cover !important;
   object-position: center center !important;
   background-repeat: no-repeat !important;
 }
