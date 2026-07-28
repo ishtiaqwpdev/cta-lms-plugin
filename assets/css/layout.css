@@ -5749,21 +5749,23 @@ button.pagination__item:disabled {
   right: var(--space-md);
 }
 
-/* Full-bleed course banner: edge-to-edge width, cover fill, no side gaps. */
+/* Banner matches content column: same left/right edges as title, progress, actions. */
 .cta-plugin-wrapper .dashboard-course-card__thumb {
   position: relative;
   display: block;
-  width: calc(100% + (2 * var(--space-lg)));
+  width: 100%;
   max-width: none;
   aspect-ratio: 16 / 9;
   height: auto;
-  margin: calc(-1 * var(--space-lg)) calc(-1 * var(--space-lg)) var(--space-md);
+  margin: 0 0 var(--space-md);
   padding: 0;
   overflow: hidden;
-  border-radius: 0;
+  border-radius: var(--radius-md, 8px);
   background: var(--color-bg-light, #f3f4f6);
   line-height: 0;
   flex: 0 0 auto;
+  align-self: stretch;
+  box-sizing: border-box;
 }
 
 .cta-plugin-wrapper .dashboard-course-card__thumb img {
