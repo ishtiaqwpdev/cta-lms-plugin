@@ -590,12 +590,13 @@ body.cta-lms-page .elementor-shortcode {
    Desktop rules are scoped so they do not break portrait mobile.
    -------------------------------------------------------------------------- */
 
-/* Banner aligns with title/progress/actions (same content width, cover fill). */
+/* Banner fills card content width; absolute + cover removes left/right empty bands. */
 .cta-plugin-wrapper .dashboard-course-card {
   overflow: hidden !important;
 }
 
 .cta-plugin-wrapper .dashboard-course-card__thumb {
+  position: relative !important;
   display: block !important;
   width: 100% !important;
   max-width: none !important;
@@ -613,6 +614,11 @@ body.cta-lms-page .elementor-shortcode {
 }
 
 .cta-plugin-wrapper .dashboard-course-card__thumb img {
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
   display: block !important;
   width: 100% !important;
   height: 100% !important;

@@ -5749,7 +5749,7 @@ button.pagination__item:disabled {
   right: var(--space-md);
 }
 
-/* Banner matches content column: same left/right edges as title, progress, actions. */
+/* Banner fills content width; absolute cover kills side letterboxing from square assets. */
 .cta-plugin-wrapper .dashboard-course-card__thumb {
   position: relative;
   display: block;
@@ -5769,6 +5769,11 @@ button.pagination__item:disabled {
 }
 
 .cta-plugin-wrapper .dashboard-course-card__thumb img {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   display: block;
   width: 100%;
   height: 100%;
