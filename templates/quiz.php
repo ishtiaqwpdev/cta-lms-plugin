@@ -242,15 +242,37 @@ if ( empty( $evaluation_questions ) || ! is_array( $evaluation_questions ) ) {
 				<div class="cta-attestation-text" id="cta-attestation-statement">
 					<?php echo esc_html( ! empty( $attestation_text ) ? $attestation_text : ( class_exists( 'CTA_Course_Attestation' ) ? CTA_Course_Attestation::default_attestation_text() : '' ) ); ?>
 				</div>
-				<input
-					type="hidden"
-					id="cta-attestation-text"
-					name="attestation_text"
-					value="<?php echo esc_attr( ! empty( $attestation_text ) ? $attestation_text : ( class_exists( 'CTA_Course_Attestation' ) ? CTA_Course_Attestation::default_attestation_text() : '' ) ); ?>"
-				>
+				<div class="form-group cta-attestation-signature">
+					<label class="form-label" for="cta-attestation-signature">
+						<?php echo esc_html__( 'Electronic signature', 'cta-lms' ); ?>
+					</label>
+					<?php
+					$attestation_name_prefill = '';
+					if ( function_exists( 'cta_lms_get_user_legal_name' ) ) {
+						$attestation_name_prefill = (string) cta_lms_get_user_legal_name( get_current_user_id() );
+					}
+					if ( '' === $attestation_name_prefill ) {
+						$current = wp_get_current_user();
+						$attestation_name_prefill = $current && $current->display_name ? (string) $current->display_name : '';
+					}
+					?>
+					<input
+						type="text"
+						id="cta-attestation-signature"
+						name="signature_name"
+						class="form-input"
+						autocomplete="name"
+						required
+						placeholder="<?php echo esc_attr__( 'Type your full legal name', 'cta-lms' ); ?>"
+						value="<?php echo esc_attr( $attestation_name_prefill ); ?>"
+					>
+					<p class="form-hint" style="margin-top:0.35rem;font-size:0.85em;opacity:0.85;">
+						<?php echo esc_html__( 'Type your full legal name to electronically sign this course-completion attestation.', 'cta-lms' ); ?>
+					</p>
+				</div>
 				<label class="cta-attestation-agree">
 					<input type="checkbox" id="cta-attestation-agree" name="agree" value="1" required>
-					<span><?php echo esc_html__( 'I have read and agree to this attestation.', 'cta-lms' ); ?></span>
+					<span><?php echo esc_html__( 'I have read and agree to this attestation, and the name above is my electronic signature.', 'cta-lms' ); ?></span>
 				</label>
 				<button type="button" class="btn btn-primary" id="cta-submit-attestation"><?php echo esc_html__( 'Submit Attestation & Get Certificate', 'cta-lms' ); ?></button>
 			</form>

@@ -153,14 +153,15 @@ class CTA_Supervision_Dashboard {
 		$is_supervision_pending = CTA_Associate_Access::is_supervision_pending( $user_id );
 		$is_approved_awaiting_plan = CTA_Associate_Access::is_approved_awaiting_plan( $user_id );
 		$is_pending_approval    = ( ! $is_approved_awaiting_plan ) && (
-			$is_supervision_pending || ( CTA_Associate_Access::is_associate( $user_id ) && ! CTA_Associate_Access::is_approved( $user_id ) )
+			CTA_Associate_Access::STATUS_PENDING === $approval_status
+			|| $is_supervision_pending
 		);
 
 		// Paid / pending purchase should never fall through to "No active plan".
 		$no_plan = ! $is_active && ! $is_locked && ! $is_pending_plan && ! $has_supervision_purchase && ! $is_pending_approval && ! $is_approved_awaiting_plan;
 
 		if ( CTA_Associate_Access::STATUS_PENDING === $approval_status || $is_pending_plan || $is_supervision_pending ) {
-			$onboarding_status_label = __( 'Pending Approval', 'cta-lms' );
+			$onboarding_status_label = __( 'Supervision Application Pending', 'cta-lms' );
 			$onboarding_status_class = 'badge--warning';
 			$onboarding_message      = CTA_Associate_Access::get_pending_message();
 		} elseif ( $is_approved_awaiting_plan ) {
@@ -241,6 +242,13 @@ class CTA_Supervision_Dashboard {
 		$plan_label          = $this->get_plan_label( $supervision_plan );
 		$associate_number    = (string) get_user_meta( $user_id, 'cta_associate_number', true );
 		$dashboard_url       = $this->get_dashboard_url();
+		$student_dashboard_url = $this->get_student_dashboard_url();
+		$courses_url         = '';
+		$courses_page_id     = absint( get_option( 'cta_courses_page_id', 0 ) );
+		if ( $courses_page_id ) {
+			$courses_permalink = get_permalink( $courses_page_id );
+			$courses_url       = $courses_permalink ? $courses_permalink : '';
+		}
 		$supervision_url     = $this->get_supervision_page_url();
 		$logout_url          = wp_logout_url( $dashboard_url ? $dashboard_url : home_url( '/' ) );
 		$home_url            = home_url( '/' );

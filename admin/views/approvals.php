@@ -21,7 +21,7 @@ $purchase_records = isset( $purchase_records ) && is_array( $purchase_records ) 
 $base_url = admin_url( 'admin.php?page=cta-lms-approvals' );
 $tabs     = array(
 	'all'              => __( 'All', 'cta-lms' ),
-	'pending_approval' => __( 'Pending Approval', 'cta-lms' ),
+	'pending_approval' => __( 'Supervision Application Pending', 'cta-lms' ),
 	'approved'         => __( 'Approved', 'cta-lms' ),
 	'rejected'         => __( 'Rejected', 'cta-lms' ),
 );

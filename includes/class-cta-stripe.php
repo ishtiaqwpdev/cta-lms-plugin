@@ -622,6 +622,9 @@ class CTA_Stripe {
 
 	/**
 	 * Create one-time Stripe Checkout session for a course.
+	 *
+	 * CE / Exam Prep checkout is available to any active account, including
+	 * Registered Associates whose supervision application is still pending.
 	 */
 	public function create_checkout_session() {
 		check_ajax_referer( 'cta_nonce', 'nonce' );
@@ -630,6 +633,20 @@ class CTA_Stripe {
 			wp_send_json_error(
 				array(
 					'message' => __( 'Please log in to enroll in this course.', 'cta-lms' ),
+				)
+			);
+		}
+
+		$user_id = get_current_user_id();
+
+		if (
+			class_exists( 'CTA_Associate_Access' )
+			&& ! CTA_Associate_Access::can_access_ce_and_exam_prep( $user_id )
+		) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'Your account is inactive. Please contact support.', 'cta-lms' ),
+					'code'    => 'account_inactive',
 				)
 			);
 		}
@@ -815,6 +832,7 @@ class CTA_Stripe {
 		}
 
 		CTA_Associate_Access::require_associate_for_purchase( get_current_user_id() );
+		CTA_Associate_Access::require_agency_for_supervision_application( get_current_user_id() );
 
 		if ( ! $this->is_stripe_configured() ) {
 			if ( ! empty( $_POST['demo_confirm'] ) ) {
@@ -1527,6 +1545,7 @@ class CTA_Stripe {
 		$user_id = get_current_user_id();
 
 		CTA_Associate_Access::require_associate_for_purchase( $user_id );
+		CTA_Associate_Access::require_agency_for_supervision_application( $user_id );
 
 		$active_sub = $wpdb->get_var(
 			$wpdb->prepare(

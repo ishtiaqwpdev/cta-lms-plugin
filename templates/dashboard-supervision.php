@@ -154,9 +154,17 @@ $document_count     = count( $documents );
 				<p class="dashboard-home-link"><a href="<?php echo esc_url( $home_url ); ?>">&larr; <?php echo esc_html__( 'Back to Home', 'cta-lms' ); ?></a></p>
 			<?php endif; ?>
 			<div class="cta-empty-state cta-supervision-pending-approval">
-				<h1><?php echo esc_html__( 'Pending Approval', 'cta-lms' ); ?></h1>
+				<h1><?php echo esc_html__( 'Supervision Application Pending', 'cta-lms' ); ?></h1>
 				<p><?php echo esc_html( $pending_approval_message ); ?></p>
-				<p><?php echo esc_html__( 'Supervision dashboard features, session booking, and materials stay locked until your application is approved.', 'cta-lms' ); ?></p>
+				<p><?php echo esc_html__( 'Supervision dashboard features, session booking, and materials stay locked until your supervision application is approved. Your general account, CE courses, and Exam Preparation Programs are not affected.', 'cta-lms' ); ?></p>
+				<p class="cta-supervision-pending-actions" style="display:flex;flex-wrap:wrap;gap:0.75rem;justify-content:center;margin-top:1.25rem;">
+					<?php if ( ! empty( $student_dashboard_url ) ) : ?>
+						<a href="<?php echo esc_url( $student_dashboard_url ); ?>" class="btn btn-primary"><?php echo esc_html__( 'Go to My Courses', 'cta-lms' ); ?></a>
+					<?php endif; ?>
+					<?php if ( ! empty( $courses_url ) ) : ?>
+						<a href="<?php echo esc_url( $courses_url ); ?>" class="btn btn-outline"><?php echo esc_html__( 'Browse CE Courses', 'cta-lms' ); ?></a>
+					<?php endif; ?>
+				</p>
 			</div>
 			<?php if ( ! empty( $has_supervision_purchase ) ) : ?>
 				<?php include CTA_PLUGIN_DIR . 'templates/partials/supervision-onboarding-status.php'; ?>

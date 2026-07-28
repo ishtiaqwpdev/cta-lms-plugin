@@ -414,14 +414,32 @@ class CTA_Exam_Access {
 
 		foreach ( self::get_default_programs() as $program ) {
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-			$exists = $wpdb->get_var(
+			$existing_id = (int) $wpdb->get_var(
 				$wpdb->prepare(
 					"SELECT id FROM {$table} WHERE slug = %s LIMIT 1",
 					$program['slug']
 				)
 			);
 
-			if ( $exists ) {
+			if ( $existing_id ) {
+				// Keep existing content/status; only enforce canonical commercial fields.
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$wpdb->update(
+					$table,
+					array(
+						'title'                => $program['title'],
+						'price'                => (float) $program['price'],
+						'category'             => $program['category'],
+						'product_type'         => self::PRODUCT_TYPE_EXAM_PREP,
+						'access_period_months' => 6,
+						'ce_hours'             => 0,
+						'awards_ce_hours'      => 0,
+						'has_ce_certificate'   => 0,
+					),
+					array( 'id' => $existing_id ),
+					array( '%s', '%f', '%s', '%s', '%d', '%f', '%d', '%d' ),
+					array( '%d' )
+				);
 				continue;
 			}
 

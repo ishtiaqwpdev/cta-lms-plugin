@@ -34,9 +34,9 @@ if ( is_user_logged_in() ) {
 $ce_hours_display = rtrim( rtrim( number_format( (float) $course->ce_hours, 1, '.', '' ), '0' ), '.' );
 $category         = ! empty( $course->category ) ? $course->category : '';
 $price_value      = (float) $course->price;
-$price_display    = ( floor( $price_value ) === $price_value )
-	? '$' . number_format( $price_value, 0 )
-	: '$' . number_format( $price_value, 2 );
+$price_display    = function_exists( 'cta_lms_format_money' )
+	? cta_lms_format_money( $price_value )
+	: ( '$' . number_format( $price_value, 2 ) );
 $is_exam_prep     = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course );
 $link_label       = $is_enrolled
 	? __( 'Continue', 'cta-lms' ) . ' →'

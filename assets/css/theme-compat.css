@@ -589,6 +589,29 @@ body.cta-lms-page .elementor-shortcode {
    Hello Elementor — layout overrides (dashboard, booking, course player)
    Desktop rules are scoped so they do not break portrait mobile.
    -------------------------------------------------------------------------- */
+
+/* Keep dashboard course thumbnails cropped; theme img { height:auto } must not win. */
+.cta-plugin-wrapper .dashboard-course-card__thumb {
+  height: 160px !important;
+  max-height: 160px !important;
+  overflow: hidden !important;
+}
+
+.cta-plugin-wrapper .dashboard-course-card__thumb img {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  object-fit: cover !important;
+  object-position: center !important;
+}
+
+@media (max-width: 640px) {
+  .cta-plugin-wrapper .dashboard-course-card__thumb {
+    height: 140px !important;
+    max-height: 140px !important;
+  }
+}
+
 body.cta-lms-page:not(.admin-bar) {
   margin-top: 0 !important;
 }

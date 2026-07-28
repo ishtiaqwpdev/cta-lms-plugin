@@ -129,6 +129,7 @@ class CTA_Memberships {
 		// All-Access / supervision-inclusive bundles require a Registered Associate account.
 		if ( $this->bundle_includes_supervision( $bundle ) ) {
 			CTA_Associate_Access::require_associate_for_purchase( $user_id );
+			CTA_Associate_Access::require_agency_for_supervision_application( $user_id );
 		}
 
 		$already_owned = $wpdb->get_var(

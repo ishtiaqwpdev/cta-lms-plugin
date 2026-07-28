@@ -176,6 +176,8 @@ class CTA_Student_Dashboard {
 		$logout_url     = wp_logout_url( $dashboard_url ? $dashboard_url : home_url( '/' ) );
 		$home_url       = home_url( '/' );
 		$dashboard_user = $this->get_dashboard_user_data( $user );
+		$is_associate   = ! empty( $dashboard_user['isAssociate'] );
+		$supervision_dashboard_url = $is_associate ? $this->get_supervision_dashboard_url() : '';
 
 		ob_start();
 		include CTA_PLUGIN_DIR . 'templates/dashboard-ce.php';
@@ -791,7 +793,10 @@ class CTA_Student_Dashboard {
 	}
 
 	/**
-	 * Check student dashboard access and redirect if needed.
+	 * Check student dashboard / course player access and redirect if needed.
+	 *
+	 * Registered Associates may use CE and Exam Prep freely. Supervision
+	 * application status must not redirect them away from this dashboard.
 	 *
 	 * @return string|null Redirect markup or null if access granted.
 	 */
@@ -803,15 +808,18 @@ class CTA_Student_Dashboard {
 		$user  = wp_get_current_user();
 		$roles = (array) $user->roles;
 
-		if ( in_array( 'cta_associate', $roles, true ) ) {
-			$url = $this->get_supervision_dashboard_url();
-			return $this->redirect_markup( $url ? $url : home_url( '/' ) );
-		}
-
 		if (
 			in_array( 'cta_licensed_professional', $roles, true )
+			|| in_array( 'cta_associate', $roles, true )
 			|| in_array( 'administrator', $roles, true )
 		) {
+			if (
+				class_exists( 'CTA_Associate_Access' )
+				&& ! CTA_Associate_Access::can_access_ce_and_exam_prep( (int) $user->ID )
+			) {
+				return $this->redirect_markup( home_url( '/' ) );
+			}
+
 			return null;
 		}
 
@@ -840,8 +848,10 @@ class CTA_Student_Dashboard {
 	 * @return array
 	 */
 	private function get_dashboard_user_data( $user ) {
-		$license = cta_lms_get_user_license_number( $user->ID );
-		$name    = function_exists( 'cta_lms_get_user_legal_name' )
+		$is_associate = in_array( 'cta_associate', (array) $user->roles, true );
+		$license      = cta_lms_get_user_license_number( $user->ID );
+		$associate    = (string) get_user_meta( $user->ID, 'cta_associate_number', true );
+		$name         = function_exists( 'cta_lms_get_user_legal_name' )
 			? cta_lms_get_user_legal_name( $user->ID )
 			: ( $user->display_name ? $user->display_name : $user->user_login );
 		$parts    = preg_split( '/\s+/', trim( $name ) );
@@ -854,11 +864,19 @@ class CTA_Student_Dashboard {
 			$initials .= strtoupper( substr( $parts[ count( $parts ) - 1 ], 0, 1 ) );
 		}
 
+		if ( $is_associate ) {
+			$subtitle = $associate ? $associate : __( 'Registered Associate', 'cta-lms' );
+		} else {
+			$subtitle = $license ? $license : __( 'Licensed Professional', 'cta-lms' );
+		}
+
 		return array(
-			'displayName'   => $name,
-			'email'         => $user->user_email,
-			'licenseNumber' => $license ? $license : __( 'Licensed Professional', 'cta-lms' ),
-			'initials'      => $initials ? $initials : '--',
+			'displayName'     => $name,
+			'email'           => $user->user_email,
+			'licenseNumber'   => $subtitle,
+			'associateNumber' => $associate,
+			'isAssociate'     => $is_associate,
+			'initials'        => $initials ? $initials : '--',
 		);
 	}
 

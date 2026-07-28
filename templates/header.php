@@ -15,11 +15,21 @@
  * @var string $site_name   Site name for accessible text.
  * @var bool   $is_logged_in Whether the visitor is logged in.
  * @var bool   $show_nav    Whether to render the navigation menu.
+ * @var string $display_name Current user display name.
+ * @var string $courses_url Browse CE courses URL.
+ * @var string $exam_prep_url Browse exam prep URL.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+$display_name  = isset( $display_name ) ? (string) $display_name : '';
+$courses_url   = isset( $courses_url ) ? (string) $courses_url : '';
+$exam_prep_url = isset( $exam_prep_url ) ? (string) $exam_prep_url : '';
+$login_text    = __( 'Login', 'cta-lms' );
+$dashboard_text = __( 'My Dashboard', 'cta-lms' );
+$button_class  = 'btn btn-outline btn--sm cta-auth-button';
 ?>
 <header class="cta-lms site-header">
 	<div class="site-header__inner">
@@ -66,20 +76,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<?php endif; ?>
 
 		<div class="site-header__actions">
-			<?php if ( $is_logged_in ) : ?>
-				<?php if ( $dashboard_url ) : ?>
-					<a href="<?php echo esc_url( $dashboard_url ); ?>" class="btn btn-outline btn--sm">
-						<?php echo esc_html__( 'My Dashboard', 'cta-lms' ); ?>
-					</a>
-				<?php endif; ?>
-				<a href="<?php echo esc_url( $logout_url ); ?>" class="btn btn-outline btn--sm">
-					<?php echo esc_html__( 'Log Out', 'cta-lms' ); ?>
-				</a>
-			<?php elseif ( $login_url ) : ?>
-				<a href="<?php echo esc_url( $login_url ); ?>" class="btn btn-outline btn--sm">
-					<?php echo esc_html__( 'Login', 'cta-lms' ); ?>
-				</a>
-			<?php endif; ?>
+			<?php include CTA_PLUGIN_DIR . 'templates/partials/auth-button.php'; ?>
 
 			<a href="<?php echo esc_url( $enroll_url ); ?>" class="btn btn-primary">
 				<?php echo esc_html__( 'Enroll Now', 'cta-lms' ); ?>

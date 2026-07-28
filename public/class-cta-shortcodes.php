@@ -151,6 +151,10 @@ class CTA_Shortcodes {
 			return '';
 		}
 
+		if ( class_exists( 'CTA_Loader' ) ) {
+			CTA_Loader::enqueue_frontend_assets();
+		}
+
 		$atts = shortcode_atts(
 			array(
 				'show_nav' => 'yes',
@@ -165,15 +169,15 @@ class CTA_Shortcodes {
 
 		$login_url     = $this->get_page_url( 'cta_login_page_id' );
 		$dashboard_url = '';
+		$display_name  = '';
 
 		if ( $is_logged_in ) {
-			$user_roles = (array) $current_user->roles;
-
-			if ( in_array( 'cta_associate', $user_roles, true ) ) {
-				$dashboard_url = $this->get_page_url( 'cta_supervision_dashboard_page_id' );
-			} else {
-				$dashboard_url = $this->get_page_url( 'cta_student_dashboard_page_id' );
-			}
+			$dashboard_url = class_exists( 'CTA_Associate_Access' )
+				? CTA_Associate_Access::get_general_dashboard_url( (int) $current_user->ID )
+				: $this->get_page_url( 'cta_student_dashboard_page_id' );
+			$display_name = function_exists( 'cta_lms_get_user_legal_name' )
+				? cta_lms_get_user_legal_name( (int) $current_user->ID )
+				: ( $current_user->display_name ? $current_user->display_name : $current_user->user_login );
 		}
 
 		$nav_items = $this->get_header_nav_items();
@@ -187,6 +191,8 @@ class CTA_Shortcodes {
 		$enroll_url  = ! empty( $nav_links[ __( 'CE Courses', 'cta-lms' ) ] )
 			? $nav_links[ __( 'CE Courses', 'cta-lms' ) ]
 			: ( $this->get_page_url( 'cta_courses_page_id' ) ? $this->get_page_url( 'cta_courses_page_id' ) : $home_url );
+		$courses_url = $this->get_page_url( 'cta_courses_page_id' );
+		$exam_prep_url = $courses_url ? add_query_arg( 'product_type', 'exam_prep', $courses_url ) : '';
 		$logout_url  = wp_logout_url( home_url() );
 		$logo_url    = cta_lms_get_logo_url();
 		$site_name   = get_bloginfo( 'name' );
@@ -197,7 +203,7 @@ class CTA_Shortcodes {
 	}
 
 	/**
-	 * Get dashboard URL for the current user based on role.
+	 * Get general (CE) dashboard URL for the current user.
 	 *
 	 * @return string
 	 */
@@ -206,10 +212,8 @@ class CTA_Shortcodes {
 			return '';
 		}
 
-		$user = wp_get_current_user();
-
-		if ( in_array( 'cta_associate', (array) $user->roles, true ) ) {
-			return $this->get_page_url( 'cta_supervision_dashboard_page_id' );
+		if ( class_exists( 'CTA_Associate_Access' ) ) {
+			return CTA_Associate_Access::get_general_dashboard_url( get_current_user_id() );
 		}
 
 		return $this->get_page_url( 'cta_student_dashboard_page_id' );
@@ -227,12 +231,16 @@ class CTA_Shortcodes {
 	 * @return string
 	 */
 	public function render_auth_button( $atts ) {
+		if ( class_exists( 'CTA_Loader' ) ) {
+			CTA_Loader::enqueue_frontend_assets();
+		}
+
 		$atts = shortcode_atts(
 			array(
 				'login_url'      => '',
 				'dashboard_url'  => '',
 				'login_text'     => __( 'Login', 'cta-lms' ),
-				'dashboard_text' => __( 'Dashboard', 'cta-lms' ),
+				'dashboard_text' => __( 'My Dashboard', 'cta-lms' ),
 				'style'          => 'outline',
 				'size'           => '',
 				'class'          => '',
@@ -242,28 +250,46 @@ class CTA_Shortcodes {
 		);
 
 		$is_logged_in = is_user_logged_in();
-		$button_url   = '';
-		$button_text  = $atts['login_text'];
+		$login_url    = ! empty( $atts['login_url'] )
+			? esc_url_raw( $atts['login_url'] )
+			: $this->get_page_url( 'cta_login_page_id' );
+		$login_text   = $atts['login_text'];
+		// Treat legacy Elementor labels as the guest CTA; logged-in state uses My Dashboard.
+		if ( '' === trim( (string) $login_text ) ) {
+			$login_text = __( 'Login', 'cta-lms' );
+		}
+
+		$dashboard_url = ! empty( $atts['dashboard_url'] )
+			? esc_url_raw( $atts['dashboard_url'] )
+			: $this->get_dashboard_url_for_user();
+
+		if ( ! $dashboard_url && class_exists( 'CTA_Associate_Access' ) ) {
+			$dashboard_url = CTA_Associate_Access::get_general_dashboard_url();
+		}
+
+		if ( ! $dashboard_url ) {
+			$dashboard_url = $this->get_page_url( 'cta_student_dashboard_page_id' );
+		}
+
+		if ( ! $dashboard_url ) {
+			$dashboard_url = home_url( '/' );
+		}
+
+		if ( ! $login_url ) {
+			$login_url = wp_login_url( get_permalink() );
+		}
+
+		$dashboard_text = $atts['dashboard_text'] ? $atts['dashboard_text'] : __( 'My Dashboard', 'cta-lms' );
+		$logout_url     = wp_logout_url( home_url( '/' ) );
+		$courses_url    = $this->get_page_url( 'cta_courses_page_id' );
+		$exam_prep_url  = $courses_url ? add_query_arg( 'product_type', 'exam_prep', $courses_url ) : '';
+		$display_name   = '';
 
 		if ( $is_logged_in ) {
-			$button_text = $atts['dashboard_text'];
-			$button_url  = ! empty( $atts['dashboard_url'] )
-				? esc_url_raw( $atts['dashboard_url'] )
-				: $this->get_dashboard_url_for_user();
-
-			if ( ! $button_url ) {
-				$button_url = home_url( '/' );
-			}
-		} else {
-			if ( ! empty( $atts['login_url'] ) ) {
-				$button_url = esc_url_raw( $atts['login_url'] );
-			} else {
-				$button_url = $this->get_page_url( 'cta_login_page_id' );
-			}
-
-			if ( ! $button_url ) {
-				$button_url = wp_login_url( get_permalink() );
-			}
+			$user = wp_get_current_user();
+			$display_name = function_exists( 'cta_lms_get_user_legal_name' )
+				? cta_lms_get_user_legal_name( (int) $user->ID )
+				: ( $user->display_name ? $user->display_name : $user->user_login );
 		}
 
 		$button_class = 'btn cta-auth-button';

@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.79' );
+	define( 'CTA_VERSION', '1.0.86' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -372,6 +372,24 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 					CTA_Course_Catalog::restore_all();
 				}
 			}
+
+			// Ensure Law & Ethics Module 1 (Regulatory Frameworks) is created when missing.
+			if ( version_compare( $installed, '1.0.84', '<' ) && class_exists( 'CTA_Syllabus_Sync' ) ) {
+				CTA_Database::maybe_add_syllabus_columns();
+				delete_option( 'cta_syllabus_synced_1_0_75' );
+				CTA_Syllabus_Sync::sync_all( true );
+			}
+
+			// Push complete standard CAMFT evaluation questions onto every CE course
+			// (fills gaps on courses that already had a partial older question set).
+			if ( version_compare( $installed, '1.0.85', '<' ) && class_exists( 'CTA_Evaluation_Questions' ) ) {
+				CTA_Evaluation_Questions::sync_camft_to_all_ce_courses();
+			}
+
+			// Force-sync every CE + Exam Prep price to the approved catalog (before/after logged).
+			if ( version_compare( $installed, '1.0.86', '<' ) && class_exists( 'CTA_Course_Catalog' ) ) {
+				CTA_Course_Catalog::sync_approved_prices();
+			}
 		} catch ( Throwable $e ) {
 			if ( defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ) {
 				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
@@ -677,6 +695,18 @@ if ( ! function_exists( 'cta_lms_get_logo_url' ) ) {
 		}
 
 		return (string) apply_filters( 'cta_lms_logo_url', $horizontal_logo, $preference );
+	}
+}
+
+if ( ! function_exists( 'cta_lms_format_money' ) ) {
+	/**
+	 * Format a course/checkout amount with a consistent two-decimal currency label.
+	 *
+	 * @param float|int|string $amount Amount.
+	 * @return string e.g. "$89.99"
+	 */
+	function cta_lms_format_money( $amount ) {
+		return '$' . number_format( (float) $amount, 2 );
 	}
 }
 

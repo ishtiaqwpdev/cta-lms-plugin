@@ -170,10 +170,6 @@ class CTA_Auth {
 		$confirm   = wp_unslash( $_POST['confirm_password'] ?? '' );
 		$user_type = sanitize_text_field( wp_unslash( $_POST['user_type'] ?? '' ) );
 
-		$employer_agency_name        = sanitize_text_field( wp_unslash( $_POST['employer_agency_name'] ?? '' ) );
-		$agency_representative_name  = sanitize_text_field( wp_unslash( $_POST['agency_representative_name'] ?? '' ) );
-		$agency_representative_email = sanitize_email( wp_unslash( $_POST['agency_representative_email'] ?? '' ) );
-
 		if ( empty( $fullname ) || empty( $email ) || empty( $password ) || empty( $user_type ) ) {
 			wp_send_json_error(
 				array(
@@ -217,28 +213,6 @@ class CTA_Auth {
 					'message' => __( 'Please select a valid account type.', 'cta-lms' ),
 				)
 			);
-		}
-
-		if ( 'cta_associate' === $user_type ) {
-			if (
-				empty( $employer_agency_name ) ||
-				empty( $agency_representative_name ) ||
-				empty( $agency_representative_email )
-			) {
-				wp_send_json_error(
-					array(
-						'message' => __( 'Please fill in all agency fields.', 'cta-lms' ),
-					)
-				);
-			}
-
-			if ( ! is_email( $agency_representative_email ) ) {
-				wp_send_json_error(
-					array(
-						'message' => __( 'Please enter a valid agency representative email.', 'cta-lms' ),
-					)
-				);
-			}
 		}
 
 		if ( email_exists( $email ) ) {
@@ -293,12 +267,15 @@ class CTA_Auth {
 		$user_obj = new WP_User( $user_id );
 		$user_obj->set_role( $user_type );
 
-		if ( 'cta_associate' === $user_type ) {
-			update_user_meta( $user_id, 'cta_employer_agency_name', $employer_agency_name );
-			update_user_meta( $user_id, 'cta_agency_representative_name', $agency_representative_name );
-			update_user_meta( $user_id, 'cta_agency_representative_email', $agency_representative_email );
-			update_user_meta( $user_id, 'cta_approval_status', 'pending_approval' );
+		// General account is active immediately for CE / Exam Prep (all roles).
+		if ( class_exists( 'CTA_Associate_Access' ) ) {
+			CTA_Associate_Access::ensure_account_active( $user_id );
+		} else {
+			update_user_meta( $user_id, 'cta_account_status', 'active' );
 		}
+
+		// Supervision application (agency fields + employer notification) happens later
+		// when the Associate applies for / purchases supervision — not at registration.
 
 		// Refresh user so role/meta are available to email helpers.
 		clean_user_cache( $user_id );
@@ -307,18 +284,6 @@ class CTA_Auth {
 		// Never let email delivery break account creation / JSON response.
 		try {
 			CTA_Emails::send( 'welcome', $user_id );
-
-			if ( 'cta_associate' === $user_type ) {
-				CTA_Emails::send(
-					'agency_representative_approval',
-					$user_id,
-					array(
-						'employer_agency_name'        => $employer_agency_name,
-						'agency_representative_name'  => $agency_representative_name,
-						'agency_representative_email' => $agency_representative_email,
-					)
-				);
-			}
 		} catch ( Exception $e ) {
 			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
@@ -343,22 +308,23 @@ class CTA_Auth {
 	 * Get post-login destination based on user role.
 	 *
 	 * Always prefers the frontend customer dashboards (never wp-admin).
-	 * Associates → supervision dashboard; licensed + everyone else → CE student dashboard.
+	 * Pending associates land on the CE dashboard (not the supervision pending screen).
+	 * Associates with full supervision access may land on the supervision dashboard.
 	 *
 	 * @param WP_User $user WordPress user object.
 	 * @return string
 	 */
 	private function get_dashboard_url( $user ) {
-		$roles = (array) $user->roles;
-
-		if ( in_array( 'cta_associate', $roles, true ) ) {
-			return $this->resolve_dashboard_page_url(
-				'cta_supervision_dashboard_page_id',
-				'cta_supervision_dashboard'
-			);
+		if ( class_exists( 'CTA_Associate_Access' ) ) {
+			$url = CTA_Associate_Access::get_general_dashboard_url( (int) $user->ID );
+			if ( $url ) {
+				return $url;
+			}
 		}
 
-		if ( in_array( 'cta_licensed_professional', $roles, true ) ) {
+		$roles = (array) $user->roles;
+
+		if ( in_array( 'cta_licensed_professional', $roles, true ) || in_array( 'cta_associate', $roles, true ) ) {
 			return $this->resolve_dashboard_page_url(
 				'cta_student_dashboard_page_id',
 				'cta_student_dashboard'

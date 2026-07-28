@@ -190,6 +190,8 @@ class CTA_Evaluation_Questions {
 		);
 
 		if ( $count > 0 ) {
+			// Library exists but may be a partial older seed — fill any missing keys.
+			self::ensure_camft_library_complete();
 			return;
 		}
 
@@ -214,6 +216,42 @@ class CTA_Evaluation_Questions {
 				)
 			);
 		}
+	}
+
+	/**
+	 * Upsert the full CAMFT template set into the shared library (course_id = 0).
+	 *
+	 * @return int Number of newly inserted library questions.
+	 */
+	public static function ensure_camft_library_complete() {
+		$inserted = 0;
+
+		foreach ( self::get_camft_template_questions() as $index => $tpl ) {
+			$existing = self::get_question_by_key( 0, $tpl['id'] );
+			$data     = array(
+				'course_id'       => 0,
+				'question_key'    => $tpl['id'],
+				'section_label'   => $tpl['section'],
+				'label'           => $tpl['label'],
+				'question_type'   => self::normalize_type( $tpl['type'] ),
+				'options'         => isset( $tpl['options'] ) ? $tpl['options'] : array(),
+				'is_required'     => ! empty( $tpl['required'] ) ? 1 : 0,
+				'summary_field'   => isset( $tpl['summary'] ) ? $tpl['summary'] : '',
+				'order_index'     => 100 + (int) $index,
+				'source_type'     => 'camft',
+				'objective_index' => -1,
+				'status'          => 'active',
+			);
+
+			if ( $existing ) {
+				self::update_question( (int) $existing->id, $data );
+			} else {
+				self::insert_question( $data );
+				++$inserted;
+			}
+		}
+
+		return $inserted;
 	}
 
 	/**
@@ -345,7 +383,7 @@ class CTA_Evaluation_Questions {
 			array(
 				'id'       => 'technology_usability',
 				'section'  => __( 'Technology', 'cta-lms' ),
-				'label'    => __( 'How user-friendly was the course technology?', 'cta-lms' ),
+				'label'    => __( 'How would you rate the technology user-friendliness?', 'cta-lms' ),
 				'type'     => 'rating',
 				'required' => true,
 				'options'  => $likert,
@@ -430,7 +468,10 @@ class CTA_Evaluation_Questions {
 	}
 
 	/**
-	 * Ensure a course has evaluation questions (LO sync + CAMFT copy).
+	 * Ensure a course has evaluation questions (LO sync + full CAMFT set).
+	 *
+	 * Always fills any missing CAMFT / standard questions so older partial
+	 * course forms pick up newly required CAMFT areas.
 	 *
 	 * @param int $course_id Course ID.
 	 * @return int Total question count for the course after sync.
@@ -442,11 +483,8 @@ class CTA_Evaluation_Questions {
 			return count( self::get_questions( 'all', 0 ) );
 		}
 
-		$existing = self::get_questions( 'all', $course_id );
-		if ( empty( $existing ) ) {
-			self::sync_learning_objective_questions( $course_id );
-			self::copy_camft_templates_to_course( $course_id );
-		}
+		self::sync_learning_objective_questions( $course_id );
+		self::copy_camft_templates_to_course( $course_id );
 
 		return count( self::get_questions( 'all', $course_id ) );
 	}
@@ -552,30 +590,7 @@ class CTA_Evaluation_Questions {
 			return 0;
 		}
 
-		self::seed_defaults_if_empty();
-
-		// Refresh shared library rows so new CAMFT questions are available for copy.
-		foreach ( self::get_camft_template_questions() as $index => $tpl ) {
-			$existing_tpl = self::get_question_by_key( 0, $tpl['id'] );
-			$data         = array(
-				'course_id'     => 0,
-				'question_key'  => $tpl['id'],
-				'section_label' => $tpl['section'],
-				'label'         => $tpl['label'],
-				'question_type' => self::normalize_type( $tpl['type'] ),
-				'options'       => isset( $tpl['options'] ) ? $tpl['options'] : array(),
-				'is_required'   => ! empty( $tpl['required'] ) ? 1 : 0,
-				'summary_field' => isset( $tpl['summary'] ) ? $tpl['summary'] : '',
-				'order_index'   => 100 + (int) $index,
-				'source_type'   => 'camft',
-				'status'        => 'active',
-			);
-			if ( $existing_tpl ) {
-				self::update_question( (int) $existing_tpl->id, $data );
-			} else {
-				self::insert_question( $data );
-			}
-		}
+		self::ensure_camft_library_complete();
 
 		$templates = self::get_questions( 'active', 0 );
 		if ( empty( $templates ) ) {
@@ -587,8 +602,14 @@ class CTA_Evaluation_Questions {
 		$copied     = 0;
 
 		foreach ( $templates as $template ) {
-			$new_key = 'camft_' . $template->question_key;
+			$bare_key = (string) $template->question_key;
+			$new_key  = ( 0 === strpos( $bare_key, 'camft_' ) ) ? $bare_key : 'camft_' . $bare_key;
+
+			// Skip when the course already has this CAMFT item (prefixed or legacy bare key).
 			if ( self::get_question_by_key( $course_id, $new_key ) ) {
+				continue;
+			}
+			if ( $new_key !== $bare_key && self::get_question_by_key( $course_id, $bare_key ) ) {
 				continue;
 			}
 
@@ -620,6 +641,54 @@ class CTA_Evaluation_Questions {
 		}
 
 		return $copied;
+	}
+
+	/**
+	 * Push the full CAMFT / standard evaluation set onto every CE course.
+	 *
+	 * Skips Exam Preparation Programs (no CE certificate / evaluation flow).
+	 *
+	 * @return array{courses:int,copied:int}
+	 */
+	public static function sync_camft_to_all_ce_courses() {
+		self::install();
+		self::ensure_camft_library_complete();
+
+		$courses = array();
+		if ( method_exists( 'CTA_Database', 'get_courses_by_product_type' ) ) {
+			$courses = CTA_Database::get_courses_by_product_type( 'ce', 'all' );
+			if ( empty( $courses ) ) {
+				$courses = CTA_Database::get_courses_by_product_type( 'ce', 'published' );
+			}
+		}
+
+		$touched = 0;
+		$copied  = 0;
+
+		foreach ( (array) $courses as $course ) {
+			if ( ! $course || empty( $course->id ) ) {
+				continue;
+			}
+
+			if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course ) ) {
+				continue;
+			}
+
+			$before = count( self::get_questions( 'all', (int) $course->id ) );
+			$added  = self::copy_camft_templates_to_course( (int) $course->id );
+			self::sync_learning_objective_questions( (int) $course->id );
+			$after = count( self::get_questions( 'all', (int) $course->id ) );
+
+			if ( $added > 0 || $after !== $before ) {
+				++$touched;
+			}
+			$copied += (int) $added;
+		}
+
+		return array(
+			'courses' => $touched,
+			'copied'  => $copied,
+		);
 	}
 
 	/**

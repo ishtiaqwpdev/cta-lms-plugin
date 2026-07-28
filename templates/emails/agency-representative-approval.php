@@ -23,7 +23,7 @@ $greeting_name = $rep_name ? $rep_name : __( 'Agency Representative', 'cta-lms' 
 	<?php
 	printf(
 		/* translators: %s: associate display name */
-		esc_html__( '%s has registered as a Registered Associate with Clinical Training and Supervision Academy and is pending approval.', 'cta-lms' ),
+		esc_html__( '%s has applied for clinical supervision with Clinical Training and Supervision Academy and is pending approval.', 'cta-lms' ),
 		esc_html( $associate_name )
 	);
 	?>
@@ -35,7 +35,7 @@ $greeting_name = $rep_name ? $rep_name : __( 'Agency Representative', 'cta-lms' 
 	<?php endif; ?>
 	<p><strong><?php esc_html_e( 'Associate Name:', 'cta-lms' ); ?></strong> <?php echo esc_html( $associate_name ); ?></p>
 	<p><strong><?php esc_html_e( 'Associate Email:', 'cta-lms' ); ?></strong> <?php echo esc_html( $associate_email ); ?></p>
-	<p><strong><?php esc_html_e( 'Status:', 'cta-lms' ); ?></strong> <?php esc_html_e( 'Pending Approval', 'cta-lms' ); ?></p>
+	<p><strong><?php esc_html_e( 'Status:', 'cta-lms' ); ?></strong> <?php esc_html_e( 'Supervision Application Pending', 'cta-lms' ); ?></p>
 </div>
 
 <p><?php esc_html_e( 'Please review and sign the following required documents, which are attached to this email:', 'cta-lms' ); ?></p>

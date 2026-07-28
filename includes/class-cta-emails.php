@@ -590,7 +590,7 @@ class CTA_Emails {
 	/**
 	 * Email agency representative with approval documents for signature.
 	 *
-	 * Sent when an Associate registers and is set to Pending Approval.
+	 * Sent when an Associate submits a supervision application (with agency details).
 	 *
 	 * @param WP_User $user Associate user.
 	 * @param array   $data Optional overrides.
@@ -1043,13 +1043,16 @@ class CTA_Emails {
 	 * @return string
 	 */
 	public static function get_dashboard_url( $user ) {
-		$roles = (array) $user->roles;
-
-		if ( in_array( 'cta_associate', $roles, true ) ) {
-			return self::get_page_url( 'cta_supervision_dashboard_page_id' );
+		if ( class_exists( 'CTA_Associate_Access' ) ) {
+			$url = CTA_Associate_Access::get_general_dashboard_url( (int) $user->ID );
+			if ( $url ) {
+				return $url;
+			}
 		}
 
-		if ( in_array( 'cta_licensed_professional', $roles, true ) ) {
+		$roles = (array) $user->roles;
+
+		if ( in_array( 'cta_licensed_professional', $roles, true ) || in_array( 'cta_associate', $roles, true ) ) {
 			return self::get_page_url( 'cta_student_dashboard_page_id' );
 		}
 
@@ -1057,11 +1060,6 @@ class CTA_Emails {
 		$student = self::get_page_url( 'cta_student_dashboard_page_id' );
 		if ( $student && untrailingslashit( $student ) !== untrailingslashit( home_url( '/' ) ) ) {
 			return $student;
-		}
-
-		$supervision = self::get_page_url( 'cta_supervision_dashboard_page_id' );
-		if ( $supervision && untrailingslashit( $supervision ) !== untrailingslashit( home_url( '/' ) ) ) {
-			return $supervision;
 		}
 
 		return home_url( '/' );

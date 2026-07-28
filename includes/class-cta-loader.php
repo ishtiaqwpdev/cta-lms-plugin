@@ -135,6 +135,24 @@ class CTA_Loader {
 			return;
 		}
 
+		self::enqueue_frontend_assets();
+	}
+
+	/**
+	 * Enqueue CTA frontend CSS/JS (idempotent).
+	 *
+	 * Safe to call from shortcodes rendered in Elementor theme headers
+	 * where the current post may not contain a CTA shortcode.
+	 */
+	public static function enqueue_frontend_assets() {
+		static $done = false;
+
+		if ( $done ) {
+			return;
+		}
+
+		$done = true;
+
 		wp_enqueue_style(
 			'cta-google-fonts',
 			'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap',
@@ -185,6 +203,15 @@ class CTA_Loader {
 			true
 		);
 
+		$dashboard_url = class_exists( 'CTA_Associate_Access' )
+			? CTA_Associate_Access::get_general_dashboard_url()
+			: self::get_page_permalink( 'cta_student_dashboard_page_id' );
+
+		$courses_url = self::get_page_permalink( 'cta_courses_page_id' );
+		$exam_prep_url = $courses_url
+			? add_query_arg( 'product_type', 'exam_prep', $courses_url )
+			: '';
+
 		wp_localize_script(
 			'cta-main',
 			'ctaAjax',
@@ -194,18 +221,29 @@ class CTA_Loader {
 				'pluginUrl'            => CTA_PLUGIN_URL,
 				'isLoggedIn'           => is_user_logged_in() ? 'yes' : 'no',
 				'currentUser'          => is_user_logged_in() ? wp_get_current_user()->display_name : '',
+				'isAssociate'          => (
+					is_user_logged_in()
+					&& class_exists( 'CTA_Associate_Access' )
+					&& CTA_Associate_Access::is_associate()
+				) ? 'yes' : 'no',
+				'hasAgencyInfo'        => (
+					is_user_logged_in()
+					&& class_exists( 'CTA_Associate_Access' )
+					&& CTA_Associate_Access::has_agency_application_info()
+				) ? 'yes' : 'no',
 				'stripePublishableKey' => get_option( 'cta_stripe_publishable_key', '' ),
 				'stripeConfigured'     => file_exists( CTA_PLUGIN_DIR . 'vendor/autoload.php' ) && ! empty( get_option( 'cta_stripe_secret_key', '' ) ) && ! empty( get_option( 'cta_stripe_publishable_key', '' ) ),
 				'paymentsBypass'       => CTA_Stripe::is_payments_bypass_enabled() ? 'yes' : 'no',
 				'loginRequiredMessage' => __( 'Please log in to continue.', 'cta-lms' ),
 				'loginUrl'             => self::get_page_permalink( 'cta_login_page_id' ),
-				'dashboardUrl'         => self::get_dashboard_url_for_user(),
+				'dashboardUrl'         => $dashboard_url,
 				'logoutUrl'            => is_user_logged_in() ? wp_logout_url( home_url( '/' ) ) : '',
-				'studentDashboardUrl'  => self::get_page_permalink( 'cta_student_dashboard_page_id' ),
+				'studentDashboardUrl'  => $dashboard_url,
 				'supervisionDashboardUrl' => self::get_page_permalink( 'cta_supervision_dashboard_page_id' ),
 				'coursePlayerUrl'      => self::get_page_permalink( 'cta_course_player_page_id' ),
 				'quizPageUrl'          => self::get_page_permalink( 'cta_quiz_page_id' ),
-				'coursesUrl'             => self::get_page_permalink( 'cta_courses_page_id' ),
+				'coursesUrl'           => $courses_url,
+				'examPrepUrl'          => $exam_prep_url,
 			)
 		);
 	}
@@ -505,10 +543,8 @@ class CTA_Loader {
 			return '';
 		}
 
-		$user = wp_get_current_user();
-
-		if ( in_array( 'cta_associate', (array) $user->roles, true ) ) {
-			return self::get_page_permalink( 'cta_supervision_dashboard_page_id' );
+		if ( class_exists( 'CTA_Associate_Access' ) ) {
+			return CTA_Associate_Access::get_general_dashboard_url( get_current_user_id() );
 		}
 
 		return self::get_page_permalink( 'cta_student_dashboard_page_id' );

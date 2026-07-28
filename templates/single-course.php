@@ -365,7 +365,13 @@ $access_months = (int) ( $course->access_period_months ?? 6 );
 						<?php if ( $is_free_course ) : ?>
 							<?php esc_html_e( 'Free', 'cta-lms' ); ?>
 						<?php else : ?>
-							$<?php echo esc_html( number_format( (float) $course->price, 2 ) ); ?>
+							<?php
+							echo esc_html(
+								function_exists( 'cta_lms_format_money' )
+									? cta_lms_format_money( (float) $course->price )
+									: ( '$' . number_format( (float) $course->price, 2 ) )
+							);
+							?>
 						<?php endif; ?>
 					</p>
 					<ul class="course-sidebar__meta">
@@ -404,7 +410,7 @@ $access_months = (int) ( $course->access_period_months ?? 6 );
 							<?php esc_html_e( 'Login to Enroll', 'cta-lms' ); ?>
 						</a>
 					<?php else : ?>
-						<button type="button" id="enroll-btn" class="btn btn-primary btn--lg course-sidebar__enroll" data-cta-course-checkout data-course-id="<?php echo esc_attr( $course->id ); ?>" data-course-title="<?php echo esc_attr( $course->title ); ?>" data-price="<?php echo esc_attr( $is_free_course ? __( 'Free', 'cta-lms' ) : '$' . number_format( (float) $course->price, 2 ) ); ?>">
+						<button type="button" id="enroll-btn" class="btn btn-primary btn--lg course-sidebar__enroll" data-cta-course-checkout data-course-id="<?php echo esc_attr( $course->id ); ?>" data-course-title="<?php echo esc_attr( $course->title ); ?>" data-price="<?php echo esc_attr( $is_free_course ? __( 'Free', 'cta-lms' ) : ( function_exists( 'cta_lms_format_money' ) ? cta_lms_format_money( (float) $course->price ) : ( '$' . number_format( (float) $course->price, 2 ) ) ) ); ?>">
 							<?php echo $is_free_course ? esc_html__( 'Enroll Free', 'cta-lms' ) : esc_html__( 'Enroll Now', 'cta-lms' ); ?>
 						</button>
 					<?php endif; ?>

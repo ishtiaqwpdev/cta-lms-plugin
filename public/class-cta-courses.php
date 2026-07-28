@@ -57,6 +57,11 @@ class CTA_Courses {
 			$active_category = sanitize_text_field( wp_unslash( $_GET['category'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		}
 
+		// Deep-link exam prep catalog: ?product_type=exam_prep
+		if ( '' === sanitize_text_field( $atts['product_type'] ) && isset( $_GET['product_type'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$atts['product_type'] = sanitize_text_field( wp_unslash( $_GET['product_type'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		}
+
 		$all_published = $this->get_courses(
 			array(
 				'limit'    => $limit,

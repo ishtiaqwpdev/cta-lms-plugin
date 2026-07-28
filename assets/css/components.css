@@ -597,3 +597,64 @@
 .cta-plugin-wrapper .course-sidebar__card {
   border-radius: 4px !important;
 }
+
+/* --------------------------------------------------------------------------
+   Auth account menu (header / [cta_auth_button])
+   -------------------------------------------------------------------------- */
+.cta-plugin-wrapper.cta-auth-button-wrap,
+.cta-auth-button-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.cta-auth-account {
+  position: relative;
+  display: inline-flex;
+}
+
+.cta-auth-account__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.cta-auth-account__caret {
+  font-size: 0.75em;
+  opacity: 0.75;
+}
+
+.cta-auth-account__menu {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  right: 0;
+  min-width: 220px;
+  padding: 0.4rem 0;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 12px 28px rgba(18, 43, 81, 0.14);
+  z-index: 10050;
+}
+
+.cta-auth-account__menu a {
+  display: block;
+  padding: 0.55rem 0.9rem;
+  color: #122b51;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.cta-auth-account__menu a:hover,
+.cta-auth-account__menu a:focus {
+  background: #f3f6fb;
+  color: #3266a9;
+}
+
+.cta-auth-account__menu .cta-auth-account__logout {
+  border-top: 1px solid #e5e7eb;
+  margin-top: 0.25rem;
+  color: #b91c1c;
+}

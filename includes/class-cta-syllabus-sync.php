@@ -497,7 +497,11 @@ class CTA_Syllabus_Sync {
 	}
 
 	/**
-	 * Upsert modules by title / order. Never deletes existing modules.
+	 * Upsert modules by exact title. Never deletes existing modules.
+	 *
+	 * Missing syllabus titles are created (so a newly approved Module 1 is
+	 * inserted instead of overwriting an existing module by position).
+	 * Matched titles keep video_url / is_locked and receive updated copy/order.
 	 *
 	 * @param int   $course_id Course ID.
 	 * @param array $modules   Syllabus modules.
@@ -509,49 +513,38 @@ class CTA_Syllabus_Sync {
 		$course_id = absint( $course_id );
 		$table     = $wpdb->prefix . 'cta_course_modules';
 		$existing  = CTA_Database::get_course_modules( $course_id );
-		$by_index  = array();
 		$by_title  = array();
 
 		foreach ( $existing as $row ) {
-			$by_index[ (int) $row->order_index ] = $row;
 			$title_key = strtolower( trim( (string) $row->title ) );
 			if ( '' !== $title_key && ! isset( $by_title[ $title_key ] ) ) {
 				$by_title[ $title_key ] = $row;
 			}
 		}
 
-		// If order_index values are sparse/zero-heavy, also map by sequence position.
-		$by_position = array_values( $existing );
-		$used_ids    = array();
-
-		$updated = 0;
-		$created = 0;
+		$used_ids = array();
+		$updated  = 0;
+		$created  = 0;
 
 		foreach ( array_values( $modules ) as $i => $mod ) {
-			$title   = sanitize_text_field( (string) ( $mod['title'] ?? '' ) );
-			$mins    = absint( $mod['duration_mins'] ?? 60 );
-			$points  = isset( $mod['summary_points'] ) ? (array) $mod['summary_points'] : array();
-			$desc    = self::format_module_description(
+			$title  = sanitize_text_field( (string) ( $mod['title'] ?? '' ) );
+			$mins   = absint( $mod['duration_mins'] ?? 60 );
+			$points = isset( $mod['summary_points'] ) ? (array) $mod['summary_points'] : array();
+			$desc   = self::format_module_description(
 				array_map( 'sanitize_text_field', $points )
 			);
-			$order   = $i + 1;
+			$order  = $i + 1;
 
 			if ( '' === $title ) {
 				continue;
 			}
 
-			$target    = null;
 			$title_key = strtolower( trim( $title ) );
+			$target    = null;
 
-			// Prefer exact title match so renumbering does not duplicate modules.
+			// Exact title match only — never remap by position when inserting a new module.
 			if ( isset( $by_title[ $title_key ] ) && ! isset( $used_ids[ (int) $by_title[ $title_key ]->id ] ) ) {
 				$target = $by_title[ $title_key ];
-			} elseif ( isset( $by_index[ $order ] ) && ! isset( $used_ids[ (int) $by_index[ $order ]->id ] ) ) {
-				$target = $by_index[ $order ];
-			} elseif ( isset( $by_index[ $i ] ) && ! isset( $used_ids[ (int) $by_index[ $i ]->id ] ) ) {
-				$target = $by_index[ $i ];
-			} elseif ( isset( $by_position[ $i ] ) && ! isset( $used_ids[ (int) $by_position[ $i ]->id ] ) ) {
-				$target = $by_position[ $i ];
 			}
 
 			if ( $target ) {

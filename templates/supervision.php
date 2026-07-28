@@ -250,7 +250,7 @@ $selected_date = ! empty( $session_dates ) ? min( $session_dates ) : $today;
 						<p><?php echo esc_html__( 'Subscribe to group supervision to access the booking calendar.', 'cta-lms' ); ?></p>
 						<a href="<?php echo esc_url( $login_url ); ?>" class="btn btn-primary"><?php echo esc_html__( 'Login to Book', 'cta-lms' ); ?></a>
 					<?php elseif ( 'pending_approval' === $user_status ) : ?>
-						<h3><?php echo esc_html__( 'Pending Approval', 'cta-lms' ); ?></h3>
+						<h3><?php echo esc_html__( 'Supervision Application Pending', 'cta-lms' ); ?></h3>
 						<p><?php echo esc_html( CTA_Associate_Access::get_pending_message() ); ?></p>
 						<p><?php echo esc_html__( 'Session booking stays locked until your supervision application is approved.', 'cta-lms' ); ?></p>
 					<?php elseif ( 'awaiting_plan' === $user_status ) : ?>

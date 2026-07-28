@@ -96,6 +96,7 @@ class CTA_Course_Catalog {
 			array(
 				'match_titles' => array(
 					'The Fundamentals of Clinical Supervision: Legal Frameworks and Developmental Models',
+					'The Fundamentals of Clinical Supervision',
 					'Fundamentals of Clinical Supervision',
 				),
 				'title'        => 'The Fundamentals of Clinical Supervision: Legal Frameworks and Developmental Models',
@@ -151,6 +152,17 @@ class CTA_Course_Catalog {
 	 * @return object|null
 	 */
 	public static function find_ce_course( array $entry ) {
+		$courses = self::find_all_ce_courses( $entry );
+		return ! empty( $courses ) ? $courses[0] : null;
+	}
+
+	/**
+	 * Find all CE courses matching catalog titles (handles duplicates).
+	 *
+	 * @param array $entry Catalog entry.
+	 * @return array
+	 */
+	public static function find_all_ce_courses( array $entry ) {
 		global $wpdb;
 
 		$table   = $wpdb->prefix . 'cta_courses';
@@ -159,6 +171,9 @@ class CTA_Course_Catalog {
 			$matches = array( $entry['title'] );
 		}
 
+		$found = array();
+		$seen  = array();
+
 		foreach ( $matches as $needle ) {
 			$needle = trim( (string) $needle );
 			if ( '' === $needle ) {
@@ -166,35 +181,209 @@ class CTA_Course_Catalog {
 			}
 
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-			$course = $wpdb->get_row(
+			$rows = $wpdb->get_results(
 				$wpdb->prepare(
 					"SELECT * FROM {$table}
 					WHERE title = %s
 					AND (product_type = 'ce' OR product_type = '' OR product_type IS NULL)
-					ORDER BY id ASC LIMIT 1",
+					ORDER BY id ASC",
 					$needle
 				)
 			);
-			if ( $course ) {
-				return $course;
+
+			foreach ( (array) $rows as $course ) {
+				$id = (int) $course->id;
+				if ( ! isset( $seen[ $id ] ) ) {
+					$seen[ $id ] = true;
+					$found[]     = $course;
+				}
 			}
 
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-			$course = $wpdb->get_row(
+			$rows = $wpdb->get_results(
 				$wpdb->prepare(
 					"SELECT * FROM {$table}
 					WHERE title LIKE %s
 					AND (product_type = 'ce' OR product_type = '' OR product_type IS NULL)
-					ORDER BY id ASC LIMIT 1",
+					ORDER BY id ASC",
 					'%' . $wpdb->esc_like( $needle ) . '%'
 				)
 			);
-			if ( $course ) {
-				return $course;
+
+			foreach ( (array) $rows as $course ) {
+				$id = (int) $course->id;
+				if ( ! isset( $seen[ $id ] ) ) {
+					$seen[ $id ] = true;
+					$found[]     = $course;
+				}
 			}
 		}
 
-		return null;
+		return $found;
+	}
+
+	/**
+	 * Compare two money amounts at cent precision.
+	 *
+	 * @param float $a First amount.
+	 * @param float $b Second amount.
+	 * @return bool
+	 */
+	public static function prices_equal( $a, $b ) {
+		return (int) round( (float) $a * 100 ) === (int) round( (float) $b * 100 );
+	}
+
+	/**
+	 * Price-only sync against the approved CE + Exam Prep catalog.
+	 *
+	 * Does not change titles, categories, or hours. Updates every matching
+	 * duplicate row. Returns a before/after report for admin review.
+	 *
+	 * @return array
+	 */
+	public static function sync_approved_prices() {
+		global $wpdb;
+
+		CTA_Database::ensure_tables();
+		CTA_Database::maybe_add_exam_prep_columns();
+
+		$table  = $wpdb->prefix . 'cta_courses';
+		$report = array(
+			'corrected' => array(),
+			'unchanged' => array(),
+			'missing'   => array(),
+			'synced_at' => gmdate( 'c' ),
+		);
+
+		foreach ( self::get_ce_catalog() as $entry ) {
+			$approved = (float) $entry['price'];
+			$label    = sanitize_text_field( (string) ( $entry['title'] ?? '' ) );
+			$courses  = self::find_all_ce_courses( $entry );
+
+			if ( empty( $courses ) ) {
+				$report['missing'][] = array(
+					'title'           => $label,
+					'approved_price'  => $approved,
+					'product_type'    => 'ce',
+				);
+				continue;
+			}
+
+			foreach ( $courses as $course ) {
+				$before = isset( $course->price ) ? (float) $course->price : 0.0;
+				$row    = array(
+					'id'              => (int) $course->id,
+					'title'           => (string) $course->title,
+					'catalog_title'   => $label,
+					'product_type'    => 'ce',
+					'price_before'    => $before,
+					'price_after'     => $approved,
+					'approved_price'  => $approved,
+				);
+
+				if ( self::prices_equal( $before, $approved ) ) {
+					$report['unchanged'][] = $row;
+					continue;
+				}
+
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$wpdb->update(
+					$table,
+					array( 'price' => $approved ),
+					array( 'id' => (int) $course->id ),
+					array( '%f' ),
+					array( '%d' )
+				);
+
+				$report['corrected'][] = $row;
+			}
+		}
+
+		if ( class_exists( 'CTA_Exam_Access' ) ) {
+			CTA_Exam_Access::seed_default_programs();
+		}
+
+		foreach ( self::get_exam_prep_catalog() as $entry ) {
+			$approved = (float) $entry['price'];
+			$slug     = sanitize_title( (string) $entry['slug'] );
+			$title    = sanitize_text_field( (string) $entry['title'] );
+
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$courses = $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT * FROM {$table}
+					WHERE slug = %s OR title = %s OR title LIKE %s
+					ORDER BY id ASC",
+					$slug,
+					$title,
+					'%' . $wpdb->esc_like( $title ) . '%'
+				)
+			);
+
+			// Prefer exact exam_prep matches; fall back to any title/slug hit.
+			$filtered = array();
+			foreach ( (array) $courses as $course ) {
+				$type = isset( $course->product_type ) ? (string) $course->product_type : '';
+				if ( 'exam_prep' === $type || $slug === (string) $course->slug || $title === (string) $course->title ) {
+					$filtered[] = $course;
+				}
+			}
+			if ( empty( $filtered ) ) {
+				$filtered = (array) $courses;
+			}
+
+			if ( empty( $filtered ) ) {
+				$report['missing'][] = array(
+					'title'          => $title,
+					'approved_price' => $approved,
+					'product_type'   => 'exam_prep',
+				);
+				continue;
+			}
+
+			$seen = array();
+			foreach ( $filtered as $course ) {
+				$id = (int) $course->id;
+				if ( isset( $seen[ $id ] ) ) {
+					continue;
+				}
+				$seen[ $id ] = true;
+
+				$before = isset( $course->price ) ? (float) $course->price : 0.0;
+				$row    = array(
+					'id'             => $id,
+					'title'          => (string) $course->title,
+					'catalog_title'  => $title,
+					'product_type'   => 'exam_prep',
+					'price_before'   => $before,
+					'price_after'    => $approved,
+					'approved_price' => $approved,
+				);
+
+				if ( self::prices_equal( $before, $approved ) ) {
+					$report['unchanged'][] = $row;
+					continue;
+				}
+
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$wpdb->update(
+					$table,
+					array(
+						'price'        => $approved,
+						'product_type' => 'exam_prep',
+					),
+					array( 'id' => $id ),
+					array( '%f', '%s' ),
+					array( '%d' )
+				);
+
+				$report['corrected'][] = $row;
+			}
+		}
+
+		update_option( 'cta_approved_price_sync_1_0_86', wp_json_encode( $report ), false );
+
+		return $report;
 	}
 
 	/**
@@ -210,40 +399,51 @@ class CTA_Course_Catalog {
 
 		$table  = $wpdb->prefix . 'cta_courses';
 		$report = array(
-			'updated' => array(),
-			'created' => array(),
-			'missing' => array(),
+			'updated'   => array(),
+			'created'   => array(),
+			'missing'   => array(),
+			'corrected' => array(),
 		);
 
 		foreach ( self::get_ce_catalog() as $entry ) {
-			$course = self::find_ce_course( $entry );
-			$title  = sanitize_text_field( (string) $entry['title'] );
-			$price  = (float) $entry['price'];
-			$ce     = (float) $entry['ce_hours'];
-			$cat    = sanitize_text_field( (string) $entry['category'] );
+			$courses = self::find_all_ce_courses( $entry );
+			$title   = sanitize_text_field( (string) $entry['title'] );
+			$price   = (float) $entry['price'];
+			$ce      = (float) $entry['ce_hours'];
+			$cat     = sanitize_text_field( (string) $entry['category'] );
 
-			if ( $course ) {
-				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-				$wpdb->update(
-					$table,
-					array(
-						'price'     => $price,
-						'category'  => $cat,
-						'ce_hours'  => $ce,
-						'title'     => $title,
-					),
-					array( 'id' => (int) $course->id ),
-					array( '%f', '%s', '%f', '%s' ),
-					array( '%d' )
-				);
+			if ( ! empty( $courses ) ) {
+				foreach ( $courses as $course ) {
+					$before = isset( $course->price ) ? (float) $course->price : 0.0;
 
-				$report['updated'][] = array(
-					'id'       => (int) $course->id,
-					'title'    => $title,
-					'price'    => $price,
-					'category' => $cat,
-					'ce_hours' => $ce,
-				);
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+					$wpdb->update(
+						$table,
+						array(
+							'price'    => $price,
+							'category' => $cat,
+							'ce_hours' => $ce,
+							'title'    => $title,
+						),
+						array( 'id' => (int) $course->id ),
+						array( '%f', '%s', '%f', '%s' ),
+						array( '%d' )
+					);
+
+					$row = array(
+						'id'           => (int) $course->id,
+						'title'        => $title,
+						'price'        => $price,
+						'price_before' => $before,
+						'price_after'  => $price,
+						'category'     => $cat,
+						'ce_hours'     => $ce,
+					);
+					$report['updated'][] = $row;
+					if ( ! self::prices_equal( $before, $price ) ) {
+						$report['corrected'][] = $row;
+					}
+				}
 				continue;
 			}
 
@@ -305,9 +505,10 @@ class CTA_Course_Catalog {
 
 		$table  = $wpdb->prefix . 'cta_courses';
 		$report = array(
-			'updated' => array(),
-			'created' => array(),
-			'missing' => array(),
+			'updated'   => array(),
+			'created'   => array(),
+			'missing'   => array(),
+			'corrected' => array(),
 		);
 
 		if ( class_exists( 'CTA_Exam_Access' ) ) {
@@ -318,11 +519,12 @@ class CTA_Course_Catalog {
 		foreach ( self::get_exam_prep_catalog() as $entry ) {
 			$slug  = sanitize_title( (string) $entry['slug'] );
 			$title = sanitize_text_field( (string) $entry['title'] );
+			$price = (float) $entry['price'];
 
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-			$course = $wpdb->get_row(
+			$courses = $wpdb->get_results(
 				$wpdb->prepare(
-					"SELECT * FROM {$table} WHERE slug = %s OR title = %s ORDER BY id ASC LIMIT 1",
+					"SELECT * FROM {$table} WHERE slug = %s OR title = %s ORDER BY id ASC",
 					$slug,
 					$title
 				)
@@ -330,7 +532,7 @@ class CTA_Course_Catalog {
 
 			$data = array(
 				'title'                => $title,
-				'price'                => (float) $entry['price'],
+				'price'                => $price,
 				'category'             => sanitize_text_field( (string) $entry['category'] ),
 				'access_period_months' => absint( $entry['access_period_months'] ),
 				'ce_hours'             => 0,
@@ -339,20 +541,38 @@ class CTA_Course_Catalog {
 				'has_ce_certificate'   => 0,
 			);
 
-			if ( $course ) {
-				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-				$wpdb->update(
-					$table,
-					$data,
-					array( 'id' => (int) $course->id ),
-					array( '%s', '%f', '%s', '%d', '%f', '%s', '%d', '%d' ),
-					array( '%d' )
-				);
-				$report['updated'][] = array(
-					'id'    => (int) $course->id,
-					'title' => $title,
-					'price' => (float) $entry['price'],
-				);
+			if ( ! empty( $courses ) ) {
+				$seen = array();
+				foreach ( $courses as $course ) {
+					$id = (int) $course->id;
+					if ( isset( $seen[ $id ] ) ) {
+						continue;
+					}
+					$seen[ $id ] = true;
+
+					$before = isset( $course->price ) ? (float) $course->price : 0.0;
+
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+					$wpdb->update(
+						$table,
+						$data,
+						array( 'id' => $id ),
+						array( '%s', '%f', '%s', '%d', '%f', '%s', '%d', '%d' ),
+						array( '%d' )
+					);
+
+					$row = array(
+						'id'           => $id,
+						'title'        => $title,
+						'price'        => $price,
+						'price_before' => $before,
+						'price_after'  => $price,
+					);
+					$report['updated'][] = $row;
+					if ( ! self::prices_equal( $before, $price ) ) {
+						$report['corrected'][] = $row;
+					}
+				}
 			} else {
 				$report['missing'][] = $title;
 			}
@@ -442,11 +662,13 @@ class CTA_Course_Catalog {
 		CTA_Database::ensure_tables();
 		CTA_Database::maybe_add_exam_prep_columns();
 
-		$ce   = self::restore_ce_pricing();
-		$exam = self::restore_exam_prep_pricing();
+		$price = self::sync_approved_prices();
+		$ce    = self::restore_ce_pricing();
+		$exam  = self::restore_exam_prep_pricing();
 		$audit = self::audit_ce_content();
 
 		$report = array(
+			'price_sync' => $price,
 			'ce'         => $ce,
 			'exam_prep'  => $exam,
 			'audit'      => $audit,

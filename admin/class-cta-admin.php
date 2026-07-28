@@ -212,11 +212,15 @@ class CTA_Admin {
 		$frontend    = home_url( '/' );
 
 		if ( in_array( 'cta_associate', $roles, true ) ) {
-			$page_id = absint( get_option( 'cta_supervision_dashboard_page_id', 0 ) );
-			if ( $page_id ) {
-				$url = get_permalink( $page_id );
-				if ( $url ) {
-					$frontend = $url;
+			if ( class_exists( 'CTA_Associate_Access' ) ) {
+				$frontend = CTA_Associate_Access::get_general_dashboard_url( (int) $user->ID );
+			} else {
+				$page_id = absint( get_option( 'cta_student_dashboard_page_id', 0 ) );
+				if ( $page_id ) {
+					$url = get_permalink( $page_id );
+					if ( $url ) {
+						$frontend = $url;
+					}
 				}
 			}
 		} else {
@@ -764,9 +768,8 @@ class CTA_Admin {
 	/**
 	 * Build Approvals queue rows.
 	 *
-	 * Includes:
-	 * 1. Registered Associates with an approval status (even before purchase)
-	 * 2. Users with a completed supervision / hybrid purchase
+	 * Includes associates who have started a supervision application (approval
+	 * status set) and/or have a supervision / hybrid purchase on file.
 	 *
 	 * @return array<int,array<string,mixed>>
 	 */
@@ -775,21 +778,7 @@ class CTA_Admin {
 
 		$by_user = array();
 
-		// All Registered Associates (purchase optional — registration alone can be Pending Approval).
-		$associate_query = new WP_User_Query(
-			array(
-				'role'    => 'cta_associate',
-				'number'  => 500,
-				'orderby' => 'registered',
-				'order'   => 'DESC',
-			)
-		);
-
-		foreach ( (array) $associate_query->get_results() as $user ) {
-			$by_user[ (int) $user->ID ] = $this->build_approval_record( $user, null );
-		}
-
-		// Also catch anyone flagged pending/rejected/approved via meta even if role lookup missed them.
+		// Associates with an explicit supervision application / approval status.
 		$meta_statuses = array(
 			CTA_Associate_Access::STATUS_PENDING,
 			CTA_Associate_Access::STATUS_APPROVED,
@@ -807,11 +796,7 @@ class CTA_Admin {
 			);
 
 			foreach ( (array) $meta_query->get_results() as $user ) {
-				$user_id = (int) $user->ID;
-				if ( isset( $by_user[ $user_id ] ) ) {
-					continue;
-				}
-				$by_user[ $user_id ] = $this->build_approval_record( $user, null );
+				$by_user[ (int) $user->ID ] = $this->build_approval_record( $user, null );
 			}
 		}
 

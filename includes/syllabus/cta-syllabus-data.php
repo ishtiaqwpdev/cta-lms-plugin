@@ -759,7 +759,8 @@ return array(
 				'title'          => 'California Regulatory Frameworks & BBS Updates',
 				'duration_mins'  => 60,
 				'summary_points' => array(
-					'California laws, regulations, and Board of Behavioral Sciences updates',
+					'California regulatory updates and Board of Behavioral Sciences requirements',
+					'Scope of competence and ethical practice standards in California mental health practice',
 					'Professional ethical standards for clinical practice',
 					'Common disciplinary concerns and risk factors',
 					'Regulatory sources that govern mental health practice',

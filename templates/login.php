@@ -206,52 +206,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 									<?php echo esc_html__( 'Registered Associate (AMFT, ASW, APCC)', 'cta-lms' ); ?>
 								</option>
 							</select>
-						</div>
-
-						<div
-							id="cta-register-associate-fields"
-							class="cta-register-associate-fields form-hidden"
-							hidden
-							aria-hidden="true"
-						>
-							<div class="form-group">
-								<label class="form-label" for="cta-register-employer-agency">
-									<?php echo esc_html__( 'Employer/Agency Name', 'cta-lms' ); ?>
-								</label>
-								<input
-									type="text"
-									id="cta-register-employer-agency"
-									name="cta_employer_agency_name"
-									class="form-input"
-									autocomplete="organization"
-								>
-							</div>
-
-							<div class="form-group">
-								<label class="form-label" for="cta-register-agency-rep-name">
-									<?php echo esc_html__( 'Agency Representative Name', 'cta-lms' ); ?>
-								</label>
-								<input
-									type="text"
-									id="cta-register-agency-rep-name"
-									name="cta_agency_representative_name"
-									class="form-input"
-									autocomplete="name"
-								>
-							</div>
-
-							<div class="form-group">
-								<label class="form-label" for="cta-register-agency-rep-email">
-									<?php echo esc_html__( 'Agency Representative Email', 'cta-lms' ); ?>
-								</label>
-								<input
-									type="email"
-									id="cta-register-agency-rep-email"
-									name="cta_agency_representative_email"
-									class="form-input"
-									autocomplete="email"
-								>
-							</div>
+							<p class="form-hint" style="margin-top:0.35rem;font-size:0.85em;opacity:0.85;">
+								<?php echo esc_html__( 'Employer/agency details are collected later only if you apply for clinical supervision.', 'cta-lms' ); ?>
+							</p>
 						</div>
 
 						<button type="button" id="cta-register-btn" class="btn btn-primary btn--lg auth-form__submit">

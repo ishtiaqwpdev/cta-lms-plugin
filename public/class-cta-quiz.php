@@ -529,14 +529,35 @@ class CTA_Quiz {
 			wp_send_json_error( array( 'message' => __( 'Submit the course evaluation before attestation.', 'cta-lms' ) ) );
 		}
 
-		$custom_text = sanitize_textarea_field( wp_unslash( $_POST['attestation_text'] ?? '' ) );
-		if ( '' === trim( $custom_text ) ) {
-			$custom_text = CTA_Course_Attestation::default_attestation_text();
+		// Statement text is always the server-side CE standard wording (never rely on a client hidden field).
+		$attestation_text = CTA_Course_Attestation::default_attestation_text();
+		$signature_name   = sanitize_text_field(
+			wp_unslash(
+				$_POST['signature_name']
+				?? $_POST['attestation_signature']
+				?? $_POST['typed_name']
+				?? ''
+			)
+		);
+
+		if ( '' === trim( $signature_name ) ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'Please type your full legal name as your electronic signature to complete this attestation.', 'cta-lms' ),
+					'code'    => 'cta_attestation_signature',
+				)
+			);
 		}
-		$result = CTA_Course_Attestation::submit( $user_id, $course_id, $custom_text );
+
+		$result = CTA_Course_Attestation::submit( $user_id, $course_id, $attestation_text, $signature_name );
 
 		if ( is_wp_error( $result ) ) {
-			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
+			wp_send_json_error(
+				array(
+					'message' => $result->get_error_message(),
+					'code'    => $result->get_error_code(),
+				)
+			);
 		}
 
 		$certificate = CTA_Certificates::generate( $user_id, $course_id, $evaluation );

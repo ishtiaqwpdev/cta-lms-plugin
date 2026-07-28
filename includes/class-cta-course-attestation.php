@@ -133,24 +133,42 @@ class CTA_Course_Attestation {
 	/**
 	 * Submit or update attestation for a user and course.
 	 *
-	 * @param int    $user_id   WordPress user ID.
-	 * @param int    $course_id Course ID.
-	 * @param string $text      Attestation text the student agreed to.
+	 * The compliance statement is always the platform default (or an explicit
+	 * override). Students must type their full legal name as an electronic
+	 * signature — that typed name is what we persist as student_name.
+	 *
+	 * @param int    $user_id        WordPress user ID.
+	 * @param int    $course_id      Course ID.
+	 * @param string $text           Attestation statement (optional; defaults applied).
+	 * @param string $signature_name Typed full legal name / electronic signature.
 	 * @return true|WP_Error
 	 */
-	public static function submit( $user_id, $course_id, $text ) {
+	public static function submit( $user_id, $course_id, $text = '', $signature_name = '' ) {
 		global $wpdb;
 
 		$user_id   = absint( $user_id );
 		$course_id = absint( $course_id );
 		$text      = sanitize_textarea_field( wp_unslash( (string) $text ) );
+		$signature = sanitize_text_field( wp_unslash( (string) $signature_name ) );
 
 		if ( ! $user_id || ! $course_id ) {
 			return new WP_Error( 'cta_attestation_invalid', __( 'Invalid attestation request.', 'cta-lms' ) );
 		}
 
+		// Never block on missing statement text — always fall back to the CE standard wording.
+		if ( '' === trim( $text ) ) {
+			$text = self::default_attestation_text();
+		}
+
 		if ( '' === trim( $text ) ) {
 			return new WP_Error( 'cta_attestation_text', __( 'Attestation text is required.', 'cta-lms' ) );
+		}
+
+		if ( '' === trim( $signature ) || strlen( trim( $signature ) ) < 2 ) {
+			return new WP_Error(
+				'cta_attestation_signature',
+				__( 'Please type your full legal name as your electronic signature to complete this attestation.', 'cta-lms' )
+			);
 		}
 
 		$course = CTA_Database::get_course( $course_id );
@@ -158,19 +176,18 @@ class CTA_Course_Attestation {
 			return new WP_Error( 'cta_attestation_course', __( 'Course not found.', 'cta-lms' ) );
 		}
 
-		$course_title  = sanitize_text_field( (string) $course->title );
-		$student_name  = self::get_student_display_name( $user_id );
-		$ip_address    = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
-		$user_agent    = isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( wp_unslash( substr( (string) $_SERVER['HTTP_USER_AGENT'], 0, 500 ) ) ) : '';
-		$existing      = self::get( $user_id, $course_id );
-		$table         = self::table_name();
-		$now           = current_time( 'mysql' );
+		$course_title = sanitize_text_field( (string) $course->title );
+		$ip_address   = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
+		$user_agent   = isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( wp_unslash( substr( (string) $_SERVER['HTTP_USER_AGENT'], 0, 500 ) ) ) : '';
+		$existing     = self::get( $user_id, $course_id );
+		$table        = self::table_name();
+		$now          = current_time( 'mysql' );
 
 		$row = array(
 			'user_id'          => $user_id,
 			'course_id'        => $course_id,
 			'course_title'     => $course_title,
-			'student_name'     => $student_name,
+			'student_name'     => $signature,
 			'attestation_text' => $text,
 			'ip_address'       => $ip_address,
 			'user_agent'       => $user_agent,

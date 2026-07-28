@@ -1955,6 +1955,100 @@
       return "cta_purchase_bundle";
     }
 
+    function paymentNeedsAgencyInfo(action, btn) {
+      if (!ctaAjax || ctaAjax.hasAgencyInfo === "yes") {
+        return false;
+      }
+
+      if (action === "cta_create_subscription") {
+        return true;
+      }
+
+      if (action !== "cta_purchase_bundle") {
+        return false;
+      }
+
+      if (btn.data("includes-supervision") === 1 || btn.data("includes-supervision") === true) {
+        return true;
+      }
+
+      var plan = String(btn.data("plan") || btn.data("plan-type") || "").toLowerCase();
+      if (plan === "hybrid" || plan.indexOf("supervision") !== -1) {
+        return true;
+      }
+
+      var label = String(btn.data("course-title") || btn.text() || "").toLowerCase();
+      return (
+        label.indexOf("supervision") !== -1 ||
+        label.indexOf("hybrid") !== -1 ||
+        label.indexOf("all-access") !== -1
+      );
+    }
+
+    function showSupervisionAgencyModal(onSubmit, onCancel) {
+      $("#cta-agency-modal").remove();
+
+      var modalHtml =
+        '<div id="cta-agency-modal" style="position:fixed;inset:0;background:rgba(18,43,81,0.55);z-index:100000;display:flex;align-items:center;justify-content:center;padding:20px;">' +
+        '<div style="background:#fff;max-width:480px;width:100%;border-radius:12px;padding:28px 24px;box-shadow:0 20px 50px rgba(0,0,0,0.2);font-family:\'Montserrat\',sans-serif;position:relative;">' +
+        '<button type="button" id="cta-agency-close" aria-label="Close" style="position:absolute;top:12px;right:14px;border:none;background:transparent;font-size:22px;line-height:1;cursor:pointer;color:#6B7280;">&times;</button>' +
+        '<h3 style="margin:0 0 8px;color:#122B51;font-size:20px;">Supervision Application</h3>' +
+        '<p style="margin:0 0 18px;color:#4B5563;font-size:14px;line-height:1.5;">Employer/agency details are required to apply for clinical supervision. Your agency representative will receive approval documents by email.</p>' +
+        '<div style="margin-bottom:12px;"><label for="cta-agency-employer" style="display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:6px;">Employer/Agency Name</label>' +
+        '<input id="cta-agency-employer" type="text" autocomplete="organization" style="width:100%;padding:12px;border:1px solid #D1D5DB;border-radius:8px;font-size:15px;"></div>' +
+        '<div style="margin-bottom:12px;"><label for="cta-agency-rep-name" style="display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:6px;">Agency Representative Name</label>' +
+        '<input id="cta-agency-rep-name" type="text" autocomplete="name" style="width:100%;padding:12px;border:1px solid #D1D5DB;border-radius:8px;font-size:15px;"></div>' +
+        '<div style="margin-bottom:18px;"><label for="cta-agency-rep-email" style="display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:6px;">Agency Representative Email</label>' +
+        '<input id="cta-agency-rep-email" type="email" autocomplete="email" style="width:100%;padding:12px;border:1px solid #D1D5DB;border-radius:8px;font-size:15px;"></div>' +
+        '<p id="cta-agency-error" style="display:none;color:#DC2626;font-size:13px;margin:0 0 12px;"></p>' +
+        '<button type="button" id="cta-agency-continue" style="width:100%;padding:14px;background:#3266A9;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;">Continue to Purchase</button>' +
+        "</div></div>";
+
+      $("body").append(modalHtml);
+
+      function closeModal() {
+        $("#cta-agency-modal").remove();
+        if (typeof onCancel === "function") {
+          onCancel();
+        }
+      }
+
+      $("#cta-agency-close").on("click", closeModal);
+      $("#cta-agency-modal").on("click", function (evt) {
+        if ($(evt.target).is("#cta-agency-modal")) {
+          closeModal();
+        }
+      });
+
+      $("#cta-agency-continue").on("click", function () {
+        var employer = $("#cta-agency-employer").val().trim();
+        var repName = $("#cta-agency-rep-name").val().trim();
+        var repEmail = $("#cta-agency-rep-email").val().trim();
+        var errorEl = $("#cta-agency-error");
+
+        if (!employer || !repName || !repEmail) {
+          errorEl.text("Please fill in all agency fields.").show();
+          return;
+        }
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(repEmail)) {
+          errorEl.text("Please enter a valid agency representative email.").show();
+          return;
+        }
+
+        errorEl.hide();
+        $("#cta-agency-modal").remove();
+
+        if (typeof onSubmit === "function") {
+          onSubmit({
+            employer_agency_name: employer,
+            agency_representative_name: repName,
+            agency_representative_email: repEmail
+          });
+        }
+      });
+    }
+
     function handlePaymentClick(e) {
       e.preventDefault();
 
@@ -1971,8 +2065,6 @@
         return;
       }
 
-      btn.text("Processing...").prop("disabled", true);
-
       var action = getPaymentAction(btn);
       var paymentData = {
         course_id: btn.data("course-id") || "",
@@ -1981,82 +2073,112 @@
         billing: btn.data("billing") || ""
       };
 
-      $.ajax({
-        url: ctaAjax.ajaxUrl,
-        type: "POST",
-        data: $.extend(
-          {
-            action: action,
-            nonce: ctaAjax.nonce
-          },
-          paymentData
-        ),
-        success: function (response) {
-          btn.text(origText).prop("disabled", false);
+      function submitPaymentRequest() {
+        btn.text("Processing...").prop("disabled", true);
 
-          if (response.success && response.data && response.data.demo_mode) {
-            showDemoPaymentModal(btn, action, paymentData);
-            return;
-          }
-
-          if (response.success && response.data && response.data.enrolled && response.data.redirect_url) {
-            window.location.href = response.data.redirect_url;
-            return;
-          }
-
-          if (response.success && response.data && response.data.checkout_url) {
-            window.location.href = response.data.checkout_url;
-            return;
-          }
-
-          if (
-            response.success &&
-            action === "cta_create_subscription"
-          ) {
-            var dashUrl =
-              (response.data && response.data.redirect_url) ||
-              ctaAjax.supervisionDashboardUrl ||
-              ctaAjax.dashboardUrl ||
-              window.location.href;
-            if (dashUrl.indexOf("cta_paid=") === -1) {
-              dashUrl +=
-                (dashUrl.indexOf("?") === -1 ? "?" : "&") +
-                "subscription=success&cta_paid=1&_cta=" +
-                Date.now();
-            }
-            window.location.href = dashUrl;
-            return;
-          }
-
-          if (!response.success) {
-            var errorMessage =
-              response.data && response.data.message
-                ? response.data.message
-                : "Something went wrong.";
-            var registerUrl =
-              response.data && response.data.register_url
-                ? response.data.register_url
-                : "";
+        $.ajax({
+          url: ctaAjax.ajaxUrl,
+          type: "POST",
+          data: $.extend(
+            {
+              action: action,
+              nonce: ctaAjax.nonce
+            },
+            paymentData
+          ),
+          success: function (response) {
+            btn.text(origText).prop("disabled", false);
 
             if (
+              response &&
+              !response.success &&
               response.data &&
-              response.data.code === "associate_required" &&
-              registerUrl
+              response.data.code === "agency_info_required"
             ) {
-              if (window.confirm(errorMessage + "\n\nGo to Associate registration?")) {
-                window.location.href = registerUrl;
-              }
+              showSupervisionAgencyModal(function (agencyData) {
+                paymentData = $.extend(paymentData, agencyData);
+                if (ctaAjax) {
+                  ctaAjax.hasAgencyInfo = "yes";
+                }
+                submitPaymentRequest();
+              });
               return;
             }
 
-            window.alert(errorMessage);
+            if (response.success && response.data && response.data.demo_mode) {
+              showDemoPaymentModal(btn, action, paymentData);
+              return;
+            }
+
+            if (response.success && response.data && response.data.enrolled && response.data.redirect_url) {
+              window.location.href = response.data.redirect_url;
+              return;
+            }
+
+            if (response.success && response.data && response.data.checkout_url) {
+              window.location.href = response.data.checkout_url;
+              return;
+            }
+
+            if (response.success && action === "cta_create_subscription") {
+              var dashUrl =
+                (response.data && response.data.redirect_url) ||
+                ctaAjax.supervisionDashboardUrl ||
+                ctaAjax.dashboardUrl ||
+                window.location.href;
+              if (dashUrl.indexOf("cta_paid=") === -1) {
+                dashUrl +=
+                  (dashUrl.indexOf("?") === -1 ? "?" : "&") +
+                  "subscription=success&cta_paid=1&_cta=" +
+                  Date.now();
+              }
+              window.location.href = dashUrl;
+              return;
+            }
+
+            if (!response.success) {
+              var errorMessage =
+                response.data && response.data.message
+                  ? response.data.message
+                  : "Something went wrong.";
+              var registerUrl =
+                response.data && response.data.register_url
+                  ? response.data.register_url
+                  : "";
+
+              if (
+                response.data &&
+                response.data.code === "associate_required" &&
+                registerUrl
+              ) {
+                if (window.confirm(errorMessage + "\n\nGo to Associate registration?")) {
+                  window.location.href = registerUrl;
+                }
+                return;
+              }
+
+              window.alert(errorMessage);
+            }
+          },
+          error: function () {
+            btn.text(origText).prop("disabled", false);
+            window.alert("Connection error. Please try again.");
           }
-        },
-        error: function () {
-          btn.text(origText).prop("disabled", false);
-          window.alert("Connection error. Please try again.");
-        }
-      });
+        });
+      }
+
+      if (paymentNeedsAgencyInfo(action, btn)) {
+        showSupervisionAgencyModal(function (agencyData) {
+          paymentData = $.extend(paymentData, agencyData);
+          if (ctaAjax) {
+            ctaAjax.hasAgencyInfo = "yes";
+          }
+          submitPaymentRequest();
+        });
+        return;
+      }
+
+      submitPaymentRequest();
     }
 
     $(document).on(
@@ -2907,6 +3029,16 @@
           return;
         }
 
+        var signatureField = document.getElementById("cta-attestation-signature");
+        var signatureName = signatureField ? signatureField.value.trim() : "";
+        if (!signatureName || signatureName.length < 2) {
+          window.alert("Please type your full legal name as your electronic signature.");
+          if (signatureField) {
+            signatureField.focus();
+          }
+          return;
+        }
+
         attestBtn.disabled = true;
         attestBtn.textContent = "Submitting...";
 
@@ -2915,14 +3047,7 @@
           nonce: ctaAjax.nonce,
           course_id: courseId,
           agree: 1,
-          attestation_text: (function () {
-            var field = document.getElementById("cta-attestation-text");
-            if (field && field.value) {
-              return field.value;
-            }
-            var statement = document.getElementById("cta-attestation-statement");
-            return statement ? (statement.textContent || "").trim() : "";
-          })()
+          signature_name: signatureName
         })
           .done(function (response) {
             if (!response.success || !response.data) {
@@ -3280,6 +3405,98 @@
   }
 
   /**
+   * Header / Elementor auth button: keep logged-in chrome in sync and open account menu.
+   */
+  function initCtaAuthChrome() {
+    function hasWpLoginCookie() {
+      return /(?:^|;\s*)wordpress_logged_in_/.test(document.cookie);
+    }
+
+    function syncAuthRoot(root) {
+      if (!root) return;
+
+      var serverLoggedIn = root.getAttribute("data-logged-in") === "yes";
+      var ajaxLoggedIn =
+        typeof ctaAjax !== "undefined" && ctaAjax.isLoggedIn === "yes";
+      var loggedIn = serverLoggedIn || ajaxLoggedIn || hasWpLoginCookie();
+      var guest = root.querySelector("[data-cta-auth-guest]");
+      var user = root.querySelector("[data-cta-auth-user]");
+      var label = root.querySelector("[data-cta-auth-label]");
+
+      if (guest && user) {
+        guest.hidden = !!loggedIn;
+        user.hidden = !loggedIn;
+      }
+
+      root.setAttribute("data-logged-in", loggedIn ? "yes" : "no");
+
+      if (loggedIn && label) {
+        var name =
+          (typeof ctaAjax !== "undefined" && ctaAjax.currentUser) ||
+          root.getAttribute("data-display-name") ||
+          "";
+        if (name) {
+          label.textContent = "Hi, " + name;
+        } else {
+          label.textContent =
+            root.getAttribute("data-dashboard-text") || "My Dashboard";
+        }
+      }
+
+      if (loggedIn && typeof ctaAjax !== "undefined" && ctaAjax.dashboardUrl) {
+        root.setAttribute("data-dashboard-url", ctaAjax.dashboardUrl);
+        root.querySelectorAll("[href]").forEach(function (link) {
+          var href = link.getAttribute("href") || "";
+          var text = (link.textContent || "").trim().toLowerCase();
+          if (href.indexOf("#certificates") !== -1) {
+            link.setAttribute("href", ctaAjax.dashboardUrl + "#certificates");
+          } else if (href.indexOf("#settings") !== -1) {
+            link.setAttribute("href", ctaAjax.dashboardUrl + "#settings");
+          } else if (href.indexOf("#courses") !== -1) {
+            link.setAttribute("href", ctaAjax.dashboardUrl + "#courses");
+          } else if (text === "my dashboard") {
+            link.setAttribute("href", ctaAjax.dashboardUrl);
+          }
+        });
+      }
+    }
+
+    document.querySelectorAll("[data-cta-auth-root]").forEach(syncAuthRoot);
+
+    document.addEventListener("click", function (e) {
+      var toggle = e.target.closest("[data-cta-auth-toggle]");
+      if (toggle) {
+        e.preventDefault();
+        e.stopPropagation();
+        var root = toggle.closest("[data-cta-auth-root]");
+        var menu = root ? root.querySelector("[data-cta-auth-menu]") : null;
+        if (!menu) return;
+        var open = menu.hasAttribute("hidden");
+        document.querySelectorAll("[data-cta-auth-menu]").forEach(function (m) {
+          m.setAttribute("hidden", "");
+        });
+        document.querySelectorAll("[data-cta-auth-toggle]").forEach(function (t) {
+          t.setAttribute("aria-expanded", "false");
+        });
+        if (open) {
+          menu.removeAttribute("hidden");
+          toggle.setAttribute("aria-expanded", "true");
+        }
+        return;
+      }
+
+      if (!e.target.closest("[data-cta-auth-root]")) {
+        document.querySelectorAll("[data-cta-auth-menu]").forEach(function (m) {
+          m.setAttribute("hidden", "");
+        });
+        document.querySelectorAll("[data-cta-auth-toggle]").forEach(function (t) {
+          t.setAttribute("aria-expanded", "false");
+        });
+      }
+    });
+  }
+
+  /**
    * WordPress login/register forms ([cta_login_form] shortcode)
    */
   function initCtaAuthForms() {
@@ -3497,38 +3714,6 @@
     var userTypeSelect = registerForm
       ? registerForm.querySelector('[name="cta_user_type"]')
       : null;
-    var associateFields = document.getElementById("cta-register-associate-fields");
-    var associateInputs = associateFields
-      ? associateFields.querySelectorAll("input")
-      : [];
-
-    function toggleAssociateFields() {
-      if (!associateFields || !userTypeSelect) return;
-
-      var isAssociate = userTypeSelect.value === "cta_associate";
-
-      if (isAssociate) {
-        associateFields.classList.remove("form-hidden");
-        associateFields.removeAttribute("hidden");
-        associateFields.setAttribute("aria-hidden", "false");
-        associateInputs.forEach(function (input) {
-          input.required = true;
-        });
-      } else {
-        associateFields.classList.add("form-hidden");
-        associateFields.setAttribute("hidden", "");
-        associateFields.setAttribute("aria-hidden", "true");
-        associateInputs.forEach(function (input) {
-          input.required = false;
-          input.value = "";
-        });
-      }
-    }
-
-    if (userTypeSelect) {
-      userTypeSelect.addEventListener("change", toggleAssociateFields);
-      toggleAssociateFields();
-    }
 
     try {
       var authParams = new URLSearchParams(window.location.search);
@@ -3536,7 +3721,6 @@
         toggleAuthForm("register");
         if (userTypeSelect) {
           userTypeSelect.value = "cta_associate";
-          toggleAssociateFields();
         }
       }
     } catch (e) {}
@@ -3558,9 +3742,6 @@
         var confirmPassword = registerForm.querySelector('[name="cta_reg_confirm_password"]').value;
         var userType = registerForm.querySelector('[name="cta_user_type"]').value;
         var nonceField = registerForm.querySelector('[name="cta_register_nonce"]');
-        var employerAgencyName = "";
-        var agencyRepName = "";
-        var agencyRepEmail = "";
 
         if (password !== confirmPassword) {
           showMessage(registerError, "Passwords do not match.", false);
@@ -3577,21 +3758,6 @@
           return;
         }
 
-        if (userType === "cta_associate") {
-          var employerField = registerForm.querySelector('[name="cta_employer_agency_name"]');
-          var repNameField = registerForm.querySelector('[name="cta_agency_representative_name"]');
-          var repEmailField = registerForm.querySelector('[name="cta_agency_representative_email"]');
-
-          employerAgencyName = employerField ? employerField.value.trim() : "";
-          agencyRepName = repNameField ? repNameField.value.trim() : "";
-          agencyRepEmail = repEmailField ? repEmailField.value.trim() : "";
-
-          if (!employerAgencyName || !agencyRepName || !agencyRepEmail) {
-            showMessage(registerError, "Please fill in all agency fields.", false);
-            return;
-          }
-        }
-
         registerBtn.textContent = "Creating account...";
         registerBtn.disabled = true;
 
@@ -3605,12 +3771,6 @@
           confirm_password: confirmPassword,
           user_type: userType
         };
-
-        if (userType === "cta_associate") {
-          registerPayloadBase.employer_agency_name = employerAgencyName;
-          registerPayloadBase.agency_representative_name = agencyRepName;
-          registerPayloadBase.agency_representative_email = agencyRepEmail;
-        }
 
         resolveAuthNonce("register", fallbackNonce)
           .then(function (nonce) {
@@ -3846,6 +4006,7 @@
     initFaqFilters();
     initPoliciesNav();
     initPasswordToggle();
+    initCtaAuthChrome();
     initCtaAuthForms();
     initCtaCourseCatalog();
     initCourseModulePreview();

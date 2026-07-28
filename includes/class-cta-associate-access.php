@@ -1,11 +1,19 @@
 <?php
 /**
- * Associate approval access checks for supervision privileges.
+ * Associate access checks — four independent status axes:
  *
- * Until an Associate is Approved, they cannot access:
+ * 1. General account status (`cta_account_status`) — active/inactive registered user.
+ * 2. CE / Exam Prep access — purchase/enrollment only; never gated by supervision approval.
+ * 3. Supervision application (`cta_approval_status`) — pending / approved / rejected vetting.
+ * 4. Supervision plan (`cta_supervision_status`) — purchased/assigned plan lifecycle.
+ *
+ * Until an Associate's supervision application is Approved (and they have an active plan),
+ * they cannot access supervision-only features:
  * - supervision booking / scheduling
  * - meeting / join links
  * - supervision resources (documents & logs)
+ *
+ * Pending supervision approval must NEVER block CE courses, Exam Prep, or the general dashboard.
  *
  * @package CTA_LMS
  */
@@ -25,13 +33,196 @@ class CTA_Associate_Access {
 	const STATUS_APPROVED = 'approved';
 	const STATUS_REJECTED = 'rejected';
 
+	const ACCOUNT_ACTIVE   = 'active';
+	const ACCOUNT_INACTIVE = 'inactive';
+
+	const META_ACCOUNT_STATUS      = 'cta_account_status';
 	const META_ADMIN_ASSIGNED_PLAN = 'cta_admin_assigned_plan';
 	const META_ADMIN_ASSIGNED_NOTE = 'cta_admin_assigned_plan_note';
 	const META_ADMIN_ASSIGNED_AT   = 'cta_admin_assigned_plan_at';
 	const META_ADMIN_ASSIGNED_BY   = 'cta_admin_assigned_plan_by';
 
 	/**
-	 * Get approval status meta for a user.
+	 * General account status (active/inactive) — independent of supervision vetting.
+	 *
+	 * @param int $user_id User ID.
+	 * @return string active|inactive|''
+	 */
+	public static function get_account_status( $user_id = 0 ) {
+		$user_id = $user_id ? absint( $user_id ) : get_current_user_id();
+
+		if ( ! $user_id ) {
+			return '';
+		}
+
+		$status = (string) get_user_meta( $user_id, self::META_ACCOUNT_STATUS, true );
+
+		if ( '' === $status ) {
+			$user = get_userdata( $user_id );
+			// Legacy accounts without the meta: treat any existing WP user as active.
+			return ( $user && ! empty( $user->ID ) ) ? self::ACCOUNT_ACTIVE : '';
+		}
+
+		return $status;
+	}
+
+	/**
+	 * Whether the general account is active (can use CE / Exam Prep / dashboards).
+	 *
+	 * Supervision application pending/rejected does not deactivate the account.
+	 *
+	 * @param int $user_id User ID.
+	 * @return bool
+	 */
+	public static function is_account_active( $user_id = 0 ) {
+		$user_id = $user_id ? absint( $user_id ) : get_current_user_id();
+
+		if ( ! $user_id ) {
+			return false;
+		}
+
+		$user = get_userdata( $user_id );
+
+		if ( ! $user ) {
+			return false;
+		}
+
+		return self::ACCOUNT_ACTIVE === self::get_account_status( $user_id );
+	}
+
+	/**
+	 * Mark a newly registered (or existing) user as an active general account.
+	 *
+	 * @param int $user_id User ID.
+	 * @return void
+	 */
+	public static function ensure_account_active( $user_id ) {
+		$user_id = absint( $user_id );
+
+		if ( ! $user_id ) {
+			return;
+		}
+
+		$current = (string) get_user_meta( $user_id, self::META_ACCOUNT_STATUS, true );
+
+		if ( self::ACCOUNT_INACTIVE === $current ) {
+			return;
+		}
+
+		update_user_meta( $user_id, self::META_ACCOUNT_STATUS, self::ACCOUNT_ACTIVE );
+	}
+
+	/**
+	 * CE and Exam Prep purchase/access are never gated by supervision approval.
+	 *
+	 * Content still requires a valid purchase/enrollment (handled elsewhere).
+	 *
+	 * @param int $user_id User ID.
+	 * @return bool
+	 */
+	public static function can_access_ce_and_exam_prep( $user_id = 0 ) {
+		$user_id = $user_id ? absint( $user_id ) : get_current_user_id();
+
+		if ( ! $user_id ) {
+			return false;
+		}
+
+		$user = get_userdata( $user_id );
+
+		if ( ! $user ) {
+			return false;
+		}
+
+		if ( in_array( 'administrator', (array) $user->roles, true ) ) {
+			return true;
+		}
+
+		return self::is_account_active( $user_id );
+	}
+
+	/**
+	 * General account dashboard URL (CE / My Courses).
+	 *
+	 * Always the student dashboard — never the supervision portal.
+	 * Pending supervision applications must not change this destination.
+	 *
+	 * @param int $user_id Unused; kept for call-site compatibility.
+	 * @return string
+	 */
+	public static function get_general_dashboard_url( $user_id = 0 ) {
+		unset( $user_id );
+
+		$ce_page_id  = absint( get_option( 'cta_student_dashboard_page_id', 0 ) );
+		$sup_page_id = absint( get_option( 'cta_supervision_dashboard_page_id', 0 ) );
+
+		// Guard against misconfigured identical page IDs (would dump users onto
+		// the supervision pending screen instead of My Courses).
+		if ( $ce_page_id && $sup_page_id && $ce_page_id === $sup_page_id ) {
+			if ( function_exists( 'cta_lms_find_page_id_by_shortcode' ) ) {
+				$found = absint( cta_lms_find_page_id_by_shortcode( 'cta_student_dashboard' ) );
+				if ( $found && $found !== $sup_page_id ) {
+					$ce_page_id = $found;
+				}
+			}
+		}
+
+		if ( $ce_page_id ) {
+			$url = get_permalink( $ce_page_id );
+			if ( $url ) {
+				return $url;
+			}
+		}
+
+		if ( function_exists( 'cta_lms_get_linked_page_url' ) ) {
+			$url = cta_lms_get_linked_page_url( 'cta_student_dashboard_page_id' );
+			if ( $url ) {
+				$sup_url = self::get_supervision_dashboard_url();
+				if ( ! $sup_url || untrailingslashit( $url ) !== untrailingslashit( $sup_url ) ) {
+					return $url;
+				}
+			}
+		}
+
+		return home_url( '/' );
+	}
+
+	/**
+	 * Supervision portal URL (booking / sessions / materials).
+	 *
+	 * @param int $user_id Unused; kept for call-site compatibility.
+	 * @return string
+	 */
+	public static function get_supervision_dashboard_url( $user_id = 0 ) {
+		unset( $user_id );
+
+		if ( function_exists( 'cta_lms_get_linked_page_url' ) ) {
+			$url = cta_lms_get_linked_page_url( 'cta_supervision_dashboard_page_id' );
+			if ( $url ) {
+				return $url;
+			}
+		}
+
+		$sup_page_id = absint( get_option( 'cta_supervision_dashboard_page_id', 0 ) );
+		$sup_url     = $sup_page_id ? get_permalink( $sup_page_id ) : '';
+
+		return $sup_url ? $sup_url : '';
+	}
+
+	/**
+	 * Primary frontend dashboard URL for a user ("My Dashboard").
+	 *
+	 * Always the general CE student dashboard so pending (or active)
+	 * supervision status never hijacks account navigation.
+	 *
+	 * @param int $user_id User ID.
+	 * @return string
+	 */
+	public static function get_primary_dashboard_url( $user_id = 0 ) {
+		return self::get_general_dashboard_url( $user_id );
+	}
+
+	/**
+	 * Get supervision application status meta for a user.
 	 *
 	 * @param int $user_id User ID.
 	 * @return string
@@ -287,6 +478,167 @@ class CTA_Associate_Access {
 	}
 
 	/**
+	 * Whether the user has complete employer/agency application details on file.
+	 *
+	 * @param int $user_id User ID.
+	 * @return bool
+	 */
+	public static function has_agency_application_info( $user_id = 0 ) {
+		$user_id = $user_id ? absint( $user_id ) : get_current_user_id();
+
+		if ( ! $user_id ) {
+			return false;
+		}
+
+		$employer = (string) get_user_meta( $user_id, 'cta_employer_agency_name', true );
+		$rep_name = (string) get_user_meta( $user_id, 'cta_agency_representative_name', true );
+		$rep_email = (string) get_user_meta( $user_id, 'cta_agency_representative_email', true );
+
+		return '' !== $employer && '' !== $rep_name && is_email( $rep_email );
+	}
+
+	/**
+	 * Parse agency fields from a request array (POST).
+	 *
+	 * @param array $source Request source (defaults to $_POST).
+	 * @return array{employer_agency_name:string,agency_representative_name:string,agency_representative_email:string}
+	 */
+	public static function parse_agency_fields_from_request( $source = null ) {
+		if ( null === $source ) {
+			$source = $_POST; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		}
+
+		$source = is_array( $source ) ? $source : array();
+
+		return array(
+			'employer_agency_name'        => sanitize_text_field( wp_unslash( $source['employer_agency_name'] ?? '' ) ),
+			'agency_representative_name'  => sanitize_text_field( wp_unslash( $source['agency_representative_name'] ?? '' ) ),
+			'agency_representative_email' => sanitize_email( wp_unslash( $source['agency_representative_email'] ?? '' ) ),
+		);
+	}
+
+	/**
+	 * Save supervision-application agency details and open the pending vetting status.
+	 *
+	 * @param int   $user_id User ID.
+	 * @param array $fields  employer_agency_name, agency_representative_name, agency_representative_email.
+	 * @param bool  $notify  Whether to send the agency representative email (once).
+	 * @return true|WP_Error
+	 */
+	public static function save_supervision_application_agency( $user_id, $fields, $notify = true ) {
+		$user_id = absint( $user_id );
+		$fields  = is_array( $fields ) ? $fields : array();
+
+		$employer  = sanitize_text_field( $fields['employer_agency_name'] ?? '' );
+		$rep_name  = sanitize_text_field( $fields['agency_representative_name'] ?? '' );
+		$rep_email = sanitize_email( $fields['agency_representative_email'] ?? '' );
+
+		if ( ! $user_id || ! self::is_associate( $user_id ) ) {
+			return new WP_Error( 'invalid_associate', __( 'Invalid Associate account.', 'cta-lms' ) );
+		}
+
+		if ( '' === $employer || '' === $rep_name || '' === $rep_email ) {
+			return new WP_Error(
+				'agency_info_required',
+				__( 'Please provide Employer/Agency Name, Agency Representative Name, and Agency Representative Email to apply for supervision.', 'cta-lms' )
+			);
+		}
+
+		if ( ! is_email( $rep_email ) ) {
+			return new WP_Error(
+				'invalid_agency_email',
+				__( 'Please enter a valid agency representative email.', 'cta-lms' )
+			);
+		}
+
+		update_user_meta( $user_id, 'cta_employer_agency_name', $employer );
+		update_user_meta( $user_id, 'cta_agency_representative_name', $rep_name );
+		update_user_meta( $user_id, 'cta_agency_representative_email', $rep_email );
+
+		$approval = self::get_approval_status( $user_id );
+		if ( '' === $approval || self::STATUS_PENDING === $approval ) {
+			update_user_meta( $user_id, 'cta_approval_status', self::STATUS_PENDING );
+		}
+
+		clean_user_cache( $user_id );
+
+		if ( $notify && class_exists( 'CTA_Emails' ) ) {
+			$already_sent = (string) get_user_meta( $user_id, 'cta_agency_notification_sent_at', true );
+
+			if ( '' === $already_sent ) {
+				$sent = CTA_Emails::send(
+					'agency_representative_approval',
+					$user_id,
+					array(
+						'employer_agency_name'        => $employer,
+						'agency_representative_name'  => $rep_name,
+						'agency_representative_email' => $rep_email,
+					)
+				);
+
+				if ( $sent ) {
+					update_user_meta( $user_id, 'cta_agency_notification_sent_at', current_time( 'mysql' ) );
+				}
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Ensure agency application details exist before a supervision purchase continues.
+	 *
+	 * Prefers POST fields; falls back to saved user meta. Sends JSON error and exits on failure.
+	 *
+	 * @param int $user_id User ID.
+	 * @return true
+	 */
+	public static function require_agency_for_supervision_application( $user_id = 0 ) {
+		$user_id = $user_id ? absint( $user_id ) : get_current_user_id();
+		$posted  = self::parse_agency_fields_from_request();
+
+		$has_posted = (
+			'' !== $posted['employer_agency_name']
+			|| '' !== $posted['agency_representative_name']
+			|| '' !== $posted['agency_representative_email']
+		);
+
+		if ( $has_posted ) {
+			$result = self::save_supervision_application_agency( $user_id, $posted, true );
+
+			if ( is_wp_error( $result ) ) {
+				wp_send_json_error(
+					array(
+						'message' => $result->get_error_message(),
+						'code'    => $result->get_error_code(),
+					)
+				);
+			}
+
+			return true;
+		}
+
+		if ( self::has_agency_application_info( $user_id ) ) {
+			// Ensure pending status is set if they already provided agency info earlier.
+			$approval = self::get_approval_status( $user_id );
+			if ( '' === $approval ) {
+				update_user_meta( $user_id, 'cta_approval_status', self::STATUS_PENDING );
+			}
+			return true;
+		}
+
+		wp_send_json_error(
+			array(
+				'message' => __(
+					'Please provide Employer/Agency Name, Agency Representative Name, and Agency Representative Email to apply for supervision.',
+					'cta-lms'
+				),
+				'code'    => 'agency_info_required',
+			)
+		);
+	}
+
+	/**
 	 * Deny a purchase AJAX request when the user is not a Registered Associate.
 	 *
 	 * @param int $user_id User ID.
@@ -369,9 +721,10 @@ class CTA_Associate_Access {
 	}
 
 	/**
-	 * Whether supervision access is still pending approval.
+	 * Whether the supervision application (vetting) is still pending.
 	 *
-	 * True when account approval or supervision plan status is Pending Approval.
+	 * Independent of general account status and CE/Exam Prep access.
+	 * Also true when a purchased plan is waiting on that same vetting step.
 	 *
 	 * @param int $user_id User ID.
 	 * @return bool
@@ -386,6 +739,10 @@ class CTA_Associate_Access {
 		$user = get_userdata( $user_id );
 
 		if ( $user && in_array( 'administrator', (array) $user->roles, true ) ) {
+			return false;
+		}
+
+		if ( ! self::is_associate( $user_id ) ) {
 			return false;
 		}
 
@@ -466,7 +823,10 @@ class CTA_Associate_Access {
 	 * @return string
 	 */
 	public static function get_pending_message() {
-		return __( 'Your supervision application is under review. You will be notified once approved.', 'cta-lms' );
+		return __(
+			'Your supervision application is under review. You can still purchase and access CE courses and Exam Preparation Programs while you wait. You will be notified once supervision is approved.',
+			'cta-lms'
+		);
 	}
 
 	/**
@@ -867,7 +1227,7 @@ class CTA_Associate_Access {
 				return __( 'Rejected', 'cta-lms' );
 			case self::STATUS_PENDING:
 			default:
-				return __( 'Pending Approval', 'cta-lms' );
+				return __( 'Supervision Application Pending', 'cta-lms' );
 		}
 	}
 }

@@ -24,6 +24,24 @@ if ( ! empty( $view_evaluation ) ) {
 			$responses = $decoded;
 		}
 	}
+
+	$question_labels = array();
+	$course_id_view  = isset( $view_evaluation->course_id ) ? (int) $view_evaluation->course_id : 0;
+	if ( $course_id_view ) {
+		foreach ( CTA_Evaluation_Questions::get_questions( 'all', $course_id_view ) as $q_row ) {
+			$question_labels[ (string) $q_row->question_key ] = (string) $q_row->label;
+		}
+	}
+	foreach ( CTA_Evaluation_Questions::get_camft_template_questions() as $tpl ) {
+		$key = (string) $tpl['id'];
+		if ( empty( $question_labels[ $key ] ) ) {
+			$question_labels[ $key ] = (string) $tpl['label'];
+		}
+		$camft_key = 'camft_' . $key;
+		if ( empty( $question_labels[ $camft_key ] ) ) {
+			$question_labels[ $camft_key ] = (string) $tpl['label'];
+		}
+	}
 	?>
 	<div class="wrap cta-admin-wrap">
 		<h1><?php esc_html_e( 'Evaluation Submission', 'cta-lms' ); ?></h1>
@@ -87,14 +105,24 @@ if ( ! empty( $view_evaluation ) ) {
 				<table class="widefat striped">
 					<thead>
 						<tr>
-							<th><?php esc_html_e( 'Question ID', 'cta-lms' ); ?></th>
+							<th><?php esc_html_e( 'Question', 'cta-lms' ); ?></th>
 							<th><?php esc_html_e( 'Answer', 'cta-lms' ); ?></th>
 						</tr>
 					</thead>
 					<tbody>
 						<?php foreach ( $responses as $qid => $answer ) : ?>
 							<tr>
-								<td><code><?php echo esc_html( (string) $qid ); ?></code></td>
+								<td>
+									<?php
+									$qid_str = (string) $qid;
+									if ( ! empty( $question_labels[ $qid_str ] ) ) {
+										echo esc_html( $question_labels[ $qid_str ] );
+										echo '<br><code>' . esc_html( $qid_str ) . '</code>';
+									} else {
+										echo '<code>' . esc_html( $qid_str ) . '</code>';
+									}
+									?>
+								</td>
 								<td>
 									<?php
 									if ( is_array( $answer ) ) {

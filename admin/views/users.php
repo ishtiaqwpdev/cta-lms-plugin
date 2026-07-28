@@ -68,7 +68,7 @@ $notice                = sanitize_text_field( wp_unslash( $_GET['cta_notice'] ??
 			<option value="past_due" <?php selected( $supervision_filter, 'past_due' ); ?>><?php esc_html_e( 'Past Due', 'cta-lms' ); ?></option>
 			<option value="locked" <?php selected( $supervision_filter, 'locked' ); ?>><?php esc_html_e( 'Locked', 'cta-lms' ); ?></option>
 			<option value="cancelled" <?php selected( $supervision_filter, 'cancelled' ); ?>><?php esc_html_e( 'Cancelled', 'cta-lms' ); ?></option>
-			<option value="pending_approval" <?php selected( $supervision_filter, 'pending_approval' ); ?>><?php esc_html_e( 'Pending Approval', 'cta-lms' ); ?></option>
+			<option value="pending_approval" <?php selected( $supervision_filter, 'pending_approval' ); ?>><?php esc_html_e( 'Supervision Application Pending', 'cta-lms' ); ?></option>
 			<option value="none" <?php selected( $supervision_filter, 'none' ); ?>><?php esc_html_e( 'No supervision status', 'cta-lms' ); ?></option>
 		</select>
 		<input type="search" name="s" value="<?php echo esc_attr( $search ); ?>" placeholder="<?php esc_attr_e( 'Search name or email', 'cta-lms' ); ?>">
@@ -117,7 +117,7 @@ $notice                = sanitize_text_field( wp_unslash( $_GET['cta_notice'] ??
 					$has_stripe_sub = ( '' !== $subscription_id && 0 !== strpos( $subscription_id, 'bypass-' ) );
 					$supervision_label  = $supervision_status
 						? ( 'pending_approval' === $supervision_status
-							? __( 'Pending Approval', 'cta-lms' )
+							? __( 'Supervision Application Pending', 'cta-lms' )
 							: ( 'past_due' === $supervision_status
 								? __( 'Past Due', 'cta-lms' )
 								: ucwords( str_replace( '_', ' ', $supervision_status ) ) ) )
