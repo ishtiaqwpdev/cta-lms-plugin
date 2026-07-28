@@ -590,26 +590,26 @@ body.cta-lms-page .elementor-shortcode {
    Desktop rules are scoped so they do not break portrait mobile.
    -------------------------------------------------------------------------- */
 
-/* Keep dashboard course thumbnails cropped; theme img { height:auto } must not win. */
+/* Dashboard course banners: show full image, no crop/stretch; theme must not force cover. */
 .cta-plugin-wrapper .dashboard-course-card__thumb {
-  height: 160px !important;
-  max-height: 160px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
   overflow: hidden !important;
+  border-radius: var(--radius-md, 8px) !important;
 }
 
 .cta-plugin-wrapper .dashboard-course-card__thumb img {
+  display: block !important;
   width: 100% !important;
-  height: 100% !important;
-  max-width: none !important;
-  object-fit: cover !important;
+  max-width: 100% !important;
+  height: auto !important;
+  object-fit: contain !important;
   object-position: center !important;
-}
-
-@media (max-width: 640px) {
-  .cta-plugin-wrapper .dashboard-course-card__thumb {
-    height: 140px !important;
-    max-height: 140px !important;
-  }
+  background-repeat: no-repeat !important;
 }
 
 body.cta-lms-page:not(.admin-bar) {
