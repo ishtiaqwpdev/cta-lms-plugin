@@ -602,6 +602,7 @@ body.cta-lms-page .elementor-shortcode {
   overflow: hidden !important;
   border-radius: var(--radius-lg, 12px) !important;
   background: var(--color-bg-light, #f3f4f6) !important;
+  flex: 0 0 auto !important;
 }
 
 .cta-plugin-wrapper .dashboard-course-card__thumb img {
@@ -613,6 +614,45 @@ body.cta-lms-page .elementor-shortcode {
   object-fit: contain !important;
   object-position: center center !important;
   background-repeat: no-repeat !important;
+}
+
+/* Student dashboard course grid: 3 / 2 / 1 columns */
+.cta-plugin-wrapper .dashboard-course-list {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 24px !important;
+  align-items: stretch !important;
+  width: 100% !important;
+}
+
+.cta-plugin-wrapper .dashboard-course-list > .cta-empty-state {
+  grid-column: 1 / -1 !important;
+}
+
+.cta-plugin-wrapper .dashboard-course-card {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.cta-plugin-wrapper .dashboard-course-card__actions {
+  margin-top: auto !important;
+}
+
+@media (max-width: 1024px) {
+  .cta-plugin-wrapper .dashboard-course-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .cta-plugin-wrapper .dashboard-course-list {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 16px !important;
+  }
 }
 
 body.cta-lms-page:not(.admin-bar) {

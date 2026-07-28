@@ -3550,13 +3550,25 @@ button.pagination__item:disabled {
 }
 
 .cta-plugin-wrapper .dashboard-course-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-lg);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  align-items: stretch;
+  width: 100%;
+}
+
+.cta-plugin-wrapper .dashboard-course-list > .cta-empty-state {
+  grid-column: 1 / -1;
 }
 
 .cta-plugin-wrapper .dashboard-course-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-width: 0;
+  width: 100%;
   padding: var(--space-lg);
+  box-sizing: border-box;
 }
 
 .cta-plugin-wrapper .dashboard-course-card:hover {
@@ -3569,12 +3581,20 @@ button.pagination__item:disabled {
   justify-content: space-between;
   gap: var(--space-md);
   margin-bottom: var(--space-md);
+  flex: 0 0 auto;
 }
 
 .cta-plugin-wrapper .dashboard-course-card__title {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
   color: var(--color-text-dark);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  line-height: 1.35;
+  word-break: break-word;
 }
 
 .cta-plugin-wrapper .dashboard-course-card__title a {
@@ -3591,6 +3611,12 @@ button.pagination__item:disabled {
   color: var(--color-text-gray);
   margin-top: var(--space-sm);
   margin-bottom: var(--space-md);
+  flex: 0 0 auto;
+}
+
+.cta-plugin-wrapper .dashboard-course-card .progress {
+  flex: 0 0 auto;
+  margin-top: 0;
 }
 
 .cta-plugin-wrapper .dashboard-course-card__actions {
@@ -3599,12 +3625,26 @@ button.pagination__item:disabled {
   justify-content: space-between;
   flex-wrap: wrap;
   gap: var(--space-md);
-  margin-top: var(--space-md);
+  margin-top: auto;
+  padding-top: var(--space-md);
 }
 
 .cta-plugin-wrapper .dashboard-course-card__completed-date {
   font-size: var(--font-size-sm);
   color: var(--color-text-gray);
+}
+
+@media (max-width: 1024px) {
+  .cta-plugin-wrapper .dashboard-course-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 767px) {
+  .cta-plugin-wrapper .dashboard-course-list {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
 }
 
 .cta-plugin-wrapper .btn--download {
@@ -5724,6 +5764,7 @@ button.pagination__item:disabled {
   border-radius: var(--radius-lg, 12px);
   background: var(--color-bg-light, #f3f4f6);
   line-height: 0;
+  flex: 0 0 auto;
 }
 
 .cta-plugin-wrapper .dashboard-course-card__thumb img {
