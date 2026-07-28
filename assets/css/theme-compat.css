@@ -1,0 +1,1141 @@
+/* ==========================================================================
+   CTA LMS — WordPress Theme Compatibility
+
+   Resolves layout, width, color, and alignment conflicts when plugin
+   shortcodes render inside Edukon, Elementor, or other theme containers.
+   Load last after layout.css.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Full-bleed breakout from theme content width
+   -------------------------------------------------------------------------- */
+.cta-plugin-wrapper > .cta-lms,
+.cta-plugin-wrapper.cta-lms,
+.cta-lms {
+  --cta-breakout: calc(50% - 50vw);
+  box-sizing: border-box;
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: var(--cta-breakout);
+  margin-right: var(--cta-breakout);
+  clear: both;
+  position: relative;
+  font-family: var(--font-family-body);
+  color: var(--color-text-dark);
+}
+
+.cta-plugin-wrapper > .cta-lms *,
+.cta-plugin-wrapper.cta-lms *,
+.cta-lms *,
+.cta-plugin-wrapper > .cta-lms *::before,
+.cta-plugin-wrapper.cta-lms *::before,
+.cta-lms *::before,
+.cta-plugin-wrapper > .cta-lms *::after,
+.cta-plugin-wrapper.cta-lms *::after,
+.cta-lms *::after {
+  box-sizing: border-box;
+}
+
+/* --------------------------------------------------------------------------
+   Plugin containers (avoid theme .container conflicts)
+   -------------------------------------------------------------------------- */
+.cta-lms .cta-container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+}
+
+.cta-lms .cta-container--narrow {
+  max-width: 960px;
+}
+
+.cta-lms .cta-container--wide {
+  max-width: 1440px;
+}
+
+/* --------------------------------------------------------------------------
+   Auth page — full viewport split layout
+   -------------------------------------------------------------------------- */
+.cta-lms.cta-login-shortcode.auth-page {
+  min-height: calc(100vh - var(--wp-admin--admin-bar--height, 0px));
+}
+
+.cta-lms.cta-login-shortcode .auth-page__layout {
+  min-height: inherit;
+}
+
+/* Override global.css dark heading/paragraph colors on navy auth panel */
+.cta-plugin-wrapper .auth-page__brand,
+.cta-plugin-wrapper .auth-page__brand h1,
+.cta-plugin-wrapper .auth-page__brand p,
+.cta-plugin-wrapper .auth-page__brand .auth-page__brand-title,
+.cta-plugin-wrapper .auth-page__brand .auth-page__brand-text,
+.cta-lms.cta-login-shortcode.auth-page .auth-page__brand,
+.cta-lms.cta-login-shortcode.auth-page .auth-page__brand h1,
+.cta-lms.cta-login-shortcode.auth-page .auth-page__brand p,
+.cta-lms.cta-login-shortcode.auth-page .auth-page__brand .auth-page__brand-title,
+.cta-lms.cta-login-shortcode.auth-page .auth-page__brand .auth-page__brand-text,
+.cta-lms.auth-page .auth-page__brand,
+.cta-lms.auth-page .auth-page__brand .auth-page__brand-title,
+.cta-lms.auth-page .auth-page__brand .auth-page__logo,
+.cta-lms.auth-page .auth-page__brand .auth-page__logo a {
+  color: #ffffff !important;
+}
+
+.cta-plugin-wrapper .auth-page__logo,
+.cta-lms.cta-login-shortcode.auth-page .auth-page__logo,
+.cta-lms.auth-page .auth-page__logo {
+  align-self: flex-start !important;
+  max-width: 220px !important;
+  margin-bottom: var(--space-xl) !important;
+}
+
+.cta-plugin-wrapper .auth-page__logo img,
+.cta-lms.cta-login-shortcode.auth-page .auth-page__logo img,
+.cta-lms.auth-page .auth-page__logo img {
+  display: block !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: 200px !important;
+  max-height: 52px !important;
+  object-fit: contain !important;
+  object-position: left center !important;
+}
+
+.cta-plugin-wrapper .auth-page__brand .auth-page__brand-title,
+.cta-lms.cta-login-shortcode.auth-page .auth-page__brand .auth-page__brand-title,
+.cta-lms.auth-page .auth-page__brand .auth-page__brand-title {
+  font-size: var(--font-size-4xl) !important;
+  margin-bottom: var(--space-lg) !important;
+}
+
+.cta-plugin-wrapper .auth-page__brand .auth-page__brand-text,
+.cta-lms.cta-login-shortcode.auth-page .auth-page__brand .auth-page__brand-text,
+.cta-lms.auth-page .auth-page__brand .auth-page__brand-text {
+  font-size: var(--font-size-lg) !important;
+  line-height: var(--line-height-relaxed) !important;
+}
+
+.cta-lms.auth-page .auth-page__brand h1,
+.cta-lms.auth-page .auth-page__brand p {
+  margin-bottom: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Page sections — centered content, full-width backgrounds
+   -------------------------------------------------------------------------- */
+.cta-lms .page-hero,
+.cta-lms .section,
+.cta-lms .section--bg {
+  width: 100%;
+}
+
+.cta-lms .page-hero__inner {
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+}
+
+/* --------------------------------------------------------------------------
+   Cards and grids — equal height and alignment
+   -------------------------------------------------------------------------- */
+.cta-lms .grid-2,
+.cta-lms .grid-3,
+.cta-lms .grid-4 {
+  display: grid;
+}
+
+.cta-lms .supervision-services__grid,
+.cta-lms .cta-supervision-plan-grid {
+  align-items: stretch;
+}
+
+.cta-lms .service-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.cta-lms .service-card__features {
+  flex: 1;
+}
+
+.cta-lms .service-card__cta {
+  margin-top: auto;
+}
+
+/* --------------------------------------------------------------------------
+   Typography isolation from theme overrides
+   -------------------------------------------------------------------------- */
+.cta-lms h1,
+.cta-lms h2,
+.cta-lms h3,
+.cta-lms h4,
+.cta-lms h5,
+.cta-lms h6 {
+  font-family: var(--font-family-heading);
+  font-weight: var(--font-weight-heading);
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+.cta-lms .page-hero__title {
+  color: var(--color-navy);
+}
+
+.cta-lms .page-hero__subtitle {
+  color: var(--color-text-gray);
+}
+
+.cta-lms a:not(.btn):not(.site-header__nav-link):not(.site-footer__links a) {
+  color: var(--color-primary);
+}
+
+.cta-lms .btn,
+.cta-lms .btn-primary,
+.cta-lms .btn-outline {
+  font-family: var(--font-family-body);
+  font-weight: var(--font-weight-regular);
+}
+
+/* --------------------------------------------------------------------------
+   Typography — Playfair Display headings, Montserrat body
+   -------------------------------------------------------------------------- */
+.cta-plugin-wrapper .page-hero__title,
+.cta-plugin-wrapper .auth-form__title,
+.cta-plugin-wrapper .auth-page__brand-title,
+.cta-plugin-wrapper .dashboard-welcome__greeting,
+.cta-plugin-wrapper .dashboard-section__title,
+.cta-plugin-wrapper .section__title,
+.cta-plugin-wrapper .service-card__title,
+.cta-plugin-wrapper .card__title,
+.cta-plugin-wrapper .cta-empty-state h1,
+.cta-plugin-wrapper .cta-empty-state h2,
+.cta-plugin-wrapper .cta-empty-state h3,
+.cta-lms .page-hero__title,
+.cta-lms .auth-form__title,
+.cta-lms .auth-page__brand-title,
+.cta-lms .dashboard-welcome__greeting,
+.cta-lms .dashboard-section__title,
+.cta-lms .section__title,
+.cta-lms .service-card__title,
+.cta-lms .card__title {
+  font-family: var(--font-family-heading) !important;
+  font-weight: var(--font-weight-heading) !important;
+}
+
+.cta-plugin-wrapper .form-label,
+.cta-plugin-wrapper .form-input,
+.cta-plugin-wrapper .form-select,
+.cta-plugin-wrapper .form-textarea,
+.cta-plugin-wrapper .btn,
+.cta-plugin-wrapper .badge,
+.cta-plugin-wrapper .dashboard-sidebar__link,
+.cta-plugin-wrapper .dashboard-sidebar__name,
+.cta-plugin-wrapper .site-header__nav-link,
+.cta-plugin-wrapper .site-footer,
+.cta-lms .form-label,
+.cta-lms .form-input,
+.cta-lms .form-select,
+.cta-lms .form-textarea,
+.cta-lms .btn,
+.cta-lms .badge {
+  font-family: var(--font-family-body) !important;
+}
+
+body.cta-lms-page,
+body.cta-lms-page--login,
+body.dashboard-page {
+  font-family: var(--font-family-body);
+}
+.cta-lms.site-header,
+.cta-lms.site-footer {
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: var(--cta-breakout);
+  margin-right: var(--cta-breakout);
+}
+
+/* --------------------------------------------------------------------------
+   Hide duplicate theme page titles on CTA pages
+   -------------------------------------------------------------------------- */
+body.cta-lms-page {
+  /* Prefer visible so sticky header CTAs are not clipped; clip only on small screens below. */
+  overflow-x: visible;
+}
+
+@media (max-width: 767px) {
+  body.cta-lms-page {
+    overflow-x: clip;
+  }
+}
+
+body.cta-lms-page .entry-header,
+body.cta-lms-page .entry-title,
+body.cta-lms-page .page-title,
+body.cta-lms-page .page-header,
+body.cta-lms-page .breadcrumb-area,
+body.cta-lms-page .edukon-breadcrumb-wrap,
+body.cta-lms-page .edukon-page-title-area,
+body.cta-lms-page .elementor-widget-theme-post-title {
+  display: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   Login + dashboard: hide theme / Elementor header & footer chrome
+   -------------------------------------------------------------------------- */
+body.cta-lms-page--no-chrome header:not(.cta-lms):not(.dashboard-sidebar):not(.dashboard-mobile-bar),
+body.cta-lms-page--no-chrome footer:not(.cta-lms):not(.dashboard-sidebar__footer),
+body.cta-lms-page--no-chrome .site-header,
+body.cta-lms-page--no-chrome .site-footer,
+body.cta-lms-page--no-chrome #masthead,
+body.cta-lms-page--no-chrome #colophon,
+body.cta-lms-page--no-chrome .elementor-location-header,
+body.cta-lms-page--no-chrome .elementor-location-footer,
+body.cta-lms-page--no-chrome .elementor-location-popup,
+body.cta-lms-page--no-chrome .edukon-header,
+body.cta-lms-page--no-chrome .edukon-footer,
+body.cta-lms-page--no-chrome .header-area,
+body.cta-lms-page--no-chrome .footer-area,
+body.cta-lms-page--no-chrome .main-header,
+body.cta-lms-page--no-chrome .main-footer,
+body.cta-lms-page--no-chrome .cta-lms.site-header,
+body.cta-lms-page--no-chrome .cta-lms.site-footer {
+  display: none !important;
+}
+
+body.cta-lms-page--no-chrome {
+  background: #fff;
+}
+
+body.cta-lms-page--login .site-content,
+body.cta-lms-page--login .content-area,
+body.cta-lms-page--login .entry-content,
+body.cta-lms-page--login .site-main,
+body.cta-lms-page--login #content,
+body.dashboard-page .site-content,
+body.dashboard-page .content-area,
+body.dashboard-page .entry-content,
+body.dashboard-page .site-main,
+body.dashboard-page #content {
+  margin: 0 !important;
+  padding: 0 !important;
+  max-width: none !important;
+  width: 100% !important;
+}
+
+body.cta-lms-page .site-content,
+body.cta-lms-page .content-area,
+body.cta-lms-page .entry-content,
+body.cta-lms-page .elementor-widget-theme-post-content,
+body.cta-lms-page .elementor-section-wrap > .elementor-section:first-child .elementor-widget-wrap {
+  padding-top: 0;
+  padding-bottom: 0;
+  max-width: none;
+  width: 100%;
+}
+
+body.cta-lms-page .container:not(.cta-container),
+body.cta-lms-page .elementor-container {
+  max-width: none;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+@media (max-width: 768px) {
+  .cta-lms .cta-container {
+    padding-inline: var(--space-md);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Hello Elementor theme fixes
+   -------------------------------------------------------------------------- */
+body.cta-lms-page .site-main,
+body.cta-lms-page .page-content,
+body.cta-lms-page .elementor-section.elementor-section-boxed > .elementor-container {
+  max-width: none !important;
+  width: 100% !important;
+}
+
+body.cta-lms-page .elementor-widget-shortcode,
+body.cta-lms-page .elementor-widget-text-editor,
+body.cta-lms-page .elementor-shortcode {
+  width: 100%;
+}
+
+.cta-lms .course-detail__main,
+.cta-lms .course-hero__summary,
+.cta-lms .accordion-item__content,
+.cta-lms .cta-course-card__excerpt,
+.cta-lms .text-body,
+.cta-lms p {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.cta-lms .cta-courses-grid {
+  width: 100%;
+  display: grid !important;
+}
+
+.cta-lms .dashboard-layout {
+  width: 100%;
+  max-width: none;
+}
+
+.cta-lms .dashboard-sidebar__link,
+.cta-lms .dashboard-sidebar__link--active,
+.cta-lms .dashboard-sidebar__link:hover {
+  color: var(--color-white) !important;
+  text-decoration: none !important;
+}
+
+.cta-lms .dashboard-sidebar__link--active {
+  background-color: var(--color-primary) !important;
+}
+
+.cta-lms .dashboard-sidebar__name,
+.cta-lms .dashboard-sidebar__license {
+  color: var(--color-white) !important;
+}
+
+.cta-lms .course-detail__layout,
+.cta-lms .course-hero__layout {
+  width: 100%;
+}
+
+.cta-lms .course-sidebar__card {
+  position: sticky;
+  top: calc(var(--header-height, 80px) + 16px);
+}
+
+.cta-plugin-wrapper.cta-lms.cta-single-course .course-sidebar__card,
+.cta-lms.cta-single-course .course-sidebar__card {
+  padding: var(--space-xl);
+}
+
+.cta-lms.cta-single-course .course-sidebar__card .course-sidebar__price {
+  padding: 0;
+  margin-bottom: var(--space-lg);
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-extrabold);
+  color: var(--color-navy);
+}
+
+.cta-lms.cta-single-course .course-sidebar__meta {
+  padding: 0 0 var(--space-lg);
+  margin-bottom: var(--space-lg);
+}
+
+.cta-lms.cta-single-course .course-sidebar__enroll {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 100% !important;
+  margin: 0 !important;
+  min-height: 48px;
+  padding: var(--space-md) var(--space-lg) !important;
+  font-size: var(--font-size-sm) !important;
+  font-weight: var(--font-weight-bold) !important;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none !important;
+  border-radius: var(--radius-md) !important;
+  border: 2px solid var(--color-primary) !important;
+  background-color: var(--color-primary) !important;
+  color: var(--color-white) !important;
+  box-shadow: var(--shadow-soft);
+  cursor: pointer;
+}
+
+.cta-lms.cta-single-course .course-sidebar__enroll:hover {
+  background-color: var(--color-primary-dark) !important;
+  border-color: var(--color-primary-dark) !important;
+  color: var(--color-white) !important;
+}
+
+.cta-lms.cta-single-course .course-sidebar__enroll:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+/* Course catalog — stay inside theme content, no 100vw breakout */
+.cta-lms.cta-course-catalog,
+.cta-lms.cta-single-course,
+.cta-lms.dashboard-layout,
+.cta-lms.cta-student-dashboard,
+.cta-lms.cta-course-player,
+.cta-lms.cta-supervision-dashboard,
+.cta-lms.cta-quiz-page,
+.cta-lms.cta-supervision-booking {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.cta-lms .cta-catalog-inner {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+  box-sizing: border-box;
+}
+
+.cta-lms.cta-course-catalog .cta-filter-bar {
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
+  padding-inline: var(--space-lg);
+  box-sizing: border-box;
+}
+
+.cta-lms.cta-course-catalog .cta-filter-bar__row {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.cta-lms.cta-course-catalog .cta-filter-bar__search,
+.cta-lms.cta-course-catalog .cta-filter-bar__sort,
+.cta-lms.cta-course-catalog .form-input,
+.cta-lms.cta-course-catalog .form-select {
+  width: auto;
+  max-width: none;
+  margin: 0;
+  height: 42px;
+  min-height: 42px;
+}
+
+.cta-lms.cta-course-catalog .cta-courses-grid {
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
+}
+
+.cta-lms.cta-course-catalog .cta-course-card,
+.cta-lms.cta-course-catalog .course-card--catalog {
+  max-width: 100%;
+  overflow: visible;
+}
+
+.cta-lms.cta-course-catalog .course-card--catalog .course-card__media {
+  overflow: visible;
+  margin-bottom: var(--space-lg);
+  aspect-ratio: 370 / 250;
+}
+
+.cta-lms.cta-course-catalog .course-card--catalog .course-card__media img {
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.cta-lms.cta-course-catalog .course-card--catalog .course-card__price,
+.cta-lms.cta-course-catalog .course-card--catalog .cta-course-card__price {
+  position: absolute !important;
+  right: var(--space-md) !important;
+  bottom: 0 !important;
+  transform: translateY(50%) !important;
+  min-width: 56px !important;
+  height: 56px !important;
+  padding: 0 8px !important;
+  border-radius: var(--radius-full) !important;
+  background-color: var(--color-primary) !important;
+  color: var(--color-white) !important;
+  box-shadow: var(--shadow-medium) !important;
+}
+
+.cta-lms.cta-course-catalog .course-card__tag,
+.cta-lms.cta-course-catalog .cta-course-card__category {
+  color: var(--color-success) !important;
+  background-color: var(--color-success-light) !important;
+}
+
+.cta-lms.cta-course-catalog .course-card__tag-dot {
+  background-color: var(--color-success) !important;
+}
+
+.cta-lms.cta-course-catalog .course-card__title,
+.cta-lms.cta-course-catalog .cta-course-card__title,
+.cta-lms.cta-course-catalog .cta-course-card__title a {
+  color: var(--color-navy) !important;
+}
+
+.cta-lms.cta-course-catalog .cta-course-card__title a:hover {
+  color: var(--color-primary) !important;
+}
+
+.cta-lms.cta-course-catalog .cta-course-card__footer .course-card__link {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  min-height: 0 !important;
+  box-shadow: none !important;
+}
+
+@media (max-width: 768px) {
+  .cta-lms.cta-course-catalog .cta-filter-bar__row {
+    flex-wrap: wrap;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Hello Elementor — layout overrides (dashboard, booking, course player)
+   Desktop rules are scoped so they do not break portrait mobile.
+   -------------------------------------------------------------------------- */
+body.cta-lms-page:not(.admin-bar) {
+  margin-top: 0 !important;
+}
+
+@media screen and (max-width: 782px) {
+  body.cta-lms-page:not(.admin-bar) {
+    margin-top: 0 !important;
+  }
+}
+
+@media (min-width: 993px) {
+  .cta-plugin-wrapper .dashboard-layout,
+  .cta-plugin-wrapper > .cta-lms.dashboard-layout {
+    display: grid !important;
+    grid-template-columns: 260px minmax(0, 1fr) !important;
+    min-height: 100vh;
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  .cta-plugin-wrapper .dashboard-sidebar {
+    display: flex !important;
+    flex-direction: column !important;
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    width: 100% !important;
+    max-width: 260px !important;
+    min-height: 100vh !important;
+    background-color: var(--color-navy) !important;
+    color: var(--color-white) !important;
+    position: relative !important;
+    float: none !important;
+  }
+
+  .cta-plugin-wrapper .dashboard-main {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    float: none !important;
+  }
+
+  /* Pending / locked / no-plan: no sidebar — use full width (do not leave 260px gap). */
+  .cta-plugin-wrapper .dashboard-layout:not(:has(.dashboard-sidebar)),
+  .cta-plugin-wrapper > .cta-lms.dashboard-layout:not(:has(.dashboard-sidebar)) {
+    grid-template-columns: 1fr !important;
+  }
+
+  .cta-plugin-wrapper .dashboard-main--full {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    max-width: 960px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .cta-plugin-wrapper .course-player-layout {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 320px !important;
+    gap: var(--space-xl) !important;
+    align-items: start !important;
+    width: 100% !important;
+  }
+
+  .cta-plugin-wrapper .course-player__sidebar {
+    position: sticky !important;
+    top: calc(var(--header-height, 80px) + 16px) !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .cta-plugin-wrapper .cta-supervision-booking__layout {
+    display: grid !important;
+    grid-template-columns: minmax(300px, 380px) minmax(0, 1fr) !important;
+    gap: var(--space-2xl) !important;
+    align-items: start !important;
+    width: 100% !important;
+  }
+
+  .cta-plugin-wrapper .cta-booking-calendar {
+    grid-column: 1 !important;
+  }
+
+  .cta-plugin-wrapper .cta-session-list,
+  .cta-plugin-wrapper #cta-supervision-sessions {
+    grid-column: 2 !important;
+  }
+}
+
+.cta-plugin-wrapper .cta-booking-calendar {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  position: relative !important;
+  float: none !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+
+.cta-plugin-wrapper .booking-calendar__weekdays,
+.cta-plugin-wrapper .booking-calendar__days {
+  display: grid !important;
+  grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+  width: 100% !important;
+}
+
+.cta-plugin-wrapper .booking-calendar__day,
+.cta-plugin-wrapper .booking-calendar .cta-calendar-day {
+  min-width: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.cta-plugin-wrapper .cta-session-list,
+.cta-plugin-wrapper #cta-supervision-sessions {
+  width: 100% !important;
+  min-width: 0 !important;
+  position: relative !important;
+  float: none !important;
+}
+
+.cta-plugin-wrapper .session-card,
+.cta-plugin-wrapper .cta-session-card {
+  position: relative !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  float: none !important;
+  clear: both !important;
+}
+
+.cta-plugin-wrapper .btn,
+.cta-plugin-wrapper .btn-primary,
+.cta-plugin-wrapper .btn-outline,
+.cta-plugin-wrapper .btn-dark {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.cta-plugin-wrapper .btn-primary {
+  background-color: var(--color-primary) !important;
+  color: var(--color-white) !important;
+  border: 2px solid var(--color-primary) !important;
+}
+
+.cta-plugin-wrapper .btn-primary:hover,
+.cta-plugin-wrapper .btn-primary:focus-visible {
+  background-color: var(--color-primary-dark) !important;
+  color: #ffffff !important;
+  border-color: var(--color-primary-dark) !important;
+}
+
+.cta-plugin-wrapper .auth-form .btn-outline {
+  background-color: transparent !important;
+  color: var(--color-primary) !important;
+  border: 2px solid var(--color-primary) !important;
+}
+
+.cta-plugin-wrapper .auth-form .btn-outline:hover,
+.cta-plugin-wrapper .auth-form .btn-outline:focus-visible {
+  background-color: var(--color-primary) !important;
+  color: #ffffff !important;
+  border-color: var(--color-primary) !important;
+}
+
+.cta-plugin-wrapper .cta-icon--inline {
+  display: inline-block;
+  vertical-align: -0.15em;
+  margin-right: 0.35em;
+}
+
+.cta-plugin-wrapper .cta-module-list__icon {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  min-width: 1.25rem;
+}
+
+/* Single course module list — keep video tag visible on row hover (Elementor/theme overrides) */
+.cta-lms.cta-single-course .course-module-list__video-tag,
+.cta-lms.cta-single-course .course-module-list__video-tag svg {
+  color: var(--color-primary) !important;
+  fill: currentColor !important;
+  stroke: currentColor !important;
+}
+
+.cta-lms.cta-single-course .course-module-list__item--locked .course-module-list__video-tag,
+.cta-lms.cta-single-course .course-module-list__item--locked .course-module-list__video-tag svg {
+  color: var(--color-text-muted) !important;
+}
+
+.cta-lms.cta-single-course .course-module-list__header:hover .course-module-list__video-tag,
+.cta-lms.cta-single-course .course-module-list__header:hover .course-module-list__video-tag svg,
+.cta-lms.cta-single-course .course-module-list__item:hover .course-module-list__video-tag,
+.cta-lms.cta-single-course .course-module-list__item:hover .course-module-list__video-tag svg {
+  color: var(--color-primary) !important;
+}
+
+.cta-lms.cta-single-course .course-module-list__item--locked:hover .course-module-list__video-tag,
+.cta-lms.cta-single-course .course-module-list__item--locked:hover .course-module-list__video-tag svg,
+.cta-lms.cta-single-course .course-module-list__item--locked .course-module-list__header:hover .course-module-list__video-tag,
+.cta-lms.cta-single-course .course-module-list__item--locked .course-module-list__header:hover .course-module-list__video-tag svg {
+  color: var(--color-text-muted) !important;
+}
+
+@media (max-width: 992px) {
+  /* Block layout avoids fixed sidebar competing for grid/flex track space. */
+  .cta-plugin-wrapper .dashboard-layout,
+  .cta-plugin-wrapper > .cta-lms.dashboard-layout,
+  .cta-lms.dashboard-layout {
+    display: block !important;
+    grid-template-columns: none !important;
+    grid-template-rows: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 0 !important;
+    overflow-x: clip !important;
+  }
+
+  .cta-plugin-wrapper .dashboard-mobile-bar {
+    display: flex !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 40 !important;
+  }
+
+  .cta-plugin-wrapper .dashboard-sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    grid-column: auto !important;
+    grid-row: auto !important;
+    width: min(300px, 88vw) !important;
+    max-width: min(300px, 88vw) !important;
+    min-height: 0 !important;
+    height: 100% !important;
+    z-index: 50 !important;
+    float: none !important;
+    transform: translateX(-105%) !important;
+    transition: transform 0.25s ease !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    /* Keep navy chrome even when desktop theme-compat rules are scoped away. */
+    display: flex !important;
+    flex-direction: column !important;
+    background-color: var(--color-navy) !important;
+    color: var(--color-white) !important;
+  }
+
+  .cta-plugin-wrapper .dashboard-layout--menu-open .dashboard-sidebar {
+    transform: translateX(0) !important;
+  }
+
+  .cta-plugin-wrapper .dashboard-layout--menu-open::before {
+    content: "" !important;
+    position: fixed !important;
+    inset: 0 !important;
+    background: rgba(15, 23, 42, 0.45) !important;
+    z-index: 45 !important;
+  }
+
+  .cta-plugin-wrapper .dashboard-main {
+    display: block !important;
+    grid-column: auto !important;
+    grid-row: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    padding: var(--space-lg) var(--space-md) !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+    float: none !important;
+  }
+
+  .cta-plugin-wrapper .course-player-layout,
+  .cta-plugin-wrapper .cta-supervision-booking__layout {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: var(--space-lg) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .cta-plugin-wrapper .course-player__sidebar,
+  .cta-plugin-wrapper .cta-booking-calendar,
+  .cta-plugin-wrapper .cta-session-list,
+  .cta-plugin-wrapper #cta-supervision-sessions {
+    position: static !important;
+    top: auto !important;
+    grid-column: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .cta-plugin-wrapper .course-player__iframe,
+  .cta-plugin-wrapper .course-player__html5-video,
+  .cta-plugin-wrapper .course-player__video,
+  .cta-plugin-wrapper .course-player__video iframe,
+  .cta-plugin-wrapper .course-player__video video {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  .cta-plugin-wrapper .course-player__iframe {
+    aspect-ratio: 16 / 9 !important;
+    min-height: 0 !important;
+  }
+
+  .cta-plugin-wrapper .course-player__nav-links {
+    flex-direction: column !important;
+  }
+
+  .cta-plugin-wrapper .course-player__nav-links .btn,
+  .cta-plugin-wrapper .course-player__lesson-actions .btn,
+  .cta-plugin-wrapper .dashboard-course-card__actions .btn,
+  .cta-plugin-wrapper .subscription-card__actions .btn,
+  .cta-plugin-wrapper .session-card__actions .btn {
+    width: 100% !important;
+    max-width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .cta-plugin-wrapper .session-table-wrap,
+  .cta-plugin-wrapper .comparison-table-wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .cta-plugin-wrapper .cta-quiz-page,
+  .cta-lms.cta-quiz-page {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: var(--space-lg) var(--space-md) !important;
+    box-sizing: border-box !important;
+  }
+
+  .cta-plugin-wrapper .cta-quiz-info-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .cta-plugin-wrapper .cta-quiz-header {
+    padding-right: 0 !important;
+  }
+
+  .cta-plugin-wrapper .cta-quiz-timer {
+    position: static !important;
+    display: inline-flex !important;
+    margin-top: var(--space-sm) !important;
+  }
+
+  .cta-plugin-wrapper .cta-quiz-start-card,
+  .cta-plugin-wrapper .cta-quiz-evaluation,
+  .cta-plugin-wrapper .cta-quiz-certificate-ready,
+  .cta-plugin-wrapper .cta-certificate-card,
+  .cta-plugin-wrapper .course-quiz-modal__dialog {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .cta-plugin-wrapper .course-quiz-modal {
+    padding: var(--space-md) !important;
+    align-items: flex-start !important;
+  }
+
+  .cta-plugin-wrapper .cta-supervision-plan-grid,
+  .cta-plugin-wrapper .grid-2,
+  .cta-plugin-wrapper .dashboard-settings .form-row,
+  .cta-plugin-wrapper .dashboard-settings .grid-2 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .cta-plugin-wrapper .dashboard-main {
+    padding: var(--space-md) var(--space-sm) !important;
+  }
+
+  .cta-plugin-wrapper .dashboard-sidebar {
+    width: min(100vw - 48px, 300px) !important;
+    max-width: min(100vw - 48px, 300px) !important;
+  }
+
+  .cta-plugin-wrapper .dashboard-welcome__greeting,
+  .cta-plugin-wrapper .course-player__lesson-title {
+    font-size: var(--font-size-lg) !important;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .cta-plugin-wrapper .course-player__video--placeholder {
+    min-height: 180px !important;
+  }
+
+  .cta-plugin-wrapper .cta-quiz-question,
+  .cta-plugin-wrapper .cta-quiz-start-card,
+  .cta-plugin-wrapper .cta-quiz-evaluation,
+  .cta-plugin-wrapper .cta-quiz-certificate-ready {
+    padding: var(--space-md) !important;
+  }
+}
+
+/* Portrait mobile: never allow app shells to force landscape via overflow */
+@media (max-width: 767px) {
+  body.cta-lms-page--no-chrome,
+  body.dashboard-page,
+  body.cta-lms-page--no-chrome .site-content,
+  body.cta-lms-page--no-chrome .content-area,
+  body.cta-lms-page--no-chrome .entry-content,
+  body.cta-lms-page--no-chrome .site-main,
+  body.dashboard-page .site-content,
+  body.dashboard-page .content-area,
+  body.dashboard-page .entry-content,
+  body.dashboard-page .site-main {
+    overflow-x: clip !important;
+    max-width: 100vw !important;
+  }
+
+  .cta-plugin-wrapper,
+  .cta-plugin-wrapper > .cta-lms,
+  .cta-lms.dashboard-layout {
+    overflow-x: clip !important;
+  }
+
+  .cta-plugin-wrapper img,
+  .cta-plugin-wrapper iframe,
+  .cta-plugin-wrapper video,
+  .cta-plugin-wrapper table {
+    max-width: 100% !important;
+  }
+
+  .cta-plugin-wrapper .dashboard-course-card__header,
+  .cta-plugin-wrapper .dashboard-course-card__actions,
+  .cta-plugin-wrapper .subscription-card,
+  .cta-plugin-wrapper .subscription-card__actions,
+  .cta-plugin-wrapper .session-card__meta,
+  .cta-plugin-wrapper .course-player__quiz-ref-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Elementor / theme header — keep nav on one line; stop right CTA clipping
+   -------------------------------------------------------------------------- */
+body.cta-lms-page,
+body:not(.cta-lms-page--no-chrome) {
+  overflow-x: visible;
+}
+
+.elementor-location-header,
+.elementor-location-header .e-con,
+.elementor-location-header .e-con-inner,
+.elementor-location-header .elementor-container,
+.elementor-location-header .elementor-widget-wrap {
+  overflow: visible !important;
+}
+
+.elementor-location-header .e-con.e-parent,
+.elementor-location-header .e-con-boxed {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  padding-inline: clamp(16px, 2.5vw, 32px) !important;
+}
+
+.elementor-location-header .e-con-inner {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: min(1300px, 100%) !important;
+  margin-inline: auto;
+  padding-inline: 0;
+}
+
+.elementor-location-header .elementor-nav-menu--main .elementor-nav-menu,
+.elementor-location-header .elementor-nav-menu {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: center;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.elementor-location-header .elementor-nav-menu > li {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.elementor-location-header .elementor-nav-menu .elementor-item,
+.elementor-location-header .elementor-nav-menu a {
+  white-space: nowrap !important;
+}
+
+/* Fallback hide if a quiz page remains in a cached Elementor menu. */
+.elementor-location-header .elementor-nav-menu > li.menu-item:has(> a[href*="/course-quiz"]),
+.elementor-location-header .elementor-nav-menu > li.menu-item:has(> a[href*="/quiz/"]) {
+  display: none !important;
+}
+
+.elementor-location-header .elementor-widget-button,
+.elementor-location-header .elementor-button-wrapper {
+  flex: 0 0 auto !important;
+  flex-shrink: 0 !important;
+  max-width: none !important;
+  overflow: visible !important;
+}
+
+.elementor-location-header .elementor-button-link,
+.elementor-location-header .elementor-button {
+  white-space: nowrap !important;
+  overflow: visible !important;
+  max-width: none !important;
+}
+
+@media (min-width: 1025px) {
+  .elementor-location-header .e-con.e-parent.e-flex,
+  .elementor-location-header .e-con-boxed.e-flex,
+  .elementor-location-header .elementor-container {
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    gap: 0.75rem;
+  }
+
+  .elementor-location-header .elementor-widget-nav-menu {
+    min-width: 0;
+    flex: 1 1 auto;
+    overflow: visible !important;
+  }
+
+  .elementor-location-header .elementor-nav-menu .elementor-item {
+    padding-inline: 0.65rem !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .elementor-location-header .elementor-nav-menu--main .elementor-nav-menu {
+    flex-wrap: wrap !important;
+    white-space: normal;
+  }
+}

@@ -1,0 +1,301 @@
+<?php
+/**
+ * Course quiz page template.
+ *
+ * @package CTA_LMS
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+$cert_print_url    = ( $certificate && class_exists( 'CTA_Certificates' ) )
+	? CTA_Certificates::get_print_url( (int) $certificate->id, true )
+	: '';
+$cert_download_url = ( $certificate && class_exists( 'CTA_Certificates' ) )
+	? CTA_Certificates::get_download_url( (int) $certificate->id )
+	: '';
+$cert_url          = $cert_print_url;
+$is_exam_prep      = ! empty( $is_exam_prep );
+if ( empty( $evaluation_questions ) || ! is_array( $evaluation_questions ) ) {
+	$evaluation_questions = CTA_Quiz::get_evaluation_questions();
+}
+?>
+<div class="cta-plugin-wrapper">
+<div
+	class="cta-lms cta-quiz-page"
+	id="cta-quiz-app"
+	data-course-id="<?php echo esc_attr( $course->id ); ?>"
+	data-quiz-id="<?php echo esc_attr( $quiz->id ); ?>"
+	data-attempt-id="<?php echo esc_attr( $active_attempt ? $active_attempt->id : 0 ); ?>"
+	data-time-limit="0"
+	data-passing-score="<?php echo esc_attr( (int) $quiz->passing_score ?: 70 ); ?>"
+	data-question-count="<?php echo esc_attr( $question_count ); ?>"
+	data-view-state="<?php echo esc_attr( $view_state ); ?>"
+	data-exam-prep="<?php echo ! empty( $is_exam_prep ) ? '1' : '0'; ?>"
+	<?php if ( ! empty( $dashboard_url ) ) : ?>
+		data-dashboard-url="<?php echo esc_url( $dashboard_url ); ?>"
+	<?php endif; ?>
+>
+	<div class="cta-quiz-header">
+		<p class="course-player__back">
+			<?php if ( $player_url ) : ?>
+				<a href="<?php echo esc_url( $player_url ); ?>">&larr; <?php echo esc_html__( 'Back to Course', 'cta-lms' ); ?></a>
+			<?php endif; ?>
+		</p>
+		<h1 class="cta-quiz-course-title"><?php echo esc_html( $course->title ); ?></h1>
+		<div class="cta-quiz-timer" id="cta-quiz-timer" hidden aria-hidden="true"></div>
+	</div>
+
+	<div class="cta-quiz-panel <?php echo 'start' === $view_state ? 'cta-quiz-panel--active' : ''; ?>" data-quiz-panel="start" <?php echo 'start' !== $view_state ? 'hidden' : ''; ?>>
+		<div class="card cta-quiz-start-card">
+			<h2><?php echo esc_html( $quiz->title ); ?></h2>
+			<div class="cta-quiz-info-grid">
+				<div><strong><?php echo esc_html__( 'Questions', 'cta-lms' ); ?></strong><span><?php echo esc_html( (string) $question_count ); ?></span></div>
+				<div><strong><?php echo esc_html__( 'Passing Score', 'cta-lms' ); ?></strong><span><?php echo esc_html( (int) $quiz->passing_score ?: 70 ); ?>%</span></div>
+				<div><strong><?php echo esc_html__( 'Time Limit', 'cta-lms' ); ?></strong><span><?php echo esc_html( $time_limit_label ); ?></span></div>
+				<div><strong><?php echo esc_html__( 'Attempts', 'cta-lms' ); ?></strong><span><?php echo esc_html( $attempts_label ); ?></span></div>
+			</div>
+			<?php if ( $attempt_count > 0 ) : ?>
+				<p class="cta-quiz-last-attempt">
+					<?php
+					printf(
+						/* translators: %d: number of previous attempts */
+						esc_html__( 'Previous attempts: %d', 'cta-lms' ),
+						(int) $attempt_count
+					);
+					?>
+				</p>
+			<?php endif; ?>
+			<?php if ( $last_attempt ) : ?>
+				<p class="cta-quiz-last-attempt">
+					<?php
+					$result_label = (int) $last_attempt->passed
+						? esc_html__( 'Passed', 'cta-lms' )
+						: esc_html__( 'Failed', 'cta-lms' );
+					printf(
+						/* translators: 1: score, 2: result */
+						esc_html__( 'Last attempt: %1$d%% — %2$s', 'cta-lms' ),
+						(int) $last_attempt->score,
+						$result_label
+					);
+					?>
+				</p>
+			<?php endif; ?>
+			<button type="button" class="btn btn-primary btn--lg" id="cta-start-quiz"><?php echo esc_html__( 'Start Quiz', 'cta-lms' ); ?></button>
+		</div>
+	</div>
+
+	<div class="cta-quiz-panel <?php echo 'in_progress' === $view_state ? 'cta-quiz-panel--active' : ''; ?>" data-quiz-panel="questions" <?php echo 'in_progress' !== $view_state ? 'hidden' : ''; ?>>
+		<p class="cta-quiz-progress" id="cta-quiz-progress"><?php echo esc_html__( 'Questions answered: 0 of 0', 'cta-lms' ); ?></p>
+		<form id="cta-quiz-form" class="cta-quiz-form">
+			<div id="cta-quiz-questions">
+				<?php
+				if ( 'in_progress' === $view_state && $active_attempt ) {
+					echo $quiz_handler->render_quiz_questions( $quiz, $active_attempt, $questions ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				}
+				?>
+			</div>
+			<div class="cta-quiz-submit-section">
+				<p class="cta-quiz-submit-warning"><?php echo esc_html__( 'Are you sure? You cannot change answers after submitting.', 'cta-lms' ); ?></p>
+				<button type="button" class="btn btn-primary" id="cta-submit-quiz" disabled><?php echo esc_html__( 'Submit Quiz', 'cta-lms' ); ?></button>
+			</div>
+		</form>
+	</div>
+
+	<div class="cta-quiz-panel" data-quiz-panel="result" hidden>
+		<div class="cta-quiz-result" id="cta-quiz-result"></div>
+	</div>
+
+	<div class="cta-quiz-panel <?php echo 'evaluation' === $view_state ? 'cta-quiz-panel--active' : ''; ?>" data-quiz-panel="evaluation" <?php echo 'evaluation' !== $view_state ? 'hidden' : ''; ?>>
+		<?php if ( empty( $is_exam_prep ) ) : ?>
+		<div class="card cta-quiz-evaluation">
+			<h2><?php echo esc_html__( 'Course Evaluation', 'cta-lms' ); ?></h2>
+			<p><?php echo esc_html__( 'Please complete this course-specific evaluation. After submission you will complete a short attestation before your certificate is issued.', 'cta-lms' ); ?></p>
+			<form id="cta-evaluation-form" class="cta-evaluation-form" novalidate>
+				<?php
+				$current_section = '';
+				foreach ( $evaluation_questions as $question ) :
+					$q_type = isset( $question['type'] ) ? $question['type'] : 'rating';
+					if ( 'textarea' === $q_type ) {
+						$q_type = 'paragraph';
+					}
+					if ( 'multiple_choice' === $q_type || 'yes_no' === $q_type ) {
+						$q_type = 'radio';
+					}
+					if ( $question['section'] !== $current_section ) :
+						$current_section = $question['section'];
+						?>
+						<h3 class="cta-evaluation-section__title"><?php echo esc_html( $current_section ); ?></h3>
+					<?php endif; ?>
+
+					<div class="form-group cta-evaluation-question" data-question-id="<?php echo esc_attr( $question['id'] ); ?>" data-question-type="<?php echo esc_attr( $q_type ); ?>">
+						<?php if ( in_array( $q_type, array( 'paragraph', 'short_text' ), true ) ) : ?>
+							<label class="form-label" for="eval-<?php echo esc_attr( $question['id'] ); ?>">
+								<?php echo esc_html( $question['label'] ); ?>
+								<?php if ( ! empty( $question['required'] ) ) : ?>
+									<span class="cta-required" aria-hidden="true">*</span>
+								<?php endif; ?>
+							</label>
+							<?php if ( 'short_text' === $q_type ) : ?>
+								<input
+									type="text"
+									id="eval-<?php echo esc_attr( $question['id'] ); ?>"
+									name="responses[<?php echo esc_attr( $question['id'] ); ?>]"
+									class="form-input"
+									<?php echo ! empty( $question['required'] ) ? 'required' : ''; ?>
+								>
+							<?php else : ?>
+								<textarea
+									id="eval-<?php echo esc_attr( $question['id'] ); ?>"
+									name="responses[<?php echo esc_attr( $question['id'] ); ?>]"
+									class="form-input"
+									rows="4"
+									<?php echo ! empty( $question['required'] ) ? 'required' : ''; ?>
+								></textarea>
+							<?php endif; ?>
+						<?php elseif ( 'dropdown' === $q_type ) : ?>
+							<label class="form-label" for="eval-<?php echo esc_attr( $question['id'] ); ?>">
+								<?php echo esc_html( $question['label'] ); ?>
+								<?php if ( ! empty( $question['required'] ) ) : ?>
+									<span class="cta-required" aria-hidden="true">*</span>
+								<?php endif; ?>
+							</label>
+							<select
+								id="eval-<?php echo esc_attr( $question['id'] ); ?>"
+								name="responses[<?php echo esc_attr( $question['id'] ); ?>]"
+								class="form-select"
+								<?php echo ! empty( $question['required'] ) ? 'required' : ''; ?>
+							>
+								<option value=""><?php echo esc_html__( 'Select an option', 'cta-lms' ); ?></option>
+								<?php
+								$options = ! empty( $question['options'] ) && is_array( $question['options'] ) ? $question['options'] : array();
+								foreach ( $options as $value => $option_label ) :
+									?>
+									<option value="<?php echo esc_attr( (string) $value ); ?>"><?php echo esc_html( $option_label ); ?></option>
+								<?php endforeach; ?>
+							</select>
+						<?php elseif ( 'checkbox' === $q_type ) : ?>
+							<span class="form-label" id="eval-label-<?php echo esc_attr( $question['id'] ); ?>">
+								<?php echo esc_html( $question['label'] ); ?>
+								<?php if ( ! empty( $question['required'] ) ) : ?>
+									<span class="cta-required" aria-hidden="true">*</span>
+								<?php endif; ?>
+							</span>
+							<div class="cta-evaluation-options" role="group" aria-labelledby="eval-label-<?php echo esc_attr( $question['id'] ); ?>">
+								<?php
+								$options = ! empty( $question['options'] ) && is_array( $question['options'] ) ? $question['options'] : array();
+								foreach ( $options as $value => $option_label ) :
+									?>
+									<label class="cta-evaluation-option">
+										<input
+											type="checkbox"
+											name="responses[<?php echo esc_attr( $question['id'] ); ?>][]"
+											value="<?php echo esc_attr( (string) $value ); ?>"
+										>
+										<span><?php echo esc_html( $option_label ); ?></span>
+									</label>
+								<?php endforeach; ?>
+							</div>
+						<?php else : ?>
+							<span class="form-label" id="eval-label-<?php echo esc_attr( $question['id'] ); ?>">
+								<?php echo esc_html( $question['label'] ); ?>
+								<?php if ( ! empty( $question['required'] ) ) : ?>
+									<span class="cta-required" aria-hidden="true">*</span>
+								<?php endif; ?>
+							</span>
+							<div class="cta-evaluation-options" role="radiogroup" aria-labelledby="eval-label-<?php echo esc_attr( $question['id'] ); ?>">
+								<?php
+								$options = ! empty( $question['options'] ) && is_array( $question['options'] )
+									? $question['options']
+									: ( in_array( $q_type, array( 'rating', 'likert' ), true )
+										? ( class_exists( 'CTA_Evaluation_Questions' ) ? CTA_Evaluation_Questions::default_rating_options() : array() )
+										: array() );
+								foreach ( $options as $value => $option_label ) :
+									?>
+									<label class="cta-evaluation-option">
+										<input
+											type="radio"
+											name="responses[<?php echo esc_attr( $question['id'] ); ?>]"
+											value="<?php echo esc_attr( (string) $value ); ?>"
+											<?php echo ! empty( $question['required'] ) ? 'required' : ''; ?>
+										>
+										<span><?php echo esc_html( $option_label ); ?></span>
+									</label>
+								<?php endforeach; ?>
+							</div>
+						<?php endif; ?>
+					</div>
+				<?php endforeach; ?>
+				<button type="button" class="btn btn-primary" id="cta-submit-evaluation"><?php echo esc_html__( 'Submit Evaluation', 'cta-lms' ); ?></button>
+			</form>
+		</div>
+		<?php endif; ?>
+	</div>
+
+	<div class="cta-quiz-panel <?php echo ( isset( $view_state ) && 'attestation' === $view_state ) ? 'cta-quiz-panel--active' : ''; ?>" data-quiz-panel="attestation" <?php echo ( ! isset( $view_state ) || 'attestation' !== $view_state ) ? 'hidden' : ''; ?>>
+		<?php if ( empty( $is_exam_prep ) ) : ?>
+		<div class="card cta-quiz-attestation">
+			<h2><?php echo esc_html__( 'Course-Completion Attestation', 'cta-lms' ); ?></h2>
+			<p><?php echo esc_html__( 'Confirm that you personally completed this asynchronous distance-learning course. A CE certificate cannot be issued until this attestation is submitted.', 'cta-lms' ); ?></p>
+			<form id="cta-attestation-form" class="cta-attestation-form" novalidate>
+				<div class="cta-attestation-text">
+					<?php echo esc_html( ! empty( $attestation_text ) ? $attestation_text : ( class_exists( 'CTA_Course_Attestation' ) ? CTA_Course_Attestation::default_attestation_text() : '' ) ); ?>
+				</div>
+				<label class="cta-attestation-agree">
+					<input type="checkbox" id="cta-attestation-agree" name="agree" value="1" required>
+					<span><?php echo esc_html__( 'I have read and agree to this attestation.', 'cta-lms' ); ?></span>
+				</label>
+				<button type="button" class="btn btn-primary" id="cta-submit-attestation"><?php echo esc_html__( 'Submit Attestation & Get Certificate', 'cta-lms' ); ?></button>
+			</form>
+		</div>
+		<?php endif; ?>
+	</div>
+
+	<div class="cta-quiz-panel <?php echo 'exam_complete' === $view_state ? 'cta-quiz-panel--active' : ''; ?>" data-quiz-panel="exam_complete" <?php echo 'exam_complete' !== $view_state ? 'hidden' : ''; ?>>
+		<div class="cta-quiz-certificate-ready card">
+			<div class="cta-quiz-certificate-ready__icon" aria-hidden="true">✓</div>
+			<h2><?php echo esc_html__( 'Practice exam complete!', 'cta-lms' ); ?></h2>
+			<p><?php echo esc_html__( 'Great work — you passed this Exam Preparation Program practice exam. No CE evaluation or certificate is required for this program.', 'cta-lms' ); ?></p>
+			<?php if ( $last_attempt && (int) $last_attempt->passed ) : ?>
+				<p><?php echo esc_html__( 'Your score:', 'cta-lms' ); ?> <strong><?php echo esc_html( (string) (int) $last_attempt->score ); ?>%</strong></p>
+			<?php endif; ?>
+			<?php if ( $dashboard_url ) : ?>
+				<a href="<?php echo esc_url( $dashboard_url ); ?>" class="btn btn-primary"><?php echo esc_html__( 'Return to Dashboard', 'cta-lms' ); ?></a>
+			<?php endif; ?>
+			<?php if ( $player_url ) : ?>
+				<a href="<?php echo esc_url( $player_url ); ?>" class="btn btn-outline"><?php echo esc_html__( 'Back to Program', 'cta-lms' ); ?></a>
+			<?php endif; ?>
+		</div>
+	</div>
+
+	<div class="cta-quiz-panel <?php echo 'certificate_ready' === $view_state ? 'cta-quiz-panel--active' : ''; ?>" data-quiz-panel="certificate" <?php echo 'certificate_ready' !== $view_state ? 'hidden' : ''; ?>>
+		<div class="cta-quiz-certificate-ready card">
+			<div class="cta-quiz-certificate-ready__icon" aria-hidden="true">🏆</div>
+			<h2><?php echo esc_html__( 'Your certificate is ready!', 'cta-lms' ); ?></h2>
+			<?php if ( $certificate ) : ?>
+				<p><?php echo esc_html__( 'Certificate number:', 'cta-lms' ); ?> <strong id="cta-certificate-number"><?php echo esc_html( $certificate->certificate_number ); ?></strong></p>
+			<?php else : ?>
+				<p><?php echo esc_html__( 'Certificate number:', 'cta-lms' ); ?> <strong id="cta-certificate-number"></strong></p>
+			<?php endif; ?>
+			<div id="cta-certificate-actions" class="cta-certificate-actions">
+				<?php if ( $certificate && ( $cert_print_url || $cert_download_url ) ) : ?>
+					<?php if ( $cert_print_url ) : ?>
+						<a href="<?php echo esc_url( $cert_print_url ); ?>" class="btn btn-primary cta-print-cert-btn" data-certificate-id="<?php echo esc_attr( $certificate->id ); ?>" data-cert-action="print" target="_blank" rel="noopener">
+							<?php echo esc_html__( 'Print / Save as PDF', 'cta-lms' ); ?>
+						</a>
+					<?php endif; ?>
+					<?php if ( $cert_download_url ) : ?>
+						<a href="<?php echo esc_url( $cert_download_url ); ?>" class="btn btn-outline cta-download-cert-btn" data-certificate-id="<?php echo esc_attr( $certificate->id ); ?>" data-cert-action="download" rel="noopener">
+							<?php echo esc_html__( 'Download Certificate', 'cta-lms' ); ?>
+						</a>
+					<?php endif; ?>
+				<?php endif; ?>
+			</div>
+			<?php if ( $dashboard_url ) : ?>
+				<a href="<?php echo esc_url( $dashboard_url ); ?>" class="btn btn-outline"><?php echo esc_html__( 'Return to Dashboard', 'cta-lms' ); ?></a>
+			<?php endif; ?>
+		</div>
+	</div>
+</div>
+</div>

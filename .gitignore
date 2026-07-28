@@ -1,0 +1,58 @@
+# Dependencies
+/vendor/
+/node_modules/
+composer.lock
+
+# OS / editor
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.code-workspace
+
+# Environment & secrets (never commit)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+secrets.json
+auth.json
+
+# Logs & fatal dumps
+*.log
+npm-debug.log*
+cta-fatal-log.txt
+debug.log
+error_log
+
+# Caches / build / temp
+.cache/
+cache/
+tmp/
+temp/
+*.tmp
+*.bak
+*.old
+*.orig
+
+# WordPress / local tooling (if present in this folder)
+wp-config.php
+wp-config-local.php
+local-config.php
+
+# Plugin runtime / protected uploads (if ever stored under the plugin)
+cta-course-materials/
+cta-certificates/
+
+# Package archives
+*.zip
+*.tar.gz
+*.rar
