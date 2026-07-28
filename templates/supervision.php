@@ -22,10 +22,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $monthly_display    = '$' . number_format( $monthly_price, 0 );
 $individual_display = '$' . number_format( $individual_price, 0 );
-$has_subscription   = ( 'active' === $user_status );
+// Calendar / Book buttons only when fully unlocked (approved + plan + active).
+$can_book_sessions  = $is_logged_in && class_exists( 'CTA_Associate_Access' )
+	? CTA_Associate_Access::can_access_supervision_features( get_current_user_id() )
+	: false;
+$has_subscription   = $can_book_sessions && ( 'active' === $user_status );
 $can_purchase_supervision = isset( $can_purchase_supervision ) ? (bool) $can_purchase_supervision : true;
 $register_url       = isset( $register_url ) ? $register_url : CTA_Associate_Access::get_associate_registration_url();
 $associate_required_message = CTA_Associate_Access::get_associate_required_message();
+$pending_message    = class_exists( 'CTA_Associate_Access' ) ? CTA_Associate_Access::get_pending_message() : '';
+$ce_dashboard_url   = class_exists( 'CTA_Associate_Access' )
+	? CTA_Associate_Access::get_general_dashboard_url()
+	: home_url( '/' );
 
 $calendar_ts   = cta_lms_session_datetime( $calendar_month, '00:00:00' );
 $calendar_ts   = $calendar_ts ? $calendar_ts->getTimestamp() : strtotime( $calendar_month );
@@ -36,7 +44,13 @@ $today         = cta_lms_current_date( 'Y-m-d' );
 $selected_date = ! empty( $session_dates ) ? min( $session_dates ) : $today;
 ?>
 <div class="cta-plugin-wrapper">
-<div class="cta-lms cta-supervision-booking">
+<div
+	class="cta-lms cta-supervision-booking"
+	data-can-book="<?php echo $can_book_sessions ? 'yes' : 'no'; ?>"
+	data-user-status="<?php echo esc_attr( (string) $user_status ); ?>"
+	data-pending-message="<?php echo esc_attr( $pending_message ); ?>"
+	data-ce-dashboard-url="<?php echo esc_url( $ce_dashboard_url ); ?>"
+>
 
 	<section class="page-hero" aria-labelledby="supervision-hero-title">
 		<div class="page-hero__inner">
@@ -252,7 +266,12 @@ $selected_date = ! empty( $session_dates ) ? min( $session_dates ) : $today;
 					<?php elseif ( 'pending_approval' === $user_status ) : ?>
 						<h3><?php echo esc_html__( 'Supervision Application Pending', 'cta-lms' ); ?></h3>
 						<p><?php echo esc_html( CTA_Associate_Access::get_pending_message() ); ?></p>
-						<p><?php echo esc_html__( 'Session booking stays locked until your supervision application is approved.', 'cta-lms' ); ?></p>
+						<p><?php echo esc_html__( 'Session booking stays locked until your supervision application is approved. CTA admin has been notified to review your application.', 'cta-lms' ); ?></p>
+						<?php if ( $ce_dashboard_url ) : ?>
+							<p style="margin-top:1rem;">
+								<a href="<?php echo esc_url( $ce_dashboard_url ); ?>" class="btn btn-primary"><?php echo esc_html__( 'Go to My Courses', 'cta-lms' ); ?></a>
+							</p>
+						<?php endif; ?>
 					<?php elseif ( 'awaiting_plan' === $user_status ) : ?>
 						<h3><?php echo esc_html__( 'Application Approved', 'cta-lms' ); ?></h3>
 						<p><?php echo esc_html( CTA_Associate_Access::get_approved_awaiting_plan_message() ); ?></p>

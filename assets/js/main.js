@@ -2244,13 +2244,60 @@
       filterSessionsByDate(initialDate);
     }
 
+    function showSupervisionBookingNotice(message, isPending) {
+      var $notice = $root.find("[data-cta-booking-notice]");
+      if (!$notice.length) {
+        $notice = $(
+          '<div class="cta-empty-state" data-cta-booking-notice style="margin-bottom:1.25rem;"></div>'
+        );
+        $root.find(".booking-section__header").after($notice);
+      }
+
+      var title = isPending
+        ? "Supervision Application Pending"
+        : "Booking unavailable";
+      var ceUrl =
+        $root.attr("data-ce-dashboard-url") ||
+        (typeof ctaAjax !== "undefined" && ctaAjax.dashboardUrl) ||
+        "/";
+
+      $notice.html(
+        "<h3>" +
+          title +
+          "</h3><p>" +
+          $("<div>").text(message || "").html() +
+          '</p><p style="margin-top:1rem;"><a class="btn btn-primary" href="' +
+          ceUrl +
+          '">Go to My Courses</a></p>'
+      );
+
+      $root.find(".cta-book-btn").prop("disabled", true);
+      $("html, body").animate(
+        { scrollTop: Math.max(0, ($notice.offset() || { top: 0 }).top - 80) },
+        250
+      );
+    }
+
     $root.on("click", ".cta-book-btn:not(:disabled)", function () {
       var $btn = $(this);
       var $card = $btn.closest(".cta-session-card");
       var sessionId = $btn.data("session-id") || $card.data("session-id");
       var originalText = $btn.text();
+      var canBook = $root.attr("data-can-book") === "yes";
+      var userStatus = $root.attr("data-user-status") || "";
+      var pendingMessage =
+        $root.attr("data-pending-message") ||
+        "Supervision Application Pending: booking stays locked until approved.";
 
       if (!sessionId) {
+        return;
+      }
+
+      if (!canBook) {
+        showSupervisionBookingNotice(
+          pendingMessage,
+          userStatus === "pending_approval" || userStatus === "awaiting_plan"
+        );
         return;
       }
 
@@ -2263,11 +2310,23 @@
       })
         .done(function (response) {
           if (!response.success) {
-            window.alert(
+            var code =
+              response.data && response.data.code ? response.data.code : "";
+            var message =
               response.data && response.data.message
                 ? response.data.message
-                : "Unable to book session."
-            );
+                : "Unable to book session.";
+
+            if (
+              code === "supervision_pending_approval" ||
+              code === "supervision_awaiting_plan" ||
+              code === "supervision_not_active"
+            ) {
+              $root.attr("data-can-book", "no");
+              showSupervisionBookingNotice(message, true);
+            } else {
+              window.alert(message);
+            }
             $btn.prop("disabled", false).text(originalText);
             return;
           }

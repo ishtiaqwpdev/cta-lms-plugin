@@ -319,7 +319,29 @@ class CTA_Associate_Access {
 			}
 		}
 
-		return (bool) get_user_meta( $user_id, 'cta_hybrid_plan_active', true );
+		if ( (bool) get_user_meta( $user_id, 'cta_hybrid_plan_active', true ) ) {
+			return true;
+		}
+
+		$subscription_id = (string) get_user_meta( $user_id, 'cta_supervision_subscription_id', true );
+		if ( '' !== $subscription_id ) {
+			return true;
+		}
+
+		$plan_slug = (string) get_user_meta( $user_id, 'cta_supervision_plan', true );
+		$plan_status = self::get_supervision_status( $user_id );
+		if (
+			'' !== $plan_slug
+			&& in_array(
+				$plan_status,
+				array( self::PLAN_ACTIVE, self::PLAN_AWAITING, self::PLAN_PAST_DUE, self::PLAN_LOCKED ),
+				true
+			)
+		) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -619,13 +641,19 @@ class CTA_Associate_Access {
 		update_user_meta( $user_id, 'cta_agency_representative_email', $rep_email );
 
 		$approval = self::get_approval_status( $user_id );
+		$became_pending = false;
 		if ( '' === $approval || self::STATUS_PENDING === $approval ) {
 			update_user_meta( $user_id, self::META_SUPERVISION_APPLICATION_STATUS, self::STATUS_PENDING );
+			$became_pending = ( '' === $approval || self::STATUS_PENDING === $approval );
 		}
 
 		// Application pending must never touch plan status or deactivate CE.
 		self::ensure_account_active( $user_id );
 		clean_user_cache( $user_id );
+
+		if ( $became_pending ) {
+			self::notify_admins_pending_application( $user_id );
+		}
 
 		if ( $notify && class_exists( 'CTA_Emails' ) ) {
 			$already_sent = (string) get_user_meta( $user_id, 'cta_agency_notification_sent_at', true );
@@ -648,6 +676,76 @@ class CTA_Associate_Access {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Email site admins that a supervision application needs review in Approvals.
+	 *
+	 * @param int $user_id Associate user ID.
+	 * @return bool
+	 */
+	public static function notify_admins_pending_application( $user_id ) {
+		$user_id = absint( $user_id );
+		$user    = $user_id ? get_userdata( $user_id ) : false;
+
+		if ( ! $user ) {
+			return false;
+		}
+
+		// Avoid spamming admins on every agency-field edit while already pending.
+		$last_notified = (string) get_user_meta( $user_id, 'cta_admin_pending_notified_at', true );
+		if ( $last_notified ) {
+			$last_ts = strtotime( $last_notified );
+			if ( $last_ts && ( time() - $last_ts ) < DAY_IN_SECONDS ) {
+				return false;
+			}
+		}
+
+		$admin_email = sanitize_email( (string) get_option( 'admin_email' ) );
+		if ( ! is_email( $admin_email ) ) {
+			return false;
+		}
+
+		$approvals_url = admin_url( 'admin.php?page=cta-lms-approvals&status=pending_approval' );
+		$employer      = (string) get_user_meta( $user_id, 'cta_employer_agency_name', true );
+		$display_name  = $user->display_name ? $user->display_name : $user->user_login;
+
+		$subject = sprintf(
+			/* translators: %s: associate name */
+			__( '[CTA LMS] Supervision application pending: %s', 'cta-lms' ),
+			$display_name
+		);
+
+		$lines = array(
+			__( 'A Registered Associate supervision application is waiting for review.', 'cta-lms' ),
+			'',
+			sprintf( __( 'Associate: %s', 'cta-lms' ), $display_name ),
+			sprintf( __( 'Email: %s', 'cta-lms' ), $user->user_email ),
+		);
+
+		if ( '' !== $employer ) {
+			$lines[] = sprintf( __( 'Employer/Agency: %s', 'cta-lms' ), $employer );
+		}
+
+		$lines[] = '';
+		$lines[] = __( 'Review and approve here:', 'cta-lms' );
+		$lines[] = $approvals_url;
+
+		$sent = wp_mail( $admin_email, $subject, implode( "\n", $lines ) );
+
+		if ( $sent ) {
+			update_user_meta( $user_id, 'cta_admin_pending_notified_at', current_time( 'mysql' ) );
+		}
+
+		/**
+		 * Fires after attempting to notify admins of a pending supervision application.
+		 *
+		 * @param int  $user_id Associate user ID.
+		 * @param bool $sent    Whether wp_mail reported success.
+		 */
+		do_action( 'cta_lms_supervision_application_pending', $user_id, (bool) $sent );
+
+		return (bool) $sent;
 	}
 
 	/**
@@ -1050,13 +1148,25 @@ class CTA_Associate_Access {
 			return false;
 		}
 
-		// Only unlock Active supervision when a plan already exists.
-		if ( self::has_qualifying_plan( $user_id ) ) {
+		// Unlock booking immediately when a purchased/assigned plan already exists
+		// (including plans stuck in pending_approval waiting on this vetting step).
+		if (
+			self::has_qualifying_plan( $user_id )
+			|| self::is_plan_awaiting_application_approval( $user_id )
+		) {
 			self::activate_purchased_supervision( $user_id );
 		}
 
 		delete_user_meta( $user_id, 'cta_approval_rejection_reason' );
+		self::ensure_account_active( $user_id );
 		clean_user_cache( $user_id );
+
+		/**
+		 * Fires after an Associate supervision application is approved.
+		 *
+		 * @param int $user_id Associate user ID.
+		 */
+		do_action( 'cta_lms_supervision_application_approved', $user_id );
 
 		return true;
 	}
@@ -1073,15 +1183,20 @@ class CTA_Associate_Access {
 			return;
 		}
 
-		if ( 'active' === self::get_supervision_status( $user_id ) ) {
+		if ( self::PLAN_ACTIVE === self::get_supervision_status( $user_id ) ) {
 			return;
 		}
 
-		if ( ! self::has_qualifying_plan( $user_id ) ) {
+		// If meta says awaiting approval, treat as a real plan even if payment lookup lags.
+		if (
+			! self::has_qualifying_plan( $user_id )
+			&& ! self::is_plan_awaiting_application_approval( $user_id )
+		) {
 			return;
 		}
 
 		update_user_meta( $user_id, self::META_SUPERVISION_PLAN_STATUS, self::PLAN_ACTIVE );
+		clean_user_cache( $user_id );
 	}
 
 	/**

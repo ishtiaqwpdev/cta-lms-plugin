@@ -1802,6 +1802,7 @@ class CTA_Stripe {
 
 			if ( '' === $approval || CTA_Associate_Access::STATUS_PENDING === $approval ) {
 				update_user_meta( $user_id, 'cta_approval_status', CTA_Associate_Access::STATUS_PENDING );
+				CTA_Associate_Access::notify_admins_pending_application( $user_id );
 			} elseif ( CTA_Associate_Access::STATUS_APPROVED === $approval ) {
 				// Already-approved Associates unlock immediately after purchase.
 				update_user_meta( $user_id, 'cta_supervision_status', 'active' );
