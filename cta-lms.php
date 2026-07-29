@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.95' );
+	define( 'CTA_VERSION', '1.0.96' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -396,6 +396,12 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				CTA_Course_Catalog::sync_approved_prices();
 			}
 
+			// Re-run price sync if 1.0.95 code never landed on the server (Hostinger deploy lag).
+			if ( version_compare( $installed, '1.0.96', '<' ) && class_exists( 'CTA_Course_Catalog' ) ) {
+				CTA_Course_Catalog::sync_approved_prices();
+				update_option( 'cta_ce_price_catalog_fp', cta_ce_price_catalog_fingerprint(), false );
+			}
+
 			// Decouple supervision application pending from general account / CE access.
 			if ( version_compare( $installed, '1.0.90', '<' ) && class_exists( 'CTA_Associate_Access' ) ) {
 				$query = new WP_User_Query(
@@ -423,8 +429,67 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 	}
 }
 
+if ( ! function_exists( 'cta_ce_price_catalog_fingerprint' ) ) {
+	/**
+	 * Fingerprint of approved CE catalog prices (detects catalog price edits).
+	 *
+	 * @return string
+	 */
+	function cta_ce_price_catalog_fingerprint() {
+		if ( ! class_exists( 'CTA_Course_Catalog' ) ) {
+			return '';
+		}
+
+		$prices = array();
+		foreach ( CTA_Course_Catalog::get_ce_catalog() as $entry ) {
+			$prices[] = array(
+				'title' => (string) ( $entry['title'] ?? '' ),
+				'price' => round( (float) ( $entry['price'] ?? 0 ), 2 ),
+			);
+		}
+
+		return md5( wp_json_encode( $prices ) );
+	}
+}
+
+if ( ! function_exists( 'cta_maybe_sync_ce_prices_from_catalog' ) ) {
+	/**
+	 * Self-heal CE prices whenever the approved catalog fingerprint changes.
+	 *
+	 * Needed when GitHub is updated but Hostinger deploy / version stamp lag
+	 * left the live `cta_courses.price` column on the previous catalog.
+	 */
+	function cta_maybe_sync_ce_prices_from_catalog() {
+		if ( ! class_exists( 'CTA_Course_Catalog' ) ) {
+			return;
+		}
+
+		$fingerprint = cta_ce_price_catalog_fingerprint();
+		if ( '' === $fingerprint ) {
+			return;
+		}
+
+		if ( get_option( 'cta_ce_price_catalog_fp', '' ) === $fingerprint ) {
+			return;
+		}
+
+		if ( get_transient( 'cta_ce_price_sync_lock' ) ) {
+			return;
+		}
+		set_transient( 'cta_ce_price_sync_lock', 1, 60 );
+
+		CTA_Course_Catalog::sync_approved_prices();
+		update_option( 'cta_ce_price_catalog_fp', $fingerprint, false );
+		delete_transient( 'cta_ce_price_sync_lock' );
+	}
+}
+
 if ( function_exists( 'cta_maybe_upgrade_db' ) && ! has_action( 'plugins_loaded', 'cta_maybe_upgrade_db' ) ) {
 	add_action( 'plugins_loaded', 'cta_maybe_upgrade_db', 5 );
+}
+
+if ( function_exists( 'cta_maybe_sync_ce_prices_from_catalog' ) && ! has_action( 'plugins_loaded', 'cta_maybe_sync_ce_prices_from_catalog' ) ) {
+	add_action( 'plugins_loaded', 'cta_maybe_sync_ce_prices_from_catalog', 6 );
 }
 
 if ( ! function_exists( 'cta_lms_migrate_alcoholism_category' ) ) {
