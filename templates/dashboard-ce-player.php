@@ -131,30 +131,58 @@ $next_url = $next_module
 
 				<section class="course-player__quiz-section" aria-labelledby="course-quiz-title">
 					<h2 class="dashboard-section__title" id="course-quiz-title">
-						<?php echo ! empty( $is_exam_prep ) ? esc_html__( 'Practice / Mock Exam', 'cta-lms' ) : esc_html__( 'Course Quiz', 'cta-lms' ); ?>
+						<?php echo ! empty( $is_exam_prep ) ? esc_html__( 'Assessments', 'cta-lms' ) : esc_html__( 'Course Quiz', 'cta-lms' ); ?>
 					</h2>
 					<?php if ( ! $quiz_available ) : ?>
 						<div class="cta-quiz-coming-soon">
-							<p><?php echo esc_html__( 'Quiz coming soon. The final quiz for this course has not been published yet — you can keep working through the modules in the meantime.', 'cta-lms' ); ?></p>
-						</div>
-					<?php else : ?>
-						<div class="cta-quiz-locked-message" <?php echo $quiz_unlocked ? 'hidden' : ''; ?>>
-							<p><?php echo esc_html__( 'Complete all modules to unlock the quiz', 'cta-lms' ); ?></p>
-						</div>
-						<div class="cta-quiz-unlocked-message" <?php echo $quiz_unlocked ? '' : 'hidden'; ?>>
 							<p>
 								<?php
 								echo ! empty( $is_exam_prep )
-									? esc_html__( 'All modules complete! Take the practice / mock exam. Answer rationales are shown after you submit.', 'cta-lms' )
-									: esc_html__( 'All modules complete! Take the final quiz (70% to pass, unlimited attempts, no time limit) to earn your certificate.', 'cta-lms' );
+									? esc_html__( 'Assessments coming soon. Practice / Form A / Form B have not been published yet — you can keep working through the modules in the meantime.', 'cta-lms' )
+									: esc_html__( 'Quiz coming soon. The final quiz for this course has not been published yet — you can keep working through the modules in the meantime.', 'cta-lms' );
 								?>
 							</p>
-							<?php if ( $quiz_page_id && $quiz_url && '#' !== $quiz_url ) : ?>
-								<a href="<?php echo esc_url( $quiz_url ); ?>" class="btn btn-primary cta-quiz-btn">
-									<?php echo ! empty( $is_exam_prep ) ? esc_html__( 'Start Practice Exam', 'cta-lms' ) : esc_html__( 'Take Quiz', 'cta-lms' ); ?>
-								</a>
+						</div>
+					<?php else : ?>
+						<div class="cta-quiz-locked-message" <?php echo $quiz_unlocked ? 'hidden' : ''; ?>>
+							<p><?php echo ! empty( $is_exam_prep ) ? esc_html__( 'Complete all modules to unlock assessments', 'cta-lms' ) : esc_html__( 'Complete all modules to unlock the quiz', 'cta-lms' ); ?></p>
+						</div>
+						<div class="cta-quiz-unlocked-message" <?php echo $quiz_unlocked ? '' : 'hidden'; ?>>
+							<?php if ( ! empty( $is_exam_prep ) ) : ?>
+								<p><?php echo esc_html__( 'All modules complete! Take each assessment independently. Answer rationales are shown after you submit.', 'cta-lms' ); ?></p>
+								<ul class="cta-exam-assessment-list">
+									<?php foreach ( $quiz_cards as $card ) : ?>
+										<li class="cta-exam-assessment-list__item">
+											<div class="cta-exam-assessment-list__meta">
+												<strong><?php echo esc_html( $card['quiz']->title ); ?></strong>
+												<?php if ( $card['passed'] ) : ?>
+													<span class="badge badge--success"><?php echo esc_html__( 'Passed', 'cta-lms' ); ?> — <?php echo esc_html( (string) (int) $card['best']->score ); ?>%</span>
+												<?php elseif ( $card['best'] ) : ?>
+													<span class="badge"><?php echo esc_html__( 'Best score', 'cta-lms' ); ?>: <?php echo esc_html( (string) (int) $card['best']->score ); ?>%</span>
+												<?php else : ?>
+													<span class="badge"><?php echo esc_html__( 'Not started', 'cta-lms' ); ?></span>
+												<?php endif; ?>
+											</div>
+											<?php if ( $quiz_page_id && ! empty( $card['url'] ) && '#' !== $card['url'] ) : ?>
+												<a href="<?php echo esc_url( $card['url'] ); ?>" class="btn btn-primary btn--sm cta-quiz-btn">
+													<?php echo $card['passed'] ? esc_html__( 'Retake', 'cta-lms' ) : esc_html__( 'Start', 'cta-lms' ); ?>
+												</a>
+											<?php endif; ?>
+										</li>
+									<?php endforeach; ?>
+								</ul>
+								<?php if ( ! $quiz_page_id ) : ?>
+									<p class="cta-empty-state"><?php echo esc_html__( 'Quiz page is not configured. Ask the site admin to assign the Quiz Page in CTA LMS Settings.', 'cta-lms' ); ?></p>
+								<?php endif; ?>
 							<?php else : ?>
-								<p class="cta-empty-state"><?php echo esc_html__( 'Quiz page is not configured. Ask the site admin to assign the Quiz Page in CTA LMS Settings.', 'cta-lms' ); ?></p>
+								<p><?php echo esc_html__( 'All modules complete! Take the final quiz (70% to pass, unlimited attempts, no time limit) to earn your certificate.', 'cta-lms' ); ?></p>
+								<?php if ( $quiz_page_id && $quiz_url && '#' !== $quiz_url ) : ?>
+									<a href="<?php echo esc_url( ! empty( $quiz_cards[0]['url'] ) ? $quiz_cards[0]['url'] : $quiz_url ); ?>" class="btn btn-primary cta-quiz-btn">
+										<?php echo esc_html__( 'Take Quiz', 'cta-lms' ); ?>
+									</a>
+								<?php else : ?>
+									<p class="cta-empty-state"><?php echo esc_html__( 'Quiz page is not configured. Ask the site admin to assign the Quiz Page in CTA LMS Settings.', 'cta-lms' ); ?></p>
+								<?php endif; ?>
 							<?php endif; ?>
 						</div>
 					<?php endif; ?>

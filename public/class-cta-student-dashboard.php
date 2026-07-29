@@ -332,11 +332,30 @@ class CTA_Student_Dashboard {
 		$quiz_url       = $this->get_quiz_url( $course_id );
 		$quiz_page_id   = absint( get_option( 'cta_quiz_page_id', 0 ) );
 
-		// A quiz only counts as "available" when it exists AND has questions,
-		// otherwise the course is still being finalized (show "coming soon").
-		$course_quiz     = CTA_Database::get_quiz_by_course( $course_id );
-		$quiz_questions  = $course_quiz ? CTA_Database::get_quiz_questions( (int) $course_quiz->id ) : array();
-		$quiz_available  = $course_quiz && ! empty( $quiz_questions );
+		// Exam Prep can have multiple assessments; CE still uses the primary quiz.
+		$course_quizzes = CTA_Database::get_quizzes_by_course( $course_id, true );
+		$quiz_cards     = array();
+		foreach ( $course_quizzes as $qrow ) {
+			$q_questions = CTA_Database::get_quiz_questions( (int) $qrow->id );
+			if ( empty( $q_questions ) ) {
+				continue;
+			}
+			$attempts = CTA_Database::get_user_quiz_attempts( get_current_user_id(), (int) $qrow->id );
+			$best     = null;
+			foreach ( $attempts as $att ) {
+				if ( null === $best || (int) $att->score > (int) $best->score ) {
+					$best = $att;
+				}
+			}
+			$quiz_cards[] = array(
+				'quiz'     => $qrow,
+				'url'      => $this->get_quiz_url( $course_id, (int) $qrow->id ),
+				'attempts' => $attempts,
+				'best'     => $best,
+				'passed'   => $best && (int) $best->passed,
+			);
+		}
+		$quiz_available = ! empty( $quiz_cards );
 		$dashboard_url  = $this->get_dashboard_url();
 		$player_base    = $this->get_player_page_url();
 		$user           = wp_get_current_user();
@@ -1059,19 +1078,25 @@ class CTA_Student_Dashboard {
 	}
 
 	/**
-	 * Get quiz page URL for a course.
+	 * Get quiz page URL for a course (and optional specific assessment).
 	 *
 	 * @param int $course_id Course ID.
+	 * @param int $quiz_id   Optional quiz/assessment ID.
 	 * @return string
 	 */
-	private function get_quiz_url( $course_id ) {
+	private function get_quiz_url( $course_id, $quiz_id = 0 ) {
 		$page_id = absint( get_option( 'cta_quiz_page_id', 0 ) );
 
 		if ( ! $page_id ) {
 			return '#';
 		}
 
-		return add_query_arg( 'course_id', $course_id, get_permalink( $page_id ) );
+		$args = array( 'course_id' => absint( $course_id ) );
+		if ( absint( $quiz_id ) ) {
+			$args['quiz_id'] = absint( $quiz_id );
+		}
+
+		return add_query_arg( $args, get_permalink( $page_id ) );
 	}
 }
 }

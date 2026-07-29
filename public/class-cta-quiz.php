@@ -58,6 +58,7 @@ class CTA_Quiz {
 		}
 
 		$course_id = isset( $_GET['course_id'] ) ? absint( wp_unslash( $_GET['course_id'] ) ) : 0;
+		$quiz_id   = isset( $_GET['quiz_id'] ) ? absint( wp_unslash( $_GET['quiz_id'] ) ) : 0;
 
 		if ( ! $course_id && isset( $_GET['course'] ) ) {
 			$course_id = absint( wp_unslash( $_GET['course'] ) );
@@ -83,7 +84,7 @@ class CTA_Quiz {
 		$user_id    = get_current_user_id();
 		$course     = CTA_Database::get_course( $course_id );
 		$enrollment = CTA_Database::get_user_enrollment( $user_id, $course_id );
-		$quiz       = CTA_Database::get_quiz_by_course( $course_id );
+		$quiz       = CTA_Database::get_quiz_for_course( $course_id, $quiz_id );
 
 		if ( ! $course ) {
 			return '<div class="cta-plugin-wrapper"><div class="cta-empty-state"><p>' . esc_html__( 'Course not found.', 'cta-lms' ) . '</p></div></div>';
@@ -176,8 +177,9 @@ class CTA_Quiz {
 		}
 
 		$course_id = absint( wp_unslash( $_POST['course_id'] ?? 0 ) );
+		$quiz_id   = absint( wp_unslash( $_POST['quiz_id'] ?? 0 ) );
 		$user_id   = get_current_user_id();
-		$check     = $this->validate_quiz_access( $user_id, $course_id );
+		$check     = $this->validate_quiz_access( $user_id, $course_id, true, $quiz_id );
 
 		if ( is_wp_error( $check ) ) {
 			wp_send_json_error( array( 'message' => $check->get_error_message() ) );
@@ -185,6 +187,8 @@ class CTA_Quiz {
 
 		/** @var object $quiz */
 		$quiz       = $check['quiz'];
+		$course     = isset( $check['course'] ) ? $check['course'] : CTA_Database::get_course( $course_id );
+		$is_exam_prep = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course );
 		$attempts   = CTA_Database::get_user_quiz_attempts( $user_id, (int) $quiz->id );
 		$active     = CTA_Database::get_active_quiz_attempt( $user_id, (int) $quiz->id );
 
@@ -192,7 +196,8 @@ class CTA_Quiz {
 			wp_send_json_success( $this->build_attempt_payload( $quiz, $active ) );
 		}
 
-		if ( $this->get_passed_attempt( $attempts ) ) {
+		// CE: block after a pass. Exam Prep assessments may be retaken independently.
+		if ( ! $is_exam_prep && $this->get_passed_attempt( $attempts ) ) {
 			wp_send_json_error( array( 'message' => __( 'You have already passed this quiz.', 'cta-lms' ) ) );
 		}
 
@@ -784,12 +789,13 @@ class CTA_Quiz {
 	 * @param int  $user_id           User ID.
 	 * @param int  $course_id         Course ID.
 	 * @param bool $require_complete  Require 100% module progress.
+	 * @param int  $quiz_id           Optional specific quiz ID.
 	 * @return array|WP_Error
 	 */
-	private function validate_quiz_access( $user_id, $course_id, $require_complete = true ) {
+	private function validate_quiz_access( $user_id, $course_id, $require_complete = true, $quiz_id = 0 ) {
 		$enrollment = CTA_Database::get_user_enrollment( $user_id, $course_id );
-		$quiz       = CTA_Database::get_quiz_by_course( $course_id );
 		$course     = CTA_Database::get_course( $course_id );
+		$quiz       = CTA_Database::get_quiz_for_course( $course_id, $quiz_id );
 
 		if ( ! $enrollment ) {
 			return new WP_Error( 'not_enrolled', __( 'You are not enrolled in this course.', 'cta-lms' ) );

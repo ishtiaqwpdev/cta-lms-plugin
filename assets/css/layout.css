@@ -6142,10 +6142,31 @@ button.pagination__item:disabled {
   flex-wrap: wrap;
 }
 
-.cta-plugin-wrapper .cta-evaluation-form {
+.cta-plugin-wrapper .cta-exam-assessment-list {
+  list-style: none;
+  margin: var(--space-md) 0 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
+}
+
+.cta-plugin-wrapper .cta-exam-assessment-list__item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  border: 1px solid var(--color-border, #d0d5dd);
+  border-radius: var(--radius-md, 8px);
+  background: #fff;
+}
+
+.cta-plugin-wrapper .cta-exam-assessment-list__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
 }
 
 .cta-plugin-wrapper .cta-evaluation-section__title {

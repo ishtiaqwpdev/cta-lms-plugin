@@ -443,16 +443,17 @@ if ( empty( $evaluation_questions ) || ! is_array( $evaluation_questions ) ) {
 	<div class="cta-quiz-panel <?php echo 'exam_complete' === $view_state ? 'cta-quiz-panel--active' : ''; ?>" data-quiz-panel="exam_complete" <?php echo 'exam_complete' !== $view_state ? 'hidden' : ''; ?>>
 		<div class="cta-quiz-certificate-ready card">
 			<div class="cta-quiz-certificate-ready__icon" aria-hidden="true">✓</div>
-			<h2><?php echo esc_html__( 'Practice exam complete!', 'cta-lms' ); ?></h2>
-			<p><?php echo esc_html__( 'Great work — you passed this Exam Preparation Program practice exam. No CE evaluation or certificate is required for this program.', 'cta-lms' ); ?></p>
+			<h2><?php echo esc_html__( 'Assessment complete!', 'cta-lms' ); ?></h2>
+			<p><?php echo esc_html__( 'Great work — you completed this Exam Preparation assessment. Answer rationales are shown after each attempt. No CE evaluation or certificate is required for this program.', 'cta-lms' ); ?></p>
 			<?php if ( $last_attempt && (int) $last_attempt->passed ) : ?>
 				<p><?php echo esc_html__( 'Your score:', 'cta-lms' ); ?> <strong><?php echo esc_html( (string) (int) $last_attempt->score ); ?>%</strong></p>
 			<?php endif; ?>
-			<?php if ( $dashboard_url ) : ?>
-				<a href="<?php echo esc_url( $dashboard_url ); ?>" class="btn btn-primary"><?php echo esc_html__( 'Return to Dashboard', 'cta-lms' ); ?></a>
-			<?php endif; ?>
+			<button type="button" class="btn btn-primary" id="cta-retake-exam-quiz"><?php echo esc_html__( 'Retake This Assessment', 'cta-lms' ); ?></button>
 			<?php if ( $player_url ) : ?>
-				<a href="<?php echo esc_url( $player_url ); ?>" class="btn btn-outline"><?php echo esc_html__( 'Back to Program', 'cta-lms' ); ?></a>
+				<a href="<?php echo esc_url( $player_url ); ?>" class="btn btn-outline"><?php echo esc_html__( 'Back to Assessments', 'cta-lms' ); ?></a>
+			<?php endif; ?>
+			<?php if ( $dashboard_url ) : ?>
+				<a href="<?php echo esc_url( $dashboard_url ); ?>" class="btn btn-outline"><?php echo esc_html__( 'Return to Dashboard', 'cta-lms' ); ?></a>
 			<?php endif; ?>
 		</div>
 	</div>

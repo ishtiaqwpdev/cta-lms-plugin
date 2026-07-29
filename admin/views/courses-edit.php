@@ -24,6 +24,7 @@ $educational_goals = isset( $educational_goals ) && is_array( $educational_goals
 $completion_requirements = isset( $completion_requirements ) && is_array( $completion_requirements ) ? $completion_requirements : array( '' );
 $syllabus_references = isset( $syllabus_references ) ? (string) $syllabus_references : '';
 $eval_questions      = isset( $eval_questions ) ? $eval_questions : array();
+$quizzes             = isset( $quizzes ) ? $quizzes : array();
 $eval_types          = class_exists( 'CTA_Evaluation_Questions' ) ? CTA_Evaluation_Questions::get_types() : array();
 
 $course_video_type  = 'vimeo';
@@ -434,13 +435,47 @@ if ( $course ) {
 		</div>
 		<?php endif; ?>
 
-		<div class="cta-admin-panel" id="cta-quiz-panel" data-course-id="<?php echo esc_attr( (string) $course_id ); ?>">
-			<h2><?php echo $is_exam_prep ? esc_html__( 'Practice Questions / Mock Exam', 'cta-lms' ) : esc_html__( 'Course Quiz', 'cta-lms' ); ?></h2>
+		<div class="cta-admin-panel" id="cta-quiz-panel" data-course-id="<?php echo esc_attr( (string) $course_id ); ?>" data-is-exam-prep="<?php echo $is_exam_prep ? '1' : '0'; ?>" data-quiz-id="<?php echo esc_attr( (string) ( $quiz->id ?? 0 ) ); ?>">
+			<h2><?php echo $is_exam_prep ? esc_html__( 'Assessments (Practice / Form A / Form B)', 'cta-lms' ) : esc_html__( 'Course Quiz', 'cta-lms' ); ?></h2>
+
+			<?php if ( $is_exam_prep ) : ?>
+				<p class="description"><?php esc_html_e( 'Exam Preparation programs support multiple assessments. Create Practice Assessment, Form A, and Form B (or custom). Each assessment has its own questions and learner progress.', 'cta-lms' ); ?></p>
+				<div id="cta-exam-assessment-toolbar" class="cta-exam-assessment-toolbar" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0;">
+					<label for="cta-active-quiz-select"><strong><?php esc_html_e( 'Editing:', 'cta-lms' ); ?></strong></label>
+					<select id="cta-active-quiz-select" style="min-width:260px;">
+						<?php
+						$quiz_rows = ! empty( $quizzes ) ? $quizzes : array();
+						if ( empty( $quiz_rows ) && $quiz ) {
+							$quiz_rows = array( $quiz );
+						}
+						foreach ( $quiz_rows as $qrow ) :
+							?>
+							<option value="<?php echo esc_attr( (string) $qrow->id ); ?>" <?php selected( (int) ( $quiz->id ?? 0 ), (int) $qrow->id ); ?>>
+								<?php echo esc_html( $qrow->title ); ?>
+							</option>
+						<?php endforeach; ?>
+					</select>
+					<button type="button" class="button" id="cta-add-assessment-practice"><?php esc_html_e( '+ Practice Assessment', 'cta-lms' ); ?></button>
+					<button type="button" class="button" id="cta-add-assessment-form-a"><?php esc_html_e( '+ Form A', 'cta-lms' ); ?></button>
+					<button type="button" class="button" id="cta-add-assessment-form-b"><?php esc_html_e( '+ Form B', 'cta-lms' ); ?></button>
+					<button type="button" class="button" id="cta-add-assessment-custom"><?php esc_html_e( '+ Custom', 'cta-lms' ); ?></button>
+				</div>
+				<p>
+					<label for="cta-quiz-type"><strong><?php esc_html_e( 'Assessment type', 'cta-lms' ); ?></strong></label><br>
+					<select id="cta-quiz-type">
+						<option value="practice" <?php selected( (string) ( $quiz->quiz_type ?? 'practice' ), 'practice' ); ?>><?php esc_html_e( 'Practice Assessment', 'cta-lms' ); ?></option>
+						<option value="form_a" <?php selected( (string) ( $quiz->quiz_type ?? '' ), 'form_a' ); ?>><?php esc_html_e( 'Form A — Full-Length Simulation', 'cta-lms' ); ?></option>
+						<option value="form_b" <?php selected( (string) ( $quiz->quiz_type ?? '' ), 'form_b' ); ?>><?php esc_html_e( 'Form B — Full-Length Simulation', 'cta-lms' ); ?></option>
+						<option value="custom" <?php selected( (string) ( $quiz->quiz_type ?? '' ), 'custom' ); ?>><?php esc_html_e( 'Custom', 'cta-lms' ); ?></option>
+					</select>
+				</p>
+			<?php endif; ?>
+
 			<div id="cta-quiz-status-line" class="cta-quiz-status-line">
 				<?php if ( $quiz ) : ?>
-					<p><?php esc_html_e( 'Quiz exists for this course.', 'cta-lms' ); ?> <strong><?php echo esc_html( $quiz->title ); ?></strong></p>
+					<p><?php echo $is_exam_prep ? esc_html__( 'Assessment selected:', 'cta-lms' ) : esc_html__( 'Quiz exists for this course.', 'cta-lms' ); ?> <strong><?php echo esc_html( $quiz->title ); ?></strong></p>
 				<?php else : ?>
-					<p><?php esc_html_e( 'No quiz created yet.', 'cta-lms' ); ?></p>
+					<p><?php echo $is_exam_prep ? esc_html__( 'No assessments created yet. Use the buttons above to add Practice / Form A / Form B.', 'cta-lms' ) : esc_html__( 'No quiz created yet.', 'cta-lms' ); ?></p>
 				<?php endif; ?>
 			</div>
 
@@ -460,7 +495,7 @@ if ( $course ) {
 			</div>
 
 			<p>
-				<label for="cta-quiz-title"><strong><?php esc_html_e( 'Quiz Title', 'cta-lms' ); ?></strong></label><br>
+				<label for="cta-quiz-title"><strong><?php echo $is_exam_prep ? esc_html__( 'Assessment Title', 'cta-lms' ) : esc_html__( 'Quiz Title', 'cta-lms' ); ?></strong></label><br>
 				<input type="text" id="cta-quiz-title" class="regular-text" placeholder="<?php esc_attr_e( 'Quiz title', 'cta-lms' ); ?>" value="<?php echo esc_attr( $quiz->title ?? '' ); ?>">
 			</p>
 
@@ -472,13 +507,13 @@ if ( $course ) {
 			</div>
 
 			<p>
-				<button type="button" class="button button-primary" id="cta-save-quiz"><?php echo $quiz ? esc_html__( 'Save Quiz', 'cta-lms' ) : esc_html__( 'Create Quiz', 'cta-lms' ); ?></button>
+				<button type="button" class="button button-primary" id="cta-save-quiz"><?php echo $quiz ? esc_html__( 'Save Assessment', 'cta-lms' ) : esc_html__( 'Create Quiz', 'cta-lms' ); ?></button>
 				<span id="cta-quiz-save-status" class="cta-inline-result"></span>
 			</p>
 			<p class="description">
 				<?php
 				echo $is_exam_prep
-					? esc_html__( 'Add practice / mock exam questions. Use the explanation field as the answer rationale shown after each question. No CE certificate is issued for exam prep programs.', 'cta-lms' )
+					? esc_html__( 'Add practice / simulation questions. Use the explanation field as the answer rationale shown after submit. Learners can complete each assessment independently. No CE certificate is issued for exam prep programs.', 'cta-lms' )
 					: esc_html__( 'Add multiple-choice questions below. Students must score 70% or higher to pass. Quizzes have no time limit and unlimited retake attempts until passed.', 'cta-lms' );
 				?>
 			</p>

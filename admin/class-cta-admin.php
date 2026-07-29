@@ -70,6 +70,7 @@ class CTA_Admin {
 		add_action( 'wp_ajax_cta_preview_email', array( $this, 'ajax_preview_email' ) );
 		add_action( 'wp_ajax_cta_save_quiz', array( $this, 'ajax_save_quiz' ) );
 		add_action( 'wp_ajax_cta_load_quiz', array( $this, 'ajax_load_quiz' ) );
+		add_action( 'wp_ajax_cta_create_exam_assessment', array( $this, 'ajax_create_exam_assessment' ) );
 		add_action( 'wp_ajax_cta_approve_associate', array( $this, 'ajax_approve_associate' ) );
 		add_action( 'wp_ajax_cta_reject_associate', array( $this, 'ajax_reject_associate' ) );
 		add_action( 'wp_ajax_cta_assign_associate_plan', array( $this, 'ajax_assign_associate_plan' ) );
@@ -435,6 +436,7 @@ class CTA_Admin {
 		$modules   = $course_id ? CTA_Database::get_course_modules( $course_id ) : array();
 		$quiz      = $course_id ? $this->get_course_quiz( $course_id ) : null;
 		$quiz_questions = ( $quiz ) ? CTA_Database::get_quiz_questions( (int) $quiz->id ) : array();
+		$quizzes   = $course_id ? CTA_Database::get_quizzes_by_course( $course_id, false ) : array();
 		$resources = $course_id ? CTA_Database::get_downloadable_resources( $course_id ) : array();
 		$objectives = array();
 
@@ -502,6 +504,7 @@ class CTA_Admin {
 				'modules'              => $modules,
 				'quiz'                 => $quiz,
 				'quiz_questions'       => $quiz_questions,
+				'quizzes'              => $quizzes,
 				'resources'            => $resources,
 				'objectives'               => $objectives,
 				'categories'               => self::get_course_categories(),
@@ -2575,18 +2578,49 @@ class CTA_Admin {
 		$this->verify_admin_ajax();
 
 		$course_id = absint( wp_unslash( $_POST['course_id'] ?? 0 ) );
+		$quiz_id   = absint( wp_unslash( $_POST['quiz_id'] ?? 0 ) );
 
 		if ( ! $course_id ) {
 			wp_send_json_error( array( 'message' => __( 'Invalid course.', 'cta-lms' ) ) );
 		}
 
-		$quiz = $this->get_course_quiz( $course_id );
+		CTA_Database::maybe_add_multi_quiz_support();
+
+		$course  = CTA_Database::get_course( $course_id );
+		$quizzes = CTA_Database::get_quizzes_by_course( $course_id, false );
+		$quiz    = null;
+
+		if ( $quiz_id ) {
+			$candidate = CTA_Database::get_quiz( $quiz_id );
+			if ( $candidate && (int) $candidate->course_id === $course_id ) {
+				$quiz = $candidate;
+			}
+		}
+
+		if ( ! $quiz && ! empty( $quizzes ) ) {
+			$quiz = $quizzes[0];
+		}
+
+		$quiz_list = array();
+		foreach ( $quizzes as $row ) {
+			$quiz_list[] = array(
+				'id'         => (int) $row->id,
+				'title'      => (string) $row->title,
+				'quiz_type'  => (string) ( $row->quiz_type ?? 'final' ),
+				'sort_order' => (int) ( $row->sort_order ?? 0 ),
+				'status'     => (string) $row->status,
+				'questions'  => count( CTA_Database::get_quiz_questions( (int) $row->id ) ),
+			);
+		}
 
 		if ( ! $quiz ) {
 			wp_send_json_success(
 				array(
 					'quiz'      => null,
 					'questions' => array(),
+					'quizzes'   => $quiz_list,
+					'is_exam_prep' => $course && class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course ),
+					'templates' => CTA_Database::get_exam_prep_assessment_templates(),
 				)
 			);
 		}
@@ -2610,10 +2644,100 @@ class CTA_Admin {
 		wp_send_json_success(
 			array(
 				'quiz'      => array(
-					'id'    => (int) $quiz->id,
-					'title' => $quiz->title,
+					'id'         => (int) $quiz->id,
+					'title'      => $quiz->title,
+					'quiz_type'  => (string) ( $quiz->quiz_type ?? 'final' ),
+					'sort_order' => (int) ( $quiz->sort_order ?? 0 ),
 				),
 				'questions' => $payload,
+				'quizzes'   => $quiz_list,
+				'is_exam_prep' => $course && class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course ),
+				'templates' => CTA_Database::get_exam_prep_assessment_templates(),
+			)
+		);
+	}
+
+	/**
+	 * AJAX: create a blank Exam Prep assessment (Practice / Form A / Form B / custom).
+	 */
+	public function ajax_create_exam_assessment() {
+		$this->verify_admin_ajax();
+
+		$course_id = absint( wp_unslash( $_POST['course_id'] ?? 0 ) );
+		$quiz_type = sanitize_key( wp_unslash( $_POST['quiz_type'] ?? 'practice' ) );
+		$title     = sanitize_text_field( wp_unslash( $_POST['quiz_title'] ?? '' ) );
+
+		if ( ! $course_id ) {
+			wp_send_json_error( array( 'message' => __( 'Course is required.', 'cta-lms' ) ) );
+		}
+
+		$course = CTA_Database::get_course( $course_id );
+		if ( ! $course || ! class_exists( 'CTA_Exam_Access' ) || ! CTA_Exam_Access::is_exam_prep( $course ) ) {
+			wp_send_json_error( array( 'message' => __( 'Assessments can only be added to Exam Preparation programs.', 'cta-lms' ) ) );
+		}
+
+		CTA_Database::maybe_add_multi_quiz_support();
+
+		$allowed_types = array( 'practice', 'form_a', 'form_b', 'custom' );
+		if ( ! in_array( $quiz_type, $allowed_types, true ) ) {
+			$quiz_type = 'custom';
+		}
+
+		$templates = CTA_Database::get_exam_prep_assessment_templates();
+		$sort      = 100;
+		foreach ( $templates as $tpl ) {
+			if ( $tpl['quiz_type'] === $quiz_type ) {
+				if ( '' === $title ) {
+					$title = $tpl['title'];
+				}
+				$sort = (int) $tpl['sort_order'];
+				break;
+			}
+		}
+
+		if ( '' === $title ) {
+			$title = __( 'Custom Assessment', 'cta-lms' );
+		}
+
+		// Avoid duplicate Practice/Form A/Form B slots unless explicitly custom.
+		if ( 'custom' !== $quiz_type ) {
+			$existing = CTA_Database::get_quizzes_by_course( $course_id, false );
+			foreach ( $existing as $row ) {
+				if ( (string) ( $row->quiz_type ?? '' ) === $quiz_type ) {
+					wp_send_json_error(
+						array(
+							'message' => __( 'That assessment already exists for this program. Open it from the list to edit.', 'cta-lms' ),
+							'quiz_id' => (int) $row->id,
+						)
+					);
+				}
+			}
+		}
+
+		global $wpdb;
+		$inserted = $wpdb->insert(
+			$wpdb->prefix . 'cta_quizzes',
+			array(
+				'course_id'       => $course_id,
+				'title'           => $title,
+				'quiz_type'       => $quiz_type,
+				'sort_order'      => $sort,
+				'status'          => 'active',
+				'passing_score'   => 70,
+				'time_limit_mins' => 0,
+				'max_attempts'    => 0,
+			),
+			array( '%d', '%s', '%s', '%d', '%s', '%d', '%d', '%d' )
+		);
+
+		if ( ! $inserted ) {
+			wp_send_json_error( array( 'message' => __( 'Could not create assessment.', 'cta-lms' ) ) );
+		}
+
+		wp_send_json_success(
+			array(
+				'quiz_id' => (int) $wpdb->insert_id,
+				'message' => __( 'Assessment created. Add questions and save.', 'cta-lms' ),
 			)
 		);
 	}
@@ -2624,19 +2748,56 @@ class CTA_Admin {
 	public function ajax_save_quiz() {
 		$this->verify_admin_ajax();
 
-		$course_id   = absint( wp_unslash( $_POST['course_id'] ?? 0 ) );
-		$quiz_title  = sanitize_text_field( wp_unslash( $_POST['quiz_title'] ?? '' ) );
+		$course_id      = absint( wp_unslash( $_POST['course_id'] ?? 0 ) );
+		$quiz_id_in     = absint( wp_unslash( $_POST['quiz_id'] ?? 0 ) );
+		$quiz_title     = sanitize_text_field( wp_unslash( $_POST['quiz_title'] ?? '' ) );
+		$quiz_type      = sanitize_key( wp_unslash( $_POST['quiz_type'] ?? '' ) );
 		$questions_json = wp_unslash( $_POST['questions_json'] ?? '' );
 
 		if ( ! $course_id ) {
 			wp_send_json_error( array( 'message' => __( 'Course is required.', 'cta-lms' ) ) );
 		}
 
+		CTA_Database::maybe_add_multi_quiz_support();
+
 		global $wpdb;
 
-		$quiz = $this->get_course_quiz( $course_id );
-		$course = CTA_Database::get_course( $course_id );
+		$course      = CTA_Database::get_course( $course_id );
+		$is_exam_prep = $course && class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course );
+		$quiz        = null;
+
+		if ( $quiz_id_in ) {
+			$candidate = CTA_Database::get_quiz( $quiz_id_in );
+			if ( $candidate && (int) $candidate->course_id === $course_id ) {
+				$quiz = $candidate;
+			}
+		}
+
+		if ( ! $quiz && ! $is_exam_prep ) {
+			$quiz = $this->get_course_quiz( $course_id );
+		}
+
+		$default_type = $is_exam_prep ? 'practice' : 'final';
+		if ( '' === $quiz_type ) {
+			$quiz_type = $quiz && ! empty( $quiz->quiz_type ) ? (string) $quiz->quiz_type : $default_type;
+		}
+
+		$allowed_types = array( 'final', 'practice', 'form_a', 'form_b', 'custom' );
+		if ( ! in_array( $quiz_type, $allowed_types, true ) ) {
+			$quiz_type = $default_type;
+		}
+
 		$title = $quiz_title ? $quiz_title : ( $course ? $course->title . ' Quiz' : 'Course Quiz' );
+		$sort  = $quiz ? (int) ( $quiz->sort_order ?? 0 ) : ( $is_exam_prep ? 10 : 0 );
+
+		if ( $is_exam_prep && ( ! $quiz || empty( $quiz->sort_order ) ) ) {
+			foreach ( CTA_Database::get_exam_prep_assessment_templates() as $tpl ) {
+				if ( $tpl['quiz_type'] === $quiz_type ) {
+					$sort = (int) $tpl['sort_order'];
+					break;
+				}
+			}
+		}
 
 		if ( $quiz ) {
 			$quiz_id = (int) $quiz->id;
@@ -2644,13 +2805,15 @@ class CTA_Admin {
 				$wpdb->prefix . 'cta_quizzes',
 				array(
 					'title'           => $title,
+					'quiz_type'       => $quiz_type,
+					'sort_order'      => $sort,
 					'status'          => 'active',
 					'passing_score'   => 70,
 					'time_limit_mins' => 0,
 					'max_attempts'    => 0,
 				),
 				array( 'id' => $quiz_id ),
-				array( '%s', '%s', '%d', '%d', '%d' ),
+				array( '%s', '%s', '%d', '%s', '%d', '%d', '%d' ),
 				array( '%d' )
 			);
 		} else {
@@ -2659,12 +2822,14 @@ class CTA_Admin {
 				array(
 					'course_id'       => $course_id,
 					'title'           => $title,
+					'quiz_type'       => $quiz_type,
+					'sort_order'      => $sort,
 					'status'          => 'active',
 					'passing_score'   => 70,
 					'time_limit_mins' => 0,
 					'max_attempts'    => 0,
 				),
-				array( '%d', '%s', '%s', '%d', '%d', '%d' )
+				array( '%d', '%s', '%s', '%d', '%s', '%d', '%d', '%d' )
 			);
 			$quiz_id = (int) $wpdb->insert_id;
 		}
@@ -2710,15 +2875,31 @@ class CTA_Admin {
 			}
 		}
 
+		$quizzes   = CTA_Database::get_quizzes_by_course( $course_id, false );
+		$quiz_list = array();
+		foreach ( $quizzes as $row ) {
+			$quiz_list[] = array(
+				'id'         => (int) $row->id,
+				'title'      => (string) $row->title,
+				'quiz_type'  => (string) ( $row->quiz_type ?? 'final' ),
+				'sort_order' => (int) ( $row->sort_order ?? 0 ),
+				'status'     => (string) $row->status,
+				'questions'  => count( CTA_Database::get_quiz_questions( (int) $row->id ) ),
+			);
+		}
+
 		wp_send_json_success(
 			array(
 				'quiz_id'   => $quiz_id,
 				'message'   => __( 'Quiz saved successfully.', 'cta-lms' ),
 				'quiz'      => array(
-					'id'    => $quiz_id,
-					'title' => $title,
+					'id'         => $quiz_id,
+					'title'      => $title,
+					'quiz_type'  => $quiz_type,
+					'sort_order' => $sort,
 				),
 				'questions' => CTA_Database::get_quiz_questions( $quiz_id ),
+				'quizzes'   => $quiz_list,
 			)
 		);
 	}
@@ -2969,9 +3150,11 @@ class CTA_Admin {
 	private function get_course_quiz( $course_id ) {
 		global $wpdb;
 
+		CTA_Database::maybe_add_multi_quiz_support();
+
 		return $wpdb->get_row(
 			$wpdb->prepare(
-				"SELECT * FROM {$wpdb->prefix}cta_quizzes WHERE course_id = %d LIMIT 1",
+				"SELECT * FROM {$wpdb->prefix}cta_quizzes WHERE course_id = %d ORDER BY sort_order ASC, id ASC LIMIT 1",
 				$course_id
 			)
 		);

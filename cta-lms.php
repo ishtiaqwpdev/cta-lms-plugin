@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.101' );
+	define( 'CTA_VERSION', '1.0.102' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -406,6 +406,11 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 			if ( version_compare( $installed, '1.0.100', '<' ) && class_exists( 'CTA_Course_Catalog' ) ) {
 				CTA_Course_Catalog::restore_ce_pricing();
 				update_option( 'cta_ce_price_catalog_fp', cta_ce_price_catalog_fingerprint(), false );
+			}
+
+			// Enable multiple Exam Prep assessments (Practice / Form A / Form B).
+			if ( version_compare( $installed, '1.0.102', '<' ) && class_exists( 'CTA_Database' ) ) {
+				CTA_Database::maybe_add_multi_quiz_support();
 			}
 
 			// Decouple supervision application pending from general account / CE access.

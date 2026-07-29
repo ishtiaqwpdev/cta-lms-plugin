@@ -399,7 +399,7 @@
 
     if (quizTitle) {
       $status.html(
-        "<p>Quiz exists for this course. <strong>" +
+        "<p>Assessment selected: <strong>" +
           $("<div>").text(quizTitle).html() +
           "</strong></p>"
       );
@@ -437,25 +437,70 @@
     $list.html(html);
   }
 
-  function loadQuizPanel(courseId) {
-    return $.post(ctaAdmin.ajaxUrl, {
+  function populateAssessmentSelect(quizzes, activeId) {
+    var $select = $("#cta-active-quiz-select");
+    if (!$select.length) {
+      return;
+    }
+
+    $select.empty();
+    (quizzes || []).forEach(function (quiz) {
+      var opt = $("<option></option>")
+        .attr("value", quiz.id)
+        .text(quiz.title + (quiz.questions ? " (" + quiz.questions + " Q)" : ""));
+      if (String(quiz.id) === String(activeId)) {
+        opt.prop("selected", true);
+      }
+      $select.append(opt);
+    });
+  }
+
+  function loadQuizPanel(courseId, quizId) {
+    var payload = {
       action: "cta_load_quiz",
       nonce: ctaAdmin.nonce,
       course_id: courseId
-    }).done(function (response) {
+    };
+    if (quizId) {
+      payload.quiz_id = quizId;
+    }
+
+    return $.post(ctaAdmin.ajaxUrl, payload).done(function (response) {
       if (response.success) {
-        if (response.data.quiz && response.data.quiz.title) {
-          $("#cta-quiz-title").val(response.data.quiz.title);
+        var quiz = response.data.quiz || null;
+        var activeId = quiz ? quiz.id : 0;
+
+        if (quiz && quiz.title) {
+          $("#cta-quiz-title").val(quiz.title);
+        } else {
+          $("#cta-quiz-title").val("");
         }
+
+        if (quiz && quiz.quiz_type && $("#cta-quiz-type").length) {
+          $("#cta-quiz-type").val(quiz.quiz_type);
+        }
+
+        $("#cta-quiz-panel").attr("data-quiz-id", activeId || 0);
+        populateAssessmentSelect(response.data.quizzes || [], activeId);
         renderQuizQuestions(response.data.questions || []);
         renderQuizSavedList(
           response.data.questions || [],
-          response.data.quiz ? response.data.quiz.title : ""
+          quiz ? quiz.title : ""
         );
       } else {
         renderQuizQuestions([]);
         renderQuizSavedList([], "");
       }
+    });
+  }
+
+  function createExamAssessment(courseId, quizType, title) {
+    return $.post(ctaAdmin.ajaxUrl, {
+      action: "cta_create_exam_assessment",
+      nonce: ctaAdmin.nonce,
+      course_id: courseId,
+      quiz_type: quizType,
+      quiz_title: title || ""
     });
   }
 
@@ -467,9 +512,55 @@
     }
 
     var courseId = $panel.data("course-id");
+    var isExamPrep = String($panel.data("is-exam-prep") || "") === "1";
+    var initialQuizId = parseInt($panel.data("quiz-id"), 10) || 0;
 
-    loadQuizPanel(courseId).fail(function () {
+    loadQuizPanel(courseId, initialQuizId).fail(function () {
       renderQuizQuestions([]);
+    });
+
+    $("#cta-active-quiz-select").on("change", function () {
+      var quizId = parseInt($(this).val(), 10) || 0;
+      loadQuizPanel(courseId, quizId);
+    });
+
+    function handleAddAssessment(type, title) {
+      createExamAssessment(courseId, type, title)
+        .done(function (response) {
+          if (!response.success) {
+            if (response.data && response.data.quiz_id) {
+              loadQuizPanel(courseId, response.data.quiz_id);
+              return;
+            }
+            window.alert(
+              response.data && response.data.message
+                ? response.data.message
+                : "Unable to create assessment."
+            );
+            return;
+          }
+          loadQuizPanel(courseId, response.data.quiz_id);
+        })
+        .fail(function () {
+          window.alert("Unable to create assessment.");
+        });
+    }
+
+    $("#cta-add-assessment-practice").on("click", function () {
+      handleAddAssessment("practice", "Practice Assessment");
+    });
+    $("#cta-add-assessment-form-a").on("click", function () {
+      handleAddAssessment("form_a", "Form A — Full-Length Simulation");
+    });
+    $("#cta-add-assessment-form-b").on("click", function () {
+      handleAddAssessment("form_b", "Form B — Full-Length Simulation");
+    });
+    $("#cta-add-assessment-custom").on("click", function () {
+      var title = window.prompt("Custom assessment title:", "Custom Assessment");
+      if (!title) {
+        return;
+      }
+      handleAddAssessment("custom", title);
     });
 
     $("#cta-add-quiz-question").on("click", function () {
@@ -500,6 +591,7 @@
       var btn = $(this);
       var $status = $("#cta-quiz-save-status");
       var questions = collectQuizQuestions();
+      var quizId = parseInt($panel.attr("data-quiz-id"), 10) || 0;
 
       if (!questions.length) {
         window.alert("Please add at least one question.");
@@ -513,7 +605,9 @@
         action: "cta_save_quiz",
         nonce: ctaAdmin.nonce,
         course_id: courseId,
+        quiz_id: quizId,
         quiz_title: $("#cta-quiz-title").val(),
+        quiz_type: $("#cta-quiz-type").length ? $("#cta-quiz-type").val() : (isExamPrep ? "practice" : "final"),
         questions_json: JSON.stringify(questions)
       })
         .done(function (response) {
@@ -529,7 +623,11 @@
           }
 
           $status.addClass("is-success").text(response.data.message || "Quiz saved.");
-          btn.text("Save Quiz");
+          btn.text(isExamPrep ? "Save Assessment" : "Save Quiz");
+          if (response.data.quiz && response.data.quiz.id) {
+            $panel.attr("data-quiz-id", response.data.quiz.id);
+          }
+          populateAssessmentSelect(response.data.quizzes || [], response.data.quiz_id);
           renderQuizQuestions(response.data.questions || collectQuizQuestions());
           renderQuizSavedList(
             response.data.questions || collectQuizQuestions(),

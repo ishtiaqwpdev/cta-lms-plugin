@@ -183,13 +183,16 @@ class CTA_Database {
   id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   course_id bigint(20) unsigned NOT NULL,
   title varchar(255) NOT NULL,
+  quiz_type varchar(40) NOT NULL DEFAULT 'final',
+  sort_order int(11) NOT NULL DEFAULT 0,
   passing_score int(11) DEFAULT 70,
   time_limit_mins int(11) DEFAULT 0,
   max_attempts int(11) DEFAULT 0,
   status varchar(20) DEFAULT 'active',
   created_at datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY  (id),
-  UNIQUE KEY course_id (course_id)
+  KEY course_id (course_id),
+  KEY course_sort (course_id, sort_order, id)
 ) $charset_collate;";
 
 		$table_quiz_questions = $wpdb->prefix . 'cta_quiz_questions';
@@ -303,6 +306,7 @@ class CTA_Database {
 		dbDelta( $sql_resources );
 
 		self::maybe_add_exam_prep_columns();
+		self::maybe_add_multi_quiz_support();
 		self::maybe_add_resource_columns();
 		self::maybe_add_syllabus_columns();
 		self::maybe_add_evaluation_submission_columns();
@@ -975,7 +979,162 @@ class CTA_Database {
 	}
 
 	/**
-	 * Fetch active quiz for a course.
+	 * Allow multiple quizzes per course (Exam Prep Practice / Form A / Form B).
+	 *
+	 * Drops the legacy UNIQUE(course_id) constraint, adds quiz_type + sort_order,
+	 * and backfills types for existing rows.
+	 */
+	public static function maybe_add_multi_quiz_support() {
+		global $wpdb;
+
+		$table = $wpdb->prefix . 'cta_quizzes';
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) );
+		if ( $exists !== $table ) {
+			return;
+		}
+
+		$columns = array(
+			'quiz_type'  => "ALTER TABLE {$table} ADD COLUMN quiz_type varchar(40) NOT NULL DEFAULT 'final' AFTER title",
+			'sort_order' => "ALTER TABLE {$table} ADD COLUMN sort_order int(11) NOT NULL DEFAULT 0 AFTER quiz_type",
+		);
+
+		foreach ( $columns as $column => $sql ) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$col_exists = $wpdb->get_results( $wpdb->prepare( "SHOW COLUMNS FROM {$table} LIKE %s", $column ) );
+			if ( empty( $col_exists ) ) {
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.NotPrepared
+				$wpdb->query( $sql );
+			}
+		}
+
+		// Drop UNIQUE(course_id) so one Exam Prep program can own multiple assessments.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$indexes = $wpdb->get_results( "SHOW INDEX FROM {$table}", ARRAY_A );
+		$has_unique_course = false;
+		$has_plain_course  = false;
+
+		foreach ( (array) $indexes as $index ) {
+			$name   = isset( $index['Key_name'] ) ? (string) $index['Key_name'] : '';
+			$unique = isset( $index['Non_unique'] ) ? (int) $index['Non_unique'] : 1;
+			$col    = isset( $index['Column_name'] ) ? (string) $index['Column_name'] : '';
+
+			if ( 'course_id' === $name && 0 === $unique && 'course_id' === $col ) {
+				$has_unique_course = true;
+			}
+			if ( 'course_id' === $name && 1 === $unique ) {
+				$has_plain_course = true;
+			}
+			if ( 'course_sort' === $name ) {
+				$has_plain_course = true;
+			}
+		}
+
+		if ( $has_unique_course ) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.NotPrepared
+			$wpdb->query( "ALTER TABLE {$table} DROP INDEX course_id" );
+			$has_plain_course = false;
+		}
+
+		if ( ! $has_plain_course ) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.NotPrepared
+			$wpdb->query( "ALTER TABLE {$table} ADD KEY course_id (course_id)" );
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.NotPrepared
+			$wpdb->query( "ALTER TABLE {$table} ADD KEY course_sort (course_id, sort_order, id)" );
+		}
+
+		// Backfill quiz_type for legacy single-quiz Exam Prep rows.
+		$courses_table = $wpdb->prefix . 'cta_courses';
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$wpdb->query(
+			"UPDATE {$table} q
+			INNER JOIN {$courses_table} c ON c.id = q.course_id
+			SET q.quiz_type = 'practice', q.sort_order = 10
+			WHERE c.product_type = 'exam_prep'
+			AND (q.quiz_type = '' OR q.quiz_type IS NULL OR q.quiz_type = 'final')"
+		);
+	}
+
+	/**
+	 * Fetch a quiz by ID.
+	 *
+	 * @param int $quiz_id Quiz ID.
+	 * @return object|null
+	 */
+	public static function get_quiz( $quiz_id ) {
+		global $wpdb;
+
+		$quiz_id = absint( $quiz_id );
+		if ( ! $quiz_id ) {
+			return null;
+		}
+
+		$table = $wpdb->prefix . 'cta_quizzes';
+
+		return $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT * FROM {$table} WHERE id = %d LIMIT 1",
+				$quiz_id
+			)
+		);
+	}
+
+	/**
+	 * Fetch all quizzes for a course (supports multiple Exam Prep assessments).
+	 *
+	 * @param int  $course_id   Course ID.
+	 * @param bool $active_only Only active quizzes.
+	 * @return array
+	 */
+	public static function get_quizzes_by_course( $course_id, $active_only = true ) {
+		global $wpdb;
+
+		$course_id = absint( $course_id );
+		if ( ! $course_id ) {
+			return array();
+		}
+
+		$table = $wpdb->prefix . 'cta_quizzes';
+		$sql   = "SELECT * FROM {$table} WHERE course_id = %d";
+		$args  = array( $course_id );
+
+		if ( $active_only ) {
+			$sql .= " AND status = 'active'";
+		}
+
+		$sql .= ' ORDER BY sort_order ASC, id ASC';
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+		return $wpdb->get_results( $wpdb->prepare( $sql, $args ) );
+	}
+
+	/**
+	 * Resolve a course quiz, optionally by explicit quiz ID.
+	 *
+	 * @param int $course_id Course ID.
+	 * @param int $quiz_id   Optional quiz ID (must belong to course).
+	 * @return object|null
+	 */
+	public static function get_quiz_for_course( $course_id, $quiz_id = 0 ) {
+		$course_id = absint( $course_id );
+		$quiz_id   = absint( $quiz_id );
+
+		if ( $quiz_id ) {
+			$quiz = self::get_quiz( $quiz_id );
+			if (
+				$quiz
+				&& (int) $quiz->course_id === $course_id
+				&& 'active' === (string) $quiz->status
+			) {
+				return $quiz;
+			}
+		}
+
+		return self::get_quiz_by_course( $course_id );
+	}
+
+	/**
+	 * Fetch primary/active quiz for a course (first by sort_order).
 	 *
 	 * @param int $course_id Course ID.
 	 * @return object|null
@@ -987,9 +1146,37 @@ class CTA_Database {
 
 		return $wpdb->get_row(
 			$wpdb->prepare(
-				"SELECT * FROM {$table} WHERE course_id = %d AND status = 'active' LIMIT 1",
+				"SELECT * FROM {$table}
+				WHERE course_id = %d AND status = 'active'
+				ORDER BY sort_order ASC, id ASC
+				LIMIT 1",
 				$course_id
 			)
+		);
+	}
+
+	/**
+	 * Default Exam Prep assessment templates (Practice / Form A / Form B).
+	 *
+	 * @return array
+	 */
+	public static function get_exam_prep_assessment_templates() {
+		return array(
+			array(
+				'quiz_type'  => 'practice',
+				'title'      => __( 'Practice Assessment', 'cta-lms' ),
+				'sort_order' => 10,
+			),
+			array(
+				'quiz_type'  => 'form_a',
+				'title'      => __( 'Form A — Full-Length Simulation', 'cta-lms' ),
+				'sort_order' => 20,
+			),
+			array(
+				'quiz_type'  => 'form_b',
+				'title'      => __( 'Form B — Full-Length Simulation', 'cta-lms' ),
+				'sort_order' => 30,
+			),
 		);
 	}
 

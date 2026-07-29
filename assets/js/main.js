@@ -2574,6 +2574,7 @@
       exam_complete: app.querySelector('[data-quiz-panel="exam_complete"]'),
       certificate: app.querySelector('[data-quiz-panel="certificate"]')
     };
+    var questionsEl = document.getElementById("cta-quiz-questions");
 
     function showPanel(name) {
       Object.keys(panels).forEach(function (key) {
@@ -2845,53 +2846,66 @@
     $(app).on("change", '.cta-quiz-question input[type="radio"]', updateAnswerCounter);
 
     var startBtn = document.getElementById("cta-start-quiz");
+    var retakeBtn = document.getElementById("cta-retake-exam-quiz");
+
+    function startQuizAttempt(button) {
+      if (!button) {
+        return;
+      }
+      var originalText = button.textContent;
+      button.disabled = true;
+      button.textContent = "Loading...";
+
+      $.post(ctaAjax.ajaxUrl, {
+        action: "cta_start_quiz",
+        nonce: ctaAjax.nonce,
+        course_id: courseId,
+        quiz_id: quizId || 0
+      })
+        .done(function (response) {
+          if (!response.success || !response.data) {
+            window.alert(
+              response.data && response.data.message
+                ? response.data.message
+                : "Unable to start quiz."
+            );
+            button.disabled = false;
+            button.textContent = originalText;
+            return;
+          }
+
+          attemptId = response.data.attempt_id;
+          app.setAttribute("data-attempt-id", String(attemptId));
+
+          if (response.data.question_count) {
+            questionCount = parseInt(response.data.question_count, 10) || questionCount;
+          }
+
+          if (response.data.html && questionsEl) {
+            questionsEl.innerHTML = response.data.html;
+          }
+
+          answeredCount = 0;
+          updateAnswerCounter();
+          showPanel("questions");
+          button.disabled = false;
+          button.textContent = originalText;
+        })
+        .fail(function () {
+          window.alert("Something went wrong. Please try again.");
+          button.disabled = false;
+          button.textContent = originalText;
+        });
+    }
+
     if (startBtn) {
       startBtn.addEventListener("click", function () {
-        startBtn.disabled = true;
-        startBtn.textContent = "Loading...";
-
-        $.post(ctaAjax.ajaxUrl, {
-          action: "cta_start_quiz",
-          nonce: ctaAjax.nonce,
-          course_id: courseId
-        })
-          .done(function (response) {
-            if (!response.success || !response.data) {
-              window.alert(
-                response.data && response.data.message
-                  ? response.data.message
-                  : "Unable to start quiz."
-              );
-              startBtn.disabled = false;
-              startBtn.textContent = "Start Quiz";
-              return;
-            }
-
-            attemptId = response.data.attempt_id;
-            app.setAttribute("data-attempt-id", String(attemptId));
-
-            if (response.data.question_count) {
-              questionCount = parseInt(response.data.question_count, 10) || questionCount;
-            }
-
-            // Keep quizzes untimed regardless of server payload.
-            timeLimitMins = 0;
-            secondsRemaining = 0;
-
-            var questionsWrap = document.getElementById("cta-quiz-questions");
-            if (questionsWrap && response.data.html) {
-              questionsWrap.innerHTML = response.data.html;
-            }
-
-            showPanel("questions");
-            updateAnswerCounter();
-            startTimer();
-          })
-          .fail(function () {
-            window.alert("Something went wrong. Please try again.");
-            startBtn.disabled = false;
-            startBtn.textContent = "Start Quiz";
-          });
+        startQuizAttempt(startBtn);
+      });
+    }
+    if (retakeBtn) {
+      retakeBtn.addEventListener("click", function () {
+        startQuizAttempt(retakeBtn);
       });
     }
 
