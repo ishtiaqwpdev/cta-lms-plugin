@@ -3937,9 +3937,31 @@ button.pagination__item:disabled {
 .cta-plugin-wrapper .course-player__lesson-actions {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: stretch;
   gap: var(--space-md);
   margin-bottom: var(--space-md);
+}
+
+.cta-plugin-wrapper .course-player__nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: var(--space-md);
+  margin-top: 0;
+  flex: 1 1 auto;
+}
+
+.cta-plugin-wrapper .course-player__lesson-actions > .course-player__action-btn,
+.cta-plugin-wrapper .course-player__nav-links > .course-player__action-btn {
+  flex: 1 1 0;
+  min-width: 11.5rem;
+  min-height: 2.75rem;
+  height: 2.75rem;
+  padding: 0 var(--space-lg);
+  box-sizing: border-box;
+  font-size: var(--font-size-sm);
+  line-height: 1.2;
+  white-space: nowrap;
 }
 
 .cta-plugin-wrapper .course-player__notice {
@@ -4394,10 +4416,15 @@ button.pagination__item:disabled {
 
   .cta-plugin-wrapper .course-player__nav-links {
     flex-direction: column;
+    flex: 1 1 100%;
+    width: 100%;
   }
 
+  .cta-plugin-wrapper .course-player__lesson-actions > .course-player__action-btn,
+  .cta-plugin-wrapper .course-player__nav-links > .course-player__action-btn,
   .cta-plugin-wrapper .course-player__nav-links .btn {
     width: 100%;
+    min-width: 0;
     justify-content: center;
   }
 
@@ -5812,9 +5839,10 @@ button.pagination__item:disabled {
 
 .cta-plugin-wrapper .course-player__nav-links {
   display: flex;
-  gap: var(--space-sm);
+  gap: var(--space-md);
   flex-wrap: wrap;
-  margin-top: var(--space-md);
+  margin-top: 0;
+  align-items: stretch;
 }
 
 .cta-plugin-wrapper .cta-module-list {

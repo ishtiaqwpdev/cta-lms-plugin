@@ -103,14 +103,14 @@ $next_url = $next_module
 
 				<div class="course-player__lesson-actions" data-course-player-actions>
 					<?php if ( $module_complete ) : ?>
-						<button type="button" class="btn btn-primary" id="cta-mark-complete" disabled>
+						<button type="button" class="btn btn-primary course-player__action-btn" id="cta-mark-complete" disabled>
 							<?php echo cta_lms_get_icon( 'check-circle', 18, 'cta-icon cta-icon--inline' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 							<?php echo esc_html__( 'Completed', 'cta-lms' ); ?>
 						</button>
 					<?php else : ?>
 						<button
 							type="button"
-							class="btn btn-primary"
+							class="btn btn-primary course-player__action-btn"
 							id="cta-mark-complete"
 							data-module-id="<?php echo esc_attr( $module->id ); ?>"
 							data-course-id="<?php echo esc_attr( $course->id ); ?>"
@@ -121,10 +121,10 @@ $next_url = $next_module
 
 					<div class="course-player__nav-links">
 						<?php if ( $prev_url ) : ?>
-							<a href="<?php echo esc_url( $prev_url ); ?>" class="btn btn-outline btn--sm">&larr; <?php echo esc_html__( 'Previous Module', 'cta-lms' ); ?></a>
+							<a href="<?php echo esc_url( $prev_url ); ?>" class="btn btn-outline course-player__action-btn">&larr; <?php echo esc_html__( 'Previous Module', 'cta-lms' ); ?></a>
 						<?php endif; ?>
 						<?php if ( $next_url ) : ?>
-							<a href="<?php echo esc_url( $next_url ); ?>" class="btn btn-outline btn--sm cta-next-module-link"><?php echo esc_html__( 'Next Module', 'cta-lms' ); ?> &rarr;</a>
+							<a href="<?php echo esc_url( $next_url ); ?>" class="btn btn-outline course-player__action-btn cta-next-module-link"><?php echo esc_html__( 'Next Module', 'cta-lms' ); ?> &rarr;</a>
 						<?php endif; ?>
 					</div>
 				</div>

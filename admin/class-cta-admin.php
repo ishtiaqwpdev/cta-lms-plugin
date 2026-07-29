@@ -178,11 +178,10 @@ class CTA_Admin {
 	}
 
 	/**
-	 * Keep CTA learner roles from hitting a cryptic wp-admin denial screen.
+	 * Keep CTA learner roles out of wp-admin without showing an error screen.
 	 *
 	 * Administrators always continue into WordPress normally.
-	 * Associates / CE learners get a clear logout → admin login path so the
-	 * site owner can reach the dashboard without hunting for a session bug.
+	 * Associates / CE learners are silently redirected to their frontend dashboard.
 	 */
 	public function redirect_frontend_roles_from_admin() {
 		if ( ! is_user_logged_in() || wp_doing_ajax() || wp_doing_cron() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
@@ -220,9 +219,7 @@ class CTA_Admin {
 			return;
 		}
 
-		$admin_login = wp_login_url( admin_url() );
-		$logout_url  = wp_logout_url( $admin_login );
-		$frontend    = home_url( '/' );
+		$frontend = home_url( '/' );
 
 		if ( in_array( 'cta_associate', $roles, true ) ) {
 			if ( class_exists( 'CTA_Associate_Access' ) ) {
@@ -246,35 +243,8 @@ class CTA_Admin {
 			}
 		}
 
-		$role_label = in_array( 'cta_associate', $roles, true )
-			? __( 'Associate', 'cta-lms' )
-			: __( 'Licensed Professional', 'cta-lms' );
-
-		$message = '<p style="font-size:14px;line-height:1.5;">'
-			. sprintf(
-				/* translators: 1: username, 2: role label */
-				esc_html__( 'You are logged in as %1$s (%2$s). That account cannot open the WordPress admin dashboard.', 'cta-lms' ),
-				'<strong>' . esc_html( $user->user_login ) . '</strong>',
-				esc_html( $role_label )
-			)
-			. '</p>'
-			. '<p style="margin:16px 0;">'
-			. '<a class="button button-primary" style="margin-right:8px;" href="' . esc_url( $logout_url ) . '">'
-			. esc_html__( 'Log out & sign in as Administrator', 'cta-lms' )
-			. '</a>'
-			. '<a class="button" href="' . esc_url( $frontend ) . '">'
-			. esc_html__( 'Go to my dashboard', 'cta-lms' )
-			. '</a>'
-			. '</p>';
-
-		wp_die(
-			$message, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped above
-			esc_html__( 'WordPress Admin Access', 'cta-lms' ),
-			array(
-				'response'  => 403,
-				'back_link' => false,
-			)
-		);
+		wp_safe_redirect( $frontend );
+		exit;
 	}
 
 	/**
