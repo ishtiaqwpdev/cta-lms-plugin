@@ -193,6 +193,19 @@ class CTA_Admin {
 			return;
 		}
 
+		// Allow gated learner file actions that still hit admin-post.php (legacy cert links, materials).
+		global $pagenow;
+		if ( 'admin-post.php' === $pagenow ) {
+			$action = sanitize_key( wp_unslash( $_REQUEST['action'] ?? '' ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$allowed_learner_actions = array(
+				'cta_print_certificate',
+				'cta_serve_resource',
+			);
+			if ( in_array( $action, $allowed_learner_actions, true ) ) {
+				return;
+			}
+		}
+
 		$user  = wp_get_current_user();
 		$roles = (array) $user->roles;
 

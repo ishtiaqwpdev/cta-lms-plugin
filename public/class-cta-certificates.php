@@ -521,7 +521,10 @@ class CTA_Certificates {
 	}
 
 	/**
-	 * Build a nonce-protected admin-post URL for certificate actions.
+	 * Build a nonce-protected frontend URL for certificate actions.
+	 *
+	 * Uses the site front door (not /wp-admin/) so Associates and other
+	 * learner roles are not blocked by the admin-dashboard gate.
 	 *
 	 * @param int   $certificate_id Certificate ID.
 	 * @param array $extra          Extra query args (print, download).
@@ -535,9 +538,8 @@ class CTA_Certificates {
 
 		$args = array_merge(
 			array(
-				'action'         => 'cta_print_certificate',
-				'certificate_id' => $certificate_id,
-				'_wpnonce'       => wp_create_nonce( 'cta_print_certificate_' . $certificate_id ),
+				'cta_certificate' => $certificate_id,
+				'_wpnonce'        => wp_create_nonce( 'cta_print_certificate_' . $certificate_id ),
 			),
 			is_array( $extra ) ? $extra : array()
 		);
@@ -549,15 +551,31 @@ class CTA_Certificates {
 			unset( $args['download'] );
 		}
 
-		return add_query_arg( $args, admin_url( 'admin-post.php' ) );
+		return add_query_arg( $args, home_url( '/' ) );
+	}
+
+	/**
+	 * Catch frontend certificate print/download requests early on init.
+	 *
+	 * Query shape: /?cta_certificate={id}&_wpnonce=...&print=1|download=1
+	 */
+	public static function maybe_handle_frontend_request() {
+		if ( empty( $_GET['cta_certificate'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			return;
+		}
+
+		self::handle_print_request();
 	}
 
 	/**
 	 * Stream a print-ready certificate (landscape, single page) for Print → Save as PDF,
 	 * or force-download the certificate HTML file when ?download=1.
+	 *
+	 * Access control: the logged-in user must own the certificate (or be an admin).
+	 * No manage_options requirement for the owner.
 	 */
 	public static function handle_print_request() {
-		$certificate_id = absint( wp_unslash( $_GET['certificate_id'] ?? 0 ) );
+		$certificate_id = absint( wp_unslash( $_GET['cta_certificate'] ?? $_GET['certificate_id'] ?? 0 ) );
 
 		if (
 			! $certificate_id
@@ -575,7 +593,11 @@ class CTA_Certificates {
 		$certificate = CTA_Database::get_certificate( $certificate_id );
 		$user_id     = get_current_user_id();
 
-		if ( ! $certificate || ( (int) $certificate->user_id !== $user_id && ! current_user_can( 'manage_options' ) ) ) {
+		// Ownership check — learners may only open their own certificate.
+		$is_owner = $certificate && (int) $certificate->user_id === (int) $user_id;
+		$is_admin = current_user_can( 'manage_options' );
+
+		if ( ! $certificate || ( ! $is_owner && ! $is_admin ) ) {
 			wp_die( esc_html__( 'Certificate not found.', 'cta-lms' ), 404 );
 		}
 

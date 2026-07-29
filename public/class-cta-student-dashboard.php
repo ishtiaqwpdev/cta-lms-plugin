@@ -29,8 +29,10 @@ class CTA_Student_Dashboard {
 		add_action( 'wp_ajax_cta_download_resource', array( $this, 'ajax_download_resource' ) );
 		add_action( 'admin_post_cta_serve_resource', array( 'CTA_Course_Materials', 'handle_serve_request' ) );
 		add_action( 'admin_post_nopriv_cta_serve_resource', array( 'CTA_Course_Materials', 'handle_serve_request' ) );
+		// Legacy admin-post hooks kept for old emailed links; new URLs use the frontend route.
 		add_action( 'admin_post_cta_print_certificate', array( 'CTA_Certificates', 'handle_print_request' ) );
 		add_action( 'admin_post_nopriv_cta_print_certificate', array( 'CTA_Certificates', 'handle_print_request' ) );
+		add_action( 'init', array( 'CTA_Certificates', 'maybe_handle_frontend_request' ), 5 );
 
 		add_filter( 'body_class', array( $this, 'add_body_class' ) );
 	}
