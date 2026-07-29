@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.94' );
+	define( 'CTA_VERSION', '1.0.95' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -388,6 +388,11 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 
 			// Force-sync every CE + Exam Prep price to the approved catalog (before/after logged).
 			if ( version_compare( $installed, '1.0.86', '<' ) && class_exists( 'CTA_Course_Catalog' ) ) {
+				CTA_Course_Catalog::sync_approved_prices();
+			}
+
+			// Re-sync CE prices to the Jul 2026 approved catalog ($79 / $45 / $149 / $129, etc.).
+			if ( version_compare( $installed, '1.0.95', '<' ) && class_exists( 'CTA_Course_Catalog' ) ) {
 				CTA_Course_Catalog::sync_approved_prices();
 			}
 

@@ -33,7 +33,7 @@ class CTA_Course_Catalog {
 				),
 				'title'        => 'California Law & Ethics for Mental Health Professionals: Navigating the Evolving Clinical Landscape',
 				'ce_hours'     => 6.0,
-				'price'        => 89.99,
+				'price'        => 79.00,
 				'category'     => 'Law & Ethics',
 			),
 			array(
@@ -43,7 +43,7 @@ class CTA_Course_Catalog {
 				),
 				'title'        => 'Clinical and Ethical Excellence in Telehealth: The Essential California Framework',
 				'ce_hours'     => 3.0,
-				'price'        => 44.98,
+				'price'        => 45.00,
 				'category'     => 'Clinical Skills',
 			),
 			array(
@@ -53,7 +53,7 @@ class CTA_Course_Catalog {
 				),
 				'title'        => 'Advanced Suicide Risk Assessment: Evidence-Based Intervention and Ethical Documentation',
 				'ce_hours'     => 6.0,
-				'price'        => 90.00,
+				'price'        => 79.00,
 				'category'     => 'Law & Ethics',
 			),
 			array(
@@ -63,7 +63,7 @@ class CTA_Course_Catalog {
 				),
 				'title'        => 'Alcoholism & Other Chemical Substance Dependency: Assessment, Treatment, Recovery, & Clinical Practice',
 				'ce_hours'     => 15.0,
-				'price'        => 225.00,
+				'price'        => 149.00,
 				'category'     => 'Law & Ethics',
 			),
 			array(
@@ -80,7 +80,7 @@ class CTA_Course_Catalog {
 				),
 				'title'        => 'HIV/AIDS and Mental Health: Clinical Implications, Stigma, and Ethical Practice',
 				'ce_hours'     => 7.0,
-				'price'        => 104.98,
+				'price'        => 89.00,
 				'category'     => 'Clinical Skills',
 			),
 			array(
@@ -101,7 +101,7 @@ class CTA_Course_Catalog {
 				),
 				'title'        => 'The Fundamentals of Clinical Supervision: Legal Frameworks and Developmental Models',
 				'ce_hours'     => 6.0,
-				'price'        => 89.99,
+				'price'        => 129.00,
 				'category'     => 'Supervision',
 			),
 		);
@@ -381,7 +381,7 @@ class CTA_Course_Catalog {
 			}
 		}
 
-		update_option( 'cta_approved_price_sync_1_0_86', wp_json_encode( $report ), false );
+		update_option( 'cta_approved_price_sync_1_0_95', wp_json_encode( $report ), false );
 
 		return $report;
 	}
