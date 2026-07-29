@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.99' );
+	define( 'CTA_VERSION', '1.0.100' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -402,6 +402,12 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				update_option( 'cta_ce_price_catalog_fp', cta_ce_price_catalog_fingerprint(), false );
 			}
 
+			// Fix Alcoholism + Suicide Risk Assessment category mismatches from catalog.
+			if ( version_compare( $installed, '1.0.100', '<' ) && class_exists( 'CTA_Course_Catalog' ) ) {
+				CTA_Course_Catalog::restore_ce_pricing();
+				update_option( 'cta_ce_price_catalog_fp', cta_ce_price_catalog_fingerprint(), false );
+			}
+
 			// Decouple supervision application pending from general account / CE access.
 			if ( version_compare( $installed, '1.0.90', '<' ) && class_exists( 'CTA_Associate_Access' ) ) {
 				$query = new WP_User_Query(
@@ -443,8 +449,9 @@ if ( ! function_exists( 'cta_ce_price_catalog_fingerprint' ) ) {
 		$prices = array();
 		foreach ( CTA_Course_Catalog::get_ce_catalog() as $entry ) {
 			$prices[] = array(
-				'title' => (string) ( $entry['title'] ?? '' ),
-				'price' => round( (float) ( $entry['price'] ?? 0 ), 2 ),
+				'title'    => (string) ( $entry['title'] ?? '' ),
+				'price'    => round( (float) ( $entry['price'] ?? 0 ), 2 ),
+				'category' => (string) ( $entry['category'] ?? '' ),
 			);
 		}
 
@@ -454,10 +461,10 @@ if ( ! function_exists( 'cta_ce_price_catalog_fingerprint' ) ) {
 
 if ( ! function_exists( 'cta_maybe_sync_ce_prices_from_catalog' ) ) {
 	/**
-	 * Self-heal CE prices whenever the approved catalog fingerprint changes.
+	 * Self-heal CE prices/categories whenever the approved catalog fingerprint changes.
 	 *
 	 * Needed when GitHub is updated but Hostinger deploy / version stamp lag
-	 * left the live `cta_courses.price` column on the previous catalog.
+	 * left the live `cta_courses` commercial fields on the previous catalog.
 	 */
 	function cta_maybe_sync_ce_prices_from_catalog() {
 		if ( ! class_exists( 'CTA_Course_Catalog' ) ) {
@@ -478,7 +485,7 @@ if ( ! function_exists( 'cta_maybe_sync_ce_prices_from_catalog' ) ) {
 		}
 		set_transient( 'cta_ce_price_sync_lock', 1, 60 );
 
-		CTA_Course_Catalog::sync_approved_prices();
+		CTA_Course_Catalog::restore_ce_pricing();
 		update_option( 'cta_ce_price_catalog_fp', $fingerprint, false );
 		delete_transient( 'cta_ce_price_sync_lock' );
 	}

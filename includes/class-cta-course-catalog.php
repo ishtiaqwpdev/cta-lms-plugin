@@ -54,7 +54,7 @@ class CTA_Course_Catalog {
 				'title'        => 'Advanced Suicide Risk Assessment: Evidence-Based Intervention and Ethical Documentation',
 				'ce_hours'     => 6.0,
 				'price'        => 79.00,
-				'category'     => 'Law & Ethics',
+				'category'     => 'Clinical Skills',
 			),
 			array(
 				'match_titles' => array(
@@ -64,7 +64,7 @@ class CTA_Course_Catalog {
 				'title'        => 'Alcoholism & Other Chemical Substance Dependency: Assessment, Treatment, Recovery, & Clinical Practice',
 				'ce_hours'     => 15.0,
 				'price'        => 149.00,
-				'category'     => 'Law & Ethics',
+				'category'     => 'Alcoholism & Other Chemical Substance Dependency',
 			),
 			array(
 				'match_titles' => array( 'Child Abuse Assessment & Mandated Reporting' ),
