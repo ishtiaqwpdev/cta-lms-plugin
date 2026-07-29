@@ -112,121 +112,281 @@ if ( empty( $evaluation_questions ) || ! is_array( $evaluation_questions ) ) {
 		<div class="card cta-quiz-evaluation">
 			<h2><?php echo esc_html__( 'Course Evaluation', 'cta-lms' ); ?></h2>
 			<p><?php echo esc_html__( 'Please complete this course-specific evaluation. After submission you will complete a short attestation before your certificate is issued.', 'cta-lms' ); ?></p>
-			<form id="cta-evaluation-form" class="cta-evaluation-form" novalidate>
+			<form id="cta-evaluation-form" class="cta-evaluation-form cta-evaluation-form--matrix" novalidate>
 				<?php
-				$current_section = '';
-				foreach ( $evaluation_questions as $question ) :
-					$q_type = isset( $question['type'] ) ? $question['type'] : 'rating';
+				/**
+				 * Normalize a question's display type (same mapping as before).
+				 *
+				 * @param array $question Question row.
+				 * @return string
+				 */
+				$cta_eval_normalize_type = static function ( $question ) {
+					$q_type = isset( $question['type'] ) ? (string) $question['type'] : 'rating';
 					if ( 'textarea' === $q_type ) {
-						$q_type = 'paragraph';
+						return 'paragraph';
 					}
 					if ( 'multiple_choice' === $q_type || 'yes_no' === $q_type ) {
-						$q_type = 'radio';
+						return 'radio';
 					}
-					if ( $question['section'] !== $current_section ) :
-						$current_section = $question['section'];
-						?>
-						<h3 class="cta-evaluation-section__title"><?php echo esc_html( $current_section ); ?></h3>
-					<?php endif; ?>
+					return $q_type;
+				};
 
-					<div class="form-group cta-evaluation-question" data-question-id="<?php echo esc_attr( $question['id'] ); ?>" data-question-type="<?php echo esc_attr( $q_type ); ?>">
-						<?php if ( in_array( $q_type, array( 'paragraph', 'short_text' ), true ) ) : ?>
-							<label class="form-label" for="eval-<?php echo esc_attr( $question['id'] ); ?>">
-								<?php echo esc_html( $question['label'] ); ?>
-								<?php if ( ! empty( $question['required'] ) ) : ?>
-									<span class="cta-required" aria-hidden="true">*</span>
+				/**
+				 * Resolve options for a question.
+				 *
+				 * @param array  $question Question row.
+				 * @param string $q_type   Normalized type.
+				 * @return array
+				 */
+				$cta_eval_options = static function ( $question, $q_type ) {
+					if ( ! empty( $question['options'] ) && is_array( $question['options'] ) ) {
+						return $question['options'];
+					}
+					if ( in_array( $q_type, array( 'rating', 'likert' ), true ) && class_exists( 'CTA_Evaluation_Questions' ) ) {
+						return CTA_Evaluation_Questions::default_rating_options();
+					}
+					return array();
+				};
+
+				/**
+				 * Whether this question can sit in a compact rating matrix row.
+				 *
+				 * @param string $q_type  Normalized type.
+				 * @param array  $options Option map.
+				 * @return bool
+				 */
+				$cta_eval_is_matrixable = static function ( $q_type, $options ) {
+					if ( ! in_array( $q_type, array( 'rating', 'likert', 'radio' ), true ) ) {
+						return false;
+					}
+					if ( count( $options ) < 2 || count( $options ) > 7 ) {
+						return false;
+					}
+					return true;
+				};
+
+				// Group consecutive matrixable questions that share the same section + option keys.
+				$eval_blocks   = array();
+				$matrix_buffer = null;
+
+				$flush_matrix = static function () use ( &$eval_blocks, &$matrix_buffer ) {
+					if ( null !== $matrix_buffer && ! empty( $matrix_buffer['questions'] ) ) {
+						$eval_blocks[] = $matrix_buffer;
+					}
+					$matrix_buffer = null;
+				};
+
+				foreach ( $evaluation_questions as $question ) {
+					$q_type  = $cta_eval_normalize_type( $question );
+					$options = $cta_eval_options( $question, $q_type );
+					$section = isset( $question['section'] ) ? (string) $question['section'] : '';
+
+					if ( $cta_eval_is_matrixable( $q_type, $options ) ) {
+						$option_sig = wp_json_encode( array_map( 'strval', array_keys( $options ) ) );
+						if (
+							null !== $matrix_buffer
+							&& $matrix_buffer['section'] === $section
+							&& $matrix_buffer['option_sig'] === $option_sig
+						) {
+							$matrix_buffer['questions'][] = array(
+								'question' => $question,
+								'type'     => $q_type,
+								'options'  => $options,
+							);
+							continue;
+						}
+						$flush_matrix();
+						$matrix_buffer = array(
+							'kind'       => 'matrix',
+							'section'    => $section,
+							'option_sig' => $option_sig,
+							'options'    => $options,
+							'questions'  => array(
+								array(
+									'question' => $question,
+									'type'     => $q_type,
+									'options'  => $options,
+								),
+							),
+						);
+						continue;
+					}
+
+					$flush_matrix();
+					$eval_blocks[] = array(
+						'kind'     => 'single',
+						'section'  => $section,
+						'question' => $question,
+						'type'     => $q_type,
+						'options'  => $options,
+					);
+				}
+				$flush_matrix();
+
+				$current_section = '';
+				foreach ( $eval_blocks as $block ) :
+					if ( $block['section'] !== $current_section ) :
+						$current_section = $block['section'];
+						if ( '' !== $current_section ) :
+							?>
+							<h3 class="cta-evaluation-section__title"><?php echo esc_html( $current_section ); ?></h3>
+							<?php
+						endif;
+					endif;
+
+					if ( 'matrix' === $block['kind'] ) :
+						$scale_options = $block['options'];
+						?>
+						<div class="cta-evaluation-matrix-wrap">
+							<table class="cta-evaluation-matrix">
+								<thead>
+									<tr>
+										<th scope="col" class="cta-evaluation-matrix__prompt-col">
+											<span class="screen-reader-text"><?php echo esc_html__( 'Question', 'cta-lms' ); ?></span>
+										</th>
+										<?php foreach ( $scale_options as $value => $option_label ) : ?>
+											<th scope="col" class="cta-evaluation-matrix__scale-col" title="<?php echo esc_attr( $option_label ); ?>">
+												<span class="cta-evaluation-matrix__scale-num"><?php echo esc_html( (string) $value ); ?></span>
+												<span class="cta-evaluation-matrix__scale-label"><?php echo esc_html( $option_label ); ?></span>
+											</th>
+										<?php endforeach; ?>
+									</tr>
+								</thead>
+								<tbody>
+									<?php foreach ( $block['questions'] as $row ) :
+										$question = $row['question'];
+										$q_type   = $row['type'];
+										$options  = $row['options'];
+										?>
+										<tr class="form-group cta-evaluation-question cta-evaluation-matrix__row" data-question-id="<?php echo esc_attr( $question['id'] ); ?>" data-question-type="<?php echo esc_attr( $q_type ); ?>">
+											<th scope="row" class="cta-evaluation-matrix__prompt" id="eval-label-<?php echo esc_attr( $question['id'] ); ?>">
+												<?php echo esc_html( $question['label'] ); ?>
+												<?php if ( ! empty( $question['required'] ) ) : ?>
+													<span class="cta-required" aria-hidden="true">*</span>
+												<?php endif; ?>
+											</th>
+											<?php foreach ( $options as $value => $option_label ) : ?>
+												<td class="cta-evaluation-matrix__cell">
+													<label class="cta-evaluation-matrix__choice" title="<?php echo esc_attr( $option_label ); ?>">
+														<input
+															type="radio"
+															name="responses[<?php echo esc_attr( $question['id'] ); ?>]"
+															value="<?php echo esc_attr( (string) $value ); ?>"
+															aria-label="<?php echo esc_attr( $option_label ); ?>"
+															<?php echo ! empty( $question['required'] ) ? 'required' : ''; ?>
+														>
+														<span class="cta-evaluation-matrix__choice-face" aria-hidden="true"><?php echo esc_html( (string) $value ); ?></span>
+													</label>
+												</td>
+											<?php endforeach; ?>
+										</tr>
+									<?php endforeach; ?>
+								</tbody>
+							</table>
+							<p class="cta-evaluation-matrix__legend" aria-hidden="true">
+								<?php
+								$legend_parts = array();
+								foreach ( $scale_options as $value => $option_label ) {
+									$legend_parts[] = esc_html( (string) $value ) . ' = ' . esc_html( $option_label );
+								}
+								echo implode( ' · ', $legend_parts ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped above
+								?>
+							</p>
+						</div>
+						<?php
+					else :
+						$question = $block['question'];
+						$q_type   = $block['type'];
+						$options  = $block['options'];
+						?>
+						<div class="form-group cta-evaluation-question" data-question-id="<?php echo esc_attr( $question['id'] ); ?>" data-question-type="<?php echo esc_attr( $q_type ); ?>">
+							<?php if ( in_array( $q_type, array( 'paragraph', 'short_text' ), true ) ) : ?>
+								<label class="form-label" for="eval-<?php echo esc_attr( $question['id'] ); ?>">
+									<?php echo esc_html( $question['label'] ); ?>
+									<?php if ( ! empty( $question['required'] ) ) : ?>
+										<span class="cta-required" aria-hidden="true">*</span>
+									<?php endif; ?>
+								</label>
+								<?php if ( 'short_text' === $q_type ) : ?>
+									<input
+										type="text"
+										id="eval-<?php echo esc_attr( $question['id'] ); ?>"
+										name="responses[<?php echo esc_attr( $question['id'] ); ?>]"
+										class="form-input"
+										<?php echo ! empty( $question['required'] ) ? 'required' : ''; ?>
+									>
+								<?php else : ?>
+									<textarea
+										id="eval-<?php echo esc_attr( $question['id'] ); ?>"
+										name="responses[<?php echo esc_attr( $question['id'] ); ?>]"
+										class="form-input"
+										rows="4"
+										<?php echo ! empty( $question['required'] ) ? 'required' : ''; ?>
+									></textarea>
 								<?php endif; ?>
-							</label>
-							<?php if ( 'short_text' === $q_type ) : ?>
-								<input
-									type="text"
+							<?php elseif ( 'dropdown' === $q_type ) : ?>
+								<label class="form-label" for="eval-<?php echo esc_attr( $question['id'] ); ?>">
+									<?php echo esc_html( $question['label'] ); ?>
+									<?php if ( ! empty( $question['required'] ) ) : ?>
+										<span class="cta-required" aria-hidden="true">*</span>
+									<?php endif; ?>
+								</label>
+								<select
 									id="eval-<?php echo esc_attr( $question['id'] ); ?>"
 									name="responses[<?php echo esc_attr( $question['id'] ); ?>]"
-									class="form-input"
+									class="form-select"
 									<?php echo ! empty( $question['required'] ) ? 'required' : ''; ?>
 								>
+									<option value=""><?php echo esc_html__( 'Select an option', 'cta-lms' ); ?></option>
+									<?php foreach ( $options as $value => $option_label ) : ?>
+										<option value="<?php echo esc_attr( (string) $value ); ?>"><?php echo esc_html( $option_label ); ?></option>
+									<?php endforeach; ?>
+								</select>
+							<?php elseif ( 'checkbox' === $q_type ) : ?>
+								<span class="form-label" id="eval-label-<?php echo esc_attr( $question['id'] ); ?>">
+									<?php echo esc_html( $question['label'] ); ?>
+									<?php if ( ! empty( $question['required'] ) ) : ?>
+										<span class="cta-required" aria-hidden="true">*</span>
+									<?php endif; ?>
+								</span>
+								<div class="cta-evaluation-options" role="group" aria-labelledby="eval-label-<?php echo esc_attr( $question['id'] ); ?>">
+									<?php foreach ( $options as $value => $option_label ) : ?>
+										<label class="cta-evaluation-option">
+											<input
+												type="checkbox"
+												name="responses[<?php echo esc_attr( $question['id'] ); ?>][]"
+												value="<?php echo esc_attr( (string) $value ); ?>"
+											>
+											<span><?php echo esc_html( $option_label ); ?></span>
+										</label>
+									<?php endforeach; ?>
+								</div>
 							<?php else : ?>
-								<textarea
-									id="eval-<?php echo esc_attr( $question['id'] ); ?>"
-									name="responses[<?php echo esc_attr( $question['id'] ); ?>]"
-									class="form-input"
-									rows="4"
-									<?php echo ! empty( $question['required'] ) ? 'required' : ''; ?>
-								></textarea>
+								<span class="form-label" id="eval-label-<?php echo esc_attr( $question['id'] ); ?>">
+									<?php echo esc_html( $question['label'] ); ?>
+									<?php if ( ! empty( $question['required'] ) ) : ?>
+										<span class="cta-required" aria-hidden="true">*</span>
+									<?php endif; ?>
+								</span>
+								<div class="cta-evaluation-options cta-evaluation-options--inline" role="radiogroup" aria-labelledby="eval-label-<?php echo esc_attr( $question['id'] ); ?>">
+									<?php foreach ( $options as $value => $option_label ) : ?>
+										<label class="cta-evaluation-option">
+											<input
+												type="radio"
+												name="responses[<?php echo esc_attr( $question['id'] ); ?>]"
+												value="<?php echo esc_attr( (string) $value ); ?>"
+												<?php echo ! empty( $question['required'] ) ? 'required' : ''; ?>
+											>
+											<span><?php echo esc_html( $option_label ); ?></span>
+										</label>
+									<?php endforeach; ?>
+								</div>
 							<?php endif; ?>
-						<?php elseif ( 'dropdown' === $q_type ) : ?>
-							<label class="form-label" for="eval-<?php echo esc_attr( $question['id'] ); ?>">
-								<?php echo esc_html( $question['label'] ); ?>
-								<?php if ( ! empty( $question['required'] ) ) : ?>
-									<span class="cta-required" aria-hidden="true">*</span>
-								<?php endif; ?>
-							</label>
-							<select
-								id="eval-<?php echo esc_attr( $question['id'] ); ?>"
-								name="responses[<?php echo esc_attr( $question['id'] ); ?>]"
-								class="form-select"
-								<?php echo ! empty( $question['required'] ) ? 'required' : ''; ?>
-							>
-								<option value=""><?php echo esc_html__( 'Select an option', 'cta-lms' ); ?></option>
-								<?php
-								$options = ! empty( $question['options'] ) && is_array( $question['options'] ) ? $question['options'] : array();
-								foreach ( $options as $value => $option_label ) :
-									?>
-									<option value="<?php echo esc_attr( (string) $value ); ?>"><?php echo esc_html( $option_label ); ?></option>
-								<?php endforeach; ?>
-							</select>
-						<?php elseif ( 'checkbox' === $q_type ) : ?>
-							<span class="form-label" id="eval-label-<?php echo esc_attr( $question['id'] ); ?>">
-								<?php echo esc_html( $question['label'] ); ?>
-								<?php if ( ! empty( $question['required'] ) ) : ?>
-									<span class="cta-required" aria-hidden="true">*</span>
-								<?php endif; ?>
-							</span>
-							<div class="cta-evaluation-options" role="group" aria-labelledby="eval-label-<?php echo esc_attr( $question['id'] ); ?>">
-								<?php
-								$options = ! empty( $question['options'] ) && is_array( $question['options'] ) ? $question['options'] : array();
-								foreach ( $options as $value => $option_label ) :
-									?>
-									<label class="cta-evaluation-option">
-										<input
-											type="checkbox"
-											name="responses[<?php echo esc_attr( $question['id'] ); ?>][]"
-											value="<?php echo esc_attr( (string) $value ); ?>"
-										>
-										<span><?php echo esc_html( $option_label ); ?></span>
-									</label>
-								<?php endforeach; ?>
-							</div>
-						<?php else : ?>
-							<span class="form-label" id="eval-label-<?php echo esc_attr( $question['id'] ); ?>">
-								<?php echo esc_html( $question['label'] ); ?>
-								<?php if ( ! empty( $question['required'] ) ) : ?>
-									<span class="cta-required" aria-hidden="true">*</span>
-								<?php endif; ?>
-							</span>
-							<div class="cta-evaluation-options" role="radiogroup" aria-labelledby="eval-label-<?php echo esc_attr( $question['id'] ); ?>">
-								<?php
-								$options = ! empty( $question['options'] ) && is_array( $question['options'] )
-									? $question['options']
-									: ( in_array( $q_type, array( 'rating', 'likert' ), true )
-										? ( class_exists( 'CTA_Evaluation_Questions' ) ? CTA_Evaluation_Questions::default_rating_options() : array() )
-										: array() );
-								foreach ( $options as $value => $option_label ) :
-									?>
-									<label class="cta-evaluation-option">
-										<input
-											type="radio"
-											name="responses[<?php echo esc_attr( $question['id'] ); ?>]"
-											value="<?php echo esc_attr( (string) $value ); ?>"
-											<?php echo ! empty( $question['required'] ) ? 'required' : ''; ?>
-										>
-										<span><?php echo esc_html( $option_label ); ?></span>
-									</label>
-								<?php endforeach; ?>
-							</div>
-						<?php endif; ?>
-					</div>
-				<?php endforeach; ?>
+						</div>
+						<?php
+					endif;
+				endforeach;
+				?>
 				<button type="button" class="btn btn-primary" id="cta-submit-evaluation"><?php echo esc_html__( 'Submit Evaluation', 'cta-lms' ); ?></button>
 			</form>
 		</div>

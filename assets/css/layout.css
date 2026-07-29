@@ -6170,6 +6170,11 @@ button.pagination__item:disabled {
   gap: var(--space-sm);
 }
 
+.cta-plugin-wrapper .cta-evaluation-options--inline {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
 .cta-plugin-wrapper .cta-evaluation-option {
   display: flex;
   align-items: flex-start;
@@ -6184,6 +6189,162 @@ button.pagination__item:disabled {
 .cta-plugin-wrapper .cta-evaluation-option:has(input:checked) {
   border-color: var(--color-navy, #122b51);
   background: #f4f7fb;
+}
+
+/* Compact rating matrix — one row per question, scale across columns */
+.cta-plugin-wrapper .cta-evaluation-matrix-wrap {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 0 var(--space-md);
+  border: 1px solid var(--color-border, #d0d5dd);
+  border-radius: var(--radius-md, 8px);
+  background: #fff;
+}
+
+.cta-plugin-wrapper .cta-evaluation-matrix {
+  width: 100%;
+  min-width: 32rem;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.cta-plugin-wrapper .cta-evaluation-matrix th,
+.cta-plugin-wrapper .cta-evaluation-matrix td {
+  padding: 0.65rem 0.4rem;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--color-border, #e4e7ec);
+}
+
+.cta-plugin-wrapper .cta-evaluation-matrix thead th {
+  background: #f4f7fb;
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--color-navy, #122b51);
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.cta-plugin-wrapper .cta-evaluation-matrix__prompt-col {
+  width: 42%;
+  text-align: left !important;
+}
+
+.cta-plugin-wrapper .cta-evaluation-matrix__scale-col {
+  width: auto;
+}
+
+.cta-plugin-wrapper .cta-evaluation-matrix__scale-num {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.cta-plugin-wrapper .cta-evaluation-matrix__scale-label {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 500;
+  line-height: 1.25;
+  color: var(--color-text-muted, #667085);
+  max-width: 5.5rem;
+  margin: 0.15rem auto 0;
+  white-space: normal;
+}
+
+.cta-plugin-wrapper .cta-evaluation-matrix__row {
+  display: table-row;
+  margin: 0;
+  padding: 0;
+}
+
+.cta-plugin-wrapper .cta-evaluation-matrix__row.form-group {
+  margin-bottom: 0;
+}
+
+.cta-plugin-wrapper .cta-evaluation-matrix__prompt {
+  text-align: left;
+  font-weight: 500;
+  font-size: 0.9rem;
+  line-height: 1.35;
+  color: var(--color-text-dark, #1d2939);
+  padding-left: 0.85rem !important;
+  padding-right: 0.65rem !important;
+}
+
+.cta-plugin-wrapper .cta-evaluation-matrix__cell {
+  text-align: center;
+}
+
+.cta-plugin-wrapper .cta-evaluation-matrix__choice {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.cta-plugin-wrapper .cta-evaluation-matrix__choice input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.cta-plugin-wrapper .cta-evaluation-matrix__choice-face {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 2px solid var(--color-border, #d0d5dd);
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-navy, #122b51);
+  background: #fff;
+  transition:
+    background-color var(--transition-base, 0.2s ease),
+    border-color var(--transition-base, 0.2s ease),
+    color var(--transition-base, 0.2s ease),
+    box-shadow var(--transition-base, 0.2s ease);
+}
+
+.cta-plugin-wrapper .cta-evaluation-matrix__choice:hover .cta-evaluation-matrix__choice-face {
+  border-color: var(--color-primary, #2f6fed);
+}
+
+.cta-plugin-wrapper .cta-evaluation-matrix__choice:has(input:checked) .cta-evaluation-matrix__choice-face,
+.cta-plugin-wrapper .cta-evaluation-matrix__choice input:checked + .cta-evaluation-matrix__choice-face {
+  background: var(--color-primary, #2f6fed);
+  border-color: var(--color-primary, #2f6fed);
+  color: #fff;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary, #2f6fed) 22%, transparent);
+}
+
+.cta-plugin-wrapper .cta-evaluation-matrix__choice:focus-within .cta-evaluation-matrix__choice-face {
+  outline: 2px solid var(--color-primary, #2f6fed);
+  outline-offset: 2px;
+}
+
+.cta-plugin-wrapper .cta-evaluation-matrix__legend {
+  margin: 0;
+  padding: 0.55rem 0.85rem 0.7rem;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  color: var(--color-text-muted, #667085);
+  border-top: 1px solid var(--color-border, #e4e7ec);
+  background: #fafbfc;
 }
 
 .cta-plugin-wrapper .cta-quiz-certificate-ready {
@@ -6226,6 +6387,31 @@ button.pagination__item:disabled {
   .cta-plugin-wrapper .cta-quiz-option {
     width: 100%;
     box-sizing: border-box;
+  }
+
+  .cta-plugin-wrapper .cta-evaluation-matrix {
+    min-width: 28rem;
+  }
+
+  .cta-plugin-wrapper .cta-evaluation-matrix__prompt-col {
+    width: 38%;
+  }
+
+  .cta-plugin-wrapper .cta-evaluation-matrix__scale-label {
+    display: none;
+  }
+
+  .cta-plugin-wrapper .cta-evaluation-matrix__choice,
+  .cta-plugin-wrapper .cta-evaluation-matrix__choice-face {
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  .cta-plugin-wrapper .cta-evaluation-matrix__prompt {
+    font-size: 0.82rem;
+    padding-left: 0.65rem !important;
   }
 }
 
