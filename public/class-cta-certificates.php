@@ -373,7 +373,7 @@ class CTA_Certificates {
 	 * @param string      $certificate_number  Certificate number.
 	 * @param string      $issued_at           MySQL datetime.
 	 * @param object|null $evaluation          Evaluation row (optional).
-	 * @param array       $args                Optional flags: auto_print (bool), download_url (string).
+	 * @param array       $args                Optional flags: auto_print (bool), download_url (string), for_pdf (bool).
 	 * @return string
 	 */
 	public static function build_html( $user_id, $course, $certificate_number, $issued_at, $evaluation = null, $args = array() ) {
@@ -426,9 +426,15 @@ class CTA_Certificates {
 		}
 		$auto_print   = ! empty( $args['auto_print'] );
 		$download_url = ! empty( $args['download_url'] ) ? (string) $args['download_url'] : '';
+		$for_pdf      = ! empty( $args['for_pdf'] );
 
 		ob_start();
-		include CTA_PLUGIN_DIR . 'templates/certificate.php';
+		// PDF uses a Dompdf-safe twin of the same visual design; on-screen print HTML stays unchanged.
+		if ( $for_pdf ) {
+			include CTA_PLUGIN_DIR . 'templates/certificate-pdf.php';
+		} else {
+			include CTA_PLUGIN_DIR . 'templates/certificate.php';
+		}
 		return (string) ob_get_clean();
 	}
 
@@ -478,6 +484,42 @@ class CTA_Certificates {
 		}
 
 		if ( '' === $path || ! is_readable( $path ) ) {
+			// Last resort: fetch a remote/custom logo so Dompdf can embed without isRemoteEnabled.
+			if ( preg_match( '#^https?://#i', $url ) && function_exists( 'wp_remote_get' ) ) {
+				$response = wp_remote_get(
+					$url,
+					array(
+						'timeout'     => 15,
+						'redirection' => 3,
+					)
+				);
+				if ( ! is_wp_error( $response ) && 200 === (int) wp_remote_retrieve_response_code( $response ) ) {
+					$bytes = (string) wp_remote_retrieve_body( $response );
+					if ( '' !== $bytes ) {
+						$content_type = (string) wp_remote_retrieve_header( $response, 'content-type' );
+						$type         = 'image/png';
+						if ( preg_match( '#^(image/[a-z0-9.+-]+)#i', $content_type, $m ) ) {
+							$type = strtolower( $m[1] );
+						} elseif ( preg_match( '/\.svg(\?|$)/i', $url ) ) {
+							$type = 'image/svg+xml';
+						} elseif ( preg_match( '/\.jpe?g(\?|$)/i', $url ) ) {
+							$type = 'image/jpeg';
+						} elseif ( preg_match( '/\.webp(\?|$)/i', $url ) ) {
+							$type = 'image/webp';
+						}
+
+						if ( 0 === strpos( $type, 'image/svg' ) && function_exists( 'imagecreatetruecolor' ) ) {
+							$raster = self::rasterize_svg_logo( $bytes, 440, 104 );
+							if ( is_string( $raster ) && '' !== $raster ) {
+								return 'data:image/png;base64,' . base64_encode( $raster );
+							}
+						}
+
+						return 'data:' . $type . ';base64,' . base64_encode( $bytes );
+					}
+				}
+			}
+
 			return '';
 		}
 
@@ -489,7 +531,42 @@ class CTA_Certificates {
 			return '';
 		}
 
+		// Prefer PNG/JPEG for Dompdf; if Imagick is present, rasterize SVG logos.
+		$ext = strtolower( pathinfo( $path, PATHINFO_EXTENSION ) );
+		if ( in_array( $ext, array( 'svg', 'svgz' ), true ) && class_exists( 'Imagick' ) ) {
+			$raster = self::rasterize_svg_logo( $bytes, 440, 104 );
+			if ( is_string( $raster ) && '' !== $raster ) {
+				return 'data:image/png;base64,' . base64_encode( $raster );
+			}
+		}
+
 		return 'data:' . $type . ';base64,' . base64_encode( $bytes );
+	}
+
+	/**
+	 * Rasterize an SVG logo to PNG bytes (Imagick) for more reliable Dompdf embedding.
+	 *
+	 * @param string $svg_bytes Raw SVG.
+	 * @param int    $width     Target width.
+	 * @param int    $height    Target height.
+	 * @return string|null PNG binary or null.
+	 */
+	private static function rasterize_svg_logo( $svg_bytes, $width = 440, $height = 104 ) {
+		try {
+			$img = new Imagick();
+			$img->setBackgroundColor( new ImagickPixel( 'white' ) );
+			$img->readImageBlob( $svg_bytes );
+			$img->setImageFormat( 'png' );
+			$img->resizeImage( (int) $width, (int) $height, Imagick::FILTER_LANCZOS, 1, true );
+			$png = $img->getImageBlob();
+			$img->clear();
+			$img->destroy();
+			return is_string( $png ) ? $png : null;
+		} catch ( Exception $e ) {
+			return null;
+		} catch ( Throwable $e ) {
+			return null;
+		}
 	}
 
 	/**
@@ -569,7 +646,7 @@ class CTA_Certificates {
 
 	/**
 	 * Stream a print-ready certificate (landscape, single page) for Print → Save as PDF,
-	 * or force-download the certificate HTML file when ?download=1.
+	 * or force-download a real PDF file when ?download=1.
 	 *
 	 * Access control: the logged-in user must own the certificate (or be an admin).
 	 * No manage_options requirement for the owner.
@@ -611,16 +688,45 @@ class CTA_Certificates {
 		}
 
 		$is_download = ! empty( $_GET['download'] );
-		$filename    = sanitize_file_name( (string) $certificate->certificate_number ) . '.html';
+		$number      = (string) $certificate->certificate_number;
 
+		// Learner download: real PDF named by verification number (e.g. CTA-2026-151748.pdf).
+		if ( $is_download ) {
+			$pdf = self::build_pdf(
+				(int) $certificate->user_id,
+				$course,
+				$number,
+				(string) $certificate->issued_at,
+				$evaluation
+			);
+
+			if ( is_wp_error( $pdf ) ) {
+				wp_die( esc_html( $pdf->get_error_message() ), 500 );
+			}
+
+			$filename = sanitize_file_name( $number ) . '.pdf';
+			if ( ! preg_match( '/\.pdf$/i', $filename ) ) {
+				$filename .= '.pdf';
+			}
+
+			nocache_headers();
+			header( 'Content-Type: application/pdf' );
+			header( 'Content-Disposition: attachment; filename="' . $filename . '"' );
+			header( 'Content-Length: ' . (string) strlen( $pdf ) );
+			header( 'X-Content-Type-Options: nosniff' );
+			echo $pdf; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- binary PDF
+			exit;
+		}
+
+		// Inline/print view remains the existing HTML certificate (unchanged design).
 		$html = self::build_html(
 			(int) $certificate->user_id,
 			$course,
-			(string) $certificate->certificate_number,
+			$number,
 			(string) $certificate->issued_at,
 			$evaluation,
 			array(
-				'auto_print'   => ! $is_download && ! empty( $_GET['print'] ),
+				'auto_print'   => ! empty( $_GET['print'] ),
 				'download_url' => self::get_download_url( $certificate_id ),
 			)
 		);
@@ -629,13 +735,102 @@ class CTA_Certificates {
 		header( 'Content-Type: text/html; charset=UTF-8' );
 		header(
 			sprintf(
-				'Content-Disposition: %s; filename="%s"',
-				$is_download ? 'attachment' : 'inline',
-				$filename
+				'Content-Disposition: inline; filename="%s"',
+				sanitize_file_name( $number ) . '.html'
 			)
 		);
 		echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		exit;
+	}
+
+	/**
+	 * Whether Dompdf is available for server-side PDF generation.
+	 *
+	 * @return bool
+	 */
+	public static function can_generate_pdf() {
+		return class_exists( '\Dompdf\Dompdf' );
+	}
+
+	/**
+	 * Build PDF binary from the certificate design (landscape, one page).
+	 *
+	 * Uses Dompdf with the existing certificate visual language (colors, logo,
+	 * typography, borders). Requires vendor/dompdf via Composer.
+	 *
+	 * @param int         $user_id            User ID.
+	 * @param object      $course             Course row.
+	 * @param string      $certificate_number Certificate number.
+	 * @param string      $issued_at          MySQL datetime.
+	 * @param object|null $evaluation         Evaluation row (optional).
+	 * @return string|WP_Error PDF binary or error.
+	 */
+	public static function build_pdf( $user_id, $course, $certificate_number, $issued_at, $evaluation = null ) {
+		if ( ! self::can_generate_pdf() ) {
+			return new WP_Error(
+				'cta_pdf_unavailable',
+				__( 'PDF generation is not available. Please run composer install (dompdf) on the server.', 'cta-lms' )
+			);
+		}
+
+		$html = self::build_html(
+			$user_id,
+			$course,
+			$certificate_number,
+			$issued_at,
+			$evaluation,
+			array(
+				'for_pdf' => true,
+			)
+		);
+
+		if ( '' === $html ) {
+			return new WP_Error( 'cta_pdf_empty', __( 'Unable to build certificate PDF.', 'cta-lms' ) );
+		}
+
+		try {
+			$options = new \Dompdf\Options();
+			$options->set( 'isRemoteEnabled', false );
+			$options->set( 'isHtml5ParserEnabled', true );
+			$options->set( 'isFontSubsettingEnabled', true );
+			$options->set( 'defaultFont', 'DejaVu Serif' );
+			$options->setChroot( array( CTA_PLUGIN_DIR ) );
+
+			$dompdf = new \Dompdf\Dompdf( $options );
+			$dompdf->loadHtml( $html, 'UTF-8' );
+			$dompdf->setPaper( 'letter', 'landscape' );
+			$dompdf->render();
+
+			$binary = $dompdf->output();
+			if ( ! is_string( $binary ) || '' === $binary ) {
+				return new WP_Error( 'cta_pdf_render', __( 'PDF rendering failed.', 'cta-lms' ) );
+			}
+
+			// Basic magic-byte check so we never send HTML labeled as PDF.
+			if ( 0 !== strpos( $binary, '%PDF' ) ) {
+				return new WP_Error( 'cta_pdf_invalid', __( 'Generated file was not a valid PDF.', 'cta-lms' ) );
+			}
+
+			return $binary;
+		} catch ( Exception $e ) {
+			return new WP_Error(
+				'cta_pdf_exception',
+				sprintf(
+					/* translators: %s: exception message */
+					__( 'PDF generation error: %s', 'cta-lms' ),
+					$e->getMessage()
+				)
+			);
+		} catch ( Throwable $e ) {
+			return new WP_Error(
+				'cta_pdf_exception',
+				sprintf(
+					/* translators: %s: exception message */
+					__( 'PDF generation error: %s', 'cta-lms' ),
+					$e->getMessage()
+				)
+			);
+		}
 	}
 
 	/**

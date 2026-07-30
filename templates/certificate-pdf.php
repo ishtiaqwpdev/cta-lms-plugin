@@ -1,9 +1,10 @@
 <?php
 /**
- * Printable CE certificate HTML (self-contained inline CSS).
+ * Dompdf-oriented certificate markup.
  *
- * Designed for one landscape page (A4 / Letter). Use browser Print → Save as PDF.
- * Learner "Download Certificate" streams a real PDF via Dompdf (see certificate-pdf.php).
+ * Visual intent matches templates/certificate.php print stylesheet
+ * (logo, navy/gold frame, typography, spacing, signature). Uses Dompdf-safe
+ * nested borders instead of CSS outline/flex — not a redesign.
  *
  * @package CTA_LMS
  *
@@ -20,8 +21,6 @@
  * @var string $signature_name
  * @var string $organization_name
  * @var string $administrator_title
- * @var bool   $auto_print
- * @var string $download_url
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -34,206 +33,141 @@ $footer_text         = ! empty( $footer_text ) ? $footer_text : 'clinicaltrainin
 $signature_name      = ! empty( $signature_name ) ? $signature_name : __( 'Program Administrator', 'cta-lms' );
 $organization_name   = ! empty( $organization_name ) ? $organization_name : __( 'Clinical Training and Supervision Academy', 'cta-lms' );
 $administrator_title = ! empty( $administrator_title ) ? $administrator_title : __( 'Program Administrator', 'cta-lms' );
-$auto_print          = ! empty( $auto_print );
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title><?php echo esc_html( $certificate_number ); ?></title>
 	<style>
 		@page {
-			size: landscape;
-			margin: 0.4in;
+			size: letter landscape;
+			margin: 0.35in;
 		}
-		* { box-sizing: border-box; }
+		* { box-sizing: border-box; margin: 0; padding: 0; }
 		html, body {
 			margin: 0;
 			padding: 0;
-			height: 100%;
+			background: #ffffff;
 		}
 		body {
-			padding: 16px;
-			font-family: Georgia, "Times New Roman", serif;
+			/* DejaVu Serif is bundled with Dompdf (Georgia look-alike for PDF embed). */
+			font-family: "DejaVu Serif", Georgia, "Times New Roman", serif;
 			color: #122B51;
-			background: #e8eef5;
-			-webkit-print-color-adjust: exact;
-			print-color-adjust: exact;
-		}
-		.certificate-shell {
-			max-width: 1050px;
-			margin: 0 auto;
-		}
-		.certificate {
-			width: 100%;
-			min-height: calc(100vh - 32px);
-			padding: 36px 48px 28px;
 			background: #ffffff;
-			border: 6px double #122B51;
-			outline: 1px solid #c5a572;
-			outline-offset: -12px;
+		}
+		/* Outer navy double frame + inner gold rule (mirrors HTML outline). */
+		.certificate-outer {
+			width: 100%;
+			border: 5px double #122B51;
+			padding: 10px;
+			background: #ffffff;
+		}
+		.certificate-inner {
+			border: 1px solid #c5a572;
+			padding: 22px 36px 16px;
 			text-align: center;
-			position: relative;
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
+			background: #ffffff;
 		}
 		.logo {
 			display: block;
-			max-width: 260px;
-			max-height: 64px;
-			width: auto;
-			height: auto;
-			margin: 0 auto 12px;
-			object-fit: contain;
+			width: 220px;
+			height: 52px;
+			margin: 0 auto 10px;
 		}
 		h1 {
-			font-size: 30px;
+			font-size: 26px;
 			margin: 0 0 4px;
 			letter-spacing: 0.06em;
 			text-transform: uppercase;
 			line-height: 1.15;
+			font-weight: bold;
+			color: #122B51;
 		}
 		.subtitle {
 			font-size: 14px;
-			margin: 0 0 18px;
+			margin: 0 0 14px;
 			letter-spacing: 0.12em;
 			text-transform: uppercase;
 			color: #475467;
 		}
-		.lead { font-size: 16px; margin: 8px 0; }
+		.lead {
+			font-size: 16px;
+			margin: 6px 0;
+			color: #122B51;
+		}
 		.recipient {
-			font-size: 32px;
+			font-size: 28px;
 			font-weight: bold;
-			margin: 10px 0;
+			margin: 8px 0;
 			line-height: 1.2;
-			word-wrap: break-word;
+			color: #122B51;
 		}
 		.course-title {
-			font-size: 20px;
+			font-size: 18px;
 			font-weight: bold;
-			margin: 10px 0 6px;
+			margin: 8px 0 4px;
 			line-height: 1.3;
-			word-wrap: break-word;
+			color: #122B51;
 		}
 		.ce-hours {
 			font-size: 18px;
-			margin: 6px 0 14px;
+			margin: 4px 0 10px;
+			color: #122B51;
 		}
 		.meta {
 			font-size: 14px;
-			line-height: 1.65;
-			margin: 10px auto;
+			line-height: 1.55;
+			margin: 8px auto;
 			max-width: 720px;
+			color: #122B51;
 		}
-		.meta p { margin: 2px 0; }
+		.meta p { margin: 1px 0; }
 		.divider {
 			width: 200px;
 			height: 2px;
 			background: #122B51;
-			margin: 16px auto;
+			margin: 12px auto;
+			border: 0;
+			font-size: 1px;
+			line-height: 1px;
 		}
 		.signature-block {
-			margin-top: 12px;
+			margin-top: 10px;
 			text-align: center;
 		}
 		.signature-line {
 			width: 300px;
 			border-top: 1px solid #122B51;
-			margin: 0 auto 6px;
-			padding-top: 8px;
+			margin: 0 auto 4px;
+			padding-top: 6px;
 			font-size: 13px;
-			line-height: 1.45;
+			line-height: 1.4;
+			color: #122B51;
 		}
 		.verify {
-			margin-top: 14px;
+			margin-top: 10px;
 			font-size: 13px;
 			font-weight: bold;
+			color: #122B51;
 		}
 		.footer {
-			margin-top: 8px;
+			margin-top: 6px;
 			font-size: 11px;
 			color: #667085;
-		}
-		.print-actions {
-			max-width: 1050px;
-			margin: 0 auto 12px;
-			text-align: center;
-		}
-		.print-actions__buttons {
-			display: flex;
-			flex-wrap: wrap;
-			gap: 10px;
-			justify-content: center;
-		}
-		.print-actions button,
-		.print-actions a {
-			font: inherit;
-			padding: 10px 18px;
-			cursor: pointer;
-			background: #122B51;
-			color: #fff;
-			border: 0;
-			border-radius: 4px;
-			text-decoration: none;
-			display: inline-block;
-		}
-		.print-actions a.print-actions__download {
-			background: #fff;
-			color: #122B51;
-			border: 1px solid #122B51;
-		}
-		.print-actions p {
-			margin: 8px 0 0;
-			font-size: 13px;
-			color: #475467;
-			font-family: system-ui, sans-serif;
-		}
-		@media print {
-			body {
-				padding: 0;
-				background: #ffffff;
-			}
-			.print-actions { display: none !important; }
-			.certificate-shell { max-width: none; }
-			.certificate {
-				min-height: auto;
-				height: auto;
-				padding: 28px 36px 20px;
-				border-width: 5px;
-				outline-offset: -10px;
-				page-break-inside: avoid;
-				break-inside: avoid;
-			}
-			.logo { max-height: 56px; max-width: 240px; }
-			h1 { font-size: 26px; }
-			.recipient { font-size: 28px; }
-			.course-title { font-size: 18px; }
 		}
 	</style>
 </head>
 <body>
-	<div class="print-actions">
-		<div class="print-actions__buttons">
-			<button type="button" onclick="window.print();"><?php esc_html_e( 'Print / Save as PDF', 'cta-lms' ); ?></button>
-			<?php if ( ! empty( $download_url ) ) : ?>
-				<a class="print-actions__download" href="<?php echo esc_url( $download_url ); ?>"><?php esc_html_e( 'Download Certificate', 'cta-lms' ); ?></a>
-			<?php endif; ?>
-		</div>
-		<p><?php esc_html_e( 'Use Print / Save as PDF to open the print dialog, or Download Certificate to save a PDF to your device.', 'cta-lms' ); ?></p>
-	</div>
-
-	<div class="certificate-shell">
-		<div class="certificate">
+	<div class="certificate-outer">
+		<div class="certificate-inner">
 			<?php if ( ! empty( $logo_url ) ) : ?>
 				<?php
-				// esc_url() strips data: URIs used for print/PDF embedding — keep those via esc_attr.
 				$logo_src = ( 0 === strpos( $logo_url, 'data:' ) )
 					? esc_attr( $logo_url )
 					: esc_url( $logo_url );
 				?>
-				<img class="logo" src="<?php echo $logo_src; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped above ?>" alt="<?php echo esc_attr( $organization_name ); ?>">
+				<img class="logo" src="<?php echo $logo_src; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped above ?>" width="220" height="52" alt="<?php echo esc_attr( $organization_name ); ?>">
 			<?php endif; ?>
 
 			<h1><?php echo esc_html( $header_text ); ?></h1>
@@ -250,7 +184,7 @@ $auto_print          = ! empty( $auto_print );
 				<p><?php esc_html_e( 'License/Registration Number:', 'cta-lms' ); ?> <?php echo $license_display; ?></p>
 			</div>
 
-			<div class="divider"></div>
+			<div class="divider">&nbsp;</div>
 
 			<p class="meta">
 				<?php esc_html_e( 'CAMFT CEPA Provider Number:', 'cta-lms' ); ?>
@@ -272,13 +206,5 @@ $auto_print          = ! empty( $auto_print );
 			<p class="footer"><?php echo esc_html( $footer_text ); ?></p>
 		</div>
 	</div>
-
-	<?php if ( $auto_print ) : ?>
-		<script>
-			window.addEventListener('load', function () {
-				setTimeout(function () { window.print(); }, 350);
-			});
-		</script>
-	<?php endif; ?>
 </body>
 </html>
