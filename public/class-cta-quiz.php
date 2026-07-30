@@ -132,7 +132,7 @@ class CTA_Quiz {
 		$view_state      = 'start';
 		$evaluation_questions = self::get_evaluation_questions( $course_id );
 		$attestation_text     = class_exists( 'CTA_Course_Attestation' )
-			? CTA_Course_Attestation::default_attestation_text()
+			? CTA_Course_Attestation::default_attestation_text( $course ? (string) $course->title : '' )
 			: '';
 		$is_exam_prep    = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course );
 
@@ -421,6 +421,39 @@ class CTA_Quiz {
 		$student_name = function_exists( 'cta_lms_get_user_legal_name' )
 			? cta_lms_get_user_legal_name( $user_id )
 			: ( $user ? $user->display_name : '' );
+		$student_email = $user ? (string) $user->user_email : '';
+
+		// Prefer participant-info answers from the evaluation form when present.
+		$responses_map = isset( $parsed['responses'] ) && is_array( $parsed['responses'] ) ? $parsed['responses'] : array();
+		$form_name     = self::evaluation_response_value( $responses_map, array( 'participant_cert_name', 'camft_participant_cert_name' ) );
+		$form_email    = self::evaluation_response_value( $responses_map, array( 'participant_email', 'camft_participant_email' ) );
+		$form_lic_type = self::evaluation_response_value( $responses_map, array( 'participant_license_type', 'camft_participant_license_type' ) );
+		$form_lic_num  = self::evaluation_response_value( $responses_map, array( 'participant_license_number', 'camft_participant_license_number' ) );
+
+		if ( '' !== $form_name ) {
+			$student_name = $form_name;
+			if ( function_exists( 'cta_lms_sync_user_name_parts' ) ) {
+				cta_lms_sync_user_name_parts( $user_id, $form_name );
+			}
+			wp_update_user(
+				array(
+					'ID'           => $user_id,
+					'display_name' => $form_name,
+				)
+			);
+		}
+		if ( '' !== $form_email && is_email( $form_email ) ) {
+			$student_email = $form_email;
+		}
+		if ( '' !== $form_lic_type ) {
+			update_user_meta( $user_id, 'cta_license_type', sanitize_text_field( $form_lic_type ) );
+		}
+		if ( '' !== $form_lic_num ) {
+			$lic = function_exists( 'cta_lms_sanitize_license_number' )
+				? cta_lms_sanitize_license_number( $form_lic_num )
+				: sanitize_text_field( $form_lic_num );
+			update_user_meta( $user_id, 'cta_license_number', $lic );
+		}
 
 		global $wpdb;
 
@@ -440,7 +473,7 @@ class CTA_Quiz {
 				'status'            => 'completed',
 				'course_title'      => $course ? (string) $course->title : '',
 				'student_name'      => (string) $student_name,
-				'student_email'     => $user ? (string) $user->user_email : '',
+				'student_email'     => (string) $student_email,
 			),
 			array( '%d', '%d', '%d', '%d', '%d', '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
 		);
@@ -518,7 +551,7 @@ class CTA_Quiz {
 
 		$agreed = ! empty( $_POST['agree'] );
 		if ( ! $agreed ) {
-			wp_send_json_error( array( 'message' => __( 'You must agree to the attestation to continue.', 'cta-lms' ) ) );
+			wp_send_json_error( array( 'message' => __( 'You must check the attestation checkbox to continue.', 'cta-lms' ) ) );
 		}
 
 		/** @var object $quiz */
@@ -534,8 +567,8 @@ class CTA_Quiz {
 			wp_send_json_error( array( 'message' => __( 'Submit the course evaluation before attestation.', 'cta-lms' ) ) );
 		}
 
-		// Statement text is always the server-side CE standard wording (never rely on a client hidden field).
-		$attestation_text = CTA_Course_Attestation::default_attestation_text();
+		$course_title     = $course ? (string) $course->title : '';
+		$attestation_text = CTA_Course_Attestation::default_attestation_text( $course_title );
 		$signature_name   = sanitize_text_field(
 			wp_unslash(
 				$_POST['signature_name']
@@ -544,17 +577,33 @@ class CTA_Quiz {
 				?? ''
 			)
 		);
+		$signature_date = sanitize_text_field(
+			wp_unslash(
+				$_POST['signature_date']
+				?? $_POST['attestation_date']
+				?? ''
+			)
+		);
 
 		if ( '' === trim( $signature_name ) ) {
 			wp_send_json_error(
 				array(
-					'message' => __( 'Please type your full legal name as your electronic signature to complete this attestation.', 'cta-lms' ),
+					'message' => __( 'Please complete the Typed Name field to electronically sign this attestation.', 'cta-lms' ),
 					'code'    => 'cta_attestation_signature',
 				)
 			);
 		}
 
-		$result = CTA_Course_Attestation::submit( $user_id, $course_id, $attestation_text, $signature_name );
+		if ( '' === trim( $signature_date ) ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'Please enter the attestation date.', 'cta-lms' ),
+					'code'    => 'cta_attestation_date',
+				)
+			);
+		}
+
+		$result = CTA_Course_Attestation::submit( $user_id, $course_id, $attestation_text, $signature_name, $signature_date );
 
 		if ( is_wp_error( $result ) ) {
 			wp_send_json_error(
@@ -586,6 +635,30 @@ class CTA_Quiz {
 				'dashboard_url'      => $this->get_dashboard_url(),
 			)
 		);
+	}
+
+	/**
+	 * Read the first non-empty evaluation response for a list of question keys.
+	 *
+	 * @param array $responses Response map.
+	 * @param array $keys      Candidate question keys.
+	 * @return string
+	 */
+	private static function evaluation_response_value( $responses, $keys ) {
+		foreach ( (array) $keys as $key ) {
+			if ( ! isset( $responses[ $key ] ) ) {
+				continue;
+			}
+			$value = $responses[ $key ];
+			if ( is_array( $value ) ) {
+				continue;
+			}
+			$value = trim( (string) $value );
+			if ( '' !== $value ) {
+				return $value;
+			}
+		}
+		return '';
 	}
 
 	/**
@@ -627,29 +700,22 @@ class CTA_Quiz {
 			$value = isset( $raw_responses[ $id ] ) ? $raw_responses[ $id ] : '';
 
 			if ( in_array( $type, array( 'rating', 'likert' ), true ) ) {
-				$rating = absint( is_array( $value ) ? 0 : $value );
+				$opt_val      = sanitize_text_field( (string) ( is_array( $value ) ? '' : $value ) );
 				$allowed_keys = array_map( 'strval', array_keys( (array) ( $question['options'] ?? array() ) ) );
 				if ( empty( $allowed_keys ) ) {
-					$allowed_keys = array( '1', '2', '3', '4', '5' );
+					$allowed_keys = array( '1', '2', '3', '4', '5', 'na' );
 				}
-				if ( ! empty( $question['required'] ) && ( $rating < 1 || ! in_array( (string) $rating, $allowed_keys, true ) && ! in_array( (string) $value, $allowed_keys, true ) ) ) {
-					// Accept either numeric 1-5 or option keys like "5" for Excellent.
-					$opt_val = sanitize_text_field( (string) ( is_array( $value ) ? '' : $value ) );
-					if ( '' === $opt_val || ! in_array( $opt_val, $allowed_keys, true ) ) {
-						return new WP_Error(
-							'missing_field',
-							sprintf(
-								/* translators: %s: question label */
-								__( 'Please answer: %s', 'cta-lms' ),
-								$question['label']
-							)
-						);
-					}
-					$clean[ $id ] = $opt_val;
-				} else {
-					$opt_val = sanitize_text_field( (string) ( is_array( $value ) ? '' : $value ) );
-					$clean[ $id ] = in_array( $opt_val, $allowed_keys, true ) ? $opt_val : ( $rating > 0 ? (string) $rating : '' );
+				if ( ! empty( $question['required'] ) && ( '' === $opt_val || ! in_array( $opt_val, $allowed_keys, true ) ) ) {
+					return new WP_Error(
+						'missing_field',
+						sprintf(
+							/* translators: %s: question label */
+							__( 'Please answer: %s', 'cta-lms' ),
+							$question['label']
+						)
+					);
 				}
+				$clean[ $id ] = in_array( $opt_val, $allowed_keys, true ) ? $opt_val : '';
 			} elseif ( in_array( $type, array( 'radio', 'multiple_choice', 'yes_no', 'dropdown' ), true ) ) {
 				$answer  = sanitize_text_field( (string) ( is_array( $value ) ? '' : $value ) );
 				$allowed = array_map( 'strval', array_keys( (array) ( $question['options'] ?? array() ) ) );
@@ -697,6 +763,17 @@ class CTA_Quiz {
 							__( 'Please answer: %s', 'cta-lms' ),
 							$question['label']
 						)
+					);
+				}
+				// Email participant field must be a valid address.
+				$bare_id = (string) $id;
+				if ( 0 === strpos( $bare_id, 'camft_' ) ) {
+					$bare_id = substr( $bare_id, 6 );
+				}
+				if ( 'participant_email' === $bare_id && '' !== $text && ! is_email( $text ) ) {
+					return new WP_Error(
+						'invalid_email',
+						__( 'Please enter a valid email address.', 'cta-lms' )
 					);
 				}
 				$clean[ $id ] = $text;

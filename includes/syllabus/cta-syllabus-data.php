@@ -970,11 +970,11 @@ return array(
 			'Support sound clinical judgment and professional boundaries in remote behavioral health treatment.',
 		),
 		'learning_objectives'     => array(
-			'Identify at least four California legal or ethical requirements governing telehealth delivery, informed consent, jurisdiction, and client safety.',
-			'Apply a telehealth intake protocol that includes identity verification, session-location verification, and assessment of appropriateness for remote care.',
-			'Design a telehealth emergency-response plan that includes local resources, emergency contacts, client location procedures, and continuity steps.',
-			'Identify at least three technological or administrative safeguards that support secure and HIPAA-compliant telehealth services.',
-			'Describe two procedures for managing technology failure, electronic communication, or professional-boundary concerns in virtual treatment.',
+			'Identify at least four California legal or ethical requirements governing telehealth initiation, informed consent, jurisdiction, and each-session safety procedures.',
+			'Apply a telehealth intake and session-opening protocol that includes identity verification, present-location verification, appropriateness assessment, and documentation.',
+			'Design a telehealth emergency-response plan that includes local resources, an emergency contact, present-location procedures, backup communication, and continuity steps.',
+			'Identify at least three administrative, physical, or technical safeguards that protect electronic client information during telehealth services.',
+			'Apply procedures for managing technology disruptions and electronic communications while maintaining privacy, continuity of care, and professional boundaries.',
 		),
 		'completion_requirements' => array(
 			'Complete all required instructional modules and embedded learning activities.',

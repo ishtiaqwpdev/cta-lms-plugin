@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.103' );
+	define( 'CTA_VERSION', '1.0.105' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -411,6 +411,22 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 			// Enable multiple Exam Prep assessments (Practice / Form A / Form B).
 			if ( version_compare( $installed, '1.0.102', '<' ) && class_exists( 'CTA_Database' ) ) {
 				CTA_Database::maybe_add_multi_quiz_support();
+			}
+
+			// Refresh CE evaluation to Participant + Sections A–E (Agree/Disagree + N/A).
+			if ( version_compare( $installed, '1.0.104', '<' ) ) {
+				if ( class_exists( 'CTA_Syllabus_Sync' ) ) {
+					CTA_Database::maybe_add_syllabus_columns();
+					CTA_Syllabus_Sync::sync_all( true );
+				}
+				if ( class_exists( 'CTA_Evaluation_Questions' ) ) {
+					CTA_Evaluation_Questions::sync_camft_to_all_ce_courses();
+				}
+			}
+
+			// Mandatory completion attestation: signature_date column + updated statement.
+			if ( version_compare( $installed, '1.0.105', '<' ) && class_exists( 'CTA_Course_Attestation' ) ) {
+				CTA_Course_Attestation::install();
 			}
 
 			// Decouple supervision application pending from general account / CE access.

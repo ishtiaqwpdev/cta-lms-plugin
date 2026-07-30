@@ -114,6 +114,34 @@ if ( empty( $evaluation_questions ) || ! is_array( $evaluation_questions ) ) {
 			<p><?php echo esc_html__( 'Please complete this course-specific evaluation. After submission you will complete a short attestation before your certificate is issued.', 'cta-lms' ); ?></p>
 			<form id="cta-evaluation-form" class="cta-evaluation-form cta-evaluation-form--matrix" novalidate>
 				<?php
+				$cta_eval_user_id = get_current_user_id();
+				$cta_eval_user    = $cta_eval_user_id ? get_userdata( $cta_eval_user_id ) : false;
+				$cta_eval_prefill = array(
+					'participant_cert_name'      => function_exists( 'cta_lms_get_user_legal_name' )
+						? (string) cta_lms_get_user_legal_name( $cta_eval_user_id )
+						: ( $cta_eval_user ? (string) $cta_eval_user->display_name : '' ),
+					'participant_email'          => $cta_eval_user ? (string) $cta_eval_user->user_email : '',
+					'participant_license_type'   => (string) get_user_meta( $cta_eval_user_id, 'cta_license_type', true ),
+					'participant_license_number' => function_exists( 'cta_lms_get_user_license_number' )
+						? (string) cta_lms_get_user_license_number( $cta_eval_user_id )
+						: (string) get_user_meta( $cta_eval_user_id, 'cta_license_number', true ),
+				);
+				// Prefill also works when course copies use the camft_ prefix.
+				foreach ( array_keys( $cta_eval_prefill ) as $pref_key ) {
+					$cta_eval_prefill[ 'camft_' . $pref_key ] = $cta_eval_prefill[ $pref_key ];
+				}
+
+				/**
+				 * Resolve a prefill value for a question key.
+				 *
+				 * @param string $qid Question key.
+				 * @return string
+				 */
+				$cta_eval_prefill_value = static function ( $qid ) use ( $cta_eval_prefill ) {
+					$qid = (string) $qid;
+					return isset( $cta_eval_prefill[ $qid ] ) ? (string) $cta_eval_prefill[ $qid ] : '';
+				};
+
 				/**
 				 * Normalize a question's display type (same mapping as before).
 				 *
@@ -230,6 +258,9 @@ if ( empty( $evaluation_questions ) || ! is_array( $evaluation_questions ) ) {
 						if ( '' !== $current_section ) :
 							?>
 							<h3 class="cta-evaluation-section__title"><?php echo esc_html( $current_section ); ?></h3>
+							<?php if ( false !== stripos( $current_section, 'Learning Objectives' ) ) : ?>
+								<p class="cta-evaluation-section__intro"><?php echo esc_html__( 'As a result of completing this course, I am able to:', 'cta-lms' ); ?></p>
+							<?php endif; ?>
 							<?php
 						endif;
 					endif;
@@ -246,7 +277,7 @@ if ( empty( $evaluation_questions ) || ! is_array( $evaluation_questions ) ) {
 										</th>
 										<?php foreach ( $scale_options as $value => $option_label ) : ?>
 											<th scope="col" class="cta-evaluation-matrix__scale-col" title="<?php echo esc_attr( $option_label ); ?>">
-												<span class="cta-evaluation-matrix__scale-num"><?php echo esc_html( (string) $value ); ?></span>
+												<span class="cta-evaluation-matrix__scale-num"><?php echo esc_html( 'na' === (string) $value ? 'N/A' : (string) $value ); ?></span>
 												<span class="cta-evaluation-matrix__scale-label"><?php echo esc_html( $option_label ); ?></span>
 											</th>
 										<?php endforeach; ?>
@@ -275,7 +306,7 @@ if ( empty( $evaluation_questions ) || ! is_array( $evaluation_questions ) ) {
 															aria-label="<?php echo esc_attr( $option_label ); ?>"
 															<?php echo ! empty( $question['required'] ) ? 'required' : ''; ?>
 														>
-														<span class="cta-evaluation-matrix__choice-face" aria-hidden="true"><?php echo esc_html( (string) $value ); ?></span>
+														<span class="cta-evaluation-matrix__choice-face" aria-hidden="true"><?php echo esc_html( 'na' === (string) $value ? 'N/A' : (string) $value ); ?></span>
 													</label>
 												</td>
 											<?php endforeach; ?>
@@ -308,11 +339,16 @@ if ( empty( $evaluation_questions ) || ! is_array( $evaluation_questions ) ) {
 									<?php endif; ?>
 								</label>
 								<?php if ( 'short_text' === $q_type ) : ?>
+									<?php
+									$pref_val   = $cta_eval_prefill_value( $question['id'] );
+									$input_type = ( false !== strpos( (string) $question['id'], 'email' ) ) ? 'email' : 'text';
+									?>
 									<input
-										type="text"
+										type="<?php echo esc_attr( $input_type ); ?>"
 										id="eval-<?php echo esc_attr( $question['id'] ); ?>"
 										name="responses[<?php echo esc_attr( $question['id'] ); ?>]"
 										class="form-input"
+										value="<?php echo esc_attr( $pref_val ); ?>"
 										<?php echo ! empty( $question['required'] ) ? 'required' : ''; ?>
 									>
 								<?php else : ?>
@@ -331,6 +367,7 @@ if ( empty( $evaluation_questions ) || ! is_array( $evaluation_questions ) ) {
 										<span class="cta-required" aria-hidden="true">*</span>
 									<?php endif; ?>
 								</label>
+								<?php $pref_val = $cta_eval_prefill_value( $question['id'] ); ?>
 								<select
 									id="eval-<?php echo esc_attr( $question['id'] ); ?>"
 									name="responses[<?php echo esc_attr( $question['id'] ); ?>]"
@@ -339,7 +376,7 @@ if ( empty( $evaluation_questions ) || ! is_array( $evaluation_questions ) ) {
 								>
 									<option value=""><?php echo esc_html__( 'Select an option', 'cta-lms' ); ?></option>
 									<?php foreach ( $options as $value => $option_label ) : ?>
-										<option value="<?php echo esc_attr( (string) $value ); ?>"><?php echo esc_html( $option_label ); ?></option>
+										<option value="<?php echo esc_attr( (string) $value ); ?>" <?php selected( $pref_val, (string) $value ); ?>><?php echo esc_html( $option_label ); ?></option>
 									<?php endforeach; ?>
 								</select>
 							<?php elseif ( 'checkbox' === $q_type ) : ?>
@@ -396,26 +433,33 @@ if ( empty( $evaluation_questions ) || ! is_array( $evaluation_questions ) ) {
 	<div class="cta-quiz-panel <?php echo ( isset( $view_state ) && 'attestation' === $view_state ) ? 'cta-quiz-panel--active' : ''; ?>" data-quiz-panel="attestation" <?php echo ( ! isset( $view_state ) || 'attestation' !== $view_state ) ? 'hidden' : ''; ?>>
 		<?php if ( empty( $is_exam_prep ) ) : ?>
 		<div class="card cta-quiz-attestation">
-			<h2><?php echo esc_html__( 'Course-Completion Attestation', 'cta-lms' ); ?></h2>
-			<p><?php echo esc_html__( 'Confirm that you personally completed this asynchronous distance-learning course. A CE certificate cannot be issued until this attestation is submitted.', 'cta-lms' ); ?></p>
+			<h2><?php echo esc_html__( 'Mandatory Completion Attestation', 'cta-lms' ); ?></h2>
+			<p><?php echo esc_html__( 'A CE certificate cannot be issued until you check the attestation and complete the Typed Name field.', 'cta-lms' ); ?></p>
 			<form id="cta-attestation-form" class="cta-attestation-form" novalidate>
-				<div class="cta-attestation-text" id="cta-attestation-statement">
-					<?php echo esc_html( ! empty( $attestation_text ) ? $attestation_text : ( class_exists( 'CTA_Course_Attestation' ) ? CTA_Course_Attestation::default_attestation_text() : '' ) ); ?>
-				</div>
+				<?php
+				$attestation_statement = ! empty( $attestation_text )
+					? (string) $attestation_text
+					: ( class_exists( 'CTA_Course_Attestation' ) ? CTA_Course_Attestation::default_attestation_text( ! empty( $course->title ) ? (string) $course->title : '' ) : '' );
+				$attestation_name_prefill = '';
+				if ( function_exists( 'cta_lms_get_user_legal_name' ) ) {
+					$attestation_name_prefill = (string) cta_lms_get_user_legal_name( get_current_user_id() );
+				}
+				if ( '' === $attestation_name_prefill ) {
+					$current = wp_get_current_user();
+					$attestation_name_prefill = $current && $current->display_name ? (string) $current->display_name : '';
+				}
+				$attestation_date_prefill = current_time( 'Y-m-d' );
+				?>
+				<label class="cta-attestation-agree cta-attestation-agree--statement">
+					<input type="checkbox" id="cta-attestation-agree" name="agree" value="1" required>
+					<span id="cta-attestation-statement"><?php echo esc_html( $attestation_statement ); ?></span>
+				</label>
+
 				<div class="form-group cta-attestation-signature">
 					<label class="form-label" for="cta-attestation-signature">
-						<?php echo esc_html__( 'Electronic signature', 'cta-lms' ); ?>
+						<?php echo esc_html__( 'Typed Name', 'cta-lms' ); ?>
+						<span class="cta-required" aria-hidden="true">*</span>
 					</label>
-					<?php
-					$attestation_name_prefill = '';
-					if ( function_exists( 'cta_lms_get_user_legal_name' ) ) {
-						$attestation_name_prefill = (string) cta_lms_get_user_legal_name( get_current_user_id() );
-					}
-					if ( '' === $attestation_name_prefill ) {
-						$current = wp_get_current_user();
-						$attestation_name_prefill = $current && $current->display_name ? (string) $current->display_name : '';
-					}
-					?>
 					<input
 						type="text"
 						id="cta-attestation-signature"
@@ -427,13 +471,25 @@ if ( empty( $evaluation_questions ) || ! is_array( $evaluation_questions ) ) {
 						value="<?php echo esc_attr( $attestation_name_prefill ); ?>"
 					>
 					<p class="form-hint" style="margin-top:0.35rem;font-size:0.85em;opacity:0.85;">
-						<?php echo esc_html__( 'Type your full legal name to electronically sign this course-completion attestation.', 'cta-lms' ); ?>
+						<?php echo esc_html__( 'This typed name serves as your electronic signature.', 'cta-lms' ); ?>
 					</p>
 				</div>
-				<label class="cta-attestation-agree">
-					<input type="checkbox" id="cta-attestation-agree" name="agree" value="1" required>
-					<span><?php echo esc_html__( 'I have read and agree to this attestation, and the name above is my electronic signature.', 'cta-lms' ); ?></span>
-				</label>
+
+				<div class="form-group cta-attestation-date">
+					<label class="form-label" for="cta-attestation-date">
+						<?php echo esc_html__( 'Date', 'cta-lms' ); ?>
+						<span class="cta-required" aria-hidden="true">*</span>
+					</label>
+					<input
+						type="date"
+						id="cta-attestation-date"
+						name="signature_date"
+						class="form-input"
+						required
+						value="<?php echo esc_attr( $attestation_date_prefill ); ?>"
+					>
+				</div>
+
 				<button type="button" class="btn btn-primary" id="cta-submit-attestation"><?php echo esc_html__( 'Submit Attestation & Get Certificate', 'cta-lms' ); ?></button>
 			</form>
 		</div>

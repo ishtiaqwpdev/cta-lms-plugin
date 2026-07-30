@@ -3098,16 +3098,29 @@
       attestBtn.addEventListener("click", function () {
         var agree = document.getElementById("cta-attestation-agree");
         if (!agree || !agree.checked) {
-          window.alert("Please agree to the attestation to continue.");
+          window.alert("Please check the attestation checkbox to continue.");
+          if (agree) {
+            agree.focus();
+          }
           return;
         }
 
         var signatureField = document.getElementById("cta-attestation-signature");
         var signatureName = signatureField ? signatureField.value.trim() : "";
         if (!signatureName || signatureName.length < 2) {
-          window.alert("Please type your full legal name as your electronic signature.");
+          window.alert("Please complete the Typed Name field to electronically sign this attestation.");
           if (signatureField) {
             signatureField.focus();
+          }
+          return;
+        }
+
+        var dateField = document.getElementById("cta-attestation-date");
+        var signatureDate = dateField ? dateField.value.trim() : "";
+        if (!signatureDate) {
+          window.alert("Please enter the attestation date.");
+          if (dateField) {
+            dateField.focus();
           }
           return;
         }
@@ -3120,7 +3133,8 @@
           nonce: ctaAjax.nonce,
           course_id: courseId,
           agree: 1,
-          signature_name: signatureName
+          signature_name: signatureName,
+          signature_date: signatureDate
         })
           .done(function (response) {
             if (!response.success || !response.data) {

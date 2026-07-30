@@ -41,10 +41,9 @@ $administrator_title = ! empty( $administrator_title ) ? $administrator_title : 
 	<title><?php echo esc_html( $certificate_number ); ?></title>
 	<style>
 		@page {
-			size: letter landscape;
-			margin: 0.35in;
+			margin: 0.4in;
 		}
-		* { box-sizing: border-box; margin: 0; padding: 0; }
+		* { box-sizing: border-box; }
 		html, body {
 			margin: 0;
 			padding: 0;
@@ -58,7 +57,8 @@ $administrator_title = ! empty( $administrator_title ) ? $administrator_title : 
 		}
 		/* Outer navy double frame + inner gold rule (mirrors HTML outline). */
 		.certificate-outer {
-			width: 100%;
+			width: 700pt;
+			margin: 0 auto;
 			border: 5px double #122B51;
 			padding: 10px;
 			background: #ffffff;

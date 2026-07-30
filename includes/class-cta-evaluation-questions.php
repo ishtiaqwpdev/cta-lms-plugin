@@ -29,7 +29,7 @@ class CTA_Evaluation_Questions {
 	 */
 	public static function get_types() {
 		return array(
-			'rating'     => __( 'Rating Scale (1–5)', 'cta-lms' ),
+			'rating'     => __( 'Rating Scale (1–5 + N/A)', 'cta-lms' ),
 			'radio'      => __( 'Radio Button', 'cta-lms' ),
 			'checkbox'   => __( 'Checkbox', 'cta-lms' ),
 			'short_text' => __( 'Short Text', 'cta-lms' ),
@@ -39,33 +39,51 @@ class CTA_Evaluation_Questions {
 	}
 
 	/**
-	 * Default Likert options for rating questions.
+	 * Default Likert options for rating questions (incl. N/A).
 	 *
 	 * @return array
 	 */
 	public static function default_rating_options() {
 		return array(
-			'1' => __( '1 — Strongly Disagree', 'cta-lms' ),
-			'2' => __( '2 — Disagree', 'cta-lms' ),
-			'3' => __( '3 — Neutral', 'cta-lms' ),
-			'4' => __( '4 — Agree', 'cta-lms' ),
-			'5' => __( '5 — Strongly Agree', 'cta-lms' ),
+			'1'  => __( '1 — Strongly Disagree', 'cta-lms' ),
+			'2'  => __( '2 — Disagree', 'cta-lms' ),
+			'3'  => __( '3 — Neutral', 'cta-lms' ),
+			'4'  => __( '4 — Agree', 'cta-lms' ),
+			'5'  => __( '5 — Strongly Agree', 'cta-lms' ),
+			'na' => __( 'N/A — Not Applicable', 'cta-lms' ),
 		);
 	}
 
 	/**
 	 * Rating options for learning-objective evaluation questions.
 	 *
+	 * Same Agree/Disagree + N/A scale as all other rating items.
+	 *
 	 * @return array
 	 */
 	public static function default_objective_rating_options() {
-		return array(
-			'5' => __( 'Excellent', 'cta-lms' ),
-			'4' => __( 'Very Good', 'cta-lms' ),
-			'3' => __( 'Good', 'cta-lms' ),
-			'2' => __( 'Fair', 'cta-lms' ),
-			'1' => __( 'Poor', 'cta-lms' ),
-		);
+		return self::default_rating_options();
+	}
+
+	/**
+	 * License/registration type choices for the evaluation participant section.
+	 *
+	 * @return array value => label
+	 */
+	public static function license_type_options() {
+		$types = function_exists( 'cta_lms_get_license_types' )
+			? cta_lms_get_license_types()
+			: array( 'LMFT', 'LCSW', 'LPCC', 'LEP', 'AMFT', 'ASW', 'APCC' );
+
+		$options = array();
+		foreach ( (array) $types as $type ) {
+			$type = (string) $type;
+			if ( '' !== $type ) {
+				$options[ $type ] = $type;
+			}
+		}
+		$options['Other'] = __( 'Other', 'cta-lms' );
+		return $options;
 	}
 
 	/**
@@ -219,16 +237,20 @@ class CTA_Evaluation_Questions {
 	}
 
 	/**
-	 * Upsert the full CAMFT template set into the shared library (course_id = 0).
+	 * Upsert the full standard evaluation template into the shared library (course_id = 0).
+	 *
+	 * Also deactivates obsolete library questions that are no longer in the template.
 	 *
 	 * @return int Number of newly inserted library questions.
 	 */
 	public static function ensure_camft_library_complete() {
-		$inserted = 0;
+		$inserted     = 0;
+		$allowed_keys = array();
 
 		foreach ( self::get_camft_template_questions() as $index => $tpl ) {
-			$existing = self::get_question_by_key( 0, $tpl['id'] );
-			$data     = array(
+			$allowed_keys[] = $tpl['id'];
+			$existing       = self::get_question_by_key( 0, $tpl['id'] );
+			$data           = array(
 				'course_id'       => 0,
 				'question_key'    => $tpl['id'],
 				'section_label'   => $tpl['section'],
@@ -243,6 +265,11 @@ class CTA_Evaluation_Questions {
 				'status'          => 'active',
 			);
 
+			// Keep participant fields at the top of the shared library.
+			if ( 0 === strpos( (string) $tpl['id'], 'participant_' ) ) {
+				$data['order_index'] = (int) $index;
+			}
+
 			if ( $existing ) {
 				self::update_question( (int) $existing->id, $data );
 			} else {
@@ -251,94 +278,196 @@ class CTA_Evaluation_Questions {
 			}
 		}
 
+		self::deactivate_obsolete_camft_questions( 0, $allowed_keys );
+
 		return $inserted;
 	}
 
 	/**
-	 * CAMFT-style evaluation template definitions (seed course_id = 0 library).
+	 * Deactivate CAMFT/standard questions whose keys are no longer in the template.
+	 *
+	 * @param int   $course_id    Course ID (0 = shared library).
+	 * @param array $allowed_keys Bare template question keys (without camft_ prefix).
+	 * @return int Number deactivated.
+	 */
+	public static function deactivate_obsolete_camft_questions( $course_id, $allowed_keys = null ) {
+		$course_id = absint( $course_id );
+		if ( null === $allowed_keys ) {
+			$allowed_keys = array();
+			foreach ( self::get_camft_template_questions() as $tpl ) {
+				$allowed_keys[] = $tpl['id'];
+			}
+		}
+		$allowed_keys = array_map( 'strval', (array) $allowed_keys );
+		$deactivated  = 0;
+
+		foreach ( self::get_questions( 'active', $course_id ) as $row ) {
+			$source = isset( $row->source_type ) ? (string) $row->source_type : '';
+			if ( 'camft' !== $source && 0 !== $course_id ) {
+				// On courses, only prune camft-sourced rows; library is all template.
+				continue;
+			}
+			if ( 0 === $course_id && 'learning_objective' === $source ) {
+				continue;
+			}
+
+			$key      = (string) $row->question_key;
+			$bare_key = ( 0 === strpos( $key, 'camft_' ) ) ? substr( $key, 6 ) : $key;
+
+			if ( in_array( $bare_key, $allowed_keys, true ) || in_array( $key, $allowed_keys, true ) ) {
+				continue;
+			}
+
+			// Leave custom (non-camft) course questions alone.
+			if ( 0 !== $course_id && 'camft' !== $source ) {
+				continue;
+			}
+
+			self::update_question(
+				(int) $row->id,
+				array(
+					'status' => 'inactive',
+				)
+			);
+			++$deactivated;
+		}
+
+		return $deactivated;
+	}
+
+	/**
+	 * Standard CE evaluation template (seed course_id = 0 library).
+	 *
+	 * Section A (learning objectives) is synced per-course from course LO text.
+	 * Participant info + Sections B–E live here.
 	 *
 	 * @return array
 	 */
 	public static function get_camft_template_questions() {
-		$likert = self::default_rating_options();
+		$likert        = self::default_rating_options();
+		$license_types = self::license_type_options();
+
+		$section_participant = __( 'Participant Information', 'cta-lms' );
+		$section_b           = __( 'Section B — Course Content and Learning Experience', 'cta-lms' );
+		$section_c           = __( 'Section C — Instructor/Presenter', 'cta-lms' );
+		$section_d           = __( 'Section D — Technology and Administration', 'cta-lms' );
+		$section_e           = __( 'Section E — Qualitative Feedback', 'cta-lms' );
 
 		return array(
+			// Participant Information (required).
+			array(
+				'id'       => 'participant_cert_name',
+				'section'  => $section_participant,
+				'label'    => __( 'Name for Certificate', 'cta-lms' ),
+				'type'     => 'short_text',
+				'required' => true,
+				'summary'  => '',
+			),
+			array(
+				'id'       => 'participant_email',
+				'section'  => $section_participant,
+				'label'    => __( 'Email Address', 'cta-lms' ),
+				'type'     => 'short_text',
+				'required' => true,
+				'summary'  => '',
+			),
+			array(
+				'id'       => 'participant_license_type',
+				'section'  => $section_participant,
+				'label'    => __( 'License/Registration Type', 'cta-lms' ),
+				'type'     => 'dropdown',
+				'required' => true,
+				'options'  => $license_types,
+				'summary'  => '',
+			),
+			array(
+				'id'       => 'participant_license_number',
+				'section'  => $section_participant,
+				'label'    => __( 'License/Registration Number', 'cta-lms' ),
+				'type'     => 'short_text',
+				'required' => true,
+				'summary'  => '',
+			),
+
+			// Section B — Course Content and Learning Experience.
 			array(
 				'id'       => 'course_appropriateness',
-				'section'  => __( 'Course Content', 'cta-lms' ),
-				'label'    => __( 'How appropriate was this course for your professional level and needs?', 'cta-lms' ),
-				'type'     => 'rating',
-				'required' => true,
-				'options'  => $likert,
-				'summary'  => '',
-			),
-			array(
-				'id'       => 'relevance_to_practice',
-				'section'  => __( 'Course Content', 'cta-lms' ),
-				'label'    => __( 'How relevant was the course content to your clinical practice?', 'cta-lms' ),
-				'type'     => 'rating',
-				'required' => true,
-				'options'  => $likert,
-				'summary'  => '',
-			),
-			array(
-				'id'       => 'content_quality',
-				'section'  => __( 'Course Content', 'cta-lms' ),
-				'label'    => __( 'How would you rate the overall quality of the course content?', 'cta-lms' ),
-				'type'     => 'rating',
-				'required' => true,
-				'options'  => $likert,
-				'summary'  => 'content_quality',
-			),
-			array(
-				'id'       => 'materials_clarity',
-				'section'  => __( 'Course Content', 'cta-lms' ),
-				'label'    => __( 'How clear and well organized were the instructional materials?', 'cta-lms' ),
+				'section'  => $section_b,
+				'label'    => __( 'The course was appropriate to my education, experience, and licensure or registration level.', 'cta-lms' ),
 				'type'     => 'rating',
 				'required' => true,
 				'options'  => $likert,
 				'summary'  => 'rating',
 			),
 			array(
-				'id'       => 'materials_usefulness',
-				'section'  => __( 'Course Content', 'cta-lms' ),
-				'label'    => __( 'How useful were the course materials and resources?', 'cta-lms' ),
+				'id'       => 'relevance_to_practice',
+				'section'  => $section_b,
+				'label'    => __( 'The course content was relevant to my professional practice.', 'cta-lms' ),
 				'type'     => 'rating',
 				'required' => true,
 				'options'  => $likert,
 				'summary'  => '',
+			),
+			array(
+				'id'       => 'presentation_active_learning',
+				'section'  => $section_b,
+				'label'    => __( 'The presentation and active-learning activities supported my learning.', 'cta-lms' ),
+				'type'     => 'rating',
+				'required' => true,
+				'options'  => $likert,
+				'summary'  => '',
+			),
+			array(
+				'id'       => 'materials_suitable',
+				'section'  => $section_b,
+				'label'    => __( 'The instructional materials and downloadable resources were suitable and useful.', 'cta-lms' ),
+				'type'     => 'rating',
+				'required' => true,
+				'options'  => $likert,
+				'summary'  => 'content_quality',
 			),
 			array(
 				'id'       => 'currency_accuracy',
-				'section'  => __( 'Course Content', 'cta-lms' ),
-				'label'    => __( 'How current and accurate was the course content?', 'cta-lms' ),
+				'section'  => $section_b,
+				'label'    => __( 'The information presented was current and accurate.', 'cta-lms' ),
 				'type'     => 'rating',
 				'required' => true,
 				'options'  => $likert,
 				'summary'  => '',
 			),
 			array(
-				'id'       => 'presentation_effectiveness',
-				'section'  => __( 'Instruction', 'cta-lms' ),
-				'label'    => __( 'How effective was the presentation and use of active learning?', 'cta-lms' ),
+				'id'       => 'apply_telehealth_concepts',
+				'section'  => $section_b,
+				'label'    => __( 'The course strengthened my ability to apply telehealth-related clinical, legal, ethical, and risk-management concepts.', 'cta-lms' ),
 				'type'     => 'rating',
 				'required' => true,
 				'options'  => $likert,
 				'summary'  => '',
 			),
+
+			// Section C — Instructor/Presenter.
 			array(
-				'id'       => 'instructor_clarity',
-				'section'  => __( 'Instruction', 'cta-lms' ),
-				'label'    => __( 'How would you rate the clarity of the instructor / presentation?', 'cta-lms' ),
+				'id'       => 'instructor_knowledge',
+				'section'  => $section_c,
+				'label'    => __( 'The instructor demonstrated knowledge of the subject matter.', 'cta-lms' ),
 				'type'     => 'rating',
 				'required' => true,
 				'options'  => $likert,
 				'summary'  => 'instructor_rating',
 			),
 			array(
-				'id'       => 'instructor_knowledge',
-				'section'  => __( 'Instruction', 'cta-lms' ),
-				'label'    => __( 'How would you rate the instructor\'s knowledge of the subject?', 'cta-lms' ),
+				'id'       => 'instructor_clarity',
+				'section'  => $section_c,
+				'label'    => __( 'The instructor communicated the material clearly.', 'cta-lms' ),
+				'type'     => 'rating',
+				'required' => true,
+				'options'  => $likert,
+				'summary'  => '',
+			),
+			array(
+				'id'       => 'instructor_delivery',
+				'section'  => $section_c,
+				'label'    => __( "The instructor's delivery was professional, practical, and approachable.", 'cta-lms' ),
 				'type'     => 'rating',
 				'required' => true,
 				'options'  => $likert,
@@ -346,17 +475,19 @@ class CTA_Evaluation_Questions {
 			),
 			array(
 				'id'       => 'instructor_responsiveness',
-				'section'  => __( 'Instruction', 'cta-lms' ),
-				'label'    => __( 'How would you rate the instructor\'s responsiveness to learner needs?', 'cta-lms' ),
+				'section'  => $section_c,
+				'label'    => __( 'The instructor was responsive to participant needs or questions, when applicable.', 'cta-lms' ),
 				'type'     => 'rating',
 				'required' => true,
 				'options'  => $likert,
 				'summary'  => '',
 			),
+
+			// Section D — Technology and Administration.
 			array(
-				'id'       => 'program_administration',
-				'section'  => __( 'Program Administration', 'cta-lms' ),
-				'label'    => __( 'How would you rate the overall program administration?', 'cta-lms' ),
+				'id'       => 'admin_instructions_clear',
+				'section'  => $section_d,
+				'label'    => __( 'Course administration and instructions were clear.', 'cta-lms' ),
 				'type'     => 'rating',
 				'required' => true,
 				'options'  => $likert,
@@ -364,8 +495,8 @@ class CTA_Evaluation_Questions {
 			),
 			array(
 				'id'       => 'technology_support',
-				'section'  => __( 'Technology', 'cta-lms' ),
-				'label'    => __( 'How would you rate the technology support available for this course?', 'cta-lms' ),
+				'section'  => $section_d,
+				'label'    => __( 'Technology support was adequate and timely, when needed.', 'cta-lms' ),
 				'type'     => 'rating',
 				'required' => true,
 				'options'  => $likert,
@@ -373,8 +504,8 @@ class CTA_Evaluation_Questions {
 			),
 			array(
 				'id'       => 'technology_contribution',
-				'section'  => __( 'Technology', 'cta-lms' ),
-				'label'    => __( 'How much did the technology contribute to your learning?', 'cta-lms' ),
+				'section'  => $section_d,
+				'label'    => __( 'The course technology contributed positively to learning.', 'cta-lms' ),
 				'type'     => 'rating',
 				'required' => true,
 				'options'  => $likert,
@@ -382,29 +513,60 @@ class CTA_Evaluation_Questions {
 			),
 			array(
 				'id'       => 'technology_usability',
-				'section'  => __( 'Technology', 'cta-lms' ),
-				'label'    => __( 'How would you rate the technology user-friendliness?', 'cta-lms' ),
+				'section'  => $section_d,
+				'label'    => __( 'The course platform was user-friendly.', 'cta-lms' ),
 				'type'     => 'rating',
 				'required' => true,
 				'options'  => $likert,
 				'summary'  => '',
 			),
 			array(
-				'id'       => 'would_recommend',
-				'section'  => __( 'Overall', 'cta-lms' ),
-				'label'    => __( 'Would you recommend this course to a colleague?', 'cta-lms' ),
-				'type'     => 'radio',
+				'id'       => 'media_functioned',
+				'section'  => $section_d,
+				'label'    => __( 'Videos, documents, quizzes, and downloads functioned as expected.', 'cta-lms' ),
+				'type'     => 'rating',
 				'required' => true,
-				'options'  => array(
-					'yes' => __( 'Yes', 'cta-lms' ),
-					'no'  => __( 'No', 'cta-lms' ),
-				),
-				'summary'  => 'would_recommend',
+				'options'  => $likert,
+				'summary'  => '',
+			),
+
+			// Section E — Qualitative Feedback (optional).
+			array(
+				'id'       => 'feedback_most_valuable',
+				'section'  => $section_e,
+				'label'    => __( 'What was the most valuable part of this course?', 'cta-lms' ),
+				'type'     => 'paragraph',
+				'required' => false,
+				'summary'  => '',
+			),
+			array(
+				'id'       => 'feedback_could_improve',
+				'section'  => $section_e,
+				'label'    => __( 'What could be improved?', 'cta-lms' ),
+				'type'     => 'paragraph',
+				'required' => false,
+				'summary'  => '',
+			),
+			array(
+				'id'       => 'feedback_apply_practice',
+				'section'  => $section_e,
+				'label'    => __( 'How do you expect to apply what you learned in professional practice?', 'cta-lms' ),
+				'type'     => 'paragraph',
+				'required' => false,
+				'summary'  => '',
+			),
+			array(
+				'id'       => 'feedback_topics_wanted',
+				'section'  => $section_e,
+				'label'    => __( 'What additional telehealth or related topics would you like CTA to offer?', 'cta-lms' ),
+				'type'     => 'paragraph',
+				'required' => false,
+				'summary'  => '',
 			),
 			array(
 				'id'       => 'comments',
-				'section'  => __( 'Additional Feedback', 'cta-lms' ),
-				'label'    => __( 'Additional comments or suggestions (optional)', 'cta-lms' ),
+				'section'  => $section_e,
+				'label'    => __( 'Additional comments', 'cta-lms' ),
 				'type'     => 'paragraph',
 				'required' => false,
 				'summary'  => 'comments',
@@ -525,16 +687,13 @@ class CTA_Evaluation_Questions {
 		$active_keys = array();
 		$synced      = 0;
 		$lo_options  = self::default_objective_rating_options();
-		$section     = __( 'Learning Objectives', 'cta-lms' );
+		$section     = __( 'Section A — Learning Objectives', 'cta-lms' );
 
 		foreach ( $objectives as $index => $objective ) {
 			$key           = 'lo_' . $index;
 			$active_keys[] = $key;
-			$label         = sprintf(
-				/* translators: %s: learning objective text */
-				__( "How well did this course help you achieve this learning objective?\n\n%s", 'cta-lms' ),
-				$objective
-			);
+			// Prompt stem is shown as the section intro in the student form.
+			$label = $objective;
 
 			$existing_row = self::get_question_by_key( $course_id, $key );
 			$data         = array(
@@ -546,7 +705,7 @@ class CTA_Evaluation_Questions {
 				'options'         => $lo_options,
 				'is_required'     => 1,
 				'summary_field'   => '',
-				'order_index'     => $index,
+				'order_index'     => 10 + (int) $index,
 				'source_type'     => 'learning_objective',
 				'objective_index' => (int) $index,
 				'status'          => 'active',
@@ -577,9 +736,10 @@ class CTA_Evaluation_Questions {
 	}
 
 	/**
-	 * Copy / upsert shared CAMFT templates (course_id = 0) into a course.
+	 * Copy / upsert shared standard templates (course_id = 0) into a course.
 	 *
-	 * Adds any missing template questions; does not delete existing course questions.
+	 * Updates existing CAMFT items to match the current template labels/options,
+	 * adds missing ones, and deactivates obsolete template keys.
 	 *
 	 * @param int $course_id Course ID.
 	 * @return int Number of questions newly copied.
@@ -597,21 +757,23 @@ class CTA_Evaluation_Questions {
 			return 0;
 		}
 
+		$allowed_keys = array();
+		foreach ( self::get_camft_template_questions() as $tpl ) {
+			$allowed_keys[] = $tpl['id'];
+		}
+
 		$lo_count   = count( self::get_questions_by_source( $course_id, 'learning_objective' ) );
-		$order_base = max( 100, $lo_count + 10 );
+		$order_base = max( 100, $lo_count + 20 );
 		$copied     = 0;
 
 		foreach ( $templates as $template ) {
 			$bare_key = (string) $template->question_key;
-			$new_key  = ( 0 === strpos( $bare_key, 'camft_' ) ) ? $bare_key : 'camft_' . $bare_key;
-
-			// Skip when the course already has this CAMFT item (prefixed or legacy bare key).
-			if ( self::get_question_by_key( $course_id, $new_key ) ) {
-				continue;
+			if ( 0 === strpos( $bare_key, 'camft_' ) ) {
+				$bare_key = substr( $bare_key, 6 );
 			}
-			if ( $new_key !== $bare_key && self::get_question_by_key( $course_id, $bare_key ) ) {
-				continue;
-			}
+			$new_key = ( 0 === strpos( (string) $template->question_key, 'camft_' ) )
+				? (string) $template->question_key
+				: 'camft_' . $bare_key;
 
 			$options = array();
 			if ( ! empty( $template->options_json ) ) {
@@ -621,24 +783,42 @@ class CTA_Evaluation_Questions {
 				}
 			}
 
-			self::insert_question(
-				array(
-					'course_id'       => $course_id,
-					'question_key'    => $new_key,
-					'section_label'   => $template->section_label,
-					'label'           => $template->label,
-					'question_type'   => self::normalize_type( $template->question_type ),
-					'options'         => $options,
-					'is_required'     => (int) $template->is_required,
-					'summary_field'   => $template->summary_field,
-					'order_index'     => $order_base + (int) $template->order_index,
-					'source_type'     => 'camft',
-					'objective_index' => -1,
-					'status'          => 'active',
-				)
+			$is_participant = ( 0 === strpos( $bare_key, 'participant_' ) );
+			$order_index    = $is_participant
+				? (int) $template->order_index
+				: $order_base + (int) $template->order_index;
+
+			$data = array(
+				'course_id'       => $course_id,
+				'question_key'    => $new_key,
+				'section_label'   => $template->section_label,
+				'label'           => $template->label,
+				'question_type'   => self::normalize_type( $template->question_type ),
+				'options'         => $options,
+				'is_required'     => (int) $template->is_required,
+				'summary_field'   => $template->summary_field,
+				'order_index'     => $order_index,
+				'source_type'     => 'camft',
+				'objective_index' => -1,
+				'status'          => 'active',
 			);
-			++$copied;
+
+			$existing = self::get_question_by_key( $course_id, $new_key );
+			if ( ! $existing && $new_key !== $bare_key ) {
+				$existing = self::get_question_by_key( $course_id, $bare_key );
+			}
+
+			if ( $existing ) {
+				// Keep the stored question_key stable if it was the legacy bare key.
+				$data['question_key'] = (string) $existing->question_key;
+				self::update_question( (int) $existing->id, $data );
+			} else {
+				self::insert_question( $data );
+				++$copied;
+			}
 		}
+
+		self::deactivate_obsolete_camft_questions( $course_id, $allowed_keys );
 
 		return $copied;
 	}
