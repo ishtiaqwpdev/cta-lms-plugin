@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.105' );
+	define( 'CTA_VERSION', '1.0.106' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -427,6 +427,12 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 			// Mandatory completion attestation: signature_date column + updated statement.
 			if ( version_compare( $installed, '1.0.105', '<' ) && class_exists( 'CTA_Course_Attestation' ) ) {
 				CTA_Course_Attestation::install();
+			}
+
+			// Telehealth website/catalog copy + SEO metadata (does not change access period or thumbnail).
+			if ( version_compare( $installed, '1.0.106', '<' ) && class_exists( 'CTA_Syllabus_Sync' ) ) {
+				CTA_Database::maybe_add_syllabus_columns();
+				CTA_Syllabus_Sync::sync_all( true );
 			}
 
 			// Decouple supervision application pending from general account / CE access.

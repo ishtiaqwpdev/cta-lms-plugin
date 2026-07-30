@@ -41,6 +41,14 @@ $is_exam_prep     = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exa
 $link_label       = $is_enrolled
 	? __( 'Continue', 'cta-lms' ) . ' →'
 	: ( $is_exam_prep ? __( 'View Program', 'cta-lms' ) . ' →' : __( 'View Course', 'cta-lms' ) . ' →' );
+
+$card_meta = class_exists( 'CTA_Syllabus_Sync' ) ? CTA_Syllabus_Sync::get_meta( $course ) : array();
+$card_desc = ! empty( $card_meta['short_description'] )
+	? (string) $card_meta['short_description']
+	: wp_trim_words( wp_strip_all_tags( (string) $course->description ), 15 );
+$card_alt  = ! empty( $card_meta['image_alt'] )
+	? (string) $card_meta['image_alt']
+	: (string) $course->title;
 ?>
 <article
 	class="cta-course-card card course-card course-card--catalog<?php echo $is_exam_prep ? ' course-card--exam-prep' : ''; ?>"
@@ -53,7 +61,7 @@ $link_label       = $is_enrolled
 		<?php if ( ! empty( $course->thumbnail_url ) ) : ?>
 			<img
 				src="<?php echo esc_url( $course->thumbnail_url ); ?>"
-				alt="<?php echo esc_attr( $course->title ); ?>"
+				alt="<?php echo esc_attr( $card_alt ); ?>"
 				loading="lazy"
 			>
 		<?php else : ?>
@@ -100,7 +108,7 @@ $link_label       = $is_enrolled
 		</h3>
 
 		<p class="cta-course-card__desc card__text course-card__text">
-			<?php echo esc_html( wp_trim_words( wp_strip_all_tags( (string) $course->description ), 15 ) ); ?>
+			<?php echo esc_html( $card_desc ); ?>
 		</p>
 
 		<div class="cta-course-card__footer course-card__footer">

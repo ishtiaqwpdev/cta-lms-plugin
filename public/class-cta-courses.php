@@ -27,6 +27,8 @@ class CTA_Courses {
 		add_action( 'wp_ajax_nopriv_cta_filter_courses', array( $this, 'ajax_filter_courses' ) );
 
 		add_filter( 'body_class', array( $this, 'add_body_class' ) );
+		add_filter( 'document_title_parts', array( $this, 'filter_document_title_parts' ) );
+		add_action( 'wp_head', array( $this, 'output_course_meta_tags' ), 5 );
 	}
 
 	/**
@@ -258,6 +260,59 @@ class CTA_Courses {
 		}
 
 		return $classes;
+	}
+
+	/**
+	 * Resolve the course currently shown by [cta_single_course], if any.
+	 *
+	 * @return object|null
+	 */
+	private function get_current_single_course() {
+		global $post;
+
+		if ( ! $post instanceof WP_Post || ! has_shortcode( $post->post_content, 'cta_single_course' ) ) {
+			return null;
+		}
+
+		$course_id = absint( $_GET['course_id'] ?? 0 ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		return $course_id ? CTA_Database::get_course( $course_id ) : null;
+	}
+
+	/**
+	 * Apply syllabus SEO title on single-course pages.
+	 *
+	 * @param array $parts Title parts.
+	 * @return array
+	 */
+	public function filter_document_title_parts( $parts ) {
+		$course = $this->get_current_single_course();
+		if ( ! $course ) {
+			return $parts;
+		}
+
+		$meta = class_exists( 'CTA_Syllabus_Sync' ) ? CTA_Syllabus_Sync::get_meta( $course ) : array();
+		if ( ! empty( $meta['seo_title'] ) ) {
+			$parts['title'] = (string) $meta['seo_title'];
+		}
+
+		return $parts;
+	}
+
+	/**
+	 * Output meta description (and related) from syllabus SEO fields.
+	 */
+	public function output_course_meta_tags() {
+		$course = $this->get_current_single_course();
+		if ( ! $course ) {
+			return;
+		}
+
+		$meta = class_exists( 'CTA_Syllabus_Sync' ) ? CTA_Syllabus_Sync::get_meta( $course ) : array();
+		if ( empty( $meta['meta_description'] ) ) {
+			return;
+		}
+
+		echo '<meta name="description" content="' . esc_attr( (string) $meta['meta_description'] ) . '" />' . "\n";
 	}
 
 	/**

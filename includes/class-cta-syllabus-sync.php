@@ -55,6 +55,47 @@ class CTA_Syllabus_Sync {
 	}
 
 	/**
+	 * Format course description HTML from a string or paragraph array.
+	 *
+	 * @param mixed $description String, newline-separated text, or paragraph list.
+	 * @return string
+	 */
+	public static function format_course_description_html( $description ) {
+		$paras = array();
+
+		if ( is_array( $description ) ) {
+			foreach ( $description as $part ) {
+				$part = trim( wp_strip_all_tags( (string) $part ) );
+				if ( '' !== $part ) {
+					$paras[] = $part;
+				}
+			}
+		} else {
+			$text = trim( (string) $description );
+			if ( '' !== $text ) {
+				$chunks = preg_split( '/\n\s*\n/', $text );
+				if ( ! is_array( $chunks ) || count( $chunks ) < 2 ) {
+					$paras[] = trim( wp_strip_all_tags( $text ) );
+				} else {
+					foreach ( $chunks as $chunk ) {
+						$chunk = trim( wp_strip_all_tags( (string) $chunk ) );
+						if ( '' !== $chunk ) {
+							$paras[] = $chunk;
+						}
+					}
+				}
+			}
+		}
+
+		$html = '';
+		foreach ( $paras as $para ) {
+			$html .= '<p>' . esc_html( $para ) . '</p>';
+		}
+
+		return wp_kses_post( $html );
+	}
+
+	/**
 	 * Format module summary points for the description field.
 	 *
 	 * @param array $points Bullet points.
@@ -301,10 +342,17 @@ class CTA_Syllabus_Sync {
 	 * @param string $title Course title.
 	 * @return string
 	 */
-	private static function unique_slug( $title ) {
+	/**
+	 * Build a unique course slug from a preferred base (title or explicit slug).
+	 *
+	 * @param string   $preferred Preferred slug or title.
+	 * @param int|null $exclude_id Course ID to exclude from uniqueness check.
+	 * @return string
+	 */
+	private static function unique_slug( $preferred, $exclude_id = null ) {
 		global $wpdb;
 
-		$base = sanitize_title( (string) $title );
+		$base = sanitize_title( (string) $preferred );
 		if ( '' === $base ) {
 			$base = 'cta-course';
 		}
@@ -312,15 +360,27 @@ class CTA_Syllabus_Sync {
 		$table = $wpdb->prefix . 'cta_courses';
 		$slug  = $base;
 		$i     = 2;
+		$exclude_id = absint( $exclude_id );
 
 		while ( true ) {
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-			$exists = $wpdb->get_var(
-				$wpdb->prepare(
-					"SELECT id FROM {$table} WHERE slug = %s LIMIT 1",
-					$slug
-				)
-			);
+			if ( $exclude_id ) {
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$exists = $wpdb->get_var(
+					$wpdb->prepare(
+						"SELECT id FROM {$table} WHERE slug = %s AND id != %d LIMIT 1",
+						$slug,
+						$exclude_id
+					)
+				);
+			} else {
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$exists = $wpdb->get_var(
+					$wpdb->prepare(
+						"SELECT id FROM {$table} WHERE slug = %s LIMIT 1",
+						$slug
+					)
+				);
+			}
 
 			if ( ! $exists ) {
 				return $slug;
@@ -333,6 +393,23 @@ class CTA_Syllabus_Sync {
 				return $base . '-' . wp_generate_password( 6, false, false );
 			}
 		}
+	}
+
+	/**
+	 * Sanitize a string list for syllabus_meta.
+	 *
+	 * @param array $items Raw items.
+	 * @return array
+	 */
+	private static function sanitize_string_list( $items ) {
+		$out = array();
+		foreach ( (array) $items as $item ) {
+			$item = sanitize_text_field( (string) $item );
+			if ( '' !== $item ) {
+				$out[] = $item;
+			}
+		}
+		return array_values( $out );
 	}
 
 	/**
@@ -358,11 +435,12 @@ class CTA_Syllabus_Sync {
 		}
 
 		$table = $wpdb->prefix . 'cta_courses';
-		$slug  = self::unique_slug( $title );
+		$slug_source = ! empty( $syllabus['slug'] ) ? (string) $syllabus['slug'] : $title;
+		$slug  = self::unique_slug( $slug_source );
 		$ce    = isset( $syllabus['ce_hours'] ) ? (float) $syllabus['ce_hours'] : 0.0;
 
 		$description = ! empty( $syllabus['description'] )
-			? wp_kses_post( '<p>' . esc_html( (string) $syllabus['description'] ) . '</p>' )
+			? self::format_course_description_html( $syllabus['description'] )
 			: '';
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
@@ -380,6 +458,7 @@ class CTA_Syllabus_Sync {
 				'modules_count'        => 0,
 				'status'               => 'published',
 				'product_type'         => 'ce',
+				// Default only for brand-new rows; existing courses keep their owner-set access period.
 				'access_period_months' => 6,
 				'awards_ce_hours'      => 1,
 				'has_ce_certificate'   => 1,
@@ -423,9 +502,17 @@ class CTA_Syllabus_Sync {
 			'target_audience'         => sanitize_text_field( (string) ( $syllabus['target_audience'] ?? '' ) ),
 			'instructional_method'    => sanitize_text_field( (string) ( $syllabus['instructional_method'] ?? '' ) ),
 			'presenter'               => sanitize_text_field( (string) ( $syllabus['presenter'] ?? '' ) ),
-			'educational_goals'       => array_values( array_filter( array_map( 'sanitize_text_field', (array) ( $syllabus['educational_goals'] ?? array() ) ) ) ),
-			'completion_requirements' => array_values( array_filter( array_map( 'sanitize_text_field', (array) ( $syllabus['completion_requirements'] ?? array() ) ) ) ),
-			'references'              => array_values( array_filter( array_map( 'sanitize_text_field', (array) ( $syllabus['references'] ?? array() ) ) ) ),
+			'course_code'             => sanitize_text_field( (string) ( $syllabus['course_code'] ?? '' ) ),
+			'course_classification'   => sanitize_text_field( (string) ( $syllabus['course_classification'] ?? '' ) ),
+			'short_description'       => sanitize_textarea_field( (string) ( $syllabus['short_description'] ?? '' ) ),
+			'educational_notice'      => sanitize_textarea_field( (string) ( $syllabus['educational_notice'] ?? '' ) ),
+			'seo_title'               => sanitize_text_field( (string) ( $syllabus['seo_title'] ?? '' ) ),
+			'meta_description'        => sanitize_text_field( (string) ( $syllabus['meta_description'] ?? '' ) ),
+			'image_alt'               => sanitize_text_field( (string) ( $syllabus['image_alt'] ?? '' ) ),
+			'educational_goals'       => self::sanitize_string_list( $syllabus['educational_goals'] ?? array() ),
+			'key_topics'              => self::sanitize_string_list( $syllabus['key_topics'] ?? array() ),
+			'completion_requirements' => self::sanitize_string_list( $syllabus['completion_requirements'] ?? array() ),
+			'references'              => self::sanitize_string_list( $syllabus['references'] ?? array() ),
 			'attestation_required'    => true,
 			'development_draft'       => ! empty( $syllabus['development_draft'] ),
 			'syllabus_synced_at'      => gmdate( 'c' ),
@@ -443,7 +530,7 @@ class CTA_Syllabus_Sync {
 		$meta['intended_ce_hours'] = $intended_ce;
 
 		$description = ! empty( $syllabus['description'] )
-			? wp_kses_post( '<p>' . esc_html( (string) $syllabus['description'] ) . '</p>' )
+			? self::format_course_description_html( $syllabus['description'] )
 			: (string) $course->description;
 
 		$data = array(
@@ -453,6 +540,11 @@ class CTA_Syllabus_Sync {
 			'ce_hours'            => $intended_ce,
 			'syllabus_meta'       => wp_json_encode( $meta ),
 		);
+
+		// Recommended public slug — never touches access_period_months or thumbnail_url.
+		if ( ! empty( $syllabus['slug'] ) ) {
+			$data['slug'] = self::unique_slug( (string) $syllabus['slug'], $course_id );
+		}
 
 		if ( ! empty( $syllabus['category'] ) ) {
 			$data['category'] = sanitize_text_field( (string) $syllabus['category'] );

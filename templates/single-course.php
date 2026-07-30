@@ -74,8 +74,19 @@ $access_months = (int) ( $course->access_period_months ?? 6 );
 						<span class="badge badge--primary"><?php echo esc_html( $course->category ); ?></span>
 					<?php endif; ?>
 				</div>
+				<?php
+				$syllabus_meta = isset( $syllabus_meta ) && is_array( $syllabus_meta ) ? $syllabus_meta : array();
+				$short_description = ! empty( $syllabus_meta['short_description'] )
+					? (string) $syllabus_meta['short_description']
+					: '';
+				$image_alt = ! empty( $syllabus_meta['image_alt'] )
+					? (string) $syllabus_meta['image_alt']
+					: (string) $course->title;
+				?>
 				<h1 class="course-hero__title" id="course-hero-title"><?php echo esc_html( $course->title ); ?></h1>
-				<?php if ( ! empty( $course->description ) ) : ?>
+				<?php if ( '' !== $short_description ) : ?>
+					<p class="course-hero__summary"><?php echo esc_html( $short_description ); ?></p>
+				<?php elseif ( ! empty( $course->description ) ) : ?>
 					<p class="course-hero__summary"><?php echo esc_html( wp_trim_words( wp_strip_all_tags( $course->description ), 40 ) ); ?></p>
 				<?php endif; ?>
 				<div class="course-hero__meta">
@@ -89,7 +100,7 @@ $access_months = (int) ( $course->access_period_months ?? 6 );
 				<?php if ( ! empty( $preview_video ) ) : ?>
 					<?php echo $preview_video; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				<?php elseif ( ! empty( $course->thumbnail_url ) ) : ?>
-					<img src="<?php echo esc_url( $course->thumbnail_url ); ?>" alt="<?php echo esc_attr( $course->title ); ?>" class="course-hero__video-thumb">
+					<img src="<?php echo esc_url( $course->thumbnail_url ); ?>" alt="<?php echo esc_attr( $image_alt ); ?>" class="course-hero__video-thumb">
 				<?php else : ?>
 					<div class="course-hero__video course-hero__video--placeholder" aria-hidden="true"></div>
 				<?php endif; ?>
@@ -101,7 +112,6 @@ $access_months = (int) ( $course->access_period_months ?? 6 );
 		<div class="cta-container course-detail__layout">
 			<div class="course-detail__main">
 				<?php
-				$syllabus_meta = isset( $syllabus_meta ) && is_array( $syllabus_meta ) ? $syllabus_meta : array();
 				$educational_goals = ! empty( $syllabus_meta['educational_goals'] ) && is_array( $syllabus_meta['educational_goals'] )
 					? $syllabus_meta['educational_goals']
 					: array();
@@ -111,10 +121,18 @@ $access_months = (int) ( $course->access_period_months ?? 6 );
 				$syllabus_references = ! empty( $syllabus_meta['references'] ) && is_array( $syllabus_meta['references'] )
 					? $syllabus_meta['references']
 					: array();
+				$key_topics = ! empty( $syllabus_meta['key_topics'] ) && is_array( $syllabus_meta['key_topics'] )
+					? $syllabus_meta['key_topics']
+					: array();
+				$educational_notice = ! empty( $syllabus_meta['educational_notice'] )
+					? (string) $syllabus_meta['educational_notice']
+					: '';
 				$has_course_info = ! empty( $syllabus_meta['course_level'] )
 					|| ! empty( $syllabus_meta['target_audience'] )
 					|| ! empty( $syllabus_meta['instructional_method'] )
 					|| ! empty( $syllabus_meta['presenter'] )
+					|| ! empty( $syllabus_meta['course_code'] )
+					|| ! empty( $syllabus_meta['course_classification'] )
 					|| ( ! $is_exam_prep && (float) $course->ce_hours > 0 );
 				?>
 
@@ -129,6 +147,12 @@ $access_months = (int) ( $course->access_period_months ?? 6 );
 					<section class="course-section" aria-labelledby="course-info-title">
 						<h2 class="course-section__title" id="course-info-title"><?php esc_html_e( 'Course Information', 'cta-lms' ); ?></h2>
 						<ul class="course-info-list">
+							<?php if ( ! empty( $syllabus_meta['course_code'] ) ) : ?>
+								<li><strong><?php esc_html_e( 'Course Code:', 'cta-lms' ); ?></strong> <?php echo esc_html( $syllabus_meta['course_code'] ); ?></li>
+							<?php endif; ?>
+							<?php if ( ! empty( $syllabus_meta['course_classification'] ) ) : ?>
+								<li><strong><?php esc_html_e( 'Course Classification:', 'cta-lms' ); ?></strong> <?php echo esc_html( $syllabus_meta['course_classification'] ); ?></li>
+							<?php endif; ?>
 							<?php if ( ! empty( $syllabus_meta['course_level'] ) ) : ?>
 								<li><strong><?php esc_html_e( 'Course Level:', 'cta-lms' ); ?></strong> <?php echo esc_html( $syllabus_meta['course_level'] ); ?></li>
 							<?php endif; ?>
@@ -164,12 +188,26 @@ $access_months = (int) ( $course->access_period_months ?? 6 );
 
 				<?php if ( ! empty( $objectives ) ) : ?>
 					<section class="course-section" aria-labelledby="course-learn-title">
-						<h2 class="course-section__title" id="course-learn-title"><?php esc_html_e( 'Measurable Learning Objectives', 'cta-lms' ); ?></h2>
+						<h2 class="course-section__title" id="course-learn-title"><?php esc_html_e( 'What Participants Will Learn', 'cta-lms' ); ?></h2>
 						<ol class="course-objectives-list">
 							<?php foreach ( $objectives as $objective ) : ?>
 								<li><?php echo esc_html( $objective ); ?></li>
 							<?php endforeach; ?>
 						</ol>
+					</section>
+				<?php endif; ?>
+
+				<?php if ( ! empty( $key_topics ) ) : ?>
+					<section class="course-section" aria-labelledby="course-topics-title">
+						<h2 class="course-section__title" id="course-topics-title"><?php esc_html_e( 'Key Topics', 'cta-lms' ); ?></h2>
+						<ul class="checklist">
+							<?php foreach ( $key_topics as $topic ) : ?>
+								<li class="checklist__item">
+									<span class="checklist__icon" aria-hidden="true">✓</span>
+									<?php echo esc_html( $topic ); ?>
+								</li>
+							<?php endforeach; ?>
+						</ul>
 					</section>
 				<?php endif; ?>
 
@@ -329,14 +367,29 @@ $access_months = (int) ( $course->access_period_months ?? 6 );
 				<?php if ( ! empty( $completion_requirements ) ) : ?>
 					<section class="course-section" aria-labelledby="course-completion-title">
 						<h2 class="course-section__title" id="course-completion-title"><?php esc_html_e( 'Course Completion Requirements', 'cta-lms' ); ?></h2>
-						<ul class="checklist">
-							<?php foreach ( $completion_requirements as $req ) : ?>
-								<li class="checklist__item">
-									<span class="checklist__icon" aria-hidden="true">✓</span>
-									<?php echo esc_html( $req ); ?>
-								</li>
-							<?php endforeach; ?>
-						</ul>
+						<?php if ( 1 === count( $completion_requirements ) ) : ?>
+							<div class="course-content-block__text">
+								<p><?php echo esc_html( $completion_requirements[0] ); ?></p>
+							</div>
+						<?php else : ?>
+							<ul class="checklist">
+								<?php foreach ( $completion_requirements as $req ) : ?>
+									<li class="checklist__item">
+										<span class="checklist__icon" aria-hidden="true">✓</span>
+										<?php echo esc_html( $req ); ?>
+									</li>
+								<?php endforeach; ?>
+							</ul>
+						<?php endif; ?>
+					</section>
+				<?php endif; ?>
+
+				<?php if ( '' !== $educational_notice ) : ?>
+					<section class="course-section course-section--notice" aria-labelledby="course-notice-title">
+						<h2 class="course-section__title" id="course-notice-title"><?php esc_html_e( 'Educational Notice', 'cta-lms' ); ?></h2>
+						<div class="course-content-block__text">
+							<p><?php echo esc_html( $educational_notice ); ?></p>
+						</div>
 					</section>
 				<?php endif; ?>
 
