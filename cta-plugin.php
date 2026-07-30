@@ -3,7 +3,7 @@
  * Plugin Name: CTA Academy LMS
  * Plugin URI: https://clinicaltrainingacademy.com
  * Description: Complete LMS platform for Clinical Training and Supervision Academy.
- * Version: 1.0.108
+ * Version: 1.0.109
  * Author: David James
  * Author URI: https://clinicaltrainingacademy.com
  * License: GPL-2.0+
@@ -44,7 +44,7 @@ if ( defined( 'CTA_LMS_LOADED' ) ) {
 
 define( 'CTA_LMS_LOADED', true );
 define( 'CTA_PLUGIN_FILE', __FILE__ );
-define( 'CTA_VERSION', '1.0.108' );
+define( 'CTA_VERSION', '1.0.109' );
 define( 'CTA_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'CTA_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'CTA_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
@@ -71,6 +71,23 @@ if ( ! function_exists( 'cta_lms_store_fatal' ) ) {
 
 		if ( function_exists( 'update_option' ) ) {
 			update_option( 'cta_lms_activation_error', wp_json_encode( $payload ), false );
+		}
+	}
+}
+
+/**
+ * Clear sticky activation/bootstrap fatals after a successful load.
+ */
+if ( ! function_exists( 'cta_lms_clear_fatal' ) ) {
+	function cta_lms_clear_fatal() {
+		if ( function_exists( 'delete_option' ) ) {
+			delete_option( 'cta_lms_activation_error' );
+		}
+
+		$log = CTA_PLUGIN_DIR . 'cta-fatal-log.txt';
+		if ( is_string( $log ) && $log && file_exists( $log ) ) {
+			// phpcs:ignore WordPress.WP.AlternativeFunctions.unlink_unlink
+			@unlink( $log );
 		}
 	}
 }
@@ -253,6 +270,10 @@ if ( ! function_exists( 'cta_lms_load_full_bootstrap' ) ) {
 
 		try {
 			require_once $bootstrap;
+			// Deploy windows can briefly store a missing-file fatal; clear once boot succeeds.
+			if ( function_exists( 'cta_lms_clear_fatal' ) ) {
+				cta_lms_clear_fatal();
+			}
 		} catch ( Throwable $e ) {
 			cta_lms_store_fatal( $e->getMessage(), $e->getFile(), $e->getLine() );
 		}
@@ -261,7 +282,7 @@ if ( ! function_exists( 'cta_lms_load_full_bootstrap' ) ) {
 
 add_action( 'plugins_loaded', 'cta_lms_load_full_bootstrap', 1 );
 
-// Show stored fatal on Plugins screen (works even when activation failed).
+// Show stored fatal on admin screens only while the problem is still real.
 add_action(
 	'admin_notices',
 	static function () {
@@ -269,7 +290,8 @@ add_action(
 			return;
 		}
 
-		$raw = get_option( 'cta_lms_activation_error', '' );
+		$bootstrap = CTA_PLUGIN_DIR . 'cta-lms.php';
+		$raw       = get_option( 'cta_lms_activation_error', '' );
 		if ( ! $raw ) {
 			$log = CTA_PLUGIN_DIR . 'cta-fatal-log.txt';
 			if ( file_exists( $log ) ) {
@@ -287,6 +309,18 @@ add_action(
 		$file = is_array( $data ) && ! empty( $data['file'] ) ? (string) $data['file'] : '';
 		$line = is_array( $data ) && ! empty( $data['line'] ) ? (int) $data['line'] : 0;
 
+		// Stale deploy notice: bootstrap exists and LMS already loaded — drop it.
+		$is_missing_bootstrap = false !== stripos( $msg, 'Bootstrap file cta-lms.php is missing' );
+		if ( $is_missing_bootstrap && file_exists( $bootstrap ) && defined( 'CTA_LMS_BOOTSTRAPPED' ) ) {
+			if ( function_exists( 'cta_lms_clear_fatal' ) ) {
+				cta_lms_clear_fatal();
+			}
+			return;
+		}
+
+		$plugin_slug = basename( untrailingslashit( CTA_PLUGIN_DIR ) );
+		$log_hint    = 'wp-content/plugins/' . $plugin_slug . '/cta-fatal-log.txt';
+
 		echo '<div class="notice notice-error"><p><strong>';
 		esc_html_e( 'CTA LMS error:', 'cta-lms' );
 		echo '</strong> ';
@@ -295,7 +329,13 @@ add_action(
 			echo '<br><code>' . esc_html( $file . ( $line ? ':' . $line : '' ) ) . '</code>';
 		}
 		echo '</p><p>';
-		esc_html_e( 'Also check wp-content/plugins/cta-academy-lms/cta-fatal-log.txt via WP File Manager.', 'cta-lms' );
+		echo esc_html(
+			sprintf(
+				/* translators: %s: relative path to fatal log */
+				__( 'Also check %s via WP File Manager.', 'cta-lms' ),
+				$log_hint
+			)
+		);
 		echo '</p></div>';
 	}
 );

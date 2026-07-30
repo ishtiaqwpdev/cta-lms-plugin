@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.108' );
+	define( 'CTA_VERSION', '1.0.109' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -1212,11 +1212,22 @@ if ( ! function_exists( 'cta_lms_admin_notices' ) ) {
 		if ( $activation_error ) {
 			$data = json_decode( (string) $activation_error, true );
 			$msg  = is_array( $data ) && ! empty( $data['message'] ) ? (string) $data['message'] : (string) $activation_error;
-			echo '<div class="notice notice-error"><p><strong>';
-			esc_html_e( 'CTA LMS activation warning:', 'cta-lms' );
-			echo '</strong> ';
-			echo esc_html( $msg );
-			echo '</p></div>';
+
+			// Ignore stale "bootstrap missing" fatals once this file has loaded.
+			$is_missing_bootstrap = false !== stripos( $msg, 'Bootstrap file cta-lms.php is missing' );
+			if ( $is_missing_bootstrap ) {
+				if ( function_exists( 'cta_lms_clear_fatal' ) ) {
+					cta_lms_clear_fatal();
+				} else {
+					delete_option( 'cta_lms_activation_error' );
+				}
+			} else {
+				echo '<div class="notice notice-error"><p><strong>';
+				esc_html_e( 'CTA LMS activation warning:', 'cta-lms' );
+				echo '</strong> ';
+				echo esc_html( $msg );
+				echo '</p></div>';
+			}
 		}
 
 		if ( ! function_exists( 'get_plugins' ) ) {
