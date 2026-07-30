@@ -283,6 +283,16 @@ class CTA_Quiz {
 		$total     = count( $questions );
 		$revealed  = array();
 
+		$course_for_reveal = CTA_Database::get_course( (int) $attempt->course_id );
+		$is_exam_prep      = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course_for_reveal );
+		// CE finals: store rationales for admin QA; do not reveal to learners until owner approves.
+		$reveal_explanations = (bool) apply_filters(
+			'cta_lms_reveal_quiz_explanations',
+			$is_exam_prep,
+			$quiz,
+			$course_for_reveal
+		);
+
 		foreach ( $questions as $question ) {
 			$qid    = (int) $question->id;
 			$answer = isset( $answers_in[ $qid ] ) ? sanitize_text_field( $answers_in[ $qid ] ) : '';
@@ -298,7 +308,7 @@ class CTA_Quiz {
 				'question_id'    => $qid,
 				'user_answer'    => $answer,
 				'correct_option' => $question->correct_option,
-				'explanation'    => $question->explanation,
+				'explanation'    => $reveal_explanations ? (string) $question->explanation : '',
 				'is_correct'     => ( $answer === $question->correct_option ),
 			);
 		}
@@ -320,11 +330,11 @@ class CTA_Quiz {
 		);
 
 		if ( $passed ) {
-			$course    = CTA_Database::get_course( (int) $attempt->course_id );
+			$course    = $course_for_reveal;
 			$next_step = 'evaluation';
 
 			// Exam prep: no CE evaluation / certificate path.
-			if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course ) ) {
+			if ( $is_exam_prep ) {
 				$next_step = 'complete';
 			}
 

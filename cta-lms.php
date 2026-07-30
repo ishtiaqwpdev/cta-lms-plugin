@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.107' );
+	define( 'CTA_VERSION', '1.0.108' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -84,6 +84,7 @@ $cta_required_files = array(
 	'includes/class-cta-course-materials.php',
 	'includes/class-cta-evaluation-questions.php',
 	'includes/class-cta-course-attestation.php',
+	'includes/class-cta-telehealth-exam-sync.php',
 	'includes/class-cta-database.php',
 	'includes/class-cta-syllabus-sync.php',
 	'includes/class-cta-course-catalog.php',
@@ -438,6 +439,11 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 			// Attach bundled Telehealth Clinical Resource Toolkit for enrolled learners.
 			if ( version_compare( $installed, '1.0.107', '<' ) && class_exists( 'CTA_Course_Materials' ) ) {
 				CTA_Course_Materials::ensure_bundled_resources();
+			}
+
+			// Telehealth (CTA-CE-002) official 25-question final exam + evaluation refresh.
+			if ( version_compare( $installed, '1.0.108', '<' ) && class_exists( 'CTA_Telehealth_Exam_Sync' ) ) {
+				CTA_Telehealth_Exam_Sync::sync( true );
 			}
 
 			// Decouple supervision application pending from general account / CE access.
