@@ -1,7 +1,9 @@
 # Dependencies
-/vendor/
+# Dompdf (and related) vendor packages are committed so PDF downloads work
+# without Composer CLI on the host. Stripe stays out of git (push protection
+# flags example keys in its README); install Stripe separately if needed.
+/vendor/stripe/
 /node_modules/
-composer.lock
 
 # OS / editor
 .DS_Store
