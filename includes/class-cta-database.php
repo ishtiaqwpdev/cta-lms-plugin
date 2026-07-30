@@ -700,6 +700,43 @@ class CTA_Database {
 	}
 
 	/**
+	 * Fetch a course by exact title, with a contains fallback.
+	 *
+	 * @param string $title Course title.
+	 * @return object|null
+	 */
+	public static function get_course_by_title( $title ) {
+		global $wpdb;
+
+		$title = trim( (string) $title );
+		if ( '' === $title ) {
+			return null;
+		}
+
+		$table = $wpdb->prefix . 'cta_courses';
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$row = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT * FROM {$table} WHERE title = %s LIMIT 1",
+				$title
+			)
+		);
+
+		if ( $row ) {
+			return $row;
+		}
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		return $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT * FROM {$table} WHERE title LIKE %s ORDER BY id ASC LIMIT 1",
+				'%' . $wpdb->esc_like( $title ) . '%'
+			)
+		);
+	}
+
+	/**
 	 * Fetch all courses, optionally filtered by status.
 	 *
 	 * @param string $status Course status (default: published).

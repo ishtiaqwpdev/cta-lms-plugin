@@ -248,6 +248,233 @@ class CTA_Course_Materials {
 	}
 
 	/**
+	 * Bundled course materials shipped inside the plugin (source → course match).
+	 *
+	 * Files live under assets/course-materials/ and are served only through the
+	 * enrollment-gated download endpoint (never as a public plugin URL).
+	 *
+	 * @return array[]
+	 */
+	public static function get_bundled_materials() {
+		return array(
+			array(
+				'course_match_titles' => array(
+					'Clinical and Ethical Excellence in Telehealth: The Essential California Framework',
+					'Clinical and Ethical Excellence in Telehealth',
+				),
+				'source_file'         => 'assets/course-materials/CTA_Telehealth_Clinical_Resource_Toolkit_v2_0.docx',
+				// Prefer PDF if present (matches other course handouts); fall back to DOCX.
+				'alt_source_files'    => array(
+					'assets/course-materials/CTA_Telehealth_Clinical_Resource_Toolkit_v2_0.pdf',
+				),
+				'title'               => 'CTA Telehealth Clinical Resource Toolkit (v2.0)',
+				'resource_key'        => 'telehealth_clinical_resource_toolkit_v2',
+			),
+		);
+	}
+
+	/**
+	 * Ensure bundled materials are registered as downloadable resources.
+	 *
+	 * Idempotent: skips when the resource title already exists for the course,
+	 * or when the source file is not present in the plugin package.
+	 *
+	 * @return array{attached:int,skipped:int,missing:array}
+	 */
+	public static function ensure_bundled_resources() {
+		global $wpdb;
+
+		$attached = 0;
+		$skipped  = 0;
+		$missing  = array();
+
+		foreach ( self::get_bundled_materials() as $bundle ) {
+			$source = self::resolve_bundled_source_path( $bundle );
+			if ( '' === $source ) {
+				$missing[] = (string) ( $bundle['source_file'] ?? '' );
+				++$skipped;
+				continue;
+			}
+
+			$course = self::find_course_for_bundle( $bundle );
+			if ( ! $course ) {
+				++$skipped;
+				continue;
+			}
+
+			$course_id = (int) $course->id;
+			$title     = sanitize_text_field( (string) ( $bundle['title'] ?? basename( $source ) ) );
+
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$existing_id = (int) $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT id FROM {$wpdb->prefix}cta_downloadable_resources
+					WHERE course_id = %d AND title = %s
+					LIMIT 1",
+					$course_id,
+					$title
+				)
+			);
+
+			if ( $existing_id ) {
+				++$skipped;
+				continue;
+			}
+
+			$imported = self::import_local_file_to_protected( $source, $course_id );
+			if ( is_wp_error( $imported ) ) {
+				$missing[] = basename( $source ) . ' (' . $imported->get_error_message() . ')';
+				++$skipped;
+				continue;
+			}
+
+			$max_order = (int) $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT COALESCE(MAX(order_index), -1) FROM {$wpdb->prefix}cta_downloadable_resources WHERE course_id = %d",
+					$course_id
+				)
+			);
+
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+			$ok = $wpdb->insert(
+				$wpdb->prefix . 'cta_downloadable_resources',
+				array(
+					'course_id'        => $course_id,
+					'module_id'        => 0,
+					'attachment_id'    => 0,
+					'title'            => $title,
+					'file_url'         => $imported['file_url'],
+					'file_path'        => $imported['relative_path'],
+					'file_type'        => $imported['file_type'],
+					'order_index'      => $max_order + 1,
+					'is_practice_test' => 0,
+				),
+				array( '%d', '%d', '%d', '%s', '%s', '%s', '%s', '%d', '%d' )
+			);
+
+			if ( $ok ) {
+				++$attached;
+			} else {
+				++$skipped;
+			}
+		}
+
+		return array(
+			'attached' => $attached,
+			'skipped'  => $skipped,
+			'missing'  => $missing,
+		);
+	}
+
+	/**
+	 * Resolve the first existing bundled source path for a material definition.
+	 *
+	 * @param array $bundle Bundle definition.
+	 * @return string Absolute path or empty.
+	 */
+	private static function resolve_bundled_source_path( array $bundle ) {
+		$candidates = array();
+		if ( ! empty( $bundle['alt_source_files'] ) && is_array( $bundle['alt_source_files'] ) ) {
+			foreach ( $bundle['alt_source_files'] as $rel ) {
+				$candidates[] = (string) $rel;
+			}
+		}
+		if ( ! empty( $bundle['source_file'] ) ) {
+			$candidates[] = (string) $bundle['source_file'];
+		}
+
+		foreach ( $candidates as $relative ) {
+			$relative = ltrim( str_replace( '\\', '/', $relative ), '/' );
+			$path     = CTA_PLUGIN_DIR . $relative;
+			if ( is_readable( $path ) ) {
+				return $path;
+			}
+		}
+
+		return '';
+	}
+
+	/**
+	 * Find a published CE course matching bundled title aliases.
+	 *
+	 * @param array $bundle Bundle definition.
+	 * @return object|null
+	 */
+	private static function find_course_for_bundle( array $bundle ) {
+		$titles = isset( $bundle['course_match_titles'] ) ? (array) $bundle['course_match_titles'] : array();
+		foreach ( $titles as $title ) {
+			$title = trim( (string) $title );
+			if ( '' === $title || ! class_exists( 'CTA_Database' ) ) {
+				continue;
+			}
+			$course = CTA_Database::get_course_by_title( $title );
+			if ( $course ) {
+				return $course;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Copy a local filesystem file into protected course materials storage.
+	 *
+	 * @param string $source_path Absolute source path.
+	 * @param int    $course_id   Course ID.
+	 * @return array|WP_Error
+	 */
+	public static function import_local_file_to_protected( $source_path, $course_id ) {
+		$course_id   = absint( $course_id );
+		$source_path = (string) $source_path;
+
+		if ( ! $course_id || ! is_readable( $source_path ) ) {
+			return new WP_Error( 'cta_missing_file', __( 'Source material file not found.', 'cta-lms' ) );
+		}
+
+		$size = filesize( $source_path );
+		if ( false !== $size && $size > self::MAX_UPLOAD_BYTES ) {
+			return new WP_Error(
+				'cta_resource_too_large',
+				__( 'File exceeds the 20MB size limit. Please upload a smaller PDF, DOC, or DOCX file.', 'cta-lms' )
+			);
+		}
+
+		$ext = strtolower( pathinfo( $source_path, PATHINFO_EXTENSION ) );
+		if ( ! in_array( $ext, self::allowed_extensions(), true ) ) {
+			return new WP_Error(
+				'cta_resource_invalid_type',
+				__( 'Only PDF, DOC, and DOCX files are allowed for course materials.', 'cta-lms' )
+			);
+		}
+
+		$root = self::get_protected_root();
+		if ( is_wp_error( $root ) ) {
+			return $root;
+		}
+
+		$course_dir = trailingslashit( $root ) . $course_id;
+		if ( ! wp_mkdir_p( $course_dir ) ) {
+			return new WP_Error( 'cta_mkdir', __( 'Could not create course materials folder.', 'cta-lms' ) );
+		}
+		self::ensure_deny_rules( $course_dir );
+
+		$filename = wp_unique_filename( $course_dir, basename( $source_path ) );
+		$dest     = trailingslashit( $course_dir ) . $filename;
+
+		if ( ! copy( $source_path, $dest ) ) {
+			return new WP_Error( 'cta_copy', __( 'Could not copy file into protected storage.', 'cta-lms' ) );
+		}
+
+		$relative = self::UPLOAD_SUBDIR . '/' . $course_id . '/' . $filename;
+
+		return array(
+			'relative_path' => $relative,
+			'absolute_path' => $dest,
+			'file_type'     => $ext,
+			'file_url'      => 'cta-protected://' . $relative,
+		);
+	}
+
+	/**
 	 * Resolve an absolute filesystem path for a resource, if local.
 	 *
 	 * @param object $resource Resource row.

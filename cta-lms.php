@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.106' );
+	define( 'CTA_VERSION', '1.0.107' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -433,6 +433,11 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 			if ( version_compare( $installed, '1.0.106', '<' ) && class_exists( 'CTA_Syllabus_Sync' ) ) {
 				CTA_Database::maybe_add_syllabus_columns();
 				CTA_Syllabus_Sync::sync_all( true );
+			}
+
+			// Attach bundled Telehealth Clinical Resource Toolkit for enrolled learners.
+			if ( version_compare( $installed, '1.0.107', '<' ) && class_exists( 'CTA_Course_Materials' ) ) {
+				CTA_Course_Materials::ensure_bundled_resources();
 			}
 
 			// Decouple supervision application pending from general account / CE access.
