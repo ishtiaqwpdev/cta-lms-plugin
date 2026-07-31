@@ -231,6 +231,11 @@ class CTA_Shortcodes {
 	 * @return string
 	 */
 	public function render_auth_button( $atts ) {
+		// Account menu belongs in the header only — never inside Theme Builder footers.
+		if ( did_action( 'elementor/theme/before_do_footer' ) && ! did_action( 'elementor/theme/after_do_footer' ) ) {
+			return '';
+		}
+
 		if ( class_exists( 'CTA_Loader' ) ) {
 			CTA_Loader::enqueue_frontend_assets();
 		}

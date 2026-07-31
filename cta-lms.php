@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.114' );
+	define( 'CTA_VERSION', '1.0.115' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {

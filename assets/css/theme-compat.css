@@ -1214,6 +1214,17 @@ body:not(.cta-lms-page--no-chrome) {
   display: none !important;
 }
 
+/* Auth account ("Hi, Name") belongs in the header only — never in footers. */
+.site-footer .cta-auth-button-wrap,
+.cta-lms.site-footer .cta-auth-button-wrap,
+footer .cta-auth-button-wrap,
+.elementor-location-footer .cta-auth-button-wrap,
+.elementor-location-footer .elementor-widget:has(.cta-auth-button-wrap),
+.elementor-location-footer .elementor-widget-button:has(.cta-auth-button-wrap),
+.elementor-location-footer .e-con:has(> .cta-auth-button-wrap) {
+  display: none !important;
+}
+
 .elementor-location-header .elementor-button-link,
 .elementor-location-header .elementor-button {
   white-space: nowrap !important;
