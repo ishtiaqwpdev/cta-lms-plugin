@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.112' );
+	define( 'CTA_VERSION', '1.0.113' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -460,6 +460,11 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 			// CE access rules: purchase permanent vs membership-gated + certificate permanence.
 			if ( version_compare( $installed, '1.0.112', '<' ) && class_exists( 'CTA_CE_Access' ) ) {
 				CTA_CE_Access::maybe_install_schema();
+			}
+
+			// CAMFT CEPA compliance: keep all CE courses unpublished until explicit authorization.
+			if ( version_compare( $installed, '1.0.113', '<' ) && class_exists( 'CTA_Course_Catalog' ) ) {
+				CTA_Course_Catalog::unpublish_all_ce_courses_pending_cepa();
 			}
 
 			// Decouple supervision application pending from general account / CE access.

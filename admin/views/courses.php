@@ -27,6 +27,15 @@ $access_counts = isset( $access_counts ) ? $access_counts : array();
 		<?php endif; ?>
 	</div>
 
+	<?php if ( ! $is_exam ) : ?>
+		<div class="notice notice-warning">
+			<p>
+				<strong><?php esc_html_e( 'CAMFT CEPA:', 'cta-lms' ); ?></strong>
+				<?php esc_html_e( 'CE courses must remain Draft/Unpublished until CTA receives CAMFT CEPA provider approval. Publishing a CE course requires an explicit confirmation.', 'cta-lms' ); ?>
+			</p>
+		</div>
+	<?php endif; ?>
+
 	<?php if ( in_array( $notice, array( 'course_deleted', 'status_updated' ), true ) ) : ?>
 		<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Course updated.', 'cta-lms' ); ?></p></div>
 	<?php elseif ( 'syllabus_synced' === $notice ) : ?>
@@ -131,7 +140,17 @@ $access_counts = isset( $access_counts ) ? $access_counts : array();
 						<td><?php echo esc_html( (string) $count ); ?></td>
 						<td class="cta-table-actions">
 							<a class="button button-small" href="<?php echo esc_url( admin_url( 'admin.php?page=cta-lms-course-edit&course_id=' . (int) $course->id ) ); ?>"><?php esc_html_e( 'Edit', 'cta-lms' ); ?></a>
-							<a class="button button-small" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=cta_toggle_course&course_id=' . (int) $course->id ), 'cta_toggle_course' ) ); ?>"><?php echo 'published' === $course->status ? esc_html__( 'Draft', 'cta-lms' ) : esc_html__( 'Publish', 'cta-lms' ); ?></a>
+							<?php
+							$toggle_url   = wp_nonce_url( admin_url( 'admin-post.php?action=cta_toggle_course&course_id=' . (int) $course->id ), 'cta_toggle_course' );
+							$is_published = ( 'published' === $course->status );
+							?>
+							<a
+								class="button button-small<?php echo ( ! $row_is_exam && ! $is_published ) ? ' cta-ce-publish-btn' : ''; ?>"
+								href="<?php echo esc_url( $toggle_url ); ?>"
+								<?php if ( ! $row_is_exam && ! $is_published ) : ?>
+									data-cta-ce-publish="1"
+								<?php endif; ?>
+							><?php echo $is_published ? esc_html__( 'Unpublish', 'cta-lms' ) : esc_html__( 'Publish', 'cta-lms' ); ?></a>
 							<a class="button button-small button-link-delete cta-delete-course" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=cta_delete_course&course_id=' . (int) $course->id ), 'cta_delete_course' ) ); ?>"><?php esc_html_e( 'Delete', 'cta-lms' ); ?></a>
 						</td>
 					</tr>
@@ -140,3 +159,24 @@ $access_counts = isset( $access_counts ) ? $access_counts : array();
 		</tbody>
 	</table>
 </div>
+<script>
+(function () {
+	document.querySelectorAll('a[data-cta-ce-publish="1"]').forEach(function (link) {
+		link.addEventListener('click', function (e) {
+			e.preventDefault();
+			var ok = window.confirm(
+				'CAMFT CEPA compliance warning:\n\n' +
+				'This CE course will become publicly visible and purchasable.\n' +
+				'Do NOT publish until CTA has CAMFT CEPA provider approval.\n\n' +
+				'Publish this CE course anyway?'
+			);
+			if (!ok) {
+				return;
+			}
+			var url = link.href;
+			url += (url.indexOf('?') >= 0 ? '&' : '?') + 'cta_confirm_ce_publish=1';
+			window.location.href = url;
+		});
+	});
+})();
+</script>

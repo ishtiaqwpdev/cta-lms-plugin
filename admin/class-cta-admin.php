@@ -1304,6 +1304,14 @@ class CTA_Admin {
 		$status     = sanitize_text_field( wp_unslash( $_POST['status'] ?? 'draft' ) );
 		$status     = in_array( $status, array( 'published', 'draft' ), true ) ? $status : 'draft';
 
+		// CE publish requires explicit confirm checkbox/field (CAMFT CEPA compliance).
+		if ( 'published' === $status && 'ce' === $product_type ) {
+			$confirmed = ! empty( $_POST['cta_confirm_ce_publish'] );
+			if ( ! $confirmed ) {
+				$status = 'draft';
+			}
+		}
+
 		$objectives_in = isset( $_POST['learning_objectives'] ) ? wp_unslash( $_POST['learning_objectives'] ) : array();
 		$objectives    = array();
 		$old_objectives_json = '';
@@ -1770,6 +1778,19 @@ class CTA_Admin {
 		global $wpdb;
 
 		$new_status = 'published' === $course->status ? 'draft' : 'published';
+		$is_exam    = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course );
+
+		// CE publish requires explicit confirm (CAMFT CEPA — do not offer CE credit until approved).
+		if ( 'published' === $new_status && ! $is_exam ) {
+			$confirmed = ! empty( $_GET['cta_confirm_ce_publish'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- nonce checked in verify_admin_request.
+			if ( ! $confirmed ) {
+				wp_die(
+					esc_html__( 'Publishing a CE course requires confirmation. CAMFT CEPA provider approval is required before any CE course may be offered publicly.', 'cta-lms' ),
+					esc_html__( 'CE publish blocked', 'cta-lms' ),
+					array( 'response' => 403 )
+				);
+			}
+		}
 
 		$wpdb->update(
 			$wpdb->prefix . 'cta_courses',

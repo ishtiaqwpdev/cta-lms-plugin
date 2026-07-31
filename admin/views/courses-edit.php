@@ -261,6 +261,12 @@ if ( $course ) {
 					<td>
 						<label><input type="radio" name="status" value="published" <?php checked( $course->status ?? 'draft', 'published' ); ?>> <?php esc_html_e( 'Published', 'cta-lms' ); ?></label>
 						<label><input type="radio" name="status" value="draft" <?php checked( $course->status ?? 'draft', 'draft' ); ?>> <?php esc_html_e( 'Draft', 'cta-lms' ); ?></label>
+						<?php if ( ! $is_exam_prep ) : ?>
+							<input type="hidden" name="cta_confirm_ce_publish" id="cta-confirm-ce-publish" value="">
+							<p class="description" style="margin-top:8px;">
+								<?php esc_html_e( 'CAMFT CEPA: CE courses must stay Draft until provider approval. Publishing requires an explicit confirmation prompt.', 'cta-lms' ); ?>
+							</p>
+						<?php endif; ?>
 					</td>
 				</tr>
 			</table>
@@ -290,6 +296,31 @@ if ( $course ) {
 			el.addEventListener('change', syncProductType);
 		});
 		syncProductType();
+
+		var form = document.querySelector('form[action*="cta_save_course"], form.cta-course-edit-form, form');
+		var confirmField = document.getElementById('cta-confirm-ce-publish');
+		if (form && confirmField) {
+			form.addEventListener('submit', function (e) {
+				var exam = document.querySelector('input[name="product_type"][value="exam_prep"]');
+				var isExam = exam && exam.checked;
+				var published = document.querySelector('input[name="status"][value="published"]');
+				confirmField.value = '';
+				if (isExam || !published || !published.checked) {
+					return;
+				}
+				var ok = window.confirm(
+					'CAMFT CEPA compliance warning:\n\n' +
+					'This CE course will become publicly visible and purchasable.\n' +
+					'Do NOT publish until CTA has CAMFT CEPA provider approval.\n\n' +
+					'Publish this CE course anyway?'
+				);
+				if (!ok) {
+					e.preventDefault();
+					return;
+				}
+				confirmField.value = '1';
+			});
+		}
 	})();
 	</script>
 

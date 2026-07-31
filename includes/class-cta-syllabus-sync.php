@@ -456,7 +456,7 @@ class CTA_Syllabus_Sync {
 				'learning_objectives'  => '[]',
 				'syllabus_meta'        => '',
 				'modules_count'        => 0,
-				'status'               => 'published',
+				'status'               => 'draft',
 				'product_type'         => 'ce',
 				// Default only for brand-new rows; existing courses keep their owner-set access period.
 				'access_period_months' => 6,

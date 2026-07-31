@@ -468,7 +468,7 @@ class CTA_Course_Catalog {
 					'category'             => $cat,
 					'learning_objectives'  => '[]',
 					'modules_count'        => 0,
-					'status'               => 'published',
+					'status'               => 'draft',
 					'product_type'         => 'ce',
 					'access_period_months' => 6,
 					'awards_ce_hours'      => 1,
@@ -649,6 +649,72 @@ class CTA_Course_Catalog {
 			$row['status']         = (string) ( $course->status ?? '' );
 			$report[]              = $row;
 		}
+
+		return $report;
+	}
+
+	/**
+	 * Force every CE course to draft pending CAMFT CEPA provider approval.
+	 *
+	 * Does not touch Exam Preparation programs. Idempotent.
+	 *
+	 * @return array{updated:array<int,array{id:int,title:string,previous:string}>,already_draft:array<int,array{id:int,title:string}>,exam_prep_untouched:int}
+	 */
+	public static function unpublish_all_ce_courses_pending_cepa() {
+		global $wpdb;
+
+		$table  = $wpdb->prefix . 'cta_courses';
+		$report = array(
+			'updated'             => array(),
+			'already_draft'       => array(),
+			'exam_prep_untouched' => 0,
+		);
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$rows = $wpdb->get_results( "SELECT id, title, status, product_type FROM {$table} ORDER BY id ASC" );
+
+		foreach ( (array) $rows as $row ) {
+			$is_exam = class_exists( 'CTA_Exam_Access' )
+				? CTA_Exam_Access::is_exam_prep( $row )
+				: ( 'exam_prep' === (string) $row->product_type );
+
+			if ( $is_exam ) {
+				++$report['exam_prep_untouched'];
+				continue;
+			}
+
+			// Treat blank/legacy product_type as CE.
+			$title = (string) $row->title;
+			$status = (string) $row->status;
+
+			if ( 'draft' === $status ) {
+				$report['already_draft'][] = array(
+					'id'    => (int) $row->id,
+					'title' => $title,
+				);
+				continue;
+			}
+
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$ok = $wpdb->update(
+				$table,
+				array( 'status' => 'draft' ),
+				array( 'id' => (int) $row->id ),
+				array( '%s' ),
+				array( '%d' )
+			);
+
+			if ( false !== $ok ) {
+				$report['updated'][] = array(
+					'id'       => (int) $row->id,
+					'title'    => $title,
+					'previous' => $status,
+				);
+			}
+		}
+
+		update_option( 'cta_ce_courses_forced_draft_cepa', wp_json_encode( $report ), false );
+		update_option( 'cta_ce_publish_confirm_required', 1, false );
 
 		return $report;
 	}
