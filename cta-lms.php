@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.113' );
+	define( 'CTA_VERSION', '1.0.114' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -465,6 +465,11 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 			// CAMFT CEPA compliance: keep all CE courses unpublished until explicit authorization.
 			if ( version_compare( $installed, '1.0.113', '<' ) && class_exists( 'CTA_Course_Catalog' ) ) {
 				CTA_Course_Catalog::unpublish_all_ce_courses_pending_cepa();
+			}
+
+			// Re-apply Telehealth module videos (per-module IDs; avoid course-preview fallback).
+			if ( version_compare( $installed, '1.0.114', '<' ) && class_exists( 'CTA_Telehealth_Exam_Sync' ) ) {
+				CTA_Telehealth_Exam_Sync::sync_module_videos( true );
 			}
 
 			// Decouple supervision application pending from general account / CE access.

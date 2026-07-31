@@ -2932,6 +2932,15 @@ class CTA_Admin {
 	 * @return string
 	 */
 	public function render_module_row_html( $module ) {
+		$video_url = trim( (string) ( $module->video_url ?? '' ) );
+		$video_label = '—';
+		if ( '' !== $video_url ) {
+			if ( preg_match( '/vimeo\.com\/(?:video\/)?(\d+)/', $video_url, $m ) || preg_match( '/^\d+$/', $video_url ) ) {
+				$video_label = 'Vimeo ' . ( isset( $m[1] ) ? $m[1] : preg_replace( '/\D/', '', $video_url ) );
+			} else {
+				$video_label = wp_html_excerpt( $video_url, 40, '…' );
+			}
+		}
 		ob_start();
 		?>
 		<tr
@@ -2939,13 +2948,14 @@ class CTA_Admin {
 			data-module-id="<?php echo esc_attr( $module->id ); ?>"
 			data-title="<?php echo esc_attr( $module->title ); ?>"
 			data-description="<?php echo esc_attr( wp_strip_all_tags( (string) $module->description ) ); ?>"
-			data-video-url="<?php echo esc_url( (string) $module->video_url ); ?>"
+			data-video-url="<?php echo esc_url( $video_url ); ?>"
 			data-duration="<?php echo esc_attr( (string) $module->duration_mins ); ?>"
 			data-locked="<?php echo esc_attr( (string) $module->is_locked ); ?>"
 		>
 			<td class="cta-module-row__handle" aria-label="<?php esc_attr_e( 'Drag to reorder', 'cta-lms' ); ?>">⋮⋮</td>
 			<td><?php echo esc_html( (string) $module->order_index ); ?></td>
 			<td><?php echo esc_html( $module->title ); ?></td>
+			<td><code><?php echo esc_html( $video_label ); ?></code></td>
 			<td><?php echo esc_html( (string) $module->duration_mins ); ?> <?php esc_html_e( 'mins', 'cta-lms' ); ?></td>
 			<td class="cta-table-actions">
 				<button type="button" class="button button-small cta-edit-module" data-module-id="<?php echo esc_attr( $module->id ); ?>"><?php esc_html_e( 'Edit', 'cta-lms' ); ?></button>

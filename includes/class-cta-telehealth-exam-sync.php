@@ -449,7 +449,7 @@ class CTA_Telehealth_Exam_Sync {
 	 * @return array{ok:bool,course_id:int,updated:int,message:string,modules:array}
 	 */
 	public static function sync_module_videos( $force = false ) {
-		$seed_option = 'cta_telehealth_module_videos_1_0_110';
+		$seed_option = 'cta_telehealth_module_videos_1_0_114';
 
 		if ( ! $force && get_option( $seed_option ) ) {
 			return array(
@@ -546,6 +546,35 @@ class CTA_Telehealth_Exam_Sync {
 			}
 		}
 
+		// Final fallback: first / second / third module by sort order (handles order_index 0,0,0).
+		if ( count( $assigned ) < count( $video_map ) ) {
+			$sorted = array_values( $modules );
+			foreach ( $video_map as $order => $url ) {
+				if ( isset( $assigned[ $order ] ) ) {
+					continue;
+				}
+				$idx = $order - 1;
+				if ( ! isset( $sorted[ $idx ] ) ) {
+					continue;
+				}
+				$module = $sorted[ $idx ];
+				$mid    = (int) $module->id;
+				if ( in_array( $mid, array_column( $report, 'id' ), true ) ) {
+					continue;
+				}
+				if ( self::apply_module_video( $mid, $url ) ) {
+					++$updated;
+				}
+				$assigned[ $order ] = true;
+				$report[]           = array(
+					'id'        => $mid,
+					'title'     => (string) $module->title,
+					'order'     => $order,
+					'video_url' => $url,
+				);
+			}
+		}
+
 		if ( count( $assigned ) < count( $video_map ) ) {
 			return array(
 				'ok'        => false,
@@ -557,6 +586,8 @@ class CTA_Telehealth_Exam_Sync {
 		}
 
 		update_option( $seed_option, 1, false );
+		// Clear legacy seed so older installs don't skip this re-apply.
+		delete_option( 'cta_telehealth_module_videos_1_0_110' );
 
 		return array(
 			'ok'        => true,

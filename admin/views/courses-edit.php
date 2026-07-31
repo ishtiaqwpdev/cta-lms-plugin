@@ -333,6 +333,7 @@ if ( $course ) {
 						<th></th>
 						<th><?php esc_html_e( 'Order', 'cta-lms' ); ?></th>
 						<th><?php esc_html_e( 'Title', 'cta-lms' ); ?></th>
+						<th><?php esc_html_e( 'Video', 'cta-lms' ); ?></th>
 						<th><?php esc_html_e( 'Duration', 'cta-lms' ); ?></th>
 						<th><?php esc_html_e( 'Actions', 'cta-lms' ); ?></th>
 					</tr>
