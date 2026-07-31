@@ -3,7 +3,7 @@
  * Plugin Name: CTA Academy LMS
  * Plugin URI: https://clinicaltrainingacademy.com
  * Description: Complete LMS platform for Clinical Training and Supervision Academy.
- * Version: 1.0.110
+ * Version: 1.0.111
  * Author: David James
  * Author URI: https://clinicaltrainingacademy.com
  * License: GPL-2.0+

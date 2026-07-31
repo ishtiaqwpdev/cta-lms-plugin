@@ -97,10 +97,10 @@ $access_months = (int) ( $course->access_period_months ?? 6 );
 				</div>
 			</div>
 			<div class="course-hero__media">
-				<?php if ( ! empty( $preview_video ) ) : ?>
-					<?php echo $preview_video; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-				<?php elseif ( ! empty( $course->thumbnail_url ) ) : ?>
+				<?php if ( ! empty( $course->thumbnail_url ) ) : ?>
 					<img src="<?php echo esc_url( $course->thumbnail_url ); ?>" alt="<?php echo esc_attr( $image_alt ); ?>" class="course-hero__video-thumb">
+				<?php elseif ( ! empty( $preview_video ) ) : ?>
+					<?php echo $preview_video; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				<?php else : ?>
 					<div class="course-hero__video course-hero__video--placeholder" aria-hidden="true"></div>
 				<?php endif; ?>

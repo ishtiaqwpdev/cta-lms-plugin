@@ -297,6 +297,124 @@ class CTA_Telehealth_Exam_Sync {
 	}
 
 	/**
+	 * Attach the approved Telehealth course thumbnail (laptop / video-call branded art).
+	 *
+	 * Uses Media Library attachment "Telehealth.png" when present; otherwise the
+	 * known uploads path. Does not change access period or other course fields.
+	 *
+	 * @param bool $force Re-run even if already applied at this seed key.
+	 * @return array{ok:bool,course_id:int,thumbnail_url:string,message:string}
+	 */
+	public static function sync_thumbnail( $force = false ) {
+		$seed_option = 'cta_telehealth_thumbnail_1_0_111';
+
+		if ( ! $force && get_option( $seed_option ) ) {
+			return array(
+				'ok'            => true,
+				'course_id'     => 0,
+				'thumbnail_url' => '',
+				'message'       => 'already_seeded',
+			);
+		}
+
+		$course = self::find_course();
+		if ( ! $course ) {
+			return array(
+				'ok'            => false,
+				'course_id'     => 0,
+				'thumbnail_url' => '',
+				'message'       => 'telehealth_course_not_found',
+			);
+		}
+
+		$thumbnail_url = self::resolve_approved_thumbnail_url();
+		if ( '' === $thumbnail_url ) {
+			return array(
+				'ok'            => false,
+				'course_id'     => (int) $course->id,
+				'thumbnail_url' => '',
+				'message'       => 'thumbnail_asset_not_found',
+			);
+		}
+
+		global $wpdb;
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$updated = $wpdb->update(
+			$wpdb->prefix . 'cta_courses',
+			array( 'thumbnail_url' => $thumbnail_url ),
+			array( 'id' => (int) $course->id ),
+			array( '%s' ),
+			array( '%d' )
+		);
+
+		if ( false === $updated ) {
+			return array(
+				'ok'            => false,
+				'course_id'     => (int) $course->id,
+				'thumbnail_url' => $thumbnail_url,
+				'message'       => 'update_failed',
+			);
+		}
+
+		update_option( $seed_option, 1, false );
+
+		return array(
+			'ok'            => true,
+			'course_id'     => (int) $course->id,
+			'thumbnail_url' => $thumbnail_url,
+			'message'       => 'synced',
+		);
+	}
+
+	/**
+	 * Resolve the approved Telehealth.png URL from Media Library or uploads path.
+	 *
+	 * @return string
+	 */
+	public static function resolve_approved_thumbnail_url() {
+		$attachment_id = 0;
+
+		// Prefer the known Media Library slug/filename from the Jul 2026 upload.
+		$by_slug = get_page_by_path( 'telehealth', OBJECT, 'attachment' );
+		if ( $by_slug && ! empty( $by_slug->ID ) ) {
+			$attachment_id = (int) $by_slug->ID;
+		}
+
+		if ( ! $attachment_id ) {
+			$query = new WP_Query(
+				array(
+					'post_type'      => 'attachment',
+					'post_status'    => 'inherit',
+					'posts_per_page' => 1,
+					'fields'         => 'ids',
+					'meta_query'     => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+						array(
+							'key'     => '_wp_attached_file',
+							'value'   => 'Telehealth.png',
+							'compare' => 'LIKE',
+						),
+					),
+				)
+			);
+			if ( ! empty( $query->posts[0] ) ) {
+				$attachment_id = (int) $query->posts[0];
+			}
+			wp_reset_postdata();
+		}
+
+		if ( $attachment_id ) {
+			$url = wp_get_attachment_url( $attachment_id );
+			if ( $url ) {
+				return esc_url_raw( $url );
+			}
+		}
+
+		// Stable fallback matching the approved Media Library asset path.
+		return esc_url_raw( content_url( 'uploads/2026/07/Telehealth.png' ) );
+	}
+
+	/**
 	 * Module order => Vimeo video URL for CTA-CE-002 instructional videos.
 	 *
 	 * Stored in cta_course_modules.video_url (same field used by CE course player).

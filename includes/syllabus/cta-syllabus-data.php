@@ -973,7 +973,7 @@ return array(
 		'meta_description'        => 'A 3-hour California telehealth CE course covering legal requirements, jurisdiction, intake, crisis planning, privacy, security, digital communication, and continuity of care.',
 		'image_alt'               => 'Clinical and Ethical Excellence in Telehealth course thumbnail from Clinical Training and Supervision Academy',
 		// OWNER DECISION REQUIRED — do not set access_period_months here.
-		// PENDING APPROVAL AND LOAD — do not set thumbnail_url here.
+		// Thumbnail applied by CTA_Telehealth_Exam_Sync::sync_thumbnail() (Media Library Telehealth.png).
 		'educational_goals'       => array(),
 		'learning_objectives'     => array(
 			'Identify at least four California legal or ethical requirements governing telehealth initiation, informed consent, jurisdiction, and each-session safety procedures.',
