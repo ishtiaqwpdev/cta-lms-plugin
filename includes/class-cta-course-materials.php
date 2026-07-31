@@ -120,6 +120,10 @@ class CTA_Course_Materials {
 			return CTA_Exam_Access::has_active_access( $user_id, $course_id );
 		}
 
+		if ( class_exists( 'CTA_CE_Access' ) && CTA_CE_Access::is_ce_course( $course ) ) {
+			return CTA_CE_Access::has_active_access( $user_id, $course_id );
+		}
+
 		return true;
 	}
 

@@ -213,6 +213,12 @@ class CTA_Courses {
 					$course_id
 				)
 			);
+
+			if ( $is_enrolled && class_exists( 'CTA_CE_Access' ) && CTA_CE_Access::is_ce_course( $course ) ) {
+				$is_enrolled = CTA_CE_Access::has_active_access( $user_id, $course_id );
+			} elseif ( $is_enrolled && class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course ) ) {
+				$is_enrolled = CTA_Exam_Access::has_active_access( $user_id, $course_id );
+			}
 		}
 
 		$player_page_id = absint( get_option( 'cta_course_player_page_id', 0 ) );

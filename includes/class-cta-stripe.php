@@ -712,16 +712,23 @@ class CTA_Stripe {
 
 		$user_id = get_current_user_id();
 
-		$enrolled = $wpdb->get_var(
-			$wpdb->prepare(
-				"SELECT id FROM {$wpdb->prefix}cta_enrollments
-				WHERE user_id = %d AND course_id = %d AND status = 'active'",
-				$user_id,
-				$course_id
-			)
-		);
+		$already_has_access = false;
+		if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course ) ) {
+			$already_has_access = CTA_Exam_Access::has_active_access( $user_id, $course_id );
+		} elseif ( class_exists( 'CTA_CE_Access' ) && CTA_CE_Access::is_ce_course( $course ) ) {
+			$already_has_access = CTA_CE_Access::has_active_access( $user_id, $course_id );
+		} else {
+			$already_has_access = (bool) $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT id FROM {$wpdb->prefix}cta_enrollments
+					WHERE user_id = %d AND course_id = %d AND status IN ('active','completed')",
+					$user_id,
+					$course_id
+				)
+			);
+		}
 
-		if ( $enrolled ) {
+		if ( $already_has_access ) {
 			wp_send_json_error(
 				array(
 					'message' => __( 'You are already enrolled in this course.', 'cta-lms' ),
@@ -1112,7 +1119,15 @@ class CTA_Stripe {
 			$course_id = absint( $metadata['course_id'] ?? 0 );
 
 			if ( $user_id && $course_id ) {
-				$this->create_enrollment( $user_id, $course_id, sanitize_text_field( $session->id ) );
+				$this->create_enrollment(
+					$user_id,
+					$course_id,
+					sanitize_text_field( $session->id ),
+					array(
+						'access_source' => 'purchase',
+						'expires_at'    => null,
+					)
+				);
 
 				$course = CTA_Database::get_course( $course_id );
 				if ( $course && class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course ) ) {
@@ -1382,17 +1397,21 @@ class CTA_Stripe {
 			$included_ids = CTA_Exam_Access::filter_ce_only_course_ids( $included_ids );
 		}
 
+		$enroll_args = class_exists( 'CTA_CE_Access' )
+			? CTA_CE_Access::enrollment_args_for_bundle( $bundle, $billing )
+			: array( 'access_source' => 'purchase', 'expires_at' => null );
+
 		if ( 'annual' === $bundle->plan_type || 'yearly' === $billing || 'subscription' === $bundle->plan_type ) {
 			$all_courses = CTA_Database::get_all_courses( 'published' );
 			foreach ( $all_courses as $course ) {
 				if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course ) ) {
 					continue;
 				}
-				$this->enroll_user_in_course( $user_id, (int) $course->id, $payment_id );
+				$this->enroll_user_in_course( $user_id, (int) $course->id, $payment_id, $enroll_args );
 			}
 		} else {
 			foreach ( $included_ids as $course_id ) {
-				$this->enroll_user_in_course( $user_id, (int) $course_id, $payment_id );
+				$this->enroll_user_in_course( $user_id, (int) $course_id, $payment_id, $enroll_args );
 			}
 		}
 
@@ -1492,7 +1511,15 @@ class CTA_Stripe {
 		$user_id = get_current_user_id();
 		$payment_id = 'bypass-' . time();
 
-		$enrolled = $this->create_enrollment( $user_id, $course_id, $payment_id );
+		$enrolled = $this->create_enrollment(
+			$user_id,
+			$course_id,
+			$payment_id,
+			array(
+				'access_source' => 'purchase',
+				'expires_at'    => null,
+			)
+		);
 
 		if ( ! $enrolled ) {
 			wp_send_json_error(
@@ -1878,12 +1905,12 @@ class CTA_Stripe {
 	 * @param int    $course_id  Course ID.
 	 * @param string $payment_id Payment reference ID.
 	 */
-	private function enroll_user_in_course( $user_id, $course_id, $payment_id ) {
+	private function enroll_user_in_course( $user_id, $course_id, $payment_id, $args = array() ) {
 		if ( ! $course_id ) {
 			return;
 		}
 
-		$this->create_enrollment( $user_id, $course_id, $payment_id );
+		$this->create_enrollment( $user_id, $course_id, $payment_id, $args );
 	}
 
 	/**
@@ -1892,9 +1919,15 @@ class CTA_Stripe {
 	 * @param int    $user_id    User ID.
 	 * @param int    $course_id  Course ID.
 	 * @param string $payment_id Stripe session/payment ID.
+	 * @param array  $args {
+	 *     Optional enrollment options.
+	 *
+	 *     @type string      $access_source purchase|membership. Default purchase.
+	 *     @type string|null $expires_at    MySQL datetime or null (permanent).
+	 * }
 	 * @return bool True when enrollment exists or was created.
 	 */
-	private function create_enrollment( $user_id, $course_id, $payment_id ) {
+	private function create_enrollment( $user_id, $course_id, $payment_id, $args = array() ) {
 		global $wpdb;
 
 		$user_id   = absint( $user_id );
@@ -1904,11 +1937,42 @@ class CTA_Stripe {
 			return false;
 		}
 
+		$args = wp_parse_args(
+			$args,
+			array(
+				'access_source' => class_exists( 'CTA_CE_Access' ) ? CTA_CE_Access::SOURCE_PURCHASE : 'purchase',
+				'expires_at'    => null,
+			)
+		);
+
+		$access_source = sanitize_key( (string) $args['access_source'] );
+		if ( ! in_array( $access_source, array( 'purchase', 'membership' ), true ) ) {
+			$access_source = 'purchase';
+		}
+
+		$expires_at = null;
+		if ( ! empty( $args['expires_at'] ) ) {
+			$expires_at = sanitize_text_field( (string) $args['expires_at'] );
+		}
+
+		// Individual CE purchase is always permanent.
+		$course = CTA_Database::get_course( $course_id );
+		$is_ce  = $course && ( ! class_exists( 'CTA_Exam_Access' ) || ! CTA_Exam_Access::is_exam_prep( $course ) );
+		if ( $is_ce && 'purchase' === $access_source ) {
+			$expires_at = null;
+		}
+
+		// Never downgrade a prior individual purchase to membership access.
+		if ( $is_ce && class_exists( 'CTA_CE_Access' ) && CTA_CE_Access::user_has_individual_purchase( $user_id, $course_id ) ) {
+			$access_source = CTA_CE_Access::SOURCE_PURCHASE;
+			$expires_at    = null;
+		}
+
 		$table = $wpdb->prefix . 'cta_enrollments';
 
 		$existing = $wpdb->get_row(
 			$wpdb->prepare(
-				"SELECT id, status FROM {$table}
+				"SELECT * FROM {$table}
 				WHERE user_id = %d AND course_id = %d
 				LIMIT 1",
 				$user_id,
@@ -1919,43 +1983,53 @@ class CTA_Stripe {
 		$created_or_restored = false;
 
 		if ( $existing ) {
-			if ( 'active' === $existing->status || 'completed' === $existing->status ) {
-				if ( $payment_id ) {
-					$wpdb->update(
-						$table,
-						array( 'payment_id' => sanitize_text_field( $payment_id ) ),
-						array( 'id' => (int) $existing->id ),
-						array( '%s' ),
-						array( '%d' )
-					);
-				}
-				$created_or_restored = true;
-			} else {
-				$updated = $wpdb->update(
-					$table,
-					array(
-						'status'     => 'active',
-						'progress'   => 0,
-						'payment_id' => sanitize_text_field( $payment_id ),
-					),
-					array( 'id' => (int) $existing->id ),
-					array( '%s', '%d', '%s' ),
-					array( '%d' )
-				);
+			$existing_source = ! empty( $existing->access_source )
+				? sanitize_key( (string) $existing->access_source )
+				: '';
 
-				$created_or_restored = false !== $updated;
+			// Preserve purchase permanence if already purchased.
+			if ( 'purchase' === $existing_source || ( class_exists( 'CTA_CE_Access' ) && CTA_CE_Access::user_has_individual_purchase( $user_id, $course_id ) ) ) {
+				$access_source = 'purchase';
+				$expires_at    = null;
 			}
+
+			$update = array(
+				'payment_id'    => sanitize_text_field( $payment_id ),
+				'access_source' => $access_source,
+				'expires_at'    => $expires_at,
+			);
+			$formats = array( '%s', '%s', '%s' );
+
+			if ( 'active' === $existing->status || 'completed' === $existing->status ) {
+				// Keep status; only refresh access metadata.
+			} else {
+				// Restore revoked/other statuses to active for a new grant.
+				$update['status']   = 'active';
+				$formats[]          = '%s';
+			}
+
+			$updated = $wpdb->update(
+				$table,
+				$update,
+				array( 'id' => (int) $existing->id ),
+				$formats,
+				array( '%d' )
+			);
+
+			$created_or_restored = false !== $updated;
 		} else {
 			$inserted = $wpdb->insert(
 				$table,
 				array(
-					'user_id'    => $user_id,
-					'course_id'  => $course_id,
-					'status'     => 'active',
-					'progress'   => 0,
-					'payment_id' => sanitize_text_field( $payment_id ),
+					'user_id'       => $user_id,
+					'course_id'     => $course_id,
+					'status'        => 'active',
+					'progress'      => 0,
+					'payment_id'    => sanitize_text_field( $payment_id ),
+					'access_source' => $access_source,
+					'expires_at'    => $expires_at,
 				),
-				array( '%d', '%d', '%s', '%d', '%s' )
+				array( '%d', '%d', '%s', '%d', '%s', '%s', '%s' )
 			);
 
 			if ( ! $inserted ) {
@@ -1987,7 +2061,6 @@ class CTA_Stripe {
 
 		// Exam prep: always ensure timed access row exists (progress stays in enrollments).
 		if ( $created_or_restored && class_exists( 'CTA_Exam_Access' ) ) {
-			$course = CTA_Database::get_course( $course_id );
 			if ( $course && CTA_Exam_Access::is_exam_prep( $course ) ) {
 				$months = ! empty( $course->access_period_months ) ? (int) $course->access_period_months : 6;
 				CTA_Exam_Access::grant_access( $user_id, $course_id, $months );
@@ -2058,7 +2131,15 @@ class CTA_Stripe {
 				? (string) $payment->stripe_payment_id
 				: ( 'payment-' . (int) $payment->id );
 
-			if ( $this->create_enrollment( $user_id, $course_id, $payment_ref ) ) {
+			if ( $this->create_enrollment(
+				$user_id,
+				$course_id,
+				$payment_ref,
+				array(
+					'access_source' => 'purchase',
+					'expires_at'    => null,
+				)
+			) ) {
 				$did_sync = true;
 			}
 		}
@@ -2094,6 +2175,11 @@ class CTA_Stripe {
 			update_user_meta( $user_id, 'cta_supervision_status', 'cancelled' );
 			update_user_meta( $user_id, 'cta_supervision_cancel_at_period_end', '0' );
 			CTA_Emails::send( 'supervision_locked', $user_id );
+
+			// Revoke membership-sourced CE access; keep individual purchases + certificates.
+			if ( class_exists( 'CTA_CE_Access' ) ) {
+				CTA_CE_Access::revoke_membership_access( $user_id );
+			}
 		}
 	}
 

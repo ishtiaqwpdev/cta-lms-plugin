@@ -80,6 +80,7 @@ class CTA_Database {
   completed_at datetime DEFAULT NULL,
   expires_at datetime DEFAULT NULL,
   payment_id varchar(100) DEFAULT NULL,
+  access_source varchar(20) DEFAULT NULL,
   PRIMARY KEY  (id),
   UNIQUE KEY unique_enrollment (user_id,course_id),
   KEY user_id (user_id),
@@ -310,6 +311,7 @@ class CTA_Database {
 		self::maybe_add_resource_columns();
 		self::maybe_add_syllabus_columns();
 		self::maybe_add_evaluation_submission_columns();
+		self::maybe_add_enrollment_access_source();
 
 		if ( class_exists( 'CTA_Evaluation_Questions' ) ) {
 			CTA_Evaluation_Questions::install();
@@ -317,6 +319,30 @@ class CTA_Database {
 
 		if ( class_exists( 'CTA_Course_Attestation' ) ) {
 			CTA_Course_Attestation::install();
+		}
+	}
+
+	/**
+	 * Ensure enrollment access_source column exists (CE purchase vs membership).
+	 */
+	public static function maybe_add_enrollment_access_source() {
+		if ( class_exists( 'CTA_CE_Access' ) ) {
+			CTA_CE_Access::maybe_install_schema();
+			return;
+		}
+
+		global $wpdb;
+		$table = $wpdb->prefix . 'cta_enrollments';
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) );
+		if ( $exists !== $table ) {
+			return;
+		}
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$col = $wpdb->get_results( $wpdb->prepare( "SHOW COLUMNS FROM {$table} LIKE %s", 'access_source' ) );
+		if ( empty( $col ) ) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
+			$wpdb->query( "ALTER TABLE {$table} ADD COLUMN access_source varchar(20) DEFAULT NULL AFTER payment_id" );
 		}
 	}
 
@@ -1011,6 +1037,30 @@ class CTA_Database {
 				"SELECT * FROM {$table} WHERE user_id = %d AND course_id = %d ORDER BY issued_at DESC LIMIT 1",
 				$user_id,
 				$course_id
+			)
+		);
+	}
+
+	/**
+	 * Fetch all certificates for a user (permanent — independent of enrollment/membership).
+	 *
+	 * @param int $user_id WordPress user ID.
+	 * @return array
+	 */
+	public static function get_user_certificates( $user_id ) {
+		global $wpdb;
+
+		$user_id = absint( $user_id );
+		if ( ! $user_id ) {
+			return array();
+		}
+
+		$table = $wpdb->prefix . 'cta_certificates';
+
+		return $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT * FROM {$table} WHERE user_id = %d ORDER BY issued_at DESC",
+				$user_id
 			)
 		);
 	}

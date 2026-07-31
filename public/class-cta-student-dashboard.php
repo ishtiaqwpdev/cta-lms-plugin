@@ -112,7 +112,13 @@ class CTA_Student_Dashboard {
 			$certificate   = CTA_Database::get_enrollment_certificate( $user_id, (int) $enrollment->id );
 			$is_exam       = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course );
 			$access        = $is_exam ? CTA_Exam_Access::get_access_record( $user_id, (int) $course->id ) : null;
-			$has_access    = $is_exam ? CTA_Exam_Access::has_active_access( $user_id, (int) $course->id ) : true;
+			if ( $is_exam ) {
+				$has_access = CTA_Exam_Access::has_active_access( $user_id, (int) $course->id );
+			} elseif ( class_exists( 'CTA_CE_Access' ) ) {
+				$has_access = CTA_CE_Access::has_active_access( $user_id, (int) $course->id );
+			} else {
+				$has_access = in_array( (string) $enrollment->status, array( 'active', 'completed' ), true );
+			}
 			$resources     = CTA_Database::get_downloadable_resources( (int) $course->id );
 			$quiz          = CTA_Database::get_quiz_by_course( (int) $course->id );
 			$quiz_url      = '';
@@ -139,13 +145,13 @@ class CTA_Student_Dashboard {
 				'completed_count' => count( $completed_ids ),
 				'next_module_id'  => $next_module ? (int) $next_module->id : 0,
 				'certificate'     => $is_exam ? null : $certificate,
-				'player_url'      => ( $is_exam && ! $has_access ) ? '' : $this->get_player_url( (int) $course->id, $next_module ? (int) $next_module->id : 0 ),
+				'player_url'      => ( ! $has_access ) ? '' : $this->get_player_url( (int) $course->id, $next_module ? (int) $next_module->id : 0 ),
 				'is_exam_prep'    => $is_exam,
 				'has_active_access' => $has_access,
 				'access'          => $access,
-				'expires_at'      => $access && ! empty( $access->expires_at ) ? $access->expires_at : null,
+				'expires_at'      => $access && ! empty( $access->expires_at ) ? $access->expires_at : ( ! empty( $enrollment->expires_at ) ? $enrollment->expires_at : null ),
 				'resources'       => $resources,
-				'quiz_url'        => ( $is_exam && ! $has_access ) ? '' : $quiz_url,
+				'quiz_url'        => ( ! $has_access ) ? '' : $quiz_url,
 			);
 
 			if ( $is_exam ) {
@@ -156,18 +162,27 @@ class CTA_Student_Dashboard {
 			if ( 'completed' === $enrollment->status ) {
 				$completed[] = $item;
 				$total_ce   += (float) $course->ce_hours;
-				if ( $certificate ) {
-					$certificates[] = (object) array(
-						'course'      => $course,
-						'enrollment'  => $enrollment,
-						'certificate' => $certificate,
-					);
-				}
-			} elseif ( 'active' === $enrollment->status && (int) $enrollment->progress < 100 ) {
-				$in_progress[] = $item;
-			} elseif ( 'active' === $enrollment->status ) {
+			} elseif ( $has_access && 'active' === $enrollment->status ) {
 				$in_progress[] = $item;
 			}
+		}
+
+		// Certificates are permanent — list from certificate rows, not membership/enrollment status.
+		$cert_rows = CTA_Database::get_user_certificates( $user_id );
+		foreach ( (array) $cert_rows as $certificate ) {
+			$course = CTA_Database::get_course( (int) $certificate->course_id );
+			if ( ! $course ) {
+				continue;
+			}
+			if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course ) ) {
+				continue;
+			}
+			$enrollment = CTA_Database::get_user_enrollment( $user_id, (int) $certificate->course_id );
+			$certificates[] = (object) array(
+				'course'      => $course,
+				'enrollment'  => $enrollment,
+				'certificate' => $certificate,
+			);
 		}
 
 		$user           = wp_get_current_user();
@@ -260,6 +275,20 @@ class CTA_Student_Dashboard {
 				<?php
 				return ob_get_clean();
 			}
+		} elseif ( class_exists( 'CTA_CE_Access' ) && CTA_CE_Access::is_ce_course( $course ) && ! CTA_CE_Access::has_active_access( $user_id, $course_id ) ) {
+			ob_start();
+			?>
+			<div class="cta-plugin-wrapper">
+				<div class="cta-empty-state cta-empty-state--locked">
+					<h2><?php esc_html_e( 'Membership access ended', 'cta-lms' ); ?></h2>
+					<p><?php esc_html_e( 'Your membership access to this course is no longer active. Certificates you already earned remain available in My Certificates. Purchase this course individually for permanent access.', 'cta-lms' ); ?></p>
+					<?php if ( $this->get_dashboard_url() ) : ?>
+						<a href="<?php echo esc_url( $this->get_dashboard_url() ); ?>" class="btn btn-primary"><?php esc_html_e( 'Back to Dashboard', 'cta-lms' ); ?></a>
+					<?php endif; ?>
+				</div>
+			</div>
+			<?php
+			return ob_get_clean();
 		}
 
 		if ( 'completed' === $enrollment->status && ! ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course ) ) ) {
@@ -409,6 +438,12 @@ class CTA_Student_Dashboard {
 					)
 				);
 			}
+		} elseif ( class_exists( 'CTA_CE_Access' ) && CTA_CE_Access::is_ce_course( $course ) && ! CTA_CE_Access::has_active_access( $user_id, $course_id ) ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'Your membership access to this course is no longer active.', 'cta-lms' ),
+				)
+			);
 		}
 
 		$modules = CTA_Database::get_course_modules( $course_id );

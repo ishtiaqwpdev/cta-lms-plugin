@@ -99,6 +99,24 @@ class CTA_Quiz {
 			);
 		}
 
+		if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course ) && ! CTA_Exam_Access::has_active_access( $user_id, $course_id ) ) {
+			return $this->render_message_state(
+				__( 'Access expired', 'cta-lms' ),
+				__( 'Your access to this Exam Preparation Program has expired.', 'cta-lms' ),
+				$this->get_dashboard_url(),
+				__( 'Back to Dashboard', 'cta-lms' )
+			);
+		}
+
+		if ( class_exists( 'CTA_CE_Access' ) && CTA_CE_Access::is_ce_course( $course ) && ! CTA_CE_Access::has_active_access( $user_id, $course_id ) ) {
+			return $this->render_message_state(
+				__( 'Membership access ended', 'cta-lms' ),
+				__( 'Your membership access to this course is no longer active. Certificates you already earned remain available in My Certificates.', 'cta-lms' ),
+				$this->get_dashboard_url(),
+				__( 'Back to Dashboard', 'cta-lms' )
+			);
+		}
+
 		if ( (int) $enrollment->progress < 100 ) {
 			return $this->render_message_state(
 				__( 'Complete All Modules First', 'cta-lms' ),
@@ -892,6 +910,8 @@ class CTA_Quiz {
 			if ( ! CTA_Exam_Access::has_active_access( $user_id, $course_id ) ) {
 				return new WP_Error( 'exam_expired', __( 'Your access to this Exam Preparation Program has expired.', 'cta-lms' ) );
 			}
+		} elseif ( class_exists( 'CTA_CE_Access' ) && CTA_CE_Access::is_ce_course( $course ) && ! CTA_CE_Access::has_active_access( $user_id, $course_id ) ) {
+			return new WP_Error( 'ce_access_ended', __( 'Your membership access to this course is no longer active.', 'cta-lms' ) );
 		}
 
 		if ( $require_complete && (int) $enrollment->progress < 100 ) {

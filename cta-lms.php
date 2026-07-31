@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.111' );
+	define( 'CTA_VERSION', '1.0.112' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -81,6 +81,7 @@ $cta_required_files = array(
 	'includes/class-cta-roles.php',
 	'includes/class-cta-associate-access.php',
 	'includes/class-cta-exam-access.php',
+	'includes/class-cta-ce-access.php',
 	'includes/class-cta-course-materials.php',
 	'includes/class-cta-evaluation-questions.php',
 	'includes/class-cta-course-attestation.php',
@@ -454,6 +455,11 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 			// Telehealth (CTA-CE-002) approved branded thumbnail (Telehealth.png).
 			if ( version_compare( $installed, '1.0.111', '<' ) && class_exists( 'CTA_Telehealth_Exam_Sync' ) ) {
 				CTA_Telehealth_Exam_Sync::sync_thumbnail( true );
+			}
+
+			// CE access rules: purchase permanent vs membership-gated + certificate permanence.
+			if ( version_compare( $installed, '1.0.112', '<' ) && class_exists( 'CTA_CE_Access' ) ) {
+				CTA_CE_Access::maybe_install_schema();
 			}
 
 			// Decouple supervision application pending from general account / CE access.
