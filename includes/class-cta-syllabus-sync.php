@@ -593,7 +593,8 @@ class CTA_Syllabus_Sync {
 	 *
 	 * Missing syllabus titles are created (so a newly approved Module 1 is
 	 * inserted instead of overwriting an existing module by position).
-	 * Matched titles keep video_url / is_locked and receive updated copy/order.
+	 * Matched titles keep is_locked and receive updated copy/order.
+	 * When syllabus provides video_url, that value is applied; otherwise existing video_url is preserved.
 	 *
 	 * @param int   $course_id Course ID.
 	 * @param array $modules   Syllabus modules.
@@ -639,21 +640,32 @@ class CTA_Syllabus_Sync {
 				$target = $by_title[ $title_key ];
 			}
 
+			$syllabus_video = isset( $mod['video_url'] ) ? esc_url_raw( (string) $mod['video_url'] ) : '';
+
 			if ( $target ) {
 				$used_ids[ (int) $target->id ] = true;
 
-				// Preserve video_url and is_locked; update title/description/duration/order.
+				// Preserve is_locked; update title/description/duration/order.
+				// Apply video_url only when the syllabus explicitly provides one.
+				$update = array(
+					'title'         => $title,
+					'description'   => $desc,
+					'duration_mins' => $mins,
+					'order_index'   => $order,
+				);
+				$formats = array( '%s', '%s', '%d', '%d' );
+
+				if ( '' !== $syllabus_video ) {
+					$update['video_url'] = $syllabus_video;
+					$formats[]           = '%s';
+				}
+
 				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 				$wpdb->update(
 					$table,
-					array(
-						'title'         => $title,
-						'description'   => $desc,
-						'duration_mins' => $mins,
-						'order_index'   => $order,
-					),
+					$update,
 					array( 'id' => (int) $target->id ),
-					array( '%s', '%s', '%d', '%d' ),
+					$formats,
 					array( '%d' )
 				);
 				++$updated;
@@ -668,7 +680,7 @@ class CTA_Syllabus_Sync {
 						'duration_mins' => $mins,
 						'order_index'   => $order,
 						'is_locked'     => 1,
-						'video_url'     => '',
+						'video_url'     => $syllabus_video,
 					),
 					array( '%d', '%s', '%s', '%d', '%d', '%d', '%s' )
 				);

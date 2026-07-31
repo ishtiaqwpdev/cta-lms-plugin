@@ -1008,6 +1008,7 @@ return array(
 			array(
 				'title'          => 'California Legal Foundations and Jurisdictional Boundaries',
 				'duration_mins'  => 60,
+				'video_url'      => 'https://vimeo.com/1213776719',
 				'summary_points' => array(
 					'California telehealth law and BBS practice standards',
 					'Jurisdiction and interstate-practice verification',
@@ -1017,6 +1018,7 @@ return array(
 			array(
 				'title'          => 'Intake, Identity and Location Verification, and Crisis Protocols',
 				'duration_mins'  => 60,
+				'video_url'      => 'https://vimeo.com/1213835801',
 				'summary_points' => array(
 					'Identity and present-location verification',
 					'Telehealth appropriateness and higher-risk planning',
@@ -1026,6 +1028,7 @@ return array(
 			array(
 				'title'          => 'HIPAA Safeguards, Digital Privacy, and Professional Boundaries',
 				'duration_mins'  => 60,
+				'video_url'      => 'https://vimeo.com/1214204058',
 				'summary_points' => array(
 					'Privacy and security safeguards for electronic client information',
 					'Technology and vendor review, including BAAs when applicable',

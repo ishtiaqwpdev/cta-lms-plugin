@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.109' );
+	define( 'CTA_VERSION', '1.0.110' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -444,6 +444,11 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 			// Telehealth (CTA-CE-002) official 25-question final exam + evaluation refresh.
 			if ( version_compare( $installed, '1.0.108', '<' ) && class_exists( 'CTA_Telehealth_Exam_Sync' ) ) {
 				CTA_Telehealth_Exam_Sync::sync( true );
+			}
+
+			// Telehealth (CTA-CE-002) module Vimeo videos (Legal Foundations / Intake / Security).
+			if ( version_compare( $installed, '1.0.110', '<' ) && class_exists( 'CTA_Telehealth_Exam_Sync' ) ) {
+				CTA_Telehealth_Exam_Sync::sync_module_videos( true );
 			}
 
 			// Decouple supervision application pending from general account / CE access.

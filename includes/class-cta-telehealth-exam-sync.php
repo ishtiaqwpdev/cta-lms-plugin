@@ -297,6 +297,188 @@ class CTA_Telehealth_Exam_Sync {
 	}
 
 	/**
+	 * Module order => Vimeo video URL for CTA-CE-002 instructional videos.
+	 *
+	 * Stored in cta_course_modules.video_url (same field used by CE course player).
+	 *
+	 * @return array<int,string> 1-based order_index => https://vimeo.com/{id}
+	 */
+	public static function get_module_video_map() {
+		return array(
+			1 => 'https://vimeo.com/1213776719', // Module 1 – Legal Foundations.
+			2 => 'https://vimeo.com/1213835801', // Module 2 – Intake & Identity.
+			3 => 'https://vimeo.com/1214204058', // Module 3 – Security & Privacy.
+		);
+	}
+
+	/**
+	 * Title keywords used as a fallback when order_index does not match 1–3.
+	 *
+	 * @return array<int,string[]>
+	 */
+	private static function get_module_title_hints() {
+		return array(
+			1 => array( 'legal foundations', 'jurisdictional' ),
+			2 => array( 'intake', 'identity', 'location verification' ),
+			3 => array( 'hipaa', 'security', 'privacy', 'professional boundaries' ),
+		);
+	}
+
+	/**
+	 * Attach official Telehealth module Vimeo videos without changing titles/order.
+	 *
+	 * @param bool $force Re-run even if already applied at this seed key.
+	 * @return array{ok:bool,course_id:int,updated:int,message:string,modules:array}
+	 */
+	public static function sync_module_videos( $force = false ) {
+		$seed_option = 'cta_telehealth_module_videos_1_0_110';
+
+		if ( ! $force && get_option( $seed_option ) ) {
+			return array(
+				'ok'        => true,
+				'course_id' => 0,
+				'updated'   => 0,
+				'message'   => 'already_seeded',
+				'modules'   => array(),
+			);
+		}
+
+		$course = self::find_course();
+		if ( ! $course ) {
+			return array(
+				'ok'        => false,
+				'course_id' => 0,
+				'updated'   => 0,
+				'message'   => 'telehealth_course_not_found',
+				'modules'   => array(),
+			);
+		}
+
+		$course_id = (int) $course->id;
+		$modules   = class_exists( 'CTA_Database' )
+			? CTA_Database::get_course_modules( $course_id )
+			: array();
+
+		if ( empty( $modules ) ) {
+			return array(
+				'ok'        => false,
+				'course_id' => $course_id,
+				'updated'   => 0,
+				'message'   => 'no_modules',
+				'modules'   => array(),
+			);
+		}
+
+		$video_map = self::get_module_video_map();
+		$hints     = self::get_module_title_hints();
+		$assigned  = array();
+		$report    = array();
+		$updated   = 0;
+
+		// Prefer stable order_index 1–3.
+		foreach ( $modules as $module ) {
+			$order = (int) ( $module->order_index ?? 0 );
+			if ( ! isset( $video_map[ $order ] ) || isset( $assigned[ $order ] ) ) {
+				continue;
+			}
+			if ( self::apply_module_video( (int) $module->id, $video_map[ $order ] ) ) {
+				++$updated;
+			}
+			$assigned[ $order ] = true;
+			$report[]           = array(
+				'id'        => (int) $module->id,
+				'title'     => (string) $module->title,
+				'order'     => $order,
+				'video_url' => $video_map[ $order ],
+			);
+		}
+
+		// Fallback: match by title keywords for any unassigned slot.
+		foreach ( $video_map as $order => $url ) {
+			if ( isset( $assigned[ $order ] ) ) {
+				continue;
+			}
+			foreach ( $modules as $module ) {
+				$mid = (int) $module->id;
+				if ( in_array( $mid, array_column( $report, 'id' ), true ) ) {
+					continue;
+				}
+				$title_l = strtolower( (string) $module->title );
+				$matched = false;
+				foreach ( (array) ( $hints[ $order ] ?? array() ) as $hint ) {
+					if ( '' !== $hint && false !== strpos( $title_l, $hint ) ) {
+						$matched = true;
+						break;
+					}
+				}
+				if ( ! $matched ) {
+					continue;
+				}
+				if ( self::apply_module_video( $mid, $url ) ) {
+					++$updated;
+				}
+				$assigned[ $order ] = true;
+				$report[]           = array(
+					'id'        => $mid,
+					'title'     => (string) $module->title,
+					'order'     => $order,
+					'video_url' => $url,
+				);
+				break;
+			}
+		}
+
+		if ( count( $assigned ) < count( $video_map ) ) {
+			return array(
+				'ok'        => false,
+				'course_id' => $course_id,
+				'updated'   => $updated,
+				'message'   => 'partial_module_match',
+				'modules'   => $report,
+			);
+		}
+
+		update_option( $seed_option, 1, false );
+
+		return array(
+			'ok'        => true,
+			'course_id' => $course_id,
+			'updated'   => $updated,
+			'message'   => 'synced',
+			'modules'   => $report,
+		);
+	}
+
+	/**
+	 * Write a module video_url.
+	 *
+	 * @param int    $module_id Module ID.
+	 * @param string $video_url Canonical Vimeo URL.
+	 * @return bool
+	 */
+	private static function apply_module_video( $module_id, $video_url ) {
+		global $wpdb;
+
+		$module_id = absint( $module_id );
+		$video_url = esc_url_raw( (string) $video_url );
+
+		if ( ! $module_id || '' === $video_url ) {
+			return false;
+		}
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$result = $wpdb->update(
+			$wpdb->prefix . 'cta_course_modules',
+			array( 'video_url' => $video_url ),
+			array( 'id' => $module_id ),
+			array( '%s' ),
+			array( '%d' )
+		);
+
+		return false !== $result;
+	}
+
+	/**
 	 * Widen option_* columns so long official stems are not truncated.
 	 */
 	private static function maybe_widen_option_columns() {
