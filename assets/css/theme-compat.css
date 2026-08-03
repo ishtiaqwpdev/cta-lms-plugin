@@ -1281,6 +1281,20 @@ body:not(.cta-lms-page--no-chrome) {
   justify-content: flex-end !important;
 }
 
+/* Account dropdown: keep menu anchored right, but labels left-aligned. */
+.elementor-location-header .cta-auth-account__menu,
+.cta-auth-button-wrap .cta-auth-account__menu,
+.cta-auth-account__menu {
+  text-align: left !important;
+}
+
+.elementor-location-header .cta-auth-account__menu a,
+.cta-auth-button-wrap .cta-auth-account__menu a,
+.cta-auth-account__menu a {
+  text-align: left !important;
+  justify-content: flex-start !important;
+}
+
 .elementor-location-header .elementor-widget-wrap:has(.cta-auth-button-wrap),
 .elementor-location-header .e-con:has(> .cta-auth-button-wrap),
 .elementor-location-header .e-con:has(.cta-auth-button-wrap) {

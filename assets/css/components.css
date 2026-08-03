@@ -646,6 +646,7 @@
   border-radius: 8px;
   box-shadow: 0 12px 28px rgba(18, 43, 81, 0.14);
   z-index: 10050;
+  text-align: left;
 }
 
 .cta-auth-account__menu a {
@@ -656,6 +657,7 @@
   font-size: 0.9rem;
   font-weight: 500;
   white-space: nowrap;
+  text-align: left;
 }
 
 .cta-auth-account__menu a:hover,
