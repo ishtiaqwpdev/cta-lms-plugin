@@ -783,6 +783,20 @@ class CTA_Quiz {
 				$text = 'short_text' === $type
 					? sanitize_text_field( (string) ( is_array( $value ) ? '' : $value ) )
 					: sanitize_textarea_field( (string) ( is_array( $value ) ? '' : $value ) );
+
+				// Email field is prefilled from the account; if a stale client omitted it,
+				// fall back to the logged-in user's email so submit still succeeds.
+				$bare_id = (string) $id;
+				if ( 0 === strpos( $bare_id, 'camft_' ) ) {
+					$bare_id = substr( $bare_id, 6 );
+				}
+				if ( 'participant_email' === $bare_id && '' === trim( $text ) && is_user_logged_in() ) {
+					$current = wp_get_current_user();
+					if ( $current && is_email( (string) $current->user_email ) ) {
+						$text = (string) $current->user_email;
+					}
+				}
+
 				if ( ! empty( $question['required'] ) && '' === trim( $text ) ) {
 					return new WP_Error(
 						'missing_field',
@@ -794,10 +808,6 @@ class CTA_Quiz {
 					);
 				}
 				// Email participant field must be a valid address.
-				$bare_id = (string) $id;
-				if ( 0 === strpos( $bare_id, 'camft_' ) ) {
-					$bare_id = substr( $bare_id, 6 );
-				}
 				if ( 'participant_email' === $bare_id && '' !== $text && ! is_email( $text ) ) {
 					return new WP_Error(
 						'invalid_email',

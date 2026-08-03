@@ -3001,7 +3001,11 @@
           }
 
           if (questionType === "textarea" || questionType === "paragraph" || questionType === "short_text") {
-            var textInput = questionEl.querySelector("textarea, input[type='text']");
+            // Email fields render as input[type=email] (see templates/quiz.php); include them
+            // so a server-prefilled value is submitted even if the learner never edits it.
+            var textInput = questionEl.querySelector(
+              "textarea, input[type='text'], input[type='email'], input[type='tel'], input[type='number'], input:not([type])"
+            );
             var textVal = textInput ? textInput.value : "";
             responses[questionId] = textVal;
             if (textInput && textInput.required && !String(textVal).trim()) {
