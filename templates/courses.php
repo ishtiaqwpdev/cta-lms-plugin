@@ -59,7 +59,7 @@ if ( ! $catalog_base_url && function_exists( 'get_permalink' ) ) {
 						data-category=""
 						role="button"
 					>
-						<?php echo esc_html__( 'All Courses', 'cta-lms' ); ?>
+						<span class="cta-pill__label"><?php echo esc_html__( 'All Courses', 'cta-lms' ); ?></span>
 					</a>
 
 					<?php foreach ( $categories as $cat ) : ?>

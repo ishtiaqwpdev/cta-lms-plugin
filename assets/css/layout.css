@@ -5454,13 +5454,21 @@ button.pagination__item:disabled {
 .cta-plugin-wrapper .cta-pill--active {
   background-color: var(--color-primary);
   border-color: var(--color-primary);
-  color: var(--color-white);
+  color: #ffffff;
 }
 
-.cta-plugin-wrapper .cta-pill--active:hover {
+.cta-plugin-wrapper .cta-pill--active:hover,
+.cta-plugin-wrapper .cta-pill--active:focus,
+.cta-plugin-wrapper .cta-pill--active:focus-visible,
+.cta-plugin-wrapper .cta-pill--active:active {
   background-color: var(--color-primary-dark);
   border-color: var(--color-primary-dark);
-  color: var(--color-white);
+  color: #ffffff;
+}
+
+.cta-plugin-wrapper .cta-pill:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }
 
 .cta-plugin-wrapper .cta-loader {

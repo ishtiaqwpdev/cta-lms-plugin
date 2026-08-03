@@ -509,6 +509,87 @@ body.cta-lms-page .elementor-shortcode {
   min-height: 42px;
 }
 
+/*
+ * Catalog category pills are <a> tags. Elementor kit forces link colors
+ * (teal #0FA79D / navy #122B51) which wash out on the active primary-blue chip
+ * and make "All Courses" look like a blank dark-blue button.
+ */
+body.elementor-kit-15 .cta-plugin-wrapper a.cta-pill,
+.cta-plugin-wrapper a.cta-pill,
+.cta-lms.cta-course-catalog a.cta-pill {
+  color: #6b7280 !important;
+  background-color: #ffffff !important;
+  border-color: #d1d9e6 !important;
+  text-decoration: none !important;
+  -webkit-text-fill-color: #6b7280 !important;
+}
+
+body.elementor-kit-15 .cta-plugin-wrapper a.cta-pill:hover,
+.cta-plugin-wrapper a.cta-pill:hover,
+.cta-lms.cta-course-catalog a.cta-pill:hover {
+  color: #3266a9 !important;
+  border-color: #3266a9 !important;
+  background-color: #ffffff !important;
+  -webkit-text-fill-color: #3266a9 !important;
+}
+
+body.elementor-kit-15 .cta-plugin-wrapper a.cta-pill:focus-visible,
+.cta-plugin-wrapper a.cta-pill:focus-visible,
+.cta-lms.cta-course-catalog a.cta-pill:focus-visible {
+  color: #3266a9 !important;
+  border-color: #3266a9 !important;
+  background-color: #ffffff !important;
+  -webkit-text-fill-color: #3266a9 !important;
+  outline: 2px solid #3266a9;
+  outline-offset: 2px;
+}
+
+body.elementor-kit-15 .cta-plugin-wrapper a.cta-pill--active,
+body.elementor-kit-15 .cta-plugin-wrapper a.cta-pill--active:hover,
+body.elementor-kit-15 .cta-plugin-wrapper a.cta-pill--active:focus,
+body.elementor-kit-15 .cta-plugin-wrapper a.cta-pill--active:focus-visible,
+body.elementor-kit-15 .cta-plugin-wrapper a.cta-pill--active:active,
+.cta-plugin-wrapper a.cta-pill--active,
+.cta-plugin-wrapper a.cta-pill--active:hover,
+.cta-plugin-wrapper a.cta-pill--active:focus,
+.cta-plugin-wrapper a.cta-pill--active:focus-visible,
+.cta-plugin-wrapper a.cta-pill--active:active,
+.cta-lms.cta-course-catalog a.cta-pill--active,
+.cta-lms.cta-course-catalog a.cta-pill--active:hover,
+.cta-lms.cta-course-catalog a.cta-pill--active:focus,
+.cta-lms.cta-course-catalog a.cta-pill--active:focus-visible,
+.cta-lms.cta-course-catalog a.cta-pill--active:active {
+  color: #ffffff !important;
+  background-color: #3266a9 !important;
+  border-color: #3266a9 !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+body.elementor-kit-15 .cta-plugin-wrapper a.cta-pill--active:hover,
+body.elementor-kit-15 .cta-plugin-wrapper a.cta-pill--active:focus,
+body.elementor-kit-15 .cta-plugin-wrapper a.cta-pill--active:focus-visible,
+body.elementor-kit-15 .cta-plugin-wrapper a.cta-pill--active:active,
+.cta-plugin-wrapper a.cta-pill--active:hover,
+.cta-plugin-wrapper a.cta-pill--active:focus,
+.cta-plugin-wrapper a.cta-pill--active:focus-visible,
+.cta-plugin-wrapper a.cta-pill--active:active,
+.cta-lms.cta-course-catalog a.cta-pill--active:hover,
+.cta-lms.cta-course-catalog a.cta-pill--active:focus,
+.cta-lms.cta-course-catalog a.cta-pill--active:focus-visible,
+.cta-lms.cta-course-catalog a.cta-pill--active:active {
+  background-color: #285589 !important;
+  border-color: #285589 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+body.elementor-kit-15 .cta-plugin-wrapper a.cta-pill .cta-pill__label,
+.cta-plugin-wrapper a.cta-pill .cta-pill__label,
+.cta-lms.cta-course-catalog a.cta-pill .cta-pill__label {
+  color: inherit !important;
+  -webkit-text-fill-color: inherit !important;
+}
+
 .cta-lms.cta-course-catalog .cta-courses-grid {
   width: 100%;
   max-width: none;

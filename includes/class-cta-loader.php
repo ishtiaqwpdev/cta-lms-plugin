@@ -188,10 +188,16 @@ class CTA_Loader {
 			CTA_VERSION
 		);
 
+		$compat_deps = array( 'cta-layout' );
+		// Load after Elementor kit so catalog pill / button contrast wins over global link colors.
+		if ( wp_style_is( 'elementor-frontend', 'registered' ) || wp_style_is( 'elementor-frontend', 'enqueued' ) ) {
+			$compat_deps[] = 'elementor-frontend';
+		}
+
 		wp_enqueue_style(
 			'cta-theme-compat',
 			CTA_PLUGIN_URL . 'assets/css/theme-compat.css',
-			array( 'cta-layout' ),
+			$compat_deps,
 			CTA_VERSION
 		);
 
