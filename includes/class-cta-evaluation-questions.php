@@ -35,6 +35,7 @@ class CTA_Evaluation_Questions {
 			'short_text' => __( 'Short Text', 'cta-lms' ),
 			'paragraph'  => __( 'Paragraph', 'cta-lms' ),
 			'dropdown'   => __( 'Dropdown', 'cta-lms' ),
+			'info'       => __( 'Information (display only)', 'cta-lms' ),
 		);
 	}
 
@@ -643,6 +644,13 @@ class CTA_Evaluation_Questions {
 		if ( ! $course_id ) {
 			self::seed_defaults_if_empty();
 			return count( self::get_questions( 'all', 0 ) );
+		}
+
+		// CTA-CE-001 uses the official 9-section evaluation (not the shared A–E template).
+		if ( class_exists( 'CTA_Law_Ethics_Evaluation_Sync' )
+			&& CTA_Law_Ethics_Evaluation_Sync::is_law_ethics_course( $course_id ) ) {
+			CTA_Law_Ethics_Evaluation_Sync::sync( false );
+			return count( self::get_questions( 'all', $course_id ) );
 		}
 
 		self::sync_learning_objective_questions( $course_id );

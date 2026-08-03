@@ -86,6 +86,23 @@ class CTA_Course_Attestation {
 	 */
 	public static function default_attestation_text( $course_title = '' ) {
 		$course_title = trim( (string) $course_title );
+
+		// CTA-CE-001 uses the Course Evaluation v1.0 Section 9 statement (exact).
+		if ( class_exists( 'CTA_Law_Ethics_Evaluation_Sync' ) ) {
+			$is_law_ethics = false;
+			if ( '' !== $course_title ) {
+				foreach ( CTA_Law_Ethics_Evaluation_Sync::match_titles() as $title ) {
+					if ( 0 === strcasecmp( $course_title, $title ) ) {
+						$is_law_ethics = true;
+						break;
+					}
+				}
+			}
+			if ( $is_law_ethics ) {
+				return CTA_Law_Ethics_Evaluation_Sync::attestation_statement();
+			}
+		}
+
 		if ( '' === $course_title ) {
 			$course_title = 'Clinical and Ethical Excellence in Telehealth: The Essential California Framework';
 		}

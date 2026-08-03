@@ -727,6 +727,8 @@ return array(
 		'instructional_method'    => 'Asynchronous Distance Learning',
 		'course_code'             => 'CTA-CE-001',
 		'presenter'               => 'Candice Fuimaono, MS, LMFT',
+		'image_alt'               => 'California Law & Ethics for Mental Health Professionals course image from Clinical Training and Supervision Academy',
+		// Thumbnail applied by CTA_Law_Ethics_Module_Sync::sync_thumbnail() (bundled Course Image JPG).
 		'educational_goals'       => array(
 			'Strengthen the ability to identify and respond to legal and ethical issues encountered in California mental health practice.',
 			'Enhance knowledge of California laws, regulations, professional standards, and Board of Behavioral Sciences expectations.',
@@ -735,12 +737,12 @@ return array(
 			'Support client welfare, professional accountability, and continuity of care across private and organizational settings.',
 		),
 		'learning_objectives'     => array(
-			'Identify at least four California legal or ethical requirements governing clinical practice, informed consent, confidentiality, and client safety.',
-			'Apply mandated reporting and confidentiality standards to a clinical case scenario.',
-			'Explain minor consent treatment regulations and parental rights considerations.',
-			'Apply Tarasoff duty-to-protect requirements and crisis management procedures to a clinical scenario.',
-			'Prepare documentation that meets defensible record-keeping and risk-management standards.',
-			'Describe the components of a professional will and practice closure plan.',
+			'Identify four California legal, regulatory, or ethical sources that govern mental health practice and distinguish scope of practice from scope of competence.',
+			'Prepare an informed-consent checklist that includes required fee, privacy, telehealth, digital-communication, and professional-boundary elements.',
+			'Distinguish confidentiality, psychotherapist-patient privilege, and lawful disclosure and select an appropriate response to a subpoena or request for records.',
+			'Apply California minor-consent, parental-involvement, custody, and mandated-reporting standards to a clinical case example.',
+			'Apply California duty-to-protect, crisis-intervention, and documentation standards to a case involving suicide risk or a serious threat of violence.',
+			'Prepare a record-management and practice-continuity plan that addresses client access, retention, security, practice closure, professional wills, and licensure or business-risk concerns.',
 		),
 		'completion_requirements' => array(
 			'Complete all required instructional modules, including the Course Integration Capstone, and embedded learning activities.',

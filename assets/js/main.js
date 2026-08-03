@@ -3030,11 +3030,15 @@
             return;
           }
 
+          if (questionType === "info") {
+            return;
+          }
+
           if (questionType === "textarea" || questionType === "paragraph" || questionType === "short_text") {
-            // Email fields render as input[type=email] (see templates/quiz.php); include them
+            // Email/date fields may render as input[type=email|date]; include them
             // so a server-prefilled value is submitted even if the learner never edits it.
             var textInput = questionEl.querySelector(
-              "textarea, input[type='text'], input[type='email'], input[type='tel'], input[type='number'], input:not([type])"
+              "textarea, input[type='text'], input[type='email'], input[type='date'], input[type='tel'], input[type='number'], input:not([type])"
             );
             var textVal = textInput ? textInput.value : "";
             responses[questionId] = textVal;

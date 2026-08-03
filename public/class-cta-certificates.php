@@ -51,12 +51,31 @@ class CTA_Certificates {
 			return null;
 		}
 
-		if ( ! self::user_completed_all_modules( $user_id, $course_id, $enrollment ) ) {
-			return null;
-		}
+		if ( class_exists( 'CTA_CE_Completion' ) ) {
+			$seq = CTA_CE_Completion::assert_can_issue_certificate( $user_id, $course_id );
+			if ( is_wp_error( $seq ) ) {
+				return null;
+			}
+		} else {
+			if ( ! self::user_completed_all_modules( $user_id, $course_id, $enrollment ) ) {
+				return null;
+			}
 
-		if ( ! self::user_passed_final_exam( $user_id, $course_id ) ) {
-			return null;
+			if ( ! self::user_passed_final_exam( $user_id, $course_id ) ) {
+				return null;
+			}
+
+			if ( null === $evaluation ) {
+				$evaluation = CTA_Database::get_course_evaluation( $user_id, $course_id );
+			}
+
+			if ( ! $evaluation ) {
+				return null;
+			}
+
+			if ( class_exists( 'CTA_Course_Attestation' ) && ! CTA_Course_Attestation::has( $user_id, $course_id ) ) {
+				return null;
+			}
 		}
 
 		if ( null === $evaluation ) {
@@ -64,10 +83,6 @@ class CTA_Certificates {
 		}
 
 		if ( ! $evaluation ) {
-			return null;
-		}
-
-		if ( class_exists( 'CTA_Course_Attestation' ) && ! CTA_Course_Attestation::has( $user_id, $course_id ) ) {
 			return null;
 		}
 

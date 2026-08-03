@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.121' );
+	define( 'CTA_VERSION', '1.0.124' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -82,12 +82,14 @@ $cta_required_files = array(
 	'includes/class-cta-associate-access.php',
 	'includes/class-cta-exam-access.php',
 	'includes/class-cta-ce-access.php',
+	'includes/class-cta-ce-completion.php',
 	'includes/class-cta-course-materials.php',
 	'includes/class-cta-evaluation-questions.php',
 	'includes/class-cta-course-attestation.php',
-		'includes/class-cta-telehealth-exam-sync.php',
-		'includes/class-cta-law-ethics-module-sync.php',
-		'includes/class-cta-database.php',
+	'includes/class-cta-telehealth-exam-sync.php',
+	'includes/class-cta-law-ethics-module-sync.php',
+	'includes/class-cta-law-ethics-evaluation-sync.php',
+	'includes/class-cta-database.php',
 	'includes/class-cta-syllabus-sync.php',
 	'includes/class-cta-course-catalog.php',
 	'includes/class-cta-supervision-plans.php',
@@ -504,6 +506,25 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				if ( class_exists( 'CTA_Course_Catalog' ) ) {
 					CTA_Course_Catalog::unpublish_all_ce_courses_pending_cepa();
 				}
+			}
+
+			// CTA-CE-001 Law & Ethics: CAMFT 9-section evaluation + in-form attestation.
+			if ( version_compare( $installed, '1.0.122', '<' ) ) {
+				if ( class_exists( 'CTA_Syllabus_Sync' ) ) {
+					CTA_Database::maybe_add_syllabus_columns();
+					CTA_Syllabus_Sync::sync_all( true );
+				}
+				if ( class_exists( 'CTA_Law_Ethics_Evaluation_Sync' ) ) {
+					CTA_Law_Ethics_Evaluation_Sync::sync( true );
+				}
+				if ( class_exists( 'CTA_Course_Catalog' ) ) {
+					CTA_Course_Catalog::unpublish_all_ce_courses_pending_cepa();
+				}
+			}
+
+			// CTA-CE-001 Law & Ethics: approved course image on catalog / detail / dashboard.
+			if ( version_compare( $installed, '1.0.124', '<' ) && class_exists( 'CTA_Law_Ethics_Module_Sync' ) ) {
+				CTA_Law_Ethics_Module_Sync::sync_thumbnail( true );
 			}
 
 			// Decouple supervision application pending from general account / CE access.

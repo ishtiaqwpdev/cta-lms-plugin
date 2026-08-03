@@ -117,10 +117,19 @@ class CTA_Quiz {
 			);
 		}
 
-		if ( (int) $enrollment->progress < 100 ) {
+		if ( class_exists( 'CTA_CE_Completion' ) ) {
+			CTA_CE_Completion::sync_progress( $user_id, $course_id, $enrollment );
+			$enrollment = CTA_Database::get_user_enrollment( $user_id, $course_id );
+		}
+
+		$modules_done = class_exists( 'CTA_CE_Completion' )
+			? CTA_CE_Completion::modules_complete( $user_id, $course_id, $enrollment )
+			: ( class_exists( 'CTA_Certificates' ) && CTA_Certificates::user_completed_all_modules( $user_id, $course_id, $enrollment ) );
+
+		if ( ! $modules_done ) {
 			return $this->render_message_state(
 				__( 'Complete All Modules First', 'cta-lms' ),
-				__( 'Finish every module before starting the course quiz.', 'cta-lms' ),
+				__( 'Finish every instructional module, including the Course Integration Capstone, before starting the final examination.', 'cta-lms' ),
 				$this->get_player_url( $course_id ),
 				__( 'Back to Course', 'cta-lms' )
 			);
@@ -159,13 +168,16 @@ class CTA_Quiz {
 			$certificate = CTA_Certificates::generate( $user_id, $course_id, $evaluation );
 		}
 
+		$inline_attestation = class_exists( 'CTA_Law_Ethics_Evaluation_Sync' )
+			&& CTA_Law_Ethics_Evaluation_Sync::evaluation_includes_attestation( $course_id );
+
 		if ( $is_exam_prep && $passed_attempt ) {
 			$view_state = 'exam_complete';
 		} elseif ( $certificate && $evaluation && $attestation && $passed_attempt ) {
 			$view_state = 'certificate_ready';
-		} elseif ( $passed_attempt && $evaluation && ! $attestation ) {
+		} elseif ( $passed_attempt && $evaluation && ! $attestation && ! $inline_attestation ) {
 			$view_state = 'attestation';
-		} elseif ( $passed_attempt && ! $evaluation ) {
+		} elseif ( $passed_attempt && ( ! $evaluation || ( ! $attestation && $inline_attestation ) ) ) {
 			$view_state = 'evaluation';
 		} elseif ( $active_attempt ) {
 			$view_state = 'in_progress';
@@ -266,6 +278,14 @@ class CTA_Quiz {
 
 		if ( ! $attempt || ! empty( $attempt->completed_at ) ) {
 			wp_send_json_error( array( 'message' => __( 'Invalid quiz attempt.', 'cta-lms' ) ) );
+		}
+
+		// Re-assert module completion so an in-flight attempt cannot bypass Capstone / sequence.
+		if ( class_exists( 'CTA_CE_Completion' ) ) {
+			$seq = CTA_CE_Completion::assert_can_access_exam( $user_id, (int) $attempt->course_id );
+			if ( is_wp_error( $seq ) ) {
+				wp_send_json_error( array( 'message' => $seq->get_error_message() ) );
+			}
 		}
 
 		$quiz      = $wpdb->get_row(
@@ -396,6 +416,13 @@ class CTA_Quiz {
 			wp_send_json_error( array( 'message' => __( 'Exam Preparation Programs do not require a CE evaluation or certificate.', 'cta-lms' ) ) );
 		}
 
+		if ( class_exists( 'CTA_CE_Completion' ) ) {
+			$seq = CTA_CE_Completion::assert_can_access_evaluation( $user_id, $course_id );
+			if ( is_wp_error( $seq ) ) {
+				wp_send_json_error( array( 'message' => $seq->get_error_message() ) );
+			}
+		}
+
 		/** @var object $quiz */
 		$quiz     = $check['quiz'];
 		$attempts = CTA_Database::get_user_quiz_attempts( $user_id, (int) $quiz->id );
@@ -424,6 +451,60 @@ class CTA_Quiz {
 			wp_send_json_error( array( 'message' => $parsed->get_error_message() ) );
 		}
 
+		$responses_map = isset( $parsed['responses'] ) && is_array( $parsed['responses'] ) ? $parsed['responses'] : array();
+
+		// CTA-CE-001: validate Section 9 attestation before persisting the evaluation.
+		$inline_attestation = class_exists( 'CTA_Law_Ethics_Evaluation_Sync' )
+			&& CTA_Law_Ethics_Evaluation_Sync::evaluation_includes_attestation( $course_id );
+		$inline_signature_name = '';
+		$inline_signature_date = '';
+		if ( $inline_attestation ) {
+			$agree_raw = self::evaluation_response_value(
+				$responses_map,
+				array( 'completion_attestation_agree' )
+			);
+			$agree_ok  = false;
+			if ( is_array( $responses_map['completion_attestation_agree'] ?? null ) ) {
+				$agree_ok = ! empty( $responses_map['completion_attestation_agree'] );
+			} elseif ( '' !== $agree_raw && '0' !== $agree_raw ) {
+				$agree_ok = true;
+			}
+
+			$inline_signature_name = self::evaluation_response_value(
+				$responses_map,
+				array( 'completion_attestation_signature', 'participant_cert_name' )
+			);
+			$inline_signature_date = self::evaluation_response_value(
+				$responses_map,
+				array( 'completion_attestation_date', 'participant_completion_date' )
+			);
+
+			if ( ! $agree_ok ) {
+				wp_send_json_error(
+					array(
+						'message' => __( 'Please check the course-completion attestation checkbox to continue.', 'cta-lms' ),
+						'code'    => 'cta_attestation_agree',
+					)
+				);
+			}
+			if ( '' === trim( $inline_signature_name ) || strlen( trim( $inline_signature_name ) ) < 2 ) {
+				wp_send_json_error(
+					array(
+						'message' => __( 'Please complete the Typed Name field to electronically sign this attestation.', 'cta-lms' ),
+						'code'    => 'cta_attestation_signature',
+					)
+				);
+			}
+			if ( '' === trim( $inline_signature_date ) ) {
+				wp_send_json_error(
+					array(
+						'message' => __( 'Please enter the attestation date.', 'cta-lms' ),
+						'code'    => 'cta_attestation_date',
+					)
+				);
+			}
+		}
+
 		$timezone = sanitize_text_field( wp_unslash( $_POST['timezone'] ?? '' ) );
 		if ( $timezone && ! $this->is_valid_timezone( $timezone ) ) {
 			$timezone = '';
@@ -436,7 +517,6 @@ class CTA_Quiz {
 		$student_email = $user ? (string) $user->user_email : '';
 
 		// Prefer participant-info answers from the evaluation form when present.
-		$responses_map = isset( $parsed['responses'] ) && is_array( $parsed['responses'] ) ? $parsed['responses'] : array();
 		$form_name     = self::evaluation_response_value( $responses_map, array( 'participant_cert_name', 'camft_participant_cert_name' ) );
 		$form_email    = self::evaluation_response_value( $responses_map, array( 'participant_email', 'camft_participant_email' ) );
 		$form_lic_type = self::evaluation_response_value( $responses_map, array( 'participant_license_type', 'camft_participant_license_type' ) );
@@ -504,6 +584,24 @@ class CTA_Quiz {
 		$has_attestation = class_exists( 'CTA_Course_Attestation' )
 			&& CTA_Course_Attestation::has( $user_id, $course_id );
 
+		// CTA-CE-001: Section 9 attestation lives in the same evaluation form (validated above).
+		if ( ! $has_attestation
+			&& $inline_attestation
+			&& class_exists( 'CTA_Course_Attestation' ) ) {
+			$attestation_text = CTA_Law_Ethics_Evaluation_Sync::attestation_statement();
+			$result           = CTA_Course_Attestation::submit(
+				$user_id,
+				$course_id,
+				$attestation_text,
+				$inline_signature_name,
+				$inline_signature_date
+			);
+			if ( is_wp_error( $result ) ) {
+				wp_send_json_error( array( 'message' => $result->get_error_message() ) );
+			}
+			$has_attestation = true;
+		}
+
 		if ( $has_attestation ) {
 			$certificate = CTA_Certificates::generate( $user_id, $course_id, $evaluation );
 			if ( ! $certificate ) {
@@ -559,6 +657,13 @@ class CTA_Quiz {
 		$course = isset( $check['course'] ) ? $check['course'] : CTA_Database::get_course( $course_id );
 		if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course ) ) {
 			wp_send_json_error( array( 'message' => __( 'Exam Preparation Programs do not require attestation.', 'cta-lms' ) ) );
+		}
+
+		if ( class_exists( 'CTA_CE_Completion' ) ) {
+			$seq = CTA_CE_Completion::assert_can_access_attestation( $user_id, $course_id );
+			if ( is_wp_error( $seq ) ) {
+				wp_send_json_error( array( 'message' => $seq->get_error_message() ) );
+			}
 		}
 
 		$agreed = ! empty( $_POST['agree'] );
@@ -711,6 +816,11 @@ class CTA_Quiz {
 			$type  = isset( $question['type'] ) ? $question['type'] : 'rating';
 			$value = isset( $raw_responses[ $id ] ) ? $raw_responses[ $id ] : '';
 
+			// Display-only rows are not answered.
+			if ( 'info' === $type ) {
+				continue;
+			}
+
 			if ( in_array( $type, array( 'rating', 'likert' ), true ) ) {
 				$opt_val      = sanitize_text_field( (string) ( is_array( $value ) ? '' : $value ) );
 				$allowed_keys = array_map( 'strval', array_keys( (array) ( $question['options'] ?? array() ) ) );
@@ -814,7 +924,15 @@ class CTA_Quiz {
 					$summary[ $question['summary'] ] = absint( is_array( $clean[ $id ] ) ? 0 : $clean[ $id ] );
 					break;
 				case 'would_recommend':
-					$summary['would_recommend'] = ( 'yes' === $clean[ $id ] || '1' === (string) $clean[ $id ] ) ? 1 : 0;
+					$raw_rec = is_array( $clean[ $id ] ) ? '' : (string) $clean[ $id ];
+					if ( 'yes' === $raw_rec || '1' === $raw_rec ) {
+						$summary['would_recommend'] = 1;
+					} elseif ( is_numeric( $raw_rec ) && (int) $raw_rec >= 4 ) {
+						// Rating scale: 4 Agree / 5 Strongly Agree counts as recommend.
+						$summary['would_recommend'] = 1;
+					} else {
+						$summary['would_recommend'] = 0;
+					}
 					break;
 				case 'comments':
 					$summary['comments'] = is_array( $clean[ $id ] ) ? '' : (string) $clean[ $id ];
@@ -908,8 +1026,22 @@ class CTA_Quiz {
 			return new WP_Error( 'ce_access_ended', __( 'Your membership access to this course is no longer active.', 'cta-lms' ) );
 		}
 
-		if ( $require_complete && (int) $enrollment->progress < 100 ) {
-			return new WP_Error( 'incomplete', __( 'Complete all modules first.', 'cta-lms' ) );
+		if ( $require_complete ) {
+			if ( class_exists( 'CTA_CE_Completion' ) ) {
+				CTA_CE_Completion::sync_progress( $user_id, $course_id, $enrollment );
+				$enrollment = CTA_Database::get_user_enrollment( $user_id, $course_id );
+				$seq        = CTA_CE_Completion::assert_can_access_exam( $user_id, $course_id );
+				if ( is_wp_error( $seq ) ) {
+					return $seq;
+				}
+			} elseif ( class_exists( 'CTA_Certificates' ) && ! CTA_Certificates::user_completed_all_modules( $user_id, $course_id, $enrollment ) ) {
+				return new WP_Error(
+					'incomplete',
+					__( 'Complete all instructional modules, including the Course Integration Capstone, before starting the final examination.', 'cta-lms' )
+				);
+			} elseif ( (int) $enrollment->progress < 100 ) {
+				return new WP_Error( 'incomplete', __( 'Complete all modules first.', 'cta-lms' ) );
+			}
 		}
 
 		if ( ! $quiz ) {

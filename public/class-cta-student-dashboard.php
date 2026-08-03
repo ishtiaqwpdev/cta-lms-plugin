@@ -356,8 +356,16 @@ class CTA_Student_Dashboard {
 		$module_index   = $this->get_module_index( $modules, $module_id );
 		$prev_module    = $module_index > 0 ? $modules[ $module_index - 1 ] : null;
 		$next_module    = ( $module_index >= 0 && $module_index < count( $modules ) - 1 ) ? $modules[ $module_index + 1 ] : null;
-		$progress       = (int) $enrollment->progress;
-		$quiz_unlocked  = count( $completed_ids ) >= count( $modules ) && count( $modules ) > 0;
+		if ( class_exists( 'CTA_CE_Completion' ) ) {
+			$progress = CTA_CE_Completion::sync_progress( get_current_user_id(), $course_id, $enrollment );
+		} else {
+			$progress = (int) $enrollment->progress;
+		}
+		// Require every active module ID (incl. Capstone) — do not trust completed-ID count
+		// alone, which can be inflated by archived/remapped legacy modules.
+		$quiz_unlocked = class_exists( 'CTA_CE_Completion' )
+			? CTA_CE_Completion::modules_complete( get_current_user_id(), $course_id, $enrollment )
+			: ( class_exists( 'CTA_Certificates' ) && CTA_Certificates::user_completed_all_modules( get_current_user_id(), $course_id, $enrollment ) );
 		$quiz_url       = $this->get_quiz_url( $course_id );
 		$quiz_page_id   = absint( get_option( 'cta_quiz_page_id', 0 ) );
 

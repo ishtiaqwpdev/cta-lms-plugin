@@ -398,6 +398,123 @@ class CTA_Law_Ethics_Module_Sync {
 	}
 
 	/**
+	 * Attach the approved CTA-CE-001 course image to thumbnail_url.
+	 *
+	 * Prefer Media Library match; fall back to the bundled plugin asset so
+	 * catalog, course detail, and dashboard cards share one proportional image.
+	 *
+	 * @param bool $force Re-run even if already applied at this seed key.
+	 * @return array{ok:bool,course_id:int,thumbnail_url:string,message:string}
+	 */
+	public static function sync_thumbnail( $force = false ) {
+		$seed_option = 'cta_law_ethics_thumbnail_1_0_124';
+
+		if ( ! $force && get_option( $seed_option ) ) {
+			return array(
+				'ok'            => true,
+				'course_id'     => 0,
+				'thumbnail_url' => '',
+				'message'       => 'already_seeded',
+			);
+		}
+
+		$course = self::find_course();
+		if ( ! $course ) {
+			return array(
+				'ok'            => false,
+				'course_id'     => 0,
+				'thumbnail_url' => '',
+				'message'       => 'law_ethics_course_not_found',
+			);
+		}
+
+		$thumbnail_url = self::resolve_approved_thumbnail_url();
+		if ( '' === $thumbnail_url ) {
+			return array(
+				'ok'            => false,
+				'course_id'     => (int) $course->id,
+				'thumbnail_url' => '',
+				'message'       => 'thumbnail_asset_not_found',
+			);
+		}
+
+		global $wpdb;
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$updated = $wpdb->update(
+			$wpdb->prefix . 'cta_courses',
+			array( 'thumbnail_url' => $thumbnail_url ),
+			array( 'id' => (int) $course->id ),
+			array( '%s' ),
+			array( '%d' )
+		);
+
+		if ( false === $updated ) {
+			return array(
+				'ok'            => false,
+				'course_id'     => (int) $course->id,
+				'thumbnail_url' => $thumbnail_url,
+				'message'       => 'update_failed',
+			);
+		}
+
+		update_option( $seed_option, 1, false );
+
+		return array(
+			'ok'            => true,
+			'course_id'     => (int) $course->id,
+			'thumbnail_url' => $thumbnail_url,
+			'message'       => 'synced',
+		);
+	}
+
+	/**
+	 * Resolve approved Law & Ethics course image URL (Media Library or bundled asset).
+	 *
+	 * @return string
+	 */
+	public static function resolve_approved_thumbnail_url() {
+		$filenames = array(
+			'CTA_California_Law_Ethics_Course_Image.jpg',
+			'CTA_California_Law_Ethics_Course_Image.jpeg',
+			'CTA_California_Law_Ethics_Course_Image.png',
+		);
+
+		foreach ( $filenames as $filename ) {
+			$query = new WP_Query(
+				array(
+					'post_type'      => 'attachment',
+					'post_status'    => 'inherit',
+					'posts_per_page' => 1,
+					'fields'         => 'ids',
+					'meta_query'     => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+						array(
+							'key'     => '_wp_attached_file',
+							'value'   => $filename,
+							'compare' => 'LIKE',
+						),
+					),
+				)
+			);
+			if ( ! empty( $query->posts[0] ) ) {
+				$url = wp_get_attachment_url( (int) $query->posts[0] );
+				wp_reset_postdata();
+				if ( $url ) {
+					return esc_url_raw( $url );
+				}
+			}
+			wp_reset_postdata();
+		}
+
+		$bundled = CTA_PLUGIN_DIR . 'assets/course-images/CTA_California_Law_Ethics_Course_Image.jpg';
+		if ( file_exists( $bundled ) ) {
+			return esc_url_raw( CTA_PLUGIN_URL . 'assets/course-images/CTA_California_Law_Ethics_Course_Image.jpg' );
+		}
+
+		return '';
+	}
+
+	/**
 	 * Format module description HTML from summary points.
 	 *
 	 * @param string[] $points Summary points.
