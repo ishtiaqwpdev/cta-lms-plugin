@@ -204,11 +204,11 @@ class CTA_Quiz {
 		}
 
 		/** @var object $quiz */
-		$quiz       = $check['quiz'];
-		$course     = isset( $check['course'] ) ? $check['course'] : CTA_Database::get_course( $course_id );
+		$quiz         = $check['quiz'];
+		$course       = isset( $check['course'] ) ? $check['course'] : CTA_Database::get_course( $course_id );
 		$is_exam_prep = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course );
-		$attempts   = CTA_Database::get_user_quiz_attempts( $user_id, (int) $quiz->id );
-		$active     = CTA_Database::get_active_quiz_attempt( $user_id, (int) $quiz->id );
+		$attempts     = CTA_Database::get_user_quiz_attempts( $user_id, (int) $quiz->id );
+		$active       = CTA_Database::get_active_quiz_attempt( $user_id, (int) $quiz->id );
 
 		if ( $active ) {
 			wp_send_json_success( $this->build_attempt_payload( $quiz, $active ) );
@@ -222,32 +222,16 @@ class CTA_Quiz {
 		// max_attempts of 0 (or any unset/legacy value) means unlimited failed retakes.
 		// Only a passing attempt blocks further starts.
 
-		global $wpdb;
+		$attempt = $this->create_quiz_attempt( $user_id, (int) $quiz->id, $course_id );
 
-		$attempt_number = count( $attempts ) + 1;
-
-		$inserted = $wpdb->insert(
-			$wpdb->prefix . 'cta_quiz_attempts',
-			array(
-				'user_id'        => $user_id,
-				'quiz_id'        => (int) $quiz->id,
-				'course_id'      => $course_id,
-				'attempt_number' => $attempt_number,
-				'started_at'     => current_time( 'mysql' ),
-			),
-			array( '%d', '%d', '%d', '%d', '%s' )
-		);
-
-		if ( ! $inserted ) {
-			wp_send_json_error( array( 'message' => __( 'Unable to start quiz.', 'cta-lms' ) ) );
+		if ( ! $attempt ) {
+			// Race / unique-key collision: resume any attempt that became active, else fail clearly.
+			$active = CTA_Database::get_active_quiz_attempt( $user_id, (int) $quiz->id );
+			if ( $active ) {
+				wp_send_json_success( $this->build_attempt_payload( $quiz, $active ) );
+			}
+			wp_send_json_error( array( 'message' => __( 'Unable to start quiz. Please refresh the page and try again.', 'cta-lms' ) ) );
 		}
-
-		$attempt = $wpdb->get_row(
-			$wpdb->prepare(
-				"SELECT * FROM {$wpdb->prefix}cta_quiz_attempts WHERE id = %d",
-				(int) $wpdb->insert_id
-			)
-		);
 
 		wp_send_json_success( $this->build_attempt_payload( $quiz, $attempt ) );
 	}
@@ -940,6 +924,58 @@ class CTA_Quiz {
 	}
 
 	/**
+	 * Create a new in-progress quiz attempt row.
+	 *
+	 * Uses MAX(attempt_number)+1 across all rows (including incomplete) to avoid
+	 * unique-key collisions after failed/abandoned attempts.
+	 *
+	 * @param int $user_id   User ID.
+	 * @param int $quiz_id   Quiz ID.
+	 * @param int $course_id Course ID.
+	 * @return object|null Attempt row or null on failure.
+	 */
+	private function create_quiz_attempt( $user_id, $quiz_id, $course_id ) {
+		global $wpdb;
+
+		$table = $wpdb->prefix . 'cta_quiz_attempts';
+
+		for ( $try = 0; $try < 3; $try++ ) {
+			$max = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT MAX(attempt_number) FROM {$table} WHERE user_id = %d AND quiz_id = %d",
+					$user_id,
+					$quiz_id
+				)
+			);
+
+			$attempt_number = absint( $max ) + 1;
+
+			$inserted = $wpdb->insert(
+				$table,
+				array(
+					'user_id'        => $user_id,
+					'quiz_id'        => $quiz_id,
+					'course_id'      => $course_id,
+					'attempt_number' => $attempt_number,
+					'started_at'     => current_time( 'mysql' ),
+				),
+				array( '%d', '%d', '%d', '%d', '%s' )
+			);
+
+			if ( $inserted ) {
+				return $wpdb->get_row(
+					$wpdb->prepare(
+						"SELECT * FROM {$table} WHERE id = %d",
+						(int) $wpdb->insert_id
+					)
+				);
+			}
+		}
+
+		return null;
+	}
+
+	/**
 	 * Build AJAX payload for quiz attempt start.
 	 *
 	 * @param object $quiz    Quiz row.
@@ -948,19 +984,6 @@ class CTA_Quiz {
 	 */
 	private function build_attempt_payload( $quiz, $attempt ) {
 		$questions = CTA_Database::get_quiz_questions( (int) $quiz->id );
-		$safe      = array();
-
-		foreach ( $questions as $question ) {
-			$safe[] = array(
-				'id'            => (int) $question->id,
-				'question_text' => $question->question_text,
-				'option_a'      => $question->option_a,
-				'option_b'      => $question->option_b,
-				'option_c'      => $question->option_c,
-				'option_d'      => $question->option_d,
-				'order_index'   => (int) $question->order_index,
-			);
-		}
 
 		return array(
 			'quiz_id'         => (int) $quiz->id,
@@ -969,8 +992,7 @@ class CTA_Quiz {
 			'time_limit_mins' => 0,
 			'passing_score'   => (int) $quiz->passing_score ?: 70,
 			'max_attempts'    => 0,
-			'question_count'  => count( $safe ),
-			'questions'       => $safe,
+			'question_count'  => count( $questions ),
 			'html'            => $this->render_quiz_questions( $quiz, $attempt, $questions ),
 		);
 	}

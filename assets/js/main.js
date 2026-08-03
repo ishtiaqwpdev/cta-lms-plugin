@@ -2776,7 +2776,9 @@
       var retryBtn = document.getElementById("cta-retry-quiz");
       if (retryBtn) {
         retryBtn.addEventListener("click", function () {
-          window.location.reload();
+          // Start a fresh attempt in-place — avoid full reload races that left
+          // the Start button stuck on "Loading...".
+          startQuizAttempt(retryBtn);
         });
       }
     }
@@ -2847,54 +2849,82 @@
 
     var startBtn = document.getElementById("cta-start-quiz");
     var retakeBtn = document.getElementById("cta-retake-exam-quiz");
+    var startInFlight = false;
 
-    function startQuizAttempt(button) {
+    function resetStartButton(button, originalText) {
       if (!button) {
         return;
       }
-      var originalText = button.textContent;
+      button.disabled = false;
+      button.textContent = originalText || "Start Quiz";
+    }
+
+    function startQuizAttempt(button) {
+      if (!button || startInFlight) {
+        return;
+      }
+
+      var originalText = button.textContent || "Start Quiz";
+      if (/loading/i.test(originalText)) {
+        originalText = button.id === "cta-retry-quiz" ? "Retry Quiz" : "Start Quiz";
+      }
+
+      startInFlight = true;
       button.disabled = true;
       button.textContent = "Loading...";
 
-      $.post(ctaAjax.ajaxUrl, {
-        action: "cta_start_quiz",
-        nonce: ctaAjax.nonce,
-        course_id: courseId,
-        quiz_id: quizId || 0
+      $.ajax({
+        url: ctaAjax.ajaxUrl,
+        type: "POST",
+        dataType: "json",
+        cache: false,
+        data: {
+          action: "cta_start_quiz",
+          nonce: ctaAjax.nonce,
+          course_id: courseId,
+          quiz_id: quizId || 0
+        }
       })
         .done(function (response) {
-          if (!response.success || !response.data) {
-            window.alert(
-              response.data && response.data.message
-                ? response.data.message
-                : "Unable to start quiz."
-            );
-            button.disabled = false;
-            button.textContent = originalText;
-            return;
-          }
+          try {
+            if (!response || !response.success || !response.data) {
+              window.alert(
+                response && response.data && response.data.message
+                  ? response.data.message
+                  : "Unable to start quiz."
+              );
+              return;
+            }
 
-          attemptId = response.data.attempt_id;
-          app.setAttribute("data-attempt-id", String(attemptId));
+            attemptId = response.data.attempt_id;
+            app.setAttribute("data-attempt-id", String(attemptId));
 
-          if (response.data.question_count) {
-            questionCount = parseInt(response.data.question_count, 10) || questionCount;
-          }
+            if (response.data.question_count) {
+              questionCount = parseInt(response.data.question_count, 10) || questionCount;
+            }
 
-          if (response.data.html && questionsEl) {
+            if (!response.data.html || !questionsEl) {
+              window.alert("Unable to load quiz questions. Please refresh and try again.");
+              return;
+            }
+
             questionsEl.innerHTML = response.data.html;
+            answeredCount = 0;
+            updateAnswerCounter();
+            showPanel("questions");
+          } catch (err) {
+            window.alert("Unable to start quiz. Please refresh the page and try again.");
           }
-
-          answeredCount = 0;
-          updateAnswerCounter();
-          showPanel("questions");
-          button.disabled = false;
-          button.textContent = originalText;
         })
         .fail(function () {
           window.alert("Something went wrong. Please try again.");
-          button.disabled = false;
-          button.textContent = originalText;
+        })
+        .always(function () {
+          startInFlight = false;
+          resetStartButton(button, originalText);
+          if (startBtn && button !== startBtn) {
+            resetStartButton(startBtn, "Start Quiz");
+          }
         });
     }
 
