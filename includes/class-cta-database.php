@@ -946,14 +946,33 @@ class CTA_Database {
 	 * @param int $course_id Course ID.
 	 * @return array
 	 */
-	public static function get_course_modules( $course_id ) {
+	/**
+	 * Fetch modules for a course (ordered).
+	 *
+	 * Rows with order_index >= 900 are treated as archived duplicates and are
+	 * excluded from the learner/admin curriculum sequence (exam unlock, locks).
+	 *
+	 * @param int  $course_id        Course ID.
+	 * @param bool $include_archived When true, include archived rows.
+	 * @return array
+	 */
+	public static function get_course_modules( $course_id, $include_archived = false ) {
 		global $wpdb;
 
 		$table = $wpdb->prefix . 'cta_course_modules';
 
+		if ( $include_archived ) {
+			return $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT * FROM {$table} WHERE course_id = %d ORDER BY order_index ASC, id ASC",
+					$course_id
+				)
+			);
+		}
+
 		return $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT * FROM {$table} WHERE course_id = %d ORDER BY order_index ASC, id ASC",
+				"SELECT * FROM {$table} WHERE course_id = %d AND order_index < 900 ORDER BY order_index ASC, id ASC",
 				$course_id
 			)
 		);

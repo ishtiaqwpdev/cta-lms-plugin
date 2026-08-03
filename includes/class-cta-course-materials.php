@@ -263,6 +263,20 @@ class CTA_Course_Materials {
 		return array(
 			array(
 				'course_match_titles' => array(
+					'California Law & Ethics for Mental Health Professionals: Navigating the Evolving Clinical Landscape',
+					'California Law & Ethics for Mental Health Professionals',
+				),
+				'source_file'         => 'assets/course-materials/CTA_CE_001_California_Law_Ethics_Final_Syllabus_v2_1.pdf',
+				'alt_source_files'    => array(
+					'assets/course-materials/Final_Syllabus_v2_1.pdf',
+					'assets/course-materials/CTA_CE_001_Final_Syllabus_v2_1.pdf',
+				),
+				'title'               => 'Final Syllabus v2.1',
+				'resource_key'        => 'cta_ce_001_final_syllabus_v2_1',
+				'is_syllabus'         => true,
+			),
+			array(
+				'course_match_titles' => array(
 					'Clinical and Ethical Excellence in Telehealth: The Essential California Framework',
 					'Clinical and Ethical Excellence in Telehealth',
 				),
@@ -275,6 +289,31 @@ class CTA_Course_Materials {
 				'resource_key'        => 'telehealth_clinical_resource_toolkit_v2',
 			),
 		);
+	}
+
+	/**
+	 * Find the downloadable syllabus resource among course materials (if any).
+	 *
+	 * Prefers titles that look like a syllabus PDF (e.g. "Final Syllabus v2.1").
+	 *
+	 * @param array $resources Downloadable resource rows.
+	 * @return object|null
+	 */
+	public static function find_syllabus_resource( array $resources ) {
+		$preferred = null;
+		foreach ( $resources as $resource ) {
+			$title = isset( $resource->title ) ? (string) $resource->title : '';
+			if ( '' === $title ) {
+				continue;
+			}
+			if ( preg_match( '/\bfinal\s+syllabus\b/i', $title ) || preg_match( '/\bsyllabus\b.*\bv\s*2\.?1\b/i', $title ) ) {
+				return $resource;
+			}
+			if ( ! $preferred && preg_match( '/\bsyllabus\b/i', $title ) ) {
+				$preferred = $resource;
+			}
+		}
+		return $preferred;
 	}
 
 	/**

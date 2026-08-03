@@ -188,8 +188,52 @@ $next_url = $next_module
 					<?php endif; ?>
 				</section>
 
-				<?php if ( ! empty( $resources ) ) : ?>
+				<?php
+				$player_resources = isset( $resources ) ? (array) $resources : array();
+				$syllabus_resource = class_exists( 'CTA_Course_Materials' )
+					? CTA_Course_Materials::find_syllabus_resource( $player_resources )
+					: null;
+				$syllabus_meta_player = array();
+				if ( ! empty( $course->syllabus_meta ) ) {
+					$decoded_player = json_decode( (string) $course->syllabus_meta, true );
+					$syllabus_meta_player = is_array( $decoded_player ) ? $decoded_player : array();
+				}
+				$show_player_course_info = $syllabus_resource
+					|| ! empty( $syllabus_meta_player['course_code'] )
+					|| ! empty( $syllabus_meta_player['instructional_method'] );
+				?>
+				<?php if ( $show_player_course_info ) : ?>
+					<section class="course-section" aria-labelledby="cta-player-course-info-title">
+						<h2 class="dashboard-section__title" id="cta-player-course-info-title"><?php esc_html_e( 'Course Information', 'cta-lms' ); ?></h2>
+						<ul class="course-info-list">
+							<?php if ( ! empty( $syllabus_meta_player['course_code'] ) ) : ?>
+								<li><strong><?php esc_html_e( 'Course Code:', 'cta-lms' ); ?></strong> <?php echo esc_html( $syllabus_meta_player['course_code'] ); ?></li>
+							<?php endif; ?>
+							<?php if ( ! empty( $syllabus_meta_player['instructional_method'] ) ) : ?>
+								<li><strong><?php esc_html_e( 'Instructional Method:', 'cta-lms' ); ?></strong> <?php echo esc_html( $syllabus_meta_player['instructional_method'] ); ?></li>
+							<?php endif; ?>
+							<?php if ( $syllabus_resource ) : ?>
+								<li>
+									<strong><?php esc_html_e( 'Downloadable Syllabus:', 'cta-lms' ); ?></strong>
+									<?php
+									$syllabus_url = CTA_Course_Materials::get_serve_url( (int) $syllabus_resource->id );
+									?>
+									<?php if ( $syllabus_url ) : ?>
+										<a href="<?php echo esc_url( $syllabus_url ); ?>" target="_blank" rel="noopener noreferrer">
+											<?php echo esc_html( $syllabus_resource->title ); ?>
+										</a>
+									<?php else : ?>
+										<?php echo esc_html( $syllabus_resource->title ); ?>
+									<?php endif; ?>
+								</li>
+							<?php endif; ?>
+						</ul>
+					</section>
+				<?php endif; ?>
+
+				<?php if ( ! empty( $player_resources ) ) : ?>
 					<?php
+					$resources   = $player_resources;
 					$heading     = ! empty( $is_exam_prep ) ? __( 'Downloadable Materials', 'cta-lms' ) : __( 'Course Materials', 'cta-lms' );
 					$is_enrolled = true;
 					include CTA_PLUGIN_DIR . 'templates/partials/course-materials.php';

@@ -1375,6 +1375,7 @@ class CTA_Admin {
 		$syllabus_meta = array_merge(
 			$existing_meta,
 			array(
+				'course_code'             => cta_lms_sanitize_utf8_text( sanitize_text_field( wp_unslash( $_POST['course_code'] ?? '' ) ) ),
 				'course_level'            => cta_lms_sanitize_utf8_text( sanitize_text_field( wp_unslash( $_POST['course_level'] ?? '' ) ) ),
 				'target_audience'         => cta_lms_sanitize_utf8_text( sanitize_text_field( wp_unslash( $_POST['target_audience'] ?? '' ) ) ),
 				'instructional_method'    => cta_lms_sanitize_utf8_text( sanitize_text_field( wp_unslash( $_POST['instructional_method'] ?? '' ) ) ),

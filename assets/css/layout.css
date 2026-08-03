@@ -5845,6 +5845,17 @@ button.pagination__item:disabled {
   border-radius: var(--radius-lg);
 }
 
+.cta-plugin-wrapper .cta-vimeo-embed {
+  margin-bottom: var(--space-lg);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background-color: var(--color-text-dark, #111);
+}
+
+.cta-plugin-wrapper .cta-vimeo-embed iframe {
+  border: 0;
+}
+
 .cta-plugin-wrapper .course-player__html5-video {
   width: 100%;
   border-radius: var(--radius-lg);

@@ -944,6 +944,47 @@ class CTA_Student_Dashboard {
 	}
 
 	/**
+	 * Build responsive Vimeo iframe embed (padding wrapper + player API).
+	 *
+	 * Closed captions use the Vimeo player's built-in CC control when tracks
+	 * are uploaded on the Vimeo asset.
+	 *
+	 * @param string $vimeo_id  Numeric Vimeo ID.
+	 * @param string $title     Accessible iframe title.
+	 * @param string $wrap_class CSS class for the outer wrap.
+	 * @return string
+	 */
+	public static function get_vimeo_responsive_embed( $vimeo_id, $title = '', $wrap_class = 'course-player__video-wrap' ) {
+		$vimeo_id = preg_replace( '/\D/', '', (string) $vimeo_id );
+		if ( '' === $vimeo_id ) {
+			return '';
+		}
+
+		$title = $title ? (string) $title : __( 'Course video', 'cta-lms' );
+		$src   = sprintf(
+			'https://player.vimeo.com/video/%1$s?badge=0&autopause=0&player_id=0&app_id=58479',
+			rawurlencode( $vimeo_id )
+		);
+
+		return sprintf(
+			'<div class="%1$s cta-vimeo-embed" style="padding:56.25%% 0 0 0;position:relative;">
+				<iframe
+					src="%2$s"
+					frameborder="0"
+					allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+					referrerpolicy="strict-origin-when-cross-origin"
+					style="position:absolute;top:0;left:0;width:100%%;height:100%%;"
+					title="%3$s"
+					allowfullscreen
+				></iframe>
+			</div>',
+			esc_attr( $wrap_class ),
+			esc_url( $src ),
+			esc_attr( $title )
+		);
+	}
+
+	/**
 	 * Build video embed markup for a module.
 	 *
 	 * @param object $module Module row.
@@ -978,19 +1019,17 @@ class CTA_Student_Dashboard {
 			);
 		}
 
-		if ( false !== strpos( $video_url, 'vimeo.com' ) ) {
+		if ( false !== strpos( $video_url, 'vimeo.com' ) || preg_match( '/^\d+$/', trim( $video_url ) ) ) {
 			$vimeo_id = '';
 
 			if ( preg_match( '/vimeo\.com\/(?:video\/)?(\d+)/', $video_url, $matches ) ) {
 				$vimeo_id = $matches[1];
+			} elseif ( preg_match( '/^\d+$/', trim( $video_url ) ) ) {
+				$vimeo_id = trim( $video_url );
 			}
 
 			if ( $vimeo_id ) {
-				return sprintf(
-					'<div class="course-player__video-wrap"><iframe class="course-player__iframe" src="https://player.vimeo.com/video/%1$s" title="%2$s" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div>',
-					esc_attr( $vimeo_id ),
-					esc_attr( $module->title )
-				);
+				return self::get_vimeo_responsive_embed( $vimeo_id, (string) $module->title, 'course-player__video-wrap' );
 			}
 		}
 

@@ -134,6 +134,14 @@ $access_months = (int) ( $course->access_period_months ?? 6 );
 					|| ! empty( $syllabus_meta['course_code'] )
 					|| ! empty( $syllabus_meta['course_classification'] )
 					|| ( ! $is_exam_prep && (float) $course->ce_hours > 0 );
+
+				$resources_for_info = isset( $resources ) ? (array) $resources : array();
+				$syllabus_resource  = class_exists( 'CTA_Course_Materials' )
+					? CTA_Course_Materials::find_syllabus_resource( $resources_for_info )
+					: null;
+				if ( $syllabus_resource ) {
+					$has_course_info = true;
+				}
 				?>
 
 				<?php if ( ! empty( $course->description ) ) : ?>
@@ -167,6 +175,25 @@ $access_months = (int) ( $course->access_period_months ?? 6 );
 							<?php endif; ?>
 							<?php if ( ! empty( $syllabus_meta['presenter'] ) ) : ?>
 								<li><strong><?php esc_html_e( 'Presenter/Author:', 'cta-lms' ); ?></strong> <?php echo esc_html( $syllabus_meta['presenter'] ); ?></li>
+							<?php endif; ?>
+							<?php if ( $syllabus_resource ) : ?>
+								<li>
+									<strong><?php esc_html_e( 'Downloadable Syllabus:', 'cta-lms' ); ?></strong>
+									<?php if ( ! empty( $is_enrolled ) ) : ?>
+										<?php
+										$syllabus_url = CTA_Course_Materials::get_serve_url( (int) $syllabus_resource->id );
+										?>
+										<?php if ( $syllabus_url ) : ?>
+											<a href="<?php echo esc_url( $syllabus_url ); ?>" class="course-info-list__download" target="_blank" rel="noopener noreferrer">
+												<?php echo esc_html( $syllabus_resource->title ); ?>
+											</a>
+										<?php else : ?>
+											<?php echo esc_html( $syllabus_resource->title ); ?>
+										<?php endif; ?>
+									<?php else : ?>
+										<span><?php esc_html_e( 'Available after enrollment', 'cta-lms' ); ?></span>
+									<?php endif; ?>
+								</li>
 							<?php endif; ?>
 						</ul>
 					</section>

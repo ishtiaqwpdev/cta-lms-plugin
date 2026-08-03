@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.119' );
+	define( 'CTA_VERSION', '1.0.121' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -85,8 +85,9 @@ $cta_required_files = array(
 	'includes/class-cta-course-materials.php',
 	'includes/class-cta-evaluation-questions.php',
 	'includes/class-cta-course-attestation.php',
-	'includes/class-cta-telehealth-exam-sync.php',
-	'includes/class-cta-database.php',
+		'includes/class-cta-telehealth-exam-sync.php',
+		'includes/class-cta-law-ethics-module-sync.php',
+		'includes/class-cta-database.php',
 	'includes/class-cta-syllabus-sync.php',
 	'includes/class-cta-course-catalog.php',
 	'includes/class-cta-supervision-plans.php',
@@ -470,6 +471,39 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 			// Re-apply Telehealth module videos (per-module IDs; avoid course-preview fallback).
 			if ( version_compare( $installed, '1.0.114', '<' ) && class_exists( 'CTA_Telehealth_Exam_Sync' ) ) {
 				CTA_Telehealth_Exam_Sync::sync_module_videos( true );
+			}
+
+			// CTA-CE-001 Law & Ethics: course code, instructional format, Final Syllabus v2.1 bundle.
+			// Remap modules by legacy title BEFORE syllabus sync so new titles do not create duplicates.
+			// Keeps CE courses in Draft (pending CAMFT CEPA) — never publishes.
+			if ( version_compare( $installed, '1.0.120', '<' ) ) {
+				if ( class_exists( 'CTA_Law_Ethics_Module_Sync' ) ) {
+					CTA_Law_Ethics_Module_Sync::sync_modules( true );
+				}
+				if ( class_exists( 'CTA_Syllabus_Sync' ) ) {
+					CTA_Database::maybe_add_syllabus_columns();
+					CTA_Syllabus_Sync::sync_all( true );
+				}
+				if ( class_exists( 'CTA_Course_Materials' ) ) {
+					CTA_Course_Materials::ensure_bundled_resources();
+				}
+				if ( class_exists( 'CTA_Course_Catalog' ) ) {
+					CTA_Course_Catalog::unpublish_all_ce_courses_pending_cepa();
+				}
+			}
+
+			// CTA-CE-001 Law & Ethics: 6 modules + Capstone with official Vimeo videos (order remap).
+			if ( version_compare( $installed, '1.0.121', '<' ) ) {
+				if ( class_exists( 'CTA_Law_Ethics_Module_Sync' ) ) {
+					CTA_Law_Ethics_Module_Sync::sync_modules( true );
+				}
+				if ( class_exists( 'CTA_Syllabus_Sync' ) ) {
+					CTA_Database::maybe_add_syllabus_columns();
+					CTA_Syllabus_Sync::sync_all( true );
+				}
+				if ( class_exists( 'CTA_Course_Catalog' ) ) {
+					CTA_Course_Catalog::unpublish_all_ce_courses_pending_cepa();
+				}
 			}
 
 			// Decouple supervision application pending from general account / CE access.

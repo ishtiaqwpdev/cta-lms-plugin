@@ -360,6 +360,13 @@ class CTA_Courses {
 			}
 
 			if ( $vimeo_id ) {
+				if ( class_exists( 'CTA_Student_Dashboard' ) ) {
+					return CTA_Student_Dashboard::get_vimeo_responsive_embed(
+						$vimeo_id,
+						(string) $course->title,
+						'course-hero__video-wrap'
+					);
+				}
 				return sprintf(
 					'<div class="course-hero__video-wrap"><iframe class="course-hero__iframe" src="https://player.vimeo.com/video/%1$s" title="%2$s" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div>',
 					esc_attr( $vimeo_id ),

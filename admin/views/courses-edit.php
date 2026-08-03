@@ -165,6 +165,13 @@ if ( $course ) {
 					</td>
 				</tr>
 				<tr class="cta-field-syllabus">
+					<th><label for="cta-course-code"><?php esc_html_e( 'Course ID / Code', 'cta-lms' ); ?></label></th>
+					<td>
+						<input type="text" class="regular-text" id="cta-course-code" name="course_code" value="<?php echo esc_attr( $syllabus_meta['course_code'] ?? '' ); ?>" placeholder="CTA-CE-001">
+						<p class="description"><?php esc_html_e( 'Official course identifier (e.g. CTA-CE-001). Shown in Course Information.', 'cta-lms' ); ?></p>
+					</td>
+				</tr>
+				<tr class="cta-field-syllabus">
 					<th><label for="cta-course-level"><?php esc_html_e( 'Course Level', 'cta-lms' ); ?></label></th>
 					<td><input type="text" class="regular-text" id="cta-course-level" name="course_level" value="<?php echo esc_attr( $syllabus_meta['course_level'] ?? '' ); ?>"></td>
 				</tr>

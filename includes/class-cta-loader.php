@@ -209,6 +209,15 @@ class CTA_Loader {
 			true
 		);
 
+		// Vimeo Player API — required for responsive module embeds / CC controls.
+		wp_enqueue_script(
+			'vimeo-player',
+			'https://player.vimeo.com/api/player.js',
+			array(),
+			null,
+			true
+		);
+
 		$dashboard_url = class_exists( 'CTA_Associate_Access' )
 			? CTA_Associate_Access::get_general_dashboard_url()
 			: self::get_page_permalink( 'cta_student_dashboard_page_id' );
