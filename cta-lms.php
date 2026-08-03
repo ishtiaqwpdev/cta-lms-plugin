@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.124' );
+	define( 'CTA_VERSION', '1.0.126' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -525,6 +525,26 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 			// CTA-CE-001 Law & Ethics: approved course image on catalog / detail / dashboard.
 			if ( version_compare( $installed, '1.0.124', '<' ) && class_exists( 'CTA_Law_Ethics_Module_Sync' ) ) {
 				CTA_Law_Ethics_Module_Sync::sync_thumbnail( true );
+			}
+
+			// CTA-CE-001 Law & Ethics: Final Syllabus v2.1 module titles + runtimes (~360 min).
+			// Remap by legacy/short titles BEFORE syllabus sync so new titles do not create duplicates.
+			if ( version_compare( $installed, '1.0.125', '<' ) ) {
+				if ( class_exists( 'CTA_Law_Ethics_Module_Sync' ) ) {
+					CTA_Law_Ethics_Module_Sync::sync_modules( true );
+				}
+				if ( class_exists( 'CTA_Syllabus_Sync' ) ) {
+					CTA_Database::maybe_add_syllabus_columns();
+					CTA_Syllabus_Sync::sync_all( true );
+				}
+				if ( class_exists( 'CTA_Course_Catalog' ) ) {
+					CTA_Course_Catalog::unpublish_all_ce_courses_pending_cepa();
+				}
+			}
+
+			// CTA-CE-001: Practice Protection Toolkit v1.0 as course-level downloadable resource.
+			if ( version_compare( $installed, '1.0.126', '<' ) && class_exists( 'CTA_Course_Materials' ) ) {
+				CTA_Course_Materials::ensure_bundled_resources();
 			}
 
 			// Decouple supervision application pending from general account / CE access.

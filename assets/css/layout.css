@@ -2129,6 +2129,18 @@ button.pagination__item:disabled {
   border-radius: var(--radius-full);
 }
 
+.cta-plugin-wrapper .course-module-list__item--admin-note .course-module-list__header,
+.cta-plugin-wrapper .cta-module-list__item--admin-note .cta-module-list__link {
+  opacity: 0.92;
+}
+
+.cta-plugin-wrapper .course-module-list__item--admin-note .course-module-list__desc {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-gray);
+  line-height: var(--line-height-relaxed);
+}
+
 .cta-plugin-wrapper .course-sidebar__notice {
   margin: 0 var(--space-xl) var(--space-xl);
   font-size: var(--font-size-sm);

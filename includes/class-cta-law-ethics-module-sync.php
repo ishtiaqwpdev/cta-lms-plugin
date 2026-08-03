@@ -2,9 +2,9 @@
 /**
  * California Law & Ethics (CTA-CE-001) instructional module + Vimeo sync.
  *
- * Remaps existing modules by order_index (preserves IDs/progress), sets official
- * titles and Vimeo URLs, and ensures the Course Integration Capstone sits after
- * Module 6 and before the Final Examination.
+ * Remaps existing modules by order_index (preserves IDs/progress), sets Final
+ * Syllabus v2.1 titles/runtimes and Vimeo URLs, and ensures the Course
+ * Integration Capstone sits after Module 6 and before the Final Examination.
  *
  * @package CTA_LMS
  */
@@ -21,7 +21,7 @@ if ( ! class_exists( 'CTA_Law_Ethics_Module_Sync' ) ) {
 class CTA_Law_Ethics_Module_Sync {
 
 	const COURSE_CODE = 'CTA-CE-001';
-	const SEED_OPTION = 'cta_law_ethics_modules_1_0_121';
+	const SEED_OPTION = 'cta_law_ethics_modules_1_0_125';
 
 	/**
 	 * Title aliases used to locate the Law & Ethics CE course.
@@ -36,83 +36,107 @@ class CTA_Law_Ethics_Module_Sync {
 	}
 
 	/**
-	 * Official module definitions (order 1–7). Capstone is required module 7.
+	 * Convert Final Syllabus MM:SS runtime to whole instructional minutes.
 	 *
-	 * @return array<int,array{title:string,video_url:string,duration_mins:int,summary_points:string[]}>
+	 * Floors fractional minutes so Modules 1–6 + Capstone total 360 (6.0 CE hours).
+	 *
+	 * @param string $runtime Runtime string (e.g. "60:07").
+	 * @return int
+	 */
+	public static function runtime_to_mins( $runtime ) {
+		$runtime = trim( (string) $runtime );
+		if ( ! preg_match( '/^(\d+):([0-5]?\d)$/', $runtime, $m ) ) {
+			return 0;
+		}
+		$secs = ( (int) $m[1] * 60 ) + (int) $m[2];
+		return (int) floor( $secs / 60 );
+	}
+
+	/**
+	 * Official module definitions (order 1–7). Capstone is required module 7.
+	 * Titles and runtimes match Final Syllabus v2.1 (Revised August 2026).
+	 *
+	 * @return array<int,array{title:string,video_url:string,duration_runtime:string,duration_mins:int,summary_points:string[]}>
 	 */
 	public static function get_module_definitions() {
-		return array(
+		$defs = array(
 			1 => array(
-				'title'          => 'Regulatory Frameworks',
-				'video_url'      => 'https://vimeo.com/1214611219',
-				'duration_mins'  => 50,
-				'summary_points' => array(
+				'title'            => 'Module 1: California Regulatory Frameworks, BBS Requirements, and Professional Competence',
+				'video_url'        => 'https://vimeo.com/1214611219',
+				'duration_runtime' => '60:07',
+				'summary_points'   => array(
 					'California regulatory updates and Board of Behavioral Sciences requirements',
 					'Scope of competence and ethical practice standards',
 					'Common disciplinary concerns and risk factors',
 				),
 			),
 			2 => array(
-				'title'          => 'Informed Consent & Digital Boundaries',
-				'video_url'      => 'https://vimeo.com/1214902641',
-				'duration_mins'  => 50,
-				'summary_points' => array(
+				'title'            => 'Module 2: Informed Consent, Telehealth, and Digital Boundaries',
+				'video_url'        => 'https://vimeo.com/1214902641',
+				'duration_runtime' => '58:08',
+				'summary_points'   => array(
 					'Legal and ethical requirements for informed consent',
 					'Digital practice boundaries and electronic communication',
 					'Fee, privacy, telehealth, and professional-boundary disclosures',
 				),
 			),
 			3 => array(
-				'title'          => 'Advanced Confidentiality & Privilege',
-				'video_url'      => 'https://vimeo.com/1214856706',
-				'duration_mins'  => 50,
-				'summary_points' => array(
+				'title'            => 'Module 3: Confidentiality, Privilege, and Lawful Disclosure',
+				'video_url'        => 'https://vimeo.com/1214856706',
+				'duration_runtime' => '62:35',
+				'summary_points'   => array(
 					'Confidentiality and psychotherapist-patient privilege',
 					'Mandatory and permissive disclosure exceptions',
 					'Mandated reporting standards and thresholds',
 				),
 			),
 			4 => array(
-				'title'          => 'Working with Minors',
-				'video_url'      => 'https://vimeo.com/1214861621',
-				'duration_mins'  => 50,
-				'summary_points' => array(
+				'title'            => 'Module 4: Working with Minors: Consent, Parents, Custody, and Reporting',
+				'video_url'        => 'https://vimeo.com/1214861621',
+				'duration_runtime' => '58:18',
+				'summary_points'   => array(
 					'Minor-consent treatment regulations',
 					'Parental rights and involvement considerations',
 					'Confidentiality considerations when treating minors',
 				),
 			),
 			5 => array(
-				'title'          => 'Crisis Management & Tarasoff',
-				'video_url'      => 'https://vimeo.com/1214876352',
-				'duration_mins'  => 50,
-				'summary_points' => array(
+				'title'            => 'Module 5: Crisis Management, Tarasoff Duties, and Professional Liability',
+				'video_url'        => 'https://vimeo.com/1214876352',
+				'duration_runtime' => '53:21',
+				'summary_points'   => array(
 					'Tarasoff duty-to-protect requirements',
 					'Crisis management and emergency-response procedures',
 					'Documentation of risk assessment and protective actions',
 				),
 			),
 			6 => array(
-				'title'          => 'Documentation, Professional Practice & Licensure Protection',
-				'video_url'      => 'https://vimeo.com/1215024927',
-				'duration_mins'  => 50,
-				'summary_points' => array(
+				'title'            => 'Module 6: Record Keeping, Business Ethics, and Practice Continuity',
+				'video_url'        => 'https://vimeo.com/1215024927',
+				'duration_runtime' => '55:03',
+				'summary_points'   => array(
 					'Defensible clinical documentation standards',
 					'Risk-management and licensure protection',
 					'Professional wills and practice closure considerations',
 				),
 			),
 			7 => array(
-				'title'          => 'Course Integration Capstone',
-				'video_url'      => 'https://vimeo.com/1214922839',
-				'duration_mins'  => 20,
-				'summary_points' => array(
+				'title'            => 'Required Course Integration Capstone: Applying California Law and Ethics in Complex Clinical Decisions',
+				'video_url'        => 'https://vimeo.com/1214922839',
+				'duration_runtime' => '14:05',
+				'summary_points'   => array(
 					'Integrate legal and ethical decision-making across Modules 1–6',
 					'Apply California Law & Ethics standards to complex clinical scenarios',
 					'Prepare for the final examination with structured clinical reasoning',
 				),
 			),
 		);
+
+		foreach ( $defs as $order => $def ) {
+			$defs[ $order ]['duration_mins'] = self::runtime_to_mins( (string) $def['duration_runtime'] );
+		}
+
+		return $defs;
 	}
 
 	/**
@@ -166,13 +190,22 @@ class CTA_Law_Ethics_Module_Sync {
 	 */
 	private static function legacy_title_order_map() {
 		return array(
-			'california regulatory frameworks & bbs updates'          => 1,
+			// Pre–CTA-CE-001 video rollout titles.
+			'california regulatory frameworks & bbs updates'           => 1,
 			'scope of competence, ethical practice & informed consent' => 2,
 			'confidentiality, privilege & mandated reporting'          => 3,
 			'minor consent, tarasoff duties & crisis management'       => 4,
 			'documentation & record-keeping standards'                 => 5,
 			'risk management, professional wills & practice closure'   => 6,
 			'required course integration capstone'                     => 7,
+			// Short titles used before Final Syllabus v2.1 (Revised August 2026).
+			'regulatory frameworks'                                    => 1,
+			'informed consent & digital boundaries'                    => 2,
+			'advanced confidentiality & privilege'                     => 3,
+			'working with minors'                                      => 4,
+			'crisis management & tarasoff'                             => 5,
+			'documentation, professional practice & licensure protection' => 6,
+			'course integration capstone'                              => 7,
 		);
 	}
 

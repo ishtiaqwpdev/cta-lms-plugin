@@ -757,12 +757,15 @@ return array(
 			'Zur, O. (2021). Digital ethics and telehealth in psychotherapy: Navigating the boundaries of remote care. Routledge.',
 		),
 		'development_draft'       => false,
+		// Mid-course knowledge check (after Module 3) is administrative — not CE instructional time.
+		'mid_course_knowledge_check_note' => 'Mid-course knowledge check — administrative activity. Not counted toward CE instructional minutes.',
 		'modules'                 => array(
 			array(
-				'title'          => 'Regulatory Frameworks',
-				'duration_mins'  => 50,
-				'video_url'      => 'https://vimeo.com/1214611219',
-				'summary_points' => array(
+				'title'            => 'Module 1: California Regulatory Frameworks, BBS Requirements, and Professional Competence',
+				'duration_runtime' => '60:07',
+				'duration_mins'    => 60,
+				'video_url'        => 'https://vimeo.com/1214611219',
+				'summary_points'   => array(
 					'California regulatory updates and Board of Behavioral Sciences requirements',
 					'Scope of competence and ethical practice standards in California mental health practice',
 					'Professional ethical standards for clinical practice',
@@ -772,10 +775,11 @@ return array(
 				),
 			),
 			array(
-				'title'          => 'Informed Consent & Digital Boundaries',
-				'duration_mins'  => 50,
-				'video_url'      => 'https://vimeo.com/1214902641',
-				'summary_points' => array(
+				'title'            => 'Module 2: Informed Consent, Telehealth, and Digital Boundaries',
+				'duration_runtime' => '58:08',
+				'duration_mins'    => 58,
+				'video_url'        => 'https://vimeo.com/1214902641',
+				'summary_points'   => array(
 					'Legal and ethical requirements for informed consent',
 					'Fee, privacy, telehealth, and professional-boundary disclosures',
 					'Digital practice boundaries and electronic communication',
@@ -783,10 +787,11 @@ return array(
 				),
 			),
 			array(
-				'title'          => 'Advanced Confidentiality & Privilege',
-				'duration_mins'  => 50,
-				'video_url'      => 'https://vimeo.com/1214856706',
-				'summary_points' => array(
+				'title'            => 'Module 3: Confidentiality, Privilege, and Lawful Disclosure',
+				'duration_runtime' => '62:35',
+				'duration_mins'    => 62,
+				'video_url'        => 'https://vimeo.com/1214856706',
+				'summary_points'   => array(
 					'Legal and ethical foundations of confidentiality',
 					'Psychotherapist-patient privilege considerations',
 					'Mandatory and permissive disclosure exceptions',
@@ -795,10 +800,11 @@ return array(
 				),
 			),
 			array(
-				'title'          => 'Working with Minors',
-				'duration_mins'  => 50,
-				'video_url'      => 'https://vimeo.com/1214861621',
-				'summary_points' => array(
+				'title'            => 'Module 4: Working with Minors: Consent, Parents, Custody, and Reporting',
+				'duration_runtime' => '58:18',
+				'duration_mins'    => 58,
+				'video_url'        => 'https://vimeo.com/1214861621',
+				'summary_points'   => array(
 					'Minor-consent treatment regulations',
 					'Parental rights and involvement considerations',
 					'Confidentiality considerations when treating minors',
@@ -806,10 +812,11 @@ return array(
 				),
 			),
 			array(
-				'title'          => 'Crisis Management & Tarasoff',
-				'duration_mins'  => 50,
-				'video_url'      => 'https://vimeo.com/1214876352',
-				'summary_points' => array(
+				'title'            => 'Module 5: Crisis Management, Tarasoff Duties, and Professional Liability',
+				'duration_runtime' => '53:21',
+				'duration_mins'    => 53,
+				'video_url'        => 'https://vimeo.com/1214876352',
+				'summary_points'   => array(
 					'Tarasoff duty-to-protect requirements',
 					'Crisis management and emergency-response procedures',
 					'Documentation of risk assessment and protective actions',
@@ -817,10 +824,11 @@ return array(
 				),
 			),
 			array(
-				'title'          => 'Documentation, Professional Practice & Licensure Protection',
-				'duration_mins'  => 50,
-				'video_url'      => 'https://vimeo.com/1215024927',
-				'summary_points' => array(
+				'title'            => 'Module 6: Record Keeping, Business Ethics, and Practice Continuity',
+				'duration_runtime' => '55:03',
+				'duration_mins'    => 55,
+				'video_url'        => 'https://vimeo.com/1215024927',
+				'summary_points'   => array(
 					'Defensible clinical documentation standards',
 					'Record-retention and security requirements',
 					'Risk-management strategies for clinicians',
@@ -829,10 +837,11 @@ return array(
 				),
 			),
 			array(
-				'title'          => 'Course Integration Capstone',
-				'duration_mins'  => 20,
-				'video_url'      => 'https://vimeo.com/1214922839',
-				'summary_points' => array(
+				'title'            => 'Required Course Integration Capstone: Applying California Law and Ethics in Complex Clinical Decisions',
+				'duration_runtime' => '14:05',
+				'duration_mins'    => 14,
+				'video_url'        => 'https://vimeo.com/1214922839',
+				'summary_points'   => array(
 					'Integrate legal and ethical decision-making across Modules 1–6',
 					'Apply California Law & Ethics standards to complex clinical scenarios',
 					'Prepare for the final examination with structured clinical reasoning',

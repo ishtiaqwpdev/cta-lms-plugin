@@ -291,6 +291,17 @@ $next_url = $next_module
 										</a>
 									<?php endif; ?>
 								</li>
+								<?php
+								// CTA-CE-001: mid-course knowledge check marker after Module 3 (not instructional time).
+								if ( 2 === (int) $index && ! empty( $syllabus_meta_player['mid_course_knowledge_check_note'] ) ) :
+									?>
+									<li class="cta-module-list__item cta-module-list__item--admin-note">
+										<span class="cta-module-list__link" title="<?php echo esc_attr( (string) $syllabus_meta_player['mid_course_knowledge_check_note'] ); ?>">
+											<span class="cta-module-list__icon" aria-hidden="true"><?php echo cta_lms_get_icon( 'check-circle', 16 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+											<span class="cta-module-list__title"><?php esc_html_e( 'Mid-Course Knowledge Check (admin — not CE minutes)', 'cta-lms' ); ?></span>
+										</span>
+									</li>
+								<?php endif; ?>
 							<?php endforeach; ?>
 						</ul>
 					</div>

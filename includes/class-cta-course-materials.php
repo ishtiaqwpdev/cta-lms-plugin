@@ -266,6 +266,7 @@ class CTA_Course_Materials {
 					'California Law & Ethics for Mental Health Professionals: Navigating the Evolving Clinical Landscape',
 					'California Law & Ethics for Mental Health Professionals',
 				),
+				'course_code'         => 'CTA-CE-001',
 				'source_file'         => 'assets/course-materials/CTA_CE_001_California_Law_Ethics_Final_Syllabus_v2_1.pdf',
 				'alt_source_files'    => array(
 					'assets/course-materials/Final_Syllabus_v2_1.pdf',
@@ -274,6 +275,21 @@ class CTA_Course_Materials {
 				'title'               => 'Final Syllabus v2.1',
 				'resource_key'        => 'cta_ce_001_final_syllabus_v2_1',
 				'is_syllabus'         => true,
+			),
+			array(
+				'course_match_titles' => array(
+					'California Law & Ethics for Mental Health Professionals: Navigating the Evolving Clinical Landscape',
+					'California Law & Ethics for Mental Health Professionals',
+				),
+				'course_code'         => 'CTA-CE-001',
+				'source_file'         => 'assets/course-materials/CTA_California_Law_Ethics_Practice_Protection_Toolkit_v1_0.pdf',
+				'alt_source_files'    => array(
+					'assets/course-materials/CTA_California_Law_Ethics_Practice_Protection_Toolkit_v1.0.pdf',
+				),
+				'title'               => 'California Law & Ethics Practice Protection Toolkit (Resource Workbook)',
+				'resource_key'        => 'cta_ce_001_practice_protection_toolkit_v1',
+				// Course-level only: supplementary workbook covering all topic areas (not module-gated).
+				'module_id'           => 0,
 			),
 			array(
 				'course_match_titles' => array(
@@ -319,8 +335,8 @@ class CTA_Course_Materials {
 	/**
 	 * Ensure bundled materials are registered as downloadable resources.
 	 *
-	 * Idempotent: skips when the resource title already exists for the course,
-	 * or when the source file is not present in the plugin package.
+	 * Idempotent: skips when the resource title (or known alias) already exists
+	 * for the course, or when the source file is not present in the plugin package.
 	 *
 	 * @return array{attached:int,skipped:int,missing:array}
 	 */
@@ -348,18 +364,7 @@ class CTA_Course_Materials {
 			$course_id = (int) $course->id;
 			$title     = sanitize_text_field( (string) ( $bundle['title'] ?? basename( $source ) ) );
 
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-			$existing_id = (int) $wpdb->get_var(
-				$wpdb->prepare(
-					"SELECT id FROM {$wpdb->prefix}cta_downloadable_resources
-					WHERE course_id = %d AND title = %s
-					LIMIT 1",
-					$course_id,
-					$title
-				)
-			);
-
-			if ( $existing_id ) {
+			if ( self::course_has_bundled_resource( $course_id, $bundle, $title ) ) {
 				++$skipped;
 				continue;
 			}
@@ -378,12 +383,14 @@ class CTA_Course_Materials {
 				)
 			);
 
+			$module_id = isset( $bundle['module_id'] ) ? absint( $bundle['module_id'] ) : 0;
+
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 			$ok = $wpdb->insert(
 				$wpdb->prefix . 'cta_downloadable_resources',
 				array(
 					'course_id'        => $course_id,
-					'module_id'        => 0,
+					'module_id'        => $module_id,
 					'attachment_id'    => 0,
 					'title'            => $title,
 					'file_url'         => $imported['file_url'],
@@ -407,6 +414,55 @@ class CTA_Course_Materials {
 			'skipped'  => $skipped,
 			'missing'  => $missing,
 		);
+	}
+
+	/**
+	 * Whether a course already has this bundled resource (by title or alias).
+	 *
+	 * @param int    $course_id Course ID.
+	 * @param array  $bundle    Bundle definition.
+	 * @param string $title     Canonical title.
+	 * @return bool
+	 */
+	private static function course_has_bundled_resource( $course_id, array $bundle, $title ) {
+		global $wpdb;
+
+		$aliases = array( $title );
+		if ( ! empty( $bundle['title_aliases'] ) && is_array( $bundle['title_aliases'] ) ) {
+			foreach ( $bundle['title_aliases'] as $alias ) {
+				$alias = sanitize_text_field( (string) $alias );
+				if ( '' !== $alias ) {
+					$aliases[] = $alias;
+				}
+			}
+		}
+
+		// Recognize common informal names for the Practice Protection Toolkit.
+		if ( ! empty( $bundle['resource_key'] ) && 'cta_ce_001_practice_protection_toolkit_v1' === $bundle['resource_key'] ) {
+			$aliases[] = 'California Law & Ethics Practice Protection Toolkit v1.0';
+			$aliases[] = 'Practice Protection Toolkit';
+			$aliases[] = 'California Law & Ethics Practice Protection Toolkit';
+		}
+
+		$aliases = array_values( array_unique( $aliases ) );
+		if ( empty( $aliases ) ) {
+			return false;
+		}
+
+		$placeholders = implode( ', ', array_fill( 0, count( $aliases ), '%s' ) );
+		$params       = array_merge( array( (int) $course_id ), $aliases );
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare, WordPress.DB.PreparedSQL.NotPrepared
+		$existing_id = (int) $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT id FROM {$wpdb->prefix}cta_downloadable_resources
+				WHERE course_id = %d AND title IN ($placeholders)
+				LIMIT 1",
+				$params
+			)
+		);
+
+		return $existing_id > 0;
 	}
 
 	/**
@@ -438,12 +494,36 @@ class CTA_Course_Materials {
 	}
 
 	/**
-	 * Find a published CE course matching bundled title aliases.
+	 * Find a CE course matching bundled course_code or title aliases.
 	 *
 	 * @param array $bundle Bundle definition.
 	 * @return object|null
 	 */
 	private static function find_course_for_bundle( array $bundle ) {
+		$code = isset( $bundle['course_code'] ) ? trim( (string) $bundle['course_code'] ) : '';
+		if ( '' !== $code && 'CTA-CE-001' === $code && class_exists( 'CTA_Law_Ethics_Module_Sync' ) ) {
+			$course = CTA_Law_Ethics_Module_Sync::find_course();
+			if ( $course ) {
+				return $course;
+			}
+		}
+
+		if ( '' !== $code && class_exists( 'CTA_Database' ) ) {
+			global $wpdb;
+			$table = $wpdb->prefix . 'cta_courses';
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$rows  = $wpdb->get_results( "SELECT * FROM {$table} ORDER BY id ASC" );
+			foreach ( (array) $rows as $row ) {
+				if ( empty( $row->syllabus_meta ) ) {
+					continue;
+				}
+				$decoded = json_decode( (string) $row->syllabus_meta, true );
+				if ( is_array( $decoded ) && isset( $decoded['course_code'] ) && $code === (string) $decoded['course_code'] ) {
+					return $row;
+				}
+			}
+		}
+
 		$titles = isset( $bundle['course_match_titles'] ) ? (array) $bundle['course_match_titles'] : array();
 		foreach ( $titles as $title ) {
 			$title = trim( (string) $title );

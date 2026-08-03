@@ -16,6 +16,14 @@ Expected Final Syllabus filename (PDF):
 Registered title for learners: **Final Syllabus v2.1**
 Shown in Course Information → Downloadable Syllabus (enrollment-gated).
 
+Expected Practice Protection Toolkit filename (PDF):
+
+- `CTA_California_Law_Ethics_Practice_Protection_Toolkit_v1_0.pdf` (preferred)
+- `CTA_California_Law_Ethics_Practice_Protection_Toolkit_v1.0.pdf`
+
+Registered title for learners: **California Law & Ethics Practice Protection Toolkit (Resource Workbook)**
+Course-level download (not module-gated) for enrolled learners.
+
 ## Telehealth toolkit
 
 Expected Telehealth toolkit filename (DOCX or PDF):

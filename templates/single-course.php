@@ -314,6 +314,23 @@ $access_months = (int) ( $course->access_period_months ?? 6 );
 											<?php endif; ?>
 										</div>
 									</li>
+									<?php
+									// CTA-CE-001: mid-course knowledge check marker after Module 3 (not instructional time).
+									$show_mid_check = ( 2 === (int) $index )
+										&& ! empty( $syllabus_meta['mid_course_knowledge_check_note'] );
+									if ( $show_mid_check ) :
+										?>
+										<li class="course-module-list__item course-module-list__item--admin-note">
+											<div class="course-module-list__header course-module-list__header--quiz">
+												<span class="course-module-list__number" aria-hidden="true">✓</span>
+												<div class="course-module-list__info">
+													<strong class="course-module-list__title"><?php esc_html_e( 'Mid-Course Knowledge Check', 'cta-lms' ); ?></strong>
+													<p class="course-module-list__desc"><?php echo esc_html( (string) $syllabus_meta['mid_course_knowledge_check_note'] ); ?></p>
+												</div>
+												<span class="course-module-list__badge"><?php esc_html_e( 'Admin', 'cta-lms' ); ?></span>
+											</div>
+										</li>
+									<?php endif; ?>
 								<?php endforeach; ?>
 							</ul>
 						<?php endif; ?>

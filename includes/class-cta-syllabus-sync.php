@@ -518,6 +518,12 @@ class CTA_Syllabus_Sync {
 			'syllabus_synced_at'      => gmdate( 'c' ),
 		);
 
+		if ( ! empty( $syllabus['mid_course_knowledge_check_note'] ) ) {
+			$meta['mid_course_knowledge_check_note'] = sanitize_text_field(
+				(string) $syllabus['mid_course_knowledge_check_note']
+			);
+		}
+
 		$objectives = array();
 		foreach ( (array) ( $syllabus['learning_objectives'] ?? array() ) as $objective ) {
 			$objective = sanitize_text_field( (string) $objective );
