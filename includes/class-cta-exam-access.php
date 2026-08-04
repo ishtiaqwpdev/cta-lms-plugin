@@ -392,11 +392,14 @@ class CTA_Exam_Access {
 				'legacy_slug' => 'lcsw-california-clinical-exam-preparation',
 			),
 			array(
-				'title'       => 'LPCC California Clinical Exam Preparation',
-				'slug'        => 'lpcc-california-clinical-exam-preparation',
-				'description' => '<p>Targeted preparation for the LPCC California Clinical Exam. Includes online instructional content, printable workbooks, practice tests, and mock examinations with answer rationales. Access is valid for 6 months from purchase. This program does not award CE hours or a CE certificate.</p>',
+				'title'       => 'CTA LPCC NCMHCE Exam Preparation Program',
+				'slug'        => 'lpcc-ncmhce-exam-preparation',
+				'description' => '<p>Complete self-paced preparation for the NCMHCE for LPCC candidates. Includes 12 workbooks, paired practice banks, three cumulative checkpoints, Form A and Form B simulations (143 questions each) with controlled rationales, a Form A remediation workbook, flashcards, quick references, and study schedules. Access is valid for 6 months from purchase. Exam Preparation Only — No CE Credit.</p>',
 				'price'       => 249.00,
 				'category'    => 'Exam Preparation',
+				'status'      => 'draft',
+				'launch_pending_testing' => true,
+				'legacy_slug' => 'lpcc-california-clinical-exam-preparation',
 			),
 		);
 	}
@@ -449,8 +452,8 @@ class CTA_Exam_Access {
 				);
 				$formats = array( '%s', '%s', '%f', '%s', '%s', '%d', '%f', '%d', '%d' );
 
-				// Commercial terms unconfirmed: keep draft and do not treat catalog price as live publish.
-				if ( ! empty( $program['commercial_pending'] ) ) {
+				// Commercial terms unconfirmed OR launch testing incomplete: keep / force draft.
+				if ( ! empty( $program['commercial_pending'] ) || ! empty( $program['launch_pending_testing'] ) ) {
 					$update['status'] = 'draft';
 					$formats[]        = '%s';
 				}
@@ -467,7 +470,7 @@ class CTA_Exam_Access {
 			}
 
 			$status = ! empty( $program['status'] ) ? sanitize_text_field( (string) $program['status'] ) : 'draft';
-			if ( ! empty( $program['commercial_pending'] ) ) {
+			if ( ! empty( $program['commercial_pending'] ) || ! empty( $program['launch_pending_testing'] ) ) {
 				$status = 'draft';
 			}
 
@@ -516,6 +519,30 @@ class CTA_Exam_Access {
 
 		return ! empty( $meta['commercial_pending'] )
 			|| ( isset( $meta['pricing_status'] ) && 'pending_client_confirmation' === $meta['pricing_status'] );
+	}
+
+	/**
+	 * Whether public launch is blocked until the student testing checklist is verified.
+	 *
+	 * @param object|null $course Course row.
+	 * @return bool
+	 */
+	public static function launch_pending_testing( $course ) {
+		if ( ! $course ) {
+			return false;
+		}
+
+		if ( empty( $course->syllabus_meta ) ) {
+			return false;
+		}
+
+		$meta = json_decode( (string) $course->syllabus_meta, true );
+		if ( ! is_array( $meta ) ) {
+			return false;
+		}
+
+		return ! empty( $meta['launch_pending_testing'] )
+			|| ( isset( $meta['launch_status'] ) && 'draft_pending_testing' === $meta['launch_status'] );
 	}
 }
 

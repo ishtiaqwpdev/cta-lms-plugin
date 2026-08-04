@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.128' );
+	define( 'CTA_VERSION', '1.0.136' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -89,6 +89,7 @@ $cta_required_files = array(
 	'includes/class-cta-telehealth-exam-sync.php',
 	'includes/class-cta-lcsw-aswb-sync.php',
 	'includes/class-cta-lmft-clinical-sync.php',
+	'includes/class-cta-lpcc-ncmhce-sync.php',
 	'includes/class-cta-law-ethics-module-sync.php',
 	'includes/class-cta-law-ethics-evaluation-sync.php',
 	'includes/class-cta-database.php',
@@ -152,6 +153,10 @@ if ( ! function_exists( 'cta_lms_init' ) ) {
 		try {
 			$loader = new CTA_Loader();
 			$loader->run();
+
+			if ( class_exists( 'CTA_Course_Materials' ) ) {
+				CTA_Course_Materials::ensure_package_tree_deny_rules();
+			}
 
 			if ( class_exists( 'CTA_Pages' ) ) {
 				CTA_Pages::init();
@@ -579,6 +584,89 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				if ( class_exists( 'CTA_Lmft_Clinical_Sync' ) ) {
 					CTA_Lmft_Clinical_Sync::sync( true );
 				}
+			}
+
+			// CTA LPCC NCMHCE Exam Prep: full student package, checkpoints, Form A/B + gated rationales.
+			if ( version_compare( $installed, '1.0.129', '<' ) ) {
+				if ( class_exists( 'CTA_Database' ) ) {
+					CTA_Database::maybe_add_resource_unlock_column();
+				}
+				if ( class_exists( 'CTA_Exam_Access' ) ) {
+					CTA_Exam_Access::seed_default_programs();
+				}
+				if ( class_exists( 'CTA_Course_Catalog' ) ) {
+					CTA_Course_Catalog::restore_exam_prep_pricing();
+				}
+				if ( class_exists( 'CTA_Lpcc_Ncmhce_Sync' ) ) {
+					CTA_Lpcc_Ncmhce_Sync::sync( true );
+				}
+			}
+
+			// CTA LPCC NCMHCE: enforce exact public listing (title, $249, 6 months, format, no CE).
+			if ( version_compare( $installed, '1.0.130', '<' ) ) {
+				if ( class_exists( 'CTA_Exam_Access' ) ) {
+					CTA_Exam_Access::seed_default_programs();
+				}
+				if ( class_exists( 'CTA_Course_Catalog' ) ) {
+					CTA_Course_Catalog::restore_exam_prep_pricing();
+				}
+				if ( class_exists( 'CTA_Lpcc_Ncmhce_Sync' ) ) {
+					CTA_Lpcc_Ncmhce_Sync::ensure_program();
+				}
+			}
+
+			// CTA LPCC NCMHCE: strip audio/video marketing references from public listing copy.
+			if ( version_compare( $installed, '1.0.131', '<' ) ) {
+				if ( class_exists( 'CTA_Exam_Access' ) ) {
+					CTA_Exam_Access::seed_default_programs();
+				}
+				if ( class_exists( 'CTA_Lpcc_Ncmhce_Sync' ) ) {
+					CTA_Lpcc_Ncmhce_Sync::ensure_program();
+				}
+			}
+
+			// CTA LPCC NCMHCE: gate all practice-bank / checkpoint / Form A–B rationales per-student after submit.
+			if ( version_compare( $installed, '1.0.132', '<' ) ) {
+				if ( class_exists( 'CTA_Database' ) ) {
+					CTA_Database::maybe_add_resource_unlock_column();
+				}
+				if ( class_exists( 'CTA_Lpcc_Ncmhce_Sync' ) ) {
+					CTA_Lpcc_Ncmhce_Sync::sync( true );
+				}
+			}
+
+			// CTA LPCC NCMHCE: Form B requires Form A Remediation Workbook completion (per student).
+			if ( version_compare( $installed, '1.0.133', '<' ) ) {
+				if ( class_exists( 'CTA_Database' ) ) {
+					CTA_Database::maybe_add_resource_unlock_column();
+				}
+				if ( class_exists( 'CTA_Lpcc_Ncmhce_Sync' ) ) {
+					CTA_Lpcc_Ncmhce_Sync::sync( true );
+				}
+			}
+
+			// Harden: deny HTTP access to _packages (90_Admin_Restricted and related trees).
+			if ( version_compare( $installed, '1.0.134', '<' ) && class_exists( 'CTA_Course_Materials' ) ) {
+				CTA_Course_Materials::ensure_package_tree_deny_rules();
+			}
+
+			// CTA LPCC NCMHCE: keep Draft until full student testing checklist is verified (unpublish if live).
+			if ( version_compare( $installed, '1.0.135', '<' ) ) {
+				if ( class_exists( 'CTA_Exam_Access' ) ) {
+					CTA_Exam_Access::seed_default_programs();
+				}
+				if ( class_exists( 'CTA_Course_Catalog' ) ) {
+					CTA_Course_Catalog::restore_exam_prep_pricing();
+				}
+				if ( class_exists( 'CTA_Lpcc_Ncmhce_Sync' ) ) {
+					CTA_Lpcc_Ncmhce_Sync::ensure_program();
+				}
+			}
+
+			// Fix quiz retake: drop legacy UNIQUE(user_id,quiz_id) that blocked Retry after attempt #1.
+			if ( version_compare( $installed, '1.0.136', '<' ) && class_exists( 'CTA_Database' ) ) {
+				CTA_Database::ensure_tables();
+				CTA_Database::maybe_fix_quiz_attempt_retake_index();
 			}
 
 			// Decouple supervision application pending from general account / CE access.

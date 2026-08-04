@@ -151,11 +151,20 @@ class CTA_Course_Catalog {
 				),
 			),
 			array(
-				'title'                => 'LPCC California Clinical Exam Preparation',
-				'slug'                 => 'lpcc-california-clinical-exam-preparation',
+				'title'                => 'CTA LPCC NCMHCE Exam Preparation Program',
+				'slug'                 => 'lpcc-ncmhce-exam-preparation',
 				'price'                => 249.00,
 				'access_period_months' => 6,
 				'category'             => 'Exam Preparation',
+				'launch_pending_testing' => true,
+				'match_slugs'          => array(
+					'lpcc-ncmhce-exam-preparation',
+					'lpcc-california-clinical-exam-preparation',
+				),
+				'match_titles'         => array(
+					'CTA LPCC NCMHCE Exam Preparation Program',
+					'LPCC California Clinical Exam Preparation',
+				),
 			),
 		);
 	}
@@ -583,10 +592,18 @@ class CTA_Course_Catalog {
 			);
 			$formats = array( '%s', '%s', '%f', '%s', '%d', '%f', '%s', '%d', '%d' );
 
+			$force_draft = false;
 			// Pending commercial confirmation: keep draft; do not publish a live price.
 			if ( ! empty( $entry['commercial_pending'] ) ) {
+				$data['price'] = 0.0;
+				$force_draft   = true;
+			}
+			// Launch testing incomplete: keep draft (configured price preserved for go-live).
+			if ( ! empty( $entry['launch_pending_testing'] ) ) {
+				$force_draft = true;
+			}
+			if ( $force_draft ) {
 				$data['status'] = 'draft';
-				$data['price']  = 0.0;
 				$formats[]      = '%s';
 			}
 

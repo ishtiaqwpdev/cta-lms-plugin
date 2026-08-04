@@ -2443,21 +2443,53 @@
   }
 
   /**
-   * WordPress CE course player -- mark module complete.
+   * WordPress CE course player -- mark module complete + Form A remediation.
    */
   function initCtaWpCoursePlayer() {
-    var markBtn = document.getElementById("cta-mark-complete");
-
-    if (!markBtn || markBtn.disabled || !markBtn.getAttribute("data-module-id")) {
-      return;
-    }
-
     if (typeof jQuery === "undefined" || typeof ctaAjax === "undefined") {
       return;
     }
 
     var $ = jQuery;
     var playerRoot = document.querySelector(".cta-course-player");
+    var markBtn = document.getElementById("cta-mark-complete");
+
+    document.querySelectorAll(".cta-mark-form-a-remediation").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var courseId = btn.getAttribute("data-course-id");
+        var originalText = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = "Saving...";
+
+        $.post(ctaAjax.ajaxUrl, {
+          action: "cta_complete_form_a_remediation",
+          nonce: ctaAjax.nonce,
+          course_id: courseId
+        })
+          .done(function (response) {
+            if (!response.success) {
+              window.alert(
+                response.data && response.data.message
+                  ? response.data.message
+                  : "Unable to mark remediation complete."
+              );
+              btn.disabled = false;
+              btn.textContent = originalText;
+              return;
+            }
+            window.location.reload();
+          })
+          .fail(function () {
+            window.alert("Something went wrong. Please try again.");
+            btn.disabled = false;
+            btn.textContent = originalText;
+          });
+      });
+    });
+
+    if (!markBtn || markBtn.disabled || !markBtn.getAttribute("data-module-id")) {
+      return;
+    }
 
     markBtn.addEventListener("click", function () {
       var courseId = markBtn.getAttribute("data-course-id");
@@ -2692,11 +2724,19 @@
               ".</p>";
 
           if (item.explanation) {
-            html += "<p class=\"cta-quiz-feedback__explanation\">" + item.explanation + "</p>";
+            html +=
+              '<p class="cta-quiz-feedback__explanation"></p>';
           }
 
           feedback.innerHTML = html;
           feedback.hidden = false;
+
+          if (item.explanation) {
+            var expEl = feedback.querySelector(".cta-quiz-feedback__explanation");
+            if (expEl) {
+              expEl.textContent = String(item.explanation);
+            }
+          }
         }
       });
     }
@@ -2913,17 +2953,28 @@
             updateAnswerCounter();
             showPanel("questions");
           } catch (err) {
+            if (window.console && console.error) {
+              console.error("cta_start_quiz render error", err);
+            }
             window.alert("Unable to start quiz. Please refresh the page and try again.");
           }
         })
-        .fail(function () {
-          window.alert("Something went wrong. Please try again.");
+        .fail(function (xhr) {
+          var msg = "Something went wrong. Please try again.";
+          if (xhr && xhr.responseJSON && xhr.responseJSON.data && xhr.responseJSON.data.message) {
+            msg = xhr.responseJSON.data.message;
+          }
+          window.alert(msg);
         })
         .always(function () {
           startInFlight = false;
           resetStartButton(button, originalText);
           if (startBtn && button !== startBtn) {
             resetStartButton(startBtn, "Start Quiz");
+          }
+          var retryStillThere = document.getElementById("cta-retry-quiz");
+          if (retryStillThere && button === retryStillThere) {
+            resetStartButton(retryStillThere, "Retry Quiz");
           }
         });
     }

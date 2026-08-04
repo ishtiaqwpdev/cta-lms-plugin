@@ -146,6 +146,23 @@ class CTA_Quiz {
 			);
 		}
 
+		$is_exam_prep_early = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course );
+		$quiz_type_early    = isset( $quiz->quiz_type ) ? (string) $quiz->quiz_type : '';
+		if ( 'form_b' === $quiz_type_early && $is_exam_prep_early && class_exists( 'CTA_Course_Materials' ) ) {
+			$form_b_gate = CTA_Course_Materials::assert_form_b_accessible( $user_id, $course_id );
+			if ( is_wp_error( $form_b_gate ) ) {
+				$title = ( 'form_a_remediation_required' === $form_b_gate->get_error_code() )
+					? __( 'Form A Remediation Required', 'cta-lms' )
+					: __( 'Form A Required', 'cta-lms' );
+				return $this->render_message_state(
+					$title,
+					$form_b_gate->get_error_message(),
+					$this->get_player_url( $course_id ),
+					__( 'Back to Course', 'cta-lms' )
+				);
+			}
+		}
+
 		$attempts        = CTA_Database::get_user_quiz_attempts( $user_id, (int) $quiz->id );
 		$active_attempt  = CTA_Database::get_active_quiz_attempt( $user_id, (int) $quiz->id );
 		$evaluation      = CTA_Database::get_course_evaluation( $user_id, $course_id );
@@ -209,18 +226,21 @@ class CTA_Quiz {
 		$course_id = absint( wp_unslash( $_POST['course_id'] ?? 0 ) );
 		$quiz_id   = absint( wp_unslash( $_POST['quiz_id'] ?? 0 ) );
 		$user_id   = get_current_user_id();
-		$check     = $this->validate_quiz_access( $user_id, $course_id, true, $quiz_id );
+		$course    = CTA_Database::get_course( $course_id );
+		$is_exam_prep = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course );
+
+		// Exam Prep assessments are independently retakeable; do not apply CE Capstone exam gating.
+		$check = $this->validate_quiz_access( $user_id, $course_id, ! $is_exam_prep, $quiz_id );
 
 		if ( is_wp_error( $check ) ) {
 			wp_send_json_error( array( 'message' => $check->get_error_message() ) );
 		}
 
 		/** @var object $quiz */
-		$quiz         = $check['quiz'];
-		$course       = isset( $check['course'] ) ? $check['course'] : CTA_Database::get_course( $course_id );
-		$is_exam_prep = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course );
-		$attempts     = CTA_Database::get_user_quiz_attempts( $user_id, (int) $quiz->id );
-		$active       = CTA_Database::get_active_quiz_attempt( $user_id, (int) $quiz->id );
+		$quiz     = $check['quiz'];
+		$course   = isset( $check['course'] ) ? $check['course'] : $course;
+		$attempts = CTA_Database::get_user_quiz_attempts( $user_id, (int) $quiz->id );
+		$active   = CTA_Database::get_active_quiz_attempt( $user_id, (int) $quiz->id );
 
 		if ( $active ) {
 			wp_send_json_success( $this->build_attempt_payload( $quiz, $active ) );
@@ -231,8 +251,10 @@ class CTA_Quiz {
 			wp_send_json_error( array( 'message' => __( 'You have already passed this quiz.', 'cta-lms' ) ) );
 		}
 
-		// max_attempts of 0 (or any unset/legacy value) means unlimited failed retakes.
-		// Only a passing attempt blocks further starts.
+		// Heal legacy UNIQUE(user_id,quiz_id) that blocks every retake after attempt #1.
+		if ( class_exists( 'CTA_Database' ) ) {
+			CTA_Database::maybe_fix_quiz_attempt_retake_index();
+		}
 
 		$attempt = $this->create_quiz_attempt( $user_id, (int) $quiz->id, $course_id );
 
@@ -242,7 +264,12 @@ class CTA_Quiz {
 			if ( $active ) {
 				wp_send_json_success( $this->build_attempt_payload( $quiz, $active ) );
 			}
-			wp_send_json_error( array( 'message' => __( 'Unable to start quiz. Please refresh the page and try again.', 'cta-lms' ) ) );
+			global $wpdb;
+			$message = __( 'Unable to start quiz. Please refresh the page and try again.', 'cta-lms' );
+			if ( current_user_can( 'manage_options' ) && ! empty( $wpdb->last_error ) ) {
+				$message .= ' [' . $wpdb->last_error . ']';
+			}
+			wp_send_json_error( array( 'message' => $message ) );
 		}
 
 		wp_send_json_success( $this->build_attempt_payload( $quiz, $attempt ) );
@@ -1048,17 +1075,23 @@ class CTA_Quiz {
 			return new WP_Error( 'no_quiz', __( 'Quiz not available.', 'cta-lms' ) );
 		}
 
-		// Form B unlocks after this learner has submitted Form A (per-student remediation gate).
+		// Form B: Form A submit required; Form A Remediation required when that workbook is part of the package.
 		$quiz_type = isset( $quiz->quiz_type ) ? (string) $quiz->quiz_type : '';
 		if ( 'form_b' === $quiz_type && class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course ) ) {
-			$has_form_a = class_exists( 'CTA_Lcsw_Aswb_Sync' )
-				? CTA_Lcsw_Aswb_Sync::user_has_completed_quiz_type( $user_id, $course_id, 'form_a' )
-				: ( class_exists( 'CTA_Course_Materials' ) && CTA_Course_Materials::user_has_completed_quiz_type( $user_id, $course_id, 'form_a' ) );
-			if ( ! $has_form_a ) {
-				return new WP_Error(
-					'form_a_required',
-					__( 'Complete and submit Comprehensive Simulation Form A before starting Form B.', 'cta-lms' )
-				);
+			if ( class_exists( 'CTA_Course_Materials' ) ) {
+				$form_b_ok = CTA_Course_Materials::assert_form_b_accessible( $user_id, $course_id );
+				if ( is_wp_error( $form_b_ok ) ) {
+					return $form_b_ok;
+				}
+			} else {
+				$has_form_a = class_exists( 'CTA_Lcsw_Aswb_Sync' )
+					&& CTA_Lcsw_Aswb_Sync::user_has_completed_quiz_type( $user_id, $course_id, 'form_a' );
+				if ( ! $has_form_a ) {
+					return new WP_Error(
+						'form_a_required',
+						__( 'Complete and submit Comprehensive Simulation Form A before starting Form B.', 'cta-lms' )
+					);
+				}
 			}
 		}
 
@@ -1085,7 +1118,7 @@ class CTA_Quiz {
 
 		$table = $wpdb->prefix . 'cta_quiz_attempts';
 
-		for ( $try = 0; $try < 3; $try++ ) {
+		for ( $try = 0; $try < 5; $try++ ) {
 			$max = $wpdb->get_var(
 				$wpdb->prepare(
 					"SELECT MAX(attempt_number) FROM {$table} WHERE user_id = %d AND quiz_id = %d",
@@ -1094,7 +1127,7 @@ class CTA_Quiz {
 				)
 			);
 
-			$attempt_number = absint( $max ) + 1;
+			$attempt_number = absint( $max ) + 1 + $try;
 
 			$inserted = $wpdb->insert(
 				$table,
@@ -1109,12 +1142,20 @@ class CTA_Quiz {
 			);
 
 			if ( $inserted ) {
-				return $wpdb->get_row(
+				$row = $wpdb->get_row(
 					$wpdb->prepare(
 						"SELECT * FROM {$table} WHERE id = %d",
 						(int) $wpdb->insert_id
 					)
 				);
+				if ( $row ) {
+					return $row;
+				}
+			}
+
+			// Duplicate key: heal index once, then retry with a higher attempt_number.
+			if ( $try === 0 && class_exists( 'CTA_Database' ) ) {
+				CTA_Database::maybe_fix_quiz_attempt_retake_index();
 			}
 		}
 

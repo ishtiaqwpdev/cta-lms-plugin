@@ -282,6 +282,14 @@ class CTA_Lcsw_Aswb_Sync {
 				? sanitize_text_field( (string) $item['unlock_after_quiz_type'] )
 				: '';
 
+			if ( class_exists( 'CTA_Course_Materials' )
+				&& CTA_Course_Materials::is_admin_restricted_source_path( $source . ' ' . $rel ) ) {
+				$missing[] = $rel . ' (admin_restricted)';
+				++$skipped;
+				++$order_index;
+				continue;
+			}
+
 			if ( ! empty( $item['workbook_num'] ) ) {
 				$wn = (int) $item['workbook_num'];
 				$module_id = isset( $module_by_n[ $wn ] ) ? (int) $module_by_n[ $wn ] : 0;
