@@ -309,7 +309,7 @@ class CTA_Database {
 
 		self::maybe_add_exam_prep_columns();
 		self::maybe_add_multi_quiz_support();
-		self::maybe_fix_quiz_attempt_retake_index();
+		self::maybe_ensure_quiz_attempt_schema();
 		self::maybe_add_resource_columns();
 		self::maybe_add_resource_unlock_column();
 		self::maybe_add_syllabus_columns();
@@ -1193,10 +1193,98 @@ class CTA_Database {
 	}
 
 	/**
+	 * Ensure attempt_number exists, zero-dates are cleaned, and retake unique key allows multiple attempts.
+	 */
+	public static function maybe_ensure_quiz_attempt_schema() {
+		global $wpdb;
+
+		$table = $wpdb->prefix . 'cta_quiz_attempts';
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) );
+		if ( $exists !== $table ) {
+			return;
+		}
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$col = $wpdb->get_results( $wpdb->prepare( "SHOW COLUMNS FROM {$table} LIKE %s", 'attempt_number' ) );
+		if ( empty( $col ) ) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
+			$wpdb->query( "ALTER TABLE {$table} ADD COLUMN attempt_number int(11) NOT NULL DEFAULT 1 AFTER passed" );
+		}
+
+		// Normalize legacy zero-dates so "active" detection works.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$wpdb->query(
+			"UPDATE {$table}
+			SET completed_at = NULL
+			WHERE completed_at = '0000-00-00 00:00:00'
+				OR completed_at = '0000-00-00'"
+		);
+
+		self::maybe_renumber_duplicate_attempt_numbers();
+		self::maybe_fix_quiz_attempt_retake_index();
+	}
+
+	/**
+	 * When attempt_number was backfilled as 1 for every row, renumber per user/quiz
+	 * so UNIQUE(user_id, quiz_id, attempt_number) can be created and Start/Retry works.
+	 */
+	public static function maybe_renumber_duplicate_attempt_numbers() {
+		global $wpdb;
+
+		$table = $wpdb->prefix . 'cta_quiz_attempts';
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$dupes = $wpdb->get_results(
+			"SELECT user_id, quiz_id
+			FROM {$table}
+			GROUP BY user_id, quiz_id, attempt_number
+			HAVING COUNT(*) > 1
+			LIMIT 200"
+		);
+
+		if ( empty( $dupes ) ) {
+			return;
+		}
+
+		$seen = array();
+		foreach ( $dupes as $pair ) {
+			$user_id = absint( $pair->user_id );
+			$quiz_id = absint( $pair->quiz_id );
+			$key     = $user_id . ':' . $quiz_id;
+			if ( isset( $seen[ $key ] ) ) {
+				continue;
+			}
+			$seen[ $key ] = true;
+
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$rows = $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT id FROM {$table} WHERE user_id = %d AND quiz_id = %d ORDER BY id ASC",
+					$user_id,
+					$quiz_id
+				)
+			);
+
+			$n = 1;
+			foreach ( (array) $rows as $row ) {
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$wpdb->update(
+					$table,
+					array( 'attempt_number' => $n ),
+					array( 'id' => (int) $row->id ),
+					array( '%d' ),
+					array( '%d' )
+				);
+				++$n;
+			}
+		}
+	}
+
+	/**
 	 * Ensure quiz attempts allow unlimited retakes (UNIQUE includes attempt_number).
 	 *
-	 * Older installs may only have UNIQUE(user_id, quiz_id), which blocks Retry after
-	 * the first completed attempt with "Unable to start quiz".
+	 * Older installs may only have UNIQUE(user_id, quiz_id), which blocks Start/Retry
+	 * after the first attempt with "Unable to start quiz".
 	 */
 	public static function maybe_fix_quiz_attempt_retake_index() {
 		global $wpdb;
@@ -1210,8 +1298,8 @@ class CTA_Database {
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$indexes = $wpdb->get_results( "SHOW INDEX FROM {$table}", ARRAY_A );
-		if ( empty( $indexes ) ) {
-			return;
+		if ( ! is_array( $indexes ) ) {
+			$indexes = array();
 		}
 
 		$by_name = array();
@@ -1241,8 +1329,13 @@ class CTA_Database {
 				continue;
 			}
 
-			// Drop legacy UNIQUE(user_id, quiz_id) (with or without other names).
-			if ( $meta['unique'] && array( 'user_id', 'quiz_id' ) === $cols ) {
+			// Drop any unique key that prevents a second attempt for the same user/quiz.
+			if (
+				$meta['unique']
+				&& in_array( 'user_id', $cols, true )
+				&& in_array( 'quiz_id', $cols, true )
+				&& ! in_array( 'attempt_number', $cols, true )
+			) {
 				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				$wpdb->query( "ALTER TABLE {$table} DROP INDEX `{$name}`" );
 			}
@@ -1250,9 +1343,17 @@ class CTA_Database {
 
 		if ( ! $has_correct_unique ) {
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
-			$wpdb->query(
+			$ok = $wpdb->query(
 				"ALTER TABLE {$table} ADD UNIQUE KEY user_quiz_attempt (user_id, quiz_id, attempt_number)"
 			);
+			if ( false === $ok ) {
+				// Duplicate attempt_number rows can block the unique key; renumber then retry once.
+				self::maybe_renumber_duplicate_attempt_numbers();
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
+				$wpdb->query(
+					"ALTER TABLE {$table} ADD UNIQUE KEY user_quiz_attempt (user_id, quiz_id, attempt_number)"
+				);
+			}
 		}
 	}
 
@@ -1438,7 +1539,12 @@ class CTA_Database {
 		return $wpdb->get_row(
 			$wpdb->prepare(
 				"SELECT * FROM {$table}
-				WHERE user_id = %d AND quiz_id = %d AND completed_at IS NULL
+				WHERE user_id = %d AND quiz_id = %d
+					AND (
+						completed_at IS NULL
+						OR completed_at = '0000-00-00 00:00:00'
+						OR completed_at = '0000-00-00'
+					)
 				ORDER BY id DESC LIMIT 1",
 				$user_id,
 				$quiz_id
