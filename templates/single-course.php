@@ -65,8 +65,8 @@ $commercial_pending = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::comm
 							<span class="badge badge--primary">
 								<?php
 								printf(
-									/* translators: %d: months of access */
-									esc_html__( '%d months access', 'cta-lms' ),
+									/* translators: %d: months of access from enrollment */
+									esc_html__( '%d months from enrollment', 'cta-lms' ),
 									$access_months
 								);
 								?>
@@ -265,7 +265,8 @@ $commercial_pending = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::comm
 							<ul class="course-module-list">
 								<?php foreach ( $modules as $index => $module ) : ?>
 									<?php
-									$has_module_video = ! empty( trim( (string) $module->video_url ) );
+									// Exam Prep launch: never advertise or expose module video UI (no recorded media).
+									$has_module_video = ! $is_exam_prep && ! empty( trim( (string) $module->video_url ) );
 									$module_locked    = ! $is_enrolled;
 									$module_video_id  = 'cta-module-video-' . (int) $module->id;
 									$item_classes     = array( 'course-module-list__item' );
@@ -488,7 +489,19 @@ $commercial_pending = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::comm
 						<?php endif; ?>
 					</p>
 					<ul class="course-sidebar__meta">
-						<li class="course-sidebar__meta-item"><span><strong><?php esc_html_e( 'Format:', 'cta-lms' ); ?></strong> <?php esc_html_e( 'Self-paced, online', 'cta-lms' ); ?></span></li>
+						<li class="course-sidebar__meta-item">
+							<span>
+								<strong><?php esc_html_e( 'Format:', 'cta-lms' ); ?></strong>
+								<?php
+								$format_label = ! empty( $syllabus_meta['instructional_method'] )
+									? (string) $syllabus_meta['instructional_method']
+									: ( $is_exam_prep
+										? __( 'Self-paced asynchronous', 'cta-lms' )
+										: __( 'Self-paced, online', 'cta-lms' ) );
+								echo esc_html( $format_label );
+								?>
+							</span>
+						</li>
 						<li class="course-sidebar__meta-item"><span><strong><?php esc_html_e( 'Modules:', 'cta-lms' ); ?></strong> <?php echo esc_html( (string) count( $modules ) ); ?></span></li>
 						<?php if ( $quiz ) : ?>
 							<li class="course-sidebar__meta-item"><span><strong><?php echo $is_exam_prep ? esc_html__( 'Practice exam:', 'cta-lms' ) : esc_html__( 'Quiz:', 'cta-lms' ); ?></strong> <?php echo esc_html( (string) count( $quiz_questions ) ); ?> <?php esc_html_e( 'questions', 'cta-lms' ); ?></span></li>
@@ -498,8 +511,14 @@ $commercial_pending = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::comm
 								<li class="course-sidebar__meta-item"><span><strong><?php esc_html_e( 'Access:', 'cta-lms' ); ?></strong> <?php esc_html_e( 'Pending client confirmation', 'cta-lms' ); ?></span></li>
 								<li class="course-sidebar__meta-item"><span><strong><?php esc_html_e( 'Classification:', 'cta-lms' ); ?></strong> <?php esc_html_e( 'Exam Preparation Only — No CE Credit (pending confirmation)', 'cta-lms' ); ?></span></li>
 							<?php else : ?>
-								<li class="course-sidebar__meta-item"><span><strong><?php esc_html_e( 'Access:', 'cta-lms' ); ?></strong> <?php echo esc_html( (string) $access_months ); ?> <?php esc_html_e( 'months from enrollment', 'cta-lms' ); ?></span></li>
-								<li class="course-sidebar__meta-item"><span><strong><?php esc_html_e( 'Classification:', 'cta-lms' ); ?></strong> <?php esc_html_e( 'Exam Preparation Only — No CE Credit', 'cta-lms' ); ?></span></li>
+								<li class="course-sidebar__meta-item"><span><strong><?php esc_html_e( 'Access Period:', 'cta-lms' ); ?></strong> <?php echo esc_html( (string) $access_months ); ?> <?php esc_html_e( 'months from enrollment', 'cta-lms' ); ?></span></li>
+								<li class="course-sidebar__meta-item"><span><strong><?php esc_html_e( 'Classification:', 'cta-lms' ); ?></strong> <?php
+									echo esc_html(
+										! empty( $syllabus_meta['course_classification'] )
+											? (string) $syllabus_meta['course_classification']
+											: __( 'Exam Preparation Only — No CE Credit', 'cta-lms' )
+									);
+								?></span></li>
 							<?php endif; ?>
 						<?php else : ?>
 							<li class="course-sidebar__meta-item"><span><strong><?php esc_html_e( 'CE Hours:', 'cta-lms' ); ?></strong> <?php echo esc_html( $ce_hours ); ?></span></li>

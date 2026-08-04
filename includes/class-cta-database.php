@@ -309,6 +309,7 @@ class CTA_Database {
 
 		self::maybe_add_exam_prep_columns();
 		self::maybe_add_multi_quiz_support();
+		self::maybe_fix_quiz_attempt_retake_index();
 		self::maybe_add_resource_columns();
 		self::maybe_add_resource_unlock_column();
 		self::maybe_add_syllabus_columns();
@@ -1189,6 +1190,70 @@ class CTA_Database {
 			WHERE c.product_type = 'exam_prep'
 			AND (q.quiz_type = '' OR q.quiz_type IS NULL OR q.quiz_type = 'final')"
 		);
+	}
+
+	/**
+	 * Ensure quiz attempts allow unlimited retakes (UNIQUE includes attempt_number).
+	 *
+	 * Older installs may only have UNIQUE(user_id, quiz_id), which blocks Retry after
+	 * the first completed attempt with "Unable to start quiz".
+	 */
+	public static function maybe_fix_quiz_attempt_retake_index() {
+		global $wpdb;
+
+		$table = $wpdb->prefix . 'cta_quiz_attempts';
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) );
+		if ( $exists !== $table ) {
+			return;
+		}
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$indexes = $wpdb->get_results( "SHOW INDEX FROM {$table}", ARRAY_A );
+		if ( empty( $indexes ) ) {
+			return;
+		}
+
+		$by_name = array();
+		foreach ( $indexes as $row ) {
+			$name = isset( $row['Key_name'] ) ? (string) $row['Key_name'] : '';
+			if ( '' === $name || 'PRIMARY' === $name ) {
+				continue;
+			}
+			if ( ! isset( $by_name[ $name ] ) ) {
+				$by_name[ $name ] = array(
+					'unique'  => ( isset( $row['Non_unique'] ) && 0 === (int) $row['Non_unique'] ),
+					'columns' => array(),
+				);
+			}
+			$seq = isset( $row['Seq_in_index'] ) ? (int) $row['Seq_in_index'] : 0;
+			$col = isset( $row['Column_name'] ) ? (string) $row['Column_name'] : '';
+			if ( $seq > 0 && '' !== $col ) {
+				$by_name[ $name ]['columns'][ $seq ] = $col;
+			}
+		}
+
+		$has_correct_unique = false;
+		foreach ( $by_name as $name => $meta ) {
+			$cols = array_values( $meta['columns'] );
+			if ( $meta['unique'] && array( 'user_id', 'quiz_id', 'attempt_number' ) === $cols ) {
+				$has_correct_unique = true;
+				continue;
+			}
+
+			// Drop legacy UNIQUE(user_id, quiz_id) (with or without other names).
+			if ( $meta['unique'] && array( 'user_id', 'quiz_id' ) === $cols ) {
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				$wpdb->query( "ALTER TABLE {$table} DROP INDEX `{$name}`" );
+			}
+		}
+
+		if ( ! $has_correct_unique ) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
+			$wpdb->query(
+				"ALTER TABLE {$table} ADD UNIQUE KEY user_quiz_attempt (user_id, quiz_id, attempt_number)"
+			);
+		}
 	}
 
 	/**

@@ -24,6 +24,7 @@ class CTA_Student_Dashboard {
 		add_shortcode( 'cta_course_player', array( $this, 'render_player' ) );
 
 		add_action( 'wp_ajax_cta_complete_module', array( $this, 'ajax_mark_module_complete' ) );
+		add_action( 'wp_ajax_cta_complete_form_a_remediation', array( $this, 'ajax_mark_form_a_remediation_complete' ) );
 		add_action( 'wp_ajax_cta_download_cert', array( $this, 'ajax_download_certificate' ) );
 		add_action( 'wp_ajax_cta_save_profile', array( $this, 'ajax_save_profile' ) );
 		add_action( 'wp_ajax_cta_download_resource', array( $this, 'ajax_download_resource' ) );
@@ -120,6 +121,9 @@ class CTA_Student_Dashboard {
 				$has_access = in_array( (string) $enrollment->status, array( 'active', 'completed' ), true );
 			}
 			$resources     = CTA_Database::get_downloadable_resources( (int) $course->id );
+			if ( class_exists( 'CTA_Course_Materials' ) ) {
+				$resources = CTA_Course_Materials::filter_student_visible_resources( $resources );
+			}
 			$quiz          = CTA_Database::get_quiz_by_course( (int) $course->id );
 			$quiz_url      = '';
 
@@ -372,24 +376,37 @@ class CTA_Student_Dashboard {
 		// Exam Prep can have multiple assessments; CE still uses the primary quiz.
 		$course_quizzes = CTA_Database::get_quizzes_by_course( $course_id, true );
 		$quiz_cards     = array();
+		$user_id_player = get_current_user_id();
 		foreach ( $course_quizzes as $qrow ) {
 			$q_questions = CTA_Database::get_quiz_questions( (int) $qrow->id );
 			if ( empty( $q_questions ) ) {
 				continue;
 			}
-			$attempts = CTA_Database::get_user_quiz_attempts( get_current_user_id(), (int) $qrow->id );
+			$attempts = CTA_Database::get_user_quiz_attempts( $user_id_player, (int) $qrow->id );
 			$best     = null;
 			foreach ( $attempts as $att ) {
 				if ( null === $best || (int) $att->score > (int) $best->score ) {
 					$best = $att;
 				}
 			}
+			$locked     = false;
+			$lock_msg   = '';
+			$q_type     = isset( $qrow->quiz_type ) ? (string) $qrow->quiz_type : '';
+			if ( 'form_b' === $q_type && class_exists( 'CTA_Course_Materials' ) ) {
+				$form_b_ok = CTA_Course_Materials::assert_form_b_accessible( $user_id_player, $course_id );
+				if ( is_wp_error( $form_b_ok ) ) {
+					$locked   = true;
+					$lock_msg = $form_b_ok->get_error_message();
+				}
+			}
 			$quiz_cards[] = array(
 				'quiz'     => $qrow,
-				'url'      => $this->get_quiz_url( $course_id, (int) $qrow->id ),
+				'url'      => $locked ? '' : $this->get_quiz_url( $course_id, (int) $qrow->id ),
 				'attempts' => $attempts,
 				'best'     => $best,
 				'passed'   => $best && (int) $best->passed,
+				'locked'   => $locked,
+				'lock_msg' => $lock_msg,
 			);
 		}
 		$quiz_available = ! empty( $quiz_cards );
@@ -403,6 +420,9 @@ class CTA_Student_Dashboard {
 		$module_complete = in_array( (int) $module->id, $completed_ids, true );
 		$dashboard      = $this;
 		$resources      = CTA_Database::get_downloadable_resources( $course_id );
+		if ( class_exists( 'CTA_Course_Materials' ) ) {
+			$resources = CTA_Course_Materials::filter_student_visible_resources( $resources );
+		}
 		$is_exam_prep   = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course );
 
 		ob_start();
@@ -520,6 +540,50 @@ class CTA_Student_Dashboard {
 				'quiz_unlocked'    => $progress >= 100,
 				'next_module_id'   => $next_module_id,
 				'next_module_url'  => $next_url,
+			)
+		);
+	}
+
+	/**
+	 * AJAX: mark Form A Remediation Workbook complete (unlocks Form B when required).
+	 */
+	public function ajax_mark_form_a_remediation_complete() {
+		check_ajax_referer( 'cta_nonce', 'nonce' );
+
+		if ( ! is_user_logged_in() ) {
+			wp_send_json_error( array( 'message' => __( 'Please log in to continue.', 'cta-lms' ) ) );
+		}
+
+		$user_id   = get_current_user_id();
+		$course_id = absint( wp_unslash( $_POST['course_id'] ?? 0 ) );
+		$course    = $course_id ? CTA_Database::get_course( $course_id ) : null;
+		$enrollment = CTA_Database::get_user_enrollment( $user_id, $course_id );
+
+		if ( ! $enrollment || ! $course ) {
+			wp_send_json_error( array( 'message' => __( 'Enrollment not found.', 'cta-lms' ) ) );
+		}
+
+		if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course ) ) {
+			if ( ! CTA_Exam_Access::has_active_access( $user_id, $course_id ) ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Your access to this Exam Preparation Program has expired.', 'cta-lms' ) )
+				);
+			}
+		}
+
+		if ( ! class_exists( 'CTA_Course_Materials' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Unable to update remediation status.', 'cta-lms' ) ) );
+		}
+
+		$result = CTA_Course_Materials::mark_form_a_remediation_complete( $user_id, $course_id );
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
+		}
+
+		wp_send_json_success(
+			array(
+				'message'       => __( 'Form A Remediation marked complete. Form B is now unlocked.', 'cta-lms' ),
+				'form_b_unlocked' => true,
 			)
 		);
 	}
@@ -1000,6 +1064,11 @@ class CTA_Student_Dashboard {
 	 * @return string
 	 */
 	public function get_module_video_markup( $module, $course ) {
+		// Exam Prep programs ship written materials only at launch — never advertise video.
+		if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course ) ) {
+			return '';
+		}
+
 		$video_url = (string) $module->video_url;
 
 		if ( preg_match( '/^\d+$/', trim( $video_url ) ) ) {

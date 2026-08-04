@@ -50,6 +50,11 @@ $cta_render_material_item = static function ( $resource ) use ( $is_enrolled ) {
 		? CTA_Course_Materials::get_serve_url( (int) $resource->id )
 		: '';
 	$type_label = ! empty( $resource->file_type ) ? strtoupper( (string) $resource->file_type ) : '';
+	$is_remediation = $can_access
+		&& class_exists( 'CTA_Course_Materials' )
+		&& CTA_Course_Materials::is_form_a_remediation_resource( $resource );
+	$remediation_done = $is_remediation
+		&& CTA_Course_Materials::user_has_completed_form_a_remediation( $user_id, (int) $resource->course_id );
 	?>
 	<li class="cta-materials-list__item course-module-list__item">
 		<div class="course-module-list__row">
@@ -60,6 +65,10 @@ $cta_render_material_item = static function ( $resource ) use ( $is_enrolled ) {
 				<strong class="course-module-list__title"><?php echo esc_html( $resource->title ); ?></strong>
 				<?php if ( $lock_msg ) : ?>
 					<p class="course-module-list__desc"><?php echo esc_html( $lock_msg ); ?></p>
+				<?php elseif ( $is_remediation && ! $remediation_done ) : ?>
+					<p class="course-module-list__desc"><?php echo esc_html__( 'Required before Form B unlocks. Download, complete, then mark complete.', 'cta-lms' ); ?></p>
+				<?php elseif ( $is_remediation && $remediation_done ) : ?>
+					<p class="course-module-list__desc"><?php echo esc_html__( 'Remediation complete — Form B unlocked.', 'cta-lms' ); ?></p>
 				<?php elseif ( $type_label ) : ?>
 					<p class="course-module-list__desc"><?php echo esc_html( $type_label ); ?></p>
 				<?php endif; ?>
@@ -77,6 +86,17 @@ $cta_render_material_item = static function ( $resource ) use ( $is_enrolled ) {
 				<span class="course-module-list__lock" title="<?php echo esc_attr( $lock_msg ); ?>" aria-hidden="true">
 					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
 				</span>
+			<?php endif; ?>
+			<?php if ( $is_remediation && ! $remediation_done ) : ?>
+				<button
+					type="button"
+					class="btn btn-primary btn--sm cta-mark-form-a-remediation"
+					data-course-id="<?php echo esc_attr( (string) (int) $resource->course_id ); ?>"
+				>
+					<?php echo esc_html__( 'Mark remediation complete', 'cta-lms' ); ?>
+				</button>
+			<?php elseif ( $is_remediation && $remediation_done ) : ?>
+				<span class="badge badge--success"><?php echo esc_html__( 'Complete', 'cta-lms' ); ?></span>
 			<?php endif; ?>
 		</div>
 	</li>

@@ -155,15 +155,24 @@ $next_url = $next_module
 										<li class="cta-exam-assessment-list__item">
 											<div class="cta-exam-assessment-list__meta">
 												<strong><?php echo esc_html( $card['quiz']->title ); ?></strong>
-												<?php if ( $card['passed'] ) : ?>
+												<?php if ( ! empty( $card['locked'] ) ) : ?>
+													<span class="badge badge--warning"><?php echo esc_html__( 'Locked', 'cta-lms' ); ?></span>
+												<?php elseif ( $card['passed'] ) : ?>
 													<span class="badge badge--success"><?php echo esc_html__( 'Passed', 'cta-lms' ); ?> — <?php echo esc_html( (string) (int) $card['best']->score ); ?>%</span>
 												<?php elseif ( $card['best'] ) : ?>
 													<span class="badge"><?php echo esc_html__( 'Best score', 'cta-lms' ); ?>: <?php echo esc_html( (string) (int) $card['best']->score ); ?>%</span>
 												<?php else : ?>
 													<span class="badge"><?php echo esc_html__( 'Not started', 'cta-lms' ); ?></span>
 												<?php endif; ?>
+												<?php if ( ! empty( $card['locked'] ) && ! empty( $card['lock_msg'] ) ) : ?>
+													<p class="text-small" style="margin:0.35rem 0 0;"><?php echo esc_html( $card['lock_msg'] ); ?></p>
+												<?php endif; ?>
 											</div>
-											<?php if ( $quiz_page_id && ! empty( $card['url'] ) && '#' !== $card['url'] ) : ?>
+											<?php if ( ! empty( $card['locked'] ) ) : ?>
+												<span class="btn btn-outline btn--sm" aria-disabled="true" title="<?php echo esc_attr( (string) ( $card['lock_msg'] ?? '' ) ); ?>">
+													<?php echo esc_html__( 'Locked', 'cta-lms' ); ?>
+												</span>
+											<?php elseif ( $quiz_page_id && ! empty( $card['url'] ) && '#' !== $card['url'] ) : ?>
 												<a href="<?php echo esc_url( $card['url'] ); ?>" class="btn btn-primary btn--sm cta-quiz-btn">
 													<?php echo $card['passed'] ? esc_html__( 'Retake', 'cta-lms' ) : esc_html__( 'Start', 'cta-lms' ); ?>
 												</a>

@@ -105,6 +105,16 @@ class CTA_Course_Materials {
 			return false;
 		}
 
+		// Never expose admin/source/control package files on student surfaces.
+		$path_bits = trim(
+			(string) ( $resource->file_path ?? '' ) . ' ' .
+			(string) ( $resource->file_url ?? '' ) . ' ' .
+			(string) ( $resource->title ?? '' )
+		);
+		if ( self::is_admin_restricted_source_path( $path_bits ) ) {
+			return false;
+		}
+
 		$course_id  = (int) $resource->course_id;
 		$enrollment = class_exists( 'CTA_Database' )
 			? CTA_Database::get_user_enrollment( $user_id, $course_id )
@@ -126,15 +136,159 @@ class CTA_Course_Materials {
 			}
 		}
 
-		// Per-student, per-form unlock: Form A/B detailed rationales stay hidden until that form is submitted.
+		// Per-student unlock gates (quiz submit or Form A remediation completion).
 		$unlock_type = isset( $resource->unlock_after_quiz_type )
 			? sanitize_text_field( (string) $resource->unlock_after_quiz_type )
 			: '';
 		if ( '' !== $unlock_type ) {
+			if ( 'form_a_remediation' === $unlock_type ) {
+				return self::user_has_completed_form_a_remediation( $user_id, $course_id );
+			}
 			if ( class_exists( 'CTA_Lcsw_Aswb_Sync' ) ) {
 				return CTA_Lcsw_Aswb_Sync::user_has_completed_quiz_type( $user_id, $course_id, $unlock_type );
 			}
 			return self::user_has_completed_quiz_type( $user_id, $course_id, $unlock_type );
+		}
+
+		return true;
+	}
+
+	/**
+	 * User-meta key for Form A remediation completion on a course.
+	 *
+	 * @param int $course_id Course ID.
+	 * @return string
+	 */
+	public static function form_a_remediation_meta_key( $course_id ) {
+		return 'cta_form_a_remediation_complete_' . absint( $course_id );
+	}
+
+	/**
+	 * Whether a downloadable resource is the Form A Remediation Workbook.
+	 *
+	 * @param object|null $resource Resource row.
+	 * @return bool
+	 */
+	public static function is_form_a_remediation_resource( $resource ) {
+		if ( ! $resource ) {
+			return false;
+		}
+
+		$title = (string) ( $resource->title ?? '' );
+		$path  = (string) ( $resource->file_path ?? '' );
+
+		if ( false !== stripos( $title, 'Remediation' ) && false !== stripos( $title, 'Form A' ) ) {
+			return true;
+		}
+
+		if ( false !== stripos( $path, 'Form_A_Remediation' ) || false !== stripos( $path, 'Remediation_Workbook' ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Whether this course attaches a Form A Remediation Workbook (hard Form B prerequisite).
+	 *
+	 * @param int $course_id Course ID.
+	 * @return bool
+	 */
+	public static function course_has_form_a_remediation( $course_id ) {
+		$course_id = absint( $course_id );
+		if ( ! $course_id || ! class_exists( 'CTA_Database' ) ) {
+			return false;
+		}
+
+		foreach ( (array) CTA_Database::get_downloadable_resources( $course_id ) as $resource ) {
+			if ( self::is_form_a_remediation_resource( $resource ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Whether this student has marked Form A Remediation complete for the course.
+	 *
+	 * @param int $user_id   User ID.
+	 * @param int $course_id Course ID.
+	 * @return bool
+	 */
+	public static function user_has_completed_form_a_remediation( $user_id, $course_id ) {
+		$user_id   = absint( $user_id );
+		$course_id = absint( $course_id );
+		if ( ! $user_id || ! $course_id ) {
+			return false;
+		}
+
+		$val = get_user_meta( $user_id, self::form_a_remediation_meta_key( $course_id ), true );
+		return is_string( $val ) && '' !== $val;
+	}
+
+	/**
+	 * Mark Form A Remediation complete for this student/course.
+	 *
+	 * @param int $user_id   User ID.
+	 * @param int $course_id Course ID.
+	 * @return true|WP_Error
+	 */
+	public static function mark_form_a_remediation_complete( $user_id, $course_id ) {
+		$user_id   = absint( $user_id );
+		$course_id = absint( $course_id );
+
+		if ( ! $user_id || ! $course_id ) {
+			return new WP_Error( 'invalid', __( 'Invalid request.', 'cta-lms' ) );
+		}
+
+		if ( ! self::course_has_form_a_remediation( $course_id ) ) {
+			return new WP_Error( 'no_remediation', __( 'This program does not include a Form A Remediation Workbook.', 'cta-lms' ) );
+		}
+
+		$has_form_a = class_exists( 'CTA_Lcsw_Aswb_Sync' )
+			? CTA_Lcsw_Aswb_Sync::user_has_completed_quiz_type( $user_id, $course_id, 'form_a' )
+			: self::user_has_completed_quiz_type( $user_id, $course_id, 'form_a' );
+
+		if ( ! $has_form_a ) {
+			return new WP_Error(
+				'form_a_required',
+				__( 'Submit Comprehensive Simulation Form A before completing the Form A Remediation Workbook.', 'cta-lms' )
+			);
+		}
+
+		update_user_meta( $user_id, self::form_a_remediation_meta_key( $course_id ), current_time( 'mysql' ) );
+		return true;
+	}
+
+	/**
+	 * Form B hard prerequisites for exam-prep programs (Form A, then remediation when present).
+	 *
+	 * @param int $user_id   User ID.
+	 * @param int $course_id Course ID.
+	 * @return true|WP_Error
+	 */
+	public static function assert_form_b_accessible( $user_id, $course_id ) {
+		$user_id   = absint( $user_id );
+		$course_id = absint( $course_id );
+
+		$has_form_a = class_exists( 'CTA_Lcsw_Aswb_Sync' )
+			? CTA_Lcsw_Aswb_Sync::user_has_completed_quiz_type( $user_id, $course_id, 'form_a' )
+			: self::user_has_completed_quiz_type( $user_id, $course_id, 'form_a' );
+
+		if ( ! $has_form_a ) {
+			return new WP_Error(
+				'form_a_required',
+				__( 'Complete and submit Comprehensive Simulation Form A before starting Form B.', 'cta-lms' )
+			);
+		}
+
+		if ( self::course_has_form_a_remediation( $course_id )
+			&& ! self::user_has_completed_form_a_remediation( $user_id, $course_id ) ) {
+			return new WP_Error(
+				'form_a_remediation_required',
+				__( 'Complete the Form A Remediation Workbook before starting Form B.', 'cta-lms' )
+			);
 		}
 
 		return true;
@@ -198,19 +352,42 @@ class CTA_Course_Materials {
 		$type      = sanitize_text_field( (string) $resource->unlock_after_quiz_type );
 		$course_id = isset( $resource->course_id ) ? (int) $resource->course_id : 0;
 
-		$unlocked = class_exists( 'CTA_Lcsw_Aswb_Sync' )
-			? CTA_Lcsw_Aswb_Sync::user_has_completed_quiz_type( $user_id, $course_id, $type )
-			: self::user_has_completed_quiz_type( $user_id, $course_id, $type );
+		if ( 'form_a_remediation' === $type ) {
+			$unlocked = self::user_has_completed_form_a_remediation( $user_id, $course_id );
+		} else {
+			$unlocked = class_exists( 'CTA_Lcsw_Aswb_Sync' )
+				? CTA_Lcsw_Aswb_Sync::user_has_completed_quiz_type( $user_id, $course_id, $type )
+				: self::user_has_completed_quiz_type( $user_id, $course_id, $type );
+		}
 
 		if ( $unlocked ) {
 			return '';
 		}
 
+		if ( 'form_a_remediation' === $type ) {
+			return __( 'Available after you complete the Form A Remediation Workbook.', 'cta-lms' );
+		}
 		if ( 'form_a' === $type ) {
 			return __( 'Available after you submit Comprehensive Simulation Form A.', 'cta-lms' );
 		}
 		if ( 'form_b' === $type ) {
 			return __( 'Available after you submit Comprehensive Simulation Form B.', 'cta-lms' );
+		}
+		if ( 'checkpoint_1' === $type ) {
+			return __( 'Available after you submit Checkpoint 1.', 'cta-lms' );
+		}
+		if ( 'checkpoint_2' === $type ) {
+			return __( 'Available after you submit Checkpoint 2.', 'cta-lms' );
+		}
+		if ( 'checkpoint_3' === $type ) {
+			return __( 'Available after you submit Checkpoint 3.', 'cta-lms' );
+		}
+		if ( preg_match( '/^wb(\d+)_bank$/', $type, $m ) ) {
+			return sprintf(
+				/* translators: %d: workbook number */
+				__( 'Available after you submit Workbook %d Practice Bank.', 'cta-lms' ),
+				(int) $m[1]
+			);
 		}
 
 		return __( 'Available after you submit the related assessment.', 'cta-lms' );
@@ -272,6 +449,10 @@ class CTA_Course_Materials {
 	public static function ensure_deny_rules( $dir ) {
 		$dir = trailingslashit( $dir );
 
+		if ( ! is_dir( $dir ) ) {
+			return;
+		}
+
 		$htaccess = $dir . '.htaccess';
 		if ( ! file_exists( $htaccess ) ) {
 			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
@@ -281,11 +462,86 @@ class CTA_Course_Materials {
 			);
 		}
 
+		$webconfig = $dir . 'web.config';
+		if ( ! file_exists( $webconfig ) ) {
+			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
+			file_put_contents(
+				$webconfig,
+				"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+				. "<configuration>\n"
+				. "  <system.webServer>\n"
+				. "    <security>\n"
+				. "      <authorization>\n"
+				. "        <deny users=\"*\" />\n"
+				. "      </authorization>\n"
+				. "    </security>\n"
+				. "  </system.webServer>\n"
+				. "</configuration>\n"
+			);
+		}
+
 		$index = $dir . 'index.php';
 		if ( ! file_exists( $index ) ) {
 			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
 			file_put_contents( $index, "<?php\n// Silence is golden.\n" );
 		}
+	}
+
+	/**
+	 * Deny HTTP access to release packages (90_Admin_Restricted, archives, etc.).
+	 *
+	 * Source packages live under `_packages/` for admin/build use only and must never
+	 * be student-visible — matching LCSW / LMFT / LPCC release rules.
+	 */
+	public static function ensure_package_tree_deny_rules() {
+		if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
+			return;
+		}
+
+		$packages = CTA_PLUGIN_DIR . '_packages';
+		if ( is_dir( $packages ) ) {
+			self::ensure_deny_rules( $packages );
+		}
+	}
+
+	/**
+	 * Whether a filesystem path points at admin/source/control content that must stay off student surfaces.
+	 *
+	 * @param string $path Absolute or relative path.
+	 * @return bool
+	 */
+	public static function is_admin_restricted_source_path( $path ) {
+		$norm = strtolower( str_replace( '\\', '/', (string) $path ) );
+		if ( '' === $norm ) {
+			return false;
+		}
+
+		$markers = array(
+			'/90_admin_restricted/',
+			'90_admin_restricted/',
+			'/99_archive_superseded',
+			'99_archive_superseded_do_not_publish',
+			'/08_unrecorded_production',
+			'unrecorded_do_not_publish',
+			'_do_not_publish/',
+			'/assessment_synchronization/',
+			'/blueprints_and_crosswalks/',
+			'/blueprint_and_qc_reports/',
+			'/administrative_item_banks/',
+			'/production_standards_and_crosswalks/',
+			'/program_audit_and_source_control/',
+			'/official_source_reference/',
+			'/question_bank_and_simulation_controls/',
+			'administrative_master_item_bank',
+		);
+
+		foreach ( $markers as $marker ) {
+			if ( false !== strpos( $norm, $marker ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -642,6 +898,13 @@ class CTA_Course_Materials {
 			return new WP_Error( 'cta_missing_file', __( 'Source material file not found.', 'cta-lms' ) );
 		}
 
+		if ( self::is_admin_restricted_source_path( $source_path ) ) {
+			return new WP_Error(
+				'cta_admin_restricted',
+				__( 'Admin-restricted source and control documents cannot be published to students.', 'cta-lms' )
+			);
+		}
+
 		$size = filesize( $source_path );
 		if ( false !== $size && $size > self::MAX_UPLOAD_BYTES ) {
 			return new WP_Error(
@@ -750,6 +1013,16 @@ class CTA_Course_Materials {
 			wp_die( esc_html__( 'File not found.', 'cta-lms' ), 404 );
 		}
 
+		$local_probe = self::resolve_local_path( $resource );
+		$path_bits   = trim(
+			(string) ( $local_probe ? $local_probe : '' ) . ' ' .
+			(string) ( $resource->file_path ?? '' ) . ' ' .
+			(string) ( $resource->title ?? '' )
+		);
+		if ( self::is_admin_restricted_source_path( $path_bits ) ) {
+			wp_die( esc_html__( 'This file is not available.', 'cta-lms' ), 403 );
+		}
+
 		$user_id = get_current_user_id();
 		if ( ! self::user_can_access( $user_id, $resource ) ) {
 			$gate_msg = self::get_unlock_lock_message( $user_id, $resource );
@@ -794,6 +1067,35 @@ class CTA_Course_Materials {
 	 * @param array $modules   Module rows (for titles).
 	 * @return array{course:array,modules:array<int,array>}
 	 */
+	/**
+	 * Strip admin/source/control package files from a student-facing resource list.
+	 *
+	 * @param array $resources Resource rows.
+	 * @return array
+	 */
+	public static function filter_student_visible_resources( $resources ) {
+		$out = array();
+		foreach ( (array) $resources as $resource ) {
+			$path_bits = trim(
+				(string) ( $resource->file_path ?? '' ) . ' ' .
+				(string) ( $resource->file_url ?? '' ) . ' ' .
+				(string) ( $resource->title ?? '' )
+			);
+			if ( self::is_admin_restricted_source_path( $path_bits ) ) {
+				continue;
+			}
+			$out[] = $resource;
+		}
+		return $out;
+	}
+
+	/**
+	 * Group resources for display (course-level vs per-module).
+	 *
+	 * @param array $resources Resource rows.
+	 * @param array $modules   Optional module rows.
+	 * @return array{course:array,modules:array}
+	 */
 	public static function group_for_display( $resources, $modules = array() ) {
 		$module_titles = array();
 		foreach ( (array) $modules as $module ) {
@@ -805,7 +1107,7 @@ class CTA_Course_Materials {
 			'modules' => array(),
 		);
 
-		foreach ( (array) $resources as $resource ) {
+		foreach ( self::filter_student_visible_resources( $resources ) as $resource ) {
 			$module_id = isset( $resource->module_id ) ? absint( $resource->module_id ) : 0;
 			if ( $module_id > 0 ) {
 				if ( ! isset( $grouped['modules'][ $module_id ] ) ) {
