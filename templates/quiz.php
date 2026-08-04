@@ -82,7 +82,14 @@ if ( empty( $evaluation_questions ) || ! is_array( $evaluation_questions ) ) {
 					?>
 				</p>
 			<?php endif; ?>
-			<button type="button" class="btn btn-primary btn--lg" id="cta-start-quiz"><?php echo esc_html__( 'Start Quiz', 'cta-lms' ); ?></button>
+			<form method="post" id="cta-start-quiz-form" class="cta-start-quiz-form" action="">
+				<?php wp_nonce_field( 'cta_start_quiz_' . (int) $course->id . '_' . (int) $quiz->id ); ?>
+				<input type="hidden" name="cta_start_quiz" value="1" />
+				<button type="button" class="btn btn-primary btn--lg" id="cta-start-quiz"><?php echo esc_html__( 'Start Quiz', 'cta-lms' ); ?></button>
+				<noscript>
+					<button type="submit" class="btn btn-primary btn--lg"><?php echo esc_html__( 'Start Quiz', 'cta-lms' ); ?></button>
+				</noscript>
+			</form>
 		</div>
 	</div>
 

@@ -126,7 +126,10 @@ class CTA_Quiz {
 			? CTA_CE_Completion::modules_complete( $user_id, $course_id, $enrollment )
 			: ( class_exists( 'CTA_Certificates' ) && CTA_Certificates::user_completed_all_modules( $user_id, $course_id, $enrollment ) );
 
-		if ( ! $modules_done ) {
+		$is_exam_prep = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course );
+
+		// Exam Prep assessments are independently available (no CE Capstone gate).
+		if ( ! $is_exam_prep && ! $modules_done ) {
 			return $this->render_message_state(
 				__( 'Complete All Modules First', 'cta-lms' ),
 				__( 'Finish every instructional module, including the Course Integration Capstone, before starting the final examination.', 'cta-lms' ),
@@ -178,7 +181,26 @@ class CTA_Quiz {
 		$attestation_text     = class_exists( 'CTA_Course_Attestation' )
 			? CTA_Course_Attestation::default_attestation_text( $course ? (string) $course->title : '' )
 			: '';
-		$is_exam_prep    = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course );
+		// $is_exam_prep already resolved above for module-gate bypass.
+
+		// Non-AJAX Start/Retry: create attempt on POST so Start never depends on admin-ajax alone.
+		if (
+			! $active_attempt
+			&& isset( $_POST['cta_start_quiz'] )
+			&& '1' === (string) wp_unslash( $_POST['cta_start_quiz'] )
+			&& isset( $_POST['_wpnonce'] )
+			&& wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'cta_start_quiz_' . $course_id . '_' . (int) $quiz->id )
+		) {
+			if ( class_exists( 'CTA_Database' ) ) {
+				CTA_Database::maybe_ensure_quiz_attempt_schema();
+			}
+			if ( $is_exam_prep || ! $this->get_passed_attempt( $attempts ) ) {
+				$created = $this->create_quiz_attempt( $user_id, (int) $quiz->id, $course_id );
+				if ( $created ) {
+					$active_attempt = $created;
+				}
+			}
+		}
 
 		// Recover certificate only when evaluation + attestation are both complete.
 		if ( ! $is_exam_prep && $passed_attempt && $evaluation && $attestation && ! $certificate ) {
@@ -188,13 +210,12 @@ class CTA_Quiz {
 		$inline_attestation = class_exists( 'CTA_Law_Ethics_Evaluation_Sync' )
 			&& CTA_Law_Ethics_Evaluation_Sync::evaluation_includes_attestation( $course_id );
 
-		if ( $is_exam_prep && $passed_attempt ) {
-			$view_state = 'exam_complete';
-		} elseif ( $certificate && $evaluation && $attestation && $passed_attempt ) {
+		// Exam Prep practice banks stay retakeable — do not lock the start panel after a pass.
+		if ( ! $is_exam_prep && $certificate && $evaluation && $attestation && $passed_attempt ) {
 			$view_state = 'certificate_ready';
-		} elseif ( $passed_attempt && $evaluation && ! $attestation && ! $inline_attestation ) {
+		} elseif ( ! $is_exam_prep && $passed_attempt && $evaluation && ! $attestation && ! $inline_attestation ) {
 			$view_state = 'attestation';
-		} elseif ( $passed_attempt && ( ! $evaluation || ( ! $attestation && $inline_attestation ) ) ) {
+		} elseif ( ! $is_exam_prep && $passed_attempt && ( ! $evaluation || ( ! $attestation && $inline_attestation ) ) ) {
 			$view_state = 'evaluation';
 		} elseif ( $active_attempt ) {
 			$view_state = 'in_progress';
@@ -216,63 +237,88 @@ class CTA_Quiz {
 	/**
 	 * AJAX: start a new quiz attempt.
 	 */
+	/**
+	 * AJAX: start a new quiz attempt.
+	 */
 	public function ajax_start_quiz() {
-		check_ajax_referer( 'cta_nonce', 'nonce' );
+		try {
+			check_ajax_referer( 'cta_nonce', 'nonce' );
 
-		if ( ! is_user_logged_in() ) {
-			wp_send_json_error( array( 'message' => __( 'Please log in to continue.', 'cta-lms' ) ) );
-		}
+			if ( ! is_user_logged_in() ) {
+				wp_send_json_error( array( 'message' => __( 'Please log in to continue.', 'cta-lms' ) ) );
+			}
 
-		$course_id = absint( wp_unslash( $_POST['course_id'] ?? 0 ) );
-		$quiz_id   = absint( wp_unslash( $_POST['quiz_id'] ?? 0 ) );
-		$user_id   = get_current_user_id();
-		$course    = CTA_Database::get_course( $course_id );
-		$is_exam_prep = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course );
+			$course_id    = absint( wp_unslash( $_POST['course_id'] ?? 0 ) );
+			$quiz_id      = absint( wp_unslash( $_POST['quiz_id'] ?? 0 ) );
+			$user_id      = get_current_user_id();
+			$course       = CTA_Database::get_course( $course_id );
+			$is_exam_prep = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course );
 
-		// Exam Prep assessments are independently retakeable; do not apply CE Capstone exam gating.
-		$check = $this->validate_quiz_access( $user_id, $course_id, ! $is_exam_prep, $quiz_id );
+			// Heal attempt schema/indexes before access checks so Start/Retry never dead-ends.
+			if ( class_exists( 'CTA_Database' ) ) {
+				CTA_Database::maybe_ensure_quiz_attempt_schema();
+			}
 
-		if ( is_wp_error( $check ) ) {
-			wp_send_json_error( array( 'message' => $check->get_error_message() ) );
-		}
+			// Exam Prep assessments are independently retakeable; do not apply CE Capstone exam gating.
+			$check = $this->validate_quiz_access( $user_id, $course_id, ! $is_exam_prep, $quiz_id );
 
-		/** @var object $quiz */
-		$quiz     = $check['quiz'];
-		$course   = isset( $check['course'] ) ? $check['course'] : $course;
-		$attempts = CTA_Database::get_user_quiz_attempts( $user_id, (int) $quiz->id );
-		$active   = CTA_Database::get_active_quiz_attempt( $user_id, (int) $quiz->id );
+			if ( is_wp_error( $check ) ) {
+				wp_send_json_error( array( 'message' => $check->get_error_message() ) );
+			}
 
-		if ( $active ) {
-			wp_send_json_success( $this->build_attempt_payload( $quiz, $active ) );
-		}
+			/** @var object $quiz */
+			$quiz     = $check['quiz'];
+			$course   = isset( $check['course'] ) ? $check['course'] : $course;
+			$attempts = CTA_Database::get_user_quiz_attempts( $user_id, (int) $quiz->id );
+			$active   = CTA_Database::get_active_quiz_attempt( $user_id, (int) $quiz->id );
 
-		// CE: block after a pass. Exam Prep assessments may be retaken independently.
-		if ( ! $is_exam_prep && $this->get_passed_attempt( $attempts ) ) {
-			wp_send_json_error( array( 'message' => __( 'You have already passed this quiz.', 'cta-lms' ) ) );
-		}
-
-		// Heal legacy UNIQUE(user_id,quiz_id) that blocks every retake after attempt #1.
-		if ( class_exists( 'CTA_Database' ) ) {
-			CTA_Database::maybe_fix_quiz_attempt_retake_index();
-		}
-
-		$attempt = $this->create_quiz_attempt( $user_id, (int) $quiz->id, $course_id );
-
-		if ( ! $attempt ) {
-			// Race / unique-key collision: resume any attempt that became active, else fail clearly.
-			$active = CTA_Database::get_active_quiz_attempt( $user_id, (int) $quiz->id );
 			if ( $active ) {
-				wp_send_json_success( $this->build_attempt_payload( $quiz, $active ) );
+				$payload = $this->build_attempt_payload( $quiz, $active );
+				if ( empty( $payload['html'] ) || empty( $payload['question_count'] ) ) {
+					wp_send_json_error( array( 'message' => __( 'This assessment has no questions yet. Please contact support.', 'cta-lms' ) ) );
+				}
+				wp_send_json_success( $payload );
 			}
-			global $wpdb;
-			$message = __( 'Unable to start quiz. Please refresh the page and try again.', 'cta-lms' );
-			if ( current_user_can( 'manage_options' ) && ! empty( $wpdb->last_error ) ) {
-				$message .= ' [' . $wpdb->last_error . ']';
-			}
-			wp_send_json_error( array( 'message' => $message ) );
-		}
 
-		wp_send_json_success( $this->build_attempt_payload( $quiz, $attempt ) );
+			// CE: block after a pass. Exam Prep assessments may be retaken independently.
+			if ( ! $is_exam_prep && $this->get_passed_attempt( $attempts ) ) {
+				wp_send_json_error( array( 'message' => __( 'You have already passed this quiz.', 'cta-lms' ) ) );
+			}
+
+			$attempt = $this->create_quiz_attempt( $user_id, (int) $quiz->id, $course_id );
+
+			if ( ! $attempt ) {
+				$active = CTA_Database::get_active_quiz_attempt( $user_id, (int) $quiz->id );
+				if ( $active ) {
+					wp_send_json_success( $this->build_attempt_payload( $quiz, $active ) );
+				}
+				global $wpdb;
+				$message = __( 'Unable to start quiz. Please refresh the page and try again.', 'cta-lms' );
+				if ( ! empty( $wpdb->last_error ) ) {
+					$message .= ' [' . $wpdb->last_error . ']';
+				}
+				wp_send_json_error(
+					array(
+						'message'      => $message,
+						'use_fallback' => true,
+					)
+				);
+			}
+
+			$payload = $this->build_attempt_payload( $quiz, $attempt );
+			if ( empty( $payload['html'] ) || empty( $payload['question_count'] ) ) {
+				wp_send_json_error( array( 'message' => __( 'This assessment has no questions yet. Please contact support.', 'cta-lms' ) ) );
+			}
+
+			wp_send_json_success( $payload );
+		} catch ( Throwable $e ) {
+			wp_send_json_error(
+				array(
+					'message'      => __( 'Unable to start quiz. Please refresh the page and try again.', 'cta-lms' ) . ' [' . $e->getMessage() . ']',
+					'use_fallback' => true,
+				)
+			);
+		}
 	}
 
 	/**
@@ -1105,8 +1151,8 @@ class CTA_Quiz {
 	/**
 	 * Create a new in-progress quiz attempt row.
 	 *
-	 * Uses MAX(attempt_number)+1 across all rows (including incomplete) to avoid
-	 * unique-key collisions after failed/abandoned attempts.
+	 * Uses MAX(attempt_number)+1 across all rows (including incomplete) and never
+	 * depends on a UNIQUE DB index (those are dropped by schema heal).
 	 *
 	 * @param int $user_id   User ID.
 	 * @param int $quiz_id   Quiz ID.
@@ -1117,8 +1163,18 @@ class CTA_Quiz {
 		global $wpdb;
 
 		$table = $wpdb->prefix . 'cta_quiz_attempts';
+		$now   = current_time( 'mysql' );
 
-		for ( $try = 0; $try < 5; $try++ ) {
+		if ( class_exists( 'CTA_Database' ) ) {
+			CTA_Database::maybe_ensure_quiz_attempt_schema();
+		}
+
+		$active = CTA_Database::get_active_quiz_attempt( $user_id, $quiz_id );
+		if ( $active ) {
+			return $active;
+		}
+
+		for ( $try = 0; $try < 8; $try++ ) {
 			$max = $wpdb->get_var(
 				$wpdb->prepare(
 					"SELECT MAX(attempt_number) FROM {$table} WHERE user_id = %d AND quiz_id = %d",
@@ -1127,25 +1183,70 @@ class CTA_Quiz {
 				)
 			);
 
-			$attempt_number = absint( $max ) + 1 + $try;
+			$attempt_number = max( 1, absint( $max ) + 1 + $try );
 
+			$wpdb->last_error = '';
+
+			// Prefer $wpdb->insert; omit completed_at so DEFAULT NULL applies.
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 			$inserted = $wpdb->insert(
 				$table,
 				array(
 					'user_id'        => $user_id,
 					'quiz_id'        => $quiz_id,
 					'course_id'      => $course_id,
+					'answers'        => '',
+					'score'          => 0,
+					'passed'         => 0,
 					'attempt_number' => $attempt_number,
-					'started_at'     => current_time( 'mysql' ),
+					'started_at'     => $now,
 				),
-				array( '%d', '%d', '%d', '%d', '%s' )
+				array( '%d', '%d', '%d', '%s', '%d', '%d', '%d', '%s' )
 			);
 
-			if ( $inserted ) {
+			if ( false === $inserted ) {
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+				$inserted = $wpdb->query(
+					$wpdb->prepare(
+						"INSERT INTO {$table}
+							(user_id, quiz_id, course_id, answers, score, passed, attempt_number, started_at, completed_at)
+						 VALUES
+							(%d, %d, %d, %s, %d, %d, %d, %s, NULL)",
+						$user_id,
+						$quiz_id,
+						$course_id,
+						'',
+						0,
+						0,
+						$attempt_number,
+						$now
+					)
+				);
+			}
+
+			$new_id = absint( $wpdb->insert_id );
+			if ( ! $new_id && false !== $inserted ) {
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$new_id = absint(
+					$wpdb->get_var(
+						$wpdb->prepare(
+							"SELECT id FROM {$table}
+							WHERE user_id = %d AND quiz_id = %d AND attempt_number = %d
+								AND (completed_at IS NULL OR completed_at = '0000-00-00 00:00:00' OR completed_at = '')
+							ORDER BY id DESC LIMIT 1",
+							$user_id,
+							$quiz_id,
+							$attempt_number
+						)
+					)
+				);
+			}
+
+			if ( $new_id ) {
 				$row = $wpdb->get_row(
 					$wpdb->prepare(
 						"SELECT * FROM {$table} WHERE id = %d",
-						(int) $wpdb->insert_id
+						$new_id
 					)
 				);
 				if ( $row ) {
@@ -1153,13 +1254,13 @@ class CTA_Quiz {
 				}
 			}
 
-			// Duplicate key: heal index once, then retry with a higher attempt_number.
-			if ( $try === 0 && class_exists( 'CTA_Database' ) ) {
-				CTA_Database::maybe_fix_quiz_attempt_retake_index();
+			if ( class_exists( 'CTA_Database' ) ) {
+				delete_option( 'cta_quiz_attempt_schema_v138' );
+				CTA_Database::maybe_ensure_quiz_attempt_schema();
 			}
 		}
 
-		return null;
+		return CTA_Database::get_active_quiz_attempt( $user_id, $quiz_id );
 	}
 
 	/**

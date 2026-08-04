@@ -2909,6 +2909,16 @@
         originalText = button.id === "cta-retry-quiz" ? "Retry Quiz" : "Start Quiz";
       }
 
+      var fallbackForm = document.getElementById("cta-start-quiz-form");
+      function submitFallbackForm() {
+        if (fallbackForm) {
+          startInFlight = false;
+          fallbackForm.submit();
+          return true;
+        }
+        return false;
+      }
+
       startInFlight = true;
       button.disabled = true;
       button.textContent = "Loading...";
@@ -2928,11 +2938,17 @@
         .done(function (response) {
           try {
             if (!response || !response.success || !response.data) {
-              window.alert(
+              var failMsg =
                 response && response.data && response.data.message
                   ? response.data.message
-                  : "Unable to start quiz."
-              );
+                  : "Unable to start quiz.";
+              var shouldFallback =
+                (response && response.data && response.data.use_fallback) ||
+                /unable to start quiz/i.test(failMsg);
+              if (shouldFallback && submitFallbackForm()) {
+                return;
+              }
+              window.alert(failMsg);
               return;
             }
 
@@ -2944,6 +2960,9 @@
             }
 
             if (!response.data.html || !questionsEl) {
+              if (submitFallbackForm()) {
+                return;
+              }
               window.alert("Unable to load quiz questions. Please refresh and try again.");
               return;
             }
@@ -2956,10 +2975,15 @@
             if (window.console && console.error) {
               console.error("cta_start_quiz render error", err);
             }
-            window.alert("Unable to start quiz. Please refresh the page and try again.");
+            if (!submitFallbackForm()) {
+              window.alert("Unable to start quiz. Please refresh the page and try again.");
+            }
           }
         })
         .fail(function (xhr) {
+          if (submitFallbackForm()) {
+            return;
+          }
           var msg = "Something went wrong. Please try again.";
           if (xhr && xhr.responseJSON && xhr.responseJSON.data && xhr.responseJSON.data.message) {
             msg = xhr.responseJSON.data.message;

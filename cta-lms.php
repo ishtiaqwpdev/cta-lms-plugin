@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.136' );
+	define( 'CTA_VERSION', '1.0.138' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -663,10 +663,11 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				}
 			}
 
-			// Fix quiz retake: drop legacy UNIQUE(user_id,quiz_id) that blocked Retry after attempt #1.
-			if ( version_compare( $installed, '1.0.136', '<' ) && class_exists( 'CTA_Database' ) ) {
+			// Bulletproof quiz Start: drop ALL unique attempt indexes; allow unlimited retakes.
+			if ( version_compare( $installed, '1.0.138', '<' ) && class_exists( 'CTA_Database' ) ) {
+				delete_option( 'cta_quiz_attempt_schema_v138' );
 				CTA_Database::ensure_tables();
-				CTA_Database::maybe_fix_quiz_attempt_retake_index();
+				CTA_Database::maybe_ensure_quiz_attempt_schema();
 			}
 
 			// Decouple supervision application pending from general account / CE access.
