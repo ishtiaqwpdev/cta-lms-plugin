@@ -15,10 +15,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $options = array(
-	'a' => $question->option_a,
-	'b' => $question->option_b,
-	'c' => $question->option_c,
-	'd' => $question->option_d,
+	'a' => isset( $question->option_a ) ? (string) $question->option_a : '',
+	'b' => isset( $question->option_b ) ? (string) $question->option_b : '',
+	'c' => isset( $question->option_c ) ? (string) $question->option_c : '',
+	'd' => isset( $question->option_d ) ? (string) $question->option_d : '',
 );
 ?>
 <fieldset class="cta-quiz-question card" data-question-id="<?php echo esc_attr( $question->id ); ?>">
