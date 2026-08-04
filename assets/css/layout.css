@@ -2854,7 +2854,13 @@ button.pagination__item:disabled {
 
 .cta-plugin-wrapper .course-sidebar__enroll {
   width: 100%;
+  max-width: 100%;
   margin-bottom: var(--space-md);
+  height: auto;
+  white-space: normal;
+  line-height: 1.35;
+  text-align: center;
+  overflow-wrap: break-word;
 }
 
 .cta-plugin-wrapper .course-sidebar__guarantee {
