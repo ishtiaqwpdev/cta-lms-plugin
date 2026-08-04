@@ -92,13 +92,26 @@ foreach ( (array) ( $item->resources ?? array() ) as $resource ) {
 				<p><strong><?php echo esc_html__( 'Workbooks & materials', 'cta-lms' ); ?></strong></p>
 				<ul>
 					<?php foreach ( $workbooks as $resource ) : ?>
+						<?php
+						$can_dl   = class_exists( 'CTA_Course_Materials' ) && CTA_Course_Materials::user_can_access( get_current_user_id(), $resource );
+						$lock_msg = ( ! $can_dl && class_exists( 'CTA_Course_Materials' ) )
+							? CTA_Course_Materials::get_unlock_lock_message( get_current_user_id(), $resource )
+							: '';
+						?>
 						<li>
-							<a class="button-link" href="<?php echo esc_url( CTA_Course_Materials::get_serve_url( (int) $resource->id ) ); ?>" target="_blank" rel="noopener noreferrer">
-								<?php echo esc_html( $resource->title ); ?>
-								<?php if ( ! empty( $resource->file_type ) ) : ?>
-									(<?php echo esc_html( strtoupper( (string) $resource->file_type ) ); ?>)
+							<?php if ( $can_dl ) : ?>
+								<a class="button-link" href="<?php echo esc_url( CTA_Course_Materials::get_serve_url( (int) $resource->id ) ); ?>" target="_blank" rel="noopener noreferrer">
+									<?php echo esc_html( $resource->title ); ?>
+									<?php if ( ! empty( $resource->file_type ) ) : ?>
+										(<?php echo esc_html( strtoupper( (string) $resource->file_type ) ); ?>)
+									<?php endif; ?>
+								</a>
+							<?php else : ?>
+								<span><?php echo esc_html( $resource->title ); ?></span>
+								<?php if ( $lock_msg ) : ?>
+									<em class="text-small"> — <?php echo esc_html( $lock_msg ); ?></em>
 								<?php endif; ?>
-							</a>
+							<?php endif; ?>
 						</li>
 					<?php endforeach; ?>
 				</ul>
@@ -107,10 +120,23 @@ foreach ( (array) ( $item->resources ?? array() ) as $resource ) {
 				<p><strong><?php echo esc_html__( 'Practice tests', 'cta-lms' ); ?></strong></p>
 				<ul>
 					<?php foreach ( $tests as $resource ) : ?>
+						<?php
+						$can_dl   = class_exists( 'CTA_Course_Materials' ) && CTA_Course_Materials::user_can_access( get_current_user_id(), $resource );
+						$lock_msg = ( ! $can_dl && class_exists( 'CTA_Course_Materials' ) )
+							? CTA_Course_Materials::get_unlock_lock_message( get_current_user_id(), $resource )
+							: '';
+						?>
 						<li>
-							<a class="button-link" href="<?php echo esc_url( CTA_Course_Materials::get_serve_url( (int) $resource->id ) ); ?>" target="_blank" rel="noopener noreferrer">
-								<?php echo esc_html( $resource->title ); ?>
-							</a>
+							<?php if ( $can_dl ) : ?>
+								<a class="button-link" href="<?php echo esc_url( CTA_Course_Materials::get_serve_url( (int) $resource->id ) ); ?>" target="_blank" rel="noopener noreferrer">
+									<?php echo esc_html( $resource->title ); ?>
+								</a>
+							<?php else : ?>
+								<span><?php echo esc_html( $resource->title ); ?></span>
+								<?php if ( $lock_msg ) : ?>
+									<em class="text-small"> — <?php echo esc_html( $lock_msg ); ?></em>
+								<?php endif; ?>
+							<?php endif; ?>
 						</li>
 					<?php endforeach; ?>
 				</ul>

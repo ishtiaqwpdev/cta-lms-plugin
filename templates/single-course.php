@@ -29,6 +29,7 @@ $duration_hours = $total_mins > 0 ? round( $total_mins / 60, 1 ) : $course->ce_h
 $admin_name = get_option( 'cta_admin_name', 'Candice Fuimaono, MS, LMFT' );
 $is_exam_prep = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course );
 $access_months = (int) ( $course->access_period_months ?? 6 );
+$commercial_pending = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::commercial_terms_pending( $course );
 ?>
 <div class="cta-plugin-wrapper">
 <div class="cta-lms cta-single-course">
@@ -57,16 +58,21 @@ $access_months = (int) ( $course->access_period_months ?? 6 );
 				</nav>
 				<div class="course-hero__badges">
 					<?php if ( $is_exam_prep ) : ?>
-						<span class="badge badge--primary">
-							<?php
-							printf(
-								/* translators: %d: months of access */
-								esc_html__( '%d months access', 'cta-lms' ),
-								$access_months
-							);
-							?>
-						</span>
-						<span class="badge"><?php esc_html_e( 'Non-CE', 'cta-lms' ); ?></span>
+						<?php if ( $commercial_pending ) : ?>
+							<span class="badge badge--primary"><?php esc_html_e( 'Pricing pending confirmation', 'cta-lms' ); ?></span>
+							<span class="badge"><?php esc_html_e( 'Exam Preparation Only — No CE Credit (pending confirmation)', 'cta-lms' ); ?></span>
+						<?php else : ?>
+							<span class="badge badge--primary">
+								<?php
+								printf(
+									/* translators: %d: months of access */
+									esc_html__( '%d months access', 'cta-lms' ),
+									$access_months
+								);
+								?>
+							</span>
+							<span class="badge"><?php esc_html_e( 'Exam Preparation Only — No CE Credit', 'cta-lms' ); ?></span>
+						<?php endif; ?>
 					<?php else : ?>
 						<span class="badge badge--success"><?php echo esc_html( $ce_hours ); ?> <?php esc_html_e( 'CE Hours', 'cta-lms' ); ?></span>
 					<?php endif; ?>
@@ -239,11 +245,17 @@ $access_months = (int) ( $course->access_period_months ?? 6 );
 				<?php endif; ?>
 
 				<section class="course-section" aria-labelledby="course-content-title">
-					<h2 class="course-section__title" id="course-content-title"><?php esc_html_e( 'Instructional Modules', 'cta-lms' ); ?></h2>
+					<h2 class="course-section__title" id="course-content-title">
+						<?php echo $is_exam_prep ? esc_html__( 'Program Workbooks', 'cta-lms' ) : esc_html__( 'Instructional Modules', 'cta-lms' ); ?>
+					</h2>
 					<?php if ( ! $is_enrolled && ( ! empty( $modules ) || $quiz ) ) : ?>
 						<p class="course-content-lock-notice">
 							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-							<?php esc_html_e( 'Enroll in this course to unlock all video lessons, modules, and the final quiz.', 'cta-lms' ); ?>
+							<?php
+							echo $is_exam_prep
+								? esc_html__( 'Enroll in this program to unlock workbooks, practice banks, and simulation assessments.', 'cta-lms' )
+								: esc_html__( 'Enroll in this course to unlock all modules and the final quiz.', 'cta-lms' );
+							?>
 						</p>
 					<?php endif; ?>
 					<?php if ( empty( $modules ) && empty( $quiz ) ) : ?>
@@ -291,7 +303,9 @@ $access_months = (int) ( $course->access_period_months ?? 6 );
 													</span>
 												<?php endif; ?>
 											</div>
-											<span class="course-module-list__duration"><?php echo esc_html( (int) $module->duration_mins . ' min' ); ?></span>
+											<?php if ( (int) $module->duration_mins > 0 ) : ?>
+												<span class="course-module-list__duration"><?php echo esc_html( (int) $module->duration_mins . ' min' ); ?></span>
+											<?php endif; ?>
 											<?php if ( $module_locked ) : ?>
 												<span class="course-module-list__lock" title="<?php esc_attr_e( 'Enroll to unlock this lesson', 'cta-lms' ); ?>" aria-hidden="true">
 													<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
@@ -461,6 +475,8 @@ $access_months = (int) ( $course->access_period_months ?? 6 );
 					<p class="course-sidebar__price">
 						<?php if ( $is_free_course ) : ?>
 							<?php esc_html_e( 'Free', 'cta-lms' ); ?>
+						<?php elseif ( ! empty( $commercial_pending ) ) : ?>
+							<?php esc_html_e( 'Pricing pending confirmation', 'cta-lms' ); ?>
 						<?php else : ?>
 							<?php
 							echo esc_html(
@@ -478,9 +494,13 @@ $access_months = (int) ( $course->access_period_months ?? 6 );
 							<li class="course-sidebar__meta-item"><span><strong><?php echo $is_exam_prep ? esc_html__( 'Practice exam:', 'cta-lms' ) : esc_html__( 'Quiz:', 'cta-lms' ); ?></strong> <?php echo esc_html( (string) count( $quiz_questions ) ); ?> <?php esc_html_e( 'questions', 'cta-lms' ); ?></span></li>
 						<?php endif; ?>
 						<?php if ( $is_exam_prep ) : ?>
-							<li class="course-sidebar__meta-item"><span><strong><?php esc_html_e( 'Access:', 'cta-lms' ); ?></strong> <?php echo esc_html( (string) $access_months ); ?> <?php esc_html_e( 'months', 'cta-lms' ); ?></span></li>
-							<li class="course-sidebar__meta-item"><span><strong><?php esc_html_e( 'CE Hours:', 'cta-lms' ); ?></strong> <?php esc_html_e( 'None (non-CE)', 'cta-lms' ); ?></span></li>
-							<li class="course-sidebar__meta-item"><span><strong><?php esc_html_e( 'Certificate:', 'cta-lms' ); ?></strong> <?php esc_html_e( 'Not included', 'cta-lms' ); ?></span></li>
+							<?php if ( ! empty( $commercial_pending ) ) : ?>
+								<li class="course-sidebar__meta-item"><span><strong><?php esc_html_e( 'Access:', 'cta-lms' ); ?></strong> <?php esc_html_e( 'Pending client confirmation', 'cta-lms' ); ?></span></li>
+								<li class="course-sidebar__meta-item"><span><strong><?php esc_html_e( 'Classification:', 'cta-lms' ); ?></strong> <?php esc_html_e( 'Exam Preparation Only — No CE Credit (pending confirmation)', 'cta-lms' ); ?></span></li>
+							<?php else : ?>
+								<li class="course-sidebar__meta-item"><span><strong><?php esc_html_e( 'Access:', 'cta-lms' ); ?></strong> <?php echo esc_html( (string) $access_months ); ?> <?php esc_html_e( 'months from enrollment', 'cta-lms' ); ?></span></li>
+								<li class="course-sidebar__meta-item"><span><strong><?php esc_html_e( 'Classification:', 'cta-lms' ); ?></strong> <?php esc_html_e( 'Exam Preparation Only — No CE Credit', 'cta-lms' ); ?></span></li>
+							<?php endif; ?>
 						<?php else : ?>
 							<li class="course-sidebar__meta-item"><span><strong><?php esc_html_e( 'CE Hours:', 'cta-lms' ); ?></strong> <?php echo esc_html( $ce_hours ); ?></span></li>
 							<li class="course-sidebar__meta-item"><span><strong><?php esc_html_e( 'Duration:', 'cta-lms' ); ?></strong> <?php echo esc_html( (string) $duration_hours ); ?> <?php esc_html_e( 'hours', 'cta-lms' ); ?></span></li>
@@ -488,7 +508,7 @@ $access_months = (int) ( $course->access_period_months ?? 6 );
 						<?php endif; ?>
 					</ul>
 
-					<?php if ( ! $is_free_course ) : ?>
+					<?php if ( ! $is_free_course && empty( $commercial_pending ) ) : ?>
 						<p class="course-sidebar__label"><?php esc_html_e( 'Secure Payment:', 'cta-lms' ); ?></p>
 						<div class="course-sidebar__payments" aria-label="<?php esc_attr_e( 'Accepted payment methods', 'cta-lms' ); ?>">
 							<span class="course-sidebar__payment-icon">Visa</span>
@@ -502,13 +522,23 @@ $access_months = (int) ( $course->access_period_months ?? 6 );
 						<a href="<?php echo esc_url( $player_url ); ?>" class="btn btn-primary btn--lg course-sidebar__enroll"><?php esc_html_e( 'Continue Learning', 'cta-lms' ); ?></a>
 					<?php elseif ( $is_enrolled ) : ?>
 						<p class="course-sidebar__notice"><?php esc_html_e( 'You are enrolled. Configure the Course Player page in CTA LMS Settings to start learning.', 'cta-lms' ); ?></p>
+					<?php elseif ( ! empty( $commercial_pending ) ) : ?>
+						<p class="course-sidebar__notice"><?php esc_html_e( 'Enrollment opens after the client confirms price, access period, and classification for this program.', 'cta-lms' ); ?></p>
 					<?php elseif ( ! is_user_logged_in() && $login_url ) : ?>
 						<a href="<?php echo esc_url( $login_url ); ?>" class="btn btn-primary btn--lg course-sidebar__enroll">
 							<?php esc_html_e( 'Login to Enroll', 'cta-lms' ); ?>
 						</a>
 					<?php else : ?>
 						<button type="button" id="enroll-btn" class="btn btn-primary btn--lg course-sidebar__enroll" data-cta-course-checkout data-course-id="<?php echo esc_attr( $course->id ); ?>" data-course-title="<?php echo esc_attr( $course->title ); ?>" data-price="<?php echo esc_attr( $is_free_course ? __( 'Free', 'cta-lms' ) : ( function_exists( 'cta_lms_format_money' ) ? cta_lms_format_money( (float) $course->price ) : ( '$' . number_format( (float) $course->price, 2 ) ) ) ); ?>">
-							<?php echo $is_free_course ? esc_html__( 'Enroll Free', 'cta-lms' ) : esc_html__( 'Enroll Now', 'cta-lms' ); ?>
+							<?php
+							if ( $is_free_course ) {
+								esc_html_e( 'Enroll Free', 'cta-lms' );
+							} elseif ( $is_exam_prep ) {
+								esc_html_e( 'Begin Your Clinical Exam Preparation', 'cta-lms' );
+							} else {
+								esc_html_e( 'Enroll Now', 'cta-lms' );
+							}
+							?>
 						</button>
 					<?php endif; ?>
 				</div>

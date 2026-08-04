@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.126' );
+	define( 'CTA_VERSION', '1.0.128' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -87,6 +87,8 @@ $cta_required_files = array(
 	'includes/class-cta-evaluation-questions.php',
 	'includes/class-cta-course-attestation.php',
 	'includes/class-cta-telehealth-exam-sync.php',
+	'includes/class-cta-lcsw-aswb-sync.php',
+	'includes/class-cta-lmft-clinical-sync.php',
 	'includes/class-cta-law-ethics-module-sync.php',
 	'includes/class-cta-law-ethics-evaluation-sync.php',
 	'includes/class-cta-database.php',
@@ -545,6 +547,38 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 			// CTA-CE-001: Practice Protection Toolkit v1.0 as course-level downloadable resource.
 			if ( version_compare( $installed, '1.0.126', '<' ) && class_exists( 'CTA_Course_Materials' ) ) {
 				CTA_Course_Materials::ensure_bundled_resources();
+			}
+
+			// CTA LCSW ASWB Clinical Exam Prep: program, 12 workbooks, Form A/B + rationale gating.
+			if ( version_compare( $installed, '1.0.127', '<' ) ) {
+				if ( class_exists( 'CTA_Database' ) ) {
+					CTA_Database::maybe_add_resource_unlock_column();
+				}
+				if ( class_exists( 'CTA_Exam_Access' ) ) {
+					CTA_Exam_Access::seed_default_programs();
+				}
+				if ( class_exists( 'CTA_Course_Catalog' ) ) {
+					CTA_Course_Catalog::restore_exam_prep_pricing();
+				}
+				if ( class_exists( 'CTA_Lcsw_Aswb_Sync' ) ) {
+					CTA_Lcsw_Aswb_Sync::sync( true );
+				}
+			}
+
+			// CTA LMFT California Clinical Exam Prep: content sync; commercial terms stay draft/pending.
+			if ( version_compare( $installed, '1.0.128', '<' ) ) {
+				if ( class_exists( 'CTA_Database' ) ) {
+					CTA_Database::maybe_add_resource_unlock_column();
+				}
+				if ( class_exists( 'CTA_Exam_Access' ) ) {
+					CTA_Exam_Access::seed_default_programs();
+				}
+				if ( class_exists( 'CTA_Course_Catalog' ) ) {
+					CTA_Course_Catalog::restore_exam_prep_pricing();
+				}
+				if ( class_exists( 'CTA_Lmft_Clinical_Sync' ) ) {
+					CTA_Lmft_Clinical_Sync::sync( true );
+				}
 			}
 
 			// Decouple supervision application pending from general account / CE access.

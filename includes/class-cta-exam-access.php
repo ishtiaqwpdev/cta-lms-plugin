@@ -375,18 +375,21 @@ class CTA_Exam_Access {
 				'category'    => 'Exam Preparation',
 			),
 			array(
-				'title'       => 'LMFT California Clinical Exam Preparation',
+				'title'       => 'CTA LMFT California Clinical Exam Preparation Program',
 				'slug'        => 'lmft-california-clinical-exam-preparation',
-				'description' => '<p>Targeted preparation for the LMFT California Clinical Exam. Includes online instructional content, printable workbooks, practice tests, and mock examinations with answer rationales. Access is valid for 6 months from purchase. This program does not award CE hours or a CE certificate.</p>',
-				'price'       => 249.00,
+				'description' => '<p>Complete self-paced preparation for the California LMFT Clinical Exam. Includes 12 workbooks, paired practice banks, two 150-question simulations with controlled rationales, flashcards, and study schedules. Exam Preparation Only — No CE Credit (classification pending final client confirmation). Recorded audio and video are not included at launch. Pricing and access period pending client confirmation.</p>',
+				'price'       => 0.00,
 				'category'    => 'Exam Preparation',
+				'status'      => 'draft',
+				'commercial_pending' => true,
 			),
 			array(
-				'title'       => 'LCSW California Clinical Exam Preparation',
-				'slug'        => 'lcsw-california-clinical-exam-preparation',
-				'description' => '<p>Targeted preparation for the LCSW California Clinical Exam. Includes online instructional content, printable workbooks, practice tests, and mock examinations with answer rationales. Access is valid for 6 months from purchase. This program does not award CE hours or a CE certificate.</p>',
+				'title'       => 'CTA LCSW ASWB Clinical Exam Preparation Program',
+				'slug'        => 'lcsw-aswb-clinical-exam-preparation',
+				'description' => '<p>Complete self-paced preparation for the ASWB Clinical Social Work Licensing Examination. Includes 12 social work–specific workbooks, paired practice banks, a 25-question mini-mock, two 122-question simulations with controlled rationales, flashcards, study schedules, and the August 2026 exam-day guide. Access is valid for 6 months from purchase. Exam Preparation Only — No CE Credit. Recorded audio and video are not included at launch.</p>',
 				'price'       => 249.00,
 				'category'    => 'Exam Preparation',
+				'legacy_slug' => 'lcsw-california-clinical-exam-preparation',
 			),
 			array(
 				'title'       => 'LPCC California Clinical Exam Preparation',
@@ -421,26 +424,51 @@ class CTA_Exam_Access {
 				)
 			);
 
+			// Migrate legacy slug (e.g. LCSW California → ASWB Clinical).
+			if ( ! $existing_id && ! empty( $program['legacy_slug'] ) ) {
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$existing_id = (int) $wpdb->get_var(
+					$wpdb->prepare(
+						"SELECT id FROM {$table} WHERE slug = %s LIMIT 1",
+						$program['legacy_slug']
+					)
+				);
+			}
+
 			if ( $existing_id ) {
-				// Keep existing content/status; only enforce canonical commercial fields.
+				$update = array(
+					'title'                => $program['title'],
+					'slug'                 => $program['slug'],
+					'price'                => (float) $program['price'],
+					'category'             => $program['category'],
+					'product_type'         => self::PRODUCT_TYPE_EXAM_PREP,
+					'access_period_months' => 6,
+					'ce_hours'             => 0,
+					'awards_ce_hours'      => 0,
+					'has_ce_certificate'   => 0,
+				);
+				$formats = array( '%s', '%s', '%f', '%s', '%s', '%d', '%f', '%d', '%d' );
+
+				// Commercial terms unconfirmed: keep draft and do not treat catalog price as live publish.
+				if ( ! empty( $program['commercial_pending'] ) ) {
+					$update['status'] = 'draft';
+					$formats[]        = '%s';
+				}
+
 				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 				$wpdb->update(
 					$table,
-					array(
-						'title'                => $program['title'],
-						'price'                => (float) $program['price'],
-						'category'             => $program['category'],
-						'product_type'         => self::PRODUCT_TYPE_EXAM_PREP,
-						'access_period_months' => 6,
-						'ce_hours'             => 0,
-						'awards_ce_hours'      => 0,
-						'has_ce_certificate'   => 0,
-					),
+					$update,
 					array( 'id' => $existing_id ),
-					array( '%s', '%f', '%s', '%s', '%d', '%f', '%d', '%d' ),
+					$formats,
 					array( '%d' )
 				);
 				continue;
+			}
+
+			$status = ! empty( $program['status'] ) ? sanitize_text_field( (string) $program['status'] ) : 'draft';
+			if ( ! empty( $program['commercial_pending'] ) ) {
+				$status = 'draft';
 			}
 
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
@@ -455,7 +483,7 @@ class CTA_Exam_Access {
 					'category'              => $program['category'],
 					'learning_objectives'   => wp_json_encode( array() ),
 					'modules_count'         => 0,
-					'status'                => 'draft',
+					'status'                => $status,
 					'product_type'          => self::PRODUCT_TYPE_EXAM_PREP,
 					'access_period_months'  => 6,
 					'awards_ce_hours'       => 0,
@@ -464,6 +492,30 @@ class CTA_Exam_Access {
 				array( '%s', '%s', '%s', '%f', '%f', '%s', '%s', '%d', '%s', '%s', '%d', '%d', '%d' )
 			);
 		}
+	}
+
+	/**
+	 * Whether commercial terms (price / access / classification) are pending client confirmation.
+	 *
+	 * @param object|null $course Course row.
+	 * @return bool
+	 */
+	public static function commercial_terms_pending( $course ) {
+		if ( ! $course ) {
+			return false;
+		}
+
+		if ( empty( $course->syllabus_meta ) ) {
+			return false;
+		}
+
+		$meta = json_decode( (string) $course->syllabus_meta, true );
+		if ( ! is_array( $meta ) ) {
+			return false;
+		}
+
+		return ! empty( $meta['commercial_pending'] )
+			|| ( isset( $meta['pricing_status'] ) && 'pending_client_confirmation' === $meta['pricing_status'] );
 	}
 }
 

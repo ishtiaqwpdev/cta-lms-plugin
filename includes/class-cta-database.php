@@ -285,6 +285,7 @@ class CTA_Database {
   file_type varchar(50) DEFAULT NULL,
   order_index int(11) DEFAULT 0,
   is_practice_test tinyint(1) NOT NULL DEFAULT 0,
+  unlock_after_quiz_type varchar(40) NOT NULL DEFAULT '',
   created_at datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY  (id),
   KEY course_id (course_id),
@@ -309,6 +310,7 @@ class CTA_Database {
 		self::maybe_add_exam_prep_columns();
 		self::maybe_add_multi_quiz_support();
 		self::maybe_add_resource_columns();
+		self::maybe_add_resource_unlock_column();
 		self::maybe_add_syllabus_columns();
 		self::maybe_add_evaluation_submission_columns();
 		self::maybe_add_enrollment_access_source();
@@ -420,6 +422,34 @@ class CTA_Database {
 				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.NotPrepared
 				$wpdb->query( $sql );
 			}
+		}
+
+		self::maybe_add_resource_unlock_column();
+	}
+
+	/**
+	 * Per-student unlock gate: hide a download until the learner submits a quiz of this type.
+	 *
+	 * Used for Form A/B detailed-rationale files (unlock_after_quiz_type = form_a|form_b).
+	 */
+	public static function maybe_add_resource_unlock_column() {
+		global $wpdb;
+
+		$table = $wpdb->prefix . 'cta_downloadable_resources';
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) );
+
+		if ( $exists !== $table ) {
+			return;
+		}
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$col_exists = $wpdb->get_results( $wpdb->prepare( "SHOW COLUMNS FROM {$table} LIKE %s", 'unlock_after_quiz_type' ) );
+		if ( empty( $col_exists ) ) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
+			$wpdb->query(
+				"ALTER TABLE {$table} ADD COLUMN unlock_after_quiz_type varchar(40) NOT NULL DEFAULT '' AFTER is_practice_test"
+			);
 		}
 	}
 

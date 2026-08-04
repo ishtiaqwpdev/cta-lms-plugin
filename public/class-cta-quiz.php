@@ -1048,6 +1048,20 @@ class CTA_Quiz {
 			return new WP_Error( 'no_quiz', __( 'Quiz not available.', 'cta-lms' ) );
 		}
 
+		// Form B unlocks after this learner has submitted Form A (per-student remediation gate).
+		$quiz_type = isset( $quiz->quiz_type ) ? (string) $quiz->quiz_type : '';
+		if ( 'form_b' === $quiz_type && class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course ) ) {
+			$has_form_a = class_exists( 'CTA_Lcsw_Aswb_Sync' )
+				? CTA_Lcsw_Aswb_Sync::user_has_completed_quiz_type( $user_id, $course_id, 'form_a' )
+				: ( class_exists( 'CTA_Course_Materials' ) && CTA_Course_Materials::user_has_completed_quiz_type( $user_id, $course_id, 'form_a' ) );
+			if ( ! $has_form_a ) {
+				return new WP_Error(
+					'form_a_required',
+					__( 'Complete and submit Comprehensive Simulation Form A before starting Form B.', 'cta-lms' )
+				);
+			}
+		}
+
 		return array(
 			'enrollment' => $enrollment,
 			'quiz'       => $quiz,
