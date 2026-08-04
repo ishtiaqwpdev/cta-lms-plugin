@@ -1635,6 +1635,12 @@ class CTA_Admin {
 		);
 		$formats = array( '%d', '%d', '%d', '%s', '%s', '%s', '%s', '%d', '%d' );
 
+		// Preserve per-student unlock gates (e.g. Form A/B rationales) when editing from admin.
+		if ( $existing && isset( $existing->unlock_after_quiz_type ) ) {
+			$data['unlock_after_quiz_type'] = sanitize_text_field( (string) $existing->unlock_after_quiz_type );
+			$formats[]                     = '%s';
+		}
+
 		if ( $resource_id ) {
 			// Preserve file_path if not replacing.
 			if ( $existing && empty( $file_path ) && ! empty( $existing->file_path ) ) {

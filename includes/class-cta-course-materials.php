@@ -117,14 +117,103 @@ class CTA_Course_Materials {
 		$course = CTA_Database::get_course( $course_id );
 
 		if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course ) ) {
-			return CTA_Exam_Access::has_active_access( $user_id, $course_id );
+			if ( ! CTA_Exam_Access::has_active_access( $user_id, $course_id ) ) {
+				return false;
+			}
+		} elseif ( class_exists( 'CTA_CE_Access' ) && CTA_CE_Access::is_ce_course( $course ) ) {
+			if ( ! CTA_CE_Access::has_active_access( $user_id, $course_id ) ) {
+				return false;
+			}
 		}
 
-		if ( class_exists( 'CTA_CE_Access' ) && CTA_CE_Access::is_ce_course( $course ) ) {
-			return CTA_CE_Access::has_active_access( $user_id, $course_id );
+		// Per-student, per-form unlock: Form A/B detailed rationales stay hidden until that form is submitted.
+		$unlock_type = isset( $resource->unlock_after_quiz_type )
+			? sanitize_text_field( (string) $resource->unlock_after_quiz_type )
+			: '';
+		if ( '' !== $unlock_type ) {
+			if ( class_exists( 'CTA_Lcsw_Aswb_Sync' ) ) {
+				return CTA_Lcsw_Aswb_Sync::user_has_completed_quiz_type( $user_id, $course_id, $unlock_type );
+			}
+			return self::user_has_completed_quiz_type( $user_id, $course_id, $unlock_type );
 		}
 
 		return true;
+	}
+
+	/**
+	 * Whether the learner has a completed attempt for a course quiz of the given type.
+	 *
+	 * @param int    $user_id   User ID.
+	 * @param int    $course_id Course ID.
+	 * @param string $quiz_type Quiz type (form_a, form_b, …).
+	 * @return bool
+	 */
+	public static function user_has_completed_quiz_type( $user_id, $course_id, $quiz_type ) {
+		global $wpdb;
+
+		$user_id   = absint( $user_id );
+		$course_id = absint( $course_id );
+		$quiz_type = sanitize_text_field( (string) $quiz_type );
+
+		if ( ! $user_id || ! $course_id || '' === $quiz_type ) {
+			return false;
+		}
+
+		$quizzes = $wpdb->prefix . 'cta_quizzes';
+		$attempts = $wpdb->prefix . 'cta_quiz_attempts';
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$count = (int) $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT COUNT(a.id) FROM {$attempts} a
+				INNER JOIN {$quizzes} q ON q.id = a.quiz_id
+				WHERE a.user_id = %d
+					AND a.course_id = %d
+					AND q.course_id = %d
+					AND q.quiz_type = %s
+					AND a.completed_at IS NOT NULL
+				LIMIT 1",
+				$user_id,
+				$course_id,
+				$course_id,
+				$quiz_type
+			)
+		);
+
+		return $count > 0;
+	}
+
+	/**
+	 * Human-readable lock reason for a gated resource (empty if unlocked by quiz submit).
+	 *
+	 * @param int         $user_id  User ID.
+	 * @param object|null $resource Resource row.
+	 * @return string
+	 */
+	public static function get_unlock_lock_message( $user_id, $resource ) {
+		if ( ! $resource || empty( $resource->unlock_after_quiz_type ) ) {
+			return '';
+		}
+
+		$type      = sanitize_text_field( (string) $resource->unlock_after_quiz_type );
+		$course_id = isset( $resource->course_id ) ? (int) $resource->course_id : 0;
+
+		$unlocked = class_exists( 'CTA_Lcsw_Aswb_Sync' )
+			? CTA_Lcsw_Aswb_Sync::user_has_completed_quiz_type( $user_id, $course_id, $type )
+			: self::user_has_completed_quiz_type( $user_id, $course_id, $type );
+
+		if ( $unlocked ) {
+			return '';
+		}
+
+		if ( 'form_a' === $type ) {
+			return __( 'Available after you submit Comprehensive Simulation Form A.', 'cta-lms' );
+		}
+		if ( 'form_b' === $type ) {
+			return __( 'Available after you submit Comprehensive Simulation Form B.', 'cta-lms' );
+		}
+
+		return __( 'Available after you submit the related assessment.', 'cta-lms' );
 	}
 
 	/**
@@ -661,7 +750,12 @@ class CTA_Course_Materials {
 			wp_die( esc_html__( 'File not found.', 'cta-lms' ), 404 );
 		}
 
-		if ( ! self::user_can_access( get_current_user_id(), $resource ) ) {
+		$user_id = get_current_user_id();
+		if ( ! self::user_can_access( $user_id, $resource ) ) {
+			$gate_msg = self::get_unlock_lock_message( $user_id, $resource );
+			if ( $gate_msg ) {
+				wp_die( esc_html( $gate_msg ), 403 );
+			}
 			wp_die( esc_html__( 'You must be enrolled in this course to download materials.', 'cta-lms' ), 403 );
 		}
 

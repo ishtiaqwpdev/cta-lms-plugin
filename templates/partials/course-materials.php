@@ -38,8 +38,15 @@ $grouped = class_exists( 'CTA_Course_Materials' )
  *
  * @param object $resource Resource.
  */
-$cta_render_material_item = static function ( $resource ) {
-	$serve_url = class_exists( 'CTA_Course_Materials' )
+$cta_render_material_item = static function ( $resource ) use ( $is_enrolled ) {
+	$user_id    = get_current_user_id();
+	$can_access = $is_enrolled && class_exists( 'CTA_Course_Materials' )
+		? CTA_Course_Materials::user_can_access( $user_id, $resource )
+		: false;
+	$lock_msg   = ( $is_enrolled && ! $can_access && class_exists( 'CTA_Course_Materials' ) )
+		? CTA_Course_Materials::get_unlock_lock_message( $user_id, $resource )
+		: '';
+	$serve_url  = ( $can_access && class_exists( 'CTA_Course_Materials' ) )
 		? CTA_Course_Materials::get_serve_url( (int) $resource->id )
 		: '';
 	$type_label = ! empty( $resource->file_type ) ? strtoupper( (string) $resource->file_type ) : '';
@@ -51,7 +58,9 @@ $cta_render_material_item = static function ( $resource ) {
 			</span>
 			<div class="course-module-list__info">
 				<strong class="course-module-list__title"><?php echo esc_html( $resource->title ); ?></strong>
-				<?php if ( $type_label ) : ?>
+				<?php if ( $lock_msg ) : ?>
+					<p class="course-module-list__desc"><?php echo esc_html( $lock_msg ); ?></p>
+				<?php elseif ( $type_label ) : ?>
 					<p class="course-module-list__desc"><?php echo esc_html( $type_label ); ?></p>
 				<?php endif; ?>
 			</div>
@@ -64,6 +73,10 @@ $cta_render_material_item = static function ( $resource ) {
 				>
 					<?php echo esc_html__( 'Open / Download', 'cta-lms' ); ?>
 				</a>
+			<?php elseif ( $lock_msg ) : ?>
+				<span class="course-module-list__lock" title="<?php echo esc_attr( $lock_msg ); ?>" aria-hidden="true">
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+				</span>
 			<?php endif; ?>
 		</div>
 	</li>

@@ -49,6 +49,7 @@ $card_desc = ! empty( $card_meta['short_description'] )
 $card_alt  = ! empty( $card_meta['image_alt'] )
 	? (string) $card_meta['image_alt']
 	: (string) $course->title;
+$commercial_pending = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::commercial_terms_pending( $course );
 ?>
 <article
 	class="cta-course-card card course-card course-card--catalog<?php echo $is_exam_prep ? ' course-card--exam-prep' : ''; ?>"
@@ -85,11 +86,15 @@ $card_alt  = ! empty( $card_meta['image_alt'] )
 			<?php if ( $is_exam_prep ) : ?>
 				<span class="cta-badge badge badge--primary course-card__badge">
 					<?php
-					printf(
-						/* translators: %d: access months */
-						esc_html__( '%d mo access', 'cta-lms' ),
-						(int) ( $course->access_period_months ?? 6 )
-					);
+					if ( $commercial_pending ) {
+						esc_html_e( 'Pricing pending', 'cta-lms' );
+					} else {
+						printf(
+							/* translators: %d: access months */
+							esc_html__( '%d mo access', 'cta-lms' ),
+							(int) ( $course->access_period_months ?? 6 )
+						);
+					}
 					?>
 				</span>
 			<?php else : ?>

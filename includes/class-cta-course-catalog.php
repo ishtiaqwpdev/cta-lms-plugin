@@ -122,18 +122,33 @@ class CTA_Course_Catalog {
 				'category'             => 'Exam Preparation',
 			),
 			array(
-				'title'                => 'LMFT California Clinical Exam Preparation',
+				'title'                => 'CTA LMFT California Clinical Exam Preparation Program',
 				'slug'                 => 'lmft-california-clinical-exam-preparation',
-				'price'                => 249.00,
+				// Commercial terms pending client confirmation — do not publish assumed LCSW-matching price.
+				'price'                => 0.00,
 				'access_period_months' => 6,
 				'category'             => 'Exam Preparation',
+				'commercial_pending'   => true,
+				'match_titles'         => array(
+					'CTA LMFT California Clinical Exam Preparation Program',
+					'LMFT California Clinical Exam Preparation',
+				),
 			),
 			array(
-				'title'                => 'LCSW California Clinical Exam Preparation',
-				'slug'                 => 'lcsw-california-clinical-exam-preparation',
+				'title'                => 'CTA LCSW ASWB Clinical Exam Preparation Program',
+				'slug'                 => 'lcsw-aswb-clinical-exam-preparation',
 				'price'                => 249.00,
 				'access_period_months' => 6,
 				'category'             => 'Exam Preparation',
+				// Migrate legacy California Clinical label → public ASWB title/slug.
+				'match_slugs'          => array(
+					'lcsw-aswb-clinical-exam-preparation',
+					'lcsw-california-clinical-exam-preparation',
+				),
+				'match_titles'         => array(
+					'CTA LCSW ASWB Clinical Exam Preparation Program',
+					'LCSW California Clinical Exam Preparation',
+				),
 			),
 			array(
 				'title'                => 'LPCC California Clinical Exam Preparation',
@@ -521,17 +536,43 @@ class CTA_Course_Catalog {
 			$title = sanitize_text_field( (string) $entry['title'] );
 			$price = (float) $entry['price'];
 
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-			$courses = $wpdb->get_results(
-				$wpdb->prepare(
-					"SELECT * FROM {$table} WHERE slug = %s OR title = %s ORDER BY id ASC",
-					$slug,
-					$title
-				)
-			);
+			$slugs  = ! empty( $entry['match_slugs'] ) ? array_map( 'sanitize_title', (array) $entry['match_slugs'] ) : array( $slug );
+			$titles = ! empty( $entry['match_titles'] ) ? array_map( 'sanitize_text_field', (array) $entry['match_titles'] ) : array( $title );
+			$slugs  = array_values( array_unique( array_filter( $slugs ) ) );
+			$titles = array_values( array_unique( array_filter( $titles ) ) );
+
+			$courses = array();
+			$seen    = array();
+			foreach ( $slugs as $match_slug ) {
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$rows = $wpdb->get_results(
+					$wpdb->prepare( "SELECT * FROM {$table} WHERE slug = %s ORDER BY id ASC", $match_slug )
+				);
+				foreach ( (array) $rows as $row ) {
+					$id = (int) $row->id;
+					if ( ! isset( $seen[ $id ] ) ) {
+						$seen[ $id ] = true;
+						$courses[]   = $row;
+					}
+				}
+			}
+			foreach ( $titles as $match_title ) {
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$rows = $wpdb->get_results(
+					$wpdb->prepare( "SELECT * FROM {$table} WHERE title = %s ORDER BY id ASC", $match_title )
+				);
+				foreach ( (array) $rows as $row ) {
+					$id = (int) $row->id;
+					if ( ! isset( $seen[ $id ] ) ) {
+						$seen[ $id ] = true;
+						$courses[]   = $row;
+					}
+				}
+			}
 
 			$data = array(
 				'title'                => $title,
+				'slug'                 => $slug,
 				'price'                => $price,
 				'category'             => sanitize_text_field( (string) $entry['category'] ),
 				'access_period_months' => absint( $entry['access_period_months'] ),
@@ -540,6 +581,14 @@ class CTA_Course_Catalog {
 				'awards_ce_hours'      => 0,
 				'has_ce_certificate'   => 0,
 			);
+			$formats = array( '%s', '%s', '%f', '%s', '%d', '%f', '%s', '%d', '%d' );
+
+			// Pending commercial confirmation: keep draft; do not publish a live price.
+			if ( ! empty( $entry['commercial_pending'] ) ) {
+				$data['status'] = 'draft';
+				$data['price']  = 0.0;
+				$formats[]      = '%s';
+			}
 
 			if ( ! empty( $courses ) ) {
 				$seen = array();
@@ -557,7 +606,7 @@ class CTA_Course_Catalog {
 						$table,
 						$data,
 						array( 'id' => $id ),
-						array( '%s', '%f', '%s', '%d', '%f', '%s', '%d', '%d' ),
+						$formats,
 						array( '%d' )
 					);
 
