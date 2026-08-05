@@ -435,6 +435,11 @@ class CTA_Exam_Access {
 				'status'                 => 'draft',
 				'commercial_pending'     => true,
 				'launch_pending_testing' => true,
+				'public_title'           => 'LMFT California Clinical Exam Preparation',
+				'match_titles'           => array(
+					'CTA LMFT California Clinical Exam Preparation Program',
+					'LMFT California Clinical Exam Preparation',
+				),
 			),
 			array(
 				'title'                  => 'CTA LCSW ASWB Clinical Exam Preparation Program',
@@ -445,16 +450,28 @@ class CTA_Exam_Access {
 				'status'                 => 'draft',
 				'launch_pending_testing' => true,
 				'legacy_slug'            => 'lcsw-california-clinical-exam-preparation',
+				'public_title'           => 'LCSW ASWB Clinical Exam Preparation',
+				'match_titles'           => array(
+					'CTA LCSW ASWB Clinical Exam Preparation Program',
+					'LCSW ASWB Clinical Exam Preparation',
+					'LCSW California Clinical Exam Preparation',
+				),
 			),
 			array(
-				'title'       => 'CTA LPCC NCMHCE Exam Preparation Program',
-				'slug'        => 'lpcc-ncmhce-exam-preparation',
-				'description' => '<p>Complete self-paced preparation for the NCMHCE for LPCC candidates. Includes 12 workbooks, paired practice banks, three cumulative checkpoints, Form A and Form B simulations (143 questions each) with controlled rationales, a Form A remediation workbook, flashcards, quick references, and study schedules. Access is valid for 6 months from purchase. Exam Preparation Only — No CE Credit.</p>',
-				'price'       => 249.00,
-				'category'    => 'Exam Preparation',
-				'status'      => 'draft',
+				'title'                  => 'CTA LPCC NCMHCE Exam Preparation Program',
+				'slug'                   => 'lpcc-ncmhce-exam-preparation',
+				'description'            => '<p>Complete self-paced preparation for the NCMHCE for LPCC candidates. Includes 12 workbooks, paired practice banks, three cumulative checkpoints, Form A and Form B simulations (143 questions each) with controlled rationales, a Form A remediation workbook, flashcards, quick references, and study schedules. Access is valid for 6 months from purchase. Exam Preparation Only — No CE Credit.</p>',
+				'price'                  => 249.00,
+				'category'               => 'Exam Preparation',
+				'status'                 => 'draft',
 				'launch_pending_testing' => true,
-				'legacy_slug' => 'lpcc-california-clinical-exam-preparation',
+				'legacy_slug'            => 'lpcc-california-clinical-exam-preparation',
+				'public_title'           => 'LPCC NCMHCE Exam Preparation',
+				'match_titles'           => array(
+					'CTA LPCC NCMHCE Exam Preparation Program',
+					'LPCC NCMHCE Exam Preparation',
+					'LPCC California Clinical Exam Preparation',
+				),
 			),
 		);
 	}

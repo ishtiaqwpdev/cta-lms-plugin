@@ -22,6 +22,7 @@ class CTA_Lmft_Clinical_Sync {
 	const SEED_OPTION              = 'cta_lmft_clinical_seeded_1_0_128';
 	const SLUG                     = 'lmft-california-clinical-exam-preparation';
 	const TITLE                    = 'CTA LMFT California Clinical Exam Preparation Program';
+	const PUBLIC_TITLE             = 'LMFT California Clinical Exam Preparation';
 	const LEGACY_TITLE             = 'LMFT California Clinical Exam Preparation';
 	const MATERIALS_REL            = 'assets/course-materials/lmft-clinical/';
 	const PRICE_PENDING            = true;
@@ -564,7 +565,7 @@ class CTA_Lmft_Clinical_Sync {
 	 */
 	private static function get_program_description_html() {
 		$html = '
-<p>The CTA LMFT California Clinical Exam Preparation Program is a complete self-paced system for AMFTs, LMFT candidates, and other eligible examinees preparing for the California LMFT Clinical Examination.</p>
+<p>LMFT California Clinical Exam Preparation is a complete self-paced system for AMFTs, LMFT candidates, and other eligible examinees preparing for the California LMFT Clinical Examination.</p>
 <p>The program teaches candidates to combine clinical engagement, relational and family-systems assessment, diagnosis and differential reasoning, crisis and safety judgment, intervention selection, California legal and ethical practice, and FIRST/NEXT/BEST exam cues when several answers appear plausible. Content and simulations are structured around the California clinical exam format: 150 total questions (125 scored and 25 pretest) within a 240-minute testing window.</p>
 <h3>What Is Included</h3>
 <ul>
@@ -611,6 +612,7 @@ class CTA_Lmft_Clinical_Sync {
 	 */
 	private static function get_syllabus_meta() {
 		return array(
+			'public_title'                    => self::PUBLIC_TITLE,
 			'commercial_pending'              => true,
 			'pricing_status'                  => 'pending_client_confirmation',
 			'access_period_status'            => 'pending_client_confirmation',
@@ -624,11 +626,14 @@ class CTA_Lmft_Clinical_Sync {
 			'target_audience'                 => 'AMFTs, LMFT candidates, and other eligible California LMFT Clinical examinees',
 			'seo_title'                       => 'LMFT California Clinical Exam Prep | CTA',
 			'meta_description'                => 'Prepare for the California LMFT Clinical exam with 12 workbooks, 204 focused practice questions, complete rationales, and two 150-question simulations. Pricing pending confirmation.',
-			'image_alt'                       => 'Clinical Training and Supervision Academy LMFT California Clinical Exam Preparation Program graphic',
+			'image_alt'                       => 'Clinical Training and Supervision Academy LMFT California Clinical Exam Preparation graphic',
 			'primary_cta'                     => 'Begin Your Clinical Exam Preparation',
 			'page_badge'                      => 'Exam Preparation • Pricing Pending Confirmation',
 			'educational_notice'              => 'Exam Preparation Only — No CE Credit (pending client confirmation). This program does not award CE hours or a CE certificate. Recorded audio and video are not included at launch. CTA is not affiliated with or endorsed by the California BBS, Pearson VUE, or AMFTRB. This is not a National MFT exam product.',
 			'price_pending'                   => (bool) self::PRICE_PENDING,
+			'launch_status'                   => 'draft_pending_testing',
+			'launch_pending_testing'          => true,
+			'development_draft'               => true,
 		);
 	}
 
