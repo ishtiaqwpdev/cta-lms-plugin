@@ -856,9 +856,10 @@ class CTA_Lpcc_Ncmhce_Sync {
 		}
 
 		$items[] = array(
-			'file'             => 'simulations/CTA_LPCC_Comprehensive_Simulation_Form_A_143_Question_Candidate_Exam_v1.0.docx',
-			'title'            => 'Form A — 143-Question Comprehensive Simulation (Candidate Exam)',
-			'is_practice_test' => 1,
+			'file'                   => 'simulations/CTA_LPCC_Comprehensive_Simulation_Form_A_143_Question_Candidate_Exam_v1.0.docx',
+			'title'                  => 'Form A — 143-Question Comprehensive Simulation (Candidate Exam)',
+			'is_practice_test'       => 1,
+			'unlock_after_quiz_type' => 'modules_complete',
 		);
 		$items[] = array(
 			'file'                   => 'simulations/CTA_LPCC_Comprehensive_Simulation_Form_A_143_Question_Answer_Rationales_v1.0.docx',
@@ -874,7 +875,7 @@ class CTA_Lpcc_Ncmhce_Sync {
 			'file'                   => 'simulations/CTA_LPCC_Comprehensive_Simulation_Form_B_143_Question_Candidate_Exam_v1.0.docx',
 			'title'                  => 'Form B — 143-Question Comprehensive Simulation (Candidate Exam)',
 			'is_practice_test'       => 1,
-			'unlock_after_quiz_type' => 'form_a_remediation',
+			'unlock_after_quiz_type' => 'form_b_ready',
 		);
 		$items[] = array(
 			'file'                   => 'simulations/CTA_LPCC_Comprehensive_Simulation_Form_B_143_Question_Answer_Rationales_v1.0.docx',

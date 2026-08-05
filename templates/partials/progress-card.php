@@ -14,6 +14,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 $enrollment = $item->enrollment;
 $course     = $item->course;
 $progress   = (int) $enrollment->progress;
+$display_title = function_exists( 'cta_lms_get_course_display_title' )
+	? cta_lms_get_course_display_title( $course )
+	: (string) $course->title;
 ?>
 <article class="card dashboard-course-card cta-progress-card" data-course-id="<?php echo esc_attr( $course->id ); ?>">
 	<?php if ( ! empty( $course->thumbnail_url ) ) : ?>
@@ -26,9 +29,9 @@ $progress   = (int) $enrollment->progress;
 	<div class="dashboard-course-card__header">
 		<h3 class="dashboard-course-card__title">
 			<?php if ( $item->player_url ) : ?>
-				<a href="<?php echo esc_url( $item->player_url ); ?>"><?php echo esc_html( $course->title ); ?></a>
+				<a href="<?php echo esc_url( $item->player_url ); ?>"><?php echo esc_html( $display_title ); ?></a>
 			<?php else : ?>
-				<?php echo esc_html( $course->title ); ?>
+				<?php echo esc_html( $display_title ); ?>
 			<?php endif; ?>
 		</h3>
 	</div>

@@ -350,7 +350,9 @@ class CTA_Emails {
 		$subject = sprintf(
 			/* translators: %s: course title */
 			__( 'You\'re Enrolled — %s', 'cta-lms' ),
-			$course->title
+			function_exists( 'cta_lms_get_course_display_title' )
+				? cta_lms_get_course_display_title( $course )
+				: $course->title
 		);
 
 		return self::deliver(

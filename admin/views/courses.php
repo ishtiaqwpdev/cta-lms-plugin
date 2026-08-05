@@ -34,6 +34,13 @@ $access_counts = isset( $access_counts ) ? $access_counts : array();
 				<?php esc_html_e( 'CE courses must remain Draft/Unpublished until CTA receives CAMFT CEPA provider approval. Publishing a CE course requires an explicit confirmation.', 'cta-lms' ); ?>
 			</p>
 		</div>
+	<?php else : ?>
+		<div class="notice notice-warning">
+			<p>
+				<strong><?php esc_html_e( 'Exam Prep release gate:', 'cta-lms' ); ?></strong>
+				<?php esc_html_e( 'All Exam Preparation programs must remain Draft/Unpublished (not publicly purchasable) until final learner testing is verified AND written approval from CTA has been received. Publishing requires an explicit confirmation. See docs/EXAM_PREP_RELEASE_GATE.md.', 'cta-lms' ); ?>
+			</p>
+		</div>
 	<?php endif; ?>
 
 	<?php if ( in_array( $notice, array( 'course_deleted', 'status_updated' ), true ) ) : ?>
@@ -97,10 +104,12 @@ $access_counts = isset( $access_counts ) ? $access_counts : array();
 			<tr>
 				<th>#</th>
 				<th><?php esc_html_e( 'Title', 'cta-lms' ); ?></th>
-				<?php if ( 'exam_prep' !== $product_type ) : ?>
-					<th><?php esc_html_e( 'CE Hours', 'cta-lms' ); ?></th>
-				<?php else : ?>
+				<?php if ( 'exam_prep' === $product_type ) : ?>
 					<th><?php esc_html_e( 'Access (months)', 'cta-lms' ); ?></th>
+				<?php elseif ( 'all' === $product_type ) : ?>
+					<th><?php esc_html_e( 'CE Hours / Access', 'cta-lms' ); ?></th>
+				<?php else : ?>
+					<th><?php esc_html_e( 'CE Hours', 'cta-lms' ); ?></th>
 				<?php endif; ?>
 				<th><?php esc_html_e( 'Price', 'cta-lms' ); ?></th>
 				<th><?php esc_html_e( 'Category', 'cta-lms' ); ?></th>
@@ -126,10 +135,16 @@ $access_counts = isset( $access_counts ) ? $access_counts : array();
 					<tr>
 						<td><?php echo esc_html( (string) $course->id ); ?></td>
 						<td><strong><?php echo esc_html( $course->title ); ?></strong></td>
-						<?php if ( 'exam_prep' !== $product_type && ! $row_is_exam ) : ?>
-							<td><?php echo esc_html( rtrim( rtrim( number_format( (float) $course->ce_hours, 1, '.', '' ), '0' ), '.' ) ); ?></td>
+						<?php if ( $row_is_exam ) : ?>
+							<td><?php
+							printf(
+								/* translators: %d: access months */
+								esc_html__( '%d mo', 'cta-lms' ),
+								(int) ( $course->access_period_months ?? 6 )
+							);
+							?></td>
 						<?php else : ?>
-							<td><?php echo esc_html( (string) (int) ( $course->access_period_months ?? 6 ) ); ?></td>
+							<td><?php echo esc_html( rtrim( rtrim( number_format( (float) $course->ce_hours, 1, '.', '' ), '0' ), '.' ) ); ?></td>
 						<?php endif; ?>
 						<td>$<?php echo esc_html( number_format( (float) $course->price, 2 ) ); ?></td>
 						<td><?php echo esc_html( $course->category ? $course->category : '—' ); ?></td>
@@ -145,10 +160,12 @@ $access_counts = isset( $access_counts ) ? $access_counts : array();
 							$is_published = ( 'published' === $course->status );
 							?>
 							<a
-								class="button button-small<?php echo ( ! $row_is_exam && ! $is_published ) ? ' cta-ce-publish-btn' : ''; ?>"
+								class="button button-small<?php echo ( ! $row_is_exam && ! $is_published ) ? ' cta-ce-publish-btn' : ''; ?><?php echo ( $row_is_exam && ! $is_published ) ? ' cta-exam-prep-publish-btn' : ''; ?>"
 								href="<?php echo esc_url( $toggle_url ); ?>"
 								<?php if ( ! $row_is_exam && ! $is_published ) : ?>
 									data-cta-ce-publish="1"
+								<?php elseif ( $row_is_exam && ! $is_published ) : ?>
+									data-cta-exam-prep-publish="1"
 								<?php endif; ?>
 							><?php echo $is_published ? esc_html__( 'Unpublish', 'cta-lms' ) : esc_html__( 'Publish', 'cta-lms' ); ?></a>
 							<a class="button button-small button-link-delete cta-delete-course" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=cta_delete_course&course_id=' . (int) $course->id ), 'cta_delete_course' ) ); ?>"><?php esc_html_e( 'Delete', 'cta-lms' ); ?></a>
@@ -175,6 +192,25 @@ $access_counts = isset( $access_counts ) ? $access_counts : array();
 			}
 			var url = link.href;
 			url += (url.indexOf('?') >= 0 ? '&' : '?') + 'cta_confirm_ce_publish=1';
+			window.location.href = url;
+		});
+	});
+	document.querySelectorAll('a[data-cta-exam-prep-publish="1"]').forEach(function (link) {
+		link.addEventListener('click', function (e) {
+			e.preventDefault();
+			var ok = window.confirm(
+				'Exam Prep release gate:\n\n' +
+				'This Exam Preparation program will become publicly visible and purchasable.\n' +
+				'Do NOT publish until:\n' +
+				'1) Final learner testing has been completed and verified, AND\n' +
+				'2) Written approval from CTA has been received.\n\n' +
+				'Publish this Exam Prep program anyway?'
+			);
+			if (!ok) {
+				return;
+			}
+			var url = link.href;
+			url += (url.indexOf('?') >= 0 ? '&' : '?') + 'cta_confirm_exam_prep_publish=1';
 			window.location.href = url;
 		});
 	});

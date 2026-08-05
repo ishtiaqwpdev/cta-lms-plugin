@@ -232,7 +232,8 @@ class CTA_Lcsw_Aswb_Sync {
 
 	/**
 	 * Attach all student materials (workbooks, banks, simulations, study tools).
-	 * Idempotent by friendly title. Form A/B answer keys gated via unlock_after_quiz_type.
+	 * Idempotent by friendly title. Form A/B candidate exams gated to modules / Form B readiness;
+	 * answer keys gated via unlock_after_quiz_type after each form is submitted.
 	 *
 	 * @param int $course_id Course ID.
 	 * @return array{attached:int,updated:int,skipped:int,missing:array}
@@ -717,14 +718,16 @@ class CTA_Lcsw_Aswb_Sync {
 		}
 
 		$items[] = array(
-			'file'             => 'simulations/CTA_LCSW_2026_Comprehensive_Simulation_Form_A_122_Question_Exam_v1.0.docx',
-			'title'            => 'Form A — 122-Question Comprehensive Simulation',
-			'is_practice_test' => 1,
+			'file'                   => 'simulations/CTA_LCSW_2026_Comprehensive_Simulation_Form_A_122_Question_Exam_v1.0.docx',
+			'title'                  => 'Form A — 122-Question Comprehensive Simulation',
+			'is_practice_test'       => 1,
+			'unlock_after_quiz_type' => 'modules_complete',
 		);
 		$items[] = array(
-			'file'             => 'simulations/CTA_LCSW_2026_Comprehensive_Simulation_Form_B_122_Question_Exam_v1.0.docx',
-			'title'            => 'Form B — 122-Question Comprehensive Simulation',
-			'is_practice_test' => 1,
+			'file'                   => 'simulations/CTA_LCSW_2026_Comprehensive_Simulation_Form_B_122_Question_Exam_v1.0.docx',
+			'title'                  => 'Form B — 122-Question Comprehensive Simulation',
+			'is_practice_test'       => 1,
+			'unlock_after_quiz_type' => 'form_b_ready',
 		);
 		$items[] = array(
 			'file'                    => 'simulations/CTA_LCSW_2026_Comprehensive_Simulation_Form_A_Answer_Key_and_Detailed_Rationales_v1.0.docx',

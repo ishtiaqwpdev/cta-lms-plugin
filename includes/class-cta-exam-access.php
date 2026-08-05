@@ -368,28 +368,83 @@ class CTA_Exam_Access {
 	public static function get_default_programs() {
 		return array(
 			array(
-				'title'       => 'California Law & Ethics Exam Preparation',
-				'slug'        => 'california-law-ethics-exam-preparation',
-				'description' => '<p>Comprehensive preparation for the California Law &amp; Ethics exam. Includes online instructional content, printable workbooks, practice tests, and mock examinations with answer rationales. Access is valid for 6 months from purchase. This program does not award CE hours or a CE certificate.</p>',
-				'price'       => 199.00,
-				'category'    => 'Exam Preparation',
+				'title'                  => 'CTA LMFT California Law & Ethics Exam Preparation Program',
+				'slug'                   => 'california-law-ethics-exam-preparation',
+				'description'            => '<p>Comprehensive preparation for the California LMFT Law &amp; Ethics exam. Includes online instructional content, printable workbooks, practice tests, and mock examinations with answer rationales. Access is valid for 6 months from purchase. This program does not award CE hours or a CE certificate.</p>',
+				'price'                  => 199.00,
+				'category'               => 'Exam Preparation',
+				'status'                 => 'draft',
+				'launch_pending_testing' => true,
+				'public_title'           => 'LMFT California Law & Ethics Exam Preparation',
+				'match_titles'           => array(
+					'CTA LMFT California Law & Ethics Exam Preparation Program',
+					'LMFT California Law & Ethics Exam Preparation',
+					'California Law & Ethics Exam Preparation',
+				),
 			),
 			array(
-				'title'       => 'CTA LMFT California Clinical Exam Preparation Program',
-				'slug'        => 'lmft-california-clinical-exam-preparation',
-				'description' => '<p>Complete self-paced preparation for the California LMFT Clinical Exam. Includes 12 workbooks, paired practice banks, two 150-question simulations with controlled rationales, flashcards, and study schedules. Exam Preparation Only — No CE Credit (classification pending final client confirmation). Recorded audio and video are not included at launch. Pricing and access period pending client confirmation.</p>',
-				'price'       => 0.00,
-				'category'    => 'Exam Preparation',
-				'status'      => 'draft',
-				'commercial_pending' => true,
+				'title'                  => 'CTA LCSW California Law & Ethics Exam Preparation Program',
+				'slug'                   => 'lcsw-california-law-ethics-exam-preparation',
+				'description'            => '<p>Exam preparation program shell for the California LCSW Law &amp; Ethics examination. Instructional modules, practice materials, and simulations will be loaded when content is finalized. Access is valid for 6 months from purchase. Exam Preparation Only — No CE Credit. This program does not award CE hours or a CE certificate.</p>',
+				'price'                  => 199.00,
+				'category'               => 'Exam Preparation',
+				'status'                 => 'draft',
+				'launch_pending_testing' => true,
+				'content_pending'        => true,
+				'public_title'           => 'LCSW California Law & Ethics Exam Preparation',
+				'match_titles'           => array(
+					'CTA LCSW California Law & Ethics Exam Preparation Program',
+					'LCSW California Law & Ethics Exam Preparation',
+				),
 			),
 			array(
-				'title'       => 'CTA LCSW ASWB Clinical Exam Preparation Program',
-				'slug'        => 'lcsw-aswb-clinical-exam-preparation',
-				'description' => '<p>Complete self-paced preparation for the ASWB Clinical Social Work Licensing Examination. Includes 12 social work–specific workbooks, paired practice banks, a 25-question mini-mock, two 122-question simulations with controlled rationales, flashcards, study schedules, and the August 2026 exam-day guide. Access is valid for 6 months from purchase. Exam Preparation Only — No CE Credit. Recorded audio and video are not included at launch.</p>',
-				'price'       => 249.00,
-				'category'    => 'Exam Preparation',
-				'legacy_slug' => 'lcsw-california-clinical-exam-preparation',
+				'title'                  => 'CTA LPCC California Law & Ethics Exam Preparation Program',
+				'slug'                   => 'lpcc-california-law-ethics-exam-preparation',
+				'description'            => '<p>Exam preparation program shell for the California LPCC Law &amp; Ethics examination. Instructional modules, practice materials, and simulations will be loaded when content is finalized. Access is valid for 6 months from purchase. Exam Preparation Only — No CE Credit. This program does not award CE hours or a CE certificate.</p>',
+				'price'                  => 199.00,
+				'category'               => 'Exam Preparation',
+				'status'                 => 'draft',
+				'launch_pending_testing' => true,
+				'content_pending'        => true,
+				'public_title'           => 'LPCC California Law & Ethics Exam Preparation',
+				'match_titles'           => array(
+					'CTA LPCC California Law & Ethics Exam Preparation Program',
+					'LPCC California Law & Ethics Exam Preparation',
+				),
+			),
+			array(
+				'title'                  => 'CTA LMFT AMFTRB National Exam Preparation Program',
+				'slug'                   => 'lmft-amftrb-national-exam-preparation',
+				'description'            => '<p>Complete self-paced preparation for the AMFTRB National MFT examination. Includes instructional modules, practice materials, and Form A / Form B comprehensive simulations with controlled answer rationales released after each form is submitted. Access is valid for 6 months from purchase. Exam Preparation Only — No CE Credit. This program does not award CE hours or a CE certificate. CTA is not affiliated with or endorsed by AMFTRB.</p>',
+				'price'                  => 329.00,
+				'category'               => 'Exam Preparation',
+				'status'                 => 'draft',
+				'launch_pending_testing' => true,
+				'public_title'           => 'LMFT AMFTRB National Exam Preparation',
+				'match_titles'           => array(
+					'CTA LMFT AMFTRB National Exam Preparation Program',
+					'LMFT AMFTRB National Exam Preparation',
+				),
+			),
+			array(
+				'title'                  => 'CTA LMFT California Clinical Exam Preparation Program',
+				'slug'                   => 'lmft-california-clinical-exam-preparation',
+				'description'            => '<p>Complete self-paced preparation for the California LMFT Clinical Exam. Includes 12 workbooks, paired practice banks, two 150-question simulations with controlled rationales, flashcards, and study schedules. Exam Preparation Only — No CE Credit (classification pending final client confirmation). Recorded audio and video are not included at launch. Pricing and access period pending client confirmation.</p>',
+				'price'                  => 0.00,
+				'category'               => 'Exam Preparation',
+				'status'                 => 'draft',
+				'commercial_pending'     => true,
+				'launch_pending_testing' => true,
+			),
+			array(
+				'title'                  => 'CTA LCSW ASWB Clinical Exam Preparation Program',
+				'slug'                   => 'lcsw-aswb-clinical-exam-preparation',
+				'description'            => '<p>Complete self-paced preparation for the ASWB Clinical Social Work Licensing Examination. Includes 12 social work–specific workbooks, paired practice banks, a 25-question mini-mock, two 122-question simulations with controlled rationales, flashcards, study schedules, and the August 2026 exam-day guide. Access is valid for 6 months from purchase. Exam Preparation Only — No CE Credit. Recorded audio and video are not included at launch.</p>',
+				'price'                  => 249.00,
+				'category'               => 'Exam Preparation',
+				'status'                 => 'draft',
+				'launch_pending_testing' => true,
+				'legacy_slug'            => 'lcsw-california-clinical-exam-preparation',
 			),
 			array(
 				'title'       => 'CTA LPCC NCMHCE Exam Preparation Program',
@@ -405,7 +460,7 @@ class CTA_Exam_Access {
 	}
 
 	/**
-	 * Seed the four default exam prep programs if missing (by slug).
+	 * Seed default exam prep programs if missing (by slug / legacy slug / match titles).
 	 */
 	public static function seed_default_programs() {
 		global $wpdb;
@@ -438,6 +493,27 @@ class CTA_Exam_Access {
 				);
 			}
 
+			// Match renamed programs by prior formal / public titles.
+			if ( ! $existing_id && ! empty( $program['match_titles'] ) ) {
+				foreach ( (array) $program['match_titles'] as $match_title ) {
+					$match_title = sanitize_text_field( (string) $match_title );
+					if ( '' === $match_title ) {
+						continue;
+					}
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+					$existing_id = (int) $wpdb->get_var(
+						$wpdb->prepare(
+							"SELECT id FROM {$table} WHERE title = %s AND product_type = %s LIMIT 1",
+							$match_title,
+							self::PRODUCT_TYPE_EXAM_PREP
+						)
+					);
+					if ( $existing_id ) {
+						break;
+					}
+				}
+			}
+
 			if ( $existing_id ) {
 				$update = array(
 					'title'                => $program['title'],
@@ -452,10 +528,21 @@ class CTA_Exam_Access {
 				);
 				$formats = array( '%s', '%s', '%f', '%s', '%s', '%d', '%f', '%d', '%d' );
 
+				if ( ! empty( $program['description'] ) ) {
+					$update['description'] = $program['description'];
+					$formats[]             = '%s';
+				}
+
 				// Commercial terms unconfirmed OR launch testing incomplete: keep / force draft.
 				if ( ! empty( $program['commercial_pending'] ) || ! empty( $program['launch_pending_testing'] ) ) {
 					$update['status'] = 'draft';
 					$formats[]        = '%s';
+				}
+
+				$meta_json = self::merge_public_title_meta( $existing_id, $program );
+				if ( null !== $meta_json ) {
+					$update['syllabus_meta'] = $meta_json;
+					$formats[]               = '%s';
 				}
 
 				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
@@ -474,27 +561,120 @@ class CTA_Exam_Access {
 				$status = 'draft';
 			}
 
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
-			$wpdb->insert(
-				$table,
-				array(
-					'title'                 => $program['title'],
-					'slug'                  => $program['slug'],
-					'description'           => $program['description'],
-					'ce_hours'              => 0,
-					'price'                 => $program['price'],
-					'category'              => $program['category'],
-					'learning_objectives'   => wp_json_encode( array() ),
-					'modules_count'         => 0,
-					'status'                => $status,
-					'product_type'          => self::PRODUCT_TYPE_EXAM_PREP,
-					'access_period_months'  => 6,
-					'awards_ce_hours'       => 0,
-					'has_ce_certificate'    => 0,
-				),
-				array( '%s', '%s', '%s', '%f', '%f', '%s', '%s', '%d', '%s', '%s', '%d', '%d', '%d' )
+			$insert = array(
+				'title'                => $program['title'],
+				'slug'                 => $program['slug'],
+				'description'          => $program['description'],
+				'ce_hours'             => 0,
+				'price'                => $program['price'],
+				'category'             => $program['category'],
+				'learning_objectives'  => wp_json_encode( array() ),
+				'modules_count'        => 0,
+				'status'               => $status,
+				'product_type'         => self::PRODUCT_TYPE_EXAM_PREP,
+				'access_period_months' => 6,
+				'awards_ce_hours'      => 0,
+				'has_ce_certificate'   => 0,
 			);
+			$insert_formats = array( '%s', '%s', '%s', '%f', '%f', '%s', '%s', '%d', '%s', '%s', '%d', '%d', '%d' );
+
+			if ( ! empty( $program['public_title'] )
+				|| ! empty( $program['content_pending'] )
+				|| ! empty( $program['launch_pending_testing'] )
+				|| ! empty( $program['commercial_pending'] ) ) {
+				$insert['syllabus_meta'] = wp_json_encode( self::program_syllabus_meta_defaults( $program ) );
+				$insert_formats[]        = '%s';
+			}
+
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+			$wpdb->insert( $table, $insert, $insert_formats );
 		}
+	}
+
+	/**
+	 * Default syllabus_meta fields for an exam prep program definition.
+	 *
+	 * @param array $program Program definition.
+	 * @return array
+	 */
+	private static function program_syllabus_meta_defaults( array $program ) {
+		$meta = array(
+			'course_classification' => 'Exam Preparation Only — No CE Credit',
+		);
+
+		if ( ! empty( $program['public_title'] ) ) {
+			$meta['public_title'] = sanitize_text_field( (string) $program['public_title'] );
+		}
+
+		if ( ! empty( $program['content_pending'] ) || ! empty( $program['launch_pending_testing'] ) ) {
+			$meta['development_draft'] = true;
+		}
+
+		if ( ! empty( $program['launch_pending_testing'] ) ) {
+			$meta['launch_pending_testing'] = true;
+			$meta['launch_status']          = 'draft_pending_testing';
+		}
+
+		if ( ! empty( $program['content_pending'] ) ) {
+			$meta['content_pending'] = true;
+		}
+
+		if ( ! empty( $program['commercial_pending'] ) ) {
+			$meta['commercial_pending'] = true;
+			$meta['pricing_status']    = 'pending_client_confirmation';
+		}
+
+		return $meta;
+	}
+
+	/**
+	 * Merge public_title / non-CE classification into an existing course syllabus_meta JSON blob.
+	 *
+	 * @param int   $course_id Course ID.
+	 * @param array $program   Program definition.
+	 * @return string|null Encoded JSON, or null when unchanged / unavailable.
+	 */
+	private static function merge_public_title_meta( $course_id, array $program ) {
+		global $wpdb;
+
+		$course_id = absint( $course_id );
+		if ( ! $course_id ) {
+			return null;
+		}
+
+		if ( empty( $program['public_title'] )
+			&& empty( $program['content_pending'] )
+			&& empty( $program['launch_pending_testing'] )
+			&& empty( $program['commercial_pending'] ) ) {
+			return null;
+		}
+
+		$table = $wpdb->prefix . 'cta_courses';
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$raw = $wpdb->get_var(
+			$wpdb->prepare( "SELECT syllabus_meta FROM {$table} WHERE id = %d LIMIT 1", $course_id )
+		);
+
+		$meta = array();
+		if ( is_string( $raw ) && '' !== $raw ) {
+			$decoded = json_decode( $raw, true );
+			$meta    = is_array( $decoded ) ? $decoded : array();
+		}
+
+		$defaults = self::program_syllabus_meta_defaults( $program );
+		$changed  = false;
+		foreach ( $defaults as $key => $value ) {
+			if ( ! array_key_exists( $key, $meta ) || $meta[ $key ] !== $value ) {
+				$meta[ $key ] = $value;
+				$changed      = true;
+			}
+		}
+
+		if ( ! $changed ) {
+			return null;
+		}
+
+		return wp_json_encode( $meta );
 	}
 
 	/**
@@ -544,6 +724,4 @@ class CTA_Exam_Access {
 		return ! empty( $meta['launch_pending_testing'] )
 			|| ( isset( $meta['launch_status'] ) && 'draft_pending_testing' === $meta['launch_status'] );
 	}
-}
-
 }

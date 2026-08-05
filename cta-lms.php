@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.138' );
+	define( 'CTA_VERSION', '1.0.142' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -670,6 +670,53 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				CTA_Database::maybe_ensure_quiz_attempt_schema();
 			}
 
+			// Exam Prep: lock Form A/B printable exams behind the same progress gates as online assessments.
+			if ( version_compare( $installed, '1.0.139', '<' ) ) {
+				if ( class_exists( 'CTA_Database' ) ) {
+					CTA_Database::maybe_add_resource_unlock_column();
+				}
+				if ( class_exists( 'CTA_Lcsw_Aswb_Sync' ) ) {
+					CTA_Lcsw_Aswb_Sync::sync( true );
+				}
+				if ( class_exists( 'CTA_Lmft_Clinical_Sync' ) ) {
+					CTA_Lmft_Clinical_Sync::sync( true );
+				}
+				if ( class_exists( 'CTA_Lpcc_Ncmhce_Sync' ) ) {
+					CTA_Lpcc_Ncmhce_Sync::sync( true );
+				}
+			}
+
+			// Rename Law & Ethics Exam Prep: formal + public titles, confirm $199 / 6 months.
+			if ( version_compare( $installed, '1.0.140', '<' ) ) {
+				if ( class_exists( 'CTA_Exam_Access' ) ) {
+					CTA_Exam_Access::seed_default_programs();
+				}
+				if ( class_exists( 'CTA_Course_Catalog' ) ) {
+					CTA_Course_Catalog::restore_exam_prep_pricing();
+				}
+			}
+
+			// Add LCSW/LPCC Law & Ethics + LMFT AMFTRB Exam Prep shells (draft / unpublished).
+			if ( version_compare( $installed, '1.0.141', '<' ) ) {
+				if ( class_exists( 'CTA_Exam_Access' ) ) {
+					CTA_Exam_Access::seed_default_programs();
+				}
+				if ( class_exists( 'CTA_Course_Catalog' ) ) {
+					CTA_Course_Catalog::restore_exam_prep_pricing();
+				}
+			}
+
+			// Keep ALL Exam Prep unpublished until learner testing + written CTA approval.
+			if ( version_compare( $installed, '1.0.142', '<' ) ) {
+				if ( class_exists( 'CTA_Exam_Access' ) ) {
+					CTA_Exam_Access::seed_default_programs();
+				}
+				if ( class_exists( 'CTA_Course_Catalog' ) ) {
+					CTA_Course_Catalog::restore_exam_prep_pricing();
+					CTA_Course_Catalog::unpublish_all_exam_prep_pending_launch();
+				}
+			}
+
 			// Decouple supervision application pending from general account / CE access.
 			if ( version_compare( $installed, '1.0.90', '<' ) && class_exists( 'CTA_Associate_Access' ) ) {
 				$query = new WP_User_Query(
@@ -1061,6 +1108,37 @@ if ( ! function_exists( 'cta_lms_format_money' ) ) {
 	 */
 	function cta_lms_format_money( $amount ) {
 		return '$' . number_format( (float) $amount, 2 );
+	}
+}
+
+if ( ! function_exists( 'cta_lms_get_course_display_title' ) ) {
+	/**
+	 * Learner-/public-facing course title.
+	 *
+	 * Prefers syllabus_meta.public_title when set (shorter marketing name),
+	 * otherwise falls back to the formal course.title used in admin.
+	 *
+	 * @param object|null $course Course row.
+	 * @return string
+	 */
+	function cta_lms_get_course_display_title( $course ) {
+		if ( ! $course ) {
+			return '';
+		}
+
+		$meta = array();
+		if ( class_exists( 'CTA_Syllabus_Sync' ) ) {
+			$meta = CTA_Syllabus_Sync::get_meta( $course );
+		} elseif ( ! empty( $course->syllabus_meta ) ) {
+			$decoded = json_decode( (string) $course->syllabus_meta, true );
+			$meta    = is_array( $decoded ) ? $decoded : array();
+		}
+
+		if ( ! empty( $meta['public_title'] ) ) {
+			return sanitize_text_field( (string) $meta['public_title'] );
+		}
+
+		return isset( $course->title ) ? (string) $course->title : '';
 	}
 }
 

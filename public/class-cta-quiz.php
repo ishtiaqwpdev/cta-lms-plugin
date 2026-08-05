@@ -128,11 +128,14 @@ class CTA_Quiz {
 
 		$is_exam_prep = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course );
 
-		// Exam Prep assessments are independently available (no CE Capstone gate).
-		if ( ! $is_exam_prep && ! $modules_done ) {
+		// All programs (including Exam Prep) unlock assessments only after modules are complete.
+		// Exam Prep skips the CE Capstone wording; the gate itself is module completion.
+		if ( ! $modules_done ) {
 			return $this->render_message_state(
 				__( 'Complete All Modules First', 'cta-lms' ),
-				__( 'Finish every instructional module, including the Course Integration Capstone, before starting the final examination.', 'cta-lms' ),
+				$is_exam_prep
+					? __( 'Finish every program module before starting assessments. The online Form A / Form B experience is the primary way to take these simulations.', 'cta-lms' )
+					: __( 'Finish every instructional module, including the Course Integration Capstone, before starting the final examination.', 'cta-lms' ),
 				$this->get_player_url( $course_id ),
 				__( 'Back to Course', 'cta-lms' )
 			);
@@ -259,8 +262,8 @@ class CTA_Quiz {
 				CTA_Database::maybe_ensure_quiz_attempt_schema();
 			}
 
-			// Exam Prep assessments are independently retakeable; do not apply CE Capstone exam gating.
-			$check = $this->validate_quiz_access( $user_id, $course_id, ! $is_exam_prep, $quiz_id );
+			// Exam Prep and CE both require modules complete before assessments; Form B adds Form A (+ remediation) gates.
+			$check = $this->validate_quiz_access( $user_id, $course_id, true, $quiz_id );
 
 			if ( is_wp_error( $check ) ) {
 				wp_send_json_error( array( 'message' => $check->get_error_message() ) );

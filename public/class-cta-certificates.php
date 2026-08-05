@@ -47,7 +47,7 @@ class CTA_Certificates {
 		}
 
 		// Exam Preparation Programs never issue CE certificates.
-		if ( class_exists( 'CTA_Exam_Access' ) && ! CTA_Exam_Access::has_ce_certificate( $course ) ) {
+		if ( class_exists( 'CTA_Exam_Access' ) && ( CTA_Exam_Access::is_exam_prep( $course ) || ! CTA_Exam_Access::has_ce_certificate( $course ) ) ) {
 			return null;
 		}
 

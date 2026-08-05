@@ -17,6 +17,9 @@ $cert_download_url = ( $certificate && class_exists( 'CTA_Certificates' ) )
 	: '';
 $cert_url          = $cert_print_url;
 $is_exam_prep      = ! empty( $is_exam_prep );
+$display_title     = ( ! empty( $course ) && function_exists( 'cta_lms_get_course_display_title' ) )
+	? cta_lms_get_course_display_title( $course )
+	: ( ! empty( $course->title ) ? (string) $course->title : '' );
 if ( empty( $evaluation_questions ) || ! is_array( $evaluation_questions ) ) {
 	$evaluation_questions = CTA_Quiz::get_evaluation_questions();
 }
@@ -43,7 +46,7 @@ if ( empty( $evaluation_questions ) || ! is_array( $evaluation_questions ) ) {
 				<a href="<?php echo esc_url( $player_url ); ?>">&larr; <?php echo esc_html__( 'Back to Course', 'cta-lms' ); ?></a>
 			<?php endif; ?>
 		</p>
-		<h1 class="cta-quiz-course-title"><?php echo esc_html( $course->title ); ?></h1>
+		<h1 class="cta-quiz-course-title"><?php echo esc_html( $display_title ); ?></h1>
 		<div class="cta-quiz-timer" id="cta-quiz-timer" hidden aria-hidden="true"></div>
 	</div>
 
@@ -544,7 +547,7 @@ if ( empty( $evaluation_questions ) || ! is_array( $evaluation_questions ) ) {
 		<div class="cta-quiz-certificate-ready card">
 			<div class="cta-quiz-certificate-ready__icon" aria-hidden="true">✓</div>
 			<h2><?php echo esc_html__( 'Assessment complete!', 'cta-lms' ); ?></h2>
-			<p><?php echo esc_html__( 'Great work — you completed this Exam Preparation assessment. Answer rationales are shown after each attempt. No CE evaluation or certificate is required for this program.', 'cta-lms' ); ?></p>
+			<p><?php echo esc_html__( 'Great work — you completed this Exam Preparation assessment. Answer rationales are shown after each attempt.', 'cta-lms' ); ?></p>
 			<?php if ( $last_attempt && (int) $last_attempt->passed ) : ?>
 				<p><?php echo esc_html__( 'Your score:', 'cta-lms' ); ?> <strong><?php echo esc_html( (string) (int) $last_attempt->score ); ?>%</strong></p>
 			<?php endif; ?>

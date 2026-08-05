@@ -136,21 +136,128 @@ class CTA_Course_Materials {
 			}
 		}
 
-		// Per-student unlock gates (quiz submit or Form A remediation completion).
+		// Per-student unlock gates (quiz submit, modules complete, or Form B readiness).
 		$unlock_type = isset( $resource->unlock_after_quiz_type )
 			? sanitize_text_field( (string) $resource->unlock_after_quiz_type )
 			: '';
+
+		// Exam Prep Form A/B candidate exam downloads inherit the same gates as online assessments
+		// even if an older sync omitted unlock_after_quiz_type.
+		if ( '' === $unlock_type
+			&& class_exists( 'CTA_Exam_Access' )
+			&& CTA_Exam_Access::is_exam_prep( $course ) ) {
+			$unlock_type = self::infer_exam_form_download_gate( $resource );
+		}
+
 		if ( '' !== $unlock_type ) {
-			if ( 'form_a_remediation' === $unlock_type ) {
-				return self::user_has_completed_form_a_remediation( $user_id, $course_id );
-			}
-			if ( class_exists( 'CTA_Lcsw_Aswb_Sync' ) ) {
-				return CTA_Lcsw_Aswb_Sync::user_has_completed_quiz_type( $user_id, $course_id, $unlock_type );
-			}
-			return self::user_has_completed_quiz_type( $user_id, $course_id, $unlock_type );
+			return self::user_meets_unlock_gate( $user_id, $course_id, $unlock_type );
 		}
 
 		return true;
+	}
+
+	/**
+	 * Whether the learner satisfies a downloadable-resource unlock gate.
+	 *
+	 * Supported gates:
+	 * - modules_complete — all instructional modules finished (Form A printable / online unlock)
+	 * - form_b_ready — Form A submitted (+ remediation when the package includes it)
+	 * - form_a_remediation — Form A remediation workbook marked complete
+	 * - form_a / form_b / wbN_bank / checkpoint_N — matching quiz type submitted
+	 *
+	 * @param int    $user_id     User ID.
+	 * @param int    $course_id   Course ID.
+	 * @param string $unlock_type Gate key.
+	 * @return bool
+	 */
+	public static function user_meets_unlock_gate( $user_id, $course_id, $unlock_type ) {
+		$user_id     = absint( $user_id );
+		$course_id   = absint( $course_id );
+		$unlock_type = sanitize_text_field( (string) $unlock_type );
+
+		if ( ! $user_id || ! $course_id || '' === $unlock_type ) {
+			return false;
+		}
+
+		if ( 'modules_complete' === $unlock_type ) {
+			$enrollment = class_exists( 'CTA_Database' )
+				? CTA_Database::get_user_enrollment( $user_id, $course_id )
+				: null;
+			if ( class_exists( 'CTA_CE_Completion' ) ) {
+				return CTA_CE_Completion::modules_complete( $user_id, $course_id, $enrollment );
+			}
+			return class_exists( 'CTA_Certificates' )
+				&& CTA_Certificates::user_completed_all_modules( $user_id, $course_id, $enrollment );
+		}
+
+		if ( 'form_b_ready' === $unlock_type ) {
+			return ! is_wp_error( self::assert_form_b_accessible( $user_id, $course_id ) );
+		}
+
+		if ( 'form_a_remediation' === $unlock_type ) {
+			return self::user_has_completed_form_a_remediation( $user_id, $course_id );
+		}
+
+		if ( class_exists( 'CTA_Lcsw_Aswb_Sync' ) ) {
+			return CTA_Lcsw_Aswb_Sync::user_has_completed_quiz_type( $user_id, $course_id, $unlock_type );
+		}
+
+		return self::user_has_completed_quiz_type( $user_id, $course_id, $unlock_type );
+	}
+
+	/**
+	 * Infer unlock gate for Form A/B candidate-exam downloads from title/path.
+	 *
+	 * Answer keys / rationales are never inferred here (they must stay on form_a/form_b submit gates).
+	 *
+	 * @param object|null $resource Resource row.
+	 * @return string Gate key or empty string.
+	 */
+	public static function infer_exam_form_download_gate( $resource ) {
+		if ( ! $resource ) {
+			return '';
+		}
+
+		$haystack = trim(
+			(string) ( $resource->title ?? '' ) . ' ' .
+			(string) ( $resource->file_path ?? '' ) . ' ' .
+			(string) ( $resource->file_url ?? '' )
+		);
+
+		if ( '' === $haystack ) {
+			return '';
+		}
+
+		// Never auto-gate answer keys / rationales / remediation workbooks this way.
+		if ( false !== stripos( $haystack, 'Answer' )
+			|| false !== stripos( $haystack, 'Rationale' )
+			|| false !== stripos( $haystack, 'Remediation' ) ) {
+			return '';
+		}
+
+		$looks_like_form = ( false !== stripos( $haystack, 'Form_A' )
+			|| false !== stripos( $haystack, 'Form A' )
+			|| false !== stripos( $haystack, 'Form_B' )
+			|| false !== stripos( $haystack, 'Form B' ) );
+		$looks_like_sim  = ( false !== stripos( $haystack, 'Simulation' )
+			|| false !== stripos( $haystack, 'Candidate_Exam' )
+			|| false !== stripos( $haystack, 'Candidate Exam' )
+			|| false !== stripos( $haystack, '_Exam_v' )
+			|| ! empty( $resource->is_practice_test ) );
+
+		if ( ! $looks_like_form || ! $looks_like_sim ) {
+			return '';
+		}
+
+		if ( false !== stripos( $haystack, 'Form_B' ) || false !== stripos( $haystack, 'Form B' ) ) {
+			return 'form_b_ready';
+		}
+
+		if ( false !== stripos( $haystack, 'Form_A' ) || false !== stripos( $haystack, 'Form A' ) ) {
+			return 'modules_complete';
+		}
+
+		return '';
 	}
 
 	/**
@@ -345,25 +452,43 @@ class CTA_Course_Materials {
 	 * @return string
 	 */
 	public static function get_unlock_lock_message( $user_id, $resource ) {
-		if ( ! $resource || empty( $resource->unlock_after_quiz_type ) ) {
+		if ( ! $resource ) {
 			return '';
 		}
 
-		$type      = sanitize_text_field( (string) $resource->unlock_after_quiz_type );
+		$type = isset( $resource->unlock_after_quiz_type )
+			? sanitize_text_field( (string) $resource->unlock_after_quiz_type )
+			: '';
+
+		$course = ( ! empty( $resource->course_id ) && class_exists( 'CTA_Database' ) )
+			? CTA_Database::get_course( (int) $resource->course_id )
+			: null;
+		if ( '' === $type
+			&& class_exists( 'CTA_Exam_Access' )
+			&& CTA_Exam_Access::is_exam_prep( $course ) ) {
+			$type = self::infer_exam_form_download_gate( $resource );
+		}
+
+		if ( '' === $type ) {
+			return '';
+		}
+
 		$course_id = isset( $resource->course_id ) ? (int) $resource->course_id : 0;
 
-		if ( 'form_a_remediation' === $type ) {
-			$unlocked = self::user_has_completed_form_a_remediation( $user_id, $course_id );
-		} else {
-			$unlocked = class_exists( 'CTA_Lcsw_Aswb_Sync' )
-				? CTA_Lcsw_Aswb_Sync::user_has_completed_quiz_type( $user_id, $course_id, $type )
-				: self::user_has_completed_quiz_type( $user_id, $course_id, $type );
-		}
-
-		if ( $unlocked ) {
+		if ( self::user_meets_unlock_gate( $user_id, $course_id, $type ) ) {
 			return '';
 		}
 
+		if ( 'modules_complete' === $type ) {
+			return __( 'Available after you complete all program modules.', 'cta-lms' );
+		}
+		if ( 'form_b_ready' === $type ) {
+			$form_b_ok = self::assert_form_b_accessible( $user_id, $course_id );
+			if ( is_wp_error( $form_b_ok ) ) {
+				return $form_b_ok->get_error_message();
+			}
+			return __( 'Available after Form A prerequisites are complete.', 'cta-lms' );
+		}
 		if ( 'form_a_remediation' === $type ) {
 			return __( 'Available after you complete the Form A Remediation Workbook.', 'cta-lms' );
 		}

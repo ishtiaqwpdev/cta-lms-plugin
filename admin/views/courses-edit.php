@@ -102,7 +102,26 @@ if ( $course ) {
 				</tr>
 				<tr>
 					<th><label for="cta-course-title"><?php echo $is_exam_prep ? esc_html__( 'Program Name', 'cta-lms' ) : esc_html__( 'Course Title', 'cta-lms' ); ?></label></th>
-					<td><input type="text" class="regular-text" id="cta-course-title" name="title" value="<?php echo esc_attr( $course->title ?? '' ); ?>" required></td>
+					<td>
+						<input type="text" class="regular-text" id="cta-course-title" name="title" value="<?php echo esc_attr( $course->title ?? '' ); ?>" required>
+						<?php
+						$admin_public_title = '';
+						if ( ! empty( $course ) && function_exists( 'cta_lms_get_course_display_title' ) ) {
+							$admin_public_title = cta_lms_get_course_display_title( $course );
+						}
+						if ( $is_exam_prep && $admin_public_title && $admin_public_title !== (string) ( $course->title ?? '' ) ) :
+							?>
+							<p class="description">
+								<?php
+								printf(
+									/* translators: %s: shorter public display name */
+									esc_html__( 'Public display name: %s', 'cta-lms' ),
+									esc_html( $admin_public_title )
+								);
+								?>
+							</p>
+						<?php endif; ?>
+					</td>
 				</tr>
 				<tr>
 					<th><label for="cta-course-slug"><?php esc_html_e( 'Slug', 'cta-lms' ); ?></label></th>
@@ -119,7 +138,7 @@ if ( $course ) {
 						</select>
 					</td>
 				</tr>
-				<tr class="cta-field-ce-hours">
+				<tr class="cta-field-ce-hours" <?php echo $is_exam_prep ? 'style="display:none;"' : ''; ?>>
 					<th><label for="cta-course-ce-hours"><?php esc_html_e( 'CE Hours', 'cta-lms' ); ?></label></th>
 					<td><input type="number" step="0.5" min="0" id="cta-course-ce-hours" name="ce_hours" value="<?php echo esc_attr( $is_exam_prep ? '0' : ( $course->ce_hours ?? '0' ) ); ?>" <?php disabled( $is_exam_prep ); ?>></td>
 				</tr>
@@ -222,11 +241,11 @@ if ( $course ) {
 						<p class="description"><?php esc_html_e( 'One reference per line.', 'cta-lms' ); ?></p>
 					</td>
 				</tr>
-				<tr class="cta-field-syllabus">
+				<tr class="cta-field-attestation" <?php echo $is_exam_prep ? 'style="display:none;"' : ''; ?>>
 					<th><?php esc_html_e( 'Attestation', 'cta-lms' ); ?></th>
 					<td>
 						<label>
-							<input type="checkbox" name="attestation_required" value="1" <?php checked( ! empty( $syllabus_meta['attestation_required'] ) || ! isset( $syllabus_meta['attestation_required'] ) ); ?>>
+							<input type="checkbox" name="attestation_required" value="1" <?php checked( ! $is_exam_prep && ( ! empty( $syllabus_meta['attestation_required'] ) || ! isset( $syllabus_meta['attestation_required'] ) ) ); ?> <?php disabled( $is_exam_prep ); ?>>
 							<?php esc_html_e( 'Require course-completion attestation (asynchronous distance learning)', 'cta-lms' ); ?>
 						</label>
 					</td>
@@ -273,6 +292,11 @@ if ( $course ) {
 							<p class="description" style="margin-top:8px;">
 								<?php esc_html_e( 'CAMFT CEPA: CE courses must stay Draft until provider approval. Publishing requires an explicit confirmation prompt.', 'cta-lms' ); ?>
 							</p>
+						<?php else : ?>
+							<input type="hidden" name="cta_confirm_exam_prep_publish" id="cta-confirm-exam-prep-publish" value="">
+							<p class="description" style="margin-top:8px;">
+								<?php esc_html_e( 'Exam Prep release gate: programs must stay Draft until final learner testing is verified AND written CTA approval is received. Publishing requires an explicit confirmation prompt.', 'cta-lms' ); ?>
+							</p>
 						<?php endif; ?>
 					</td>
 				</tr>
@@ -292,11 +316,19 @@ if ( $course ) {
 			var isExam = exam && exam.checked;
 			var ceRow = document.querySelector('.cta-field-ce-hours');
 			var accessRow = document.querySelector('.cta-field-access-months');
+			var attestRow = document.querySelector('.cta-field-attestation');
 			var ceInput = document.getElementById('cta-course-ce-hours');
+			var attestInput = document.querySelector('input[name="attestation_required"]');
+			if (ceRow) { ceRow.style.display = isExam ? 'none' : ''; }
 			if (accessRow) { accessRow.style.display = isExam ? '' : 'none'; }
+			if (attestRow) { attestRow.style.display = isExam ? 'none' : ''; }
 			if (ceInput) {
 				ceInput.disabled = !!isExam;
 				if (isExam) { ceInput.value = '0'; }
+			}
+			if (attestInput) {
+				attestInput.disabled = !!isExam;
+				if (isExam) { attestInput.checked = false; }
 			}
 		}
 		document.querySelectorAll('input[name="product_type"]').forEach(function (el) {
@@ -306,13 +338,41 @@ if ( $course ) {
 
 		var form = document.querySelector('form[action*="cta_save_course"], form.cta-course-edit-form, form');
 		var confirmField = document.getElementById('cta-confirm-ce-publish');
-		if (form && confirmField) {
+		var examConfirmField = document.getElementById('cta-confirm-exam-prep-publish');
+		if (form && (confirmField || examConfirmField)) {
 			form.addEventListener('submit', function (e) {
 				var exam = document.querySelector('input[name="product_type"][value="exam_prep"]');
 				var isExam = exam && exam.checked;
 				var published = document.querySelector('input[name="status"][value="published"]');
-				confirmField.value = '';
-				if (isExam || !published || !published.checked) {
+				if (confirmField) {
+					confirmField.value = '';
+				}
+				if (examConfirmField) {
+					examConfirmField.value = '';
+				}
+				if (!published || !published.checked) {
+					return;
+				}
+				if (isExam) {
+					if (!examConfirmField) {
+						return;
+					}
+					var okExam = window.confirm(
+						'Exam Prep release gate:\n\n' +
+						'This Exam Preparation program will become publicly visible and purchasable.\n' +
+						'Do NOT publish until:\n' +
+						'1) Final learner testing has been completed and verified, AND\n' +
+						'2) Written approval from CTA has been received.\n\n' +
+						'Publish this Exam Prep program anyway?'
+					);
+					if (!okExam) {
+						e.preventDefault();
+						return;
+					}
+					examConfirmField.value = '1';
+					return;
+				}
+				if (!confirmField) {
 					return;
 				}
 				var ok = window.confirm(

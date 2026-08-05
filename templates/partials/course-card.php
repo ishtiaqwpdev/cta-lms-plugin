@@ -50,12 +50,15 @@ $card_alt  = ! empty( $card_meta['image_alt'] )
 	? (string) $card_meta['image_alt']
 	: (string) $course->title;
 $commercial_pending = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::commercial_terms_pending( $course );
+$display_title      = function_exists( 'cta_lms_get_course_display_title' )
+	? cta_lms_get_course_display_title( $course )
+	: (string) $course->title;
 ?>
 <article
 	class="cta-course-card card course-card course-card--catalog<?php echo $is_exam_prep ? ' course-card--exam-prep' : ''; ?>"
 	data-category="<?php echo esc_attr( $category ); ?>"
 	data-price="<?php echo esc_attr( $course->price ); ?>"
-	data-ce-hours="<?php echo esc_attr( $course->ce_hours ); ?>"
+	data-ce-hours="<?php echo esc_attr( $is_exam_prep ? '' : $course->ce_hours ); ?>"
 	data-product-type="<?php echo esc_attr( $is_exam_prep ? 'exam_prep' : 'ce' ); ?>"
 >
 	<div class="cta-course-card__thumb course-card__media">
@@ -106,9 +109,9 @@ $commercial_pending = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::comm
 
 		<h3 class="cta-course-card__title card__title course-card__title">
 			<?php if ( $course_url ) : ?>
-				<a href="<?php echo esc_url( $course_url ); ?>"><?php echo esc_html( $course->title ); ?></a>
+				<a href="<?php echo esc_url( $course_url ); ?>"><?php echo esc_html( $display_title ); ?></a>
 			<?php else : ?>
-				<?php echo esc_html( $course->title ); ?>
+				<?php echo esc_html( $display_title ); ?>
 			<?php endif; ?>
 		</h3>
 

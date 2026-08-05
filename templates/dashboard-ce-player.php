@@ -49,7 +49,7 @@ $next_url = $next_module
 	: '';
 ?>
 <div class="cta-plugin-wrapper">
-<div class="cta-lms cta-course-player dashboard-layout" data-course-player data-course-id="<?php echo esc_attr( $course->id ); ?>" data-module-id="<?php echo esc_attr( $module->id ); ?>">
+<div class="cta-lms cta-course-player dashboard-layout" data-course-player data-course-id="<?php echo esc_attr( $course->id ); ?>" data-module-id="<?php echo esc_attr( $module->id ); ?>" data-exam-prep="<?php echo ! empty( $is_exam_prep ) ? '1' : '0'; ?>">
 
 	<aside class="dashboard-sidebar" aria-label="<?php echo esc_attr__( 'Dashboard navigation', 'cta-lms' ); ?>">
 		<div class="dashboard-sidebar__user">
@@ -149,7 +149,7 @@ $next_url = $next_module
 						</div>
 						<div class="cta-quiz-unlocked-message" <?php echo $quiz_unlocked ? '' : 'hidden'; ?>>
 							<?php if ( ! empty( $is_exam_prep ) ) : ?>
-								<p><?php echo esc_html__( 'All modules complete! Take each assessment independently. Answer rationales are shown after you submit.', 'cta-lms' ); ?></p>
+								<p><?php echo esc_html__( 'All modules complete! You may now begin the program assessments.', 'cta-lms' ); ?></p>
 								<ul class="cta-exam-assessment-list">
 									<?php foreach ( $quiz_cards as $card ) : ?>
 										<li class="cta-exam-assessment-list__item">
@@ -253,7 +253,14 @@ $next_url = $next_module
 			<aside class="course-player__sidebar" aria-label="<?php echo esc_attr__( 'Course modules', 'cta-lms' ); ?>">
 				<div class="course-player__modules">
 					<div class="course-player__modules-header">
-						<?php echo esc_html( $course->title ); ?> — <?php echo esc_html__( 'Modules', 'cta-lms' ); ?>
+						<?php
+						echo esc_html(
+							function_exists( 'cta_lms_get_course_display_title' )
+								? cta_lms_get_course_display_title( $course )
+								: $course->title
+						);
+						?>
+						— <?php echo esc_html__( 'Modules', 'cta-lms' ); ?>
 					</div>
 					<div class="course-player__module-list">
 						<ul class="cta-module-list">
@@ -302,7 +309,7 @@ $next_url = $next_module
 								</li>
 								<?php
 								// CTA-CE-001: mid-course knowledge check marker after Module 3 (not instructional time).
-								if ( 2 === (int) $index && ! empty( $syllabus_meta_player['mid_course_knowledge_check_note'] ) ) :
+								if ( empty( $is_exam_prep ) && 2 === (int) $index && ! empty( $syllabus_meta_player['mid_course_knowledge_check_note'] ) ) :
 									?>
 									<li class="cta-module-list__item cta-module-list__item--admin-note">
 										<span class="cta-module-list__link" title="<?php echo esc_attr( (string) $syllabus_meta_player['mid_course_knowledge_check_note'] ); ?>">

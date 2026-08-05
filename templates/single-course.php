@@ -28,6 +28,9 @@ $ce_hours = rtrim( rtrim( number_format( (float) $course->ce_hours, 1, '.', '' )
 $duration_hours = $total_mins > 0 ? round( $total_mins / 60, 1 ) : $course->ce_hours;
 $admin_name = get_option( 'cta_admin_name', 'Candice Fuimaono, MS, LMFT' );
 $is_exam_prep = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course );
+$display_title = function_exists( 'cta_lms_get_course_display_title' )
+	? cta_lms_get_course_display_title( $course )
+	: (string) $course->title;
 $access_months = (int) ( $course->access_period_months ?? 6 );
 $commercial_pending = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::commercial_terms_pending( $course );
 ?>
@@ -54,7 +57,7 @@ $commercial_pending = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::comm
 					<span class="course-hero__breadcrumb-separator" aria-hidden="true">/</span>
 					<a href="<?php echo esc_url( $courses_url ); ?>"><?php echo $is_exam_prep ? esc_html__( 'Exam Prep', 'cta-lms' ) : esc_html__( 'CE Courses', 'cta-lms' ); ?></a>
 					<span class="course-hero__breadcrumb-separator" aria-hidden="true">/</span>
-					<span class="course-hero__breadcrumb-current"><?php echo esc_html( $course->title ); ?></span>
+					<span class="course-hero__breadcrumb-current"><?php echo esc_html( $display_title ); ?></span>
 				</nav>
 				<div class="course-hero__badges">
 					<?php if ( $is_exam_prep ) : ?>
@@ -87,9 +90,9 @@ $commercial_pending = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::comm
 					: '';
 				$image_alt = ! empty( $syllabus_meta['image_alt'] )
 					? (string) $syllabus_meta['image_alt']
-					: (string) $course->title;
+					: $display_title;
 				?>
-				<h1 class="course-hero__title" id="course-hero-title"><?php echo esc_html( $course->title ); ?></h1>
+				<h1 class="course-hero__title" id="course-hero-title"><?php echo esc_html( $display_title ); ?></h1>
 				<?php if ( '' !== $short_description ) : ?>
 					<p class="course-hero__summary"><?php echo esc_html( $short_description ); ?></p>
 				<?php elseif ( ! empty( $course->description ) ) : ?>
@@ -548,7 +551,7 @@ $commercial_pending = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::comm
 							<?php esc_html_e( 'Login to Enroll', 'cta-lms' ); ?>
 						</a>
 					<?php else : ?>
-						<button type="button" id="enroll-btn" class="btn btn-primary btn--lg course-sidebar__enroll" data-cta-course-checkout data-course-id="<?php echo esc_attr( $course->id ); ?>" data-course-title="<?php echo esc_attr( $course->title ); ?>" data-price="<?php echo esc_attr( $is_free_course ? __( 'Free', 'cta-lms' ) : ( function_exists( 'cta_lms_format_money' ) ? cta_lms_format_money( (float) $course->price ) : ( '$' . number_format( (float) $course->price, 2 ) ) ) ); ?>">
+						<button type="button" id="enroll-btn" class="btn btn-primary btn--lg course-sidebar__enroll" data-cta-course-checkout data-course-id="<?php echo esc_attr( $course->id ); ?>" data-course-title="<?php echo esc_attr( $display_title ); ?>" data-price="<?php echo esc_attr( $is_free_course ? __( 'Free', 'cta-lms' ) : ( function_exists( 'cta_lms_format_money' ) ? cta_lms_format_money( (float) $course->price ) : ( '$' . number_format( (float) $course->price, 2 ) ) ) ); ?>">
 							<?php
 							if ( $is_free_course ) {
 								esc_html_e( 'Enroll Free', 'cta-lms' );
