@@ -97,9 +97,13 @@ class CTA_CE_Completion {
 		}
 
 		if ( ! self::modules_complete( $user_id, $course_id, $enrollment ) ) {
+			$course = class_exists( 'CTA_Database' ) ? CTA_Database::get_course( $course_id ) : null;
+			$is_exam = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course );
 			return new WP_Error(
 				'cta_seq_modules',
-				__( 'Complete all instructional modules, including the Course Integration Capstone, before starting the final examination.', 'cta-lms' )
+				$is_exam
+					? __( 'Complete all program modules before starting assessments.', 'cta-lms' )
+					: __( 'Complete all instructional modules, including the Course Integration Capstone, before starting the final examination.', 'cta-lms' )
 			);
 		}
 
@@ -114,6 +118,14 @@ class CTA_CE_Completion {
 	 * @return true|WP_Error
 	 */
 	public static function assert_can_access_evaluation( $user_id, $course_id ) {
+		$course = class_exists( 'CTA_Database' ) ? CTA_Database::get_course( absint( $course_id ) ) : null;
+		if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course ) ) {
+			return new WP_Error(
+				'cta_seq_exam_prep',
+				__( 'Exam Preparation Programs do not use CE course evaluations.', 'cta-lms' )
+			);
+		}
+
 		$exam = self::assert_can_access_exam( $user_id, $course_id );
 		if ( is_wp_error( $exam ) ) {
 			return $exam;

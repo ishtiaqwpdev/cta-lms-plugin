@@ -710,6 +710,19 @@ class CTA_Stripe {
 			);
 		}
 
+		if (
+			class_exists( 'CTA_Exam_Access' )
+			&& CTA_Exam_Access::is_exam_prep( $course )
+			&& CTA_Exam_Access::launch_pending_testing( $course )
+		) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'This Exam Preparation program is not available for purchase yet.', 'cta-lms' ),
+					'code'    => 'exam_prep_launch_pending',
+				)
+			);
+		}
+
 		$user_id = get_current_user_id();
 
 		$already_has_access = false;
@@ -760,7 +773,23 @@ class CTA_Stripe {
 
 		$cancel_url = add_query_arg( 'course_id', $course_id, $course_page );
 
-		$ce_hours = rtrim( rtrim( number_format( (float) $course->ce_hours, 1, '.', '' ), '0' ), '.' );
+		$is_exam_prep = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course );
+		$ce_hours     = rtrim( rtrim( number_format( (float) $course->ce_hours, 1, '.', '' ), '0' ), '.' );
+
+		if ( $is_exam_prep ) {
+			$access_months = ! empty( $course->access_period_months ) ? (int) $course->access_period_months : 6;
+			$line_description = sprintf(
+				/* translators: %d: access period in months */
+				__( 'Exam Preparation Program — %d months access. No CE credit.', 'cta-lms' ),
+				$access_months
+			);
+		} else {
+			$line_description = sprintf(
+				/* translators: %s: CE hours */
+				__( '%s CE Hours — BBS Approved', 'cta-lms' ),
+				$ce_hours
+			);
+		}
 
 		try {
 			$session = \Stripe\Checkout\Session::create(
@@ -774,12 +803,10 @@ class CTA_Stripe {
 								'currency'     => 'usd',
 								'unit_amount'  => (int) round( (float) $course->price * 100 ),
 								'product_data' => array(
-									'name'        => $course->title,
-									'description' => sprintf(
-										/* translators: %s: CE hours */
-										__( '%s CE Hours — BBS Approved', 'cta-lms' ),
-										$ce_hours
-									),
+									'name'        => function_exists( 'cta_lms_get_course_display_title' )
+										? cta_lms_get_course_display_title( $course )
+										: $course->title,
+									'description' => $line_description,
 								),
 							),
 							'quantity' => 1,
@@ -788,7 +815,7 @@ class CTA_Stripe {
 					'metadata'    => array(
 						'user_id'      => (string) $user_id,
 						'course_id'    => (string) $course_id,
-						'product_type' => 'course',
+						'product_type' => $is_exam_prep ? 'exam_prep' : 'course',
 					),
 					'success_url' => $success_url,
 					'cancel_url'  => $cancel_url,
@@ -1504,6 +1531,19 @@ class CTA_Stripe {
 			wp_send_json_error(
 				array(
 					'message' => __( 'Course not found.', 'cta-lms' ),
+				)
+			);
+		}
+
+		if (
+			class_exists( 'CTA_Exam_Access' )
+			&& CTA_Exam_Access::is_exam_prep( $course )
+			&& CTA_Exam_Access::launch_pending_testing( $course )
+		) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'This Exam Preparation program is not available for purchase yet.', 'cta-lms' ),
+					'code'    => 'exam_prep_launch_pending',
 				)
 			);
 		}

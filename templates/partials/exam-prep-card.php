@@ -23,6 +23,9 @@ if ( ! empty( $item->expires_at ) ) {
 
 $workbooks = array();
 $tests     = array();
+$display_title = function_exists( 'cta_lms_get_course_display_title' )
+	? cta_lms_get_course_display_title( $course )
+	: (string) $course->title;
 
 foreach ( (array) ( $item->resources ?? array() ) as $resource ) {
 	if ( ! empty( $resource->is_practice_test ) ) {
@@ -44,9 +47,9 @@ foreach ( (array) ( $item->resources ?? array() ) as $resource ) {
 	<div class="dashboard-course-card__header">
 		<h3 class="dashboard-course-card__title">
 			<?php if ( $has_access && $item->player_url ) : ?>
-				<a href="<?php echo esc_url( $item->player_url ); ?>"><?php echo esc_html( $course->title ); ?></a>
+				<a href="<?php echo esc_url( $item->player_url ); ?>"><?php echo esc_html( $display_title ); ?></a>
 			<?php else : ?>
-				<?php echo esc_html( $course->title ); ?>
+				<?php echo esc_html( $display_title ); ?>
 			<?php endif; ?>
 		</h3>
 		<p class="dashboard-course-card__meta">

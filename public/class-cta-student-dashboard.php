@@ -530,6 +530,8 @@ class CTA_Student_Dashboard {
 			? $this->get_player_url( $course_id, $next_module_id )
 			: '';
 
+		$is_exam_prep = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course );
+
 		wp_send_json_success(
 			array(
 				'message'          => __( 'Module marked complete.', 'cta-lms' ),
@@ -538,6 +540,7 @@ class CTA_Student_Dashboard {
 				'total_modules'    => $total_modules,
 				'module_id'        => $module_id,
 				'quiz_unlocked'    => $progress >= 100,
+				'is_exam_prep'     => $is_exam_prep,
 				'next_module_id'   => $next_module_id,
 				'next_module_url'  => $next_url,
 			)
@@ -794,6 +797,11 @@ class CTA_Student_Dashboard {
 			return false;
 		}
 
+		$course = CTA_Database::get_course( (int) $enrollment->course_id );
+		if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course ) ) {
+			return false;
+		}
+
 		$evaluation = CTA_Database::get_course_evaluation( $user_id, (int) $enrollment->course_id );
 
 		if ( ! $evaluation ) {
@@ -811,6 +819,11 @@ class CTA_Student_Dashboard {
 	 * @return bool
 	 */
 	private function complete_course( $enrollment, $user_id ) {
+		$course = CTA_Database::get_course( (int) $enrollment->course_id );
+		if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course ) ) {
+			return false;
+		}
+
 		$certificate = CTA_Certificates::generate( $user_id, (int) $enrollment->course_id );
 
 		return (bool) $certificate;

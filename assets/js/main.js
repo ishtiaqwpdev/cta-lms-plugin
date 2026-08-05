@@ -2543,10 +2543,15 @@
               unlockedMsg.hidden = false;
             }
 
+            var isExamPrepPlayer =
+              !!(response.data.is_exam_prep) ||
+              (playerRoot && playerRoot.getAttribute("data-exam-prep") === "1");
             var notice = document.createElement("p");
             notice.className = "course-player__notice course-player__notice--success";
             notice.setAttribute("role", "status");
-            notice.textContent = "Course Complete! Take the quiz to earn your certificate.";
+            notice.textContent = isExamPrepPlayer
+              ? "All modules complete! You may now begin the program assessments."
+              : "Course Complete! Take the quiz to earn your certificate.";
             var actions = document.querySelector("[data-course-player-actions]");
             if (actions && !document.querySelector(".course-player__notice--success")) {
               actions.insertAdjacentElement("afterend", notice);
@@ -2759,7 +2764,7 @@
 
         if (nextStep === "complete" || isExamPrep) {
           html +=
-            "<p><strong>Practice exam complete.</strong> No CE evaluation or certificate is required for Exam Preparation Programs.</p>";
+            "<p><strong>Practice exam complete.</strong> Answer rationales are shown after each attempt.</p>";
           if (dashboardUrl) {
             html +=
               '<a href="' +

@@ -1312,6 +1312,14 @@ class CTA_Admin {
 			}
 		}
 
+		// Exam Prep publish requires explicit confirm (learner testing + written CTA approval).
+		if ( 'published' === $status && 'exam_prep' === $product_type ) {
+			$confirmed = ! empty( $_POST['cta_confirm_exam_prep_publish'] );
+			if ( ! $confirmed ) {
+				$status = 'draft';
+			}
+		}
+
 		$objectives_in = isset( $_POST['learning_objectives'] ) ? wp_unslash( $_POST['learning_objectives'] ) : array();
 		$objectives    = array();
 		$old_objectives_json = '';
@@ -1383,9 +1391,14 @@ class CTA_Admin {
 				'educational_goals'       => $goals,
 				'completion_requirements' => $completion,
 				'references'              => $references,
-				'attestation_required'    => ! empty( $_POST['attestation_required'] ),
+				'attestation_required'    => ( 'exam_prep' === $product_type ) ? false : ! empty( $_POST['attestation_required'] ),
 			)
 		);
+
+		// Confirmed Exam Prep publish clears launch-pending flags so checkout can proceed.
+		if ( 'published' === $status && 'exam_prep' === $product_type && ! empty( $_POST['cta_confirm_exam_prep_publish'] ) ) {
+			unset( $syllabus_meta['launch_pending_testing'], $syllabus_meta['development_draft'], $syllabus_meta['launch_status'] );
+		}
 
 		if ( '' === $title ) {
 			wp_die( esc_html__( 'Course title is required.', 'cta-lms' ) );
@@ -1799,11 +1812,38 @@ class CTA_Admin {
 			}
 		}
 
+		// Exam Prep publish requires explicit confirm (testing verified + written CTA approval).
+		if ( 'published' === $new_status && $is_exam ) {
+			$confirmed = ! empty( $_GET['cta_confirm_exam_prep_publish'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- nonce checked in verify_admin_request.
+			if ( ! $confirmed ) {
+				wp_die(
+					esc_html__( 'Publishing an Exam Preparation program requires confirmation. Final learner testing must be verified and written CTA approval received before any Exam Prep program may be offered for public purchase.', 'cta-lms' ),
+					esc_html__( 'Exam Prep publish blocked', 'cta-lms' ),
+					array( 'response' => 403 )
+				);
+			}
+		}
+
+		$update = array( 'status' => $new_status );
+		$formats = array( '%s' );
+
+		// Confirmed Exam Prep publish: clear launch-pending meta so checkout is not blocked.
+		if ( 'published' === $new_status && $is_exam ) {
+			$meta = array();
+			if ( ! empty( $course->syllabus_meta ) ) {
+				$decoded = json_decode( (string) $course->syllabus_meta, true );
+				$meta    = is_array( $decoded ) ? $decoded : array();
+			}
+			unset( $meta['launch_pending_testing'], $meta['development_draft'], $meta['launch_status'] );
+			$update['syllabus_meta'] = wp_json_encode( $meta );
+			$formats[]              = '%s';
+		}
+
 		$wpdb->update(
 			$wpdb->prefix . 'cta_courses',
-			array( 'status' => $new_status ),
+			$update,
 			array( 'id' => $course_id ),
-			array( '%s' ),
+			$formats,
 			array( '%d' )
 		);
 
