@@ -24,6 +24,7 @@ class CTA_Lpcc_Ncmhce_Sync {
 	const SEED_OPTION   = 'cta_lpcc_ncmhce_seeded_1_0_132';
 	const SLUG          = 'lpcc-ncmhce-exam-preparation';
 	const TITLE         = 'CTA LPCC NCMHCE Exam Preparation Program';
+	const PUBLIC_TITLE  = 'LPCC NCMHCE Exam Preparation';
 	const LEGACY_SLUG   = 'lpcc-california-clinical-exam-preparation';
 	const LEGACY_TITLE  = 'LPCC California Clinical Exam Preparation';
 	const PRICE         = 249.00;
@@ -654,7 +655,7 @@ class CTA_Lpcc_Ncmhce_Sync {
 	 */
 	private static function get_program_description_html() {
 		$html = '
-<p>The CTA LPCC NCMHCE Exam Preparation Program is a complete self-paced system for LPCC candidates and other eligible examinees preparing for the National Clinical Mental Health Counseling Examination (NCMHCE).</p>
+<p>LPCC NCMHCE Exam Preparation is a complete self-paced system for LPCC candidates and other eligible examinees preparing for the National Clinical Mental Health Counseling Examination (NCMHCE).</p>
 <p>The program teaches candidates to apply clinical counselor reasoning across NCMHCE-style case studies: intake and assessment, diagnosis and differential reasoning, crisis and level-of-care decisions, treatment planning, evidence-informed interventions, multicultural and contextual practice, and California legal and ethical judgment when several answers appear plausible.</p>
 <h3>What Is Included</h3>
 <ul>
@@ -703,18 +704,20 @@ class CTA_Lpcc_Ncmhce_Sync {
 	 */
 	private static function get_syllabus_meta() {
 		return array(
+			'public_title'           => self::PUBLIC_TITLE,
 			'short_description'      => 'Twelve LPCC workbooks, twelve practice bank pairs, three cumulative checkpoints, Form A and Form B 143-question simulations, Form A remediation, flashcards, quick references, and study schedules for NCMHCE exam preparation.',
 			'course_classification'  => 'Exam Preparation Only — No CE Credit',
 			'instructional_method'   => 'Self-paced asynchronous',
 			'target_audience'        => 'LPCC candidates and other eligible NCMHCE examinees',
 			'seo_title'              => 'LPCC NCMHCE Exam Prep | CTA',
 			'meta_description'       => 'Prepare for the NCMHCE with 12 LPCC workbooks, practice banks, three cumulative checkpoints, and two 143-question simulations. Exam preparation only — no CE credit.',
-			'image_alt'              => 'Clinical Training and Supervision Academy LPCC NCMHCE Exam Preparation Program graphic',
+			'image_alt'              => 'Clinical Training and Supervision Academy LPCC NCMHCE Exam Preparation graphic',
 			'primary_cta'            => 'Begin Your Clinical Exam Preparation',
 			'page_badge'             => 'Exam Preparation Only — No CE Credit',
 			'educational_notice'     => 'Exam Preparation Only — No CE Credit. This program does not award CE hours or a CE certificate. CTA is not affiliated with or endorsed by NBCC, Pearson VUE, or any state licensing board. This is an NCMHCE preparation program for LPCC candidates — not an AMFTRB or ASWB product.',
 			'launch_status'          => 'draft_pending_testing',
 			'launch_pending_testing' => true,
+			'development_draft'      => true,
 		);
 	}
 

@@ -9,7 +9,7 @@
 
 Do **not** publish (or leave published) any Exam Prep program that has not cleared both gates.
 
-## Programs covered (as of plugin 1.0.142)
+## Programs covered (as of plugin 1.0.143)
 
 | Public display title | Formal / internal title | Notes |
 |---|---|---|

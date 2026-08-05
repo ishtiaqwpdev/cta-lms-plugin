@@ -478,7 +478,9 @@ class CTA_Emails {
 		$subject = sprintf(
 			/* translators: %s: course title */
 			__( 'Your CE Certificate is Ready — %s', 'cta-lms' ),
-			$course->title
+			function_exists( 'cta_lms_get_course_display_title' )
+				? cta_lms_get_course_display_title( $course )
+				: $course->title
 		);
 
 		$certificate_url = class_exists( 'CTA_Certificates' )
@@ -885,7 +887,9 @@ class CTA_Emails {
 			'{role_label}'            => $vars['role_label'] ?? '',
 			'{dashboard_url}'         => $vars['dashboard_url'] ?? '',
 			'{faq_url}'               => $vars['faq_url'] ?? '',
-			'{course_name}'           => $course->title ?? '',
+			'{course_name}'           => ( $course && function_exists( 'cta_lms_get_course_display_title' ) )
+				? cta_lms_get_course_display_title( $course )
+				: ( $course->title ?? '' ),
 			'{ce_hours}'              => $vars['ce_hours'] ?? '',
 			'{payment_reference}'     => $vars['payment_reference'] ?? '',
 			'{enrolled_date}'         => $vars['enrolled_date'] ?? '',

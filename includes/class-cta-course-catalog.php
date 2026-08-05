@@ -178,6 +178,7 @@ class CTA_Course_Catalog {
 				'category'               => 'Exam Preparation',
 				'commercial_pending'     => true,
 				'launch_pending_testing' => true,
+				'public_title'           => 'LMFT California Clinical Exam Preparation',
 				'match_titles'           => array(
 					'CTA LMFT California Clinical Exam Preparation Program',
 					'LMFT California Clinical Exam Preparation',
@@ -190,6 +191,7 @@ class CTA_Course_Catalog {
 				'access_period_months'   => 6,
 				'category'               => 'Exam Preparation',
 				'launch_pending_testing' => true,
+				'public_title'           => 'LCSW ASWB Clinical Exam Preparation',
 				// Migrate legacy California Clinical label → public ASWB title/slug.
 				'match_slugs'            => array(
 					'lcsw-aswb-clinical-exam-preparation',
@@ -197,22 +199,25 @@ class CTA_Course_Catalog {
 				),
 				'match_titles'           => array(
 					'CTA LCSW ASWB Clinical Exam Preparation Program',
+					'LCSW ASWB Clinical Exam Preparation',
 					'LCSW California Clinical Exam Preparation',
 				),
 			),
 			array(
-				'title'                => 'CTA LPCC NCMHCE Exam Preparation Program',
-				'slug'                 => 'lpcc-ncmhce-exam-preparation',
-				'price'                => 249.00,
-				'access_period_months' => 6,
-				'category'             => 'Exam Preparation',
+				'title'                  => 'CTA LPCC NCMHCE Exam Preparation Program',
+				'slug'                   => 'lpcc-ncmhce-exam-preparation',
+				'price'                  => 249.00,
+				'access_period_months'   => 6,
+				'category'               => 'Exam Preparation',
 				'launch_pending_testing' => true,
-				'match_slugs'          => array(
+				'public_title'           => 'LPCC NCMHCE Exam Preparation',
+				'match_slugs'            => array(
 					'lpcc-ncmhce-exam-preparation',
 					'lpcc-california-clinical-exam-preparation',
 				),
-				'match_titles'         => array(
+				'match_titles'           => array(
 					'CTA LPCC NCMHCE Exam Preparation Program',
+					'LPCC NCMHCE Exam Preparation',
 					'LPCC California Clinical Exam Preparation',
 				),
 			),

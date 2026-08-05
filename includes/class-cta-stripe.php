@@ -1168,7 +1168,9 @@ class CTA_Stripe {
 						$user_id,
 						array(
 							'payment_id'   => sanitize_text_field( $session->id ),
-							'product_name' => $course->title,
+							'product_name' => function_exists( 'cta_lms_get_course_display_title' )
+								? cta_lms_get_course_display_title( $course )
+								: $course->title,
 						)
 					);
 				}

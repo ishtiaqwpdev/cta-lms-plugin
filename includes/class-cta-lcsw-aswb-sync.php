@@ -19,6 +19,7 @@ class CTA_Lcsw_Aswb_Sync {
 	const SEED_OPTION   = 'cta_lcsw_aswb_clinical_seeded_1_0_127';
 	const SLUG          = 'lcsw-aswb-clinical-exam-preparation';
 	const TITLE         = 'CTA LCSW ASWB Clinical Exam Preparation Program';
+	const PUBLIC_TITLE  = 'LCSW ASWB Clinical Exam Preparation';
 	const LEGACY_SLUG   = 'lcsw-california-clinical-exam-preparation';
 	const LEGACY_TITLE  = 'LCSW California Clinical Exam Preparation';
 	const PRICE         = 249.00;
@@ -84,7 +85,8 @@ class CTA_Lcsw_Aswb_Sync {
 			'category'             => 'Exam Preparation',
 			'learning_objectives'  => $objectives,
 			'syllabus_meta'        => $meta,
-			'status'               => 'published',
+			// Hard gate: remain draft until learner testing + written CTA launch approval.
+			'status'               => 'draft',
 			'product_type'         => 'exam_prep',
 			'access_period_months' => (int) self::ACCESS_MONTHS,
 			'awards_ce_hours'      => 0,
@@ -561,7 +563,7 @@ class CTA_Lcsw_Aswb_Sync {
 	 */
 	private static function get_program_description_html() {
 		$html = '
-<p>The CTA LCSW ASWB Clinical Exam Preparation Program is a complete self-paced system for ASWs, LCSW candidates, and other eligible examinees preparing for the ASWB Clinical Social Work Licensing Examination.</p>
+<p>LCSW ASWB Clinical Exam Preparation is a complete self-paced system for ASWs, LCSW candidates, and other eligible examinees preparing for the ASWB Clinical Social Work Licensing Examination.</p>
 <p>The program teaches candidates to combine social work values, self-determination, person-in-environment assessment, clinical judgment, service planning, intervention, advocacy, and systems reasoning when several answers appear plausible. Content and simulations reflect the redesigned examination structure used for testing on or after August 3, 2026, including three content areas and a mixture of three- and four-option questions.</p>
 <h3>What Is Included</h3>
 <ul>
@@ -609,16 +611,20 @@ class CTA_Lcsw_Aswb_Sync {
 	 */
 	private static function get_syllabus_meta() {
 		return array(
-			'short_description'     => 'Twelve social work–specific workbooks, focused practice banks, complete rationales, and two 122-question simulations aligned to the 2026 ASWB Clinical examination structure.',
-			'course_classification' => 'Exam Preparation Only — No CE Credit',
-			'instructional_method'  => 'Self-paced asynchronous online program with printable resources',
-			'target_audience'       => 'ASWs, LCSW candidates, and other eligible ASWB Clinical examinees',
-			'seo_title'             => 'LCSW ASWB Clinical Exam Prep | CTA',
-			'meta_description'      => 'Prepare for the 2026 ASWB Clinical exam with 12 workbooks, 204 focused practice questions, complete rationales, a 25-question mini-mock, and two 122-question simulations.',
-			'image_alt'             => 'Clinical Training and Supervision Academy LCSW ASWB Clinical Exam Preparation Program graphic',
-			'primary_cta'           => 'Begin Your Clinical Exam Preparation',
-			'page_badge'            => 'Exam Preparation • No CE Credit',
-			'educational_notice'    => 'Exam Preparation Only — No CE Credit. This program does not award CE hours or a CE certificate. Recorded audio and video are not included at launch. CTA is not affiliated with or endorsed by ASWB, Pearson VUE, or any state licensing board.',
+			'public_title'           => self::PUBLIC_TITLE,
+			'short_description'      => 'Twelve social work–specific workbooks, focused practice banks, complete rationales, and two 122-question simulations aligned to the 2026 ASWB Clinical examination structure.',
+			'course_classification'  => 'Exam Preparation Only — No CE Credit',
+			'instructional_method'   => 'Self-paced asynchronous online program with printable resources',
+			'target_audience'        => 'ASWs, LCSW candidates, and other eligible ASWB Clinical examinees',
+			'seo_title'              => 'LCSW ASWB Clinical Exam Prep | CTA',
+			'meta_description'       => 'Prepare for the 2026 ASWB Clinical exam with 12 workbooks, 204 focused practice questions, complete rationales, a 25-question mini-mock, and two 122-question simulations.',
+			'image_alt'              => 'Clinical Training and Supervision Academy LCSW ASWB Clinical Exam Preparation graphic',
+			'primary_cta'            => 'Begin Your Clinical Exam Preparation',
+			'page_badge'             => 'Exam Preparation • No CE Credit',
+			'educational_notice'     => 'Exam Preparation Only — No CE Credit. This program does not award CE hours or a CE certificate. Recorded audio and video are not included at launch. CTA is not affiliated with or endorsed by ASWB, Pearson VUE, or any state licensing board.',
+			'launch_status'          => 'draft_pending_testing',
+			'launch_pending_testing' => true,
+			'development_draft'      => true,
 		);
 	}
 

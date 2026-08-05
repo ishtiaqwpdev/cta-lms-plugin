@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.142' );
+	define( 'CTA_VERSION', '1.0.143' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -713,6 +713,30 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				}
 				if ( class_exists( 'CTA_Course_Catalog' ) ) {
 					CTA_Course_Catalog::restore_exam_prep_pricing();
+					CTA_Course_Catalog::unpublish_all_exam_prep_pending_launch();
+				}
+			}
+
+			// Exam Prep: public display titles for clinical packages; keep LCSW sync draft (hard gate).
+			if ( version_compare( $installed, '1.0.143', '<' ) ) {
+				if ( class_exists( 'CTA_Exam_Access' ) ) {
+					CTA_Exam_Access::seed_default_programs();
+				}
+				if ( class_exists( 'CTA_Course_Catalog' ) ) {
+					CTA_Course_Catalog::restore_exam_prep_pricing();
+					CTA_Course_Catalog::unpublish_all_exam_prep_pending_launch();
+				}
+				if ( class_exists( 'CTA_Lcsw_Aswb_Sync' ) ) {
+					CTA_Lcsw_Aswb_Sync::ensure_program();
+				}
+				if ( class_exists( 'CTA_Lmft_Clinical_Sync' ) ) {
+					CTA_Lmft_Clinical_Sync::ensure_program();
+				}
+				if ( class_exists( 'CTA_Lpcc_Ncmhce_Sync' ) ) {
+					CTA_Lpcc_Ncmhce_Sync::ensure_program();
+				}
+				if ( class_exists( 'CTA_Course_Catalog' ) ) {
+					// Re-assert draft after sync ensure_program (never leave Exam Prep published).
 					CTA_Course_Catalog::unpublish_all_exam_prep_pending_launch();
 				}
 			}
