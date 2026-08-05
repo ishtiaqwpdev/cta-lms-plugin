@@ -887,9 +887,11 @@ class CTA_Emails {
 			'{role_label}'            => $vars['role_label'] ?? '',
 			'{dashboard_url}'         => $vars['dashboard_url'] ?? '',
 			'{faq_url}'               => $vars['faq_url'] ?? '',
-			'{course_name}'           => ( $course && function_exists( 'cta_lms_get_course_display_title' ) )
-				? cta_lms_get_course_display_title( $course )
-				: ( $course->title ?? '' ),
+			'{course_name}'           => $course
+				? ( function_exists( 'cta_lms_get_course_display_title' )
+					? cta_lms_get_course_display_title( $course )
+					: (string) ( $course->title ?? '' ) )
+				: '',
 			'{ce_hours}'              => $vars['ce_hours'] ?? '',
 			'{payment_reference}'     => $vars['payment_reference'] ?? '',
 			'{enrolled_date}'         => $vars['enrolled_date'] ?? '',
