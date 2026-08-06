@@ -742,3 +742,5 @@ class CTA_Exam_Access {
 			|| ( isset( $meta['launch_status'] ) && 'draft_pending_testing' === $meta['launch_status'] );
 	}
 }
+
+}

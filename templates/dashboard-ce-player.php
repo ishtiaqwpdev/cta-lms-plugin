@@ -269,7 +269,7 @@ $next_url = $next_module
 								$mod_id       = (int) $mod->id;
 								$is_complete  = in_array( $mod_id, $completed_ids, true );
 								$is_current   = $mod_id === (int) $module->id;
-								$is_locked    = ! $dashboard->is_module_accessible( $modules, $completed_ids, $mod_id );
+								$is_locked    = ! $dashboard->is_module_accessible( $modules, $completed_ids, $mod_id, $course );
 								$mod_url      = add_query_arg(
 									array(
 										'course_id' => (int) $course->id,

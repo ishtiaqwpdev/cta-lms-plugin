@@ -351,7 +351,7 @@ class CTA_Student_Dashboard {
 			$module_id = (int) $module->id;
 		}
 
-		if ( ! $this->is_module_accessible( $modules, $completed_ids, $module_id ) ) {
+		if ( ! $this->is_module_accessible( $modules, $completed_ids, $module_id, $course ) ) {
 			$accessible = $this->get_next_module( $modules, $completed_ids );
 			$module     = $accessible ? $accessible : $modules[0];
 			$module_id  = (int) $module->id;
@@ -494,7 +494,7 @@ class CTA_Student_Dashboard {
 
 		$completed_ids = $this->parse_completed_modules( $enrollment->modules_completed );
 
-		if ( ! $this->is_module_accessible( $modules, $completed_ids, $module_id ) ) {
+		if ( ! $this->is_module_accessible( $modules, $completed_ids, $module_id, $course ) ) {
 			wp_send_json_error(
 				array(
 					'message' => __( 'Complete previous modules first.', 'cta-lms' ),
@@ -872,16 +872,29 @@ class CTA_Student_Dashboard {
 	/**
 	 * Determine whether a module can be accessed.
 	 *
-	 * @param array $modules       Course modules.
-	 * @param array $completed_ids Completed module IDs.
-	 * @param int   $module_id     Module ID.
+	 * Exam Preparation programs allow any module/workbook in any order once enrolled.
+	 * CE courses keep sequential unlock: each module opens only after the previous is complete.
+	 *
+	 * @param array       $modules       Course modules.
+	 * @param array       $completed_ids Completed module IDs.
+	 * @param int         $module_id     Module ID.
+	 * @param object|null $course        Optional course row (used to detect Exam Prep).
 	 * @return bool
 	 */
-	public function is_module_accessible( $modules, $completed_ids, $module_id ) {
+	public function is_module_accessible( $modules, $completed_ids, $module_id, $course = null ) {
 		$index = $this->get_module_index( $modules, $module_id );
 
 		if ( $index < 0 ) {
 			return false;
+		}
+
+		if ( null === $course && ! empty( $modules[0]->course_id ) ) {
+			$course = CTA_Database::get_course( (int) $modules[0]->course_id );
+		}
+
+		// Exam Prep: all workbooks/modules are open immediately (any order).
+		if ( $course && class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course ) ) {
+			return true;
 		}
 
 		if ( 0 === $index ) {
