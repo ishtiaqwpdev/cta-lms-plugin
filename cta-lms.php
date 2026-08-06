@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.144' );
+	define( 'CTA_VERSION', '1.0.148' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -89,6 +89,7 @@ $cta_required_files = array(
 	'includes/class-cta-telehealth-exam-sync.php',
 	'includes/class-cta-lcsw-aswb-sync.php',
 	'includes/class-cta-lmft-clinical-sync.php',
+	'includes/class-cta-lmft-amftrb-sync.php',
 	'includes/class-cta-lpcc-ncmhce-sync.php',
 	'includes/class-cta-law-ethics-module-sync.php',
 	'includes/class-cta-law-ethics-evaluation-sync.php',
@@ -737,6 +738,49 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				}
 				if ( class_exists( 'CTA_Course_Catalog' ) ) {
 					// Re-assert draft after sync ensure_program (never leave Exam Prep published).
+					CTA_Course_Catalog::unpublish_all_exam_prep_pending_launch();
+				}
+			}
+
+			// CTA LMFT AMFTRB National + LPCC audio / Access Correction re-sync (draft / HOLD).
+			if ( version_compare( $installed, '1.0.145', '<' ) ) {
+				if ( class_exists( 'CTA_Database' ) ) {
+					CTA_Database::maybe_add_resource_unlock_column();
+				}
+				if ( class_exists( 'CTA_Lmft_Amftrb_Sync' ) ) {
+					CTA_Lmft_Amftrb_Sync::sync( true );
+				}
+				if ( class_exists( 'CTA_Lpcc_Ncmhce_Sync' ) ) {
+					CTA_Lpcc_Ncmhce_Sync::sync( true );
+				}
+				if ( class_exists( 'CTA_Course_Catalog' ) ) {
+					CTA_Course_Catalog::unpublish_all_exam_prep_pending_launch();
+				}
+			}
+
+			// LMFT AMFTRB: authoritative audio placement map titles/runtimes + transcript title re-sync.
+			if ( version_compare( $installed, '1.0.146', '<' ) ) {
+				if ( class_exists( 'CTA_Lmft_Amftrb_Sync' ) ) {
+					CTA_Lmft_Amftrb_Sync::sync( true );
+				}
+			}
+
+			// LMFT AMFTRB: preserved-attempt gates for protected rationales (no open-when-missing-quiz bypass).
+			if ( version_compare( $installed, '1.0.147', '<' ) ) {
+				if ( class_exists( 'CTA_Course_Materials' ) ) {
+					CTA_Course_Materials::ensure_package_tree_deny_rules();
+				}
+				if ( class_exists( 'CTA_Lmft_Amftrb_Sync' ) ) {
+					CTA_Lmft_Amftrb_Sync::sync( true );
+				}
+			}
+
+			// AMFTRB (and all Exam Prep): re-assert checkout HOLD until written client release approval.
+			if ( version_compare( $installed, '1.0.148', '<' ) ) {
+				if ( class_exists( 'CTA_Lmft_Amftrb_Sync' ) ) {
+					CTA_Lmft_Amftrb_Sync::sync( true );
+				}
+				if ( class_exists( 'CTA_Course_Catalog' ) ) {
 					CTA_Course_Catalog::unpublish_all_exam_prep_pending_launch();
 				}
 			}

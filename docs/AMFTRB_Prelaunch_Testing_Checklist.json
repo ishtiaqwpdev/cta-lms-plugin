@@ -1,0 +1,254 @@
+{
+    "program": "CTA LMFT AMFTRB National Exam Preparation Program",
+    "plugin": "1.0.147+",
+    "generated": "2026-08-06",
+    "summary": {
+        "PASS": 25,
+        "FAIL": 0,
+        "BLOCKED": 5
+    },
+    "checks": [
+        {
+            "area": "1_navigation",
+            "id": "mod_count",
+            "label": "12 workbook modules defined",
+            "status": "PASS",
+            "detail": "count=12",
+            "method": "offline"
+        },
+        {
+            "area": "1_navigation",
+            "id": "wb_order",
+            "label": "Student workbooks appear in order WB1\u2192WB12",
+            "status": "PASS",
+            "detail": "got=[1,2,3,4,5,6,7,8,9,10,11,12]",
+            "method": "offline"
+        },
+        {
+            "area": "1_navigation",
+            "id": "wb_audio_bank_order",
+            "label": "Each workbook block is WB \u2192 Audio \u2192 Candidate Bank \u2192 Rationale (+ CP inserts)",
+            "status": "PASS",
+            "detail": "all 12 blocks sequenced",
+            "method": "offline"
+        },
+        {
+            "area": "1_navigation",
+            "id": "form_order",
+            "label": "Form A candidate precedes Form B candidate",
+            "status": "PASS",
+            "detail": "form_a=56 form_b=60",
+            "method": "offline"
+        },
+        {
+            "area": "1_navigation",
+            "id": "form_gates_candidate",
+            "label": "Form A gated modules_complete; Form B gated form_b_ready",
+            "status": "PASS",
+            "detail": "A=modules_complete B=form_b_ready",
+            "method": "offline"
+        },
+        {
+            "area": "1_navigation",
+            "id": "files_exist",
+            "label": "All mapped learner materials exist on disk",
+            "status": "PASS",
+            "detail": "count=69",
+            "method": "offline"
+        },
+        {
+            "area": "1_navigation",
+            "id": "no_internal_in_assets",
+            "label": "Learner materials tree contains no 03_INTERNAL / blueprint / protected-package paths",
+            "status": "PASS",
+            "detail": "clean",
+            "method": "offline"
+        },
+        {
+            "area": "2_audio",
+            "id": "tracks_1_12",
+            "label": "All 12 MP3s present with valid MPEG/ID3 headers and placement-map runtimes",
+            "status": "PASS",
+            "detail": "12/12 OK",
+            "method": "offline"
+        },
+        {
+            "area": "2_audio",
+            "id": "transcript_file",
+            "label": "Authoritative transcript DOCX present alongside audio",
+            "status": "PASS",
+            "detail": "CTA_LMFT_AMFTRB_WB1-12_Authoritative_Audio_Recording_Script_and_Transcript_v1.1.docx",
+            "method": "offline"
+        },
+        {
+            "area": "2_audio",
+            "id": "player_markup",
+            "label": "Learner template renders <audio> player for MP3 resources",
+            "status": "PASS",
+            "detail": "course-materials.php",
+            "method": "offline"
+        },
+        {
+            "area": "2_audio",
+            "id": "transcript_link_markup",
+            "label": "Learner template exposes keyboard-accessible Track N transcript link",
+            "status": "PASS",
+            "detail": "course-materials.php",
+            "method": "offline"
+        },
+        {
+            "area": "2_audio",
+            "id": "runtime_line",
+            "label": "Learner template shows Runtime line from placement map",
+            "status": "PASS",
+            "detail": "course-materials.php",
+            "method": "offline"
+        },
+        {
+            "area": "2_audio",
+            "id": "browser_playback",
+            "label": "Play all 12 tracks in browser as enrolled learner",
+            "status": "BLOCKED",
+            "detail": "No local WordPress learner session available in this environment",
+            "method": "requires_wp_learner"
+        },
+        {
+            "area": "3_downloads",
+            "id": "packages_deny",
+            "label": "_packages/.htaccess denies HTTP access",
+            "status": "PASS",
+            "detail": "C:\\Users\\premier computer\\Desktop\\New folder\\cta-academy-lms/_packages/.htaccess",
+            "method": "offline"
+        },
+        {
+            "area": "3_downloads",
+            "id": "deny_markers",
+            "label": "Internal/protected package path markers blocked",
+            "status": "PASS",
+            "detail": "6 markers",
+            "method": "offline"
+        },
+        {
+            "area": "3_downloads",
+            "id": "rationale_gate",
+            "label": "Rationale locked before preserved attempt; unlocked after",
+            "status": "PASS",
+            "detail": "before=locked after=open",
+            "method": "offline"
+        },
+        {
+            "area": "3_downloads",
+            "id": "candidate_open",
+            "label": "Candidate bank downloadable while enrolled (no rationale gate)",
+            "status": "PASS",
+            "detail": "",
+            "method": "offline"
+        },
+        {
+            "area": "3_downloads",
+            "id": "list_filter",
+            "label": "Student material list strips internal-controls rows",
+            "status": "PASS",
+            "detail": "count=1",
+            "method": "offline"
+        },
+        {
+            "area": "3_downloads",
+            "id": "preserve_ui",
+            "label": "UI includes preserved-attempt record control",
+            "status": "PASS",
+            "detail": "course-materials.php",
+            "method": "offline"
+        },
+        {
+            "area": "3_downloads",
+            "id": "live_serve_urls",
+            "label": "Enrolled learner Open/Download + direct serve URL 403 for gated/internal",
+            "status": "BLOCKED",
+            "detail": "Requires WP admin-post cta_serve_resource against a seeded course",
+            "method": "requires_wp_learner"
+        },
+        {
+            "area": "4_responsive",
+            "id": "audio_css",
+            "label": "Audio player CSS present (full-width player in materials row)",
+            "status": "PASS",
+            "detail": "components.css",
+            "method": "offline"
+        },
+        {
+            "area": "4_responsive",
+            "id": "mobile_breakpoints",
+            "label": "Theme/compat CSS includes mobile max-width breakpoints",
+            "status": "PASS",
+            "detail": "theme-compat.css",
+            "method": "offline"
+        },
+        {
+            "area": "4_responsive",
+            "id": "desktop_walkthrough",
+            "label": "Full learner walkthrough on desktop viewport",
+            "status": "BLOCKED",
+            "detail": "No WP learner UI host in this environment (xampp/htdocs empty)",
+            "method": "requires_wp_learner"
+        },
+        {
+            "area": "4_responsive",
+            "id": "mobile_walkthrough",
+            "label": "Full learner walkthrough on mobile viewport",
+            "status": "BLOCKED",
+            "detail": "No WP learner UI host in this environment",
+            "method": "requires_wp_learner"
+        },
+        {
+            "area": "5_assessments",
+            "id": "gates_locked_default",
+            "label": "Assessment gates locked without preserved/online attempt",
+            "status": "PASS",
+            "detail": "wb1/cp1-3/form_a/form_b",
+            "method": "offline"
+        },
+        {
+            "area": "5_assessments",
+            "id": "form_a_after_attempt",
+            "label": "form_a gate opens after preserved Form A attempt",
+            "status": "PASS",
+            "detail": "",
+            "method": "offline"
+        },
+        {
+            "area": "5_assessments",
+            "id": "form_b_ready_gate",
+            "label": "form_b_ready requires Form A remediation completion",
+            "status": "PASS",
+            "detail": "before=locked",
+            "method": "offline"
+        },
+        {
+            "area": "5_assessments",
+            "id": "rationale_gate_coverage",
+            "label": "Rationale files gated for WB banks, CP1\u20133, Form A/B",
+            "status": "PASS",
+            "detail": "wb1_bank,wb2_bank,wb3_bank,wb4_bank,checkpoint_1,wb5_bank,wb6_bank,wb7_bank,wb8_bank,checkpoint_2,wb9_bank,wb10_bank,wb11_bank,wb12_bank,checkpoint_3,form_a,form_b",
+            "method": "offline"
+        },
+        {
+            "area": "5_assessments",
+            "id": "launch_hold",
+            "label": "Program remains draft / launch_pending_testing until live QA sign-off",
+            "status": "PASS",
+            "detail": "code comment + launch_pending_testing meta pattern; live publish not verified here",
+            "method": "offline"
+        },
+        {
+            "area": "5_assessments",
+            "id": "live_gate_walkthrough",
+            "label": "Learner UI: mark preserved attempts unlock matching keys; rem unlocks Form B",
+            "status": "BLOCKED",
+            "detail": "Requires enrolled test learner on WP",
+            "method": "requires_wp_learner"
+        }
+    ],
+    "overall": "PASS_OFFLINE_HOLD_LIVE",
+    "note": "Offline structural/gate verification complete. Desktop/mobile learner walkthrough and in-browser audio playback remain BLOCKED until a WordPress test learner environment is available. Keep checkout HOLD."
+}

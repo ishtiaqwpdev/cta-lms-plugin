@@ -25,6 +25,7 @@ class CTA_Student_Dashboard {
 
 		add_action( 'wp_ajax_cta_complete_module', array( $this, 'ajax_mark_module_complete' ) );
 		add_action( 'wp_ajax_cta_complete_form_a_remediation', array( $this, 'ajax_mark_form_a_remediation_complete' ) );
+		add_action( 'wp_ajax_cta_mark_preserved_attempt', array( $this, 'ajax_mark_preserved_attempt' ) );
 		add_action( 'wp_ajax_cta_download_cert', array( $this, 'ajax_download_certificate' ) );
 		add_action( 'wp_ajax_cta_save_profile', array( $this, 'ajax_save_profile' ) );
 		add_action( 'wp_ajax_cta_download_resource', array( $this, 'ajax_download_resource' ) );
@@ -370,6 +371,11 @@ class CTA_Student_Dashboard {
 		$quiz_unlocked = class_exists( 'CTA_CE_Completion' )
 			? CTA_CE_Completion::modules_complete( get_current_user_id(), $course_id, $enrollment )
 			: ( class_exists( 'CTA_Certificates' ) && CTA_Certificates::user_completed_all_modules( get_current_user_id(), $course_id, $enrollment ) );
+		// LPCC Access Correction / open Exam Prep: assessments available from enrollment.
+		if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course )
+			&& ! CTA_Exam_Access::uses_assessment_gates( $course ) ) {
+			$quiz_unlocked = true;
+		}
 		$quiz_url       = $this->get_quiz_url( $course_id );
 		$quiz_page_id   = absint( get_option( 'cta_quiz_page_id', 0 ) );
 
@@ -522,6 +528,10 @@ class CTA_Student_Dashboard {
 			: '';
 
 		$is_exam_prep = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course );
+		$quiz_unlocked = ( $progress >= 100 );
+		if ( $is_exam_prep && class_exists( 'CTA_Exam_Access' ) && ! CTA_Exam_Access::uses_assessment_gates( $course ) ) {
+			$quiz_unlocked = true;
+		}
 
 		wp_send_json_success(
 			array(
@@ -530,7 +540,7 @@ class CTA_Student_Dashboard {
 				'completed_count'  => count( $completed_ids ),
 				'total_modules'    => $total_modules,
 				'module_id'        => $module_id,
-				'quiz_unlocked'    => $progress >= 100,
+				'quiz_unlocked'    => $quiz_unlocked,
 				'is_exam_prep'     => $is_exam_prep,
 				'next_module_id'   => $next_module_id,
 				'next_module_url'  => $next_url,
@@ -578,6 +588,69 @@ class CTA_Student_Dashboard {
 			array(
 				'message'         => __( 'Form A Remediation marked complete.', 'cta-lms' ),
 				'form_b_unlocked' => true,
+			)
+		);
+	}
+
+	/**
+	 * AJAX: record a preserved first attempt for a printable candidate assessment (AMFTRB gates).
+	 */
+	public function ajax_mark_preserved_attempt() {
+		check_ajax_referer( 'cta_nonce', 'nonce' );
+
+		if ( ! is_user_logged_in() ) {
+			wp_send_json_error( array( 'message' => __( 'Please log in to continue.', 'cta-lms' ) ) );
+		}
+
+		$user_id     = get_current_user_id();
+		$course_id   = absint( wp_unslash( $_POST['course_id'] ?? 0 ) );
+		$unlock_type = sanitize_text_field( wp_unslash( $_POST['unlock_type'] ?? '' ) );
+		$resource_id = absint( wp_unslash( $_POST['resource_id'] ?? 0 ) );
+		$course      = $course_id ? CTA_Database::get_course( $course_id ) : null;
+		$enrollment  = CTA_Database::get_user_enrollment( $user_id, $course_id );
+
+		if ( ! $enrollment || ! $course ) {
+			wp_send_json_error( array( 'message' => __( 'Enrollment not found.', 'cta-lms' ) ) );
+		}
+
+		if ( ! class_exists( 'CTA_Exam_Access' ) || ! CTA_Exam_Access::uses_assessment_gates( $course ) ) {
+			wp_send_json_error( array( 'message' => __( 'Preserved attempts are not used for this program.', 'cta-lms' ) ) );
+		}
+
+		if ( ! CTA_Exam_Access::has_active_access( $user_id, $course_id ) ) {
+			wp_send_json_error(
+				array( 'message' => __( 'Your access to this Exam Preparation Program has expired.', 'cta-lms' ) )
+			);
+		}
+
+		if ( ! class_exists( 'CTA_Course_Materials' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Unable to record attempt.', 'cta-lms' ) ) );
+		}
+
+		if ( $resource_id ) {
+			$resource = CTA_Database::get_downloadable_resource( $resource_id );
+			if ( ! $resource || (int) $resource->course_id !== $course_id ) {
+				wp_send_json_error( array( 'message' => __( 'Assessment not found.', 'cta-lms' ) ) );
+			}
+			if ( ! CTA_Course_Materials::user_can_access( $user_id, $resource ) ) {
+				wp_send_json_error( array( 'message' => __( 'You cannot record an attempt for this file yet.', 'cta-lms' ) ) );
+			}
+			$inferred = CTA_Course_Materials::infer_preserved_attempt_type( $resource );
+			if ( '' === $inferred ) {
+				wp_send_json_error( array( 'message' => __( 'This file is not a candidate assessment.', 'cta-lms' ) ) );
+			}
+			$unlock_type = $inferred;
+		}
+
+		$result = CTA_Course_Materials::mark_preserved_attempt( $user_id, $course_id, $unlock_type );
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
+		}
+
+		wp_send_json_success(
+			array(
+				'message'     => __( 'Assessment attempt recorded. Matching answer keys and rationales are now available.', 'cta-lms' ),
+				'unlock_type' => $unlock_type,
 			)
 		);
 	}

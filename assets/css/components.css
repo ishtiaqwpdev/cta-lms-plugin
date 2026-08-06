@@ -671,3 +671,42 @@
   margin-top: 0.25rem;
   color: #b91c1c;
 }
+
+/* Exam Prep audio review players (AMFTRB / LPCC) */
+.cta-materials-list__item--audio .cta-audio-player {
+  display: block;
+  width: 100%;
+  max-width: 28rem;
+  margin-top: 0.65rem;
+  height: 2.25rem;
+}
+
+.cta-materials-list__item--audio .course-module-list__row {
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.cta-materials-list__item--audio .course-module-list__info {
+  flex: 1 1 14rem;
+  min-width: 0;
+}
+
+.cta-audio-runtime {
+  margin: 0.25rem 0 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.cta-audio-transcript {
+  margin: 0.5rem 0 0;
+}
+
+.cta-audio-transcript__link {
+  font-size: 0.9rem;
+  text-decoration: underline;
+  color: inherit;
+}
+
+.cta-audio-transcript__link:focus {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}

@@ -2487,6 +2487,43 @@
       });
     });
 
+    document.querySelectorAll(".cta-mark-preserved-attempt").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var courseId = btn.getAttribute("data-course-id");
+        var resourceId = btn.getAttribute("data-resource-id");
+        var unlockType = btn.getAttribute("data-unlock-type");
+        var originalText = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = "Saving...";
+
+        $.post(ctaAjax.ajaxUrl, {
+          action: "cta_mark_preserved_attempt",
+          nonce: ctaAjax.nonce,
+          course_id: courseId,
+          resource_id: resourceId,
+          unlock_type: unlockType
+        })
+          .done(function (response) {
+            if (!response.success) {
+              window.alert(
+                response.data && response.data.message
+                  ? response.data.message
+                  : "Unable to record assessment attempt."
+              );
+              btn.disabled = false;
+              btn.textContent = originalText;
+              return;
+            }
+            window.location.reload();
+          })
+          .fail(function () {
+            window.alert("Something went wrong. Please try again.");
+            btn.disabled = false;
+            btn.textContent = originalText;
+          });
+      });
+    });
+
     if (!markBtn || markBtn.disabled || !markBtn.getAttribute("data-module-id")) {
       return;
     }

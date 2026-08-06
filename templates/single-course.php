@@ -33,6 +33,8 @@ $display_title = function_exists( 'cta_lms_get_course_display_title' )
 	: (string) $course->title;
 $access_months = (int) ( $course->access_period_months ?? 6 );
 $commercial_pending = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::commercial_terms_pending( $course );
+$launch_pending     = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::launch_pending_testing( $course );
+$checkout_held      = $commercial_pending || $launch_pending;
 ?>
 <div class="cta-plugin-wrapper">
 <div class="cta-lms cta-single-course">
@@ -64,6 +66,9 @@ $commercial_pending = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::comm
 						<?php if ( $commercial_pending ) : ?>
 							<span class="badge badge--primary"><?php esc_html_e( 'Pricing pending confirmation', 'cta-lms' ); ?></span>
 							<span class="badge"><?php esc_html_e( 'Exam Preparation Only — No CE Credit (pending confirmation)', 'cta-lms' ); ?></span>
+						<?php elseif ( $launch_pending ) : ?>
+							<span class="badge badge--primary"><?php esc_html_e( 'Coming soon — not open for enrollment', 'cta-lms' ); ?></span>
+							<span class="badge"><?php esc_html_e( 'Exam Preparation Only — No CE Credit', 'cta-lms' ); ?></span>
 						<?php else : ?>
 							<span class="badge badge--primary">
 								<?php
@@ -486,6 +491,15 @@ $commercial_pending = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::comm
 							<?php esc_html_e( 'Free', 'cta-lms' ); ?>
 						<?php elseif ( ! empty( $commercial_pending ) ) : ?>
 							<?php esc_html_e( 'Pricing pending confirmation', 'cta-lms' ); ?>
+						<?php elseif ( ! empty( $launch_pending ) ) : ?>
+							<?php
+							echo esc_html(
+								function_exists( 'cta_lms_format_money' )
+									? cta_lms_format_money( (float) $course->price )
+									: ( '$' . number_format( (float) $course->price, 2 ) )
+							);
+							?>
+							<span class="course-sidebar__price-note"><?php esc_html_e( '(enrollment not open)', 'cta-lms' ); ?></span>
 						<?php else : ?>
 							<?php
 							echo esc_html(
@@ -535,7 +549,7 @@ $commercial_pending = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::comm
 						<?php endif; ?>
 					</ul>
 
-					<?php if ( ! $is_free_course && empty( $commercial_pending ) ) : ?>
+					<?php if ( ! $is_free_course && empty( $checkout_held ) ) : ?>
 						<p class="course-sidebar__label"><?php esc_html_e( 'Secure Payment:', 'cta-lms' ); ?></p>
 						<div class="course-sidebar__payments" aria-label="<?php esc_attr_e( 'Accepted payment methods', 'cta-lms' ); ?>">
 							<span class="course-sidebar__payment-icon">Visa</span>
@@ -551,6 +565,8 @@ $commercial_pending = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::comm
 						<p class="course-sidebar__notice"><?php esc_html_e( 'You are enrolled. Configure the Course Player page in CTA LMS Settings to start learning.', 'cta-lms' ); ?></p>
 					<?php elseif ( ! empty( $commercial_pending ) ) : ?>
 						<p class="course-sidebar__notice"><?php esc_html_e( 'Enrollment opens after the client confirms price, access period, and classification for this program.', 'cta-lms' ); ?></p>
+					<?php elseif ( ! empty( $launch_pending ) ) : ?>
+						<p class="course-sidebar__notice"><?php esc_html_e( 'Public checkout and enrollment are on hold until learner-view testing is complete and CTA provides final written release approval.', 'cta-lms' ); ?></p>
 					<?php elseif ( ! is_user_logged_in() && $login_url ) : ?>
 						<a href="<?php echo esc_url( $login_url ); ?>" class="btn btn-primary btn--lg course-sidebar__enroll">
 							<?php esc_html_e( 'Login to Enroll', 'cta-lms' ); ?>

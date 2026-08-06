@@ -21,7 +21,7 @@ if ( ! class_exists( 'CTA_Lpcc_Ncmhce_Sync' ) ) {
 
 class CTA_Lpcc_Ncmhce_Sync {
 
-	const SEED_OPTION   = 'cta_lpcc_ncmhce_seeded_1_0_132';
+	const SEED_OPTION   = 'cta_lpcc_ncmhce_seeded_1_0_145';
 	const SLUG          = 'lpcc-ncmhce-exam-preparation';
 	const TITLE         = 'CTA LPCC NCMHCE Exam Preparation Program';
 	const PUBLIC_TITLE  = 'LPCC NCMHCE Exam Preparation';
@@ -661,14 +661,15 @@ class CTA_Lpcc_Ncmhce_Sync {
 <ul>
 <li>12 editable and print-optimized LPCC student workbooks</li>
 <li>12 paired 17-question practice bank pairs (candidate forms with complete answer rationales)</li>
-<li>3 cumulative checkpoints (39-, 52-, and 65-question assessments) with controlled rationales released after each checkpoint is submitted</li>
+<li>3 cumulative checkpoints (39-, 52-, and 65-question assessments) with answer rationales</li>
 <li>Comprehensive Simulation Form A — 143 questions</li>
-<li>Form A remediation workbook (released after Form A is submitted)</li>
+<li>Form A remediation workbook (recommended study sequence before Form B)</li>
 <li>Comprehensive Simulation Form B — 143 questions</li>
-<li>Controlled answer keys and detailed rationales for both simulations (released after each form is submitted)</li>
+<li>Answer keys and detailed rationales for both simulations</li>
+<li>Eight screen-free audio-review tracks (about 49 minutes total) for offline or LMS playback</li>
 <li>Flashcard collection, quick-reference and rapid-review library, readiness tracker, Student FAQ, and Start-Here roadmap with 10-, 14-, and 18-week study schedules</li>
 </ul>
-<p><strong>Written program complete.</strong></p>
+<p><strong>Written program complete.</strong> Eight recorded audio-review tracks are included.</p>
 <h3>Important Notices</h3>
 <ul>
 <li><strong>Exam Preparation Only — No CE Credit.</strong> This program does not provide continuing education hours or a CE certificate.</li>
@@ -705,12 +706,12 @@ class CTA_Lpcc_Ncmhce_Sync {
 	private static function get_syllabus_meta() {
 		return array(
 			'public_title'           => self::PUBLIC_TITLE,
-			'short_description'      => 'Twelve LPCC workbooks, twelve practice bank pairs, three cumulative checkpoints, Form A and Form B 143-question simulations, Form A remediation, flashcards, quick references, and study schedules for NCMHCE exam preparation.',
+			'short_description'      => 'Twelve LPCC workbooks, twelve practice bank pairs, three cumulative checkpoints, Form A and Form B 143-question simulations, Form A remediation, eight audio-review tracks, flashcards, quick references, and study schedules for NCMHCE exam preparation.',
 			'course_classification'  => 'Exam Preparation Only — No CE Credit',
 			'instructional_method'   => 'Self-paced asynchronous',
 			'target_audience'        => 'LPCC candidates and other eligible NCMHCE examinees',
 			'seo_title'              => 'LPCC NCMHCE Exam Prep | CTA',
-			'meta_description'       => 'Prepare for the NCMHCE with 12 LPCC workbooks, practice banks, three cumulative checkpoints, and two 143-question simulations. Exam preparation only — no CE credit.',
+			'meta_description'       => 'Prepare for the NCMHCE with 12 LPCC workbooks, practice banks, three cumulative checkpoints, two 143-question simulations, and eight audio-review tracks. Exam preparation only — no CE credit.',
 			'image_alt'              => 'Clinical Training and Supervision Academy LPCC NCMHCE Exam Preparation graphic',
 			'primary_cta'            => 'Begin Your Clinical Exam Preparation',
 			'page_badge'             => 'Exam Preparation Only — No CE Credit',
@@ -718,6 +719,8 @@ class CTA_Lpcc_Ncmhce_Sync {
 			'launch_status'          => 'draft_pending_testing',
 			'launch_pending_testing' => true,
 			'development_draft'      => true,
+			'audio_tracks'           => 8,
+			'open_access_exam_prep'  => true,
 		);
 	}
 
@@ -808,8 +811,7 @@ class CTA_Lpcc_Ncmhce_Sync {
 				'title'        => $wb['title'],
 				'workbook_num' => $n,
 			);
-			// Candidate form stays available; answer rationales unlock only after this student
-			// submits the matching Workbook N practice-bank quiz (per-student, per-form).
+			// Access Correction v1.0: no delayed rationale / progression locks for LPCC Exam Prep.
 			$items[] = array(
 				'file'             => 'practice-banks/CTA_LPCC_WB' . $n . '_17_Question_Practice_Bank_Candidate_Form_v1.0.docx',
 				'title'            => 'Workbook ' . $n . ' — 17-Question Practice Bank (Candidate Form)',
@@ -817,10 +819,9 @@ class CTA_Lpcc_Ncmhce_Sync {
 				'is_practice_test' => 1,
 			);
 			$items[] = array(
-				'file'                   => 'practice-banks/CTA_LPCC_WB' . $n . '_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx',
-				'title'                  => 'Workbook ' . $n . ' — 17-Question Practice Bank (Answer Rationales)',
-				'workbook_num'           => $n,
-				'unlock_after_quiz_type' => 'wb' . $n . '_bank',
+				'file'         => 'practice-banks/CTA_LPCC_WB' . $n . '_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx',
+				'title'        => 'Workbook ' . $n . ' — 17-Question Practice Bank (Answer Rationales)',
+				'workbook_num' => $n,
 			);
 		}
 
@@ -852,39 +853,85 @@ class CTA_Lpcc_Ncmhce_Sync {
 				'is_practice_test' => 1,
 			);
 			$items[] = array(
-				'file'                   => $cp['rat'],
-				'title'                  => 'Checkpoint ' . $n . ' — Answer Rationales',
-				'unlock_after_quiz_type' => 'checkpoint_' . $n,
+				'file'  => $cp['rat'],
+				'title' => 'Checkpoint ' . $n . ' — Answer Rationales',
 			);
 		}
 
 		$items[] = array(
-			'file'                   => 'simulations/CTA_LPCC_Comprehensive_Simulation_Form_A_143_Question_Candidate_Exam_v1.0.docx',
-			'title'                  => 'Form A — 143-Question Comprehensive Simulation (Candidate Exam)',
-			'is_practice_test'       => 1,
-			'unlock_after_quiz_type' => 'modules_complete',
+			'file'             => 'simulations/CTA_LPCC_Comprehensive_Simulation_Form_A_143_Question_Candidate_Exam_v1.0.docx',
+			'title'            => 'Form A — 143-Question Comprehensive Simulation (Candidate Exam)',
+			'is_practice_test' => 1,
 		);
 		$items[] = array(
-			'file'                   => 'simulations/CTA_LPCC_Comprehensive_Simulation_Form_A_143_Question_Answer_Rationales_v1.0.docx',
-			'title'                  => 'Form A — Answer Rationales',
-			'unlock_after_quiz_type' => 'form_a',
+			'file'  => 'simulations/CTA_LPCC_Comprehensive_Simulation_Form_A_143_Question_Answer_Rationales_v1.0.docx',
+			'title' => 'Form A — Answer Rationales',
 		);
 		$items[] = array(
-			'file'                   => 'simulations/CTA_LPCC_Form_A_Remediation_Workbook_v1.0.docx',
-			'title'                  => 'Form A — Remediation Workbook',
-			'unlock_after_quiz_type' => 'form_a',
+			'file'  => 'simulations/CTA_LPCC_Form_A_Remediation_Workbook_v1.0.docx',
+			'title' => 'Form A — Remediation Workbook (recommended before Form B)',
 		);
 		$items[] = array(
-			'file'                   => 'simulations/CTA_LPCC_Comprehensive_Simulation_Form_B_143_Question_Candidate_Exam_v1.0.docx',
-			'title'                  => 'Form B — 143-Question Comprehensive Simulation (Candidate Exam)',
-			'is_practice_test'       => 1,
-			'unlock_after_quiz_type' => 'form_b_ready',
+			'file'             => 'simulations/CTA_LPCC_Comprehensive_Simulation_Form_B_143_Question_Candidate_Exam_v1.0.docx',
+			'title'            => 'Form B — 143-Question Comprehensive Simulation (Candidate Exam)',
+			'is_practice_test' => 1,
 		);
 		$items[] = array(
-			'file'                   => 'simulations/CTA_LPCC_Comprehensive_Simulation_Form_B_143_Question_Answer_Rationales_v1.0.docx',
-			'title'                  => 'Form B — Answer Rationales',
-			'unlock_after_quiz_type' => 'form_b',
+			'file'  => 'simulations/CTA_LPCC_Comprehensive_Simulation_Form_B_143_Question_Answer_Rationales_v1.0.docx',
+			'title' => 'Form B — Answer Rationales',
 		);
+
+		$audio_tracks = array(
+			1 => array(
+				'file'    => 'audio/CTA_LPCC_Audio_Track_01_NCMHCE_Case_Reasoning_Sections_Qualifiers_and_Evidence_v1.0.mp3',
+				'title'   => 'Audio Review 1 — NCMHCE Case Reasoning: Sections, Qualifiers, and Evidence (3:58)',
+				'runtime' => '3:58',
+			),
+			2 => array(
+				'file'    => 'audio/CTA_LPCC_Audio_Track_02_Professional_Identity_Intake_Assessment_and_Differential_Reasoning_v1.0.mp3',
+				'title'   => 'Audio Review 2 — Professional Identity, Intake, Assessment, and Differential Reasoning (10:37)',
+				'runtime' => '10:37',
+			),
+			3 => array(
+				'file'    => 'audio/CTA_LPCC_Audio_Track_03_Crisis_Trauma_Abuse_Violence_and_Level_of_Care_Sequencing_v1.0.mp3',
+				'title'   => 'Audio Review 3 — Crisis, Trauma, Abuse, Violence, and Level-of-Care Sequencing (4:13)',
+				'runtime' => '4:13',
+			),
+			4 => array(
+				'file'    => 'audio/CTA_LPCC_Audio_Track_04_Conceptualization_Planning_Measurement_Progress_and_Termination_v1.0.mp3',
+				'title'   => 'Audio Review 4 — Conceptualization, Planning, Measurement, Progress, and Termination (4:05)',
+				'runtime' => '4:05',
+			),
+			5 => array(
+				'file'    => 'audio/CTA_LPCC_Audio_Track_05_Counseling_Theories_Therapeutic_Alliance_and_Core_Skills_v1.0.mp3',
+				'title'   => 'Audio Review 5 — Counseling Theories, Therapeutic Alliance, and Core Skills (4:09)',
+				'runtime' => '4:09',
+			),
+			6 => array(
+				'file'    => 'audio/CTA_LPCC_Audio_Track_06_Evidence_Informed_Interventions_and_Context_Responsive_Care_v1.0.mp3',
+				'title'   => 'Audio Review 6 — Evidence-Informed Interventions and Context-Responsive Care (7:30)',
+				'runtime' => '7:30',
+			),
+			7 => array(
+				'file'    => 'audio/CTA_LPCC_Audio_Track_07_Modality_Referral_Collaboration_and_California_Professional_Practice_v1.0.mp3',
+				'title'   => 'Audio Review 7 — Modality, Referral, Collaboration, and California Professional Practice (7:26)',
+				'runtime' => '7:26',
+			),
+			8 => array(
+				'file'    => 'audio/CTA_LPCC_Audio_Track_08_Integrated_Review_Error_Repair_and_Form_A_Form_B_Readiness_v1.0.mp3',
+				'title'   => 'Audio Review 8 — Integrated Review, Error Repair, and Form A/Form B Readiness (6:47)',
+				'runtime' => '6:47',
+			),
+		);
+
+		foreach ( $audio_tracks as $track ) {
+			$items[] = array(
+				'file'          => $track['file'],
+				'title'         => $track['title'],
+				'is_audio'      => 1,
+				'audio_runtime' => $track['runtime'],
+			);
+		}
 
 		$items[] = array(
 			'file'  => 'study-tools/CTA_LPCC_Clinical_Exam_Preparation_Flashcard_Collection_v1.0.docx',

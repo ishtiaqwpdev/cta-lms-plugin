@@ -22,23 +22,24 @@ class CTA_Course_Materials {
 
 	const UPLOAD_SUBDIR = 'cta-course-materials';
 
-	/** @var int Max upload size in bytes (20MB). */
-	const MAX_UPLOAD_BYTES = 20971520;
+	/** @var int Max upload size in bytes (25MB — fits exam-prep audio MP3s). */
+	const MAX_UPLOAD_BYTES = 26214400;
 
 	/** @var array Allowed MIME types keyed by extension. */
 	const ALLOWED_MIMES = array(
 		'pdf'  => 'application/pdf',
 		'doc'  => 'application/msword',
 		'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+		'mp3'  => 'audio/mpeg',
 	);
 
 	/**
-	 * Allowed extensions for course materials (PDF / DOC / DOCX).
+	 * Allowed extensions for course materials (PDF / DOC / DOCX / MP3).
 	 *
 	 * @return string[]
 	 */
 	public static function allowed_extensions() {
-		return array( 'pdf', 'doc', 'docx' );
+		return array( 'pdf', 'doc', 'docx', 'mp3' );
 	}
 
 	/**
@@ -70,7 +71,7 @@ class CTA_Course_Materials {
 		if ( false !== $size && $size > self::MAX_UPLOAD_BYTES ) {
 			return new WP_Error(
 				'cta_resource_too_large',
-				__( 'File exceeds the 20MB size limit. Please upload a smaller PDF, DOC, or DOCX file.', 'cta-lms' )
+				__( 'File exceeds the 25MB size limit. Please upload a smaller PDF, DOC, DOCX, or MP3 file.', 'cta-lms' )
 			);
 		}
 
@@ -83,7 +84,7 @@ class CTA_Course_Materials {
 			if ( ! in_array( $fallback, self::allowed_extensions(), true ) ) {
 				return new WP_Error(
 					'cta_resource_invalid_type',
-					__( 'Only PDF, DOC, and DOCX files are allowed for course materials.', 'cta-lms' )
+					__( 'Only PDF, DOC, DOCX, and MP3 files are allowed for course materials.', 'cta-lms' )
 				);
 			}
 		}
@@ -130,8 +131,16 @@ class CTA_Course_Materials {
 			if ( ! CTA_Exam_Access::has_active_access( $user_id, $course_id ) ) {
 				return false;
 			}
-			// Exam Prep: all student-facing downloads open immediately on enrollment.
-			// No module / quiz / assessment completion gates (CE gates stay below).
+			// AMFTRB National keeps assessment/rationale gates from its handoff package.
+			// Other Exam Prep programs (LPCC Access Correction): open on enrollment.
+			if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::uses_assessment_gates( $course ) ) {
+				$unlock_type = isset( $resource->unlock_after_quiz_type )
+					? sanitize_text_field( (string) $resource->unlock_after_quiz_type )
+					: '';
+				if ( '' !== $unlock_type ) {
+					return self::user_meets_unlock_gate( $user_id, $course_id, $unlock_type );
+				}
+			}
 			return true;
 		} elseif ( class_exists( 'CTA_CE_Access' ) && CTA_CE_Access::is_ce_course( $course ) ) {
 			if ( ! CTA_CE_Access::has_active_access( $user_id, $course_id ) ) {
@@ -188,13 +197,30 @@ class CTA_Course_Materials {
 				&& CTA_Certificates::user_completed_all_modules( $user_id, $course_id, $enrollment );
 		}
 
-		// Form B printable: open on enrollment — no Form A / remediation prerequisite.
+		// Form B: AMFTRB requires Form A remediation first; other Exam Prep stays open.
 		if ( 'form_b_ready' === $unlock_type ) {
+			$course = class_exists( 'CTA_Database' ) ? CTA_Database::get_course( $course_id ) : null;
+			if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::uses_assessment_gates( $course ) ) {
+				return self::user_has_completed_form_a_remediation( $user_id, $course_id );
+			}
 			return true;
 		}
 
 		if ( 'form_a_remediation' === $unlock_type ) {
 			return self::user_has_completed_form_a_remediation( $user_id, $course_id );
+		}
+
+		// AMFTRB: require a preserved first attempt (online quiz submit OR printable attempt mark).
+		// Do not open protected rationales when no online quiz exists yet.
+		$course_for_gate = class_exists( 'CTA_Database' ) ? CTA_Database::get_course( $course_id ) : null;
+		if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::uses_assessment_gates( $course_for_gate ) ) {
+			if ( self::user_has_preserved_attempt( $user_id, $course_id, $unlock_type ) ) {
+				return true;
+			}
+			if ( class_exists( 'CTA_Lcsw_Aswb_Sync' ) ) {
+				return CTA_Lcsw_Aswb_Sync::user_has_completed_quiz_type( $user_id, $course_id, $unlock_type );
+			}
+			return self::user_has_completed_quiz_type( $user_id, $course_id, $unlock_type );
 		}
 
 		if ( class_exists( 'CTA_Lcsw_Aswb_Sync' ) ) {
@@ -287,7 +313,10 @@ class CTA_Course_Materials {
 			return true;
 		}
 
-		if ( false !== stripos( $path, 'Form_A_Remediation' ) || false !== stripos( $path, 'Remediation_Workbook' ) ) {
+		if ( false !== stripos( $path, 'Form_A_Remediation' )
+			|| false !== stripos( $path, 'Form_A_Required_Remediation' )
+			|| ( false !== stripos( $path, 'Simulation_Form_A' ) && false !== stripos( $path, 'Remediation' ) )
+			|| false !== stripos( $path, 'Remediation_Workbook' ) ) {
 			return true;
 		}
 
@@ -352,19 +381,163 @@ class CTA_Course_Materials {
 			return new WP_Error( 'no_remediation', __( 'This program does not include a Form A Remediation Workbook.', 'cta-lms' ) );
 		}
 
-		$has_form_a = class_exists( 'CTA_Lcsw_Aswb_Sync' )
-			? CTA_Lcsw_Aswb_Sync::user_has_completed_quiz_type( $user_id, $course_id, 'form_a' )
-			: self::user_has_completed_quiz_type( $user_id, $course_id, 'form_a' );
+		$has_form_a = self::user_has_preserved_attempt( $user_id, $course_id, 'form_a' )
+			|| ( class_exists( 'CTA_Lcsw_Aswb_Sync' )
+				? CTA_Lcsw_Aswb_Sync::user_has_completed_quiz_type( $user_id, $course_id, 'form_a' )
+				: self::user_has_completed_quiz_type( $user_id, $course_id, 'form_a' ) );
 
 		if ( ! $has_form_a ) {
 			return new WP_Error(
 				'form_a_required',
-				__( 'Submit Comprehensive Simulation Form A before completing the Form A Remediation Workbook.', 'cta-lms' )
+				__( 'Submit Comprehensive Simulation Form A (or record your preserved Form A attempt) before completing the Form A Remediation Workbook.', 'cta-lms' )
 			);
 		}
 
 		update_user_meta( $user_id, self::form_a_remediation_meta_key( $course_id ), current_time( 'mysql' ) );
 		return true;
+	}
+
+	/**
+	 * User-meta key storing preserved printable assessment attempts for a course.
+	 *
+	 * @param int $course_id Course ID.
+	 * @return string
+	 */
+	public static function preserved_attempts_meta_key( $course_id ) {
+		return 'cta_exam_preserved_attempts_' . absint( $course_id );
+	}
+
+	/**
+	 * Whether the learner has a preserved first attempt for an unlock/quiz type.
+	 *
+	 * @param int    $user_id     User ID.
+	 * @param int    $course_id   Course ID.
+	 * @param string $unlock_type Gate key (wb1_bank, checkpoint_1, form_a, …).
+	 * @return bool
+	 */
+	public static function user_has_preserved_attempt( $user_id, $course_id, $unlock_type ) {
+		$user_id     = absint( $user_id );
+		$course_id   = absint( $course_id );
+		$unlock_type = sanitize_text_field( (string) $unlock_type );
+
+		if ( ! $user_id || ! $course_id || '' === $unlock_type ) {
+			return false;
+		}
+
+		$raw = get_user_meta( $user_id, self::preserved_attempts_meta_key( $course_id ), true );
+		if ( ! is_array( $raw ) ) {
+			return false;
+		}
+
+		return ! empty( $raw[ $unlock_type ] );
+	}
+
+	/**
+	 * Infer the assessment unlock type that a candidate practice resource preserves.
+	 *
+	 * @param object|null $resource Resource row.
+	 * @return string Unlock type or empty.
+	 */
+	public static function infer_preserved_attempt_type( $resource ) {
+		if ( ! $resource ) {
+			return '';
+		}
+
+		$title = (string) ( $resource->title ?? '' );
+		$path  = (string) ( $resource->file_path ?? '' ) . ' ' . (string) ( $resource->file_url ?? '' );
+		$hay   = $title . ' ' . $path;
+
+		if ( preg_match( '/Workbook\s+(\d+)/i', $title, $m )
+			&& ( false !== stripos( $hay, 'Candidate Bank' ) || false !== stripos( $hay, 'Candidate_Bank' ) ) ) {
+			return 'wb' . (int) $m[1] . '_bank';
+		}
+
+		if ( preg_match( '/Checkpoint\s+(\d+)/i', $title, $m )
+			&& ( false !== stripos( $hay, 'Candidate' ) || ! empty( $resource->is_practice_test ) ) ) {
+			return 'checkpoint_' . (int) $m[1];
+		}
+
+		if ( ( false !== stripos( $hay, 'Form A' ) || false !== stripos( $hay, 'Form_A' ) )
+			&& ( false !== stripos( $hay, 'Candidate' ) || ! empty( $resource->is_practice_test ) )
+			&& false === stripos( $hay, 'Rationale' )
+			&& false === stripos( $hay, 'Remediation' )
+			&& false === stripos( $hay, 'Answer Key' ) ) {
+			return 'form_a';
+		}
+
+		if ( ( false !== stripos( $hay, 'Form B' ) || false !== stripos( $hay, 'Form_B' ) )
+			&& ( false !== stripos( $hay, 'Candidate' ) || ! empty( $resource->is_practice_test ) )
+			&& false === stripos( $hay, 'Rationale' )
+			&& false === stripos( $hay, 'Remediation' )
+			&& false === stripos( $hay, 'Answer Key' ) ) {
+			return 'form_b';
+		}
+
+		return '';
+	}
+
+	/**
+	 * Record a preserved first attempt for a printable candidate assessment.
+	 *
+	 * @param int    $user_id     User ID.
+	 * @param int    $course_id   Course ID.
+	 * @param string $unlock_type Gate key.
+	 * @return true|WP_Error
+	 */
+	public static function mark_preserved_attempt( $user_id, $course_id, $unlock_type ) {
+		$user_id     = absint( $user_id );
+		$course_id   = absint( $course_id );
+		$unlock_type = sanitize_text_field( (string) $unlock_type );
+
+		if ( ! $user_id || ! $course_id || '' === $unlock_type ) {
+			return new WP_Error( 'invalid', __( 'Invalid request.', 'cta-lms' ) );
+		}
+
+		if ( ! preg_match( '/^(wb\d+_bank|checkpoint_[123]|form_a|form_b)$/', $unlock_type ) ) {
+			return new WP_Error( 'invalid_type', __( 'Unknown assessment type.', 'cta-lms' ) );
+		}
+
+		$key = self::preserved_attempts_meta_key( $course_id );
+		$raw = get_user_meta( $user_id, $key, true );
+		if ( ! is_array( $raw ) ) {
+			$raw = array();
+		}
+
+		if ( empty( $raw[ $unlock_type ] ) ) {
+			$raw[ $unlock_type ] = current_time( 'mysql' );
+			update_user_meta( $user_id, $key, $raw );
+		}
+
+		return true;
+	}
+
+	/**
+	 * Whether a resource is a protected answer-key / rationale file (gated release).
+	 *
+	 * @param object|null $resource Resource row.
+	 * @return bool
+	 */
+	public static function is_protected_rationale_resource( $resource ) {
+		if ( ! $resource ) {
+			return false;
+		}
+
+		$hay = (string) ( $resource->title ?? '' ) . ' ' .
+			(string) ( $resource->file_path ?? '' ) . ' ' .
+			(string) ( $resource->file_url ?? '' );
+
+		if ( false !== stripos( $hay, '/rationales/' ) || false !== stripos( $hay, '\\rationales\\' ) ) {
+			return true;
+		}
+
+		if ( false !== stripos( $hay, 'Answer Key' )
+			|| false !== stripos( $hay, 'Answer_Key' )
+			|| false !== stripos( $hay, 'Detailed Rationales' )
+			|| false !== stripos( $hay, 'Controlled Answer' ) ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -380,6 +553,42 @@ class CTA_Course_Materials {
 	public static function assert_form_b_accessible( $user_id, $course_id ) {
 		unset( $user_id, $course_id );
 		return true;
+	}
+
+	/**
+	 * Whether the course has an online quiz row for the given quiz_type.
+	 *
+	 * @param int    $course_id Course ID.
+	 * @param string $quiz_type Quiz type slug.
+	 * @return bool
+	 */
+	public static function course_has_quiz_type( $course_id, $quiz_type ) {
+		global $wpdb;
+
+		$course_id = absint( $course_id );
+		$quiz_type = sanitize_text_field( (string) $quiz_type );
+
+		if ( ! $course_id || '' === $quiz_type ) {
+			return false;
+		}
+
+		// Non-quiz gate keys are not online quiz types.
+		if ( in_array( $quiz_type, array( 'modules_complete', 'form_b_ready', 'form_a_remediation' ), true ) ) {
+			return true;
+		}
+
+		$quizzes = $wpdb->prefix . 'cta_quizzes';
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$count = (int) $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT COUNT(id) FROM {$quizzes} WHERE course_id = %d AND quiz_type = %s LIMIT 1",
+				$course_id,
+				$quiz_type
+			)
+		);
+
+		return $count > 0;
 	}
 
 	/**
@@ -441,8 +650,9 @@ class CTA_Course_Materials {
 			? CTA_Database::get_course( (int) $resource->course_id )
 			: null;
 
-		// Exam Prep downloads are unrestricted after enrollment — never show completion lock copy.
-		if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course ) ) {
+		// Non-gated Exam Prep: no lock copy. AMFTRB (assessment gates) shows messages below.
+		if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course )
+			&& ! CTA_Exam_Access::uses_assessment_gates( $course ) ) {
 			return '';
 		}
 
@@ -464,27 +674,52 @@ class CTA_Course_Materials {
 			return __( 'Available after you complete all program modules.', 'cta-lms' );
 		}
 		if ( 'form_b_ready' === $type ) {
+			if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::uses_assessment_gates( $course ) ) {
+				return __( 'Available after you complete the Form A Remediation Workbook.', 'cta-lms' );
+			}
 			return '';
 		}
 		if ( 'form_a_remediation' === $type ) {
 			return __( 'Available after you complete the Form A Remediation Workbook.', 'cta-lms' );
 		}
 		if ( 'form_a' === $type ) {
+			if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::uses_assessment_gates( $course ) ) {
+				return __( 'Available after you submit Comprehensive Simulation Form A, or record your preserved Form A attempt.', 'cta-lms' );
+			}
 			return __( 'Available after you submit Comprehensive Simulation Form A.', 'cta-lms' );
 		}
 		if ( 'form_b' === $type ) {
+			if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::uses_assessment_gates( $course ) ) {
+				return __( 'Available after you submit Comprehensive Simulation Form B, or record your preserved Form B attempt.', 'cta-lms' );
+			}
 			return __( 'Available after you submit Comprehensive Simulation Form B.', 'cta-lms' );
 		}
 		if ( 'checkpoint_1' === $type ) {
+			if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::uses_assessment_gates( $course ) ) {
+				return __( 'Available after you submit Checkpoint 1, or record your preserved Checkpoint 1 attempt.', 'cta-lms' );
+			}
 			return __( 'Available after you submit Checkpoint 1.', 'cta-lms' );
 		}
 		if ( 'checkpoint_2' === $type ) {
+			if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::uses_assessment_gates( $course ) ) {
+				return __( 'Available after you submit Checkpoint 2, or record your preserved Checkpoint 2 attempt.', 'cta-lms' );
+			}
 			return __( 'Available after you submit Checkpoint 2.', 'cta-lms' );
 		}
 		if ( 'checkpoint_3' === $type ) {
+			if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::uses_assessment_gates( $course ) ) {
+				return __( 'Available after you submit Checkpoint 3, or record your preserved Checkpoint 3 attempt.', 'cta-lms' );
+			}
 			return __( 'Available after you submit Checkpoint 3.', 'cta-lms' );
 		}
 		if ( preg_match( '/^wb(\d+)_bank$/', $type, $m ) ) {
+			if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::uses_assessment_gates( $course ) ) {
+				return sprintf(
+					/* translators: %d: workbook number */
+					__( 'Available after you submit Workbook %d Practice Bank, or record your preserved attempt for that bank.', 'cta-lms' ),
+					(int) $m[1]
+				);
+			}
 			return sprintf(
 				/* translators: %d: workbook number */
 				__( 'Available after you submit Workbook %d Practice Bank.', 'cta-lms' ),
@@ -635,6 +870,21 @@ class CTA_Course_Materials {
 			'/official_source_reference/',
 			'/question_bank_and_simulation_controls/',
 			'administrative_master_item_bank',
+			// AMFTRB / David handoff package trees — never learner-facing.
+			'/03_internal_controls/',
+			'03_internal_controls/',
+			'/assessment_and_program_blueprints/',
+			'assessment_and_program_blueprints/',
+			'/audio_production/',
+			'audio_production/',
+			'/program_architecture_and_audits/',
+			'program_architecture_and_audits/',
+			'/protected_inventory/',
+			'protected_inventory/',
+			'/workbook_blueprints/',
+			'workbook_blueprints/',
+			'/02_protected_rationales/',
+			'02_protected_rationales/',
 		);
 
 		foreach ( $markers as $marker ) {
@@ -1011,7 +1261,7 @@ class CTA_Course_Materials {
 		if ( false !== $size && $size > self::MAX_UPLOAD_BYTES ) {
 			return new WP_Error(
 				'cta_resource_too_large',
-				__( 'File exceeds the 20MB size limit. Please upload a smaller PDF, DOC, or DOCX file.', 'cta-lms' )
+				__( 'File exceeds the 25MB size limit. Please upload a smaller PDF, DOC, DOCX, or MP3 file.', 'cta-lms' )
 			);
 		}
 
@@ -1019,7 +1269,7 @@ class CTA_Course_Materials {
 		if ( ! in_array( $ext, self::allowed_extensions(), true ) ) {
 			return new WP_Error(
 				'cta_resource_invalid_type',
-				__( 'Only PDF, DOC, and DOCX files are allowed for course materials.', 'cta-lms' )
+				__( 'Only PDF, DOC, DOCX, and MP3 files are allowed for course materials.', 'cta-lms' )
 			);
 		}
 
@@ -1162,13 +1412,6 @@ class CTA_Course_Materials {
 		wp_die( esc_html__( 'File is unavailable.', 'cta-lms' ), 404 );
 	}
 
-	/**
-	 * Group resources for display (course-level vs per-module).
-	 *
-	 * @param array $resources Resource rows.
-	 * @param array $modules   Module rows (for titles).
-	 * @return array{course:array,modules:array<int,array>}
-	 */
 	/**
 	 * Strip admin/source/control package files from a student-facing resource list.
 	 *

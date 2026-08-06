@@ -127,10 +127,12 @@ class CTA_Quiz {
 			: ( class_exists( 'CTA_Certificates' ) && CTA_Certificates::user_completed_all_modules( $user_id, $course_id, $enrollment ) );
 
 		$is_exam_prep = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course );
+		$open_exam_prep = $is_exam_prep
+			&& class_exists( 'CTA_Exam_Access' )
+			&& ! CTA_Exam_Access::uses_assessment_gates( $course );
 
-		// All programs (including Exam Prep) unlock assessments only after modules are complete.
-		// Exam Prep skips the CE Capstone wording; the gate itself is module completion.
-		if ( ! $modules_done ) {
+		// CE and gated Exam Prep (AMFTRB) require modules first. Open Exam Prep (LPCC Access Correction) does not.
+		if ( ! $modules_done && ! $open_exam_prep ) {
 			return $this->render_message_state(
 				__( 'Complete All Modules First', 'cta-lms' ),
 				$is_exam_prep
@@ -1086,20 +1088,26 @@ class CTA_Quiz {
 		}
 
 		if ( $require_complete ) {
-			if ( class_exists( 'CTA_CE_Completion' ) ) {
-				CTA_CE_Completion::sync_progress( $user_id, $course_id, $enrollment );
-				$enrollment = CTA_Database::get_user_enrollment( $user_id, $course_id );
-				$seq        = CTA_CE_Completion::assert_can_access_exam( $user_id, $course_id );
-				if ( is_wp_error( $seq ) ) {
-					return $seq;
+			$skip_module_gate = class_exists( 'CTA_Exam_Access' )
+				&& CTA_Exam_Access::is_exam_prep( $course )
+				&& ! CTA_Exam_Access::uses_assessment_gates( $course );
+
+			if ( ! $skip_module_gate ) {
+				if ( class_exists( 'CTA_CE_Completion' ) ) {
+					CTA_CE_Completion::sync_progress( $user_id, $course_id, $enrollment );
+					$enrollment = CTA_Database::get_user_enrollment( $user_id, $course_id );
+					$seq        = CTA_CE_Completion::assert_can_access_exam( $user_id, $course_id );
+					if ( is_wp_error( $seq ) ) {
+						return $seq;
+					}
+				} elseif ( class_exists( 'CTA_Certificates' ) && ! CTA_Certificates::user_completed_all_modules( $user_id, $course_id, $enrollment ) ) {
+					return new WP_Error(
+						'incomplete',
+						__( 'Complete all instructional modules, including the Course Integration Capstone, before starting the final examination.', 'cta-lms' )
+					);
+				} elseif ( (int) $enrollment->progress < 100 ) {
+					return new WP_Error( 'incomplete', __( 'Complete all modules first.', 'cta-lms' ) );
 				}
-			} elseif ( class_exists( 'CTA_Certificates' ) && ! CTA_Certificates::user_completed_all_modules( $user_id, $course_id, $enrollment ) ) {
-				return new WP_Error(
-					'incomplete',
-					__( 'Complete all instructional modules, including the Course Integration Capstone, before starting the final examination.', 'cta-lms' )
-				);
-			} elseif ( (int) $enrollment->progress < 100 ) {
-				return new WP_Error( 'incomplete', __( 'Complete all modules first.', 'cta-lms' ) );
 			}
 		}
 

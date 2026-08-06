@@ -77,6 +77,11 @@ class CTA_Courses {
 
 		foreach ( $all_published as $course ) {
 			if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course ) ) {
+				// Checkout HOLD: hide programs still awaiting learner testing + written release approval.
+				if ( CTA_Exam_Access::launch_pending_testing( $course )
+					|| CTA_Exam_Access::commercial_terms_pending( $course ) ) {
+					continue;
+				}
 				$exam_courses[] = $course;
 			} else {
 				$ce_courses[] = $course;
@@ -178,6 +183,14 @@ class CTA_Courses {
 
 		if ( ! $course || 'published' !== $course->status ) {
 			return '<div class="cta-empty-state"><p>' . esc_html__( 'Course not found.', 'cta-lms' ) . '</p></div>';
+		}
+
+		// Exam Prep on launch HOLD: not publicly purchasable (direct URL still readable only for admins).
+		if ( class_exists( 'CTA_Exam_Access' )
+			&& CTA_Exam_Access::is_exam_prep( $course )
+			&& CTA_Exam_Access::launch_pending_testing( $course )
+			&& ! current_user_can( 'manage_options' ) ) {
+			return '<div class="cta-empty-state"><p>' . esc_html__( 'This Exam Preparation program is not available for purchase yet.', 'cta-lms' ) . '</p></div>';
 		}
 
 		$modules     = CTA_Database::get_course_modules( $course_id );

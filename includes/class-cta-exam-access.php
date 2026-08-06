@@ -415,7 +415,7 @@ class CTA_Exam_Access {
 			array(
 				'title'                  => 'CTA LMFT AMFTRB National Exam Preparation Program',
 				'slug'                   => 'lmft-amftrb-national-exam-preparation',
-				'description'            => '<p>Complete self-paced preparation for the AMFTRB National MFT examination. Includes instructional modules, practice materials, and Form A / Form B comprehensive simulations with controlled answer rationales released after each form is submitted. Access is valid for 6 months from purchase. Exam Preparation Only — No CE Credit. This program does not award CE hours or a CE certificate. CTA is not affiliated with or endorsed by AMFTRB.</p>',
+				'description'            => '<p>Complete self-paced preparation for the AMFTRB National MFT examination. Includes 12 workbooks, 12 practice banks, three cumulative checkpoints, Form A / Form B 180-question simulations with controlled rationales, remediation tools, and 12 recorded audio-review tracks with an authoritative transcript. Access is valid for 6 months from purchase. Exam Preparation Only — No CE Credit. This program does not award CE hours or a CE certificate. CTA is not affiliated with or endorsed by AMFTRB.</p>',
 				'price'                  => 329.00,
 				'category'               => 'Exam Preparation',
 				'status'                 => 'draft',
@@ -460,7 +460,7 @@ class CTA_Exam_Access {
 			array(
 				'title'                  => 'CTA LPCC NCMHCE Exam Preparation Program',
 				'slug'                   => 'lpcc-ncmhce-exam-preparation',
-				'description'            => '<p>Complete self-paced preparation for the NCMHCE for LPCC candidates. Includes 12 workbooks, paired practice banks, three cumulative checkpoints, Form A and Form B simulations (143 questions each) with controlled rationales, a Form A remediation workbook, flashcards, quick references, and study schedules. Access is valid for 6 months from purchase. Exam Preparation Only — No CE Credit.</p>',
+				'description'            => '<p>Complete self-paced preparation for the NCMHCE for LPCC candidates. Includes 12 workbooks, paired practice banks, three cumulative checkpoints, Form A and Form B simulations (143 questions each) with answer rationales, a Form A remediation workbook, eight audio-review tracks, flashcards, quick references, and study schedules. All learner materials are available from enrollment. Access is valid for 6 months from purchase. Exam Preparation Only — No CE Credit.</p>',
 				'price'                  => 249.00,
 				'category'               => 'Exam Preparation',
 				'status'                 => 'draft',
@@ -740,6 +740,24 @@ class CTA_Exam_Access {
 
 		return ! empty( $meta['launch_pending_testing'] )
 			|| ( isset( $meta['launch_status'] ) && 'draft_pending_testing' === $meta['launch_status'] );
+	}
+
+	/**
+	 * Whether this Exam Prep program enforces assessment/rationale download gates.
+	 *
+	 * AMFTRB National follows its David handoff gates. LPCC Access Correction and
+	 * other Exam Prep products keep learner materials open on enrollment.
+	 *
+	 * @param object|null $course Course row.
+	 * @return bool
+	 */
+	public static function uses_assessment_gates( $course ) {
+		if ( ! $course || ! self::is_exam_prep( $course ) ) {
+			return false;
+		}
+
+		$slug = isset( $course->slug ) ? (string) $course->slug : '';
+		return ( 'lmft-amftrb-national-exam-preparation' === $slug );
 	}
 }
 
