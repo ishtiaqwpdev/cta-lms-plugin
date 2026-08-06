@@ -23,12 +23,16 @@ if ( ! class_exists( 'CTA_Lmft_Amftrb_Sync' ) ) {
 
 class CTA_Lmft_Amftrb_Sync {
 
-	const SEED_OPTION   = 'cta_lmft_amftrb_seeded_1_0_146';
+	const SEED_OPTION   = 'cta_lmft_amftrb_seeded_1_0_154';
 	const SLUG          = 'lmft-amftrb-national-exam-preparation';
 	const TITLE         = 'CTA LMFT AMFTRB National Exam Preparation Program';
 	const PUBLIC_TITLE  = 'LMFT AMFTRB National Exam Preparation';
 	const PRICE         = 329.00;
 	const ACCESS_MONTHS = 6;
+	const CLASSIFICATION = 'Exam Preparation Program | No CE Credit';
+	/** Authoritative combined runtime from Audio LMS Staging handoff (12 tracks). */
+	const COMBINED_AUDIO_RUNTIME = '1:15:26.811';
+	const AUDIO_TRACK_COUNT      = 12;
 	const MATERIALS_REL = 'assets/course-materials/lmft-amftrb/';
 	const TRANSCRIPT_TITLE = 'Authoritative Audio Transcript v1.1 (Tracks 1–12)';
 
@@ -237,7 +241,7 @@ class CTA_Lmft_Amftrb_Sync {
 
 	/**
 	 * Attach all student materials (workbooks, audio, banks, checkpoints, simulations, study tools).
-	 * Idempotent by friendly title. Practice-bank, checkpoint, and Form answer keys gated via unlock_after_quiz_type.
+	 * Idempotent by friendly title. Access Correction Notice: no unlock_after_quiz_type gates on Exam Prep materials.
 	 *
 	 * @param int $course_id Course ID.
 	 * @return array{attached:int,updated:int,skipped:int,missing:array}
@@ -283,9 +287,8 @@ class CTA_Lmft_Amftrb_Sync {
 			$source      = CTA_PLUGIN_DIR . self::MATERIALS_REL . $rel;
 			$module_id   = 0;
 			$is_practice = ! empty( $item['is_practice_test'] ) ? 1 : 0;
-			$unlock      = isset( $item['unlock_after_quiz_type'] )
-				? sanitize_text_field( (string) $item['unlock_after_quiz_type'] )
-				: '';
+			// Access Correction Notice: never persist material unlock gates for Exam Prep.
+			$unlock      = '';
 
 			if ( class_exists( 'CTA_Course_Materials' )
 				&& CTA_Course_Materials::is_admin_restricted_source_path( $source . ' ' . $rel ) ) {
@@ -502,7 +505,7 @@ class CTA_Lmft_Amftrb_Sync {
 <li>Three cumulative checkpoints: 45 questions after Workbook 4, 60 questions after Workbook 8, and 90 questions after Workbook 12</li>
 <li>Comprehensive Simulation Form A — 180 questions / 240 minutes, with controlled rationales, domain report, and required remediation</li>
 <li>Comprehensive Simulation Form B — 180 questions / 240 minutes, with controlled rationales, domain report, and final readiness gate</li>
-<li>12 recorded audio review tracks (one aligned to each workbook; combined runtime approximately 1 hour 15 minutes) with an accessible authoritative transcript</li>
+<li>12 recorded audio review tracks (one aligned to each workbook; combined runtime 1:15:26.811) with an accessible authoritative transcript</li>
 <li>Start Here roadmap with 10-, 14-, and 18-week schedules, baseline inventory, progress tracker, and error log</li>
 <li>Twelve quick-reference sheets and a 120-card flashcard study collection</li>
 <li>California transition and candidate-routing companion (maintained separately from the national core)</li>
@@ -510,7 +513,7 @@ class CTA_Lmft_Amftrb_Sync {
 <p><strong>Publication hold.</strong> This program remains in draft until price, access, catalog, website, LMS, learner testing, and Founder/CEO release approval are complete. Checkout is held while launch_pending_testing is set.</p>
 <h3>Important Notices</h3>
 <ul>
-<li><strong>Exam Preparation Only — No CE Credit.</strong> This program does not award continuing education hours or a CE certificate.</li>
+<li><strong>Exam Preparation Program | No CE Credit.</strong> This program does not award continuing education hours or a CE certificate.</li>
 <li><strong>No guarantee.</strong> Completion, CTA practice scores, and readiness decisions do not guarantee an official examination result, licensure, eligibility, or board acceptance.</li>
 <li><strong>No affiliation.</strong> Clinical Training and Supervision Academy is not affiliated with, endorsed by, or sponsored by AMFTRB, PTC, Prometric, AAMFT, or any licensing board. CTA materials are original educational resources and do not reproduce live or official examination questions.</li>
 <li>This is a separate national AMFTRB product. It must not be used as though it carries California BBS clinical-exam timing, domains, or legal framing. California Law and Ethics preparation is a separate product.</li>
@@ -544,21 +547,24 @@ class CTA_Lmft_Amftrb_Sync {
 	private static function get_syllabus_meta() {
 		return array(
 			'public_title'           => self::PUBLIC_TITLE,
-			'short_description'      => 'Twelve LMFT AMFTRB workbooks, twelve 17-question banks, three cumulative checkpoints, Form A and Form B 180-question / 240-minute simulations, 12 audio reviews with transcript, flashcards, quick references, and study schedules. Exam Preparation Only — No CE Credit.',
-			'course_classification'  => 'Exam Preparation Only — No CE Credit',
+			'short_description'      => 'Twelve LMFT AMFTRB workbooks, twelve 17-question banks, three cumulative checkpoints, Form A and Form B 180-question / 240-minute simulations, 12 audio reviews (combined runtime 1:15:26.811) with transcript, flashcards, quick references, and study schedules. Exam Preparation Program | No CE Credit.',
+			'course_classification'  => self::CLASSIFICATION,
 			'instructional_method'   => 'Self-paced asynchronous online program with printable resources and recorded audio reviews',
 			'target_audience'        => 'LMFT/MFT candidates preparing for the AMFTRB National Examination',
 			'seo_title'              => 'LMFT AMFTRB National Exam Prep | CTA',
-			'meta_description'       => 'Prepare for the AMFTRB National MFT exam with 12 workbooks, 204 practice questions, three checkpoints, two 180-question simulations, and 12 audio reviews. Exam preparation only — no CE credit.',
+			'meta_description'       => 'Prepare for the AMFTRB National MFT exam with 12 workbooks, 204 practice questions, three checkpoints, two 180-question simulations, and 12 audio reviews (combined runtime 1:15:26.811). Exam Preparation Program | No CE Credit.',
 			'image_alt'              => 'Clinical Training and Supervision Academy LMFT AMFTRB National Exam Preparation graphic',
 			'primary_cta'            => 'Begin Your National Exam Preparation',
-			'page_badge'             => 'Exam Preparation Only — No CE Credit • Draft Pending Testing',
-			'educational_notice'     => 'Exam Preparation Only — No CE Credit. This program does not award CE hours or a CE certificate. CTA is not affiliated with, endorsed by, or sponsored by AMFTRB, PTC, Prometric, AAMFT, or any licensing board. Completion does not guarantee examination passage or determine eligibility. This is not a California BBS Clinical exam product.',
+			'page_badge'             => self::CLASSIFICATION . ' • Draft Pending Testing',
+			'educational_notice'     => self::CLASSIFICATION . '. This program does not award CE hours or a CE certificate. CTA is not affiliated with, endorsed by, or sponsored by AMFTRB, PTC, Prometric, AAMFT, or any licensing board. Completion does not guarantee examination passage or determine eligibility. This is not a California BBS Clinical exam product.',
 			'launch_status'          => 'draft_pending_testing',
 			'launch_pending_testing' => true,
 			'development_draft'      => true,
-			'audio_tracks'           => 12,
+			'audio_tracks'           => self::AUDIO_TRACK_COUNT,
+			'audio_combined_runtime' => self::COMBINED_AUDIO_RUNTIME,
 			'exam_mechanics'         => '180 items | 240 minutes | six domains',
+			'offer_price'            => self::PRICE,
+			'offer_access_months'    => self::ACCESS_MONTHS,
 		);
 	}
 
@@ -821,10 +827,9 @@ class CTA_Lmft_Amftrb_Sync {
 				'is_practice_test' => 1,
 			);
 			$items[] = array(
-				'file'                   => $rationales[ $n ],
-				'title'                  => 'Workbook ' . $n . ' — Answer Key and Detailed Rationales',
-				'workbook_num'           => $n,
-				'unlock_after_quiz_type' => 'wb' . $n . '_bank',
+				'file'         => $rationales[ $n ],
+				'title'        => 'Workbook ' . $n . ' — Answer Key and Detailed Rationales',
+				'workbook_num' => $n,
 			);
 
 			// Checkpoint 1 after Workbook 4.
@@ -836,10 +841,9 @@ class CTA_Lmft_Amftrb_Sync {
 					'is_practice_test' => 1,
 				);
 				$items[] = array(
-					'file'                   => 'rationales/CTA_LMFT_AMFTRB_Checkpoint_1_45_Question_Answer_Key_and_Detailed_Rationales_v1.0.docx',
-					'title'                  => 'Checkpoint 1 — Answer Key and Detailed Rationales',
-					'workbook_num'           => 4,
-					'unlock_after_quiz_type' => 'checkpoint_1',
+					'file'         => 'rationales/CTA_LMFT_AMFTRB_Checkpoint_1_45_Question_Answer_Key_and_Detailed_Rationales_v1.0.docx',
+					'title'        => 'Checkpoint 1 — Answer Key and Detailed Rationales',
+					'workbook_num' => 4,
 				);
 			}
 
@@ -852,22 +856,19 @@ class CTA_Lmft_Amftrb_Sync {
 					'is_practice_test' => 1,
 				);
 				$items[] = array(
-					'file'                   => 'rationales/CTA_LMFT_AMFTRB_Checkpoint_2_60_Question_Controlled_Answer_Key_and_Detailed_Rationales_v1.0.docx',
-					'title'                  => 'Checkpoint 2 — Controlled Answer Key and Detailed Rationales',
-					'workbook_num'           => 8,
-					'unlock_after_quiz_type' => 'checkpoint_2',
+					'file'         => 'rationales/CTA_LMFT_AMFTRB_Checkpoint_2_60_Question_Controlled_Answer_Key_and_Detailed_Rationales_v1.0.docx',
+					'title'        => 'Checkpoint 2 — Controlled Answer Key and Detailed Rationales',
+					'workbook_num' => 8,
 				);
 				$items[] = array(
-					'file'                   => 'remediation/CTA_LMFT_AMFTRB_Checkpoint_2_Domain_Performance_Report_v1.0.docx',
-					'title'                  => 'Checkpoint 2 — Domain Performance Report',
-					'workbook_num'           => 8,
-					'unlock_after_quiz_type' => 'checkpoint_2',
+					'file'         => 'remediation/CTA_LMFT_AMFTRB_Checkpoint_2_Domain_Performance_Report_v1.0.docx',
+					'title'        => 'Checkpoint 2 — Domain Performance Report',
+					'workbook_num' => 8,
 				);
 				$items[] = array(
-					'file'                   => 'remediation/CTA_LMFT_AMFTRB_Checkpoint_2_Required_Remediation_Workbook_and_Workbook_9_Progression_Gate_v1.0.docx',
-					'title'                  => 'Checkpoint 2 — Required Remediation Workbook and Workbook 9 Progression Gate',
-					'workbook_num'           => 8,
-					'unlock_after_quiz_type' => 'checkpoint_2',
+					'file'         => 'remediation/CTA_LMFT_AMFTRB_Checkpoint_2_Required_Remediation_Workbook_and_Workbook_9_Progression_Gate_v1.0.docx',
+					'title'        => 'Checkpoint 2 — Remediation Workbook (recommended before Workbook 9)',
+					'workbook_num' => 8,
 				);
 			}
 
@@ -880,58 +881,49 @@ class CTA_Lmft_Amftrb_Sync {
 					'is_practice_test' => 1,
 				);
 				$items[] = array(
-					'file'                   => 'rationales/CTA_LMFT_AMFTRB_Checkpoint_3_Controlled_Answer_Key_and_Detailed_Rationales_v1.0.docx',
-					'title'                  => 'Checkpoint 3 — Controlled Answer Key and Detailed Rationales',
-					'workbook_num'           => 12,
-					'unlock_after_quiz_type' => 'checkpoint_3',
+					'file'         => 'rationales/CTA_LMFT_AMFTRB_Checkpoint_3_Controlled_Answer_Key_and_Detailed_Rationales_v1.0.docx',
+					'title'        => 'Checkpoint 3 — Controlled Answer Key and Detailed Rationales',
+					'workbook_num' => 12,
 				);
 			}
 		}
 
-		// Form A — unlock after modules complete; rationales/rem after form_a.
+		// Form A — open from enrollment (Access Correction Notice).
 		$items[] = array(
-			'file'                   => 'question-banks/CTA_LMFT_AMFTRB_Simulation_Form_A_180_Question_Candidate_Assessment_v1.0.docx',
-			'title'                  => 'Form A — 180-Question Comprehensive Simulation (Candidate Assessment)',
-			'is_practice_test'       => 1,
-			'unlock_after_quiz_type' => 'modules_complete',
+			'file'             => 'question-banks/CTA_LMFT_AMFTRB_Simulation_Form_A_180_Question_Candidate_Assessment_v1.0.docx',
+			'title'            => 'Form A — 180-Question Comprehensive Simulation (Candidate Assessment)',
+			'is_practice_test' => 1,
 		);
 		$items[] = array(
-			'file'                   => 'rationales/CTA_LMFT_AMFTRB_Simulation_Form_A_180_Question_Controlled_Answer_Key_and_Detailed_Rationales_v1.0.docx',
-			'title'                  => 'Form A — Controlled Answer Key and Detailed Rationales',
-			'unlock_after_quiz_type' => 'form_a',
+			'file'  => 'rationales/CTA_LMFT_AMFTRB_Simulation_Form_A_180_Question_Controlled_Answer_Key_and_Detailed_Rationales_v1.0.docx',
+			'title' => 'Form A — Controlled Answer Key and Detailed Rationales',
 		);
 		$items[] = array(
-			'file'                   => 'remediation/CTA_LMFT_AMFTRB_Simulation_Form_A_Domain_Performance_Report_v1.0.docx',
-			'title'                  => 'Form A — Domain Performance Report',
-			'unlock_after_quiz_type' => 'form_a',
+			'file'  => 'remediation/CTA_LMFT_AMFTRB_Simulation_Form_A_Domain_Performance_Report_v1.0.docx',
+			'title' => 'Form A — Domain Performance Report',
 		);
 		$items[] = array(
-			'file'                   => 'remediation/CTA_LMFT_AMFTRB_Simulation_Form_A_Required_Remediation_Workbook_v1.0.docx',
-			'title'                  => 'Form A — Required Remediation Workbook',
-			'unlock_after_quiz_type' => 'form_a',
+			'file'  => 'remediation/CTA_LMFT_AMFTRB_Simulation_Form_A_Required_Remediation_Workbook_v1.0.docx',
+			'title' => 'Form A — Remediation Workbook (recommended before Form B)',
 		);
 
-		// Form B — unlock when form_b_ready; rationales/rem after form_b.
+		// Form B — open from enrollment; remediation before Form B is advisory only.
 		$items[] = array(
-			'file'                   => 'question-banks/CTA_LMFT_AMFTRB_Simulation_Form_B_180_Question_Candidate_Assessment_v1.0.docx',
-			'title'                  => 'Form B — 180-Question Comprehensive Simulation (Candidate Assessment)',
-			'is_practice_test'       => 1,
-			'unlock_after_quiz_type' => 'form_b_ready',
+			'file'             => 'question-banks/CTA_LMFT_AMFTRB_Simulation_Form_B_180_Question_Candidate_Assessment_v1.0.docx',
+			'title'            => 'Form B — 180-Question Comprehensive Simulation (Candidate Assessment)',
+			'is_practice_test' => 1,
 		);
 		$items[] = array(
-			'file'                   => 'rationales/CTA_LMFT_AMFTRB_Simulation_Form_B_180_Question_Controlled_Answer_Key_and_Detailed_Rationales_v1.0.docx',
-			'title'                  => 'Form B — Controlled Answer Key and Detailed Rationales',
-			'unlock_after_quiz_type' => 'form_b',
+			'file'  => 'rationales/CTA_LMFT_AMFTRB_Simulation_Form_B_180_Question_Controlled_Answer_Key_and_Detailed_Rationales_v1.0.docx',
+			'title' => 'Form B — Controlled Answer Key and Detailed Rationales',
 		);
 		$items[] = array(
-			'file'                   => 'remediation/CTA_LMFT_AMFTRB_Simulation_Form_B_Domain_Performance_Report_v1.0.docx',
-			'title'                  => 'Form B — Domain Performance Report',
-			'unlock_after_quiz_type' => 'form_b',
+			'file'  => 'remediation/CTA_LMFT_AMFTRB_Simulation_Form_B_Domain_Performance_Report_v1.0.docx',
+			'title' => 'Form B — Domain Performance Report',
 		);
 		$items[] = array(
-			'file'                   => 'remediation/CTA_LMFT_AMFTRB_Simulation_Form_B_Required_Remediation_Workbook_and_Final_Readiness_Gate_v1.0.docx',
-			'title'                  => 'Form B — Required Remediation Workbook and Final Readiness Gate',
-			'unlock_after_quiz_type' => 'form_b',
+			'file'  => 'remediation/CTA_LMFT_AMFTRB_Simulation_Form_B_Required_Remediation_Workbook_and_Final_Readiness_Gate_v1.0.docx',
+			'title' => 'Form B — Remediation Workbook (recommended final readiness review)',
 		);
 
 		// Course-level study tools, Start Here, California companion, and transcript (workbook_num 0 / omitted).

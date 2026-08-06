@@ -696,6 +696,16 @@
   font-variant-numeric: tabular-nums;
 }
 
+.cta-materials-advisory {
+  margin: 0 0 1rem;
+  padding: 0.75rem 1rem;
+  border-left: 3px solid #3266a9;
+  background: #f3f6fb;
+  color: #1f2937;
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
 .cta-audio-transcript {
   margin: 0.5rem 0 0;
 }

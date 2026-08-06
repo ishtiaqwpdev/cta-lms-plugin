@@ -127,11 +127,10 @@ class CTA_Quiz {
 			: ( class_exists( 'CTA_Certificates' ) && CTA_Certificates::user_completed_all_modules( $user_id, $course_id, $enrollment ) );
 
 		$is_exam_prep = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course );
-		$open_exam_prep = $is_exam_prep
-			&& class_exists( 'CTA_Exam_Access' )
-			&& ! CTA_Exam_Access::uses_assessment_gates( $course );
+		// Access Correction Notice: all Exam Prep assessments are open from enrollment.
+		$open_exam_prep = $is_exam_prep;
 
-		// CE and gated Exam Prep (AMFTRB) require modules first. Open Exam Prep (LPCC Access Correction) does not.
+		// CE requires modules first. Exam Prep does not.
 		if ( ! $modules_done && ! $open_exam_prep ) {
 			return $this->render_message_state(
 				__( 'Complete All Modules First', 'cta-lms' ),

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>LPCC Audio Playback Harness (LMS-parity)</title>
+	<style>
+		:root { --bg:#f7f4ef; --ink:#1a1a1a; --line:#d6d0c4; --ok:#166534; --fail:#991b1b; --warn:#92400e; }
+		* { box-sizing: border-box; }
+		body { margin: 0; font-family: Georgia, "Times New Roman", serif; background: var(--bg); color: var(--ink); }
+		header { padding: 1rem 1.25rem; border-bottom: 1px solid var(--line); background: #fff; }
+		h1 { margin: 0 0 .35rem; font-size: 1.25rem; }
+		p { margin: 0; font-size: .95rem; line-height: 1.4; }
+		.toolbar { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .75rem; }
+		button { font: inherit; padding: .45rem .75rem; border: 1px solid var(--line); background: #fff; cursor: pointer; }
+		button.primary { background: #1e3a5f; color: #fff; border-color: #1e3a5f; }
+		main { padding: 1rem 1.25rem 2rem; max-width: 42rem; margin: 0 auto; }
+		.track { border: 1px solid var(--line); background: #fff; padding: .85rem 1rem; margin: 0 0 .75rem; }
+		.track h2 { margin: 0 0 .25rem; font-size: 1rem; font-weight: 600; }
+		.meta { font-size: .85rem; color: #444; margin-bottom: .5rem; }
+		/* Mirror LMS player sizing from assets/css/components.css */
+		.cta-audio-player { display: block; width: 100%; max-width: 28rem; margin-top: .35rem; height: 2.25rem; }
+		.log { margin-top: 1rem; padding: 1rem; background: #111; color: #e5e7eb; font-family: Consolas, monospace; font-size: .78rem; white-space: pre-wrap; max-height: 28rem; overflow: auto; }
+		.pass { color: #86efac; }
+		.fail { color: #fca5a5; }
+		.warn { color: #fcd34d; }
+		@media (max-width: 480px) {
+			main { padding: .75rem; }
+			.cta-audio-player { max-width: 100%; }
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<h1>LPCC NCMHCE — 8-track playback harness</h1>
+		<p>Same markup pattern as LMS: native <code>&lt;audio controls&gt;</code> with package MP3s. Automated checks cover play/pause, seek, volume, order, and end-of-file reachability. Viewport: <strong id="vp"></strong></p>
+		<div class="toolbar">
+			<button class="primary" id="runAll" type="button">Run automated suite</button>
+			<button id="stopAll" type="button">Stop all</button>
+		</div>
+	</header>
+	<main id="list"></main>
+	<pre class="log" id="log"></pre>
+	<script>
+	const TRACKS = [
+		{ n:1, title:'NCMHCE Case Reasoning: Sections, Qualifiers, and Evidence', runtime:'3:58', file:'../assets/course-materials/lpcc-ncmhce/audio/CTA_LPCC_Audio_Track_01_NCMHCE_Case_Reasoning_Sections_Qualifiers_and_Evidence_v1.0.mp3' },
+		{ n:2, title:'Professional Identity, Intake, Assessment, and Differential Reasoning', runtime:'10:37', file:'../assets/course-materials/lpcc-ncmhce/audio/CTA_LPCC_Audio_Track_02_Professional_Identity_Intake_Assessment_and_Differential_Reasoning_v1.0.mp3' },
+		{ n:3, title:'Crisis, Trauma, Abuse, Violence, and Level-of-Care Sequencing', runtime:'4:13', file:'../assets/course-materials/lpcc-ncmhce/audio/CTA_LPCC_Audio_Track_03_Crisis_Trauma_Abuse_Violence_and_Level_of_Care_Sequencing_v1.0.mp3' },
+		{ n:4, title:'Conceptualization, Planning, Measurement, Progress, and Termination', runtime:'4:05', file:'../assets/course-materials/lpcc-ncmhce/audio/CTA_LPCC_Audio_Track_04_Conceptualization_Planning_Measurement_Progress_and_Termination_v1.0.mp3' },
+		{ n:5, title:'Counseling Theories, Therapeutic Alliance, and Core Skills', runtime:'4:09', file:'../assets/course-materials/lpcc-ncmhce/audio/CTA_LPCC_Audio_Track_05_Counseling_Theories_Therapeutic_Alliance_and_Core_Skills_v1.0.mp3' },
+		{ n:6, title:'Evidence-Informed Interventions and Context-Responsive Care', runtime:'7:30', file:'../assets/course-materials/lpcc-ncmhce/audio/CTA_LPCC_Audio_Track_06_Evidence_Informed_Interventions_and_Context_Responsive_Care_v1.0.mp3' },
+		{ n:7, title:'Modality, Referral, Collaboration, and California Professional Practice', runtime:'7:26', file:'../assets/course-materials/lpcc-ncmhce/audio/CTA_LPCC_Audio_Track_07_Modality_Referral_Collaboration_and_California_Professional_Practice_v1.0.mp3' },
+		{ n:8, title:'Integrated Review, Error Repair, and Form A/Form B Readiness', runtime:'6:47', file:'../assets/course-materials/lpcc-ncmhce/audio/CTA_LPCC_Audio_Track_08_Integrated_Review_Error_Repair_and_Form_A_Form_B_Readiness_v1.0.mp3' }
+	];
+
+	const list = document.getElementById('list');
+	const logEl = document.getElementById('log');
+	const vpEl = document.getElementById('vp');
+	const results = [];
+
+	function log(msg, cls) {
+		const line = document.createElement('div');
+		if (cls) line.className = cls;
+		line.textContent = msg;
+		logEl.appendChild(line);
+		logEl.scrollTop = logEl.scrollHeight;
+	}
+
+	function updateVp() {
+		vpEl.textContent = window.innerWidth + '×' + window.innerHeight + (window.innerWidth <= 480 ? ' (mobile)' : window.innerWidth <= 900 ? ' (tablet)' : ' (desktop)');
+	}
+	updateVp();
+	window.addEventListener('resize', updateVp);
+
+	TRACKS.forEach((t) => {
+		const wrap = document.createElement('article');
+		wrap.className = 'track';
+		wrap.dataset.n = String(t.n);
+		wrap.innerHTML = `<h2>${t.n}. ${t.title}</h2><div class="meta">Runtime: ${t.runtime}</div>`;
+		const audio = document.createElement('audio');
+		audio.className = 'cta-audio-player';
+		audio.controls = true;
+		audio.preload = 'metadata';
+		audio.src = t.file;
+		audio.dataset.n = String(t.n);
+		wrap.appendChild(audio);
+		list.appendChild(wrap);
+	});
+
+	function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
+
+	async function waitEvent(el, name, timeoutMs) {
+		return new Promise((resolve, reject) => {
+			const to = setTimeout(() => {
+				el.removeEventListener(name, on);
+				reject(new Error(name + ' timeout'));
+			}, timeoutMs);
+			function on(ev) {
+				clearTimeout(to);
+				el.removeEventListener(name, on);
+				resolve(ev);
+			}
+			el.addEventListener(name, on);
+		});
+	}
+
+	async function testTrack(audio, t, viewportLabel) {
+		const prefix = `[${viewportLabel}] T${t.n}`;
+		const row = { track: t.n, viewport: viewportLabel, playPause: 'FAIL', seek: 'FAIL', volume: 'FAIL', uninterrupted: 'FAIL', titleOrder: 'PASS', notes: [] };
+
+		try {
+			audio.pause();
+			audio.currentTime = 0;
+			audio.muted = true; // autoplay policies
+			await audio.play();
+			await sleep(350);
+			if (audio.paused) throw new Error('did not start');
+			audio.pause();
+			await sleep(150);
+			if (!audio.paused) throw new Error('did not stop');
+			row.playPause = 'PASS';
+			log(`${prefix} play/pause PASS`, 'pass');
+		} catch (e) {
+			row.notes.push('playPause: ' + e.message);
+			log(`${prefix} play/pause FAIL: ${e.message}`, 'fail');
+		}
+
+		try {
+			if (!isFinite(audio.duration) || audio.duration < 5) {
+				await waitEvent(audio, 'loadedmetadata', 8000);
+			}
+			// Wait until the media reports a seekable range (requires HTTP Range).
+			for (let i = 0; i < 40; i++) {
+				if (audio.seekable.length && audio.seekable.end(0) > 1) break;
+				await sleep(100);
+			}
+			if (!audio.seekable.length || audio.seekable.end(0) <= 1) {
+				throw new Error('media not seekable (missing HTTP Range support)');
+			}
+			const mid = Math.min(Math.max(audio.duration * 0.4, 2), audio.duration - 2);
+			const seeked = waitEvent(audio, 'seeked', 8000);
+			audio.currentTime = mid;
+			await seeked;
+			if (Math.abs(audio.currentTime - mid) > 1.25) throw new Error(`seek landed at ${audio.currentTime.toFixed(2)} want ~${mid.toFixed(2)}`);
+			row.seek = 'PASS';
+			log(`${prefix} seek PASS (→${audio.currentTime.toFixed(1)}s / ${audio.duration.toFixed(1)}s)`, 'pass');
+		} catch (e) {
+			row.notes.push('seek: ' + e.message);
+			log(`${prefix} seek FAIL: ${e.message}`, 'fail');
+		}
+
+		try {
+			audio.muted = false;
+			audio.volume = 0.35;
+			if (Math.abs(audio.volume - 0.35) > 0.01) throw new Error('volume not applied');
+			audio.volume = 0.7;
+			if (Math.abs(audio.volume - 0.7) > 0.01) throw new Error('volume change failed');
+			row.volume = 'PASS';
+			log(`${prefix} volume PASS`, 'pass');
+		} catch (e) {
+			row.notes.push('volume: ' + e.message);
+			log(`${prefix} volume FAIL: ${e.message}`, 'fail');
+		}
+
+		try {
+			if (!isFinite(audio.duration) || audio.duration < 5) {
+				await waitEvent(audio, 'loadedmetadata', 8000);
+			}
+			const nearEnd = Math.max(audio.duration - 1.5, 0);
+			const seeked = waitEvent(audio, 'seeked', 8000);
+			audio.currentTime = nearEnd;
+			await seeked;
+			audio.muted = true;
+			await audio.play();
+			await waitEvent(audio, 'ended', 12000);
+			row.uninterrupted = 'PASS';
+			log(`${prefix} complete-file reachability PASS (ended @ ${audio.duration.toFixed(1)}s)`, 'pass');
+		} catch (e) {
+			row.notes.push('uninterrupted: ' + e.message);
+			log(`${prefix} complete-file FAIL: ${e.message}`, 'fail');
+		}
+
+		audio.pause();
+		audio.currentTime = 0;
+		results.push(row);
+		return row;
+	}
+
+	function titleOrderOk() {
+		const titles = [...document.querySelectorAll('.track h2')].map((h) => h.textContent.trim());
+		for (let i = 0; i < TRACKS.length; i++) {
+			const want = `${TRACKS[i].n}. ${TRACKS[i].title}`;
+			if (titles[i] !== want) return false;
+		}
+		return true;
+	}
+
+	document.getElementById('runAll').addEventListener('click', async () => {
+		logEl.textContent = '';
+		results.length = 0;
+		const viewportLabel = window.innerWidth <= 480 ? 'mobile' : 'desktop';
+		log(`Viewport ${window.innerWidth}×${window.innerHeight} → suite label: ${viewportLabel}`);
+		log(`Title order: ${titleOrderOk() ? 'PASS' : 'FAIL'}`, titleOrderOk() ? 'pass' : 'fail');
+
+		const audios = [...document.querySelectorAll('audio.cta-audio-player')];
+		for (let i = 0; i < TRACKS.length; i++) {
+			await testTrack(audios[i], TRACKS[i], viewportLabel);
+		}
+
+		const orderPass = titleOrderOk();
+		results.forEach((r) => { r.titleOrder = orderPass ? 'PASS' : 'FAIL'; });
+
+		const summary = {
+			viewport: viewportLabel,
+			width: window.innerWidth,
+			height: window.innerHeight,
+			titleOrder: orderPass ? 'PASS' : 'FAIL',
+			tracks: results,
+			allPass: results.every((r) => r.playPause === 'PASS' && r.seek === 'PASS' && r.volume === 'PASS' && r.uninterrupted === 'PASS') && orderPass
+		};
+		window.__LPCC_AUDIO_RESULTS__ = summary;
+		log(JSON.stringify(summary, null, 2), summary.allPass ? 'pass' : 'fail');
+		log(summary.allPass ? 'SUITE PASS' : 'SUITE HAS FAILURES', summary.allPass ? 'pass' : 'fail');
+	});
+
+	document.getElementById('stopAll').addEventListener('click', () => {
+		document.querySelectorAll('audio').forEach((a) => { a.pause(); });
+	});
+
+	// Expose for CDP automation
+	window.__runLpccAudioSuite = async function() {
+		document.getElementById('runAll').click();
+		for (let i = 0; i < 120; i++) {
+			await sleep(500);
+			if (window.__LPCC_AUDIO_RESULTS__) return window.__LPCC_AUDIO_RESULTS__;
+		}
+		throw new Error('suite timeout');
+	};
+	</script>
+</body>
+</html>

@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.148' );
+	define( 'CTA_VERSION', '1.0.154' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -782,6 +782,53 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				}
 				if ( class_exists( 'CTA_Course_Catalog' ) ) {
 					CTA_Course_Catalog::unpublish_all_exam_prep_pending_launch();
+				}
+			}
+
+			// AMFTRB: sync approved offer controls (classification + exact combined audio runtime).
+			if ( version_compare( $installed, '1.0.149', '<' ) ) {
+				if ( class_exists( 'CTA_Lmft_Amftrb_Sync' ) ) {
+					CTA_Lmft_Amftrb_Sync::sync( true );
+				}
+			}
+
+			// LPCC: re-sync 8 audio tracks (exact titles/runtimes, open from enrollment).
+			if ( version_compare( $installed, '1.0.150', '<' ) ) {
+				if ( class_exists( 'CTA_Lpcc_Ncmhce_Sync' ) ) {
+					CTA_Lpcc_Ncmhce_Sync::sync( true );
+				}
+			}
+
+			// LPCC: authoritative combined audio runtime (48 minutes 49 seconds).
+			if ( version_compare( $installed, '1.0.151', '<' ) ) {
+				if ( class_exists( 'CTA_Lpcc_Ncmhce_Sync' ) ) {
+					CTA_Lpcc_Ncmhce_Sync::sync( true );
+				}
+			}
+
+			// LPCC: approve public description audio advertising after Prompt 11 test PASS.
+			if ( version_compare( $installed, '1.0.153', '<' ) ) {
+				if ( class_exists( 'CTA_Lpcc_Ncmhce_Sync' ) ) {
+					CTA_Lpcc_Ncmhce_Sync::sync( true );
+				}
+			}
+
+			// Access Correction Notice: clear Exam Prep material unlock gates programwide.
+			if ( version_compare( $installed, '1.0.154', '<' ) ) {
+				if ( class_exists( 'CTA_Exam_Access' ) ) {
+					CTA_Exam_Access::clear_all_exam_prep_material_unlock_gates();
+				}
+				if ( class_exists( 'CTA_Lpcc_Ncmhce_Sync' ) ) {
+					CTA_Lpcc_Ncmhce_Sync::sync( true );
+				}
+				if ( class_exists( 'CTA_Lcsw_Aswb_Sync' ) ) {
+					CTA_Lcsw_Aswb_Sync::sync( true );
+				}
+				if ( class_exists( 'CTA_Lmft_Clinical_Sync' ) ) {
+					CTA_Lmft_Clinical_Sync::sync( true );
+				}
+				if ( class_exists( 'CTA_Lmft_Amftrb_Sync' ) ) {
+					CTA_Lmft_Amftrb_Sync::sync( true );
 				}
 			}
 

@@ -131,16 +131,8 @@ class CTA_Course_Materials {
 			if ( ! CTA_Exam_Access::has_active_access( $user_id, $course_id ) ) {
 				return false;
 			}
-			// AMFTRB National keeps assessment/rationale gates from its handoff package.
-			// Other Exam Prep programs (LPCC Access Correction): open on enrollment.
-			if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::uses_assessment_gates( $course ) ) {
-				$unlock_type = isset( $resource->unlock_after_quiz_type )
-					? sanitize_text_field( (string) $resource->unlock_after_quiz_type )
-					: '';
-				if ( '' !== $unlock_type ) {
-					return self::user_meets_unlock_gate( $user_id, $course_id, $unlock_type );
-				}
-			}
+			// Access Correction Notice: Exam Prep materials are open from enrollment.
+			// unlock_after_quiz_type is ignored for Exam Prep (CE gates still apply below).
 			return true;
 		} elseif ( class_exists( 'CTA_CE_Access' ) && CTA_CE_Access::is_ce_course( $course ) ) {
 			if ( ! CTA_CE_Access::has_active_access( $user_id, $course_id ) ) {
@@ -197,12 +189,8 @@ class CTA_Course_Materials {
 				&& CTA_Certificates::user_completed_all_modules( $user_id, $course_id, $enrollment );
 		}
 
-		// Form B: AMFTRB requires Form A remediation first; other Exam Prep stays open.
+		// Form B candidate materials: never require Form A remediation (advisory only).
 		if ( 'form_b_ready' === $unlock_type ) {
-			$course = class_exists( 'CTA_Database' ) ? CTA_Database::get_course( $course_id ) : null;
-			if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::uses_assessment_gates( $course ) ) {
-				return self::user_has_completed_form_a_remediation( $user_id, $course_id );
-			}
 			return true;
 		}
 
@@ -650,9 +638,8 @@ class CTA_Course_Materials {
 			? CTA_Database::get_course( (int) $resource->course_id )
 			: null;
 
-		// Non-gated Exam Prep: no lock copy. AMFTRB (assessment gates) shows messages below.
-		if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course )
-			&& ! CTA_Exam_Access::uses_assessment_gates( $course ) ) {
+		// Exam Prep: no lock copy (Access Correction Notice — open from enrollment).
+		if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course ) ) {
 			return '';
 		}
 
@@ -885,6 +872,13 @@ class CTA_Course_Materials {
 			'workbook_blueprints/',
 			'/02_protected_rationales/',
 			'02_protected_rationales/',
+			// LPCC audio supplement admin references — never learner-facing.
+			'/00_admin/',
+			'00_admin/',
+			'recording_guide',
+			'completion_record',
+			'audio_review_supplement_recording',
+			'audio_production_completion',
 		);
 
 		foreach ( $markers as $marker ) {
@@ -1390,15 +1384,62 @@ class CTA_Course_Materials {
 			$filename = sanitize_file_name( basename( $local ) );
 			$mime     = wp_check_filetype( $filename );
 			$type     = ! empty( $mime['type'] ) ? $mime['type'] : 'application/octet-stream';
+			$size     = (int) filesize( $local );
 
 			nocache_headers();
 			header( 'Content-Type: ' . $type );
-			header( 'Content-Length: ' . (string) filesize( $local ) );
 			header( 'Content-Disposition: inline; filename="' . $filename . '"' );
 			header( 'X-Content-Type-Options: nosniff' );
+			header( 'Accept-Ranges: bytes' );
 
-			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_readfile
-			readfile( $local );
+			$start = 0;
+			$end   = max( 0, $size - 1 );
+			$code  = 200;
+
+			$range_header = isset( $_SERVER['HTTP_RANGE'] ) ? (string) wp_unslash( $_SERVER['HTTP_RANGE'] ) : '';
+			if ( '' !== $range_header && preg_match( '/bytes=(\d*)-(\d*)/', $range_header, $m ) ) {
+				if ( '' !== $m[1] ) {
+					$start = (int) $m[1];
+				}
+				if ( '' !== $m[2] ) {
+					$end = (int) $m[2];
+				}
+				if ( $end >= $size ) {
+					$end = $size - 1;
+				}
+				if ( $start > $end || $start >= $size || $size <= 0 ) {
+					status_header( 416 );
+					header( 'Content-Range: bytes */' . $size );
+					exit;
+				}
+				$code = 206;
+				header( 'Content-Range: bytes ' . $start . '-' . $end . '/' . $size );
+			}
+
+			$length = ( $size > 0 ) ? ( $end - $start + 1 ) : 0;
+			status_header( $code );
+			header( 'Content-Length: ' . (string) $length );
+
+			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
+			$fp = fopen( $local, 'rb' );
+			if ( false === $fp ) {
+				wp_die( esc_html__( 'File is unavailable.', 'cta-lms' ), 404 );
+			}
+			if ( $start > 0 ) {
+				fseek( $fp, $start );
+			}
+			$left = $length;
+			while ( $left > 0 && ! feof( $fp ) ) {
+				// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fread
+				$chunk = fread( $fp, min( 8192, $left ) );
+				if ( false === $chunk || '' === $chunk ) {
+					break;
+				}
+				echo $chunk; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- binary stream
+				$left -= strlen( $chunk );
+			}
+			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
+			fclose( $fp );
 			exit;
 		}
 

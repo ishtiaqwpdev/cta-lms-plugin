@@ -77,6 +77,12 @@ $cta_render_material_item = static function ( $resource ) use ( $is_enrolled, $c
 	if ( $is_audio && class_exists( 'CTA_Lmft_Amftrb_Sync' ) && method_exists( 'CTA_Lmft_Amftrb_Sync', 'resolve_audio_meta' ) ) {
 		$audio_meta = CTA_Lmft_Amftrb_Sync::resolve_audio_meta( $resource );
 	}
+	if ( ( ! $audio_meta || empty( $audio_meta['runtime'] ) )
+		&& $is_audio
+		&& class_exists( 'CTA_Lpcc_Ncmhce_Sync' )
+		&& method_exists( 'CTA_Lpcc_Ncmhce_Sync', 'resolve_audio_meta' ) ) {
+		$audio_meta = CTA_Lpcc_Ncmhce_Sync::resolve_audio_meta( $resource );
+	}
 	$audio_runtime = ( $audio_meta && ! empty( $audio_meta['runtime'] ) ) ? (string) $audio_meta['runtime'] : '';
 	$audio_track   = ( $audio_meta && ! empty( $audio_meta['track'] ) ) ? (int) $audio_meta['track'] : 0;
 
@@ -121,7 +127,7 @@ $cta_render_material_item = static function ( $resource ) use ( $is_enrolled, $c
 				<?php elseif ( '' !== $preserved_type && $preserved_done ) : ?>
 					<p class="course-module-list__desc"><?php echo esc_html__( 'Attempt recorded — matching rationales are unlocked.', 'cta-lms' ); ?></p>
 				<?php elseif ( $is_remediation && ! $remediation_done ) : ?>
-					<p class="course-module-list__desc"><?php echo esc_html__( 'Optional remediation after Form A. Download, complete, then mark complete.', 'cta-lms' ); ?></p>
+					<p class="course-module-list__desc"><?php echo esc_html__( 'Recommended after Form A and before Form B (optional). Download, complete, then mark complete for your own tracking.', 'cta-lms' ); ?></p>
 				<?php elseif ( $is_remediation && $remediation_done ) : ?>
 					<p class="course-module-list__desc"><?php echo esc_html__( 'Remediation marked complete.', 'cta-lms' ); ?></p>
 				<?php elseif ( $is_audio && $audio_runtime ) : ?>
@@ -220,6 +226,24 @@ $cta_render_material_item = static function ( $resource ) use ( $is_enrolled, $c
 ?>
 <section class="cta-materials-section course-player__resources-section" aria-labelledby="cta-materials-title">
 	<h2 class="dashboard-section__title" id="cta-materials-title"><?php echo esc_html( $heading ); ?></h2>
+
+	<?php
+	$cta_materials_course = null;
+	if ( $is_enrolled && ! empty( $resources ) && class_exists( 'CTA_Database' ) ) {
+		$first_res = reset( $resources );
+		if ( $first_res && ! empty( $first_res->course_id ) ) {
+			$cta_materials_course = CTA_Database::get_course( (int) $first_res->course_id );
+		}
+	}
+	$cta_is_exam_prep_materials = $cta_materials_course
+		&& class_exists( 'CTA_Exam_Access' )
+		&& CTA_Exam_Access::is_exam_prep( $cta_materials_course );
+	?>
+	<?php if ( $cta_is_exam_prep_materials ) : ?>
+		<p class="cta-materials-advisory" role="note">
+			<?php echo esc_html__( 'Recommended study sequence: complete Form A remediation before Form B. This is guidance only — Form B, answer keys, rationales, and all other learner materials are available now with no unlock requirement.', 'cta-lms' ); ?>
+		</p>
+	<?php endif; ?>
 
 	<?php if ( ! $is_enrolled ) : ?>
 		<div class="cta-quiz-locked-message">

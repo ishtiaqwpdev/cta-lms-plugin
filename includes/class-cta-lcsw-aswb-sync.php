@@ -16,7 +16,7 @@ if ( ! class_exists( 'CTA_Lcsw_Aswb_Sync' ) ) {
 
 class CTA_Lcsw_Aswb_Sync {
 
-	const SEED_OPTION   = 'cta_lcsw_aswb_clinical_seeded_1_0_127';
+	const SEED_OPTION   = 'cta_lcsw_aswb_clinical_seeded_1_0_154';
 	const SLUG          = 'lcsw-aswb-clinical-exam-preparation';
 	const TITLE         = 'CTA LCSW ASWB Clinical Exam Preparation Program';
 	const PUBLIC_TITLE  = 'LCSW ASWB Clinical Exam Preparation';
@@ -281,9 +281,8 @@ class CTA_Lcsw_Aswb_Sync {
 			$source     = CTA_PLUGIN_DIR . self::MATERIALS_REL . $rel;
 			$module_id  = 0;
 			$is_practice = ! empty( $item['is_practice_test'] ) ? 1 : 0;
-			$unlock     = isset( $item['unlock_after_quiz_type'] )
-				? sanitize_text_field( (string) $item['unlock_after_quiz_type'] )
-				: '';
+			// Access Correction Notice: never persist material unlock gates for Exam Prep.
+			$unlock     = '';
 
 			if ( class_exists( 'CTA_Course_Materials' )
 				&& CTA_Course_Materials::is_admin_restricted_source_path( $source . ' ' . $rel ) ) {
@@ -727,23 +726,19 @@ class CTA_Lcsw_Aswb_Sync {
 			'file'                   => 'simulations/CTA_LCSW_2026_Comprehensive_Simulation_Form_A_122_Question_Exam_v1.0.docx',
 			'title'                  => 'Form A — 122-Question Comprehensive Simulation',
 			'is_practice_test'       => 1,
-			'unlock_after_quiz_type' => 'modules_complete',
 		);
 		$items[] = array(
 			'file'                   => 'simulations/CTA_LCSW_2026_Comprehensive_Simulation_Form_B_122_Question_Exam_v1.0.docx',
 			'title'                  => 'Form B — 122-Question Comprehensive Simulation',
 			'is_practice_test'       => 1,
-			'unlock_after_quiz_type' => 'form_b_ready',
 		);
 		$items[] = array(
 			'file'                    => 'simulations/CTA_LCSW_2026_Comprehensive_Simulation_Form_A_Answer_Key_and_Detailed_Rationales_v1.0.docx',
 			'title'                   => 'Form A — Answer Key and Detailed Rationales',
-			'unlock_after_quiz_type'  => 'form_a',
 		);
 		$items[] = array(
 			'file'                    => 'simulations/CTA_LCSW_2026_Comprehensive_Simulation_Form_B_Answer_Key_and_Detailed_Rationales_v1.0.docx',
 			'title'                   => 'Form B — Answer Key and Detailed Rationales',
-			'unlock_after_quiz_type'  => 'form_b',
 		);
 		$items[] = array(
 			'file'  => 'study-tools/CTA_LCSW_Clinical_Exam_Preparation_Flashcard_Collection_v1.0.docx',

@@ -415,12 +415,13 @@ class CTA_Exam_Access {
 			array(
 				'title'                  => 'CTA LMFT AMFTRB National Exam Preparation Program',
 				'slug'                   => 'lmft-amftrb-national-exam-preparation',
-				'description'            => '<p>Complete self-paced preparation for the AMFTRB National MFT examination. Includes 12 workbooks, 12 practice banks, three cumulative checkpoints, Form A / Form B 180-question simulations with controlled rationales, remediation tools, and 12 recorded audio-review tracks with an authoritative transcript. Access is valid for 6 months from purchase. Exam Preparation Only — No CE Credit. This program does not award CE hours or a CE certificate. CTA is not affiliated with or endorsed by AMFTRB.</p>',
+				'description'            => '<p>Complete self-paced preparation for the AMFTRB National MFT examination. Includes 12 workbooks, 12 practice banks, three cumulative checkpoints, Form A / Form B 180-question simulations with controlled rationales, remediation tools, and 12 recorded audio-review tracks (combined runtime 1:15:26.811) with an authoritative transcript. Access is valid for 6 months from purchase. Exam Preparation Program | No CE Credit. This program does not award CE hours or a CE certificate. CTA is not affiliated with or endorsed by AMFTRB.</p>',
 				'price'                  => 329.00,
 				'category'               => 'Exam Preparation',
 				'status'                 => 'draft',
 				'launch_pending_testing' => true,
 				'public_title'           => 'LMFT AMFTRB National Exam Preparation',
+				'course_classification'  => 'Exam Preparation Program | No CE Credit',
 				'match_titles'           => array(
 					'CTA LMFT AMFTRB National Exam Preparation Program',
 					'LMFT AMFTRB National Exam Preparation',
@@ -460,7 +461,9 @@ class CTA_Exam_Access {
 			array(
 				'title'                  => 'CTA LPCC NCMHCE Exam Preparation Program',
 				'slug'                   => 'lpcc-ncmhce-exam-preparation',
-				'description'            => '<p>Complete self-paced preparation for the NCMHCE for LPCC candidates. Includes 12 workbooks, paired practice banks, three cumulative checkpoints, Form A and Form B simulations (143 questions each) with answer rationales, a Form A remediation workbook, eight audio-review tracks, flashcards, quick references, and study schedules. All learner materials are available from enrollment. Access is valid for 6 months from purchase. Exam Preparation Only — No CE Credit.</p>',
+				'description'            => ( class_exists( 'CTA_Lpcc_Ncmhce_Sync' ) && CTA_Lpcc_Ncmhce_Sync::audio_public_advertising_approved() )
+					? '<p>Complete self-paced preparation for the NCMHCE for LPCC candidates. Includes 12 workbooks, paired practice banks, three cumulative checkpoints, Form A and Form B simulations (143 questions each) with answer rationales, a Form A remediation workbook, eight audio-review tracks (combined runtime 48 minutes 49 seconds), flashcards, quick references, and study schedules. All learner materials are available from enrollment. Access is valid for 6 months from purchase. Exam Preparation Only — No CE Credit.</p>'
+					: '<p>Complete self-paced preparation for the NCMHCE for LPCC candidates. Includes 12 workbooks, paired practice banks, three cumulative checkpoints, Form A and Form B simulations (143 questions each) with answer rationales, a Form A remediation workbook, flashcards, quick references, and study schedules. All learner materials are available from enrollment. Access is valid for 6 months from purchase. Exam Preparation Only — No CE Credit.</p>',
 				'price'                  => 249.00,
 				'category'               => 'Exam Preparation',
 				'status'                 => 'draft',
@@ -619,6 +622,10 @@ class CTA_Exam_Access {
 			'course_classification' => 'Exam Preparation Only — No CE Credit',
 		);
 
+		if ( ! empty( $program['course_classification'] ) ) {
+			$meta['course_classification'] = sanitize_text_field( (string) $program['course_classification'] );
+		}
+
 		if ( ! empty( $program['public_title'] ) ) {
 			$meta['public_title'] = sanitize_text_field( (string) $program['public_title'] );
 		}
@@ -745,19 +752,41 @@ class CTA_Exam_Access {
 	/**
 	 * Whether this Exam Prep program enforces assessment/rationale download gates.
 	 *
-	 * AMFTRB National follows its David handoff gates. LPCC Access Correction and
-	 * other Exam Prep products keep learner materials open on enrollment.
+	 * CTA Exam-Preparation Access Standard (Access Correction Notice v1.0):
+	 * Exam Prep never uses CE-style progression, submission, score, remediation,
+	 * or rationale-hide locks. All learner-facing content is open from enrollment.
+	 * CE courses remain the only products that use required progression locks.
+	 *
+	 * Kept for backward-compatible call sites; always returns false for Exam Prep.
 	 *
 	 * @param object|null $course Course row.
 	 * @return bool
 	 */
 	public static function uses_assessment_gates( $course ) {
-		if ( ! $course || ! self::is_exam_prep( $course ) ) {
-			return false;
-		}
+		unset( $course );
+		return false;
+	}
 
-		$slug = isset( $course->slug ) ? (string) $course->slug : '';
-		return ( 'lmft-amftrb-national-exam-preparation' === $slug );
+	/**
+	 * Clear unlock_after_quiz_type on all Exam Prep downloadable resources.
+	 * Idempotent migration helper for Access Correction Notice v1.0.
+	 *
+	 * @return int Rows updated.
+	 */
+	public static function clear_all_exam_prep_material_unlock_gates() {
+		global $wpdb;
+
+		$courses = $wpdb->prefix . 'cta_courses';
+		$res     = $wpdb->prefix . 'cta_downloadable_resources';
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		return (int) $wpdb->query(
+			"UPDATE {$res} r
+			INNER JOIN {$courses} c ON c.id = r.course_id
+			SET r.unlock_after_quiz_type = ''
+			WHERE c.product_type = 'exam_prep'
+			  AND r.unlock_after_quiz_type <> ''"
+		);
 	}
 }
 

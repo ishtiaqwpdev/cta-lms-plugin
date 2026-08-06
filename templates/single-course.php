@@ -35,6 +35,20 @@ $access_months = (int) ( $course->access_period_months ?? 6 );
 $commercial_pending = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::commercial_terms_pending( $course );
 $launch_pending     = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::launch_pending_testing( $course );
 $checkout_held      = $commercial_pending || $launch_pending;
+$syllabus_meta      = isset( $syllabus_meta ) && is_array( $syllabus_meta ) ? $syllabus_meta : array();
+$classification_label = ! empty( $syllabus_meta['course_classification'] )
+	? (string) $syllabus_meta['course_classification']
+	: ( $is_exam_prep ? __( 'Exam Preparation Program | No CE Credit', 'cta-lms' ) : '' );
+$short_description = ! empty( $syllabus_meta['short_description'] )
+	? (string) $syllabus_meta['short_description']
+	: '';
+$image_alt = ! empty( $syllabus_meta['image_alt'] )
+	? (string) $syllabus_meta['image_alt']
+	: $display_title;
+$audio_tracks_count = isset( $syllabus_meta['audio_tracks'] ) ? absint( $syllabus_meta['audio_tracks'] ) : 0;
+$audio_combined_runtime = ! empty( $syllabus_meta['audio_combined_runtime'] )
+	? (string) $syllabus_meta['audio_combined_runtime']
+	: '';
 ?>
 <div class="cta-plugin-wrapper">
 <div class="cta-lms cta-single-course">
@@ -65,10 +79,10 @@ $checkout_held      = $commercial_pending || $launch_pending;
 					<?php if ( $is_exam_prep ) : ?>
 						<?php if ( $commercial_pending ) : ?>
 							<span class="badge badge--primary"><?php esc_html_e( 'Pricing pending confirmation', 'cta-lms' ); ?></span>
-							<span class="badge"><?php esc_html_e( 'Exam Preparation Only — No CE Credit (pending confirmation)', 'cta-lms' ); ?></span>
+							<span class="badge"><?php echo esc_html( $classification_label . ' (pending confirmation)' ); ?></span>
 						<?php elseif ( $launch_pending ) : ?>
 							<span class="badge badge--primary"><?php esc_html_e( 'Coming soon — not open for enrollment', 'cta-lms' ); ?></span>
-							<span class="badge"><?php esc_html_e( 'Exam Preparation Only — No CE Credit', 'cta-lms' ); ?></span>
+							<span class="badge"><?php echo esc_html( $classification_label ); ?></span>
 						<?php else : ?>
 							<span class="badge badge--primary">
 								<?php
@@ -79,7 +93,7 @@ $checkout_held      = $commercial_pending || $launch_pending;
 								);
 								?>
 							</span>
-							<span class="badge"><?php esc_html_e( 'Exam Preparation Only — No CE Credit', 'cta-lms' ); ?></span>
+							<span class="badge"><?php echo esc_html( $classification_label ); ?></span>
 						<?php endif; ?>
 					<?php else : ?>
 						<span class="badge badge--success"><?php echo esc_html( $ce_hours ); ?> <?php esc_html_e( 'CE Hours', 'cta-lms' ); ?></span>
@@ -88,15 +102,6 @@ $checkout_held      = $commercial_pending || $launch_pending;
 						<span class="badge badge--primary"><?php echo esc_html( $course->category ); ?></span>
 					<?php endif; ?>
 				</div>
-				<?php
-				$syllabus_meta = isset( $syllabus_meta ) && is_array( $syllabus_meta ) ? $syllabus_meta : array();
-				$short_description = ! empty( $syllabus_meta['short_description'] )
-					? (string) $syllabus_meta['short_description']
-					: '';
-				$image_alt = ! empty( $syllabus_meta['image_alt'] )
-					? (string) $syllabus_meta['image_alt']
-					: $display_title;
-				?>
 				<h1 class="course-hero__title" id="course-hero-title"><?php echo esc_html( $display_title ); ?></h1>
 				<?php if ( '' !== $short_description ) : ?>
 					<p class="course-hero__summary"><?php echo esc_html( $short_description ); ?></p>
@@ -147,6 +152,7 @@ $checkout_held      = $commercial_pending || $launch_pending;
 					|| ! empty( $syllabus_meta['presenter'] )
 					|| ! empty( $syllabus_meta['course_code'] )
 					|| ! empty( $syllabus_meta['course_classification'] )
+					|| $audio_tracks_count > 0
 					|| ( ! $is_exam_prep && (float) $course->ce_hours > 0 );
 
 				$resources_for_info = isset( $resources ) ? (array) $resources : array();
@@ -174,6 +180,31 @@ $checkout_held      = $commercial_pending || $launch_pending;
 							<?php endif; ?>
 							<?php if ( ! empty( $syllabus_meta['course_classification'] ) ) : ?>
 								<li><strong><?php esc_html_e( 'Course Classification:', 'cta-lms' ); ?></strong> <?php echo esc_html( $syllabus_meta['course_classification'] ); ?></li>
+							<?php endif; ?>
+							<?php if ( $audio_tracks_count > 0 ) : ?>
+								<li>
+									<strong><?php esc_html_e( 'Recorded Audio:', 'cta-lms' ); ?></strong>
+									<?php
+									if ( '' !== $audio_combined_runtime ) {
+										echo esc_html(
+											sprintf(
+												/* translators: 1: number of tracks, 2: combined runtime */
+												__( '%1$d tracks, combined runtime %2$s', 'cta-lms' ),
+												$audio_tracks_count,
+												$audio_combined_runtime
+											)
+										);
+									} else {
+										echo esc_html(
+											sprintf(
+												/* translators: %d: number of tracks */
+												_n( '%d track', '%d tracks', $audio_tracks_count, 'cta-lms' ),
+												$audio_tracks_count
+											)
+										);
+									}
+									?>
+								</li>
 							<?php endif; ?>
 							<?php if ( ! empty( $syllabus_meta['course_level'] ) ) : ?>
 								<li><strong><?php esc_html_e( 'Course Level:', 'cta-lms' ); ?></strong> <?php echo esc_html( $syllabus_meta['course_level'] ); ?></li>
@@ -538,9 +569,21 @@ $checkout_held      = $commercial_pending || $launch_pending;
 									echo esc_html(
 										! empty( $syllabus_meta['course_classification'] )
 											? (string) $syllabus_meta['course_classification']
-											: __( 'Exam Preparation Only — No CE Credit', 'cta-lms' )
+											: __( 'Exam Preparation Program | No CE Credit', 'cta-lms' )
 									);
 								?></span></li>
+								<?php if ( $audio_tracks_count > 0 && '' !== $audio_combined_runtime ) : ?>
+									<li class="course-sidebar__meta-item"><span><strong><?php esc_html_e( 'Recorded Audio:', 'cta-lms' ); ?></strong> <?php
+										echo esc_html(
+											sprintf(
+												/* translators: 1: number of tracks, 2: combined runtime */
+												__( '%1$d tracks, combined runtime %2$s', 'cta-lms' ),
+												$audio_tracks_count,
+												$audio_combined_runtime
+											)
+										);
+									?></span></li>
+								<?php endif; ?>
 							<?php endif; ?>
 						<?php else : ?>
 							<li class="course-sidebar__meta-item"><span><strong><?php esc_html_e( 'CE Hours:', 'cta-lms' ); ?></strong> <?php echo esc_html( $ce_hours ); ?></span></li>

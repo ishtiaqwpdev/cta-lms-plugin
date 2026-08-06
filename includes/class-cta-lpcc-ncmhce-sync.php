@@ -21,7 +21,7 @@ if ( ! class_exists( 'CTA_Lpcc_Ncmhce_Sync' ) ) {
 
 class CTA_Lpcc_Ncmhce_Sync {
 
-	const SEED_OPTION   = 'cta_lpcc_ncmhce_seeded_1_0_145';
+	const SEED_OPTION   = 'cta_lpcc_ncmhce_seeded_1_0_154';
 	const SLUG          = 'lpcc-ncmhce-exam-preparation';
 	const TITLE         = 'CTA LPCC NCMHCE Exam Preparation Program';
 	const PUBLIC_TITLE  = 'LPCC NCMHCE Exam Preparation';
@@ -30,6 +30,14 @@ class CTA_Lpcc_Ncmhce_Sync {
 	const PRICE         = 249.00;
 	const ACCESS_MONTHS = 6;
 	const MATERIALS_REL = 'assets/course-materials/lpcc-ncmhce/';
+	const AUDIO_TRACK_COUNT = 8;
+	/** Authoritative combined runtime for the 8 learner-facing audio tracks. */
+	const COMBINED_AUDIO_RUNTIME = '48 minutes 49 seconds';
+	/**
+	 * Public LMS/website may advertise the 8 audio-review tracks only after Prompt 11 testing PASS.
+	 * Evidence: docs/LPCC_Audio_Playback_Verification.md (desktop + mobile all PASS).
+	 */
+	const AUDIO_PUBLIC_ADVERTISING_APPROVED = true;
 
 	/**
 	 * Find the LPCC NCMHCE course by new/legacy slug or title.
@@ -286,9 +294,8 @@ class CTA_Lpcc_Ncmhce_Sync {
 			$source      = CTA_PLUGIN_DIR . self::MATERIALS_REL . $rel;
 			$module_id   = 0;
 			$is_practice = ! empty( $item['is_practice_test'] ) ? 1 : 0;
-			$unlock      = isset( $item['unlock_after_quiz_type'] )
-				? sanitize_text_field( (string) $item['unlock_after_quiz_type'] )
-				: '';
+			// Access Correction Notice: never persist material unlock gates for Exam Prep.
+			$unlock      = '';
 
 			// Never attach 90_Admin_Restricted / DO_NOT_PUBLISH / archive package trees.
 			if ( class_exists( 'CTA_Course_Materials' )
@@ -311,10 +318,11 @@ class CTA_Lpcc_Ncmhce_Sync {
 				continue;
 			}
 
-			$existing_id = self::find_resource_id_by_title( $course_id, $title );
+			$existing_id = self::find_resource_id( $course_id, $title, $rel );
 
 			if ( $existing_id ) {
 				$update = array(
+					'title'                  => $title,
 					'module_id'              => $module_id,
 					'order_index'            => $order_index,
 					'is_practice_test'       => $is_practice,
@@ -325,7 +333,7 @@ class CTA_Lpcc_Ncmhce_Sync {
 					$wpdb->prefix . 'cta_downloadable_resources',
 					$update,
 					array( 'id' => $existing_id ),
-					array( '%d', '%d', '%d', '%s' ),
+					array( '%s', '%d', '%d', '%d', '%s' ),
 					array( '%d' )
 				);
 				++$updated;
@@ -649,11 +657,51 @@ class CTA_Lpcc_Ncmhce_Sync {
 	 * ---------------------------------------------------------------------- */
 
 	/**
-	 * Approved program description HTML (written materials only; no A/V advertising).
+	 * Whether public LMS/website copy may advertise the eight audio-review tracks.
+	 * Gated until Prompt 11 desktop/mobile playback testing is documented PASS.
+	 *
+	 * @return bool
+	 */
+	public static function audio_public_advertising_approved() {
+		return (bool) self::AUDIO_PUBLIC_ADVERTISING_APPROVED;
+	}
+
+	/**
+	 * Short marketing phrase for audio tracks (empty until advertising is approved).
+	 *
+	 * @return string
+	 */
+	public static function get_audio_public_phrase() {
+		if ( ! self::audio_public_advertising_approved() ) {
+			return '';
+		}
+		return sprintf(
+			/* translators: 1: track count, 2: combined runtime */
+			__( '%1$d screen-free audio-review tracks (combined runtime %2$s)', 'cta-lms' ),
+			(int) self::AUDIO_TRACK_COUNT,
+			self::COMBINED_AUDIO_RUNTIME
+		);
+	}
+
+	/**
+	 * Program description HTML for LMS and website.
+	 * Audio-review advertising is included only after documented playback testing PASS.
 	 *
 	 * @return string
 	 */
 	private static function get_program_description_html() {
+		$audio_li   = '';
+		$audio_note = '<p><strong>Written program complete.</strong></p>';
+
+		if ( self::audio_public_advertising_approved() ) {
+			$audio_li = '<li>Eight screen-free audio-review tracks (combined runtime '
+				. self::COMBINED_AUDIO_RUNTIME
+				. ') for offline or LMS playback</li>';
+			$audio_note = '<p><strong>Written program complete.</strong> Eight recorded audio-review tracks are included (combined runtime '
+				. self::COMBINED_AUDIO_RUNTIME
+				. ').</p>';
+		}
+
 		$html = '
 <p>LPCC NCMHCE Exam Preparation is a complete self-paced system for LPCC candidates and other eligible examinees preparing for the National Clinical Mental Health Counseling Examination (NCMHCE).</p>
 <p>The program teaches candidates to apply clinical counselor reasoning across NCMHCE-style case studies: intake and assessment, diagnosis and differential reasoning, crisis and level-of-care decisions, treatment planning, evidence-informed interventions, multicultural and contextual practice, and California legal and ethical judgment when several answers appear plausible.</p>
@@ -666,10 +714,10 @@ class CTA_Lpcc_Ncmhce_Sync {
 <li>Form A remediation workbook (recommended study sequence before Form B)</li>
 <li>Comprehensive Simulation Form B — 143 questions</li>
 <li>Answer keys and detailed rationales for both simulations</li>
-<li>Eight screen-free audio-review tracks (about 49 minutes total) for offline or LMS playback</li>
+' . $audio_li . '
 <li>Flashcard collection, quick-reference and rapid-review library, readiness tracker, Student FAQ, and Start-Here roadmap with 10-, 14-, and 18-week study schedules</li>
 </ul>
-<p><strong>Written program complete.</strong> Eight recorded audio-review tracks are included.</p>
+' . $audio_note . '
 <h3>Important Notices</h3>
 <ul>
 <li><strong>Exam Preparation Only — No CE Credit.</strong> This program does not provide continuing education hours or a CE certificate.</li>
@@ -704,14 +752,27 @@ class CTA_Lpcc_Ncmhce_Sync {
 	 * @return array
 	 */
 	private static function get_syllabus_meta() {
+		$audio_phrase = self::get_audio_public_phrase();
+		$short        = 'Twelve LPCC workbooks, twelve practice bank pairs, three cumulative checkpoints, Form A and Form B 143-question simulations, Form A remediation, flashcards, quick references, and study schedules for NCMHCE exam preparation.';
+		$meta_desc    = 'Prepare for the NCMHCE with 12 LPCC workbooks, practice banks, three cumulative checkpoints, and two 143-question simulations. Exam preparation only — no CE credit.';
+
+		if ( '' !== $audio_phrase ) {
+			$short     = 'Twelve LPCC workbooks, twelve practice bank pairs, three cumulative checkpoints, Form A and Form B 143-question simulations, Form A remediation, eight audio-review tracks (combined runtime '
+				. self::COMBINED_AUDIO_RUNTIME
+				. '), flashcards, quick references, and study schedules for NCMHCE exam preparation.';
+			$meta_desc = 'Prepare for the NCMHCE with 12 LPCC workbooks, practice banks, three cumulative checkpoints, two 143-question simulations, and eight audio-review tracks (combined runtime '
+				. self::COMBINED_AUDIO_RUNTIME
+				. '). Exam preparation only — no CE credit.';
+		}
+
 		return array(
 			'public_title'           => self::PUBLIC_TITLE,
-			'short_description'      => 'Twelve LPCC workbooks, twelve practice bank pairs, three cumulative checkpoints, Form A and Form B 143-question simulations, Form A remediation, eight audio-review tracks, flashcards, quick references, and study schedules for NCMHCE exam preparation.',
+			'short_description'      => $short,
 			'course_classification'  => 'Exam Preparation Only — No CE Credit',
 			'instructional_method'   => 'Self-paced asynchronous',
 			'target_audience'        => 'LPCC candidates and other eligible NCMHCE examinees',
 			'seo_title'              => 'LPCC NCMHCE Exam Prep | CTA',
-			'meta_description'       => 'Prepare for the NCMHCE with 12 LPCC workbooks, practice banks, three cumulative checkpoints, two 143-question simulations, and eight audio-review tracks. Exam preparation only — no CE credit.',
+			'meta_description'       => $meta_desc,
 			'image_alt'              => 'Clinical Training and Supervision Academy LPCC NCMHCE Exam Preparation graphic',
 			'primary_cta'            => 'Begin Your Clinical Exam Preparation',
 			'page_badge'             => 'Exam Preparation Only — No CE Credit',
@@ -719,7 +780,9 @@ class CTA_Lpcc_Ncmhce_Sync {
 			'launch_status'          => 'draft_pending_testing',
 			'launch_pending_testing' => true,
 			'development_draft'      => true,
-			'audio_tracks'           => 8,
+			'audio_tracks'           => self::AUDIO_TRACK_COUNT,
+			'audio_combined_runtime' => self::audio_public_advertising_approved() ? self::COMBINED_AUDIO_RUNTIME : '',
+			'audio_public_approved'  => self::audio_public_advertising_approved(),
 			'open_access_exam_prep'  => true,
 		);
 	}
@@ -881,55 +944,14 @@ class CTA_Lpcc_Ncmhce_Sync {
 			'title' => 'Form B — Answer Rationales',
 		);
 
-		$audio_tracks = array(
-			1 => array(
-				'file'    => 'audio/CTA_LPCC_Audio_Track_01_NCMHCE_Case_Reasoning_Sections_Qualifiers_and_Evidence_v1.0.mp3',
-				'title'   => 'Audio Review 1 — NCMHCE Case Reasoning: Sections, Qualifiers, and Evidence (3:58)',
-				'runtime' => '3:58',
-			),
-			2 => array(
-				'file'    => 'audio/CTA_LPCC_Audio_Track_02_Professional_Identity_Intake_Assessment_and_Differential_Reasoning_v1.0.mp3',
-				'title'   => 'Audio Review 2 — Professional Identity, Intake, Assessment, and Differential Reasoning (10:37)',
-				'runtime' => '10:37',
-			),
-			3 => array(
-				'file'    => 'audio/CTA_LPCC_Audio_Track_03_Crisis_Trauma_Abuse_Violence_and_Level_of_Care_Sequencing_v1.0.mp3',
-				'title'   => 'Audio Review 3 — Crisis, Trauma, Abuse, Violence, and Level-of-Care Sequencing (4:13)',
-				'runtime' => '4:13',
-			),
-			4 => array(
-				'file'    => 'audio/CTA_LPCC_Audio_Track_04_Conceptualization_Planning_Measurement_Progress_and_Termination_v1.0.mp3',
-				'title'   => 'Audio Review 4 — Conceptualization, Planning, Measurement, Progress, and Termination (4:05)',
-				'runtime' => '4:05',
-			),
-			5 => array(
-				'file'    => 'audio/CTA_LPCC_Audio_Track_05_Counseling_Theories_Therapeutic_Alliance_and_Core_Skills_v1.0.mp3',
-				'title'   => 'Audio Review 5 — Counseling Theories, Therapeutic Alliance, and Core Skills (4:09)',
-				'runtime' => '4:09',
-			),
-			6 => array(
-				'file'    => 'audio/CTA_LPCC_Audio_Track_06_Evidence_Informed_Interventions_and_Context_Responsive_Care_v1.0.mp3',
-				'title'   => 'Audio Review 6 — Evidence-Informed Interventions and Context-Responsive Care (7:30)',
-				'runtime' => '7:30',
-			),
-			7 => array(
-				'file'    => 'audio/CTA_LPCC_Audio_Track_07_Modality_Referral_Collaboration_and_California_Professional_Practice_v1.0.mp3',
-				'title'   => 'Audio Review 7 — Modality, Referral, Collaboration, and California Professional Practice (7:26)',
-				'runtime' => '7:26',
-			),
-			8 => array(
-				'file'    => 'audio/CTA_LPCC_Audio_Track_08_Integrated_Review_Error_Repair_and_Form_A_Form_B_Readiness_v1.0.mp3',
-				'title'   => 'Audio Review 8 — Integrated Review, Error Repair, and Form A/Form B Readiness (6:47)',
-				'runtime' => '6:47',
-			),
-		);
+		$audio_tracks = self::get_audio_placement_map();
 
 		foreach ( $audio_tracks as $track ) {
 			$items[] = array(
-				'file'          => $track['file'],
-				'title'         => $track['title'],
-				'is_audio'      => 1,
-				'audio_runtime' => $track['runtime'],
+				'file'  => $track['file'],
+				'title' => $track['title'],
+				// Open from enrollment — never set unlock_after_quiz_type.
+				'is_audio' => 1,
 			);
 		}
 
@@ -955,6 +977,154 @@ class CTA_Lpcc_Ncmhce_Sync {
 		);
 
 		return $items;
+	}
+
+	/**
+	 * Eight learner-facing audio tracks (exact package filenames, titles, runtimes).
+	 * Open from enrollment — no unlock gates. Admin Recording Guide / Completion Record stay out.
+	 *
+	 * @return array<int,array{file:string,title:string,runtime:string,file_needle:string}>
+	 */
+	public static function get_audio_placement_map() {
+		return array(
+			1 => array(
+				'file'        => 'audio/CTA_LPCC_Audio_Track_01_NCMHCE_Case_Reasoning_Sections_Qualifiers_and_Evidence_v1.0.mp3',
+				'title'       => 'NCMHCE Case Reasoning: Sections, Qualifiers, and Evidence',
+				'runtime'     => '3:58',
+				'file_needle' => 'Audio_Track_01_',
+			),
+			2 => array(
+				'file'        => 'audio/CTA_LPCC_Audio_Track_02_Professional_Identity_Intake_Assessment_and_Differential_Reasoning_v1.0.mp3',
+				'title'       => 'Professional Identity, Intake, Assessment, and Differential Reasoning',
+				'runtime'     => '10:37',
+				'file_needle' => 'Audio_Track_02_',
+			),
+			3 => array(
+				'file'        => 'audio/CTA_LPCC_Audio_Track_03_Crisis_Trauma_Abuse_Violence_and_Level_of_Care_Sequencing_v1.0.mp3',
+				'title'       => 'Crisis, Trauma, Abuse, Violence, and Level-of-Care Sequencing',
+				'runtime'     => '4:13',
+				'file_needle' => 'Audio_Track_03_',
+			),
+			4 => array(
+				'file'        => 'audio/CTA_LPCC_Audio_Track_04_Conceptualization_Planning_Measurement_Progress_and_Termination_v1.0.mp3',
+				'title'       => 'Conceptualization, Planning, Measurement, Progress, and Termination',
+				'runtime'     => '4:05',
+				'file_needle' => 'Audio_Track_04_',
+			),
+			5 => array(
+				'file'        => 'audio/CTA_LPCC_Audio_Track_05_Counseling_Theories_Therapeutic_Alliance_and_Core_Skills_v1.0.mp3',
+				'title'       => 'Counseling Theories, Therapeutic Alliance, and Core Skills',
+				'runtime'     => '4:09',
+				'file_needle' => 'Audio_Track_05_',
+			),
+			6 => array(
+				'file'        => 'audio/CTA_LPCC_Audio_Track_06_Evidence_Informed_Interventions_and_Context_Responsive_Care_v1.0.mp3',
+				'title'       => 'Evidence-Informed Interventions and Context-Responsive Care',
+				'runtime'     => '7:30',
+				'file_needle' => 'Audio_Track_06_',
+			),
+			7 => array(
+				'file'        => 'audio/CTA_LPCC_Audio_Track_07_Modality_Referral_Collaboration_and_California_Professional_Practice_v1.0.mp3',
+				'title'       => 'Modality, Referral, Collaboration, and California Professional Practice',
+				'runtime'     => '7:26',
+				'file_needle' => 'Audio_Track_07_',
+			),
+			8 => array(
+				'file'        => 'audio/CTA_LPCC_Audio_Track_08_Integrated_Review_Error_Repair_and_Form_A_Form_B_Readiness_v1.0.mp3',
+				'title'       => 'Integrated Review, Error Repair, and Form A/Form B Readiness',
+				'runtime'     => '6:47',
+				'file_needle' => 'Audio_Track_08_',
+			),
+		);
+	}
+
+	/**
+	 * Resolve track number, display title, and runtime for an LPCC audio resource.
+	 *
+	 * @param object|array $resource Resource row or array.
+	 * @return array{track:int,title:string,runtime:string}|null
+	 */
+	public static function resolve_audio_meta( $resource ) {
+		$file_path = '';
+		$title     = '';
+
+		if ( is_object( $resource ) ) {
+			$file_path = (string) ( $resource->file_path ?? '' );
+			if ( '' === $file_path ) {
+				$file_path = (string) ( $resource->file_url ?? '' );
+			}
+			$title = (string) ( $resource->title ?? '' );
+		} elseif ( is_array( $resource ) ) {
+			$file_path = (string) ( $resource['file_path'] ?? '' );
+			if ( '' === $file_path ) {
+				$file_path = (string) ( $resource['file_url'] ?? '' );
+			}
+			$title = (string) ( $resource['title'] ?? '' );
+		} else {
+			return null;
+		}
+
+		$file_path = str_replace( '\\', '/', $file_path );
+
+		foreach ( self::get_audio_placement_map() as $track => $meta ) {
+			$needle = (string) ( $meta['file_needle'] ?? '' );
+			$base   = basename( (string) ( $meta['file'] ?? '' ) );
+
+			$matched = false;
+			if ( '' !== $needle && false !== stripos( $file_path, $needle ) ) {
+				$matched = true;
+			} elseif ( '' !== $base && false !== stripos( $file_path, $base ) ) {
+				$matched = true;
+			} elseif ( '' !== $title && 0 === strcasecmp( $title, (string) $meta['title'] ) ) {
+				$matched = true;
+			}
+
+			if ( $matched ) {
+				return array(
+					'track'   => (int) $track,
+					'title'   => (string) $meta['title'],
+					'runtime' => (string) $meta['runtime'],
+				);
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Find existing resource by title or filename (supports rematch after title polish).
+	 *
+	 * @param int    $course_id Course ID.
+	 * @param string $title     Resource title.
+	 * @param string $rel_path  Relative materials path.
+	 * @return int
+	 */
+	private static function find_resource_id( $course_id, $title, $rel_path ) {
+		$by_title = self::find_resource_id_by_title( $course_id, $title );
+		if ( $by_title ) {
+			return $by_title;
+		}
+
+		$base = basename( str_replace( '\\', '/', (string) $rel_path ) );
+		if ( '' === $base ) {
+			return 0;
+		}
+
+		global $wpdb;
+		$like = '%' . $wpdb->esc_like( $base ) . '%';
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		return (int) $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT id FROM {$wpdb->prefix}cta_downloadable_resources
+				WHERE course_id = %d
+					AND ( file_path LIKE %s OR file_url LIKE %s )
+				LIMIT 1",
+				absint( $course_id ),
+				$like,
+				$like
+			)
+		);
 	}
 
 	/**

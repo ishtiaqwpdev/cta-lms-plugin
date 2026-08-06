@@ -19,7 +19,7 @@ if ( ! class_exists( 'CTA_Lmft_Clinical_Sync' ) ) {
 
 class CTA_Lmft_Clinical_Sync {
 
-	const SEED_OPTION              = 'cta_lmft_clinical_seeded_1_0_128';
+	const SEED_OPTION              = 'cta_lmft_clinical_seeded_1_0_154';
 	const SLUG                     = 'lmft-california-clinical-exam-preparation';
 	const TITLE                    = 'CTA LMFT California Clinical Exam Preparation Program';
 	const PUBLIC_TITLE             = 'LMFT California Clinical Exam Preparation';
@@ -283,9 +283,8 @@ class CTA_Lmft_Clinical_Sync {
 			$source      = CTA_PLUGIN_DIR . self::MATERIALS_REL . $rel;
 			$module_id   = 0;
 			$is_practice = ! empty( $item['is_practice_test'] ) ? 1 : 0;
-			$unlock      = isset( $item['unlock_after_quiz_type'] )
-				? sanitize_text_field( (string) $item['unlock_after_quiz_type'] )
-				: '';
+			// Access Correction Notice: never persist material unlock gates for Exam Prep.
+			$unlock      = '';
 
 			if ( class_exists( 'CTA_Course_Materials' )
 				&& CTA_Course_Materials::is_admin_restricted_source_path( $source . ' ' . $rel ) ) {
@@ -736,23 +735,19 @@ class CTA_Lmft_Clinical_Sync {
 			'file'                   => 'simulations/CTA_LMFT_Comprehensive_Simulation_Form_A_150_Question_Exam_v1.0.docx',
 			'title'                  => 'Form A — 150-Question Comprehensive Simulation',
 			'is_practice_test'       => 1,
-			'unlock_after_quiz_type' => 'modules_complete',
 		);
 		$items[] = array(
 			'file'                   => 'simulations/CTA_LMFT_Comprehensive_Simulation_Form_B_150_Question_Exam_v1.0.docx',
 			'title'                  => 'Form B — 150-Question Comprehensive Simulation',
 			'is_practice_test'       => 1,
-			'unlock_after_quiz_type' => 'form_b_ready',
 		);
 		$items[] = array(
 			'file'                   => 'simulations/CTA_LMFT_Comprehensive_Simulation_Form_A_Answer_Key_and_Detailed_Rationales_v1.0.docx',
 			'title'                  => 'Form A — Answer Key and Detailed Rationales',
-			'unlock_after_quiz_type' => 'form_a',
 		);
 		$items[] = array(
 			'file'                   => 'simulations/CTA_LMFT_Comprehensive_Simulation_Form_B_Answer_Key_and_Detailed_Rationales_v1.0.docx',
 			'title'                  => 'Form B — Answer Key and Detailed Rationales',
-			'unlock_after_quiz_type' => 'form_b',
 		);
 		$items[] = array(
 			'file'  => 'study-tools/CTA_LMFT_Clinical_Exam_Preparation_Flashcard_Collection_v1.0.docx',
