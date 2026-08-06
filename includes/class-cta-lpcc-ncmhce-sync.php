@@ -21,7 +21,7 @@ if ( ! class_exists( 'CTA_Lpcc_Ncmhce_Sync' ) ) {
 
 class CTA_Lpcc_Ncmhce_Sync {
 
-	const SEED_OPTION   = 'cta_lpcc_ncmhce_seeded_1_0_154';
+	const SEED_OPTION   = 'cta_lpcc_ncmhce_seeded_1_0_155';
 	const SLUG          = 'lpcc-ncmhce-exam-preparation';
 	const TITLE         = 'CTA LPCC NCMHCE Exam Preparation Program';
 	const PUBLIC_TITLE  = 'LPCC NCMHCE Exam Preparation';

@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.154' );
+	define( 'CTA_VERSION', '1.0.155' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -829,6 +829,13 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				}
 				if ( class_exists( 'CTA_Lmft_Amftrb_Sync' ) ) {
 					CTA_Lmft_Amftrb_Sync::sync( true );
+				}
+			}
+
+			// LPCC: force re-attach 8 audio MP3s if missing on server after deploy.
+			if ( version_compare( $installed, '1.0.155', '<' ) ) {
+				if ( class_exists( 'CTA_Lpcc_Ncmhce_Sync' ) ) {
+					CTA_Lpcc_Ncmhce_Sync::sync( true );
 				}
 			}
 
