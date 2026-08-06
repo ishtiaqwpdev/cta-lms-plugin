@@ -66,9 +66,9 @@ $cta_render_material_item = static function ( $resource ) use ( $is_enrolled ) {
 				<?php if ( $lock_msg ) : ?>
 					<p class="course-module-list__desc"><?php echo esc_html( $lock_msg ); ?></p>
 				<?php elseif ( $is_remediation && ! $remediation_done ) : ?>
-					<p class="course-module-list__desc"><?php echo esc_html__( 'Required before Form B unlocks. Download, complete, then mark complete.', 'cta-lms' ); ?></p>
+					<p class="course-module-list__desc"><?php echo esc_html__( 'Optional remediation after Form A. Download, complete, then mark complete.', 'cta-lms' ); ?></p>
 				<?php elseif ( $is_remediation && $remediation_done ) : ?>
-					<p class="course-module-list__desc"><?php echo esc_html__( 'Remediation complete — Form B unlocked.', 'cta-lms' ); ?></p>
+					<p class="course-module-list__desc"><?php echo esc_html__( 'Remediation marked complete.', 'cta-lms' ); ?></p>
 				<?php elseif ( $type_label ) : ?>
 					<p class="course-module-list__desc"><?php echo esc_html( $type_label ); ?></p>
 				<?php endif; ?>

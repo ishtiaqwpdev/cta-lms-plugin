@@ -130,24 +130,19 @@ class CTA_Course_Materials {
 			if ( ! CTA_Exam_Access::has_active_access( $user_id, $course_id ) ) {
 				return false;
 			}
+			// Exam Prep: all student-facing downloads open immediately on enrollment.
+			// No module / quiz / assessment completion gates (CE gates stay below).
+			return true;
 		} elseif ( class_exists( 'CTA_CE_Access' ) && CTA_CE_Access::is_ce_course( $course ) ) {
 			if ( ! CTA_CE_Access::has_active_access( $user_id, $course_id ) ) {
 				return false;
 			}
 		}
 
-		// Per-student unlock gates (quiz submit, modules complete, or Form B readiness).
+		// CE (and non-exam-prep) per-resource unlock gates.
 		$unlock_type = isset( $resource->unlock_after_quiz_type )
 			? sanitize_text_field( (string) $resource->unlock_after_quiz_type )
 			: '';
-
-		// Exam Prep Form A/B candidate exam downloads inherit the same gates as online assessments
-		// even if an older sync omitted unlock_after_quiz_type.
-		if ( '' === $unlock_type
-			&& class_exists( 'CTA_Exam_Access' )
-			&& CTA_Exam_Access::is_exam_prep( $course ) ) {
-			$unlock_type = self::infer_exam_form_download_gate( $resource );
-		}
 
 		if ( '' !== $unlock_type ) {
 			return self::user_meets_unlock_gate( $user_id, $course_id, $unlock_type );
@@ -159,9 +154,12 @@ class CTA_Course_Materials {
 	/**
 	 * Whether the learner satisfies a downloadable-resource unlock gate.
 	 *
+	 * Used for CE courses (and any non–Exam Prep product). Exam Prep skips these
+	 * gates in user_can_access() so enrolled learners get materials immediately.
+	 *
 	 * Supported gates:
-	 * - modules_complete — all instructional modules finished (Form A printable / online unlock)
-	 * - form_b_ready — Form A submitted (+ remediation when the package includes it)
+	 * - modules_complete — all instructional modules finished
+	 * - form_b_ready — always true (legacy key; Exam Prep no longer uses it for locking)
 	 * - form_a_remediation — Form A remediation workbook marked complete
 	 * - form_a / form_b / wbN_bank / checkpoint_N — matching quiz type submitted
 	 *
@@ -190,8 +188,9 @@ class CTA_Course_Materials {
 				&& CTA_Certificates::user_completed_all_modules( $user_id, $course_id, $enrollment );
 		}
 
+		// Form B printable: open on enrollment — no Form A / remediation prerequisite.
 		if ( 'form_b_ready' === $unlock_type ) {
-			return ! is_wp_error( self::assert_form_b_accessible( $user_id, $course_id ) );
+			return true;
 		}
 
 		if ( 'form_a_remediation' === $unlock_type ) {
@@ -296,7 +295,7 @@ class CTA_Course_Materials {
 	}
 
 	/**
-	 * Whether this course attaches a Form A Remediation Workbook (hard Form B prerequisite).
+	 * Whether this course attaches a Form A Remediation Workbook.
 	 *
 	 * @param int $course_id Course ID.
 	 * @return bool
@@ -369,35 +368,17 @@ class CTA_Course_Materials {
 	}
 
 	/**
-	 * Form B hard prerequisites for exam-prep programs (Form A, then remediation when present).
+	 * Form B access check for Exam Prep programs.
+	 *
+	 * Form B is open independently of Form A (and of Form A Remediation). Enrollment /
+	 * timed access are enforced by callers; this helper no longer applies a Form A sequence.
 	 *
 	 * @param int $user_id   User ID.
 	 * @param int $course_id Course ID.
 	 * @return true|WP_Error
 	 */
 	public static function assert_form_b_accessible( $user_id, $course_id ) {
-		$user_id   = absint( $user_id );
-		$course_id = absint( $course_id );
-
-		$has_form_a = class_exists( 'CTA_Lcsw_Aswb_Sync' )
-			? CTA_Lcsw_Aswb_Sync::user_has_completed_quiz_type( $user_id, $course_id, 'form_a' )
-			: self::user_has_completed_quiz_type( $user_id, $course_id, 'form_a' );
-
-		if ( ! $has_form_a ) {
-			return new WP_Error(
-				'form_a_required',
-				__( 'Complete and submit Comprehensive Simulation Form A before starting Form B.', 'cta-lms' )
-			);
-		}
-
-		if ( self::course_has_form_a_remediation( $course_id )
-			&& ! self::user_has_completed_form_a_remediation( $user_id, $course_id ) ) {
-			return new WP_Error(
-				'form_a_remediation_required',
-				__( 'Complete the Form A Remediation Workbook before starting Form B.', 'cta-lms' )
-			);
-		}
-
+		unset( $user_id, $course_id );
 		return true;
 	}
 
@@ -456,18 +437,18 @@ class CTA_Course_Materials {
 			return '';
 		}
 
-		$type = isset( $resource->unlock_after_quiz_type )
-			? sanitize_text_field( (string) $resource->unlock_after_quiz_type )
-			: '';
-
 		$course = ( ! empty( $resource->course_id ) && class_exists( 'CTA_Database' ) )
 			? CTA_Database::get_course( (int) $resource->course_id )
 			: null;
-		if ( '' === $type
-			&& class_exists( 'CTA_Exam_Access' )
-			&& CTA_Exam_Access::is_exam_prep( $course ) ) {
-			$type = self::infer_exam_form_download_gate( $resource );
+
+		// Exam Prep downloads are unrestricted after enrollment — never show completion lock copy.
+		if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course ) ) {
+			return '';
 		}
+
+		$type = isset( $resource->unlock_after_quiz_type )
+			? sanitize_text_field( (string) $resource->unlock_after_quiz_type )
+			: '';
 
 		if ( '' === $type ) {
 			return '';
@@ -483,11 +464,7 @@ class CTA_Course_Materials {
 			return __( 'Available after you complete all program modules.', 'cta-lms' );
 		}
 		if ( 'form_b_ready' === $type ) {
-			$form_b_ok = self::assert_form_b_accessible( $user_id, $course_id );
-			if ( is_wp_error( $form_b_ok ) ) {
-				return $form_b_ok->get_error_message();
-			}
-			return __( 'Available after Form A prerequisites are complete.', 'cta-lms' );
+			return '';
 		}
 		if ( 'form_a_remediation' === $type ) {
 			return __( 'Available after you complete the Form A Remediation Workbook.', 'cta-lms' );

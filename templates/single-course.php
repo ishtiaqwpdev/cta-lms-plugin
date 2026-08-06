@@ -251,6 +251,11 @@ $commercial_pending = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::comm
 					<h2 class="course-section__title" id="course-content-title">
 						<?php echo $is_exam_prep ? esc_html__( 'Program Workbooks', 'cta-lms' ) : esc_html__( 'Instructional Modules', 'cta-lms' ); ?>
 					</h2>
+					<?php if ( $is_exam_prep && ! empty( $modules ) ) : ?>
+						<p class="course-content-order-hint">
+							<?php esc_html_e( 'Numbers show a recommended study order. After enrollment you can open workbooks in any order.', 'cta-lms' ); ?>
+						</p>
+					<?php endif; ?>
 					<?php if ( ! $is_enrolled && ( ! empty( $modules ) || $quiz ) ) : ?>
 						<p class="course-content-lock-notice">
 							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>

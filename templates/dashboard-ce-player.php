@@ -250,7 +250,7 @@ $next_url = $next_module
 				<?php endif; ?>
 			</div>
 
-			<aside class="course-player__sidebar" aria-label="<?php echo esc_attr__( 'Course modules', 'cta-lms' ); ?>">
+			<aside class="course-player__sidebar" aria-label="<?php echo ! empty( $is_exam_prep ) ? esc_attr__( 'Program workbooks', 'cta-lms' ) : esc_attr__( 'Course modules', 'cta-lms' ); ?>">
 				<div class="course-player__modules">
 					<div class="course-player__modules-header">
 						<?php
@@ -260,8 +260,13 @@ $next_url = $next_module
 								: $course->title
 						);
 						?>
-						— <?php echo esc_html__( 'Modules', 'cta-lms' ); ?>
+						— <?php echo ! empty( $is_exam_prep ) ? esc_html__( 'Workbooks', 'cta-lms' ) : esc_html__( 'Modules', 'cta-lms' ); ?>
 					</div>
+					<?php if ( ! empty( $is_exam_prep ) ) : ?>
+						<p class="course-player__modules-hint">
+							<?php esc_html_e( 'Recommended order is a suggestion only — open any workbook anytime.', 'cta-lms' ); ?>
+						</p>
+					<?php endif; ?>
 					<div class="course-player__module-list">
 						<ul class="cta-module-list">
 							<?php foreach ( $modules as $index => $mod ) : ?>
@@ -288,22 +293,46 @@ $next_url = $next_module
 								if ( $is_locked ) {
 									$item_classes[] = 'cta-module-list__item--locked';
 								}
+
+								$recommended_label = '';
+								if ( ! empty( $is_exam_prep ) ) {
+									$recommended_label = sprintf(
+										/* translators: %d: suggested workbook order number (1-based). */
+										__( 'Recommended #%d', 'cta-lms' ),
+										(int) $index + 1
+									);
+								}
 								?>
 								<li class="<?php echo esc_attr( implode( ' ', $item_classes ) ); ?>" data-module-id="<?php echo esc_attr( $mod_id ); ?>">
 									<?php if ( $is_locked ) : ?>
 										<span class="cta-module-list__link" title="<?php echo esc_attr__( 'Complete previous modules first', 'cta-lms' ); ?>">
 											<span class="cta-module-list__icon" aria-hidden="true"><?php echo cta_lms_get_icon( 'lock', 16 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
-											<span class="cta-module-list__title"><?php echo esc_html( $mod->title ); ?></span>
+											<span class="cta-module-list__title">
+												<?php echo esc_html( $mod->title ); ?>
+												<?php if ( $recommended_label ) : ?>
+													<span class="cta-module-list__recommended"><?php echo esc_html( $recommended_label ); ?></span>
+												<?php endif; ?>
+											</span>
 										</span>
 									<?php elseif ( $is_complete ) : ?>
 										<a href="<?php echo esc_url( $mod_url ); ?>" class="cta-module-list__link">
 											<span class="cta-module-list__icon" aria-hidden="true"><?php echo cta_lms_get_icon( 'check-circle', 16 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
-											<span class="cta-module-list__title"><?php echo esc_html( $mod->title ); ?></span>
+											<span class="cta-module-list__title">
+												<?php echo esc_html( $mod->title ); ?>
+												<?php if ( $recommended_label ) : ?>
+													<span class="cta-module-list__recommended"><?php echo esc_html( $recommended_label ); ?></span>
+												<?php endif; ?>
+											</span>
 										</a>
 									<?php else : ?>
 										<a href="<?php echo esc_url( $mod_url ); ?>" class="cta-module-list__link">
 											<span class="cta-module-list__icon" aria-hidden="true"><?php echo $is_current ? cta_lms_get_icon( 'arrow-right', 16 ) : cta_lms_get_icon( 'circle', 14 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
-											<span class="cta-module-list__title"><?php echo esc_html( $mod->title ); ?></span>
+											<span class="cta-module-list__title">
+												<?php echo esc_html( $mod->title ); ?>
+												<?php if ( $recommended_label ) : ?>
+													<span class="cta-module-list__recommended"><?php echo esc_html( $recommended_label ); ?></span>
+												<?php endif; ?>
+											</span>
 										</a>
 									<?php endif; ?>
 								</li>

@@ -389,24 +389,15 @@ class CTA_Student_Dashboard {
 					$best = $att;
 				}
 			}
-			$locked     = false;
-			$lock_msg   = '';
-			$q_type     = isset( $qrow->quiz_type ) ? (string) $qrow->quiz_type : '';
-			if ( 'form_b' === $q_type && class_exists( 'CTA_Course_Materials' ) ) {
-				$form_b_ok = CTA_Course_Materials::assert_form_b_accessible( $user_id_player, $course_id );
-				if ( is_wp_error( $form_b_ok ) ) {
-					$locked   = true;
-					$lock_msg = $form_b_ok->get_error_message();
-				}
-			}
+			// Form B is independent of Form A — no sequential Form A → Form B lock.
 			$quiz_cards[] = array(
 				'quiz'     => $qrow,
-				'url'      => $locked ? '' : $this->get_quiz_url( $course_id, (int) $qrow->id ),
+				'url'      => $this->get_quiz_url( $course_id, (int) $qrow->id ),
 				'attempts' => $attempts,
 				'best'     => $best,
 				'passed'   => $best && (int) $best->passed,
-				'locked'   => $locked,
-				'lock_msg' => $lock_msg,
+				'locked'   => false,
+				'lock_msg' => '',
 			);
 		}
 		$quiz_available = ! empty( $quiz_cards );
@@ -548,7 +539,7 @@ class CTA_Student_Dashboard {
 	}
 
 	/**
-	 * AJAX: mark Form A Remediation Workbook complete (unlocks Form B when required).
+	 * AJAX: mark Form A Remediation Workbook complete (progress tracking; does not gate Form B).
 	 */
 	public function ajax_mark_form_a_remediation_complete() {
 		check_ajax_referer( 'cta_nonce', 'nonce' );
@@ -585,7 +576,7 @@ class CTA_Student_Dashboard {
 
 		wp_send_json_success(
 			array(
-				'message'       => __( 'Form A Remediation marked complete. Form B is now unlocked.', 'cta-lms' ),
+				'message'         => __( 'Form A Remediation marked complete.', 'cta-lms' ),
 				'form_b_unlocked' => true,
 			)
 		);

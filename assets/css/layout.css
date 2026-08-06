@@ -1976,6 +1976,13 @@ button.pagination__item:disabled {
   line-height: var(--line-height-relaxed);
 }
 
+.cta-plugin-wrapper .course-content-order-hint {
+  margin: 0 0 var(--space-md);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-muted, #6b7280);
+}
+
 .cta-plugin-wrapper .course-content-lock-notice svg {
   flex-shrink: 0;
   margin-top: 2px;
@@ -4247,6 +4254,25 @@ button.pagination__item:disabled {
   color: var(--color-text-dark);
   background-color: var(--color-bg-light);
   border-bottom: 1px solid var(--color-border-light);
+}
+
+.cta-plugin-wrapper .course-player__modules-hint {
+  margin: 0;
+  padding: var(--space-sm) var(--space-lg);
+  font-size: var(--font-size-xs, 0.75rem);
+  line-height: 1.4;
+  font-weight: var(--font-weight-normal, 400);
+  color: var(--color-text-muted, #6b7280);
+  background-color: var(--color-bg-light);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.cta-plugin-wrapper .cta-module-list__recommended {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: var(--font-size-xs, 0.75rem);
+  font-weight: var(--font-weight-normal, 400);
+  color: var(--color-text-muted, #6b7280);
 }
 
 .cta-plugin-wrapper .course-player__module-list {
