@@ -635,7 +635,7 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				}
 			}
 
-			// CTA LPCC NCMHCE: Form B requires Form A Remediation Workbook completion (per student).
+			// CTA LPCC NCMHCE: historical remediation meta/sync (Form B no longer gated on remediation).
 			if ( version_compare( $installed, '1.0.133', '<' ) ) {
 				if ( class_exists( 'CTA_Database' ) ) {
 					CTA_Database::maybe_add_resource_unlock_column();

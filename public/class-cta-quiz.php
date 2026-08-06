@@ -152,23 +152,6 @@ class CTA_Quiz {
 			);
 		}
 
-		$is_exam_prep_early = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course );
-		$quiz_type_early    = isset( $quiz->quiz_type ) ? (string) $quiz->quiz_type : '';
-		if ( 'form_b' === $quiz_type_early && $is_exam_prep_early && class_exists( 'CTA_Course_Materials' ) ) {
-			$form_b_gate = CTA_Course_Materials::assert_form_b_accessible( $user_id, $course_id );
-			if ( is_wp_error( $form_b_gate ) ) {
-				$title = ( 'form_a_remediation_required' === $form_b_gate->get_error_code() )
-					? __( 'Form A Remediation Required', 'cta-lms' )
-					: __( 'Form A Required', 'cta-lms' );
-				return $this->render_message_state(
-					$title,
-					$form_b_gate->get_error_message(),
-					$this->get_player_url( $course_id ),
-					__( 'Back to Course', 'cta-lms' )
-				);
-			}
-		}
-
 		$attempts        = CTA_Database::get_user_quiz_attempts( $user_id, (int) $quiz->id );
 		$active_attempt  = CTA_Database::get_active_quiz_attempt( $user_id, (int) $quiz->id );
 		$evaluation      = CTA_Database::get_course_evaluation( $user_id, $course_id );
@@ -262,7 +245,7 @@ class CTA_Quiz {
 				CTA_Database::maybe_ensure_quiz_attempt_schema();
 			}
 
-			// Exam Prep and CE both require modules complete before assessments; Form B adds Form A (+ remediation) gates.
+			// Exam Prep and CE both require modules complete before assessments.
 			$check = $this->validate_quiz_access( $user_id, $course_id, true, $quiz_id );
 
 			if ( is_wp_error( $check ) ) {
@@ -1122,26 +1105,6 @@ class CTA_Quiz {
 
 		if ( ! $quiz ) {
 			return new WP_Error( 'no_quiz', __( 'Quiz not available.', 'cta-lms' ) );
-		}
-
-		// Form B: Form A submit required; Form A Remediation required when that workbook is part of the package.
-		$quiz_type = isset( $quiz->quiz_type ) ? (string) $quiz->quiz_type : '';
-		if ( 'form_b' === $quiz_type && class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course ) ) {
-			if ( class_exists( 'CTA_Course_Materials' ) ) {
-				$form_b_ok = CTA_Course_Materials::assert_form_b_accessible( $user_id, $course_id );
-				if ( is_wp_error( $form_b_ok ) ) {
-					return $form_b_ok;
-				}
-			} else {
-				$has_form_a = class_exists( 'CTA_Lcsw_Aswb_Sync' )
-					&& CTA_Lcsw_Aswb_Sync::user_has_completed_quiz_type( $user_id, $course_id, 'form_a' );
-				if ( ! $has_form_a ) {
-					return new WP_Error(
-						'form_a_required',
-						__( 'Complete and submit Comprehensive Simulation Form A before starting Form B.', 'cta-lms' )
-					);
-				}
-			}
 		}
 
 		return array(
