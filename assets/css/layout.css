@@ -1499,30 +1499,6 @@
   transform: translateY(50%);
 }
 
-/* Live CE hours overlay — covers outdated CE stamps baked into course thumbnails. */
-.cta-plugin-wrapper .course-card--catalog .course-card__ce-media {
-  position: absolute;
-  right: var(--space-md);
-  bottom: 3.4rem;
-  z-index: 2;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 4.75rem;
-  padding: 0.45rem 0.75rem;
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-bold);
-  line-height: 1.15;
-  letter-spacing: 0.01em;
-  text-align: center;
-  color: var(--color-white);
-  background-color: rgba(15, 40, 71, 0.96);
-  border: 2px solid var(--color-white);
-  border-radius: var(--radius-full);
-  box-shadow: var(--shadow-medium);
-  pointer-events: none;
-}
-
 .cta-plugin-wrapper .course-card--catalog .card__body {
   padding-top: var(--space-md);
 }
