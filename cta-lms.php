@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.165' );
+	define( 'CTA_VERSION', '1.0.166' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -871,6 +871,18 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 			if ( version_compare( $installed, '1.0.161', '<' ) && class_exists( 'CTA_Course_Catalog' ) ) {
 				delete_option( 'cta_ce_price_catalog_fp' );
 				CTA_Course_Catalog::maybe_restore_ce_pricing( true );
+			}
+
+			// CE certificate provider line: CAMFT-Approved Continuing Education Provider | CEPA Provider #003369.
+			if ( version_compare( $installed, '1.0.166', '<' ) ) {
+				$camft = (string) get_option( 'cta_camft_provider_number', '' );
+				$cepa  = (string) get_option( 'cta_cepa_provider_number', '' );
+				if ( '' === trim( $camft ) || false !== stripos( $camft, 'CAMFT CEPA' ) ) {
+					update_option( 'cta_camft_provider_number', '#003369', false );
+				}
+				if ( '' === trim( $cepa ) || false !== stripos( $cepa, 'CAMFT CEPA' ) ) {
+					update_option( 'cta_cepa_provider_number', '#003369', false );
+				}
 			}
 
 			// Decouple supervision application pending from general account / CE access.

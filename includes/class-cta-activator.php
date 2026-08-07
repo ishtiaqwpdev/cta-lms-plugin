@@ -109,7 +109,7 @@ class CTA_Activator {
 		add_option( 'cta_supervision_product_name', 'Group Supervision' );
 		add_option( 'cta_supervision_product_description', 'Monthly group supervision subscription' );
 		add_option( 'cta_timezone', 'America/Los_Angeles' );
-		add_option( 'cta_cepa_provider_number', 'CAMFT CEPA #003369' );
+		add_option( 'cta_cepa_provider_number', '#003369' );
 		add_option( 'cta_admin_name', 'Candice Fuimaono, MS, LMFT' );
 		add_option( 'cta_support_email', 'support@clinicaltrainingacademy.com' );
 		add_option( 'cta_certificate_header_text', 'Certificate of Completion' );

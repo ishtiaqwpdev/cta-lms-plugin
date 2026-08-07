@@ -454,6 +454,31 @@ class CTA_Certificates {
 	}
 
 	/**
+	 * Master CE certificate provider line (CAMFT-approved wording).
+	 *
+	 * Uses the configured provider number when present; defaults to #003369.
+	 *
+	 * @return string
+	 */
+	public static function get_provider_line() {
+		$raw = (string) get_option( 'cta_camft_provider_number', '' );
+		if ( '' === trim( $raw ) ) {
+			$raw = (string) get_option( 'cta_cepa_provider_number', '' );
+		}
+
+		$number = '#003369';
+		if ( preg_match( '/#?\s*(\d{3,})/', $raw, $m ) ) {
+			$number = '#' . $m[1];
+		}
+
+		return sprintf(
+			/* translators: %s: CEPA provider number, e.g. #003369 */
+			__( 'CAMFT-Approved Continuing Education Provider | CEPA Provider %s', 'cta-lms' ),
+			$number
+		);
+	}
+
+	/**
 	 * Embed the CTA logo as a data URI so print/PDF output never depends on a remote URL.
 	 *
 	 * @return string data: URI or empty string.

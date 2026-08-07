@@ -253,8 +253,13 @@ $auto_print          = ! empty( $auto_print );
 			<div class="divider"></div>
 
 			<p class="meta">
-				<?php esc_html_e( 'CAMFT CEPA Provider Number:', 'cta-lms' ); ?>
-				<?php echo esc_html( $provider_number ? $provider_number : __( 'N/A', 'cta-lms' ) ); ?>
+				<?php
+				echo esc_html(
+					class_exists( 'CTA_Certificates' )
+						? CTA_Certificates::get_provider_line()
+						: __( 'CAMFT-Approved Continuing Education Provider | CEPA Provider #003369', 'cta-lms' )
+				);
+				?>
 			</p>
 
 			<div class="signature-block">
