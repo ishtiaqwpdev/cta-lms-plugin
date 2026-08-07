@@ -576,57 +576,41 @@ class CTA_Database {
 
 		$table = $wpdb->prefix . 'cta_bundles';
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- table name is prefixed.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$count = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$table}" );
 
 		if ( $count > 0 ) {
 			return;
 		}
 
+		if ( class_exists( 'CTA_Bundle_Catalog' ) ) {
+			CTA_Bundle_Catalog::sync_all();
+			return;
+		}
+
+		// Fallback if catalog class is unavailable.
 		$bundles = array(
 			array(
-				'name'             => 'First Renewal Starter Bundle',
-				'slug'             => 'first-renewal-starter',
-				'description'      => 'Perfect for first-time license renewal. Covers mandatory reporting topics.',
+				'name'             => 'First Renewal Bundle',
+				'slug'             => 'first-renewal-bundle',
+				'description'      => 'First Renewal Bundle — Child Abuse and HIV/AIDS courses (retail value $178).',
 				'plan_type'        => 'bundle',
 				'price'            => 139.00,
 				'billing_cycle'    => 'one_time',
-				'included_courses' => wp_json_encode( array( 5, 6 ) ),
+				'included_courses' => wp_json_encode( array() ),
 				'is_featured'      => 0,
-				'sort_order'       => 1,
+				'sort_order'       => 10,
 			),
 			array(
-				'name'             => 'Clinical Focus CE Bundle',
-				'slug'             => 'clinical-focus-bundle',
-				'description'      => 'Deepen your clinical knowledge with three high-impact courses.',
-				'plan_type'        => 'bundle',
-				'price'            => 215.00,
-				'billing_cycle'    => 'one_time',
-				'included_courses' => wp_json_encode( array( 6, 9, 10 ) ),
-				'is_featured'      => 0,
-				'sort_order'       => 2,
-			),
-			array(
-				'name'             => 'Crisis & Risk Management Bundle',
-				'slug'             => 'crisis-risk-bundle',
-				'description'      => 'Essential training for crisis intervention and risk assessment.',
-				'plan_type'        => 'bundle',
-				'price'            => 215.00,
-				'billing_cycle'    => 'one_time',
-				'included_courses' => wp_json_encode( array( 3, 6, 9 ) ),
-				'is_featured'      => 0,
-				'sort_order'       => 3,
-			),
-			array(
-				'name'             => 'Annual All-Access CE Pass',
-				'slug'             => 'annual-all-access',
-				'description'      => 'Unlimited access to all published CE courses for a full year.',
+				'name'             => 'Clinical Excellence Annual All-Access Pass',
+				'slug'             => 'clinical-excellence-annual-all-access',
+				'description'      => 'Unlimited access to all asynchronous CE courses for a full year. Excludes live supervision and Exam Preparation programs.',
 				'plan_type'        => 'annual',
 				'price'            => 299.00,
 				'billing_cycle'    => 'yearly',
 				'included_courses' => wp_json_encode( array() ),
 				'is_featured'      => 1,
-				'sort_order'       => 4,
+				'sort_order'       => 120,
 			),
 			CTA_Supervision_Plans::get_all_access_bundle_seed(),
 		);

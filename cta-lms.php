@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.157' );
+	define( 'CTA_VERSION', '1.0.158' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -96,6 +96,7 @@ $cta_required_files = array(
 	'includes/class-cta-database.php',
 	'includes/class-cta-syllabus-sync.php',
 	'includes/class-cta-course-catalog.php',
+	'includes/class-cta-bundle-catalog.php',
 	'includes/class-cta-supervision-plans.php',
 	'includes/class-cta-emails.php',
 	'includes/class-cta-pages.php',
@@ -842,6 +843,11 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 			// Exam Prep catalog shortcode + dedicated Exam Preparation page (nav left for manual add).
 			if ( version_compare( $installed, '1.0.156', '<' ) && class_exists( 'CTA_Pages' ) ) {
 				CTA_Pages::sync_public_pages();
+			}
+
+			// Master Pricing Catalog v3.5 — sync membership/bundle/pathway names + prices.
+			if ( version_compare( $installed, '1.0.158', '<' ) && class_exists( 'CTA_Bundle_Catalog' ) ) {
+				CTA_Bundle_Catalog::sync_all();
 			}
 
 			// Decouple supervision application pending from general account / CE access.
