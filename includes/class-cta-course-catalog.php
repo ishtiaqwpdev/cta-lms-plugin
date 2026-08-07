@@ -100,8 +100,9 @@ class CTA_Course_Catalog {
 					'Fundamentals of Clinical Supervision',
 				),
 				'title'        => 'The Fundamentals of Clinical Supervision: Legal Frameworks and Developmental Models',
-				'ce_hours'     => 6.0,
-				'price'        => 129.00,
+				// Master Pricing Catalog v3.5 Course 8 = 15 CE; commercial price $169 (client).
+				'ce_hours'     => 15.0,
+				'price'        => 169.00,
 				'category'     => 'Supervision',
 			),
 		);

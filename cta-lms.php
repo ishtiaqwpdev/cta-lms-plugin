@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.159' );
+	define( 'CTA_VERSION', '1.0.160' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -405,7 +405,7 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				CTA_Course_Catalog::sync_approved_prices();
 			}
 
-			// Re-sync CE prices to the Jul 2026 approved catalog ($79 / $45 / $149 / $129, etc.).
+			// Re-sync CE prices to the Jul 2026 approved catalog ($79 / $45 / $149 / $169, etc.).
 			if ( version_compare( $installed, '1.0.95', '<' ) && class_exists( 'CTA_Course_Catalog' ) ) {
 				CTA_Course_Catalog::sync_approved_prices();
 			}
@@ -856,6 +856,15 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				CTA_Bundle_Catalog::maybe_sync( true );
 			}
 
+			// CE Course 8 Clinical Supervision: 15 CE / $169 (was 6 / $129). Re-sync full CE catalog.
+			if ( version_compare( $installed, '1.0.160', '<' ) && class_exists( 'CTA_Course_Catalog' ) ) {
+				delete_option( 'cta_ce_price_catalog_fp' );
+				CTA_Course_Catalog::restore_ce_pricing();
+				if ( function_exists( 'cta_ce_price_catalog_fingerprint' ) ) {
+					update_option( 'cta_ce_price_catalog_fp', cta_ce_price_catalog_fingerprint(), false );
+				}
+			}
+
 			// Decouple supervision application pending from general account / CE access.
 			if ( version_compare( $installed, '1.0.90', '<' ) && class_exists( 'CTA_Associate_Access' ) ) {
 				$query = new WP_User_Query(
@@ -899,6 +908,7 @@ if ( ! function_exists( 'cta_ce_price_catalog_fingerprint' ) ) {
 			$prices[] = array(
 				'title'    => (string) ( $entry['title'] ?? '' ),
 				'price'    => round( (float) ( $entry['price'] ?? 0 ), 2 ),
+				'ce_hours' => round( (float) ( $entry['ce_hours'] ?? 0 ), 2 ),
 				'category' => (string) ( $entry['category'] ?? '' ),
 			);
 		}
