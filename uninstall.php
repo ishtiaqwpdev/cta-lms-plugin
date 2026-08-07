@@ -68,6 +68,7 @@ delete_option( 'cta_support_email' );
 delete_option( 'cta_certificate_header_text' );
 delete_option( 'cta_certificate_footer_text' );
 delete_option( 'cta_certificate_signature_name' );
+delete_option( 'cta_certificate_signature_image_url' );
 
 $cta_email_types = array(
 	'welcome',

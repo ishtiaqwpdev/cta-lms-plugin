@@ -337,6 +337,10 @@ class CTA_Admin {
 		if ( 'cta-lms_page_cta-lms-course-edit' === $hook ) {
 			wp_enqueue_media();
 		}
+
+		if ( 'cta-lms_page_cta-lms-settings' === $hook ) {
+			wp_enqueue_media();
+		}
 	}
 
 	/**
@@ -1966,6 +1970,7 @@ class CTA_Admin {
 		update_option( 'cta_certificate_header_text', cta_lms_sanitize_utf8_text( sanitize_text_field( wp_unslash( $_POST['cta_certificate_header_text'] ?? '' ) ) ) );
 		update_option( 'cta_certificate_footer_text', cta_lms_sanitize_utf8_text( sanitize_text_field( wp_unslash( $_POST['cta_certificate_footer_text'] ?? '' ) ) ) );
 		update_option( 'cta_certificate_signature_name', cta_lms_sanitize_utf8_text( sanitize_text_field( wp_unslash( $_POST['cta_certificate_signature_name'] ?? '' ) ) ) );
+		update_option( 'cta_certificate_signature_image_url', esc_url_raw( wp_unslash( $_POST['cta_certificate_signature_image_url'] ?? '' ) ) );
 
 		wp_safe_redirect(
 			add_query_arg(

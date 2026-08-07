@@ -165,6 +165,35 @@ $notice = sanitize_text_field( wp_unslash( $_GET['cta_notice'] ?? '' ) );
 					<th><label for="cta_certificate_signature_name"><?php esc_html_e( 'Administrator Signature Name', 'cta-lms' ); ?></label></th>
 					<td><input type="text" class="regular-text" id="cta_certificate_signature_name" name="cta_certificate_signature_name" value="<?php echo esc_attr( get_option( 'cta_certificate_signature_name', 'Candice Fuimaono, MS, LMFT' ) ); ?>"></td>
 				</tr>
+				<tr>
+					<th><label for="cta_certificate_signature_image_url"><?php esc_html_e( 'Administrator Signature Image', 'cta-lms' ); ?></label></th>
+					<td>
+						<?php
+						$sig_img_url = (string) get_option( 'cta_certificate_signature_image_url', '' );
+						$bundled_sig = '';
+						if ( class_exists( 'CTA_Certificates' ) ) {
+							foreach ( CTA_Certificates::get_bundled_signature_paths() as $sig_path ) {
+								if ( is_readable( $sig_path ) ) {
+									$bundled_sig = CTA_PLUGIN_URL . 'assets/img/' . basename( $sig_path );
+									break;
+								}
+							}
+						}
+						$preview_src = $sig_img_url ? $sig_img_url : $bundled_sig;
+						?>
+						<input type="url" class="regular-text" id="cta_certificate_signature_image_url" name="cta_certificate_signature_image_url" value="<?php echo esc_attr( $sig_img_url ); ?>" placeholder="https://…/signature.png">
+						<p>
+							<button type="button" class="button" id="cta-select-signature-image"><?php esc_html_e( 'Select from Media Library', 'cta-lms' ); ?></button>
+							<button type="button" class="button" id="cta-clear-signature-image"><?php esc_html_e( 'Clear', 'cta-lms' ); ?></button>
+						</p>
+						<?php if ( $preview_src ) : ?>
+							<p><img src="<?php echo esc_url( $preview_src ); ?>" alt="" style="max-width:220px;max-height:72px;height:auto;border:1px solid #d0d5dd;padding:6px;background:#fff;"></p>
+						<?php endif; ?>
+						<p class="description">
+							<?php esc_html_e( 'Appears above the typed name on every CE certificate. Prefer a transparent PNG. Bundled fallback path: assets/img/certificate-signature.png', 'cta-lms' ); ?>
+						</p>
+					</td>
+				</tr>
 			</table>
 			<p>
 				<button type="button" class="button" id="cta-preview-certificate"><?php esc_html_e( 'Preview Certificate', 'cta-lms' ); ?></button>
@@ -176,3 +205,34 @@ $notice = sanitize_text_field( wp_unslash( $_GET['cta_notice'] ?? '' ) );
 		</p>
 	</form>
 </div>
+<script>
+(function ($) {
+	$(function () {
+		var frame;
+		$('#cta-select-signature-image').on('click', function (e) {
+			e.preventDefault();
+			if (frame) {
+				frame.open();
+				return;
+			}
+			frame = wp.media({
+				title: '<?php echo esc_js( __( 'Select signature image', 'cta-lms' ) ); ?>',
+				button: { text: '<?php echo esc_js( __( 'Use this signature', 'cta-lms' ) ); ?>' },
+				library: { type: 'image' },
+				multiple: false
+			});
+			frame.on('select', function () {
+				var attachment = frame.state().get('selection').first().toJSON();
+				if (attachment && attachment.url) {
+					$('#cta_certificate_signature_image_url').val(attachment.url);
+				}
+			});
+			frame.open();
+		});
+		$('#cta-clear-signature-image').on('click', function (e) {
+			e.preventDefault();
+			$('#cta_certificate_signature_image_url').val('');
+		});
+	});
+})(jQuery);
+</script>

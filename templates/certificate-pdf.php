@@ -19,6 +19,7 @@
  * @var string $header_text
  * @var string $footer_text
  * @var string $signature_name
+ * @var string $signature_url
  * @var string $organization_name
  * @var string $administrator_title
  */
@@ -33,6 +34,10 @@ $footer_text         = ! empty( $footer_text ) ? $footer_text : 'clinicaltrainin
 $signature_name      = ! empty( $signature_name ) ? $signature_name : __( 'Program Administrator', 'cta-lms' );
 $organization_name   = ! empty( $organization_name ) ? $organization_name : __( 'Clinical Training and Supervision Academy', 'cta-lms' );
 $administrator_title = ! empty( $administrator_title ) ? $administrator_title : __( 'Program Administrator', 'cta-lms' );
+if ( empty( $signature_url ) && class_exists( 'CTA_Certificates' ) ) {
+	$signature_url = CTA_Certificates::get_signature_data_uri();
+}
+$signature_url = ! empty( $signature_url ) ? $signature_url : '';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -136,6 +141,14 @@ $administrator_title = ! empty( $administrator_title ) ? $administrator_title : 
 			margin-top: 10px;
 			text-align: center;
 		}
+		.signature-image {
+			display: block;
+			max-width: 200px;
+			max-height: 56px;
+			width: 200px;
+			height: auto;
+			margin: 0 auto -2px;
+		}
 		.signature-line {
 			width: 300px;
 			border-top: 1px solid #122B51;
@@ -197,6 +210,20 @@ $administrator_title = ! empty( $administrator_title ) ? $administrator_title : 
 			</p>
 
 			<div class="signature-block">
+				<?php if ( ! empty( $signature_url ) ) : ?>
+					<?php
+					$sig_src = ( 0 === strpos( (string) $signature_url, 'data:' ) )
+						? esc_attr( $signature_url )
+						: esc_url( $signature_url );
+					?>
+					<img
+						class="signature-image"
+						src="<?php echo $sig_src; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped above ?>"
+						alt="<?php echo esc_attr( sprintf( /* translators: %s: signer name */ __( 'Signature of %s', 'cta-lms' ), $signature_name ) ); ?>"
+						width="200"
+						height="56"
+					>
+				<?php endif; ?>
 				<div class="signature-line">
 					<?php echo esc_html( $signature_name ); ?><br>
 					<?php echo esc_html( $administrator_title ); ?><br>

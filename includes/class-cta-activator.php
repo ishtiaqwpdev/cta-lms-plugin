@@ -115,6 +115,7 @@ class CTA_Activator {
 		add_option( 'cta_certificate_header_text', 'Certificate of Completion' );
 		add_option( 'cta_certificate_footer_text', 'clinicaltrainingacademy.com' );
 		add_option( 'cta_certificate_signature_name', 'Candice Fuimaono, MS, LMFT' );
+		add_option( 'cta_certificate_signature_image_url', '' );
 
 		update_option( 'cta_lms_version', CTA_VERSION );
 		delete_option( 'cta_lms_activation_error' );

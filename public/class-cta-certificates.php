@@ -439,6 +439,7 @@ class CTA_Certificates {
 		if ( '' === $logo_url ) {
 			$logo_url = cta_lms_get_logo_url();
 		}
+		$signature_url = self::get_signature_data_uri();
 		$auto_print   = ! empty( $args['auto_print'] );
 		$download_url = ! empty( $args['download_url'] ) ? (string) $args['download_url'] : '';
 		$for_pdf      = ! empty( $args['for_pdf'] );
@@ -476,6 +477,129 @@ class CTA_Certificates {
 			__( 'CAMFT-Approved Continuing Education Provider | CEPA Provider %s', 'cta-lms' ),
 			$number
 		);
+	}
+
+	/**
+	 * Absolute paths checked for the bundled administrator signature image.
+	 *
+	 * @return array<int,string>
+	 */
+	public static function get_bundled_signature_paths() {
+		$base = CTA_PLUGIN_DIR . 'assets/img/';
+		return array(
+			$base . 'certificate-signature.png',
+			$base . 'certificate-signature.jpg',
+			$base . 'certificate-signature.jpeg',
+			$base . 'certificate-signature.webp',
+		);
+	}
+
+	/**
+	 * Electronic signature image as a data URI for print/PDF embedding.
+	 *
+	 * Prefers the bundled plugin asset, then Media Library / settings URL.
+	 *
+	 * @return string data: URI or empty string.
+	 */
+	public static function get_signature_data_uri() {
+		foreach ( self::get_bundled_signature_paths() as $path ) {
+			$uri = self::path_to_data_uri( $path );
+			if ( '' !== $uri ) {
+				return $uri;
+			}
+		}
+
+		$url = (string) get_option( 'cta_certificate_signature_image_url', '' );
+		$url = esc_url_raw( trim( $url ) );
+		if ( '' === $url ) {
+			return '';
+		}
+
+		$path = '';
+
+		if ( 0 === strpos( $url, CTA_PLUGIN_URL ) ) {
+			$relative  = substr( $url, strlen( CTA_PLUGIN_URL ) );
+			$candidate = CTA_PLUGIN_DIR . ltrim( $relative, '/\\' );
+			if ( file_exists( $candidate ) ) {
+				$path = $candidate;
+			}
+		}
+
+		if ( '' === $path ) {
+			$upload = wp_upload_dir();
+			if ( empty( $upload['error'] ) && 0 === strpos( $url, $upload['baseurl'] ) ) {
+				$relative  = substr( $url, strlen( $upload['baseurl'] ) );
+				$candidate = trailingslashit( $upload['basedir'] ) . ltrim( $relative, '/\\' );
+				if ( file_exists( $candidate ) ) {
+					$path = $candidate;
+				}
+			}
+		}
+
+		if ( '' === $path && function_exists( 'attachment_url_to_postid' ) ) {
+			$att_id = absint( attachment_url_to_postid( $url ) );
+			if ( $att_id ) {
+				$attached = get_attached_file( $att_id );
+				if ( $attached && file_exists( $attached ) ) {
+					$path = $attached;
+				}
+			}
+		}
+
+		if ( '' !== $path ) {
+			return self::path_to_data_uri( $path );
+		}
+
+		// Remote fallback for Dompdf (same pattern as logo).
+		if ( preg_match( '#^https?://#i', $url ) && function_exists( 'wp_remote_get' ) ) {
+			$response = wp_remote_get(
+				$url,
+				array(
+					'timeout'     => 15,
+					'redirection' => 3,
+				)
+			);
+			if ( ! is_wp_error( $response ) && 200 === (int) wp_remote_retrieve_response_code( $response ) ) {
+				$bytes = (string) wp_remote_retrieve_body( $response );
+				if ( '' !== $bytes ) {
+					$content_type = (string) wp_remote_retrieve_header( $response, 'content-type' );
+					$type         = 'image/png';
+					if ( preg_match( '#^(image/[a-z0-9.+-]+)#i', $content_type, $m ) ) {
+						$type = strtolower( $m[1] );
+					} elseif ( preg_match( '/\.jpe?g(\?|$)/i', $url ) ) {
+						$type = 'image/jpeg';
+					} elseif ( preg_match( '/\.webp(\?|$)/i', $url ) ) {
+						$type = 'image/webp';
+					}
+					return 'data:' . $type . ';base64,' . base64_encode( $bytes );
+				}
+			}
+		}
+
+		return '';
+	}
+
+	/**
+	 * Convert a local image path to a data URI.
+	 *
+	 * @param string $path Absolute filesystem path.
+	 * @return string
+	 */
+	private static function path_to_data_uri( $path ) {
+		$path = (string) $path;
+		if ( '' === $path || ! is_readable( $path ) ) {
+			return '';
+		}
+
+		$mime = function_exists( 'wp_check_filetype' ) ? wp_check_filetype( $path ) : array();
+		$type = ! empty( $mime['type'] ) ? $mime['type'] : 'image/png';
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+		$bytes = file_get_contents( $path );
+		if ( false === $bytes || '' === $bytes ) {
+			return '';
+		}
+
+		return 'data:' . $type . ';base64,' . base64_encode( $bytes );
 	}
 
 	/**
