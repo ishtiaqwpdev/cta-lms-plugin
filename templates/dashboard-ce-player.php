@@ -101,6 +101,60 @@ $next_url = $next_module
 
 				<h1 class="course-player__lesson-title"><?php echo esc_html( $module->title ); ?></h1>
 
+				<?php
+				$exam_lesson = null;
+				$workbook_resource = null;
+				if ( ! empty( $is_exam_prep ) && class_exists( 'CTA_Exam_Prep_Lessons' ) ) {
+					$exam_lesson = CTA_Exam_Prep_Lessons::get_lesson_for_module( $course, $module );
+					$player_resources_for_wb = isset( $resources ) ? (array) $resources : array();
+					$workbook_resource = CTA_Exam_Prep_Lessons::find_workbook_resource( $player_resources_for_wb, $module );
+				}
+				?>
+
+				<?php if ( ! empty( $exam_lesson['html'] ) ) : ?>
+					<div class="cta-exam-lesson">
+						<?php if ( $workbook_resource && class_exists( 'CTA_Course_Materials' ) ) : ?>
+							<?php
+							$wb_can_dl = CTA_Course_Materials::user_can_access( get_current_user_id(), $workbook_resource );
+							$wb_url    = $wb_can_dl ? CTA_Course_Materials::get_serve_url( (int) $workbook_resource->id ) : '';
+							?>
+							<div class="cta-exam-lesson__download">
+								<?php if ( $wb_url ) : ?>
+									<a class="btn btn-outline btn--sm" href="<?php echo esc_url( $wb_url ); ?>" target="_blank" rel="noopener noreferrer">
+										<?php echo esc_html__( 'Download printable workbook (DOCX)', 'cta-lms' ); ?>
+									</a>
+								<?php else : ?>
+									<span class="btn btn-outline btn--sm" aria-disabled="true">
+										<?php echo esc_html__( 'Printable workbook available in Course Materials', 'cta-lms' ); ?>
+									</span>
+								<?php endif; ?>
+								<p class="cta-exam-lesson__download-note">
+									<?php echo esc_html__( 'Read this workbook online below, or download the printable DOCX. Both options stay available — neither replaces the other.', 'cta-lms' ); ?>
+								</p>
+							</div>
+						<?php endif; ?>
+
+						<div class="cta-exam-lesson__body">
+							<?php echo $exam_lesson['html']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitized via CTA_Exam_Prep_Lessons::sanitize_lesson_html(). ?>
+						</div>
+
+						<div class="cta-exam-lesson__nav">
+							<?php if ( $prev_url ) : ?>
+								<a href="<?php echo esc_url( $prev_url ); ?>" class="btn btn-outline">&larr; <?php echo esc_html__( 'Previous Workbook', 'cta-lms' ); ?></a>
+							<?php else : ?>
+								<span></span>
+							<?php endif; ?>
+							<?php if ( $next_url ) : ?>
+								<a href="<?php echo esc_url( $next_url ); ?>" class="btn btn-primary cta-next-module-link"><?php echo esc_html__( 'Next Workbook', 'cta-lms' ); ?> &rarr;</a>
+							<?php endif; ?>
+						</div>
+					</div>
+				<?php elseif ( ! empty( $is_exam_prep ) ) : ?>
+					<p class="cta-exam-lesson__missing">
+						<?php echo esc_html__( 'Online lesson text is not available for this workbook yet. Use the printable DOCX in Course Materials below.', 'cta-lms' ); ?>
+					</p>
+				<?php endif; ?>
+
 				<div class="course-player__lesson-actions" data-course-player-actions>
 					<?php if ( $module_complete ) : ?>
 						<button type="button" class="btn btn-primary course-player__action-btn" id="cta-mark-complete" disabled>
