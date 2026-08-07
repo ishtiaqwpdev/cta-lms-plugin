@@ -155,15 +155,12 @@ class CTA_Certificates {
 			'file_url'           => $paths['file_url'],
 		);
 
-		$student_timezone = ! empty( $evaluation->timezone ) ? (string) $evaluation->timezone : null;
-
 		CTA_Emails::send(
 			'certificate_ready',
 			$user_id,
 			array(
 				'course'      => $course,
 				'certificate' => $certificate,
-				'timezone'    => $student_timezone,
 			)
 		);
 
@@ -341,13 +338,42 @@ class CTA_Certificates {
 	}
 
 	/**
+	 * Rebuild every stored certificate HTML file (timezone / template updates).
+	 *
+	 * @param int $limit Max rows to refresh (0 = all).
+	 * @return int Number of files refreshed.
+	 */
+	public static function refresh_all_certificates( $limit = 0 ) {
+		global $wpdb;
+
+		$limit = absint( $limit );
+		$sql   = "SELECT * FROM {$wpdb->prefix}cta_certificates ORDER BY id ASC";
+		if ( $limit > 0 ) {
+			$sql .= $wpdb->prepare( ' LIMIT %d', $limit );
+		}
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$rows = $wpdb->get_results( $sql );
+
+		$count = 0;
+		foreach ( (array) $rows as $row ) {
+			if ( self::refresh_file( $row ) ) {
+				++$count;
+			}
+		}
+
+		return $count;
+	}
+
+	/**
 	 * Format the certificate issue / completion datetime for print and email.
 	 *
-	 * Uses the stored issue instant only (never "now"). Prefers the learner's
-	 * evaluation timezone when available so the printed day matches when they earned it.
+	 * Uses the stored issue instant only (never "now"). Always displays in the
+	 * CTA Pacific timezone (America/Los_Angeles → PST/PDT) — never the learner's
+	 * browser timezone (which produced PKT / Asia/Karachi labels on certificates).
 	 *
 	 * @param string      $issued_at   MySQL datetime from the certificate row.
-	 * @param object|null $evaluation  Evaluation row (optional; timezone / submitted_at).
+	 * @param object|null $evaluation  Evaluation row (optional; submitted_at fallback).
 	 * @return string
 	 */
 	public static function format_issue_date( $issued_at, $evaluation = null ) {
@@ -364,19 +390,10 @@ class CTA_Certificates {
 			return '';
 		}
 
-		$display_tz = cta_lms_get_timezone();
-		if ( $evaluation && ! empty( $evaluation->timezone ) ) {
-			try {
-				$display_tz = new DateTimeZone( (string) $evaluation->timezone );
-			} catch ( Exception $e ) {
-				$display_tz = cta_lms_get_timezone();
-			}
-		}
-
 		return cta_lms_format_local_date(
 			$issue_source,
 			'F j, Y \a\t g:i A T',
-			$display_tz
+			cta_lms_get_timezone()
 		);
 	}
 

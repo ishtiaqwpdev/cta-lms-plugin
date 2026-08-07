@@ -453,7 +453,7 @@ class CTA_CE_Access {
 			$expires_at = gmdate( 'Y-m-d H:i:s', strtotime( current_time( 'mysql' ) . ' +12 months' ) );
 			// Prefer site-local time via DateTime if available.
 			try {
-				$tz   = function_exists( 'wp_timezone' ) ? wp_timezone() : new DateTimeZone( 'UTC' );
+				$tz   = function_exists( 'cta_lms_get_timezone' ) ? cta_lms_get_timezone() : ( function_exists( 'wp_timezone' ) ? wp_timezone() : new DateTimeZone( 'UTC' ) );
 				$dt   = new DateTime( current_time( 'mysql' ), $tz );
 				$dt->modify( '+12 months' );
 				$expires_at = $dt->format( 'Y-m-d H:i:s' );

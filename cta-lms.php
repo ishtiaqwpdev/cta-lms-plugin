@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.167' );
+	define( 'CTA_VERSION', '1.0.168' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -882,6 +882,18 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				}
 				if ( '' === trim( $cepa ) || false !== stripos( $cepa, 'CAMFT CEPA' ) ) {
 					update_option( 'cta_cepa_provider_number', '#003369', false );
+				}
+			}
+
+			// Certificates / dashboards: force Pacific Time (never PKT / Asia/Karachi).
+			if ( version_compare( $installed, '1.0.168', '<' ) ) {
+				if ( function_exists( 'cta_lms_ensure_pacific_timezone' ) ) {
+					cta_lms_ensure_pacific_timezone();
+				} else {
+					update_option( 'cta_timezone', 'America/Los_Angeles', false );
+				}
+				if ( class_exists( 'CTA_Certificates' ) && method_exists( 'CTA_Certificates', 'refresh_all_certificates' ) ) {
+					CTA_Certificates::refresh_all_certificates();
 				}
 			}
 

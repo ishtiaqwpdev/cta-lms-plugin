@@ -1965,7 +1965,19 @@ class CTA_Admin {
 		} catch ( Exception $e ) {
 			$timezone = 'America/Los_Angeles';
 		}
+		if ( function_exists( 'cta_lms_is_non_cta_server_timezone' ) && cta_lms_is_non_cta_server_timezone( $timezone ) ) {
+			$timezone = 'America/Los_Angeles';
+		}
 		update_option( 'cta_timezone', $timezone );
+		// Keep WordPress site timezone aligned when CTA uses Pacific (or when WP was a blocked zone).
+		$wp_tz = (string) get_option( 'timezone_string', '' );
+		if (
+			'America/Los_Angeles' === $timezone
+			&& ( '' === $wp_tz || ( function_exists( 'cta_lms_is_non_cta_server_timezone' ) && cta_lms_is_non_cta_server_timezone( $wp_tz ) ) )
+		) {
+			update_option( 'timezone_string', 'America/Los_Angeles', false );
+			update_option( 'gmt_offset', 0, false );
+		}
 
 		update_option( 'cta_certificate_header_text', cta_lms_sanitize_utf8_text( sanitize_text_field( wp_unslash( $_POST['cta_certificate_header_text'] ?? '' ) ) ) );
 		update_option( 'cta_certificate_footer_text', cta_lms_sanitize_utf8_text( sanitize_text_field( wp_unslash( $_POST['cta_certificate_footer_text'] ?? '' ) ) ) );

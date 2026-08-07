@@ -109,6 +109,11 @@ class CTA_Activator {
 		add_option( 'cta_supervision_product_name', 'Group Supervision' );
 		add_option( 'cta_supervision_product_description', 'Monthly group supervision subscription' );
 		add_option( 'cta_timezone', 'America/Los_Angeles' );
+		if ( function_exists( 'cta_lms_ensure_pacific_timezone' ) ) {
+			cta_lms_ensure_pacific_timezone();
+		} elseif ( '' === (string) get_option( 'timezone_string', '' ) ) {
+			update_option( 'timezone_string', 'America/Los_Angeles' );
+		}
 		add_option( 'cta_cepa_provider_number', '#003369' );
 		add_option( 'cta_admin_name', 'Candice Fuimaono, MS, LMFT' );
 		add_option( 'cta_support_email', 'support@clinicaltrainingacademy.com' );

@@ -131,7 +131,7 @@ $notice = sanitize_text_field( wp_unslash( $_GET['cta_notice'] ?? '' ) );
 							<?php endforeach; ?>
 						</select>
 						<p class="description">
-							<?php esc_html_e( 'All booking times, dashboards, emails, and admin timestamps display in this timezone. Default: America/Los_Angeles (Pacific Time).', 'cta-lms' ); ?>
+							<?php esc_html_e( 'All booking times, certificates, dashboards, emails, and admin timestamps display in this timezone. Default: America/Los_Angeles (Pacific Time — PST/PDT). Do not use Asia/Karachi or other server-local zones.', 'cta-lms' ); ?>
 						</p>
 					</td>
 				</tr>

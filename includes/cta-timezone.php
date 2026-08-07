@@ -20,6 +20,67 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+if ( ! function_exists( 'cta_lms_is_non_cta_server_timezone' ) ) {
+	/**
+	 * Whether a timezone is a known non-CTA host/local zone (e.g. Pakistan).
+	 *
+	 * CTA is California-based; certificates and dashboards must not use these.
+	 *
+	 * @param string $timezone IANA timezone id.
+	 * @return bool
+	 */
+	function cta_lms_is_non_cta_server_timezone( $timezone ) {
+		$timezone = (string) $timezone;
+		$blocked  = array(
+			'Asia/Karachi',
+			'Asia/Calcutta',
+			'Asia/Kolkata',
+			'Asia/Dhaka',
+			'Asia/Colombo',
+		);
+
+		return in_array( $timezone, $blocked, true );
+	}
+}
+
+if ( ! function_exists( 'cta_lms_ensure_pacific_timezone' ) ) {
+	/**
+	 * Root-level timezone heal for CTA (California / Pacific Time).
+	 *
+	 * - Keeps plugin display timezone on America/Los_Angeles when empty or
+	 *   set to a known server-local zone (Asia/Karachi → PKT on certificates).
+	 * - Aligns WordPress Settings → General → Timezone when empty or similarly
+	 *   mis-set, so current_time() / wp_timezone() stay consistent with CTA.
+	 *
+	 * @return string Resolved CTA timezone string.
+	 */
+	function cta_lms_ensure_pacific_timezone() {
+		$desired = 'America/Los_Angeles';
+		$cta     = (string) get_option( 'cta_timezone', '' );
+
+		if ( '' === $cta || cta_lms_is_non_cta_server_timezone( $cta ) ) {
+			update_option( 'cta_timezone', $desired, false );
+			$cta = $desired;
+		}
+
+		try {
+			new DateTimeZone( $cta );
+		} catch ( Exception $e ) {
+			update_option( 'cta_timezone', $desired, false );
+			$cta = $desired;
+		}
+
+		$wp_tz = (string) get_option( 'timezone_string', '' );
+		if ( '' === $wp_tz || cta_lms_is_non_cta_server_timezone( $wp_tz ) ) {
+			update_option( 'timezone_string', $cta, false );
+			// gmt_offset is ignored when timezone_string is set; clear stale offset.
+			update_option( 'gmt_offset', 0, false );
+		}
+
+		return $cta;
+	}
+}
+
 if ( ! function_exists( 'cta_lms_get_timezone_string' ) ) {
 	/**
 	 * Plugin display timezone string (defaults to Pacific Time).
@@ -29,7 +90,7 @@ if ( ! function_exists( 'cta_lms_get_timezone_string' ) ) {
 	function cta_lms_get_timezone_string() {
 		$timezone = (string) get_option( 'cta_timezone', 'America/Los_Angeles' );
 
-		if ( '' === $timezone ) {
+		if ( '' === $timezone || cta_lms_is_non_cta_server_timezone( $timezone ) ) {
 			$timezone = 'America/Los_Angeles';
 		}
 
