@@ -21,6 +21,7 @@ class CTA_Courses {
 	 */
 	public function __construct() {
 		add_shortcode( 'cta_course_catalog', array( $this, 'render_catalog' ) );
+		add_shortcode( 'cta_exam_prep_catalog', array( $this, 'render_exam_prep_catalog' ) );
 		add_shortcode( 'cta_single_course', array( $this, 'render_single_course' ) );
 
 		add_action( 'wp_ajax_cta_filter_courses', array( $this, 'ajax_filter_courses' ) );
@@ -32,7 +33,9 @@ class CTA_Courses {
 	}
 
 	/**
-	 * Render the course catalog shortcode.
+	 * Render the CE course catalog shortcode.
+	 *
+	 * CE only — Exam Preparation programs use [cta_exam_prep_catalog].
 	 *
 	 * @param array $atts Shortcode attributes.
 	 * @return string
@@ -40,10 +43,9 @@ class CTA_Courses {
 	public function render_catalog( $atts ) {
 		$atts = shortcode_atts(
 			array(
-				'limit'        => -1,
-				'category'     => '',
-				'columns'      => 3,
-				'product_type' => '',
+				'limit'    => -1,
+				'category' => '',
+				'columns'  => 3,
 			),
 			$atts,
 			'cta_course_catalog'
@@ -59,53 +61,67 @@ class CTA_Courses {
 			$active_category = sanitize_text_field( wp_unslash( $_GET['category'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		}
 
-		// Deep-link exam prep catalog: ?product_type=exam_prep
-		if ( '' === sanitize_text_field( $atts['product_type'] ) && isset( $_GET['product_type'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			$atts['product_type'] = sanitize_text_field( wp_unslash( $_GET['product_type'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		}
-
-		$all_published = $this->get_courses(
+		$courses = $this->get_courses(
 			array(
-				'limit'    => $limit,
-				'category' => $active_category,
-				'status'   => 'published',
+				'limit'        => $limit,
+				'category'     => $active_category,
+				'status'       => 'published',
+				'product_type' => 'ce',
 			)
 		);
 
-		$ce_courses   = array();
-		$exam_courses = array();
-
-		foreach ( $all_published as $course ) {
-			if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course ) ) {
-				// Checkout HOLD: hide programs still awaiting learner testing + written release approval.
-				if ( CTA_Exam_Access::launch_pending_testing( $course )
-					|| CTA_Exam_Access::commercial_terms_pending( $course ) ) {
-					continue;
-				}
-				$exam_courses[] = $course;
-			} else {
-				$ce_courses[] = $course;
-			}
-		}
-
-		// Default catalog shows CE; optional product_type="exam_prep" for exam-only shortcode.
-		$product_type_filter = sanitize_text_field( $atts['product_type'] );
-		if ( 'exam_prep' === $product_type_filter ) {
-			$courses    = $exam_courses;
-			$ce_courses = array();
-		} elseif ( 'ce' === $product_type_filter ) {
-			$courses      = $ce_courses;
-			$exam_courses = array();
-		} else {
-			$courses = $ce_courses;
-		}
-
-		$categories = $this->get_categories( 'ce' === $product_type_filter || '' === $product_type_filter ? 'ce' : $product_type_filter );
+		$categories = $this->get_categories( 'ce' );
 
 		$alcoholism_course_url = $this->get_alcoholism_course_url();
 
 		ob_start();
 		include CTA_PLUGIN_DIR . 'templates/courses.php';
+		return ob_get_clean();
+	}
+
+	/**
+	 * Render the Exam Preparation program catalog shortcode.
+	 *
+	 * Exam Prep only — does not include CE courses, CE hours, or CE category filters.
+	 *
+	 * @param array $atts Shortcode attributes.
+	 * @return string
+	 */
+	public function render_exam_prep_catalog( $atts ) {
+		$atts = shortcode_atts(
+			array(
+				'limit'   => -1,
+				'columns' => 3,
+			),
+			$atts,
+			'cta_exam_prep_catalog'
+		);
+
+		$limit   = intval( $atts['limit'] );
+		$columns = max( 1, min( 4, absint( $atts['columns'] ) ) );
+		$search  = '';
+
+		$published = $this->get_courses(
+			array(
+				'limit'        => $limit,
+				'status'       => 'published',
+				'product_type' => 'exam_prep',
+			)
+		);
+
+		$courses = array();
+		foreach ( $published as $course ) {
+			// Checkout HOLD: hide programs still awaiting learner testing + written release approval.
+			if ( class_exists( 'CTA_Exam_Access' )
+				&& ( CTA_Exam_Access::launch_pending_testing( $course )
+					|| CTA_Exam_Access::commercial_terms_pending( $course ) ) ) {
+				continue;
+			}
+			$courses[] = $course;
+		}
+
+		ob_start();
+		include CTA_PLUGIN_DIR . 'templates/exam-prep-catalog.php';
 		return ob_get_clean();
 	}
 
@@ -420,6 +436,15 @@ class CTA_Courses {
 		$limit        = isset( $_POST['limit'] ) ? intval( $_POST['limit'] ) : -1;
 		$product_type = sanitize_text_field( wp_unslash( $_POST['product_type'] ?? 'ce' ) );
 
+		if ( ! in_array( $product_type, array( 'ce', 'exam_prep' ), true ) ) {
+			$product_type = 'ce';
+		}
+
+		// Exam Prep catalog: never sort by CE hours (not applicable).
+		if ( 'exam_prep' === $product_type && 'ce_hours' === $sort ) {
+			$sort = 'default';
+		}
+
 		$courses = $this->get_courses(
 			array(
 				'category'     => $category,
@@ -431,11 +456,27 @@ class CTA_Courses {
 			)
 		);
 
+		if ( 'exam_prep' === $product_type && class_exists( 'CTA_Exam_Access' ) ) {
+			$filtered = array();
+			foreach ( $courses as $course ) {
+				if ( CTA_Exam_Access::launch_pending_testing( $course )
+					|| CTA_Exam_Access::commercial_terms_pending( $course ) ) {
+					continue;
+				}
+				$filtered[] = $course;
+			}
+			$courses = $filtered;
+		}
+
 		ob_start();
 
 		if ( empty( $courses ) ) {
 			echo '<div class="cta-empty-state cta-empty-state--inline">';
-			echo '<p>' . esc_html__( 'No courses found matching your search.', 'cta-lms' ) . '</p>';
+			if ( 'exam_prep' === $product_type ) {
+				echo '<p>' . esc_html__( 'No programs found matching your search.', 'cta-lms' ) . '</p>';
+			} else {
+				echo '<p>' . esc_html__( 'No courses found matching your search.', 'cta-lms' ) . '</p>';
+			}
 			echo '</div>';
 		} else {
 			foreach ( $courses as $course ) {
@@ -479,8 +520,13 @@ class CTA_Courses {
 		$values = array( $args['status'] );
 
 		if ( ! empty( $args['product_type'] ) && in_array( $args['product_type'], array( 'ce', 'exam_prep' ), true ) ) {
-			$where[]  = 'product_type = %s';
-			$values[] = $args['product_type'];
+			if ( 'ce' === $args['product_type'] ) {
+				// Legacy CE rows may have blank/null product_type — treat as CE, never exam_prep.
+				$where[] = "(product_type = 'ce' OR product_type = '' OR product_type IS NULL)";
+			} else {
+				$where[]  = 'product_type = %s';
+				$values[] = $args['product_type'];
+			}
 		}
 
 		if ( ! empty( $args['category'] ) ) {
@@ -532,17 +578,29 @@ class CTA_Courses {
 		$table = $wpdb->prefix . 'cta_courses';
 
 		if ( in_array( $product_type, array( 'ce', 'exam_prep' ), true ) ) {
-			$from_db = $wpdb->get_col(
-				$wpdb->prepare(
+			if ( 'ce' === $product_type ) {
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$from_db = $wpdb->get_col(
 					"SELECT DISTINCT category FROM {$table}
 					WHERE status = 'published'
-					AND product_type = %s
+					AND (product_type = 'ce' OR product_type = '' OR product_type IS NULL)
 					AND category != ''
 					AND category IS NOT NULL
-					ORDER BY category ASC",
-					$product_type
-				)
-			);
+					ORDER BY category ASC"
+				);
+			} else {
+				$from_db = $wpdb->get_col(
+					$wpdb->prepare(
+						"SELECT DISTINCT category FROM {$table}
+						WHERE status = 'published'
+						AND product_type = %s
+						AND category != ''
+						AND category IS NOT NULL
+						ORDER BY category ASC",
+						$product_type
+					)
+				);
+			}
 		} else {
 			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- table name is prefixed.
 			$from_db = $wpdb->get_col(

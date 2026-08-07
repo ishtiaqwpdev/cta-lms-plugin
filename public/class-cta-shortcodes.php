@@ -192,7 +192,10 @@ class CTA_Shortcodes {
 			? $nav_links[ __( 'CE Courses', 'cta-lms' ) ]
 			: ( $this->get_page_url( 'cta_courses_page_id' ) ? $this->get_page_url( 'cta_courses_page_id' ) : $home_url );
 		$courses_url = $this->get_page_url( 'cta_courses_page_id' );
-		$exam_prep_url = $courses_url ? add_query_arg( 'product_type', 'exam_prep', $courses_url ) : '';
+		$exam_prep_url = $this->get_page_url( 'cta_exam_prep_page_id' );
+		if ( ! $exam_prep_url && $courses_url ) {
+			$exam_prep_url = add_query_arg( 'product_type', 'exam_prep', $courses_url );
+		}
 		$logout_url  = wp_logout_url( home_url() );
 		$logo_url    = cta_lms_get_logo_url();
 		$site_name   = get_bloginfo( 'name' );
@@ -287,7 +290,10 @@ class CTA_Shortcodes {
 		$dashboard_text = $atts['dashboard_text'] ? $atts['dashboard_text'] : __( 'My Dashboard', 'cta-lms' );
 		$logout_url     = wp_logout_url( home_url( '/' ) );
 		$courses_url    = $this->get_page_url( 'cta_courses_page_id' );
-		$exam_prep_url  = $courses_url ? add_query_arg( 'product_type', 'exam_prep', $courses_url ) : '';
+		$exam_prep_url  = $this->get_page_url( 'cta_exam_prep_page_id' );
+		if ( ! $exam_prep_url && $courses_url ) {
+			$exam_prep_url = add_query_arg( 'product_type', 'exam_prep', $courses_url );
+		}
 		$display_name   = '';
 
 		if ( $is_logged_in ) {

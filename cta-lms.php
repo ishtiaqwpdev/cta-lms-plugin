@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.155' );
+	define( 'CTA_VERSION', '1.0.156' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -839,6 +839,11 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				}
 			}
 
+			// Exam Prep catalog shortcode + dedicated Exam Preparation page (nav left for manual add).
+			if ( version_compare( $installed, '1.0.156', '<' ) && class_exists( 'CTA_Pages' ) ) {
+				CTA_Pages::sync_public_pages();
+			}
+
 			// Decouple supervision application pending from general account / CE access.
 			if ( version_compare( $installed, '1.0.90', '<' ) && class_exists( 'CTA_Associate_Access' ) ) {
 				$query = new WP_User_Query(
@@ -1096,6 +1101,7 @@ if ( ! function_exists( 'cta_lms_resolve_linked_page_id' ) ) {
 
 		$slug_map = array(
 			'cta_courses_page_id'      => array( 'ce-courses', 'courses' ),
+			'cta_exam_prep_page_id'    => array( 'exam-preparation', 'exam-prep', 'exam-prep-catalog' ),
 			'cta_supervision_page_id'  => array( 'supervision-booking', 'clinical-supervision', 'supervision' ),
 			'cta_memberships_page_id'  => array( 'memberships-page', 'memberships' ),
 			'cta_faq_page_id'          => array( 'faq', 'faqs' ),
@@ -1118,6 +1124,7 @@ if ( ! function_exists( 'cta_lms_resolve_linked_page_id' ) ) {
 		// Shortcode-based recovery for known marketing pages.
 		$shortcode_map = array(
 			'cta_courses_page_id'     => 'cta_course_catalog',
+			'cta_exam_prep_page_id'   => 'cta_exam_prep_catalog',
 			'cta_supervision_page_id' => 'cta_supervision_booking',
 			'cta_memberships_page_id' => 'cta_membership_pricing',
 			'cta_login_page_id'       => 'cta_login_form',

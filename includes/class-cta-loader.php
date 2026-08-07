@@ -223,9 +223,10 @@ class CTA_Loader {
 			: self::get_page_permalink( 'cta_student_dashboard_page_id' );
 
 		$courses_url = self::get_page_permalink( 'cta_courses_page_id' );
-		$exam_prep_url = $courses_url
-			? add_query_arg( 'product_type', 'exam_prep', $courses_url )
-			: '';
+		$exam_prep_url = self::get_page_permalink( 'cta_exam_prep_page_id' );
+		if ( ! $exam_prep_url && $courses_url ) {
+			$exam_prep_url = add_query_arg( 'product_type', 'exam_prep', $courses_url );
+		}
 
 		wp_localize_script(
 			'cta-main',
@@ -502,6 +503,7 @@ class CTA_Loader {
 		return array(
 			'cta_login_page_id',
 			'cta_courses_page_id',
+			'cta_exam_prep_page_id',
 			'cta_single_course_page_id',
 			'cta_supervision_page_id',
 			'cta_memberships_page_id',
@@ -526,6 +528,7 @@ class CTA_Loader {
 			'cta_auth_button',
 			'cta_login_form',
 			'cta_course_catalog',
+			'cta_exam_prep_catalog',
 			'cta_single_course',
 			'cta_supervision_booking',
 			'cta_membership_pricing',

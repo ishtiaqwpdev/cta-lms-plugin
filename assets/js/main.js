@@ -3626,8 +3626,10 @@
         success: function (response) {
           if (response.success) {
             $("#cta-courses-grid").html(response.data.html);
+            var productType = $catalog.attr("data-product-type") || "ce";
+            var unit = productType === "exam_prep" ? "programs" : "courses";
             $(".cta-filter-bar__count").text(
-              "Showing " + response.data.count + " courses"
+              "Showing " + response.data.count + " " + unit
             );
           }
         },

@@ -3182,6 +3182,11 @@ class CTA_Admin {
 				'usage'       => __( 'Courses page. Use limit="3" for featured only.', 'cta-lms' ),
 			),
 			array(
+				'code'        => '[cta_exam_prep_catalog]',
+				'description' => __( 'Exam Preparation programs grid (no CE hours)', 'cta-lms' ),
+				'usage'       => __( 'Exam Preparation page. Separate from CE catalog.', 'cta-lms' ),
+			),
+			array(
 				'code'        => '[cta_single_course]',
 				'description' => __( 'Individual course detail page', 'cta-lms' ),
 				'usage'       => __( 'Single course page. Requires ?course_id=X in URL.', 'cta-lms' ),

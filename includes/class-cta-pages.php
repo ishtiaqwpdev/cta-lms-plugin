@@ -39,6 +39,11 @@ class CTA_Pages {
 				'title'     => __( 'CE Courses', 'cta-lms' ),
 				'slug'      => 'ce-courses',
 			),
+			'cta_exam_prep_page_id'   => array(
+				'shortcode' => 'cta_exam_prep_catalog',
+				'title'     => __( 'Exam Preparation', 'cta-lms' ),
+				'slug'      => 'exam-preparation',
+			),
 			'cta_supervision_page_id' => array(
 				'shortcode' => 'cta_supervision_booking',
 				'title'     => __( 'Clinical Supervision', 'cta-lms' ),
@@ -236,12 +241,25 @@ class CTA_Pages {
 
 		$courses_url = self::get_option_permalink( 'cta_courses_page_id' );
 		$booking_url = self::get_option_permalink( 'cta_supervision_page_id' );
+		$exam_prep_url = self::get_option_permalink( 'cta_exam_prep_page_id' );
 
 		if ( in_array( $path, array( 'ce-courses', 'courses', 'course-catalog', 'ce-course-catalog' ), true ) && $courses_url ) {
 			$target_path = trim( (string) wp_parse_url( $courses_url, PHP_URL_PATH ), '/' );
 			if ( $target_path !== $path ) {
 				wp_safe_redirect( $courses_url, 301 );
 				exit;
+			}
+		}
+
+		// Legacy CE catalog deep-link ?product_type=exam_prep → dedicated Exam Prep page.
+		if ( $exam_prep_url && isset( $_GET['product_type'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$pt = sanitize_text_field( wp_unslash( $_GET['product_type'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			if ( 'exam_prep' === $pt ) {
+				$courses_path = $courses_url ? trim( (string) wp_parse_url( $courses_url, PHP_URL_PATH ), '/' ) : '';
+				if ( $path === $courses_path || in_array( $path, array( 'ce-courses', 'courses', 'course-catalog' ), true ) ) {
+					wp_safe_redirect( $exam_prep_url, 301 );
+					exit;
+				}
 			}
 		}
 
