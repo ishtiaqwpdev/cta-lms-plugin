@@ -144,12 +144,9 @@ $next_url = $next_module
 							</p>
 						</div>
 					<?php else : ?>
-						<div class="cta-quiz-locked-message" <?php echo $quiz_unlocked ? 'hidden' : ''; ?>>
-							<p><?php echo ! empty( $is_exam_prep ) ? esc_html__( 'Complete all modules to unlock assessments', 'cta-lms' ) : esc_html__( 'Complete all modules to unlock the quiz', 'cta-lms' ); ?></p>
-						</div>
-						<div class="cta-quiz-unlocked-message" <?php echo $quiz_unlocked ? '' : 'hidden'; ?>>
-							<?php if ( ! empty( $is_exam_prep ) ) : ?>
-								<p><?php echo esc_html__( 'All modules complete! You may now begin the program assessments.', 'cta-lms' ); ?></p>
+						<?php if ( ! empty( $is_exam_prep ) ) : ?>
+							<div class="cta-quiz-unlocked-message">
+								<p><?php echo esc_html__( 'Program assessments are available at any time. The recommended study sequence is provided as guidance.', 'cta-lms' ); ?></p>
 								<ul class="cta-exam-assessment-list">
 									<?php foreach ( $quiz_cards as $card ) : ?>
 										<li class="cta-exam-assessment-list__item">
@@ -183,7 +180,12 @@ $next_url = $next_module
 								<?php if ( ! $quiz_page_id ) : ?>
 									<p class="cta-empty-state"><?php echo esc_html__( 'Quiz page is not configured. Ask the site admin to assign the Quiz Page in CTA LMS Settings.', 'cta-lms' ); ?></p>
 								<?php endif; ?>
-							<?php else : ?>
+							</div>
+						<?php else : ?>
+							<div class="cta-quiz-locked-message" <?php echo $quiz_unlocked ? 'hidden' : ''; ?>>
+								<p><?php echo esc_html__( 'Complete all modules to unlock the quiz', 'cta-lms' ); ?></p>
+							</div>
+							<div class="cta-quiz-unlocked-message" <?php echo $quiz_unlocked ? '' : 'hidden'; ?>>
 								<p><?php echo esc_html__( 'All modules complete! Take the final quiz (70% to pass, unlimited attempts, no time limit) to earn your certificate.', 'cta-lms' ); ?></p>
 								<?php if ( $quiz_page_id && $quiz_url && '#' !== $quiz_url ) : ?>
 									<a href="<?php echo esc_url( ! empty( $quiz_cards[0]['url'] ) ? $quiz_cards[0]['url'] : $quiz_url ); ?>" class="btn btn-primary cta-quiz-btn">
@@ -192,8 +194,8 @@ $next_url = $next_module
 								<?php else : ?>
 									<p class="cta-empty-state"><?php echo esc_html__( 'Quiz page is not configured. Ask the site admin to assign the Quiz Page in CTA LMS Settings.', 'cta-lms' ); ?></p>
 								<?php endif; ?>
-							<?php endif; ?>
-						</div>
+							</div>
+						<?php endif; ?>
 					<?php endif; ?>
 				</section>
 

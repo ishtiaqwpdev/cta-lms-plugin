@@ -2583,12 +2583,21 @@
             var isExamPrepPlayer =
               !!(response.data.is_exam_prep) ||
               (playerRoot && playerRoot.getAttribute("data-exam-prep") === "1");
+
+            // Exam Prep assessments are open-access — never claim "all modules complete".
+            if (isExamPrepPlayer) {
+              if (response.data.next_module_url) {
+                setTimeout(function () {
+                  window.location.href = response.data.next_module_url;
+                }, 1000);
+              }
+              return;
+            }
+
             var notice = document.createElement("p");
             notice.className = "course-player__notice course-player__notice--success";
             notice.setAttribute("role", "status");
-            notice.textContent = isExamPrepPlayer
-              ? "All modules complete! You may now begin the program assessments."
-              : "Course Complete! Take the quiz to earn your certificate.";
+            notice.textContent = "Course Complete! Take the quiz to earn your certificate.";
             var actions = document.querySelector("[data-course-player-actions]");
             if (actions && !document.querySelector(".course-player__notice--success")) {
               actions.insertAdjacentElement("afterend", notice);
