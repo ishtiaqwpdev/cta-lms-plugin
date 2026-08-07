@@ -51,6 +51,11 @@ class CTA_Courses {
 			'cta_course_catalog'
 		);
 
+		// Self-heal CE hours/prices from canonical catalog before cards render.
+		if ( class_exists( 'CTA_Course_Catalog' ) ) {
+			CTA_Course_Catalog::maybe_restore_ce_pricing();
+		}
+
 		$limit           = intval( $atts['limit'] );
 		$columns         = max( 1, min( 4, absint( $atts['columns'] ) ) );
 		$active_category = sanitize_text_field( $atts['category'] );

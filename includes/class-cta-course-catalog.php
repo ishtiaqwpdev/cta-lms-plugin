@@ -494,7 +494,8 @@ class CTA_Course_Catalog {
 
 			if ( ! empty( $courses ) ) {
 				foreach ( $courses as $course ) {
-					$before = isset( $course->price ) ? (float) $course->price : 0.0;
+					$before    = isset( $course->price ) ? (float) $course->price : 0.0;
+					$before_ce = isset( $course->ce_hours ) ? (float) $course->ce_hours : 0.0;
 
 					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 					$wpdb->update(
@@ -511,16 +512,18 @@ class CTA_Course_Catalog {
 					);
 
 					$row = array(
-						'id'           => (int) $course->id,
-						'title'        => $title,
-						'price'        => $price,
-						'price_before' => $before,
-						'price_after'  => $price,
-						'category'     => $cat,
-						'ce_hours'     => $ce,
+						'id'              => (int) $course->id,
+						'title'           => $title,
+						'price'           => $price,
+						'price_before'    => $before,
+						'price_after'     => $price,
+						'ce_hours_before' => $before_ce,
+						'ce_hours_after'  => $ce,
+						'category'        => $cat,
+						'ce_hours'        => $ce,
 					);
 					$report['updated'][] = $row;
-					if ( ! self::prices_equal( $before, $price ) ) {
+					if ( ! self::prices_equal( $before, $price ) || abs( $before_ce - $ce ) > 0.01 ) {
 						$report['corrected'][] = $row;
 					}
 				}
@@ -569,6 +572,50 @@ class CTA_Course_Catalog {
 				$report['missing'][] = $title;
 			}
 		}
+
+		return $report;
+	}
+
+	/**
+	 * Self-heal CE commercial fields when the canonical catalog fingerprint drifts.
+	 *
+	 * @param bool $force Force restore even when fingerprint matches.
+	 * @return array|null Report or null when skipped.
+	 */
+	public static function maybe_restore_ce_pricing( $force = false ) {
+		$fingerprint = '';
+		if ( function_exists( 'cta_ce_price_catalog_fingerprint' ) ) {
+			$fingerprint = (string) cta_ce_price_catalog_fingerprint();
+		} else {
+			$parts = array();
+			foreach ( self::get_ce_catalog() as $entry ) {
+				$parts[] = (string) ( $entry['title'] ?? '' )
+					. ':' . number_format( (float) ( $entry['price'] ?? 0 ), 2, '.', '' )
+					. ':' . number_format( (float) ( $entry['ce_hours'] ?? 0 ), 2, '.', '' );
+			}
+			$fingerprint = md5( implode( '|', $parts ) );
+		}
+
+		if ( ! $force && $fingerprint && get_option( 'cta_ce_price_catalog_fp', '' ) === $fingerprint ) {
+			return null;
+		}
+
+		if ( get_transient( 'cta_ce_price_sync_lock' ) ) {
+			return null;
+		}
+		set_transient( 'cta_ce_price_sync_lock', 1, 60 );
+
+		$report = self::restore_ce_pricing();
+
+		if ( $fingerprint ) {
+			update_option( 'cta_ce_price_catalog_fp', $fingerprint, false );
+		}
+
+		if ( class_exists( 'CTA_Bundle_Catalog' ) && method_exists( 'CTA_Bundle_Catalog', 'clear_front_caches' ) ) {
+			CTA_Bundle_Catalog::clear_front_caches();
+		}
+
+		delete_transient( 'cta_ce_price_sync_lock' );
 
 		return $report;
 	}

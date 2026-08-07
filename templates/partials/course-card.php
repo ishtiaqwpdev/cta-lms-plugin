@@ -74,6 +74,10 @@ $display_title      = function_exists( 'cta_lms_get_course_display_title' )
 			</div>
 		<?php endif; ?>
 
+		<?php if ( ! $is_exam_prep && '' !== $ce_hours_display ) : ?>
+			<span class="cta-course-card__ce-media course-card__ce-media"><?php echo esc_html( $ce_hours_display ); ?> <?php echo esc_html__( 'CE Hours', 'cta-lms' ); ?></span>
+		<?php endif; ?>
+
 		<span class="cta-course-card__price course-card__price"><?php echo esc_html( $price_display ); ?></span>
 	</div>
 

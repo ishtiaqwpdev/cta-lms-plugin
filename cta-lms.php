@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.160' );
+	define( 'CTA_VERSION', '1.0.161' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -863,6 +863,12 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				if ( function_exists( 'cta_ce_price_catalog_fingerprint' ) ) {
 					update_option( 'cta_ce_price_catalog_fp', cta_ce_price_catalog_fingerprint(), false );
 				}
+			}
+
+			// Force CE catalog restore again (live still showing Supervision 6/$129 until page-render heal).
+			if ( version_compare( $installed, '1.0.161', '<' ) && class_exists( 'CTA_Course_Catalog' ) ) {
+				delete_option( 'cta_ce_price_catalog_fp' );
+				CTA_Course_Catalog::maybe_restore_ce_pricing( true );
 			}
 
 			// Decouple supervision application pending from general account / CE access.
