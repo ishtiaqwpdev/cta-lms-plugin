@@ -97,7 +97,7 @@ assert_true( false !== strpos( $stripe, "status = 'published'" ), 'Stripe checko
 
 // Public catalog filters HOLD programs.
 $courses_php = file_get_contents( CTA_PLUGIN_DIR . 'public/class-cta-courses.php' );
-assert_true( false !== strpos( $courses_php, 'launch_pending_testing( $course )' ), 'Public catalog skips launch-pending exam prep' );
+assert_true( false !== strpos( $courses_php, 'get_exam_prep_catalog_courses' ), 'Public Exam Prep catalog uses dedicated listing helper (includes commercial-pending Clinical)' );
 assert_true( false !== strpos( $courses_php, 'not available for purchase yet' ), 'Public single-course blocks launch-pending for non-admins' );
 
 // UI: enroll button held.

@@ -83,6 +83,9 @@ class CTA_Courses {
 	 * Render the Exam Preparation program catalog shortcode.
 	 *
 	 * Exam Prep only — does not include CE courses, CE hours, or CE category filters.
+	 * Catalog listing shows every catalog Exam Prep program that exists in the DB
+	 * (including commercial-pending drafts such as LMFT California Clinical).
+	 * Checkout holds stay on the single-program / Stripe path — not here.
 	 *
 	 * @param array $atts Shortcode attributes.
 	 * @return string
@@ -101,28 +104,128 @@ class CTA_Courses {
 		$columns = max( 1, min( 4, absint( $atts['columns'] ) ) );
 		$search  = '';
 
+		$courses = $this->get_exam_prep_catalog_courses(
+			array(
+				'limit'  => $limit,
+				'search' => $search,
+			)
+		);
+
+		ob_start();
+		include CTA_PLUGIN_DIR . 'templates/exam-prep-catalog.php';
+		return ob_get_clean();
+	}
+
+	/**
+	 * Exam Prep programs for the public catalog grid.
+	 *
+	 * Includes published exam_prep rows plus draft rows that belong to the
+	 * canonical Exam Prep catalog (so commercial-pending programs like
+	 * LMFT California Clinical still appear with a Pricing-pending badge).
+	 * Does not apply launch/commercial hold filters — those block purchase only.
+	 *
+	 * @param array $args {
+	 *     @type int    $limit  Max rows (-1 = all).
+	 *     @type string $search Optional title search.
+	 *     @type string $sort   Optional sort key.
+	 * }
+	 * @return array
+	 */
+	public function get_exam_prep_catalog_courses( $args = array() ) {
+		$args = wp_parse_args(
+			$args,
+			array(
+				'limit'  => -1,
+				'search' => '',
+				'sort'   => 'default',
+			)
+		);
+
 		$published = $this->get_courses(
 			array(
-				'limit'        => $limit,
+				'limit'        => -1,
+				'search'       => $args['search'],
+				'sort'         => $args['sort'],
 				'status'       => 'published',
 				'product_type' => 'exam_prep',
 			)
 		);
 
-		$courses = array();
-		foreach ( $published as $course ) {
-			// Checkout HOLD: hide programs still awaiting learner testing + written release approval.
-			if ( class_exists( 'CTA_Exam_Access' )
-				&& ( CTA_Exam_Access::launch_pending_testing( $course )
-					|| CTA_Exam_Access::commercial_terms_pending( $course ) ) ) {
+		$drafts = $this->get_courses(
+			array(
+				'limit'        => -1,
+				'search'       => $args['search'],
+				'sort'         => $args['sort'],
+				'status'       => 'draft',
+				'product_type' => 'exam_prep',
+			)
+		);
+
+		$canonical_slugs = $this->get_canonical_exam_prep_slugs();
+		$courses         = array();
+		$seen            = array();
+
+		foreach ( array_merge( (array) $published, (array) $drafts ) as $course ) {
+			$id = (int) $course->id;
+			if ( isset( $seen[ $id ] ) ) {
 				continue;
 			}
-			$courses[] = $course;
+
+			$slug   = sanitize_title( (string) ( $course->slug ?? '' ) );
+			$status = (string) ( $course->status ?? '' );
+
+			// Published Exam Prep always lists.
+			// Drafts list only when they are a known catalog program (avoids random draft shells).
+			if ( 'published' !== $status ) {
+				$is_canonical = $slug && in_array( $slug, $canonical_slugs, true );
+				$is_commercial_pending = class_exists( 'CTA_Exam_Access' )
+					&& CTA_Exam_Access::commercial_terms_pending( $course );
+				if ( ! $is_canonical && ! $is_commercial_pending ) {
+					continue;
+				}
+			}
+
+			$seen[ $id ] = true;
+			$courses[]   = $course;
 		}
 
-		ob_start();
-		include CTA_PLUGIN_DIR . 'templates/exam-prep-catalog.php';
-		return ob_get_clean();
+		if ( $args['limit'] > 0 && count( $courses ) > (int) $args['limit'] ) {
+			$courses = array_slice( $courses, 0, (int) $args['limit'] );
+		}
+
+		return $courses;
+	}
+
+	/**
+	 * Slugs from the canonical Exam Prep catalog (including legacy match_slugs).
+	 *
+	 * @return string[]
+	 */
+	private function get_canonical_exam_prep_slugs() {
+		$slugs = array();
+
+		$entries = array();
+		if ( class_exists( 'CTA_Course_Catalog' ) ) {
+			$entries = CTA_Course_Catalog::get_exam_prep_catalog();
+		} elseif ( class_exists( 'CTA_Exam_Access' ) ) {
+			$entries = CTA_Exam_Access::get_default_programs();
+		}
+
+		foreach ( (array) $entries as $entry ) {
+			if ( ! empty( $entry['slug'] ) ) {
+				$slugs[] = sanitize_title( (string) $entry['slug'] );
+			}
+			if ( ! empty( $entry['match_slugs'] ) ) {
+				foreach ( (array) $entry['match_slugs'] as $match ) {
+					$slugs[] = sanitize_title( (string) $match );
+				}
+			}
+			if ( ! empty( $entry['legacy_slug'] ) ) {
+				$slugs[] = sanitize_title( (string) $entry['legacy_slug'] );
+			}
+		}
+
+		return array_values( array_unique( array_filter( $slugs ) ) );
 	}
 
 	/**
@@ -445,27 +548,26 @@ class CTA_Courses {
 			$sort = 'default';
 		}
 
-		$courses = $this->get_courses(
-			array(
-				'category'     => $category,
-				'search'       => $search,
-				'sort'         => $sort,
-				'limit'        => $limit,
-				'status'       => 'published',
-				'product_type' => $product_type,
-			)
-		);
-
-		if ( 'exam_prep' === $product_type && class_exists( 'CTA_Exam_Access' ) ) {
-			$filtered = array();
-			foreach ( $courses as $course ) {
-				if ( CTA_Exam_Access::launch_pending_testing( $course )
-					|| CTA_Exam_Access::commercial_terms_pending( $course ) ) {
-					continue;
-				}
-				$filtered[] = $course;
-			}
-			$courses = $filtered;
+		// Exam Prep catalog: include commercial-pending / canonical drafts; never hide for checkout holds.
+		if ( 'exam_prep' === $product_type ) {
+			$courses = $this->get_exam_prep_catalog_courses(
+				array(
+					'limit'  => $limit,
+					'search' => $search,
+					'sort'   => $sort,
+				)
+			);
+		} else {
+			$courses = $this->get_courses(
+				array(
+					'category'     => $category,
+					'search'       => $search,
+					'sort'         => $sort,
+					'limit'        => $limit,
+					'status'       => 'published',
+					'product_type' => $product_type,
+				)
+			);
 		}
 
 		ob_start();
