@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.158' );
+	define( 'CTA_VERSION', '1.0.159' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -848,6 +848,12 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 			// Master Pricing Catalog v3.5 — sync membership/bundle/pathway names + prices.
 			if ( version_compare( $installed, '1.0.158', '<' ) && class_exists( 'CTA_Bundle_Catalog' ) ) {
 				CTA_Bundle_Catalog::sync_all();
+			}
+
+			// Force re-apply v3.5 (fix partial sync / leftover Clinical Focus + Crisis $215 cards).
+			if ( version_compare( $installed, '1.0.159', '<' ) && class_exists( 'CTA_Bundle_Catalog' ) ) {
+				delete_option( 'cta_bundle_catalog_v35_fp' );
+				CTA_Bundle_Catalog::maybe_sync( true );
 			}
 
 			// Decouple supervision application pending from general account / CE access.

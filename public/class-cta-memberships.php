@@ -35,6 +35,11 @@ class CTA_Memberships {
 	public function render_pricing( $atts ) {
 		global $wpdb;
 
+		// Self-heal Catalog v3.5 names/prices before rendering (kills leftover $215 SKUs).
+		if ( class_exists( 'CTA_Bundle_Catalog' ) ) {
+			CTA_Bundle_Catalog::maybe_sync();
+		}
+
 		$bundles = CTA_Database::get_all_bundles();
 
 		foreach ( $bundles as $bundle ) {

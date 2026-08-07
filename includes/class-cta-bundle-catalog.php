@@ -202,6 +202,8 @@ class CTA_Bundle_Catalog {
 	/**
 	 * Obsolete SKUs not in Catalog v3.5 — deactivate (do not delete).
 	 *
+	 * Includes remapped legacy slugs that may remain as duplicate rows after sync.
+	 *
 	 * @return array<int,array{slug:string,name:string}>
 	 */
 	public static function get_obsolete_bundles() {
@@ -210,8 +212,102 @@ class CTA_Bundle_Catalog {
 				'slug' => 'clinical-focus-bundle',
 				'name' => 'Clinical Focus CE Bundle',
 			),
-			// crisis-risk-bundle is remapped via legacy_slugs on Risk Management bundle.
+			array(
+				'slug' => 'crisis-risk-bundle',
+				'name' => 'Crisis & Risk Management Bundle',
+			),
+			array(
+				'slug' => 'first-renewal-starter',
+				'name' => 'First Renewal Starter Bundle',
+			),
+			array(
+				'slug' => 'annual-all-access',
+				'name' => 'Annual All-Access CE Pass',
+			),
 		);
+	}
+
+	/**
+	 * Fingerprint of approved v3.5 bundle names + prices.
+	 *
+	 * @return string
+	 */
+	public static function fingerprint() {
+		$parts = array();
+		foreach ( self::get_catalog() as $entry ) {
+			$parts[] = sanitize_title( (string) $entry['slug'] ) . ':' . number_format( (float) $entry['price'], 2, '.', '' );
+		}
+		return md5( implode( '|', $parts ) );
+	}
+
+	/**
+	 * Self-heal: sync when fingerprint drifts or force flag is set.
+	 *
+	 * @param bool $force Force sync even when fingerprint matches.
+	 * @return array|null Report or null when skipped.
+	 */
+	public static function maybe_sync( $force = false ) {
+		$fp = self::fingerprint();
+		if ( ! $force && get_option( 'cta_bundle_catalog_v35_fp', '' ) === $fp ) {
+			// Still kill any leftover obsolete actives (partial prior sync).
+			if ( self::has_active_obsolete_bundles() ) {
+				$force = true;
+			} else {
+				return null;
+			}
+		}
+
+		if ( get_transient( 'cta_bundle_catalog_sync_lock' ) ) {
+			return null;
+		}
+		set_transient( 'cta_bundle_catalog_sync_lock', 1, 60 );
+
+		$report = self::sync_all();
+		update_option( 'cta_bundle_catalog_v35_fp', $fp, false );
+		delete_transient( 'cta_bundle_catalog_sync_lock' );
+
+		return $report;
+	}
+
+	/**
+	 * Whether any obsolete SKU is still active on the front-end catalog.
+	 *
+	 * @return bool
+	 */
+	public static function has_active_obsolete_bundles() {
+		global $wpdb;
+
+		$table = $wpdb->prefix . 'cta_bundles';
+		foreach ( self::get_obsolete_bundles() as $obs ) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$id = (int) $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT id FROM {$table}
+					WHERE status = 'active'
+					AND (slug = %s OR name = %s OR name LIKE %s)
+					LIMIT 1",
+					sanitize_title( (string) $obs['slug'] ),
+					(string) $obs['name'],
+					'%' . $wpdb->esc_like( (string) $obs['name'] ) . '%'
+				)
+			);
+			if ( $id ) {
+				return true;
+			}
+		}
+
+		// Catch leftover $215 one-time bundles that match the old seed prices.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$id = (int) $wpdb->get_var(
+			"SELECT id FROM {$table}
+			WHERE status = 'active'
+			AND plan_type = 'bundle'
+			AND billing_cycle = 'one_time'
+			AND ROUND(price, 2) = 215.00
+			LIMIT 1"
+		);
+
+		return $id > 0;
 	}
 
 	/**
@@ -226,16 +322,16 @@ class CTA_Bundle_Catalog {
 
 		$table  = $wpdb->prefix . 'cta_bundles';
 		$report = array(
-			'updated'    => array(),
-			'created'    => array(),
-			'deactivated'=> array(),
+			'updated'         => array(),
+			'created'         => array(),
+			'deactivated'     => array(),
 			'missing_courses' => array(),
-			'synced_at'  => gmdate( 'c' ),
+			'synced_at'       => gmdate( 'c' ),
 		);
 
 		foreach ( self::get_catalog() as $entry ) {
-			$ids     = self::resolve_course_ids( $entry );
-			$missing = isset( $ids['missing'] ) ? $ids['missing'] : array();
+			$ids        = self::resolve_course_ids( $entry );
+			$missing    = isset( $ids['missing'] ) ? $ids['missing'] : array();
 			$course_ids = isset( $ids['ids'] ) ? $ids['ids'] : array();
 
 			if ( ! empty( $missing ) ) {
@@ -245,7 +341,6 @@ class CTA_Bundle_Catalog {
 				);
 			}
 
-			// Prefer Supervision Plans canonical price for All-Access subscription.
 			$price = (float) $entry['price'];
 			$name  = (string) $entry['name'];
 			$desc  = (string) $entry['description'];
@@ -273,9 +368,33 @@ class CTA_Bundle_Catalog {
 				'sort_order'       => absint( $entry['sort_order'] ),
 			);
 
-			$existing_id = self::find_bundle_id( $slug, isset( $entry['legacy_slugs'] ) ? (array) $entry['legacy_slugs'] : array(), $name );
+			$legacy     = isset( $entry['legacy_slugs'] ) ? (array) $entry['legacy_slugs'] : array();
+			$existing_id = self::find_bundle_id( $slug, $legacy, $name );
 
 			if ( $existing_id ) {
+				// Avoid UNIQUE slug collisions when remapping a legacy row onto a slug that already exists.
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$slug_owner = (int) $wpdb->get_var(
+					$wpdb->prepare( "SELECT id FROM {$table} WHERE slug = %s AND id <> %d LIMIT 1", $slug, $existing_id )
+				);
+				if ( $slug_owner ) {
+					// Keep the canonical slug row; deactivate the legacy duplicate instead of renaming into a conflict.
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+					$wpdb->update(
+						$table,
+						array( 'status' => 'inactive' ),
+						array( 'id' => $existing_id ),
+						array( '%s' ),
+						array( '%d' )
+					);
+					$report['deactivated'][] = array(
+						'id'   => $existing_id,
+						'name' => 'legacy duplicate before remap',
+						'slug' => 'legacy',
+					);
+					$existing_id = $slug_owner;
+				}
+
 				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 				$wpdb->update(
 					$table,
@@ -310,17 +429,28 @@ class CTA_Bundle_Catalog {
 
 		foreach ( self::get_obsolete_bundles() as $obs ) {
 			$slug = sanitize_title( (string) $obs['slug'] );
+			$name = (string) $obs['name'];
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 			$ids = $wpdb->get_col(
 				$wpdb->prepare(
-					"SELECT id FROM {$table} WHERE slug = %s OR name = %s",
+					"SELECT id FROM {$table}
+					WHERE slug = %s OR name = %s OR name LIKE %s",
 					$slug,
-					(string) $obs['name']
+					$name,
+					'%' . $wpdb->esc_like( $name ) . '%'
 				)
 			);
 			foreach ( (array) $ids as $id ) {
 				$id = absint( $id );
 				if ( ! $id ) {
+					continue;
+				}
+				// Never deactivate a row that now holds a canonical catalog slug.
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$current_slug = (string) $wpdb->get_var(
+					$wpdb->prepare( "SELECT slug FROM {$table} WHERE id = %d", $id )
+				);
+				if ( self::is_canonical_slug( $current_slug ) ) {
 					continue;
 				}
 				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
@@ -333,10 +463,38 @@ class CTA_Bundle_Catalog {
 				);
 				$report['deactivated'][] = array(
 					'id'   => $id,
-					'name' => (string) $obs['name'],
+					'name' => $name,
 					'slug' => $slug,
 				);
 			}
+		}
+
+		// Final sweep: any leftover active $215 one-time CE bundles from the old seed.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$stale_215 = $wpdb->get_results(
+			"SELECT id, name, slug FROM {$table}
+			WHERE status = 'active'
+			AND plan_type = 'bundle'
+			AND billing_cycle = 'one_time'
+			AND ROUND(price, 2) = 215.00"
+		);
+		foreach ( (array) $stale_215 as $stale ) {
+			if ( self::is_canonical_slug( (string) $stale->slug ) ) {
+				continue;
+			}
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$wpdb->update(
+				$table,
+				array( 'status' => 'inactive' ),
+				array( 'id' => (int) $stale->id ),
+				array( '%s' ),
+				array( '%d' )
+			);
+			$report['deactivated'][] = array(
+				'id'   => (int) $stale->id,
+				'name' => (string) $stale->name,
+				'slug' => (string) $stale->slug,
+			);
 		}
 
 		if ( class_exists( 'CTA_Supervision_Plans' ) ) {
@@ -346,8 +504,25 @@ class CTA_Bundle_Catalog {
 		self::clear_front_caches();
 
 		update_option( 'cta_bundle_catalog_sync_v35', wp_json_encode( $report ), false );
+		update_option( 'cta_bundle_catalog_v35_fp', self::fingerprint(), false );
 
 		return $report;
+	}
+
+	/**
+	 * Whether a slug is a current Catalog v3.5 slug.
+	 *
+	 * @param string $slug Bundle slug.
+	 * @return bool
+	 */
+	private static function is_canonical_slug( $slug ) {
+		$slug = sanitize_title( (string) $slug );
+		foreach ( self::get_catalog() as $entry ) {
+			if ( $slug === sanitize_title( (string) $entry['slug'] ) ) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
