@@ -1,0 +1,728 @@
+{
+    "program":  "lmft-amftrb",
+    "title":  "LMFT AMFTRB Flashcards",
+    "version":  "1.0",
+    "count":  120,
+    "cards":  [
+                  {
+                      "id":  "001",
+                      "tag":  "Workbook 1: Exam Strategy, Systemic Reasoning, and One-Best-Answer Decisions | WB1-01",
+                      "front":  "When should I use Exam Facts and Pacing Sheet?",
+                      "back":  "Use Exam Facts and Pacing Sheet to current mechanics; six-domain map; all-items-count rule; 80-second average; four pacing checkpoints; raw-score limits; official-source reminder."
+                  },
+                  {
+                      "id":  "002",
+                      "tag":  "Workbook 1: Exam Strategy, Systemic Reasoning, and One-Best-Answer Decisions | WB1-02",
+                      "front":  "When should I use Question Deconstruction Grid?",
+                      "back":  "Use Question Deconstruction Grid to final-question-first strategy; qualifier words; role; stage of care; what has already occurred; client system; treatment unit; evidence present versus missing. Apply it by: Identify..."
+                  },
+                  {
+                      "id":  "003",
+                      "tag":  "Workbook 1: Exam Strategy, Systemic Reasoning, and One-Best-Answer Decisions | WB1-03",
+                      "front":  "When should I use SYSTEM Map and Linear-to-Systemic Lab?",
+                      "back":  "Use SYSTEM Map and Linear-to-Systemic Lab to systemic foundations; circularity; reciprocal sequences; function; homeostasis; multiple contexts; individual-plus-systemic integration; diversity and social justice; self..."
+                  },
+                  {
+                      "id":  "004",
+                      "tag":  "Workbook 1: Exam Strategy, Systemic Reasoning, and One-Best-Answer Decisions | WB1-04",
+                      "front":  "When should I use Priority Ladder and Missing-Information Check?",
+                      "back":  "Use Priority Ladder and Missing-Information Check to safety and medical urgency; legal and ethical controls; role/scope; informed participation; assessment before intervention; collaboration and consultation; least..."
+                  },
+                  {
+                      "id":  "005",
+                      "tag":  "Workbook 1: Exam Strategy, Systemic Reasoning, and One-Best-Answer Decisions | WB1-05",
+                      "front":  "When should I use TRAP Elimination Grid?",
+                      "back":  "Use TRAP Elimination Grid to timing errors; role errors; unsupported assumptions; absolutes; over-response; under-response; theory-name bait; answer-change discipline; completion and guessing strategy. Apply it by:..."
+                  },
+                  {
+                      "id":  "006",
+                      "tag":  "Workbook 1: Exam Strategy, Systemic Reasoning, and One-Best-Answer Decisions | WB1-06",
+                      "front":  "When should I use Integrated Case Labs and Error Log?",
+                      "back":  "Use Integrated Case Labs and Error Log to mixed cross-domain cases; confidence coding; error categories; low-confidence correct answers; one-sentence rule learning; targeted repair plan; transition to workbook 2."
+                  },
+                  {
+                      "id":  "007",
+                      "tag":  "Workbook 1: Exam Strategy, Systemic Reasoning, and One-Best-Answer Decisions | WB1-07",
+                      "front":  "What must I be able to do for WB1-LO1?",
+                      "back":  "Identify the current AMFTRB examination structure, six-domain organization, and four-hour pacing requirements."
+                  },
+                  {
+                      "id":  "008",
+                      "tag":  "Workbook 1: Exam Strategy, Systemic Reasoning, and One-Best-Answer Decisions | WB1-08",
+                      "front":  "What must I be able to do for WB1-LO2?",
+                      "back":  "Use four pacing checkpoints to complete 180 items without treating the 80-second average as a rigid per-item limit."
+                  },
+                  {
+                      "id":  "009",
+                      "tag":  "Workbook 1: Exam Strategy, Systemic Reasoning, and One-Best-Answer Decisions | WB1-09",
+                      "front":  "What must I be able to do for WB1-LO3?",
+                      "back":  "Distinguish the decision demands signaled by FIRST, NEXT, BEST, MOST, PRIMARY, and INITIAL."
+                  },
+                  {
+                      "id":  "010",
+                      "tag":  "Workbook 1: Exam Strategy, Systemic Reasoning, and One-Best-Answer Decisions | WB1-10",
+                      "front":  "What must I be able to do for WB1-LO4?",
+                      "back":  "Identify the client system, treatment unit, therapist role, stage of care, and exact question task before comparing answer choices."
+                  },
+                  {
+                      "id":  "011",
+                      "tag":  "Workbook 2: Therapeutic Alliance, Systemic Practice, and Self of the Therapist | WB2-01",
+                      "front":  "When should I use CIRCLE Formulation Grid?",
+                      "back":  "Use CIRCLE Formulation Grid to systemic philosophy; circularity; reciprocal influence; treatment unit; relational ethics; non-blaming language; therapist participation in the system. Apply it by: Identify the cue;..."
+                  },
+                  {
+                      "id":  "012",
+                      "tag":  "Workbook 2: Therapeutic Alliance, Systemic Practice, and Self of the Therapist | WB2-02",
+                      "front":  "When should I use ALLIANCE Participation Map?",
+                      "back":  "Use ALLIANCE Participation Map to alliance as shared process; psychological safety; role clarity; consent and expectations; balanced participation; multiple alliances; voluntariness; access and accommodations. Apply it..."
+                  },
+                  {
+                      "id":  "013",
+                      "tag":  "Workbook 2: Therapeutic Alliance, Systemic Practice, and Self of the Therapist | WB2-03",
+                      "front":  "When should I use LEVELS Integration Matrix?",
+                      "back":  "Use LEVELS Integration Matrix to when individual work fits; maintaining systemic hypotheses; confidentiality and treatment-unit implications; cross-level interventions; preserving safety and autonomy. Apply it by:..."
+                  },
+                  {
+                      "id":  "014",
+                      "tag":  "Workbook 2: Therapeutic Alliance, Systemic Practice, and Self of the Therapist | WB2-04",
+                      "front":  "When should I use POWER and CONTEXT Grid?",
+                      "back":  "Use POWER and CONTEXT Grid to cultural humility; social location; power differentials; language and disability access; minority stress; economic stress; therapist authority; microaggression and repair. Apply it by:..."
+                  },
+                  {
+                      "id":  "015",
+                      "tag":  "Workbook 2: Therapeutic Alliance, Systemic Practice, and Self of the Therapist | WB2-05",
+                      "front":  "When should I use SELF Check?",
+                      "back":  "Use SELF Check to values; bias; reactivity; countertransference; trauma activation; overidentification; rescuing; rigidity; competence; exploitation risk; consultation and documentation. Apply it by: Identify the cue;..."
+                  },
+                  {
+                      "id":  "016",
+                      "tag":  "Workbook 2: Therapeutic Alliance, Systemic Practice, and Self of the Therapist | WB2-06",
+                      "front":  "When should I use REPAIR Sequence?",
+                      "back":  "Use REPAIR Sequence to alliance monitoring; direct feedback; rupture markers; therapist accountability; repair; treatment revision; client rights; concise documentation and follow-through. Apply it by: Identify the..."
+                  },
+                  {
+                      "id":  "017",
+                      "tag":  "Workbook 2: Therapeutic Alliance, Systemic Practice, and Self of the Therapist | WB2-07",
+                      "front":  "What must I be able to do for WB2-LO1?",
+                      "back":  "Distinguish systemic formulation from linear blame and identify the reciprocal patterns, contexts, and meanings that shape the therapeutic relationship."
+                  },
+                  {
+                      "id":  "018",
+                      "tag":  "Workbook 2: Therapeutic Alliance, Systemic Practice, and Self of the Therapist | WB2-08",
+                      "front":  "What must I be able to do for WB2-LO2?",
+                      "back":  "Select alliance-building responses that co-create safety, inclusion, role clarity, and participation with the client system."
+                  },
+                  {
+                      "id":  "019",
+                      "tag":  "Workbook 2: Therapeutic Alliance, Systemic Practice, and Self of the Therapist | WB2-09",
+                      "front":  "What must I be able to do for WB2-LO3?",
+                      "back":  "Integrate individual interventions with systemic treatment while preserving the identified client, treatment unit, and relational hypothesis."
+                  },
+                  {
+                      "id":  "020",
+                      "tag":  "Workbook 2: Therapeutic Alliance, Systemic Practice, and Self of the Therapist | WB2-10",
+                      "front":  "What must I be able to do for WB2-LO4?",
+                      "back":  "Evaluate how culture, power, social location, access, and oppression affect alliance, trust, participation, and therapist authority."
+                  },
+                  {
+                      "id":  "021",
+                      "tag":  "Workbook 3: Intake, Assessment, Mental Status, Relational Patterns, and Context | WB3-01",
+                      "front":  "When should I use INTAKE Sequence?",
+                      "back":  "Use INTAKE Sequence to referral question; who is the client; who is present/affected; consent as clinical process; roles; information limits; assessment priorities; initial safety and access; avoiding premature problem..."
+                  },
+                  {
+                      "id":  "022",
+                      "tag":  "Workbook 3: Intake, Assessment, Mental Status, Relational Patterns, and Context | WB3-02",
+                      "front":  "When should I use BASELINE Scan?",
+                      "back":  "Use BASELINE Scan to observation versus inference; timeline; baseline; cross-setting functioning; mse domains; cognition; mood/affect; thought; insight/judgment; acute change; documentation; urgent referral indicators...."
+                  },
+                  {
+                      "id":  "023",
+                      "tag":  "Workbook 3: Intake, Assessment, Mental Status, Relational Patterns, and Context | WB3-03",
+                      "front":  "When should I use MAPS Relational Map?",
+                      "back":  "Use MAPS Relational Map to communication sequences; boundaries; roles; rules; alliances; coalitions; hierarchy; homeostasis; multigenerational patterns; attachment/development; transitions; treatment-unit implications...."
+                  },
+                  {
+                      "id":  "024",
+                      "tag":  "Workbook 3: Intake, Assessment, Mental Status, Relational Patterns, and Context | WB3-04",
+                      "front":  "When should I use LENSES Context Grid?",
+                      "back":  "Use LENSES Context Grid to cultural humility; identity; migration; spirituality; power/oppression; economic and occupational stress; language/disability access; community/institutional systems; resilience; exceptions;..."
+                  },
+                  {
+                      "id":  "025",
+                      "tag":  "Workbook 3: Intake, Assessment, Mental Status, Relational Patterns, and Context | WB3-05",
+                      "front":  "When should I use SCREEN and ROUTE Matrix?",
+                      "back":  "Use SCREEN and ROUTE Matrix to risk screening; medical/medication indicators; substances/process use; trauma/childhood experiences; sexual functioning; abuse/endangerment indicators; collateral authority; discrepant..."
+                  },
+                  {
+                      "id":  "026",
+                      "tag":  "Workbook 3: Intake, Assessment, Mental Status, Relational Patterns, and Context | WB3-06",
+                      "front":  "When should I use LENSES + INTAKE Integration?",
+                      "back":  "Use LENSES + INTAKE Integration to evidence integration; multiple hypotheses; missing data; fit of individual/couple/family/group/teletherapy formats; referral/coordination; strengths-based formulation; documentation;..."
+                  },
+                  {
+                      "id":  "027",
+                      "tag":  "Workbook 3: Intake, Assessment, Mental Status, Relational Patterns, and Context | WB3-07",
+                      "front":  "What must I be able to do for WB3-LO1?",
+                      "back":  "Identify the client, treatment unit, assessment purpose, participation expectations, and immediate safety priorities before gathering detailed history."
+                  },
+                  {
+                      "id":  "028",
+                      "tag":  "Workbook 3: Intake, Assessment, Mental Status, Relational Patterns, and Context | WB3-08",
+                      "front":  "What must I be able to do for WB3-LO2?",
+                      "back":  "Distinguish direct observation, client report, collateral report, record data, screening results, and clinical inference when organizing assessment information."
+                  },
+                  {
+                      "id":  "029",
+                      "tag":  "Workbook 3: Intake, Assessment, Mental Status, Relational Patterns, and Context | WB3-09",
+                      "front":  "What must I be able to do for WB3-LO3?",
+                      "back":  "Apply a structured mental-status and baseline-change scan to determine when acute medical, substance-related, psychiatric, or safety evaluation is needed."
+                  },
+                  {
+                      "id":  "030",
+                      "tag":  "Workbook 3: Intake, Assessment, Mental Status, Relational Patterns, and Context | WB3-10",
+                      "front":  "What must I be able to do for WB3-LO4?",
+                      "back":  "Map communication, interactional sequences, roles, rules, boundaries, alliances, hierarchies, and multigenerational patterns within the client system."
+                  },
+                  {
+                      "id":  "031",
+                      "tag":  "Workbook 4: Diagnosis, Differential Diagnosis, Instruments, and Systemic Case Formulation | WB4-01",
+                      "front":  "When should I use DIAGNOSE?",
+                      "back":  "Use DIAGNOSE to symptoms, syndromes, diagnosis, relational/contextual conditions, systemic hypotheses, client system, treatment unit, strengths, and diagnostic humility. Apply it by: Identify the cue; apply the tool;..."
+                  },
+                  {
+                      "id":  "032",
+                      "tag":  "Workbook 4: Diagnosis, Differential Diagnosis, Instruments, and Systemic Case Formulation | WB4-02",
+                      "front":  "When should I use PTI Grid?",
+                      "back":  "Use PTI Grid to onset, duration, course, baseline, episode versus trait, severity, impairment, remission, cross-setting data, and diagnostic status. Apply it by: Identify the cue; apply the tool; record the supported..."
+                  },
+                  {
+                      "id":  "033",
+                      "tag":  "Workbook 4: Diagnosis, Differential Diagnosis, Instruments, and Systemic Case Formulation | WB4-03",
+                      "front":  "When should I use DIFF Grid?",
+                      "back":  "Use DIFF Grid to competing explanations; medical, neurological, medication, substance, sleep, trauma, developmental, cultural, and contextual exclusions; comorbidity. Apply it by: Identify the cue; apply the tool;..."
+                  },
+                  {
+                      "id":  "034",
+                      "tag":  "Workbook 4: Diagnosis, Differential Diagnosis, Instruments, and Systemic Case Formulation | WB4-04",
+                      "front":  "When should I use MEASURE?",
+                      "back":  "Use MEASURE to purpose and fit; screening versus diagnosis; reliability, validity, norms, cut scores, accessibility, bias, competence, ai/technology, and interpretation limits. Apply it by: Identify the cue; apply the..."
+                  },
+                  {
+                      "id":  "035",
+                      "tag":  "Workbook 4: Diagnosis, Differential Diagnosis, Instruments, and Systemic Case Formulation | WB4-05",
+                      "front":  "When should I use COMPARE?",
+                      "back":  "Use COMPARE to mood/bipolar, anxiety/ocd, trauma/dissociation, psychosis, substances, neurodevelopment, personality, eating, sleep, somatic, medical, sexual, and co-occurring presentations. Apply it by: Identify the..."
+                  },
+                  {
+                      "id":  "036",
+                      "tag":  "Workbook 4: Diagnosis, Differential Diagnosis, Instruments, and Systemic Case Formulation | WB4-06",
+                      "front":  "When should I use FORMULATE?",
+                      "back":  "Use FORMULATE to one-sentence formulation, reciprocal effects, context, strengths, treatment unit, missing data, referral question, interdisciplinary coordination, documentation, and revision. Apply it by: Identify the..."
+                  },
+                  {
+                      "id":  "037",
+                      "tag":  "Workbook 4: Diagnosis, Differential Diagnosis, Instruments, and Systemic Case Formulation | WB4-07",
+                      "front":  "What must I be able to do for WB4-LO1?",
+                      "back":  "Distinguish symptoms, syndromes, diagnoses, relational/contextual conditions, and systemic hypotheses and explain how each contributes to case formulation."
+                  },
+                  {
+                      "id":  "038",
+                      "tag":  "Workbook 4: Diagnosis, Differential Diagnosis, Instruments, and Systemic Case Formulation | WB4-08",
+                      "front":  "What must I be able to do for WB4-LO2?",
+                      "back":  "Apply pattern, timeline, threshold, impairment, exclusions, alternatives, and diagnostic-status reasoning before selecting a working diagnosis."
+                  },
+                  {
+                      "id":  "039",
+                      "tag":  "Workbook 4: Diagnosis, Differential Diagnosis, Instruments, and Systemic Case Formulation | WB4-09",
+                      "front":  "What must I be able to do for WB4-LO3?",
+                      "back":  "Compare closely competing presentations using chronology, mechanism, baseline, context, cross-setting evidence, and co-occurrence rather than one memorable symptom."
+                  },
+                  {
+                      "id":  "040",
+                      "tag":  "Workbook 4: Diagnosis, Differential Diagnosis, Instruments, and Systemic Case Formulation | WB4-10",
+                      "front":  "What must I be able to do for WB4-LO4?",
+                      "back":  "Select and interpret standardized instruments within purpose, psychometric limits, language/cultural fit, accessibility, professional competence, and scope."
+                  },
+                  {
+                      "id":  "041",
+                      "tag":  "Workbook 5: Treatment Design, Goals, Contracts, Measurement, and Systemic Planning | WB5-01",
+                      "front":  "When should I use DESIGN?",
+                      "back":  "Use DESIGN to planning purpose; client system and treatment unit; assessment-to-plan sequence; strengths and risks; prior attempts; competing priorities; contextual formulation; planning errors. Apply it by: Identify..."
+                  },
+                  {
+                      "id":  "042",
+                      "tag":  "Workbook 5: Treatment Design, Goals, Contracts, Measurement, and Systemic Planning | WB5-02",
+                      "front":  "When should I use CONTRACT?",
+                      "back":  "Use CONTRACT to client(s), therapist role, third-party and collateral roles, participation, expectations, session structure, communication, boundaries, consent as an ongoing process, alliance and contract repair."
+                  },
+                  {
+                      "id":  "043",
+                      "tag":  "Workbook 5: Treatment Design, Goals, Contracts, Measurement, and Systemic Planning | WB5-03",
+                      "front":  "When should I use TARGET?",
+                      "back":  "Use TARGET to short- and long-term goals; observable objectives; relational and functional indicators; baseline and time frame; client language; review points; successful-completion criteria; avoiding vague or..."
+                  },
+                  {
+                      "id":  "044",
+                      "tag":  "Workbook 5: Treatment Design, Goals, Contracts, Measurement, and Systemic Planning | WB5-04",
+                      "front":  "When should I use SEQUENCE?",
+                      "back":  "Use SEQUENCE to who participates; individual/couple/family/group/collateral/system involvement; in-person/teletherapy/hybrid fit; intensity and level of care; safety; readiness; access; dependencies; sequencing;..."
+                  },
+                  {
+                      "id":  "045",
+                      "tag":  "Workbook 5: Treatment Design, Goals, Contracts, Measurement, and Systemic Planning | WB5-05",
+                      "front":  "When should I use MATCH?",
+                      "back":  "Use MATCH to theory and evidence; shared contextual understanding; client preferences and autonomy; culture, spirituality, biology, disability, language, economics, and resources; feasibility; therapist competence;..."
+                  },
+                  {
+                      "id":  "046",
+                      "tag":  "Workbook 5: Treatment Design, Goals, Contracts, Measurement, and Systemic Planning | WB5-06",
+                      "front":  "When should I use REVIEW?",
+                      "back":  "Use REVIEW to safety-plan responsibilities; prescriber and specialty coordination; referral and collateral systems; ai-assisted planning safeguards; documentation; measures; feedback; review intervals; revision..."
+                  },
+                  {
+                      "id":  "047",
+                      "tag":  "Workbook 5: Treatment Design, Goals, Contracts, Measurement, and Systemic Planning | WB5-07",
+                      "front":  "What must I be able to do for WB5-LO1?",
+                      "back":  "Translate assessment findings, diagnostic impressions, systemic hypotheses, strengths, risks, and client priorities into an organized contextual treatment plan."
+                  },
+                  {
+                      "id":  "048",
+                      "tag":  "Workbook 5: Treatment Design, Goals, Contracts, Measurement, and Systemic Planning | WB5-08",
+                      "front":  "What must I be able to do for WB5-LO2?",
+                      "back":  "Establish a clear therapeutic contract that identifies the client system, treatment roles, goals, participation expectations, communication structure, and relevant limits."
+                  },
+                  {
+                      "id":  "049",
+                      "tag":  "Workbook 5: Treatment Design, Goals, Contracts, Measurement, and Systemic Planning | WB5-09",
+                      "front":  "What must I be able to do for WB5-LO3?",
+                      "back":  "Write short- and long-term goals with observable objectives, meaningful measures, review intervals, and criteria for successful completion."
+                  },
+                  {
+                      "id":  "050",
+                      "tag":  "Workbook 5: Treatment Design, Goals, Contracts, Measurement, and Systemic Planning | WB5-10",
+                      "front":  "What must I be able to do for WB5-LO4?",
+                      "back":  "Select the treatment unit, participants, delivery modality, intensity, and level of care based on safety, appropriateness, access, readiness, preference, and formulation."
+                  },
+                  {
+                      "id":  "051",
+                      "tag":  "Workbook 6: Crisis, Suicide, Violence, Abuse, Trauma, and Emergency Response | WB6-01",
+                      "front":  "When should I use ACUITY?",
+                      "back":  "Use ACUITY to crisis versus severe distress; acuity; mse change; medical, substance, psychosis, delirium, and disability considerations; vulnerability; environmental danger; protective capacity; immediate priorities;..."
+                  },
+                  {
+                      "id":  "052",
+                      "tag":  "Workbook 6: Crisis, Suicide, Violence, Abuse, Trauma, and Emergency Response | WB6-02",
+                      "front":  "When should I use DIRECT?",
+                      "back":  "Use DIRECT to direct inquiry; ideation, intent, planning, preparation, means, prior behavior, nssi, dynamic risk, protective factors, collaborative safety planning, means safety, escalation, and follow-up. Apply it by:..."
+                  },
+                  {
+                      "id":  "053",
+                      "tag":  "Workbook 6: Crisis, Suicide, Violence, Abuse, Trauma, and Emergency Response | WB6-03",
+                      "front":  "When should I use SHIELD?",
+                      "back":  "Use SHIELD to violence toward the client; coercive control; stalking; threats toward others; harm toward the therapist; external threats; weapons and access; safety-sensitive conjoint work; consultation and protective..."
+                  },
+                  {
+                      "id":  "054",
+                      "tag":  "Workbook 6: Crisis, Suicide, Violence, Abuse, Trauma, and Emergency Response | WB6-04",
+                      "front":  "When should I use REPORT?",
+                      "back":  "Use REPORT to endangerment across the lifespan; child, elder, dependent/vulnerable adult and sexual abuse concerns; jurisdictional thresholds; correct recipient; immediate protection; therapeutic response;..."
+                  },
+                  {
+                      "id":  "055",
+                      "tag":  "Workbook 6: Crisis, Suicide, Violence, Abuse, Trauma, and Emergency Response | WB6-05",
+                      "front":  "When should I use STABLE?",
+                      "back":  "Use STABLE to trauma history in current crisis; grounding; orientation; practical support; grief and major transitions; acute stress; substance/medical/psychiatric referral; stabilization before processing; level of..."
+                  },
+                  {
+                      "id":  "056",
+                      "tag":  "Workbook 6: Crisis, Suicide, Violence, Abuse, Trauma, and Emergency Response | WB6-06",
+                      "front":  "When should I use CONNECT?",
+                      "back":  "Use CONNECT to natural disasters, mass violence, public-health crises, community trauma, teletherapy and hybrid emergencies, location/resources, stakeholder roles, handoff, minimum necessary information, documentation,..."
+                  },
+                  {
+                      "id":  "057",
+                      "tag":  "Workbook 6: Crisis, Suicide, Violence, Abuse, Trauma, and Emergency Response | WB6-07",
+                      "front":  "What must I be able to do for WB6-O1?",
+                      "back":  "Distinguish severe distress from a crisis requiring immediate intervention by assessing impairment, immediacy, vulnerability, environmental danger, and available supports."
+                  },
+                  {
+                      "id":  "058",
+                      "tag":  "Workbook 6: Crisis, Suicide, Violence, Abuse, Trauma, and Emergency Response | WB6-08",
+                      "front":  "What must I be able to do for WB6-O2?",
+                      "back":  "Use direct, developmentally and culturally responsive inquiry to assess suicidal ideation, intent, planning, access to means, self-injury, prior behavior, and the level of intervention indicated."
+                  },
+                  {
+                      "id":  "059",
+                      "tag":  "Workbook 6: Crisis, Suicide, Violence, Abuse, Trauma, and Emergency Response | WB6-09",
+                      "front":  "What must I be able to do for WB6-O3?",
+                      "back":  "Assess violence, coercion, threats, and stalking directed toward the client, others, or the therapist and select safety actions consistent with the known risk and professional role."
+                  },
+                  {
+                      "id":  "060",
+                      "tag":  "Workbook 6: Crisis, Suicide, Violence, Abuse, Trauma, and Emergency Response | WB6-10",
+                      "front":  "What must I be able to do for WB6-O4?",
+                      "back":  "Identify abuse, neglect, exploitation, and endangerment concerns and apply a jurisdiction-controlled reporting and protection sequence without delaying for certainty or conducting an unnecessary investigation."
+                  },
+                  {
+                      "id":  "061",
+                      "tag":  "Workbook 7: Couple, Family, Attachment, Structural, Strategic, and Intergenerational Interventions | WB7-01",
+                      "front":  "When should I use FIT?",
+                      "back":  "Use FIT to choose modality and intervention before technique. Apply it by: Formulate the maintaining sequence; Identify the treatment unit and change target; Test safety, readiness, culture, access, and model fit."
+                  },
+                  {
+                      "id":  "062",
+                      "tag":  "Workbook 7: Couple, Family, Attachment, Structural, Strategic, and Intergenerational Interventions | WB7-02",
+                      "front":  "When should I use JOIN?",
+                      "back":  "Use JOIN to alliance and conjoint-treatment readiness. Apply it by: Join each participant; Observe power and participation; Identify voluntariness and safety; Name the shared process without false equivalence."
+                  },
+                  {
+                      "id":  "063",
+                      "tag":  "Workbook 7: Couple, Family, Attachment, Structural, Strategic, and Intergenerational Interventions | WB7-03",
+                      "front":  "When should I use SECURE?",
+                      "back":  "Use SECURE to attachment-informed intervention sequencing. Apply it by: Spot the negative cycle; Explore primary emotion and attachment meaning; Create safe engagement; Use responsive interactions; Review impact; Extend..."
+                  },
+                  {
+                      "id":  "064",
+                      "tag":  "Workbook 7: Couple, Family, Attachment, Structural, Strategic, and Intergenerational Interventions | WB7-04",
+                      "front":  "When should I use SHIFT?",
+                      "back":  "Use SHIFT to structural and strategic methods. Apply it by: See the interactional pattern; Highlight structure or attempted solution; Intervene through enactment, boundary work, reframe, or task; Follow the..."
+                  },
+                  {
+                      "id":  "065",
+                      "tag":  "Workbook 7: Couple, Family, Attachment, Structural, Strategic, and Intergenerational Interventions | WB7-05",
+                      "front":  "When should I use ROOTS?",
+                      "back":  "Use ROOTS to intergenerational formulation and intervention. Apply it by: Review generations and context; Observe triangles and legacies; Track transmission and cutoffs; Support differentiation and present choice."
+                  },
+                  {
+                      "id":  "066",
+                      "tag":  "Workbook 7: Couple, Family, Attachment, Structural, Strategic, and Intergenerational Interventions | WB7-06",
+                      "front":  "When should I use ADAPT?",
+                      "back":  "Use ADAPT to integration and plan revision. Apply it by: Assess response and alliance; Detect nonresponse, harm, or drift; Align with the working hypothesis; Pivot, consult, refer, or revise; Track and..."
+                  },
+                  {
+                      "id":  "067",
+                      "tag":  "Workbook 7: Couple, Family, Attachment, Structural, Strategic, and Intergenerational Interventions | WB7-07",
+                      "front":  "What must I be able to do for WB7-LO1?",
+                      "back":  "Client versus treatment unit; linear versus circular descriptions; relational sequences; mechanism of change; modality and participant decisions; contraindications; FIT."
+                  },
+                  {
+                      "id":  "068",
+                      "tag":  "Workbook 7: Couple, Family, Attachment, Structural, Strategic, and Intergenerational Interventions | WB7-08",
+                      "front":  "What must I be able to do for WB7-LO2?",
+                      "back":  "Multi-person alliance; balanced accountability; secrets and privacy policies; culture and power; coercion screening; therapist position; rupture; JOIN."
+                  },
+                  {
+                      "id":  "069",
+                      "tag":  "Workbook 7: Couple, Family, Attachment, Structural, Strategic, and Intergenerational Interventions | WB7-09",
+                      "front":  "What must I be able to do for WB7-LO3?",
+                      "back":  "Negative cycles; protest and withdrawal; primary/secondary emotion; accessibility, responsiveness, engagement; pacing; repair; SECURE."
+                  },
+                  {
+                      "id":  "070",
+                      "tag":  "Workbook 7: Couple, Family, Attachment, Structural, Strategic, and Intergenerational Interventions | WB7-10",
+                      "front":  "What must I be able to do for WB7-LO4?",
+                      "back":  "Subsystems, boundaries, hierarchy, coalitions, enactments, joining, reframing, attempted solutions, directives, pattern interruption, monitoring effects; SHIFT."
+                  },
+                  {
+                      "id":  "071",
+                      "tag":  "Workbook 8: Narrative, Solution-Focused, Experiential, Behavioral, Cognitive, and Mindfulness Interventions | WB8-01",
+                      "front":  "When should I use MATCH?",
+                      "back":  "Use MATCH to select and integrate interventions coherently. Apply it by: Map the maintaining sequence; Align mechanism and agreed goal; Test treatment unit and readiness; Check safety, culture, access, evidence, and..."
+                  },
+                  {
+                      "id":  "072",
+                      "tag":  "Workbook 8: Narrative, Solution-Focused, Experiential, Behavioral, Cognitive, and Mindfulness Interventions | WB8-02",
+                      "front":  "When should I use STORY?",
+                      "back":  "Use STORY to narrative formulation and intervention. Apply it by: Separate the person from the problem; Trace effects, influence, and context; Open space for exceptions and unique outcomes; Re-author preferred..."
+                  },
+                  {
+                      "id":  "073",
+                      "tag":  "Workbook 8: Narrative, Solution-Focused, Experiential, Behavioral, Cognitive, and Mindfulness Interventions | WB8-03",
+                      "front":  "When should I use SPARK?",
+                      "back":  "Use SPARK to solution-focused and motivational methods. Apply it by: Specify the preferred future; Prioritize autonomy and readiness; Ask about exceptions, scales, coping, and change talk; Reflect strengths and..."
+                  },
+                  {
+                      "id":  "074",
+                      "tag":  "Workbook 8: Narrative, Solution-Focused, Experiential, Behavioral, Cognitive, and Mindfulness Interventions | WB8-04",
+                      "front":  "When should I use FEEL?",
+                      "back":  "Use FEEL to experiential process and pacing. Apply it by: Focus present process; Establish regulation, permission, and choice; Evoke emotion and meaning within tolerance; Link experience to the relational..."
+                  },
+                  {
+                      "id":  "075",
+                      "tag":  "Workbook 8: Narrative, Solution-Focused, Experiential, Behavioral, Cognitive, and Mindfulness Interventions | WB8-05",
+                      "front":  "When should I use CHANGE?",
+                      "back":  "Use CHANGE to behavioral and cognitive interventions. Apply it by: Clarify the behavioral, cognitive, and relational target; Hunt antecedents, consequences, appraisals, and reciprocal effects; Arrange a skill or..."
+                  },
+                  {
+                      "id":  "076",
+                      "tag":  "Workbook 8: Narrative, Solution-Focused, Experiential, Behavioral, Cognitive, and Mindfulness Interventions | WB8-06",
+                      "front":  "When should I use PAUSE?",
+                      "back":  "Use PAUSE to mindfulness- and acceptance-informed practice. Apply it by: Prepare safety, rationale, accessibility, and choice; Attend to present experience; Unhook and observe with openness; Select a values-linked..."
+                  },
+                  {
+                      "id":  "077",
+                      "tag":  "Workbook 8: Narrative, Solution-Focused, Experiential, Behavioral, Cognitive, and Mindfulness Interventions | WB8-07",
+                      "front":  "What must I be able to do for WB8-LO1?",
+                      "back":  "Systemic formulation; mechanism of change; treatment unit; common factors versus model-specific methods; client preference; evidence; safety; readiness; culture; access; MATCH."
+                  },
+                  {
+                      "id":  "078",
+                      "tag":  "Workbook 8: Narrative, Solution-Focused, Experiential, Behavioral, Cognitive, and Mindfulness Interventions | WB8-08",
+                      "front":  "What must I be able to do for WB8-LO2?",
+                      "back":  "Collaborative stance; language and power; externalizing; mapping effects and influence; unique outcomes; re-authoring; preferred identity; documents/rituals; accountability; STORY."
+                  },
+                  {
+                      "id":  "079",
+                      "tag":  "Workbook 8: Narrative, Solution-Focused, Experiential, Behavioral, Cognitive, and Mindfulness Interventions | WB8-09",
+                      "front":  "What must I be able to do for WB8-LO3?",
+                      "back":  "Preferred future; exceptions; coping; scaling; small steps; strengths; autonomy; ambivalence; change/sustain talk; readiness; collaborative planning; SPARK."
+                  },
+                  {
+                      "id":  "080",
+                      "tag":  "Workbook 8: Narrative, Solution-Focused, Experiential, Behavioral, Cognitive, and Mindfulness Interventions | WB8-10",
+                      "front":  "What must I be able to do for WB8-LO4?",
+                      "back":  "Present process; therapist use of self; regulation; emotion/meaning; experiential enactment; congruence; contact; pacing; trauma sensitivity; FEEL."
+                  },
+                  {
+                      "id":  "081",
+                      "tag":  "Workbook 9: Complex Presentations, Substance Use, Recovery, Sexuality, Health, Development, Grief, and Integrated Care | WB9-01",
+                      "front":  "When should I use MOSAIC?",
+                      "back":  "Use MOSAIC to build a non-reductive complex-presentation formulation. Apply it by: Map interacting conditions and relational sequences; Observe function, acuity, strengths, and context; Select client/treatment unit and..."
+                  },
+                  {
+                      "id":  "082",
+                      "tag":  "Workbook 9: Complex Presentations, Substance Use, Recovery, Sexuality, Health, Development, Grief, and Integrated Care | WB9-02",
+                      "front":  "When should I use RECOVER?",
+                      "back":  "Use RECOVER to reason through substance use, recovery, and level of care. Apply it by: Recognize pattern, function, and recovery context; Evaluate intoxication, withdrawal, overdose, and co-occurring risk; Clarify..."
+                  },
+                  {
+                      "id":  "083",
+                      "tag":  "Workbook 9: Complex Presentations, Substance Use, Recovery, Sexuality, Health, Development, Grief, and Integrated Care | WB9-03",
+                      "front":  "When should I use OPENS?",
+                      "back":  "Use OPENS to conduct inclusive sexuality and sexual-health inquiry. Apply it by: Offer permission, privacy, and inclusive language; Pinpoint the concern and client-defined goal; Evaluate consent, coercion, safety,..."
+                  },
+                  {
+                      "id":  "084",
+                      "tag":  "Workbook 9: Complex Presentations, Substance Use, Recovery, Sexuality, Health, Development, Grief, and Integrated Care | WB9-04",
+                      "front":  "When should I use BRIDGE?",
+                      "back":  "Use BRIDGE to coordinate health-related and interdisciplinary care. Apply it by: Build the shared care question; Review health, medication, disability, function, and access; Identify bidirectional relational effects;..."
+                  },
+                  {
+                      "id":  "085",
+                      "tag":  "Workbook 9: Complex Presentations, Substance Use, Recovery, Sexuality, Health, Development, Grief, and Integrated Care | WB9-05",
+                      "front":  "When should I use SEASONS?",
+                      "back":  "Use SEASONS to differentiate and treat transitions, caregiving, grief, and loss. Apply it by: Situate the concern in development and family life cycle; Elicit meaning, culture, spirituality, and ritual; Assess grief,..."
+                  },
+                  {
+                      "id":  "086",
+                      "tag":  "Workbook 9: Complex Presentations, Substance Use, Recovery, Sexuality, Health, Development, Grief, and Integrated Care | WB9-06",
+                      "front":  "When should I use STEADY?",
+                      "back":  "Use STEADY to prioritize stability, level of care, and safe transitions. Apply it by: Screen immediate danger and instability; Triage medical, psychiatric, substance, abuse, and neglect needs; Establish stabilization..."
+                  },
+                  {
+                      "id":  "087",
+                      "tag":  "Workbook 9: Complex Presentations, Substance Use, Recovery, Sexuality, Health, Development, Grief, and Integrated Care | WB9-07",
+                      "front":  "What must I be able to do for WB9-LO1?",
+                      "back":  "Multidimensional formulation; urgent versus nonurgent needs; diagnostic overshadowing; client/treatment unit; collateral information; strengths; culture; access; scope; MOSAIC."
+                  },
+                  {
+                      "id":  "088",
+                      "tag":  "Workbook 9: Complex Presentations, Substance Use, Recovery, Sexuality, Health, Development, Grief, and Integrated Care | WB9-08",
+                      "front":  "What must I be able to do for WB9-LO2?",
+                      "back":  "Use pattern and function; intoxication/withdrawal/overdose; co-occurring conditions; readiness; recovery pathways; family effects; medications and specialty roles; level of care; RECOVER."
+                  },
+                  {
+                      "id":  "089",
+                      "tag":  "Workbook 9: Complex Presentations, Substance Use, Recovery, Sexuality, Health, Development, Grief, and Integrated Care | WB9-09",
+                      "front":  "What must I be able to do for WB9-LO3?",
+                      "back":  "Inclusive inquiry; anatomy/behavior/identity distinctions; desire and function; consent/coercion; trauma; reproductive and life-stage context; medical factors; competence and referral; OPENS."
+                  },
+                  {
+                      "id":  "090",
+                      "tag":  "Workbook 9: Complex Presentations, Substance Use, Recovery, Sexuality, Health, Development, Grief, and Integrated Care | WB9-10",
+                      "front":  "What must I be able to do for WB9-LO4?",
+                      "back":  "Chronic illness; pain; sleep; disability; neurocognitive/functional change; medication effects and adherence; access and accommodations; caregiving; consented coordination; BRIDGE."
+                  },
+                  {
+                      "id":  "091",
+                      "tag":  "Workbook 10: Progress Evaluation, Research Literacy, Plan Revision, Termination, and Continuity | WB10-01",
+                      "front":  "When should I use TRACK?",
+                      "back":  "Use TRACK to build and use a collaborative progress-monitoring plan. Apply it by: Target agreed goals and indicators; Record baseline, method, and review point; Attend alliance, safety, function, culture, access, and..."
+                  },
+                  {
+                      "id":  "092",
+                      "tag":  "Workbook 10: Progress Evaluation, Research Literacy, Plan Revision, Termination, and Continuity | WB10-02",
+                      "front":  "When should I use LENS?",
+                      "back":  "Use LENS to appraise evidence without overgeneralizing it. Apply it by: Locate the clinical decision question; Examine design, source, sample, comparison, and measures; Note effect, harm, bias, limits, cultural fit, and..."
+                  },
+                  {
+                      "id":  "093",
+                      "tag":  "Workbook 10: Progress Evaluation, Research Literacy, Plan Revision, Termination, and Continuity | WB10-03",
+                      "front":  "When should I use SIGNAL?",
+                      "back":  "Use SIGNAL to interpret practice-based data responsibly. Apply it by: Specify the indicator, expected direction, and timeframe; Integrate repeated and multi-informant information; Gauge trend, meaningful change, harm,..."
+                  },
+                  {
+                      "id":  "094",
+                      "tag":  "Workbook 10: Progress Evaluation, Research Literacy, Plan Revision, Termination, and Continuity | WB10-04",
+                      "front":  "When should I use REPAIR?",
+                      "back":  "Use REPAIR to respond to nonresponse, deterioration, or rupture. Apply it by: Reassess safety, diagnosis, hypothesis, and fit; Elicit client-system feedback and meaning; Probe alliance, implementation, access, and..."
+                  },
+                  {
+                      "id":  "095",
+                      "tag":  "Workbook 10: Progress Evaluation, Research Literacy, Plan Revision, Termination, and Continuity | WB10-05",
+                      "front":  "When should I use STEPS?",
+                      "back":  "Use STEPS to manage step-up/down, referral, and transfer. Apply it by: Screen acuity, function, competence, and continuity risk; Test current treatment fit and alternatives; Explain options, benefits, burdens, and..."
+                  },
+                  {
+                      "id":  "096",
+                      "tag":  "Workbook 10: Progress Evaluation, Research Literacy, Plan Revision, Termination, and Continuity | WB10-06",
+                      "front":  "When should I use CLOSE?",
+                      "back":  "Use CLOSE to plan termination and maintain gains. Apply it by: Clarify the indication, criteria, readiness, and safety; Link progress evidence to goals and client meaning; Outline gains, remaining needs,..."
+                  },
+                  {
+                      "id":  "097",
+                      "tag":  "Workbook 10: Progress Evaluation, Research Literacy, Plan Revision, Termination, and Continuity | WB10-07",
+                      "front":  "What must I be able to do for WB10-LO1?",
+                      "back":  "Client-system goals; baseline; observable indicators; symptoms, function, relationships, quality of life, safety, alliance, and qualitative feedback; treatment unit; language and access; review intervals; TRACK."
+                  },
+                  {
+                      "id":  "098",
+                      "tag":  "Workbook 10: Progress Evaluation, Research Literacy, Plan Revision, Termination, and Continuity | WB10-08",
+                      "front":  "What must I be able to do for WB10-LO2?",
+                      "back":  "Decision questions; quantitative/qualitative designs; reviews; sampling; comparison; validity; bias; effect and harm; clinical significance; culture; feasibility; applicability; LENS."
+                  },
+                  {
+                      "id":  "099",
+                      "tag":  "Workbook 10: Progress Evaluation, Research Literacy, Plan Revision, Termination, and Continuity | WB10-09",
+                      "front":  "What must I be able to do for WB10-LO3?",
+                      "back":  "Repeated measurement; trend; expected variation; clinically meaningful versus statistical change; missingness; measure limits; multiple informants; client meaning; decision rationale; SIGNAL."
+                  },
+                  {
+                      "id":  "100",
+                      "tag":  "Workbook 10: Progress Evaluation, Research Literacy, Plan Revision, Termination, and Continuity | WB10-10",
+                      "front":  "What must I be able to do for WB10-LO4?",
+                      "back":  "Outcome worsening; dropout risk; alliance rupture; implementation and access barriers; safety and diagnosis reassessment; hypothesis revision; consultation; collaborative plan adaptation; REPAIR."
+                  },
+                  {
+                      "id":  "101",
+                      "tag":  "Workbook 11: Diversity, Social Justice, Community Systems, Groups, Referral, Collaboration, and Supervision | WB11-01",
+                      "front":  "When should I use HUMBLE?",
+                      "back":  "Use HUMBLE to practice cultural humility without stereotyping or false neutrality. Apply it by: Hold curiosity and locate self; Understand identity, history, context, and power; Map privilege, oppression, strengths,..."
+                  },
+                  {
+                      "id":  "102",
+                      "tag":  "Workbook 11: Diversity, Social Justice, Community Systems, Groups, Referral, Collaboration, and Supervision | WB11-02",
+                      "front":  "When should I use ACCESS?",
+                      "back":  "Use ACCESS to make services understandable, usable, and participatory. Apply it by: Ask communication, language, disability, literacy, and participation needs; Check barriers and client preferences; Coordinate..."
+                  },
+                  {
+                      "id":  "103",
+                      "tag":  "Workbook 11: Diversity, Social Justice, Community Systems, Groups, Referral, Collaboration, and Supervision | WB11-03",
+                      "front":  "When should I use ECOLOGY?",
+                      "back":  "Use ECOLOGY to map community systems and choose proportionate action. Apply it by: Examine person, relationship, family, community, institution, and policy layers; Center client-defined priorities; Organize strengths,..."
+                  },
+                  {
+                      "id":  "104",
+                      "tag":  "Workbook 11: Diversity, Social Justice, Community Systems, Groups, Referral, Collaboration, and Supervision | WB11-04",
+                      "front":  "When should I use GROUP?",
+                      "back":  "Use GROUP to screen and lead groups responsively. Apply it by: Gate for purpose, fit, readiness, voluntariness, safety, and alternatives; Review consent, confidentiality limits, roles, and access; Organize..."
+                  },
+                  {
+                      "id":  "105",
+                      "tag":  "Workbook 11: Diversity, Social Justice, Community Systems, Groups, Referral, Collaboration, and Supervision | WB11-05",
+                      "front":  "When should I use LINK?",
+                      "back":  "Use LINK to consult, refer, collaborate, and hand off safely. Apply it by: Locate need, urgency, competence limits, and client goals; Identify options that fit preference, culture, language, access, and resources;..."
+                  },
+                  {
+                      "id":  "106",
+                      "tag":  "Workbook 11: Diversity, Social Justice, Community Systems, Groups, Referral, Collaboration, and Supervision | WB11-06",
+                      "front":  "When should I use GUIDE?",
+                      "back":  "Use GUIDE to supervise and delegate while protecting clients. Apply it by: Ground role, authority, expectations, and power; Understand supervisee competence, workload, context, and learning needs; Identify client risk..."
+                  },
+                  {
+                      "id":  "107",
+                      "tag":  "Workbook 11: Diversity, Social Justice, Community Systems, Groups, Referral, Collaboration, and Supervision | WB11-07",
+                      "front":  "What must I be able to do for WB11-LO1?",
+                      "back":  "Self-location; worldview; intersectionality; privilege and oppression; discrimination; spirituality; migration; therapist values and reactivity; client-defined meaning; stereotyping; rupture and repair; HUMBLE."
+                  },
+                  {
+                      "id":  "108",
+                      "tag":  "Workbook 11: Diversity, Social Justice, Community Systems, Groups, Referral, Collaboration, and Supervision | WB11-08",
+                      "front":  "What must I be able to do for WB11-LO2?",
+                      "back":  "Communication preferences; qualified language assistance; health literacy; sensory/cognitive/mobility access; individualized accommodations; digital and financial barriers; transportation; caregiving; structural..."
+                  },
+                  {
+                      "id":  "109",
+                      "tag":  "Workbook 11: Diversity, Social Justice, Community Systems, Groups, Referral, Collaboration, and Supervision | WB11-09",
+                      "front":  "What must I be able to do for WB11-LO3?",
+                      "back":  "Ecological mapping; family/community strengths; schools, health, housing, justice, faith, benefits, and organizations; client priorities; role boundaries; community partnership; structural leverage; ECOLOGY."
+                  },
+                  {
+                      "id":  "110",
+                      "tag":  "Workbook 11: Diversity, Social Justice, Community Systems, Groups, Referral, Collaboration, and Supervision | WB11-10",
+                      "front":  "What must I be able to do for WB11-LO4?",
+                      "back":  "Purpose; selection and exclusion; voluntariness; alternatives; composition; access; confidentiality limits; norms; cohesion; conflict; power; trauma; risk; co-leadership; outcomes; GROUP."
+                  },
+                  {
+                      "id":  "111",
+                      "tag":  "Workbook 12: Ethics, Law, Business Practice, Documentation, Technology, Teletherapy, and AI | WB12-01",
+                      "front":  "When should I use COMPASS?",
+                      "back":  "Use COMPASS to make defensible ethical and jurisdictional decisions. Apply it by: Clarify client, treatment unit, decision, role, and affected parties; Observe immediate safety and rights; Map law, regulation, ethics,..."
+                  },
+                  {
+                      "id":  "112",
+                      "tag":  "Workbook 12: Ethics, Law, Business Practice, Documentation, Technology, Teletherapy, and AI | WB12-02",
+                      "front":  "When should I use CONSENT?",
+                      "back":  "Use CONSENT to manage consent and systemic information rights. Apply it by: Confirm client, treatment unit, capacity, and legal authority; Outline service, roles, fees, risks, benefits, alternatives, and technology;..."
+                  },
+                  {
+                      "id":  "113",
+                      "tag":  "Workbook 12: Ethics, Law, Business Practice, Documentation, Technology, Teletherapy, and AI | WB12-03",
+                      "front":  "When should I use RECORD?",
+                      "back":  "Use RECORD to create and manage accurate, protected records. Apply it by: Record relevant facts, sources, observations, and participation; Explain clinical reasoning and decisions; Correct errors transparently without..."
+                  },
+                  {
+                      "id":  "114",
+                      "tag":  "Workbook 12: Ethics, Law, Business Practice, Documentation, Technology, Teletherapy, and AI | WB12-04",
+                      "front":  "When should I use TRUST?",
+                      "back":  "Use TRUST to protect integrity in business and public practice. Apply it by: Tell clients financial and role terms clearly; Represent credentials, services, specialties, and outcomes accurately; Use truthful billing,..."
+                  },
+                  {
+                      "id":  "115",
+                      "tag":  "Workbook 12: Ethics, Law, Business Practice, Documentation, Technology, Teletherapy, and AI | WB12-05",
+                      "front":  "When should I use TELESAFE?",
+                      "back":  "Use TELESAFE to deliver teletherapy safely across changing contexts. Apply it by: Track client and therapist location and jurisdiction; Evaluate authority, clinical fit, access, privacy, and technology; Locate..."
+                  },
+                  {
+                      "id":  "116",
+                      "tag":  "Workbook 12: Ethics, Law, Business Practice, Documentation, Technology, Teletherapy, and AI | WB12-06",
+                      "front":  "When should I use HUMAN?",
+                      "back":  "Use HUMAN to govern ai, recording, transcription, and automation. Apply it by: Hold the therapist responsible for every decision and record; Understand purpose, data flow, vendor terms, retention, and affected people;..."
+                  },
+                  {
+                      "id":  "117",
+                      "tag":  "Workbook 12: Ethics, Law, Business Practice, Documentation, Technology, Teletherapy, and AI | WB12-07",
+                      "front":  "What must I be able to do for WB12-LO1?",
+                      "back":  "Sources of authority; law versus ethics; client and treatment unit; role; competence; consultation; conflicts; multiple relationships; legal-system roles; organizational pressure; discipline risk; COMPASS."
+                  },
+                  {
+                      "id":  "118",
+                      "tag":  "Workbook 12: Ethics, Law, Business Practice, Documentation, Technology, Teletherapy, and AI | WB12-08",
+                      "front":  "What must I be able to do for WB12-LO2?",
+                      "back":  "Capacity and authority; understandable consent; third parties; couple/family/group policies; written authorization; privilege; subpoenas and orders; permitted/required disclosure; minimum necessary; CONSENT."
+                  },
+                  {
+                      "id":  "119",
+                      "tag":  "Workbook 12: Ethics, Law, Business Practice, Documentation, Technology, Teletherapy, and AI | WB12-09",
+                      "front":  "What must I be able to do for WB12-LO3?",
+                      "back":  "Accurate and adequate notes; corrections; psychotherapy notes; client and systemic access; third-party information; storage; release; retention; disposal; breach; incapacitation, sale, closure, transfer; RECORD."
+                  },
+                  {
+                      "id":  "120",
+                      "tag":  "Workbook 12: Ethics, Law, Business Practice, Documentation, Technology, Teletherapy, and AI | WB12-10",
+                      "front":  "What must I be able to do for WB12-LO4?",
+                      "back":  "Fees; financial disclosures; payer accuracy; coding; collections; bartering; referrals; conflicts; truthful credentials and specialties; testimonials; social media; contractors; forensic versus therapy roles; TRUST."
+                  }
+              ]
+}

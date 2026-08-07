@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.163' );
+	define( 'CTA_VERSION', '1.0.164' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -84,6 +84,7 @@ $cta_required_files = array(
 	'includes/class-cta-ce-access.php',
 	'includes/class-cta-ce-completion.php',
 	'includes/class-cta-course-materials.php',
+	'includes/class-cta-flashcards.php',
 	'includes/class-cta-evaluation-questions.php',
 	'includes/class-cta-course-attestation.php',
 	'includes/class-cta-telehealth-exam-sync.php',

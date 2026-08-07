@@ -1,0 +1,800 @@
+{
+    "program":  "lmft-clinical",
+    "title":  "LMFT Clinical Flashcards",
+    "version":  "1.0",
+    "count":  132,
+    "cards":  [
+                  {
+                      "id":  "001",
+                      "tag":  "LMFT  â€¢  CORE",
+                      "front":  "What is the LMFT core decision sequence?",
+                      "back":  "Task â†’ Safety/Duty â†’ Role â†’ Assessment â†’ Formulation â†’ Plan â†’ Intervention â†’ Review"
+                  },
+                  {
+                      "id":  "002",
+                      "tag":  "LMFT  â€¢  CORE",
+                      "front":  "What should you identify before solving the vignette?",
+                      "back":  "Read the final question first and identify the requested task word and stage of care."
+                  },
+                  {
+                      "id":  "003",
+                      "tag":  "LMFT  â€¢  CORE",
+                      "front":  "What controls the sequence when safety or a duty is present?",
+                      "back":  "Address immediate safety and controlling legal or ethical duties before routine assessment, planning, or intervention."
+                  },
+                  {
+                      "id":  "004",
+                      "tag":  "LMFT  â€¢  CORE",
+                      "front":  "What role question is essential in LMFT cases?",
+                      "back":  "Clarify the therapist role, who the client is, and the appropriate treatment unit before choosing an action."
+                  },
+                  {
+                      "id":  "005",
+                      "tag":  "LMFT  â€¢  CORE",
+                      "front":  "How should known and missing facts affect an answer?",
+                      "back":  "Choose the option supported by known facts. When decision-critical information is missing, assess or clarify before acting."
+                  },
+                  {
+                      "id":  "006",
+                      "tag":  "LMFT  â€¢  CORE",
+                      "front":  "What does the LMFT systemic lens add?",
+                      "back":  "Identify reciprocal patterns, relationships, context, power, safety, and the smallest effective safe treatment unit."
+                  },
+                  {
+                      "id":  "007",
+                      "tag":  "LMFT  â€¢  CORE",
+                      "front":  "How should client preference and consent shape the response?",
+                      "back":  "Integrate client preference, voluntariness, consent, privacy, culture, and context unless a safety or legal duty changes the sequence."
+                  },
+                  {
+                      "id":  "008",
+                      "tag":  "LMFT  â€¢  CORE",
+                      "front":  "What does â€œleast assumptiveâ€ mean?",
+                      "back":  "Reject options that require motives, diagnoses, readiness, authority, or facts that the vignette does not provide."
+                  },
+                  {
+                      "id":  "009",
+                      "tag":  "LMFT  â€¢  CORE",
+                      "front":  "What is a common timing rule?",
+                      "back":  "A clinically reasonable intervention is wrong when assessment, stabilization, consent, planning, or role clarification must occur first."
+                  },
+                  {
+                      "id":  "010",
+                      "tag":  "LMFT  â€¢  CORE",
+                      "front":  "What level of response is usually preferred?",
+                      "back":  "Use the least unnecessarily intensive, intrusive, or disruptive action that is safe, effective, ethical, and supported by the facts."
+                  },
+                  {
+                      "id":  "011",
+                      "tag":  "LMFT  â€¢  CORE",
+                      "front":  "What makes an action complete?",
+                      "back":  "Include documentation, coordination or handoff, follow-up, outcome review, and continuity of care when the case requires them."
+                  },
+                  {
+                      "id":  "012",
+                      "tag":  "LMFT  â€¢  CORE",
+                      "front":  "How should a missed question become a study tool?",
+                      "back":  "Classify the error, write the corrective decision rule, identify the cue you missed, and practice the same pattern again."
+                  },
+                  {
+                      "id":  "013",
+                      "tag":  "LMFT  â€¢  WB1",
+                      "front":  "WB1: What reasoning sequence anchors this topic?",
+                      "back":  "Task â†’ Priority â†’ Fit â†’ Answer"
+                  },
+                  {
+                      "id":  "014",
+                      "tag":  "LMFT  â€¢  WB1",
+                      "front":  "WB1: Which CTA memory aid organizes decisions?",
+                      "back":  "Clinical Decision Hierarchy + Three-Pass Method. Use it to organize the reasoning priorities in Exam Strategy and Clinical Reasoning."
+                  },
+                  {
+                      "id":  "015",
+                      "tag":  "LMFT  â€¢  WB1",
+                      "front":  "WB1 high-yield rule 1: What should you remember?",
+                      "back":  "Read the final question and qualifier before solving the full vignette. FIRST, NEXT, BEST, and MOST identify different tasks."
+                  },
+                  {
+                      "id":  "016",
+                      "tag":  "LMFT  â€¢  WB1",
+                      "front":  "WB1 high-yield rule 2: What should you remember?",
+                      "back":  "Use sequence: Emergency â†’ Duty â†’ Role â†’ Assess â†’ Plan â†’ Intervene â†’ Review."
+                  },
+                  {
+                      "id":  "017",
+                      "tag":  "LMFT  â€¢  WB1",
+                      "front":  "WB1 high-yield rule 3: What should you remember?",
+                      "back":  "Add the LMFT lens: identify the individual, relationship pattern, context, and appropriate treatment unit."
+                  },
+                  {
+                      "id":  "018",
+                      "tag":  "LMFT  â€¢  WB1",
+                      "front":  "WB1 trap check 1: What tempting mistake should you reject?",
+                      "back":  "Choosing the strongest or most sophisticated action instead of the best-timed action."
+                  },
+                  {
+                      "id":  "019",
+                      "tag":  "LMFT  â€¢  WB1",
+                      "front":  "WB1 trap check 2: What tempting mistake should you reject?",
+                      "back":  "Assuming facts, motives, consent, safety, or readiness that the vignette does not provide."
+                  },
+                  {
+                      "id":  "020",
+                      "tag":  "LMFT  â€¢  WB1",
+                      "front":  "WB1 trap check 3: What tempting mistake should you reject?",
+                      "back":  "Forcing conjoint or family treatment when safety, privacy, medical urgency, or individual assessment controls the sequence."
+                  },
+                  {
+                      "id":  "021",
+                      "tag":  "LMFT  â€¢  WB1",
+                      "front":  "WB1: Which three self-check questions should you ask?",
+                      "back":  "What exact task is the question asking? â€¢ What stage of care is the case in? â€¢ Which option fits the known facts without adding assumptions?"
+                  },
+                  {
+                      "id":  "022",
+                      "tag":  "LMFT  â€¢  WB1",
+                      "front":  "WB1: What practice action should follow this review?",
+                      "back":  "For each missed item, record the task word, decision stage, overlooked fact, and corrective rule."
+                  },
+                  {
+                      "id":  "023",
+                      "tag":  "LMFT  â€¢  WB2",
+                      "front":  "WB2: What reasoning sequence anchors this topic?",
+                      "back":  "Role â€¢ Safety â€¢ Baseline â€¢ Context â€¢ Next Step"
+                  },
+                  {
+                      "id":  "024",
+                      "tag":  "LMFT  â€¢  WB2",
+                      "front":  "WB2: Which CTA memory aid organizes decisions?",
+                      "back":  "Integrated Intake + MSE Snapshot. Use it to organize the reasoning priorities in Clinical Engagement, Intake, and Mental Status Assessment."
+                  },
+                  {
+                      "id":  "025",
+                      "tag":  "LMFT  â€¢  WB2",
+                      "front":  "WB2 high-yield rule 1: What should you remember?",
+                      "back":  "Engagement and assessment occur together; the relationship itself provides clinical data."
+                  },
+                  {
+                      "id":  "026",
+                      "tag":  "LMFT  â€¢  WB2",
+                      "front":  "WB2 high-yield rule 2: What should you remember?",
+                      "back":  "Clarify referral source, participants, therapist role, confidentiality frame, and who the client is before deciding what to do."
+                  },
+                  {
+                      "id":  "027",
+                      "tag":  "LMFT  â€¢  WB2",
+                      "front":  "WB2 high-yield rule 3: What should you remember?",
+                      "back":  "Use the MSE as a current behavioral snapshot: observe, describe, compare with baseline, and consider medical, medication, substance, sleep, and contextual factors."
+                  },
+                  {
+                      "id":  "028",
+                      "tag":  "LMFT  â€¢  WB2",
+                      "front":  "WB2 trap check 1: What tempting mistake should you reject?",
+                      "back":  "Taking sides or treating one participantâ€™s report as the complete truth."
+                  },
+                  {
+                      "id":  "029",
+                      "tag":  "LMFT  â€¢  WB2",
+                      "front":  "WB2 trap check 2: What tempting mistake should you reject?",
+                      "back":  "Converting observations into motives or diagnoses without adequate evidence."
+                  },
+                  {
+                      "id":  "030",
+                      "tag":  "LMFT  â€¢  WB2",
+                      "front":  "WB2 trap check 3: What tempting mistake should you reject?",
+                      "back":  "Ignoring sudden changes, physical signs, medication effects, or substance use that may require medical attention."
+                  },
+                  {
+                      "id":  "031",
+                      "tag":  "LMFT  â€¢  WB2",
+                      "front":  "WB2: Which three self-check questions should you ask?",
+                      "back":  "Who is the client and what is my role? â€¢ What is observed versus inferred? â€¢ What changed, when, and what else could explain it?"
+                  },
+                  {
+                      "id":  "032",
+                      "tag":  "LMFT  â€¢  WB2",
+                      "front":  "WB2: What practice action should follow this review?",
+                      "back":  "Practice writing one sentence of observation before one sentence of interpretation."
+                  },
+                  {
+                      "id":  "033",
+                      "tag":  "LMFT  â€¢  WB3",
+                      "front":  "WB3: What reasoning sequence anchors this topic?",
+                      "back":  "Locate â†’ Systems â†’ Change â†’ Meaning â†’ Strengths â†’ Pattern â†’ Action"
+                  },
+                  {
+                      "id":  "034",
+                      "tag":  "LMFT  â€¢  WB3",
+                      "front":  "WB3: Which CTA memory aid organizes decisions?",
+                      "back":  "Contextual Reasoning Sequence. Use it to organize the reasoning priorities in Developmental, Psychosocial, and Diversity Assessment."
+                  },
+                  {
+                      "id":  "035",
+                      "tag":  "LMFT  â€¢  WB3",
+                      "front":  "WB3 high-yield rule 1: What should you remember?",
+                      "back":  "Locate the client in developmental level, life stage, family life cycle, and recent transitionsâ€”not age alone."
+                  },
+                  {
+                      "id":  "036",
+                      "tag":  "LMFT  â€¢  WB3",
+                      "front":  "WB3 high-yield rule 2: What should you remember?",
+                      "back":  "Ask how culture, identity, trauma, power, access, and systems shape the clientâ€™s meaning and options."
+                  },
+                  {
+                      "id":  "037",
+                      "tag":  "LMFT  â€¢  WB3",
+                      "front":  "WB3 high-yield rule 3: What should you remember?",
+                      "back":  "Assess barriers and protective resources together, then identify the maintaining pattern and next assessment or intervention step."
+                  },
+                  {
+                      "id":  "038",
+                      "tag":  "LMFT  â€¢  WB3",
+                      "front":  "WB3 trap check 1: What tempting mistake should you reject?",
+                      "back":  "Using developmental or cultural stereotypes as explanations."
+                  },
+                  {
+                      "id":  "039",
+                      "tag":  "LMFT  â€¢  WB3",
+                      "front":  "WB3 trap check 2: What tempting mistake should you reject?",
+                      "back":  "Pathologizing difference or treating structural stress as an individual defect."
+                  },
+                  {
+                      "id":  "040",
+                      "tag":  "LMFT  â€¢  WB3",
+                      "front":  "WB3 trap check 3: What tempting mistake should you reject?",
+                      "back":  "Giving advice before understanding the transition, system, and client-defined meaning."
+                  },
+                  {
+                      "id":  "041",
+                      "tag":  "LMFT  â€¢  WB3",
+                      "front":  "WB3: Which three self-check questions should you ask?",
+                      "back":  "What developmental and family transition is occurring? â€¢ What systems and power conditions matter? â€¢ What strength or resource can be used clinically?"
+                  },
+                  {
+                      "id":  "042",
+                      "tag":  "LMFT  â€¢  WB3",
+                      "front":  "WB3: What practice action should follow this review?",
+                      "back":  "Build a five-line context map before answering the practice bank."
+                  },
+                  {
+                      "id":  "043",
+                      "tag":  "LMFT  â€¢  WB4",
+                      "front":  "WB4: What reasoning sequence anchors this topic?",
+                      "back":  "Relationships â€¢ Emotional Injury â€¢ Life System â€¢ Aggression â€¢ Tools â€¢ Existing Strengths"
+                  },
+                  {
+                      "id":  "044",
+                      "tag":  "LMFT  â€¢  WB4",
+                      "front":  "WB4: Which CTA memory aid organizes decisions?",
+                      "back":  "RELATE Assessment Map. Use it to organize the reasoning priorities in Relational, Family-System, Trauma, and Strengths Assessment."
+                  },
+                  {
+                      "id":  "045",
+                      "tag":  "LMFT  â€¢  WB4",
+                      "front":  "WB4 high-yield rule 1: What should you remember?",
+                      "back":  "Assess relational patterns, boundaries, roles, support, intimacy, trauma, aggression, and protectionâ€”not only conflict history."
+                  },
+                  {
+                      "id":  "046",
+                      "tag":  "LMFT  â€¢  WB4",
+                      "front":  "WB4 high-yield rule 2: What should you remember?",
+                      "back":  "Place a safety and consent gate before detailed trauma, violence, sexuality, or joint disclosure work."
+                  },
+                  {
+                      "id":  "047",
+                      "tag":  "LMFT  â€¢  WB4",
+                      "front":  "WB4 high-yield rule 3: What should you remember?",
+                      "back":  "Use measures, consultation, and referral only when they answer a specific unresolved clinical question and preserve continuity."
+                  },
+                  {
+                      "id":  "048",
+                      "tag":  "LMFT  â€¢  WB4",
+                      "front":  "WB4 trap check 1: What tempting mistake should you reject?",
+                      "back":  "Treating one personâ€™s account or a screening score as the diagnosis."
+                  },
+                  {
+                      "id":  "049",
+                      "tag":  "LMFT  â€¢  WB4",
+                      "front":  "WB4 trap check 2: What tempting mistake should you reject?",
+                      "back":  "Pressing for detail before safety, pacing, and consent are established."
+                  },
+                  {
+                      "id":  "050",
+                      "tag":  "LMFT  â€¢  WB4",
+                      "front":  "WB4 trap check 3: What tempting mistake should you reject?",
+                      "back":  "Using vague strengths language that does not change the formulation or plan."
+                  },
+                  {
+                      "id":  "051",
+                      "tag":  "LMFT  â€¢  WB4",
+                      "front":  "WB4: Which three self-check questions should you ask?",
+                      "back":  "What pattern and protection are present? â€¢ What is known, missing, and from which source? â€¢ Does this tool or referral change the next decision?"
+                  },
+                  {
+                      "id":  "052",
+                      "tag":  "LMFT  â€¢  WB4",
+                      "front":  "WB4: What practice action should follow this review?",
+                      "back":  "Complete a RELATE map with one item in every domain."
+                  },
+                  {
+                      "id":  "053",
+                      "tag":  "LMFT  â€¢  WB5",
+                      "front":  "WB5: What reasoning sequence anchors this topic?",
+                      "back":  "Pattern â€¢ Timeline â€¢ Impact â€¢ Exclusions â€¢ Alternatives â€¢ Status"
+                  },
+                  {
+                      "id":  "054",
+                      "tag":  "LMFT  â€¢  WB5",
+                      "front":  "WB5: Which CTA memory aid organizes decisions?",
+                      "back":  "Working Diagnostic Formulation. Use it to organize the reasoning priorities in Diagnosis and Differential Diagnosis."
+                  },
+                  {
+                      "id":  "055",
+                      "tag":  "LMFT  â€¢  WB5",
+                      "front":  "WB5 high-yield rule 1: What should you remember?",
+                      "back":  "Diagnosis is a working conclusion based on pattern, threshold, chronology, impairment, and exclusions."
+                  },
+                  {
+                      "id":  "056",
+                      "tag":  "LMFT  â€¢  WB5",
+                      "front":  "WB5 high-yield rule 2: What should you remember?",
+                      "back":  "Rule out medical, neurological, medication, substance, and sleep explanations before locking in a psychiatric diagnosis."
+                  },
+                  {
+                      "id":  "057",
+                      "tag":  "LMFT  â€¢  WB5",
+                      "front":  "WB5 high-yield rule 3: What should you remember?",
+                      "back":  "Use working, provisional, differential, rule-out, and contextual status language accurately; state only what the evidence supports."
+                  },
+                  {
+                      "id":  "058",
+                      "tag":  "LMFT  â€¢  WB5",
+                      "front":  "WB5 trap check 1: What tempting mistake should you reject?",
+                      "back":  "Diagnosing from one dramatic symptom or selecting the most severe-sounding label."
+                  },
+                  {
+                      "id":  "059",
+                      "tag":  "LMFT  â€¢  WB5",
+                      "front":  "WB5 trap check 2: What tempting mistake should you reject?",
+                      "back":  "Ignoring timeline, baseline, periods of use or abstinence, and competing explanations."
+                  },
+                  {
+                      "id":  "060",
+                      "tag":  "LMFT  â€¢  WB5",
+                      "front":  "WB5 trap check 3: What tempting mistake should you reject?",
+                      "back":  "Making one diagnosis explain relational, cultural, environmental, and comorbid factors that require separate attention."
+                  },
+                  {
+                      "id":  "061",
+                      "tag":  "LMFT  â€¢  WB5",
+                      "front":  "WB5: Which three self-check questions should you ask?",
+                      "back":  "What is the pattern and chronology? â€¢ What exclusions remain? â€¢ Is the evidence sufficient to diagnose, gather more, or refer?"
+                  },
+                  {
+                      "id":  "062",
+                      "tag":  "LMFT  â€¢  WB5",
+                      "front":  "WB5: What practice action should follow this review?",
+                      "back":  "Write a one-sentence working formulation plus two competing explanations."
+                  },
+                  {
+                      "id":  "063",
+                      "tag":  "LMFT  â€¢  WB6",
+                      "front":  "WB6: What reasoning sequence anchors this topic?",
+                      "back":  "Stabilize â€¢ Assess â€¢ Formulate â€¢ Execute â€¢ Record/Reconnect"
+                  },
+                  {
+                      "id":  "064",
+                      "tag":  "LMFT  â€¢  WB6",
+                      "front":  "WB6: Which CTA memory aid organizes decisions?",
+                      "back":  "SAFER Crisis Sequence. Use it to organize the reasoning priorities in Crisis, Abuse, and Safety."
+                  },
+                  {
+                      "id":  "065",
+                      "tag":  "LMFT  â€¢  WB6",
+                      "front":  "WB6 high-yield rule 1: What should you remember?",
+                      "back":  "When risk is incomplete, assess directly; when danger or a duty is established, act proportionately."
+                  },
+                  {
+                      "id":  "066",
+                      "tag":  "LMFT  â€¢  WB6",
+                      "front":  "WB6 high-yield rule 2: What should you remember?",
+                      "back":  "Move from labels to specific facts: intent, plan, means, timing, history, protective factors, location, access, and reachability."
+                  },
+                  {
+                      "id":  "067",
+                      "tag":  "LMFT  â€¢  WB6",
+                      "front":  "WB6 high-yield rule 3: What should you remember?",
+                      "back":  "Recognize when the controlling issue is medical, legal/reporting, relational, or level of care, then create a plan that can actually be used."
+                  },
+                  {
+                      "id":  "068",
+                      "tag":  "LMFT  â€¢  WB6",
+                      "front":  "WB6 trap check 1: What tempting mistake should you reject?",
+                      "back":  "Substituting reassurance, a safety contract, or a generic resource list for direct assessment."
+                  },
+                  {
+                      "id":  "069",
+                      "tag":  "LMFT  â€¢  WB6",
+                      "front":  "WB6 trap check 2: What tempting mistake should you reject?",
+                      "back":  "Using the most restrictive response before acuity, capacity, and feasible alternatives are considered."
+                  },
+                  {
+                      "id":  "070",
+                      "tag":  "LMFT  â€¢  WB6",
+                      "front":  "WB6 trap check 3: What tempting mistake should you reject?",
+                      "back":  "Failing to document rationale, handoff, and follow-up after the immediate action."
+                  },
+                  {
+                      "id":  "071",
+                      "tag":  "LMFT  â€¢  WB6",
+                      "front":  "WB6: Which three self-check questions should you ask?",
+                      "back":  "What immediate signal requires clarification? â€¢ What facts determine acuity and duty? â€¢ Is the plan reachable, realistic, and followed up?"
+                  },
+                  {
+                      "id":  "072",
+                      "tag":  "LMFT  â€¢  WB6",
+                      "front":  "WB6: What practice action should follow this review?",
+                      "back":  "Practice stating the next two questions you would ask before naming an intervention."
+                  },
+                  {
+                      "id":  "073",
+                      "tag":  "LMFT  â€¢  WB7",
+                      "front":  "WB7: What reasoning sequence anchors this topic?",
+                      "back":  "Prioritize â€¢ Link â€¢ Agree â€¢ Name â€¢ Evaluate â€¢ Revise"
+                  },
+                  {
+                      "id":  "074",
+                      "tag":  "LMFT  â€¢  WB7",
+                      "front":  "WB7: Which CTA memory aid organizes decisions?",
+                      "back":  "PLAN-ER + CLOSE. Use it to organize the reasoning priorities in Planning, Progress, and Termination."
+                  },
+                  {
+                      "id":  "075",
+                      "tag":  "LMFT  â€¢  WB7",
+                      "front":  "WB7 high-yield rule 1: What should you remember?",
+                      "back":  "Create a defensible chain: assessment finding â†’ formulation â†’ goal â†’ action â†’ measure â†’ review."
+                  },
+                  {
+                      "id":  "076",
+                      "tag":  "LMFT  â€¢  WB7",
+                      "front":  "WB7 high-yield rule 2: What should you remember?",
+                      "back":  "Goals must be collaborative, specific enough to recognize progress, and linked to the maintaining pattern and treatment unit."
+                  },
+                  {
+                      "id":  "077",
+                      "tag":  "LMFT  â€¢  WB7",
+                      "front":  "WB7 high-yield rule 3: What should you remember?",
+                      "back":  "Use CLOSE for transitions: Confirm, Look, Organize, Summarize, End; plan continuity and relapse prevention rather than ending abruptly."
+                  },
+                  {
+                      "id":  "078",
+                      "tag":  "LMFT  â€¢  WB7",
+                      "front":  "WB7 trap check 1: What tempting mistake should you reject?",
+                      "back":  "Writing broad goals that cannot be measured or tied to a formulation."
+                  },
+                  {
+                      "id":  "079",
+                      "tag":  "LMFT  â€¢  WB7",
+                      "front":  "WB7 trap check 2: What tempting mistake should you reject?",
+                      "back":  "Choosing a modality or level of care because it is familiar rather than because it fits the target."
+                  },
+                  {
+                      "id":  "080",
+                      "tag":  "LMFT  â€¢  WB7",
+                      "front":  "WB7 trap check 3: What tempting mistake should you reject?",
+                      "back":  "Blaming the client for limited progress before reassessing diagnosis, alliance, access, implementation, intensity, or treatment unit."
+                  },
+                  {
+                      "id":  "081",
+                      "tag":  "LMFT  â€¢  WB7",
+                      "front":  "WB7: Which three self-check questions should you ask?",
+                      "back":  "What priority is the plan addressing? â€¢ How does the action link to the formulation? â€¢ What measure and review point make revision possible?"
+                  },
+                  {
+                      "id":  "082",
+                      "tag":  "LMFT  â€¢  WB7",
+                      "front":  "WB7: What practice action should follow this review?",
+                      "back":  "Rewrite one vague goal into a measurable clinical or relational goal."
+                  },
+                  {
+                      "id":  "083",
+                      "tag":  "LMFT  â€¢  WB8",
+                      "front":  "WB8: What reasoning sequence anchors this topic?",
+                      "back":  "Safety â†’ Who â†’ Shared Goal â†’ Role â†’ Information â†’ Access â†’ Follow-Up"
+                  },
+                  {
+                      "id":  "084",
+                      "tag":  "LMFT  â€¢  WB8",
+                      "front":  "WB8: Which CTA memory aid organizes decisions?",
+                      "back":  "SYSTEM Treatment-Frame Sequence. Use it to organize the reasoning priorities in Family, Couple, Attachment, and Relational Interventions."
+                  },
+                  {
+                      "id":  "085",
+                      "tag":  "LMFT  â€¢  WB8",
+                      "front":  "WB8 high-yield rule 1: What should you remember?",
+                      "back":  "Choose the smallest effective safe system; more participants do not automatically create better care."
+                  },
+                  {
+                      "id":  "086",
+                      "tag":  "LMFT  â€¢  WB8",
+                      "front":  "WB8 high-yield rule 2: What should you remember?",
+                      "back":  "Sequence relational work: safety, alliance, formulation, goals/unit, reorganization, and review."
+                  },
+                  {
+                      "id":  "087",
+                      "tag":  "LMFT  â€¢  WB8",
+                      "front":  "WB8 high-yield rule 3: What should you remember?",
+                      "back":  "Target the maintaining processâ€”cycle, boundary, hierarchy, role, attachment response, or transitionâ€”then match the modality and stage."
+                  },
+                  {
+                      "id":  "088",
+                      "tag":  "LMFT  â€¢  WB8",
+                      "front":  "WB8 trap check 1: What tempting mistake should you reject?",
+                      "back":  "Beginning conjoint work when coercion, retaliation, privacy, or voluntariness is unresolved."
+                  },
+                  {
+                      "id":  "089",
+                      "tag":  "LMFT  â€¢  WB8",
+                      "front":  "WB8 trap check 2: What tempting mistake should you reject?",
+                      "back":  "Aligning with one participant or placing a child between adults."
+                  },
+                  {
+                      "id":  "090",
+                      "tag":  "LMFT  â€¢  WB8",
+                      "front":  "WB8 trap check 3: What tempting mistake should you reject?",
+                      "back":  "Referring to a group or specialist without screening fit, clarifying purpose, and preserving continuity."
+                  },
+                  {
+                      "id":  "091",
+                      "tag":  "LMFT  â€¢  WB8",
+                      "front":  "WB8: Which three self-check questions should you ask?",
+                      "back":  "Who should participate and why? â€¢ What maintaining relational process is the target? â€¢ What safety, consent, access, and follow-up conditions are required?"
+                  },
+                  {
+                      "id":  "092",
+                      "tag":  "LMFT  â€¢  WB8",
+                      "front":  "WB8: What practice action should follow this review?",
+                      "back":  "Draw the interaction cycle and mark the exact point the intervention should change."
+                  },
+                  {
+                      "id":  "093",
+                      "tag":  "LMFT  â€¢  WB9",
+                      "front":  "WB9: What reasoning sequence anchors this topic?",
+                      "back":  "Formulation â€¢ Immediacy â€¢ Target â€¢ Suitability â€¢ Response Check"
+                  },
+                  {
+                      "id":  "094",
+                      "tag":  "LMFT  â€¢  WB9",
+                      "front":  "WB9: Which CTA memory aid organizes decisions?",
+                      "back":  "FITS Intervention Selection. Use it to organize the reasoning priorities in Trauma, Psychological, Behavioral, and Recovery Interventions."
+                  },
+                  {
+                      "id":  "095",
+                      "tag":  "LMFT  â€¢  WB9",
+                      "front":  "WB9 high-yield rule 1: What should you remember?",
+                      "back":  "Select the intervention because of the formulation, urgency, target, client/system fit, and measurable responseâ€”not the technique name."
+                  },
+                  {
+                      "id":  "096",
+                      "tag":  "LMFT  â€¢  WB9",
+                      "front":  "WB9 high-yield rule 2: What should you remember?",
+                      "back":  "Match methods to maintaining mechanisms such as avoidance, reinforcement, dysregulation, ambivalence, grief, or reassurance cycles."
+                  },
+                  {
+                      "id":  "097",
+                      "tag":  "LMFT  â€¢  WB9",
+                      "front":  "WB9 high-yield rule 3: What should you remember?",
+                      "back":  "Adapt for development, relationships, recovery stage, culture, access, and medical risk; reassess before adding more techniques."
+                  },
+                  {
+                      "id":  "098",
+                      "tag":  "LMFT  â€¢  WB9",
+                      "front":  "WB9 trap check 1: What tempting mistake should you reject?",
+                      "back":  "Beginning trauma processing during instability or severe dysregulation."
+                  },
+                  {
+                      "id":  "099",
+                      "tag":  "LMFT  â€¢  WB9",
+                      "front":  "WB9 trap check 2: What tempting mistake should you reject?",
+                      "back":  "Confronting ambivalence or using conjoint work automatically when safety or readiness is unresolved."
+                  },
+                  {
+                      "id":  "100",
+                      "tag":  "LMFT  â€¢  WB9",
+                      "front":  "WB9 trap check 3: What tempting mistake should you reject?",
+                      "back":  "Technique-shopping after nonresponse instead of reassessing diagnosis, alliance, implementation, intensity, access, and treatment unit."
+                  },
+                  {
+                      "id":  "101",
+                      "tag":  "LMFT  â€¢  WB9",
+                      "front":  "WB9: Which three self-check questions should you ask?",
+                      "back":  "What mechanism maintains the problem? â€¢ What is urgent before the target intervention? â€¢ How will response be measured and reviewed?"
+                  },
+                  {
+                      "id":  "102",
+                      "tag":  "LMFT  â€¢  WB9",
+                      "front":  "WB9: What practice action should follow this review?",
+                      "back":  "For one intervention, state the mechanism it is intended to change."
+                  },
+                  {
+                      "id":  "103",
+                      "tag":  "LMFT  â€¢  WB10",
+                      "front":  "WB10: What reasoning sequence anchors this topic?",
+                      "back":  "Context â€¢ Access/Alliance â€¢ Relational Adaptation â€¢ Evaluate"
+                  },
+                  {
+                      "id":  "104",
+                      "tag":  "LMFT  â€¢  WB10",
+                      "front":  "WB10: Which CTA memory aid organizes decisions?",
+                      "back":  "CARE Adaptation Sequence. Use it to organize the reasoning priorities in Developmental, Cultural, and Contextual Interventions."
+                  },
+                  {
+                      "id":  "105",
+                      "tag":  "LMFT  â€¢  WB10",
+                      "front":  "WB10 high-yield rule 1: What should you remember?",
+                      "back":  "Context must change delivery: pacing, language, modality, participants, examples, materials, and goals."
+                  },
+                  {
+                      "id":  "106",
+                      "tag":  "LMFT  â€¢  WB10",
+                      "front":  "WB10 high-yield rule 2: What should you remember?",
+                      "back":  "Match intervention to demonstrated capacity, developmental stage, family life cycle, identity, spirituality, and client-defined meaning."
+                  },
+                  {
+                      "id":  "107",
+                      "tag":  "LMFT  â€¢  WB10",
+                      "front":  "WB10 high-yield rule 3: What should you remember?",
+                      "back":  "Treat transportation, technology, housing, cost, work, language, caregiving, and disability access as treatment variables."
+                  },
+                  {
+                      "id":  "108",
+                      "tag":  "LMFT  â€¢  WB10",
+                      "front":  "WB10 trap check 1: What tempting mistake should you reject?",
+                      "back":  "Assuming preferences or needs from demographic categories."
+                  },
+                  {
+                      "id":  "109",
+                      "tag":  "LMFT  â€¢  WB10",
+                      "front":  "WB10 trap check 2: What tempting mistake should you reject?",
+                      "back":  "Inviting family or changing modality by default rather than from evidence and client choice."
+                  },
+                  {
+                      "id":  "110",
+                      "tag":  "LMFT  â€¢  WB10",
+                      "front":  "WB10 trap check 3: What tempting mistake should you reject?",
+                      "back":  "Labeling missed sessions or access barriers as resistance or noncommitment."
+                  },
+                  {
+                      "id":  "111",
+                      "tag":  "LMFT  â€¢  WB10",
+                      "front":  "WB10: Which three self-check questions should you ask?",
+                      "back":  "What meaning does the client assign to the situation? â€¢ What barrier or power condition changes delivery? â€¢ What adaptation will be evaluated for effectiveness?"
+                  },
+                  {
+                      "id":  "112",
+                      "tag":  "LMFT  â€¢  WB10",
+                      "front":  "WB10: What practice action should follow this review?",
+                      "back":  "Name one concrete adaptation and the outcome that would show it helped."
+                  },
+                  {
+                      "id":  "113",
+                      "tag":  "LMFT  â€¢  WB11",
+                      "front":  "WB11: What reasoning sequence anchors this topic?",
+                      "back":  "Target â€¢ Hypothesis â€¢ Evidence â€¢ Orientation Fit â€¢ Readiness â€¢ Yield/Review"
+                  },
+                  {
+                      "id":  "114",
+                      "tag":  "LMFT  â€¢  WB11",
+                      "front":  "WB11: Which CTA memory aid organizes decisions?",
+                      "back":  "THEORY + GROUP. Use it to organize the reasoning priorities in Theory, Groups, Referral, and Interdisciplinary Collaboration."
+                  },
+                  {
+                      "id":  "115",
+                      "tag":  "LMFT  â€¢  WB11",
+                      "front":  "WB11 high-yield rule 1: What should you remember?",
+                      "back":  "Theory is a testable decision map linking observations, maintaining hypothesis, target, intervention, and response."
+                  },
+                  {
+                      "id":  "116",
+                      "tag":  "LMFT  â€¢  WB11",
+                      "front":  "WB11 high-yield rule 2: What should you remember?",
+                      "back":  "Choose an orientation because its mechanism fits the case; integrate approaches coherently rather than collecting techniques."
+                  },
+                  {
+                      "id":  "117",
+                      "tag":  "LMFT  â€¢  WB11",
+                      "front":  "WB11 high-yield rule 3: What should you remember?",
+                      "back":  "Use GROUP for selection and facilitation: Goal, Readiness, Organization, Understanding limits, Process/safety; collaborate with consent and role clarity."
+                  },
+                  {
+                      "id":  "118",
+                      "tag":  "LMFT  â€¢  WB11",
+                      "front":  "WB11 trap check 1: What tempting mistake should you reject?",
+                      "back":  "Matching vocabulary or diagnosis to a theory without naming the mechanism."
+                  },
+                  {
+                      "id":  "119",
+                      "tag":  "LMFT  â€¢  WB11",
+                      "front":  "WB11 trap check 2: What tempting mistake should you reject?",
+                      "back":  "Selecting a group without screening purpose, readiness, composition, and risk."
+                  },
+                  {
+                      "id":  "120",
+                      "tag":  "LMFT  â€¢  WB11",
+                      "front":  "WB11 trap check 3: What tempting mistake should you reject?",
+                      "back":  "Assuming consultation or referral transfers the therapistâ€™s responsibility or permits broad information sharing."
+                  },
+                  {
+                      "id":  "121",
+                      "tag":  "LMFT  â€¢  WB11",
+                      "front":  "WB11: Which three self-check questions should you ask?",
+                      "back":  "What mechanism is the theory explaining? â€¢ Is the client or group ready for this format? â€¢ What is each providerâ€™s role and what information is necessary?"
+                  },
+                  {
+                      "id":  "122",
+                      "tag":  "LMFT  â€¢  WB11",
+                      "front":  "WB11: What practice action should follow this review?",
+                      "back":  "Complete one THEORY statement: target, hypothesis, evidence, orientation, and review indicator."
+                  },
+                  {
+                      "id":  "123",
+                      "tag":  "LMFT  â€¢  WB12",
+                      "front":  "WB12: What reasoning sequence anchors this topic?",
+                      "back":  "Problem/People â€¢ Role/Rules â€¢ Obtain Facts â€¢ Threat â€¢ Ethical Options â€¢ Consult â€¢ Take/Track"
+                  },
+                  {
+                      "id":  "124",
+                      "tag":  "LMFT  â€¢  WB12",
+                      "front":  "WB12: Which CTA memory aid organizes decisions?",
+                      "back":  "PROTECT Professional-Practice Sequence. Use it to organize the reasoning priorities in California Legal, Ethical, and Professional Practice."
+                  },
+                  {
+                      "id":  "125",
+                      "tag":  "LMFT  â€¢  WB12",
+                      "front":  "WB12 high-yield rule 1: What should you remember?",
+                      "back":  "Identify the controlling issue before choosing an action: client welfare, privacy, safety, competence, role, law, ethics, or continuity."
+                  },
+                  {
+                      "id":  "126",
+                      "tag":  "LMFT  â€¢  WB12",
+                      "front":  "WB12 high-yield rule 2: What should you remember?",
+                      "back":  "Separate client status, participation, payment, consent, authorization, privilege, legal process, and information authority."
+                  },
+                  {
+                      "id":  "127",
+                      "tag":  "LMFT  â€¢  WB12",
+                      "front":  "WB12 high-yield rule 3: What should you remember?",
+                      "back":  "Protect record integrity, boundaries, competence, technology practice, third-party communication, consultation, and continuity of care."
+                  },
+                  {
+                      "id":  "128",
+                      "tag":  "LMFT  â€¢  WB12",
+                      "front":  "WB12 trap check 1: What tempting mistake should you reject?",
+                      "back":  "Assuming payment, participation, consent, a subpoena, or an agency policy automatically authorizes disclosure or action."
+                  },
+                  {
+                      "id":  "129",
+                      "tag":  "LMFT  â€¢  WB12",
+                      "front":  "WB12 trap check 2: What tempting mistake should you reject?",
+                      "back":  "Overdisclosing, altering records, acting outside competence, or delaying consultation when risk is present."
+                  },
+                  {
+                      "id":  "130",
+                      "tag":  "LMFT  â€¢  WB12",
+                      "front":  "WB12 trap check 3: What tempting mistake should you reject?",
+                      "back":  "Ending or referring abruptly without stabilization, transition planning, and documentation."
+                  },
+                  {
+                      "id":  "131",
+                      "tag":  "LMFT  â€¢  WB12",
+                      "front":  "WB12: Which three self-check questions should you ask?",
+                      "back":  "Who is the client and what is my role? â€¢ What authority or duty actually controls? â€¢ What action protects welfare with the least unnecessary disclosure or disruption?"
+                  },
+                  {
+                      "id":  "132",
+                      "tag":  "LMFT  â€¢  WB12",
+                      "front":  "WB12: What practice action should follow this review?",
+                      "back":  "Write the issue, authority, facts still needed, consultation plan, action, and documentation step."
+                  }
+              ]
+}

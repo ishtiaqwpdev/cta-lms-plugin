@@ -4488,6 +4488,155 @@
     });
   }
 
+  /**
+   * In-browser Exam Prep flashcards (flip / prev / next / shuffle).
+   */
+  function initCtaFlashcards() {
+    var roots = document.querySelectorAll("[data-cta-flashcards]");
+    if (!roots.length) {
+      return;
+    }
+
+    roots.forEach(function (root) {
+      if (root.getAttribute("data-cta-flash-ready") === "1") {
+        return;
+      }
+
+      var deckEl = root.querySelector("[data-cta-flash-deck]");
+      if (!deckEl) {
+        return;
+      }
+
+      var cards;
+      try {
+        cards = JSON.parse(deckEl.textContent || "[]");
+      } catch (err) {
+        return;
+      }
+
+      if (!Array.isArray(cards) || !cards.length) {
+        return;
+      }
+
+      root.setAttribute("data-cta-flash-ready", "1");
+
+      var order = cards.map(function (_c, i) {
+        return i;
+      });
+      var index = 0;
+      var revealed = false;
+
+      var cardBtn = root.querySelector("[data-cta-flash-card]");
+      var tagEl = root.querySelector("[data-cta-flash-tag]");
+      var labelEl = root.querySelector("[data-cta-flash-label]");
+      var textEl = root.querySelector("[data-cta-flash-text]");
+      var hintEl = root.querySelector("[data-cta-flash-hint]");
+      var metaEl = root.querySelector("[data-cta-flash-meta]");
+      var prevBtn = root.querySelector("[data-cta-flash-prev]");
+      var nextBtn = root.querySelector("[data-cta-flash-next]");
+      var shuffleBtn = root.querySelector("[data-cta-flash-shuffle]");
+
+      function currentCard() {
+        return cards[order[index]] || null;
+      }
+
+      function render() {
+        var card = currentCard();
+        if (!card || !textEl) {
+          return;
+        }
+
+        if (tagEl) {
+          tagEl.textContent = card.tag || "";
+          tagEl.hidden = !card.tag;
+        }
+
+        if (labelEl) {
+          labelEl.textContent = revealed ? "Answer" : "Question";
+        }
+
+        textEl.textContent = revealed ? card.back : card.front;
+
+        if (hintEl) {
+          hintEl.textContent = revealed
+            ? "Tap to show question"
+            : "Tap to reveal answer";
+        }
+
+        if (metaEl) {
+          metaEl.textContent =
+            "Card " + (index + 1) + " of " + order.length + (card.id ? " · #" + card.id : "");
+        }
+
+        if (cardBtn) {
+          cardBtn.classList.toggle("is-revealed", revealed);
+          cardBtn.setAttribute("aria-pressed", revealed ? "true" : "false");
+        }
+
+        if (prevBtn) {
+          prevBtn.disabled = index <= 0;
+        }
+        if (nextBtn) {
+          nextBtn.disabled = index >= order.length - 1;
+        }
+      }
+
+      function go(delta) {
+        var next = index + delta;
+        if (next < 0 || next >= order.length) {
+          return;
+        }
+        index = next;
+        revealed = false;
+        render();
+      }
+
+      function shuffleOrder() {
+        for (var i = order.length - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1));
+          var tmp = order[i];
+          order[i] = order[j];
+          order[j] = tmp;
+        }
+        index = 0;
+        revealed = false;
+        render();
+      }
+
+      if (cardBtn) {
+        cardBtn.addEventListener("click", function () {
+          revealed = !revealed;
+          render();
+        });
+        cardBtn.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            revealed = !revealed;
+            render();
+          }
+        });
+      }
+
+      if (prevBtn) {
+        prevBtn.addEventListener("click", function () {
+          go(-1);
+        });
+      }
+      if (nextBtn) {
+        nextBtn.addEventListener("click", function () {
+          go(1);
+        });
+      }
+      if (shuffleBtn) {
+        shuffleBtn.addEventListener("click", function () {
+          shuffleOrder();
+        });
+      }
+
+      render();
+    });
+  }
+
   function init() {
     initMobileMenu();
     initAccordion();
@@ -4503,6 +4652,7 @@
     initCtaSupervisionBooking();
     initCtaWpCoursePlayer();
     initCtaQuiz();
+    initCtaFlashcards();
     initCtaDashboardSettings();
     initCtaCertificateDownload();
     initCtaSupervisionDashboard();

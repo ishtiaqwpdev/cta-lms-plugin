@@ -269,5 +269,14 @@ $cta_render_material_item = static function ( $resource ) use ( $is_enrolled, $c
 				<?php endforeach; ?>
 			</ul>
 		<?php endforeach; ?>
+
+		<?php
+		if ( $cta_is_exam_prep_materials && $cta_materials_course && class_exists( 'CTA_Flashcards' ) ) {
+			$flashcard_deck = CTA_Flashcards::get_deck_for_course( $cta_materials_course );
+			if ( ! empty( $flashcard_deck ) ) {
+				include CTA_PLUGIN_DIR . 'templates/partials/flashcard-viewer.php';
+			}
+		}
+		?>
 	<?php endif; ?>
 </section>
