@@ -122,11 +122,15 @@ if ( $page_id ) {
 										<li class="cta-checklist__item checklist__item">
 											<span class="cta-checklist__check checklist__icon" aria-hidden="true">&#10003;</span>
 											<?php
-											printf(
-												/* translators: %d: number of published courses */
-												esc_html__( 'All %d published CE courses included', 'cta-lms' ),
-												(int) $published_course_count
-											);
+											if ( (int) $published_course_count > 0 ) {
+												printf(
+													/* translators: %d: number of published courses */
+													esc_html__( 'All %d published CE courses included', 'cta-lms' ),
+													(int) $published_course_count
+												);
+											} else {
+												echo esc_html__( 'All published CE courses included', 'cta-lms' );
+											}
 											?>
 										</li>
 										<li class="cta-checklist__item checklist__item">
@@ -151,11 +155,15 @@ if ( $page_id ) {
 										<li class="cta-checklist__item checklist__item">
 											<span class="cta-checklist__check checklist__icon" aria-hidden="true">&#10003;</span>
 											<?php
-											printf(
-												/* translators: %d: number of published courses */
-												esc_html__( 'Full CE library access (%d courses)', 'cta-lms' ),
-												(int) $published_course_count
-											);
+											if ( (int) $published_course_count > 0 ) {
+												printf(
+													/* translators: %d: number of published courses */
+													esc_html__( 'Full CE library access (%d courses)', 'cta-lms' ),
+													(int) $published_course_count
+												);
+											} else {
+												echo esc_html__( 'Full CE library access to our entire CE course library', 'cta-lms' );
+											}
 											?>
 										</li>
 									</ul>
@@ -227,11 +235,15 @@ if ( $page_id ) {
 									}
 
 									if ( 'annual' === $bundle->plan_type || 'subscription' === $bundle->plan_type ) {
-										$display = sprintf(
-											/* translators: %d: number of courses */
-											__( 'All %d', 'cta-lms' ),
-											(int) $published_course_count
-										);
+										if ( (int) $published_course_count > 0 ) {
+											$display = sprintf(
+												/* translators: %d: number of courses */
+												__( 'All %d', 'cta-lms' ),
+												(int) $published_course_count
+											);
+										} else {
+											$display = __( 'All courses included', 'cta-lms' );
+										}
 									} elseif ( count( $ids ) > 0 ) {
 										$display = sprintf(
 											/* translators: %d: number of courses */
