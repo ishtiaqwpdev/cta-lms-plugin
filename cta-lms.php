@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.172' );
+	define( 'CTA_VERSION', '1.0.173' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -927,6 +927,24 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				}
 			}
 
+			// Force re-sync CTA-EP-003 (1.0.172 may have stamped version before Hostinger finished deploy / sync timed out).
+			if ( version_compare( $installed, '1.0.173', '<' ) ) {
+				delete_option( 'cta_lpcc_law_ethics_seeded_1_0_172' );
+				delete_option( 'cta_lpcc_law_ethics_seeded_1_0_173' );
+				if ( class_exists( 'CTA_Exam_Access' ) ) {
+					CTA_Exam_Access::seed_default_programs();
+				}
+				if ( class_exists( 'CTA_Lpcc_Law_Ethics_Sync' ) ) {
+					if ( function_exists( 'set_time_limit' ) ) {
+						@set_time_limit( 300 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+					}
+					CTA_Lpcc_Law_Ethics_Sync::sync( true );
+				}
+				if ( class_exists( 'CTA_Course_Catalog' ) ) {
+					CTA_Course_Catalog::unpublish_all_exam_prep_pending_launch();
+				}
+			}
+
 			// Decouple supervision application pending from general account / CE access.
 			if ( version_compare( $installed, '1.0.90', '<' ) && class_exists( 'CTA_Associate_Access' ) ) {
 				$query = new WP_User_Query(
@@ -1013,6 +1031,21 @@ if ( ! function_exists( 'cta_maybe_sync_ce_prices_from_catalog' ) ) {
 
 if ( function_exists( 'cta_maybe_upgrade_db' ) && ! has_action( 'plugins_loaded', 'cta_maybe_upgrade_db' ) ) {
 	add_action( 'plugins_loaded', 'cta_maybe_upgrade_db', 5 );
+}
+
+if ( ! function_exists( 'cta_maybe_heal_lpcc_law_ethics' ) ) {
+	/**
+	 * Re-run CTA-EP-003 content sync when the Draft shell is still empty after deploy.
+	 */
+	function cta_maybe_heal_lpcc_law_ethics() {
+		if ( class_exists( 'CTA_Lpcc_Law_Ethics_Sync' ) ) {
+			CTA_Lpcc_Law_Ethics_Sync::maybe_heal_incomplete_content();
+		}
+	}
+}
+
+if ( function_exists( 'cta_maybe_heal_lpcc_law_ethics' ) && ! has_action( 'plugins_loaded', 'cta_maybe_heal_lpcc_law_ethics' ) ) {
+	add_action( 'plugins_loaded', 'cta_maybe_heal_lpcc_law_ethics', 7 );
 }
 
 if ( function_exists( 'cta_maybe_sync_ce_prices_from_catalog' ) && ! has_action( 'plugins_loaded', 'cta_maybe_sync_ce_prices_from_catalog' ) ) {

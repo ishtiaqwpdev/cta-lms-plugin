@@ -20,7 +20,7 @@ if ( ! class_exists( 'CTA_Lpcc_Law_Ethics_Sync' ) ) {
 
 class CTA_Lpcc_Law_Ethics_Sync {
 
-	const SEED_OPTION   = 'cta_lpcc_law_ethics_seeded_1_0_172';
+	const SEED_OPTION   = 'cta_lpcc_law_ethics_seeded_1_0_173';
 	const SLUG          = 'lpcc-california-law-ethics-exam-preparation';
 	const TITLE         = 'CTA LPCC California Law & Ethics Exam Preparation Program';
 	const PUBLIC_TITLE  = 'LPCC California Law & Ethics Exam Preparation';
@@ -552,6 +552,13 @@ class CTA_Lpcc_Law_Ethics_Sync {
 			);
 		}
 
+		if ( function_exists( 'set_time_limit' ) ) {
+			@set_time_limit( 300 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged -- Hostinger may need long import.
+		}
+		if ( function_exists( 'wp_raise_memory_limit' ) ) {
+			wp_raise_memory_limit( 'admin' );
+		}
+
 		if ( class_exists( 'CTA_Database' ) ) {
 			CTA_Database::ensure_tables();
 		}
@@ -601,7 +608,21 @@ class CTA_Lpcc_Law_Ethics_Sync {
 				),
 				false
 			);
+		} elseif ( defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ) {
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			error_log( 'CTA LPCC Law & Ethics sync failed: ' . (string) ( $assessments['message'] ?? 'unknown' ) );
 		}
+
+		// Always keep Draft after sync attempts.
+		global $wpdb;
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$wpdb->update(
+			$wpdb->prefix . 'cta_courses',
+			array( 'status' => 'draft' ),
+			array( 'id' => $course_id ),
+			array( '%s' ),
+			array( '%d' )
+		);
 
 		return array(
 			'ok'        => $ok,
@@ -609,6 +630,49 @@ class CTA_Lpcc_Law_Ethics_Sync {
 			'message'   => $ok ? 'synced' : (string) ( $assessments['message'] ?? 'sync_failed' ),
 			'counts'    => $counts,
 		);
+	}
+
+	/**
+	 * Self-heal: if the Draft program exists but modules/quizzes were never loaded, force sync once.
+	 *
+	 * @return void
+	 */
+	public static function maybe_heal_incomplete_content() {
+		if ( get_transient( 'cta_lpcc_le_heal_lock' ) ) {
+			return;
+		}
+
+		$seed = get_option( self::SEED_OPTION );
+		if ( is_array( $seed ) && ! empty( $seed['course_id'] ) && (int) ( $seed['counts']['chapters_ok'] ?? 0 ) >= 45 ) {
+			return;
+		}
+
+		$course = self::find_course();
+		if ( ! $course ) {
+			return;
+		}
+
+		$course_id     = (int) $course->id;
+		$modules_count = isset( $course->modules_count ) ? (int) $course->modules_count : 0;
+
+		$quiz_count = 0;
+		if ( class_exists( 'CTA_Database' ) ) {
+			$quizzes = CTA_Database::get_quizzes_by_course( $course_id, false );
+			$quiz_count = is_array( $quizzes ) ? count( $quizzes ) : 0;
+		}
+
+		// Incomplete shell: fewer than Start Here + 9 workbooks, or fewer than core assessments.
+		if ( $modules_count >= 10 && $quiz_count >= 49 ) {
+			return;
+		}
+
+		set_transient( 'cta_lpcc_le_heal_lock', 1, 10 * MINUTE_IN_SECONDS );
+
+		if ( function_exists( 'set_time_limit' ) ) {
+			@set_time_limit( 300 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		}
+
+		self::sync( true );
 	}
 
 	/**
