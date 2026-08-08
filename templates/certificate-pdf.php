@@ -143,11 +143,11 @@ $signature_url = ! empty( $signature_url ) ? $signature_url : '';
 		}
 		.signature-image {
 			display: block;
-			max-width: 200px;
-			max-height: 56px;
-			width: 200px;
+			max-width: 280px;
+			max-height: 72px;
+			width: 280px;
 			height: auto;
-			margin: 0 auto -2px;
+			margin: 0 auto 2px;
 		}
 		.signature-line {
 			width: 300px;
@@ -220,8 +220,8 @@ $signature_url = ! empty( $signature_url ) ? $signature_url : '';
 						class="signature-image"
 						src="<?php echo $sig_src; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped above ?>"
 						alt="<?php echo esc_attr( sprintf( /* translators: %s: signer name */ __( 'Signature of %s', 'cta-lms' ), $signature_name ) ); ?>"
-						width="200"
-						height="56"
+						width="280"
+						height="72"
 					>
 				<?php endif; ?>
 				<div class="signature-line">

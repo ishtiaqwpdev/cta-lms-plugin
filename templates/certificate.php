@@ -145,11 +145,11 @@ $auto_print          = ! empty( $auto_print );
 		}
 		.signature-image {
 			display: block;
-			max-width: 200px;
-			max-height: 56px;
+			max-width: 280px;
+			max-height: 72px;
 			width: auto;
 			height: auto;
-			margin: 0 auto -2px;
+			margin: 0 auto 2px;
 			object-fit: contain;
 			object-position: center bottom;
 		}
@@ -157,7 +157,7 @@ $auto_print          = ! empty( $auto_print );
 			width: 300px;
 			border-top: 1px solid #122B51;
 			margin: 0 auto 6px;
-			padding-top: 8px;
+			padding-top: 6px;
 			font-size: 13px;
 			line-height: 1.45;
 		}
@@ -288,8 +288,8 @@ $auto_print          = ! empty( $auto_print );
 						class="signature-image"
 						src="<?php echo $sig_src; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped above ?>"
 						alt="<?php echo esc_attr( sprintf( /* translators: %s: signer name */ __( 'Signature of %s', 'cta-lms' ), $signature_name ) ); ?>"
-						width="200"
-						height="56"
+						width="280"
+						height="72"
 					>
 				<?php endif; ?>
 				<div class="signature-line">
