@@ -6,793 +6,793 @@
     "cards":  [
                   {
                       "id":  "001",
-                      "tag":  "LCSW  â€¢  CORE",
+                      "tag":  "LCSW  •  CORE",
                       "front":  "What is the LCSW core decision sequence?",
-                      "back":  "Task â†’ Safety/Duty â†’ Engage â†’ Assess â†’ Plan â†’ Act â†’ Review"
+                      "back":  "Task -\u003e Safety/Duty -\u003e Engage -\u003e Assess -\u003e Plan -\u003e Act -\u003e Review"
                   },
                   {
                       "id":  "002",
-                      "tag":  "LCSW  â€¢  CORE",
+                      "tag":  "LCSW  •  CORE",
                       "front":  "What should you identify before solving the vignette?",
                       "back":  "Read the qualifier first. FIRST, NEXT, BEST, MOST, and INITIAL require different responses."
                   },
                   {
                       "id":  "003",
-                      "tag":  "LCSW  â€¢  CORE",
+                      "tag":  "LCSW  •  CORE",
                       "front":  "What controls the sequence when safety or a duty is present?",
                       "back":  "Assess and address urgency, capacity, immediate safety, and controlling duties before routine services or interventions."
                   },
                   {
                       "id":  "004",
-                      "tag":  "LCSW  â€¢  CORE",
+                      "tag":  "LCSW  •  CORE",
                       "front":  "Why does engagement come before many actions?",
                       "back":  "Engagement clarifies the client perspective, strengthens collaboration, and provides information needed for accurate assessment and planning."
                   },
                   {
                       "id":  "005",
-                      "tag":  "LCSW  â€¢  CORE",
+                      "tag":  "LCSW  •  CORE",
                       "front":  "What does person-in-environment reasoning require?",
                       "back":  "Integrate individual functioning, relationships, systems, culture, resources, access, history, and power."
                   },
                   {
                       "id":  "006",
-                      "tag":  "LCSW  â€¢  CORE",
+                      "tag":  "LCSW  •  CORE",
                       "front":  "How should self-determination be balanced?",
                       "back":  "Support informed client choice while assessing capacity, coercion, safety, barriers, and proportionate professional responsibility."
                   },
                   {
                       "id":  "007",
-                      "tag":  "LCSW  â€¢  CORE",
-                      "front":  "What does â€œleast assumptiveâ€ mean?",
+                      "tag":  "LCSW  •  CORE",
+                      "front":  "What does “least assumptive” mean?",
                       "back":  "Reject answers that invent motives, diagnoses, services, readiness, authority, access, or facts not supplied by the vignette."
                   },
                   {
                       "id":  "008",
-                      "tag":  "LCSW  â€¢  CORE",
+                      "tag":  "LCSW  •  CORE",
                       "front":  "What is a common timing rule?",
                       "back":  "A helpful service or intervention is wrong when engagement, assessment, consent, planning, or duty action must come first."
                   },
                   {
                       "id":  "009",
-                      "tag":  "LCSW  â€¢  CORE",
+                      "tag":  "LCSW  •  CORE",
                       "front":  "What intervention level is generally preferred?",
                       "back":  "Choose the smallest effective level that addresses the stated barrier and remains safe, accessible, and within role."
                   },
                   {
                       "id":  "010",
-                      "tag":  "LCSW  â€¢  CORE",
+                      "tag":  "LCSW  •  CORE",
                       "front":  "What information-sharing rule should guide collaboration?",
                       "back":  "Clarify role and consent, share only necessary information, and protect privacy while coordinating the required action."
                   },
                   {
                       "id":  "011",
-                      "tag":  "LCSW  â€¢  CORE",
+                      "tag":  "LCSW  •  CORE",
                       "front":  "What makes an action complete?",
                       "back":  "Verify access, responsibility, handoff, documentation, follow-up, and outcome review."
                   },
                   {
                       "id":  "012",
-                      "tag":  "LCSW  â€¢  CORE",
+                      "tag":  "LCSW  •  CORE",
                       "front":  "How should a missed question become a study tool?",
                       "back":  "Classify the error, write the corrective rule, link it to the matching workbook, and retest the pattern."
                   },
                   {
                       "id":  "013",
-                      "tag":  "LCSW  â€¢  WB1",
+                      "tag":  "LCSW  •  WB1",
                       "front":  "WB1: What reasoning sequence anchors this topic?",
-                      "back":  "Task â†’ Priority â†’ Fit â†’ Answer"
+                      "back":  "Task -\u003e Priority -\u003e Fit -\u003e Answer"
                   },
                   {
                       "id":  "014",
-                      "tag":  "LCSW  â€¢  WB1",
+                      "tag":  "LCSW  •  WB1",
                       "front":  "WB1: Which CTA memory aid organizes decisions?",
                       "back":  "Decision Sequence + VALUES. Use it to organize the reasoning priorities in ASWB Exam Strategy and Applied Reasoning."
                   },
                   {
                       "id":  "015",
-                      "tag":  "LCSW  â€¢  WB1",
+                      "tag":  "LCSW  •  WB1",
                       "front":  "WB1 high-yield rule 1: What should you remember?",
                       "back":  "Let the qualifier define the task; read the final question first and identify FIRST, NEXT, BEST, MOST, or INITIAL."
                   },
                   {
                       "id":  "016",
-                      "tag":  "LCSW  â€¢  WB1",
+                      "tag":  "LCSW  •  WB1",
                       "front":  "WB1 high-yield rule 2: What should you remember?",
-                      "back":  "Use sequence: Safety â†’ Duty â†’ Engage â†’ Assess â†’ Plan â†’ Act â†’ Review."
+                      "back":  "Use sequence: Safety -\u003e Duty -\u003e Engage -\u003e Assess -\u003e Plan -\u003e Act -\u003e Review."
                   },
                   {
                       "id":  "017",
-                      "tag":  "LCSW  â€¢  WB1",
+                      "tag":  "LCSW  •  WB1",
                       "front":  "WB1 high-yield rule 3: What should you remember?",
                       "back":  "Use VALUES to compare options: Values, Assessment, Least assumptive, Understand the client, Environment, Safety/System."
                   },
                   {
                       "id":  "018",
-                      "tag":  "LCSW  â€¢  WB1",
+                      "tag":  "LCSW  •  WB1",
                       "front":  "WB1 trap check 1: What tempting mistake should you reject?",
                       "back":  "Choosing a good service or intervention at the wrong stage."
                   },
                   {
                       "id":  "019",
-                      "tag":  "LCSW  â€¢  WB1",
+                      "tag":  "LCSW  •  WB1",
                       "front":  "WB1 trap check 2: What tempting mistake should you reject?",
                       "back":  "Treating self-determination as passivity when clarification, education, or risk assessment is needed."
                   },
                   {
                       "id":  "020",
-                      "tag":  "LCSW  â€¢  WB1",
+                      "tag":  "LCSW  •  WB1",
                       "front":  "WB1 trap check 3: What tempting mistake should you reject?",
                       "back":  "Adding facts, services, diagnoses, or barriers not supplied by the vignette."
                   },
                   {
                       "id":  "021",
-                      "tag":  "LCSW  â€¢  WB1",
+                      "tag":  "LCSW  •  WB1",
                       "front":  "WB1: Which three self-check questions should you ask?",
-                      "back":  "What task and stage are being tested? â€¢ What option uses the least unsupported assumption? â€¢ How do client choice, environment, and safety change the response?"
+                      "back":  "What task and stage are being tested? • What option uses the least unsupported assumption? • How do client choice, environment, and safety change the response?"
                   },
                   {
                       "id":  "022",
-                      "tag":  "LCSW  â€¢  WB1",
+                      "tag":  "LCSW  •  WB1",
                       "front":  "WB1: What practice action should follow this review?",
                       "back":  "Classify every miss as task, priority, assumption, client perspective, environment, or timing."
                   },
                   {
                       "id":  "023",
-                      "tag":  "LCSW  â€¢  WB2",
+                      "tag":  "LCSW  •  WB2",
                       "front":  "WB2: What reasoning sequence anchors this topic?",
-                      "back":  "Clarify â€¢ Locate â€¢ Evaluate â€¢ Act â€¢ Review"
+                      "back":  "Clarify • Locate • Evaluate • Act • Review"
                   },
                   {
                       "id":  "024",
-                      "tag":  "LCSW  â€¢  WB2",
+                      "tag":  "LCSW  •  WB2",
                       "front":  "WB2: Which CTA memory aid organizes decisions?",
                       "back":  "CLEAR Ethical Sequence. Use it to organize the reasoning priorities in Values, Ethics, Self-Determination, and Social Justice."
                   },
                   {
                       "id":  "025",
-                      "tag":  "LCSW  â€¢  WB2",
+                      "tag":  "LCSW  •  WB2",
                       "front":  "WB2 high-yield rule 1: What should you remember?",
                       "back":  "Clarify the conflict and locate role, rights, risk, power, competence, and applicable authority before acting."
                   },
                   {
                       "id":  "026",
-                      "tag":  "LCSW  â€¢  WB2",
+                      "tag":  "LCSW  •  WB2",
                       "front":  "WB2 high-yield rule 2: What should you remember?",
                       "back":  "Separate consent, confidentiality, privacy, privilege, and authorization; they are related but not interchangeable."
                   },
                   {
                       "id":  "027",
-                      "tag":  "LCSW  â€¢  WB2",
+                      "tag":  "LCSW  •  WB2",
                       "front":  "WB2 high-yield rule 3: What should you remember?",
                       "back":  "Support informed self-determination while using proportionate limits when capacity, safety, coercion, or legal duties require them."
                   },
                   {
                       "id":  "028",
-                      "tag":  "LCSW  â€¢  WB2",
+                      "tag":  "LCSW  •  WB2",
                       "front":  "WB2 trap check 1: What tempting mistake should you reject?",
                       "back":  "Paternalism or overriding the client before understanding capacity, options, and barriers."
                   },
                   {
                       "id":  "029",
-                      "tag":  "LCSW  â€¢  WB2",
+                      "tag":  "LCSW  •  WB2",
                       "front":  "WB2 trap check 2: What tempting mistake should you reject?",
                       "back":  "Releasing more information than necessary because a payer, family member, or agency requests it."
                   },
                   {
                       "id":  "030",
-                      "tag":  "LCSW  â€¢  WB2",
+                      "tag":  "LCSW  •  WB2",
                       "front":  "WB2 trap check 3: What tempting mistake should you reject?",
                       "back":  "Focusing only on coping while ignoring discrimination, access, exploitation, or system-level barriers."
                   },
                   {
                       "id":  "031",
-                      "tag":  "LCSW  â€¢  WB2",
+                      "tag":  "LCSW  •  WB2",
                       "front":  "WB2: Which three self-check questions should you ask?",
-                      "back":  "What ethical conflict and role are present? â€¢ Who benefits, who is pressured, and who is excluded? â€¢ What action protects rights without overreaching?"
+                      "back":  "What ethical conflict and role are present? • Who benefits, who is pressured, and who is excluded? • What action protects rights without overreaching?"
                   },
                   {
                       "id":  "032",
-                      "tag":  "LCSW  â€¢  WB2",
+                      "tag":  "LCSW  •  WB2",
                       "front":  "WB2: What practice action should follow this review?",
                       "back":  "Complete a CLEAR analysis for one difficult item before viewing the rationale."
                   },
                   {
                       "id":  "033",
-                      "tag":  "LCSW  â€¢  WB3",
+                      "tag":  "LCSW  •  WB3",
                       "front":  "WB3: What reasoning sequence anchors this topic?",
-                      "back":  "Time â€¢ Systems â€¢ Change â€¢ Meaning â€¢ Strengths/Barriers â€¢ Choice â€¢ Action"
+                      "back":  "Time • Systems • Change • Meaning • Strengths/Barriers • Choice • Action"
                   },
                   {
                       "id":  "034",
-                      "tag":  "LCSW  â€¢  WB3",
+                      "tag":  "LCSW  •  WB3",
                       "front":  "WB3: Which CTA memory aid organizes decisions?",
                       "back":  "Seven-Step PIE Sequence. Use it to organize the reasoning priorities in Human Development, Diversity, and Person-in-Environment."
                   },
                   {
                       "id":  "035",
-                      "tag":  "LCSW  â€¢  WB3",
+                      "tag":  "LCSW  •  WB3",
                       "front":  "WB3 high-yield rule 1: What should you remember?",
                       "back":  "Place the person within development, family, community, institutions, resources, history, and current transition."
                   },
                   {
                       "id":  "036",
-                      "tag":  "LCSW  â€¢  WB3",
+                      "tag":  "LCSW  •  WB3",
                       "front":  "WB3 high-yield rule 2: What should you remember?",
-                      "back":  "Assess demonstrated capacity, life stage, identity, intersectionality, power, minority stress, and client-defined meaningâ€”not age or category alone."
+                      "back":  "Assess demonstrated capacity, life stage, identity, intersectionality, power, minority stress, and client-defined meaning-not age or category alone."
                   },
                   {
                       "id":  "037",
-                      "tag":  "LCSW  â€¢  WB3",
+                      "tag":  "LCSW  •  WB3",
                       "front":  "WB3 high-yield rule 3: What should you remember?",
                       "back":  "Connect barriers, resources, resilience, accessibility, and client participation to the next action."
                   },
                   {
                       "id":  "038",
-                      "tag":  "LCSW  â€¢  WB3",
+                      "tag":  "LCSW  •  WB3",
                       "front":  "WB3 trap check 1: What tempting mistake should you reject?",
                       "back":  "Using age, culture, diagnosis, or identity as a shortcut to explain behavior."
                   },
                   {
                       "id":  "039",
-                      "tag":  "LCSW  â€¢  WB3",
+                      "tag":  "LCSW  •  WB3",
                       "front":  "WB3 trap check 2: What tempting mistake should you reject?",
                       "back":  "Choosing an intrapsychic-only answer when housing, food, transportation, language, disability, or discrimination drives the problem."
                   },
                   {
                       "id":  "040",
-                      "tag":  "LCSW  â€¢  WB3",
+                      "tag":  "LCSW  •  WB3",
                       "front":  "WB3 trap check 3: What tempting mistake should you reject?",
                       "back":  "Labeling access problems as resistance or poor motivation."
                   },
                   {
                       "id":  "041",
-                      "tag":  "LCSW  â€¢  WB3",
+                      "tag":  "LCSW  •  WB3",
                       "front":  "WB3: Which three self-check questions should you ask?",
-                      "back":  "What changed and in which systems? â€¢ How does the client understand the situation? â€¢ What barrier, strength, resource, and access plan matter?"
+                      "back":  "What changed and in which systems? • How does the client understand the situation? • What barrier, strength, resource, and access plan matter?"
                   },
                   {
                       "id":  "042",
-                      "tag":  "LCSW  â€¢  WB3",
+                      "tag":  "LCSW  •  WB3",
                       "front":  "WB3: What practice action should follow this review?",
                       "back":  "Create a seven-line PIE map for one vignette."
                   },
                   {
                       "id":  "043",
-                      "tag":  "LCSW  â€¢  WB4",
+                      "tag":  "LCSW  •  WB4",
                       "front":  "WB4: What reasoning sequence anchors this topic?",
-                      "back":  "Role/Safety â†’ Perspective â†’ Engagement â†’ Domains â†’ Health/Context â†’ Collateral â†’ Missing Data â†’ Plan â†’ Revise"
+                      "back":  "Role/Safety -\u003e Perspective -\u003e Engagement -\u003e Domains -\u003e Health/Context -\u003e Collateral -\u003e Missing Data -\u003e Plan -\u003e Revise"
                   },
                   {
                       "id":  "044",
-                      "tag":  "LCSW  â€¢  WB4",
+                      "tag":  "LCSW  •  WB4",
                       "front":  "WB4: Which CTA memory aid organizes decisions?",
                       "back":  "Integrated Assessment Sequence. Use it to organize the reasoning priorities in Clinical Assessment, Interviewing, and Mental Status."
                   },
                   {
                       "id":  "045",
-                      "tag":  "LCSW  â€¢  WB4",
+                      "tag":  "LCSW  •  WB4",
                       "front":  "WB4 high-yield rule 1: What should you remember?",
                       "back":  "Engage while gathering decision-critical information; assessment is relational and structured."
                   },
                   {
                       "id":  "046",
-                      "tag":  "LCSW  â€¢  WB4",
+                      "tag":  "LCSW  •  WB4",
                       "front":  "WB4 high-yield rule 2: What should you remember?",
                       "back":  "Match open, reflective, focused, clarifying, and direct questions to the information need."
                   },
                   {
                       "id":  "047",
-                      "tag":  "LCSW  â€¢  WB4",
+                      "tag":  "LCSW  •  WB4",
                       "front":  "WB4 high-yield rule 3: What should you remember?",
                       "back":  "Use MSE as a current snapshot and integrate baseline, culture, health, medication, substance, collateral source, reliability, and relevance."
                   },
                   {
                       "id":  "048",
-                      "tag":  "LCSW  â€¢  WB4",
+                      "tag":  "LCSW  •  WB4",
                       "front":  "WB4 trap check 1: What tempting mistake should you reject?",
                       "back":  "Intervening or diagnosing before required assessment is complete."
                   },
                   {
                       "id":  "049",
-                      "tag":  "LCSW  â€¢  WB4",
+                      "tag":  "LCSW  •  WB4",
                       "front":  "WB4 trap check 2: What tempting mistake should you reject?",
                       "back":  "Inferring motive, character, or diagnosis from behavior without context."
                   },
                   {
                       "id":  "050",
-                      "tag":  "LCSW  â€¢  WB4",
+                      "tag":  "LCSW  •  WB4",
                       "front":  "WB4 trap check 3: What tempting mistake should you reject?",
                       "back":  "Relying on collateral as complete truth or giving medication advice outside role."
                   },
                   {
                       "id":  "051",
-                      "tag":  "LCSW  â€¢  WB4",
+                      "tag":  "LCSW  •  WB4",
                       "front":  "WB4: Which three self-check questions should you ask?",
-                      "back":  "What is known, missing, urgent, and from which source? â€¢ What is observed versus inferred? â€¢ What plan follows and what information could revise it?"
+                      "back":  "What is known, missing, urgent, and from which source? • What is observed versus inferred? • What plan follows and what information could revise it?"
                   },
                   {
                       "id":  "052",
-                      "tag":  "LCSW  â€¢  WB4",
+                      "tag":  "LCSW  •  WB4",
                       "front":  "WB4: What practice action should follow this review?",
                       "back":  "List the next three questions in order before choosing the intervention."
                   },
                   {
                       "id":  "053",
-                      "tag":  "LCSW  â€¢  WB5",
+                      "tag":  "LCSW  •  WB5",
                       "front":  "WB5: What reasoning sequence anchors this topic?",
-                      "back":  "Safety â€¢ Pattern â€¢ Chronology â€¢ Medical/Medication â€¢ Substance â€¢ Differential â€¢ PIE â€¢ Client â€¢ Plan"
+                      "back":  "Safety • Pattern • Chronology • Medical/Medication • Substance • Differential • PIE • Client • Plan"
                   },
                   {
                       "id":  "054",
-                      "tag":  "LCSW  â€¢  WB5",
+                      "tag":  "LCSW  •  WB5",
                       "front":  "WB5: Which CTA memory aid organizes decisions?",
                       "back":  "Nine-Step Diagnostic-Health Sequence. Use it to organize the reasoning priorities in Diagnosis, Medical Factors, and Psychopharmacology."
                   },
                   {
                       "id":  "055",
-                      "tag":  "LCSW  â€¢  WB5",
+                      "tag":  "LCSW  •  WB5",
                       "front":  "WB5 high-yield rule 1: What should you remember?",
                       "back":  "Diagnosis is a working explanation integrating pattern, time, impairment, exclusions, context, and client goals."
                   },
                   {
                       "id":  "056",
-                      "tag":  "LCSW  â€¢  WB5",
+                      "tag":  "LCSW  •  WB5",
                       "front":  "WB5 high-yield rule 2: What should you remember?",
                       "back":  "New, fluctuating, physical, neurological, medication-linked, or substance-linked symptoms require health assessment and coordination."
                   },
                   {
                       "id":  "057",
-                      "tag":  "LCSW  â€¢  WB5",
+                      "tag":  "LCSW  •  WB5",
                       "front":  "WB5 high-yield rule 3: What should you remember?",
                       "back":  "Within social work scope: assess purpose, benefit, effects, adherence barriers, access, and prescriber communication; do not prescribe."
                   },
                   {
                       "id":  "058",
-                      "tag":  "LCSW  â€¢  WB5",
+                      "tag":  "LCSW  •  WB5",
                       "front":  "WB5 trap check 1: What tempting mistake should you reject?",
                       "back":  "Letting a prior diagnosis or familiar symptom end the assessment."
                   },
                   {
                       "id":  "059",
-                      "tag":  "LCSW  â€¢  WB5",
+                      "tag":  "LCSW  •  WB5",
                       "front":  "WB5 trap check 2: What tempting mistake should you reject?",
                       "back":  "Ignoring medical, neurological, sleep, medication, substance, and access explanations."
                   },
                   {
                       "id":  "060",
-                      "tag":  "LCSW  â€¢  WB5",
+                      "tag":  "LCSW  •  WB5",
                       "front":  "WB5 trap check 3: What tempting mistake should you reject?",
                       "back":  "Giving medication recommendations rather than assessing and coordinating."
                   },
                   {
                       "id":  "061",
-                      "tag":  "LCSW  â€¢  WB5",
+                      "tag":  "LCSW  •  WB5",
                       "front":  "WB5: Which three self-check questions should you ask?",
-                      "back":  "What is the timeline and baseline? â€¢ What competing explanation must be ruled out? â€¢ What can the social worker assess, coordinate, and document within role?"
+                      "back":  "What is the timeline and baseline? • What competing explanation must be ruled out? • What can the social worker assess, coordinate, and document within role?"
                   },
                   {
                       "id":  "062",
-                      "tag":  "LCSW  â€¢  WB5",
+                      "tag":  "LCSW  •  WB5",
                       "front":  "WB5: What practice action should follow this review?",
                       "back":  "Write a diagnostic-health sequence for one practice item before checking the answer."
                   },
                   {
                       "id":  "063",
-                      "tag":  "LCSW  â€¢  WB6",
+                      "tag":  "LCSW  •  WB6",
                       "front":  "WB6: What reasoning sequence anchors this topic?",
-                      "back":  "Stabilize â€¢ Assess â€¢ Formulate â€¢ Execute â€¢ Resources â€¢ Engage â€¢ Access â€¢ Link"
+                      "back":  "Stabilize • Assess • Formulate • Execute • Resources • Engage • Access • Link"
                   },
                   {
                       "id":  "064",
-                      "tag":  "LCSW  â€¢  WB6",
+                      "tag":  "LCSW  •  WB6",
                       "front":  "WB6: Which CTA memory aid organizes decisions?",
                       "back":  "SAFE + REAL. Use it to organize the reasoning priorities in Crisis, Abuse, and Risk Assessment."
                   },
                   {
                       "id":  "065",
-                      "tag":  "LCSW  â€¢  WB6",
+                      "tag":  "LCSW  •  WB6",
                       "front":  "WB6 high-yield rule 1: What should you remember?",
                       "back":  "Ask direct, specific questions, formulate acuity, and match the response to actual danger, capacity, duty, and least restrictive safe care."
                   },
                   {
                       "id":  "066",
-                      "tag":  "LCSW  â€¢  WB6",
+                      "tag":  "LCSW  •  WB6",
                       "front":  "WB6 high-yield rule 2: What should you remember?",
                       "back":  "Use the reporting or protective duty supplied by the item; distinguish assessment, protection, reporting, medical response, and stabilization."
                   },
                   {
                       "id":  "067",
-                      "tag":  "LCSW  â€¢  WB6",
+                      "tag":  "LCSW  •  WB6",
                       "front":  "WB6 high-yield rule 3: What should you remember?",
                       "back":  "Make the plan real by checking resources, engagement, accessibility, reachability, handoff, and follow-up."
                   },
                   {
                       "id":  "068",
-                      "tag":  "LCSW  â€¢  WB6",
+                      "tag":  "LCSW  •  WB6",
                       "front":  "WB6 trap check 1: What tempting mistake should you reject?",
                       "back":  "Planning services before directly assessing suicide, violence, abuse, neglect, intoxication, withdrawal, or medical risk."
                   },
                   {
                       "id":  "069",
-                      "tag":  "LCSW  â€¢  WB6",
+                      "tag":  "LCSW  •  WB6",
                       "front":  "WB6 trap check 2: What tempting mistake should you reject?",
                       "back":  "Using excessive control or routine referral without considering capacity and least restrictive alternatives."
                   },
                   {
                       "id":  "070",
-                      "tag":  "LCSW  â€¢  WB6",
+                      "tag":  "LCSW  •  WB6",
                       "front":  "WB6 trap check 3: What tempting mistake should you reject?",
-                      "back":  "Ignoring transportation, phone access, housing, cost, language, or the clientâ€™s ability to carry out the plan."
+                      "back":  "Ignoring transportation, phone access, housing, cost, language, or the client’s ability to carry out the plan."
                   },
                   {
                       "id":  "071",
-                      "tag":  "LCSW  â€¢  WB6",
+                      "tag":  "LCSW  •  WB6",
                       "front":  "WB6: Which three self-check questions should you ask?",
-                      "back":  "What danger must be assessed directly? â€¢ What duty or level of care controls? â€¢ Can the client access and carry out the plan?"
+                      "back":  "What danger must be assessed directly? • What duty or level of care controls? • Can the client access and carry out the plan?"
                   },
                   {
                       "id":  "072",
-                      "tag":  "LCSW  â€¢  WB6",
+                      "tag":  "LCSW  •  WB6",
                       "front":  "WB6: What practice action should follow this review?",
                       "back":  "Write the risk question, acuity finding, action, access check, and follow-up step."
                   },
                   {
                       "id":  "073",
-                      "tag":  "LCSW  â€¢  WB7",
+                      "tag":  "LCSW  •  WB7",
                       "front":  "WB7: What reasoning sequence anchors this topic?",
-                      "back":  "Prioritize â€¢ Link â€¢ Agree â€¢ Name â€¢ Evaluate â€¢ Revise"
+                      "back":  "Prioritize • Link • Agree • Name • Evaluate • Revise"
                   },
                   {
                       "id":  "074",
-                      "tag":  "LCSW  â€¢  WB7",
+                      "tag":  "LCSW  •  WB7",
                       "front":  "WB7: Which CTA memory aid organizes decisions?",
                       "back":  "PLAN-ER + CLOSE. Use it to organize the reasoning priorities in Treatment and Service Planning."
                   },
                   {
                       "id":  "075",
-                      "tag":  "LCSW  â€¢  WB7",
+                      "tag":  "LCSW  •  WB7",
                       "front":  "WB7 high-yield rule 1: What should you remember?",
                       "back":  "Build a usable plan: right need, right fit, real access, and scheduled review."
                   },
                   {
                       "id":  "076",
-                      "tag":  "LCSW  â€¢  WB7",
+                      "tag":  "LCSW  •  WB7",
                       "front":  "WB7 high-yield rule 2: What should you remember?",
                       "back":  "Write measurable clinical, functional, and service goals: what changes, who acts, by when, and how it will be measured."
                   },
                   {
                       "id":  "077",
-                      "tag":  "LCSW  â€¢  WB7",
+                      "tag":  "LCSW  •  WB7",
                       "front":  "WB7 high-yield rule 3: What should you remember?",
                       "back":  "When progress is limited, reassess formulation, alliance, access, implementation, intensity, resources, and continuity before blaming the client."
                   },
                   {
                       "id":  "078",
-                      "tag":  "LCSW  â€¢  WB7",
+                      "tag":  "LCSW  •  WB7",
                       "front":  "WB7 trap check 1: What tempting mistake should you reject?",
                       "back":  "Listing services without linking them to priority needs and client goals."
                   },
                   {
                       "id":  "079",
-                      "tag":  "LCSW  â€¢  WB7",
+                      "tag":  "LCSW  •  WB7",
                       "front":  "WB7 trap check 2: What tempting mistake should you reject?",
                       "back":  "Treating availability as accessibility or assuming a referral solves the barrier."
                   },
                   {
                       "id":  "080",
-                      "tag":  "LCSW  â€¢  WB7",
+                      "tag":  "LCSW  •  WB7",
                       "front":  "WB7 trap check 3: What tempting mistake should you reject?",
                       "back":  "Ending, transferring, or revising care without evaluation and continuity planning."
                   },
                   {
                       "id":  "081",
-                      "tag":  "LCSW  â€¢  WB7",
+                      "tag":  "LCSW  •  WB7",
                       "front":  "WB7: Which three self-check questions should you ask?",
-                      "back":  "What priority and formulation does the plan address? â€¢ What action and measure make the goal testable? â€¢ What access barrier or outcome requires revision?"
+                      "back":  "What priority and formulation does the plan address? • What action and measure make the goal testable? • What access barrier or outcome requires revision?"
                   },
                   {
                       "id":  "082",
-                      "tag":  "LCSW  â€¢  WB7",
+                      "tag":  "LCSW  •  WB7",
                       "front":  "WB7: What practice action should follow this review?",
                       "back":  "Convert one service list into a linked, measurable, client-agreed plan."
                   },
                   {
                       "id":  "083",
-                      "tag":  "LCSW  â€¢  WB8",
+                      "tag":  "LCSW  •  WB8",
                       "front":  "WB8: What reasoning sequence anchors this topic?",
-                      "back":  "Formulation â€¢ Immediacy â€¢ Target â€¢ Suitability â€¢ Response Check"
+                      "back":  "Formulation • Immediacy • Target • Suitability • Response Check"
                   },
                   {
                       "id":  "084",
-                      "tag":  "LCSW  â€¢  WB8",
+                      "tag":  "LCSW  •  WB8",
                       "front":  "WB8: Which CTA memory aid organizes decisions?",
                       "back":  "FITS. Use it to organize the reasoning priorities in Clinical Interventions and Trauma-Informed Practice."
                   },
                   {
                       "id":  "085",
-                      "tag":  "LCSW  â€¢  WB8",
+                      "tag":  "LCSW  •  WB8",
                       "front":  "WB8 high-yield rule 1: What should you remember?",
-                      "back":  "Choose an intervention because of what it changes, for whom, at this stageâ€”not because the technique is well known."
+                      "back":  "Choose an intervention because of what it changes, for whom, at this stage-not because the technique is well known."
                   },
                   {
                       "id":  "086",
-                      "tag":  "LCSW  â€¢  WB8",
+                      "tag":  "LCSW  •  WB8",
                       "front":  "WB8 high-yield rule 2: What should you remember?",
                       "back":  "Trauma-informed care emphasizes safety, transparency, choice, collaboration, pacing, and stabilization before deeper processing."
                   },
                   {
                       "id":  "087",
-                      "tag":  "LCSW  â€¢  WB8",
+                      "tag":  "LCSW  •  WB8",
                       "front":  "WB8 high-yield rule 3: What should you remember?",
                       "back":  "Adapt delivery for development, culture, language, disability, strengths, resources, and structural barriers; measure response."
                   },
                   {
                       "id":  "088",
-                      "tag":  "LCSW  â€¢  WB8",
+                      "tag":  "LCSW  •  WB8",
                       "front":  "WB8 trap check 1: What tempting mistake should you reject?",
                       "back":  "Choosing a technique before naming the target and maintaining mechanism."
                   },
                   {
                       "id":  "089",
-                      "tag":  "LCSW  â€¢  WB8",
+                      "tag":  "LCSW  •  WB8",
                       "front":  "WB8 trap check 2: What tempting mistake should you reject?",
                       "back":  "Pressing trauma processing during withdrawal, dysregulation, or insufficient readiness."
                   },
                   {
                       "id":  "090",
-                      "tag":  "LCSW  â€¢  WB8",
+                      "tag":  "LCSW  •  WB8",
                       "front":  "WB8 trap check 3: What tempting mistake should you reject?",
                       "back":  "Treating ambivalence as defiance or evidence-based treatment as automatically suitable."
                   },
                   {
                       "id":  "091",
-                      "tag":  "LCSW  â€¢  WB8",
+                      "tag":  "LCSW  •  WB8",
                       "front":  "WB8: Which three self-check questions should you ask?",
-                      "back":  "What formulation and mechanism guide the method? â€¢ What urgency or stabilization need comes first? â€¢ What adaptation and measure show fit?"
+                      "back":  "What formulation and mechanism guide the method? • What urgency or stabilization need comes first? • What adaptation and measure show fit?"
                   },
                   {
                       "id":  "092",
-                      "tag":  "LCSW  â€¢  WB8",
+                      "tag":  "LCSW  •  WB8",
                       "front":  "WB8: What practice action should follow this review?",
                       "back":  "State the target, mechanism, intervention, adaptation, and response measure."
                   },
                   {
                       "id":  "093",
-                      "tag":  "LCSW  â€¢  WB9",
+                      "tag":  "LCSW  •  WB9",
                       "front":  "WB9: What reasoning sequence anchors this topic?",
-                      "back":  "Goal â€¢ System Level â€¢ Safety â€¢ Participation â€¢ Access â€¢ Role â€¢ Follow-Up"
+                      "back":  "Goal • System Level • Safety • Participation • Access • Role • Follow-Up"
                   },
                   {
                       "id":  "094",
-                      "tag":  "LCSW  â€¢  WB9",
+                      "tag":  "LCSW  •  WB9",
                       "front":  "WB9: Which CTA memory aid organizes decisions?",
                       "back":  "Client-System Selection. Use it to organize the reasoning priorities in Family, Couple, Group, and Parenting Interventions."
                   },
                   {
                       "id":  "095",
-                      "tag":  "LCSW  â€¢  WB9",
+                      "tag":  "LCSW  •  WB9",
                       "front":  "WB9 high-yield rule 1: What should you remember?",
                       "back":  "Choose the smallest effective level that fits the goal: individual, caregiver, family, couple, group, team, network, or community."
                   },
                   {
                       "id":  "096",
-                      "tag":  "LCSW  â€¢  WB9",
+                      "tag":  "LCSW  •  WB9",
                       "front":  "WB9 high-yield rule 2: What should you remember?",
                       "back":  "Ask who the client considers family and whether involvement is voluntary, useful, safe, and consistent with role and confidentiality."
                   },
                   {
                       "id":  "097",
-                      "tag":  "LCSW  â€¢  WB9",
+                      "tag":  "LCSW  •  WB9",
                       "front":  "WB9 high-yield rule 3: What should you remember?",
                       "back":  "Screen group purpose, readiness, composition, norms, stage, conflict, and safety before using the group."
                   },
                   {
                       "id":  "098",
-                      "tag":  "LCSW  â€¢  WB9",
+                      "tag":  "LCSW  •  WB9",
                       "front":  "WB9 trap check 1: What tempting mistake should you reject?",
                       "back":  "Automatic family involvement or conjoint work before coercion, retaliation, and voluntariness are assessed."
                   },
                   {
                       "id":  "099",
-                      "tag":  "LCSW  â€¢  WB9",
+                      "tag":  "LCSW  •  WB9",
                       "front":  "WB9 trap check 2: What tempting mistake should you reject?",
                       "back":  "Using communication training alone when housing, poverty, safety, or another environmental crisis controls the case."
                   },
                   {
                       "id":  "100",
-                      "tag":  "LCSW  â€¢  WB9",
+                      "tag":  "LCSW  •  WB9",
                       "front":  "WB9 trap check 3: What tempting mistake should you reject?",
                       "back":  "Referring to a group, team, or resource without access checks and clear responsibility."
                   },
                   {
                       "id":  "101",
-                      "tag":  "LCSW  â€¢  WB9",
+                      "tag":  "LCSW  •  WB9",
                       "front":  "WB9: Which three self-check questions should you ask?",
-                      "back":  "What system level fits the stated goal? â€¢ What safety and participation conditions are needed? â€¢ How will roles, access, and follow-up be coordinated?"
+                      "back":  "What system level fits the stated goal? • What safety and participation conditions are needed? • How will roles, access, and follow-up be coordinated?"
                   },
                   {
                       "id":  "102",
-                      "tag":  "LCSW  â€¢  WB9",
+                      "tag":  "LCSW  •  WB9",
                       "front":  "WB9: What practice action should follow this review?",
                       "back":  "Map the client system and circle the smallest effective level for the question."
                   },
                   {
                       "id":  "103",
-                      "tag":  "LCSW  â€¢  WB10",
+                      "tag":  "LCSW  •  WB10",
                       "front":  "WB10: What reasoning sequence anchors this topic?",
-                      "back":  "Begin â€¢ Respect â€¢ Identify â€¢ Define â€¢ Generate â€¢ Evaluate"
+                      "back":  "Begin • Respect • Identify • Define • Generate • Evaluate"
                   },
                   {
                       "id":  "104",
-                      "tag":  "LCSW  â€¢  WB10",
+                      "tag":  "LCSW  •  WB10",
                       "front":  "WB10: Which CTA memory aid organizes decisions?",
                       "back":  "BRIDGE. Use it to organize the reasoning priorities in Case Management, Advocacy, Resources, and Collaboration."
                   },
                   {
                       "id":  "105",
-                      "tag":  "LCSW  â€¢  WB10",
+                      "tag":  "LCSW  •  WB10",
                       "front":  "WB10 high-yield rule 1: What should you remember?",
                       "back":  "Begin with the priority and client participation; identify systems and barriers; define roles and disclosure; generate a warm handoff; evaluate outcome."
                   },
                   {
                       "id":  "106",
-                      "tag":  "LCSW  â€¢  WB10",
+                      "tag":  "LCSW  •  WB10",
                       "front":  "WB10 high-yield rule 2: What should you remember?",
                       "back":  "Map who is involved, what the barrier is, and who owns the next step."
                   },
                   {
                       "id":  "107",
-                      "tag":  "LCSW  â€¢  WB10",
+                      "tag":  "LCSW  •  WB10",
                       "front":  "WB10 high-yield rule 3: What should you remember?",
                       "back":  "Verify resource eligibility, availability, accessibility, acceptability, logistics, and follow-through; use the least intrusive effective advocacy level."
                   },
                   {
                       "id":  "108",
-                      "tag":  "LCSW  â€¢  WB10",
+                      "tag":  "LCSW  •  WB10",
                       "front":  "WB10 trap check 1: What tempting mistake should you reject?",
                       "back":  "Providing a referral list without confirming fit or handoff."
                   },
                   {
                       "id":  "109",
-                      "tag":  "LCSW  â€¢  WB10",
+                      "tag":  "LCSW  •  WB10",
                       "front":  "WB10 trap check 2: What tempting mistake should you reject?",
                       "back":  "Unclear roles, broad disclosure, duplicated services, or no person responsible for follow-up."
                   },
                   {
                       "id":  "110",
-                      "tag":  "LCSW  â€¢  WB10",
+                      "tag":  "LCSW  •  WB10",
                       "front":  "WB10 trap check 3: What tempting mistake should you reject?",
                       "back":  "Interpreting access failure as lack of motivation or escalating advocacy beyond the needed level."
                   },
                   {
                       "id":  "111",
-                      "tag":  "LCSW  â€¢  WB10",
+                      "tag":  "LCSW  •  WB10",
                       "front":  "WB10: Which three self-check questions should you ask?",
-                      "back":  "What priority and barrier are being addressed? â€¢ Who owns each next step and what disclosure is necessary? â€¢ How will access and outcome be verified?"
+                      "back":  "What priority and barrier are being addressed? • Who owns each next step and what disclosure is necessary? • How will access and outcome be verified?"
                   },
                   {
                       "id":  "112",
-                      "tag":  "LCSW  â€¢  WB10",
+                      "tag":  "LCSW  •  WB10",
                       "front":  "WB10: What practice action should follow this review?",
                       "back":  "Complete a BRIDGE map for one complex service vignette."
                   },
                   {
                       "id":  "113",
-                      "tag":  "LCSW  â€¢  WB11",
+                      "tag":  "LCSW  •  WB11",
                       "front":  "WB11: What reasoning sequence anchors this topic?",
-                      "back":  "Establish â€¢ Value â€¢ Articulate â€¢ Locate â€¢ Use â€¢ Analyze â€¢ Translate â€¢ Evaluate Again"
+                      "back":  "Establish • Value • Articulate • Locate • Use • Analyze • Translate • Evaluate Again"
                   },
                   {
                       "id":  "114",
-                      "tag":  "LCSW  â€¢  WB11",
+                      "tag":  "LCSW  •  WB11",
                       "front":  "WB11: Which CTA memory aid organizes decisions?",
                       "back":  "EVALUATE + SUPERVISE. Use it to organize the reasoning priorities in Practice Evaluation, Research, Supervision, and Administration."
                   },
                   {
                       "id":  "115",
-                      "tag":  "LCSW  â€¢  WB11",
+                      "tag":  "LCSW  •  WB11",
                       "front":  "WB11 high-yield rule 1: What should you remember?",
                       "back":  "Start with the decision the information must support; then define the valued outcome and the question."
                   },
                   {
                       "id":  "116",
-                      "tag":  "LCSW  â€¢  WB11",
+                      "tag":  "LCSW  •  WB11",
                       "front":  "WB11 high-yield rule 2: What should you remember?",
                       "back":  "Match needs, process, outcome, cost-effectiveness, or cost-benefit evaluation to the question and available data."
                   },
                   {
                       "id":  "117",
-                      "tag":  "LCSW  â€¢  WB11",
+                      "tag":  "LCSW  •  WB11",
                       "front":  "WB11 high-yield rule 3: What should you remember?",
                       "back":  "Make no stronger claim than reliability, validity, sampling, design, bias, feasibility, and ethics allow; bring risk and uncertainty to supervision early."
                   },
                   {
                       "id":  "118",
-                      "tag":  "LCSW  â€¢  WB11",
+                      "tag":  "LCSW  •  WB11",
                       "front":  "WB11 trap check 1: What tempting mistake should you reject?",
                       "back":  "Choosing a measure before defining the question and target."
                   },
                   {
                       "id":  "119",
-                      "tag":  "LCSW  â€¢  WB11",
+                      "tag":  "LCSW  •  WB11",
                       "front":  "WB11 trap check 2: What tempting mistake should you reject?",
                       "back":  "Treating correlation as causation or generalizing beyond the design and sample."
                   },
                   {
                       "id":  "120",
-                      "tag":  "LCSW  â€¢  WB11",
+                      "tag":  "LCSW  •  WB11",
                       "front":  "WB11 trap check 3: What tempting mistake should you reject?",
                       "back":  "Disciplining an individual or delaying supervision before examining system conditions and safeguards."
                   },
                   {
                       "id":  "121",
-                      "tag":  "LCSW  â€¢  WB11",
+                      "tag":  "LCSW  •  WB11",
                       "front":  "WB11: Which three self-check questions should you ask?",
-                      "back":  "What decision and outcome are being evaluated? â€¢ What data and design support the claim? â€¢ What ethical, supervisory, or system action follows?"
+                      "back":  "What decision and outcome are being evaluated? • What data and design support the claim? • What ethical, supervisory, or system action follows?"
                   },
                   {
                       "id":  "122",
-                      "tag":  "LCSW  â€¢  WB11",
+                      "tag":  "LCSW  •  WB11",
                       "front":  "WB11: What practice action should follow this review?",
                       "back":  "Write one evaluation question, measure, limitation, action, and recheck point."
                   },
                   {
                       "id":  "123",
-                      "tag":  "LCSW  â€¢  WB12",
+                      "tag":  "LCSW  •  WB12",
                       "front":  "WB12: What reasoning sequence anchors this topic?",
-                      "back":  "Clarify â€¢ Locate â€¢ Identify â€¢ Name â€¢ Intervene â€¢ Check"
+                      "back":  "Clarify • Locate • Identify • Name • Intervene • Check"
                   },
                   {
                       "id":  "124",
-                      "tag":  "LCSW  â€¢  WB12",
+                      "tag":  "LCSW  •  WB12",
                       "front":  "WB12: Which CTA memory aid organizes decisions?",
                       "back":  "CLINIC + Priority Ladder. Use it to organize the reasoning priorities in Integrated Review and 25-Question Mini-Mock."
                   },
                   {
                       "id":  "125",
-                      "tag":  "LCSW  â€¢  WB12",
+                      "tag":  "LCSW  •  WB12",
                       "front":  "WB12 high-yield rule 1: What should you remember?",
                       "back":  "Integrate ethics, assessment/planning, and intervention/practice by clarifying the task, locating urgency, identifying authority/capacity, naming the stage, acting proportionately, and checking continuity."
                   },
                   {
                       "id":  "126",
-                      "tag":  "LCSW  â€¢  WB12",
+                      "tag":  "LCSW  •  WB12",
                       "front":  "WB12 high-yield rule 2: What should you remember?",
-                      "back":  "Use the priority ladder: Urgency â†’ Authority/Capacity â†’ Assess â†’ Plan â†’ Act â†’ Review."
+                      "back":  "Use the priority ladder: Urgency -\u003e Authority/Capacity -\u003e Assess -\u003e Plan -\u003e Act -\u003e Review."
                   },
                   {
                       "id":  "127",
-                      "tag":  "LCSW  â€¢  WB12",
+                      "tag":  "LCSW  •  WB12",
                       "front":  "WB12 high-yield rule 3: What should you remember?",
                       "back":  "Use time and confidence as data; change an answer only when a specific fact, principle, role boundary, or sequence makes the original weaker."
                   },
                   {
                       "id":  "128",
-                      "tag":  "LCSW  â€¢  WB12",
+                      "tag":  "LCSW  •  WB12",
                       "front":  "WB12 trap check 1: What tempting mistake should you reject?",
                       "back":  "Adding facts or answering a different practice stage than the question asks."
                   },
                   {
                       "id":  "129",
-                      "tag":  "LCSW  â€¢  WB12",
+                      "tag":  "LCSW  •  WB12",
                       "front":  "WB12 trap check 2: What tempting mistake should you reject?",
                       "back":  "Paternalism, system blindness, overreferral, or action without follow-up."
                   },
                   {
                       "id":  "130",
-                      "tag":  "LCSW  â€¢  WB12",
+                      "tag":  "LCSW  •  WB12",
                       "front":  "WB12 trap check 3: What tempting mistake should you reject?",
                       "back":  "Changing answers because another option sounds more sophisticated rather than because evidence supports the change."
                   },
                   {
                       "id":  "131",
-                      "tag":  "LCSW  â€¢  WB12",
+                      "tag":  "LCSW  •  WB12",
                       "front":  "WB12: Which three self-check questions should you ask?",
-                      "back":  "What is urgent and what authority or capacity matters? â€¢ What stage is the question testing? â€¢ What specific reason supports keeping or changing the answer?"
+                      "back":  "What is urgent and what authority or capacity matters? • What stage is the question testing? • What specific reason supports keeping or changing the answer?"
                   },
                   {
                       "id":  "132",
-                      "tag":  "LCSW  â€¢  WB12",
+                      "tag":  "LCSW  •  WB12",
                       "front":  "WB12: What practice action should follow this review?",
                       "back":  "After the mini-mock, classify every miss by content, stage, sequence, distractor, pacing, and confidence."
                   }

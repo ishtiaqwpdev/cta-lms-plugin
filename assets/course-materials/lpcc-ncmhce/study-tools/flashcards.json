@@ -6,793 +6,793 @@
     "cards":  [
                   {
                       "id":  "001",
-                      "tag":  "LPCC  â€¢  CORE",
+                      "tag":  "LPCC  •  CORE",
                       "front":  "How should the LPCC flashcards be used?",
                       "back":  "Use them after learning the full material. Retrieve the answer aloud, check it, then return missed cards to the matching workbook and rationale."
                   },
                   {
                       "id":  "002",
-                      "tag":  "LPCC  â€¢  CORE",
+                      "tag":  "LPCC  •  CORE",
                       "front":  "What is the LPCC six-pass case decision sequence?",
-                      "back":  "READ â†’ LOCATE â†’ STAGE â†’ PRIORITIZE â†’ CHOOSE â†’ CHECK"
+                      "back":  "READ -\u003e LOCATE -\u003e STAGE -\u003e PRIORITIZE -\u003e CHOOSE -\u003e CHECK"
                   },
                   {
                       "id":  "003",
-                      "tag":  "LPCC  â€¢  CORE",
+                      "tag":  "LPCC  •  CORE",
                       "front":  "What should you read before solving the full vignette?",
                       "back":  "Read the final question and qualifier first. Identify the exact task before comparing answer choices."
                   },
                   {
                       "id":  "004",
-                      "tag":  "LPCC  â€¢  CORE",
+                      "tag":  "LPCC  •  CORE",
                       "front":  "What evidence controls an answer in a three-part case?",
                       "back":  "Use only information available in the current case section. Do not use later facts to justify an earlier answer."
                   },
                   {
                       "id":  "005",
-                      "tag":  "LPCC  â€¢  CORE",
+                      "tag":  "LPCC  •  CORE",
                       "front":  "What should happen before routine treatment when urgency is present?",
                       "back":  "Address immediate medical, safety, abuse, violence, or legal duties before routine assessment, planning, or intervention."
                   },
                   {
                       "id":  "006",
-                      "tag":  "LPCC  â€¢  CORE",
+                      "tag":  "LPCC  •  CORE",
                       "front":  "What should you do when decision-critical facts are missing?",
                       "back":  "Gather the missing information before selecting a later-stage diagnosis, plan, referral, or intervention."
                   },
                   {
                       "id":  "007",
-                      "tag":  "LPCC  â€¢  CORE",
+                      "tag":  "LPCC  •  CORE",
                       "front":  "How should scope and competence affect the choice?",
                       "back":  "Choose an action that is legally authorized, within current competence, role-appropriate, and proportionate to client risk."
                   },
                   {
                       "id":  "008",
-                      "tag":  "LPCC  â€¢  CORE",
+                      "tag":  "LPCC  •  CORE",
                       "front":  "How should culture, preference, and access affect the response?",
                       "back":  "Use client-defined meaning and preferences, adapt delivery to context, and reject options the client cannot realistically access or use."
                   },
                   {
                       "id":  "009",
-                      "tag":  "LPCC  â€¢  CORE",
+                      "tag":  "LPCC  •  CORE",
                       "front":  "What makes a clinically reasonable action complete?",
                       "back":  "Include the needed documentation, coordination or handoff, measurement, continuity, and follow-up."
                   },
                   {
                       "id":  "010",
-                      "tag":  "LPCC  â€¢  CORE",
+                      "tag":  "LPCC  •  CORE",
                       "front":  "What are the seven CTA LPCC error codes?",
-                      "back":  "C Content â€¢ S Stage/Sequence â€¢ Q Qualifier â€¢ E Evidence â€¢ R Role/Scope â€¢ X Context/Access â€¢ F Follow-Up"
+                      "back":  "C Content • S Stage/Sequence • Q Qualifier • E Evidence • R Role/Scope • X Context/Access • F Follow-Up"
                   },
                   {
                       "id":  "011",
-                      "tag":  "LPCC  â€¢  CORE",
+                      "tag":  "LPCC  •  CORE",
                       "front":  "When should you change an answer during review?",
-                      "back":  "Change it only when a specific case fact, principle, role boundary, or sequence makes the original answer weakerâ€”not because another option sounds more sophisticated."
+                      "back":  "Change it only when a specific case fact, principle, role boundary, or sequence makes the original answer weaker-not because another option sounds more sophisticated."
                   },
                   {
                       "id":  "012",
-                      "tag":  "LPCC  â€¢  CORE",
+                      "tag":  "LPCC  •  CORE",
                       "front":  "What is the LPCC 10-second reset?",
-                      "back":  "State the task, current stage, controlling evidence, and safest feasible next step in one sentenceâ€”then choose and move forward."
+                      "back":  "State the task, current stage, controlling evidence, and safest feasible next step in one sentence-then choose and move forward."
                   },
                   {
                       "id":  "013",
-                      "tag":  "LPCC  â€¢  WB1",
+                      "tag":  "LPCC  •  WB1",
                       "front":  "WB1: What reasoning sequence anchors this topic?",
-                      "back":  "Task â†’ Section â†’ Evidence â†’ Priority â†’ Best-Supported Action"
+                      "back":  "Task -\u003e Section -\u003e Evidence -\u003e Priority -\u003e Best-Supported Action"
                   },
                   {
                       "id":  "014",
-                      "tag":  "LPCC  â€¢  WB1",
+                      "tag":  "LPCC  •  WB1",
                       "front":  "WB1: Which CTA memory aid organizes decisions?",
                       "back":  "Case Navigation + Decision Control. Use it to organize the reasoning priorities in NCMHCE Case-Study Strategy and Applied Counselor Reasoning."
                   },
                   {
                       "id":  "015",
-                      "tag":  "LPCC  â€¢  WB1",
+                      "tag":  "LPCC  •  WB1",
                       "front":  "WB1 high-yield rule 1: What should you remember?",
                       "back":  "Treat each three-part case as an unfolding record. Reorient when new information appears."
                   },
                   {
                       "id":  "016",
-                      "tag":  "LPCC  â€¢  WB1",
+                      "tag":  "LPCC  •  WB1",
                       "front":  "WB1 high-yield rule 2: What should you remember?",
                       "back":  "FIRST, NEXT, BEST, MOST, and LEAST RESTRICTIVE test different decisions; do not treat them as interchangeable."
                   },
                   {
                       "id":  "017",
-                      "tag":  "LPCC  â€¢  WB1",
+                      "tag":  "LPCC  •  WB1",
                       "front":  "WB1 high-yield rule 3: What should you remember?",
                       "back":  "Answer from the current section only. Later information cannot retroactively justify an earlier choice."
                   },
                   {
                       "id":  "018",
-                      "tag":  "LPCC  â€¢  WB1",
+                      "tag":  "LPCC  •  WB1",
                       "front":  "WB1 trap check 1: What tempting mistake should you reject?",
                       "back":  "Reading for diagnosis before identifying the question task."
                   },
                   {
                       "id":  "019",
-                      "tag":  "LPCC  â€¢  WB1",
+                      "tag":  "LPCC  •  WB1",
                       "front":  "WB1 trap check 2: What tempting mistake should you reject?",
                       "back":  "Choosing the most intensive or sophisticated response instead of the best-timed response."
                   },
                   {
                       "id":  "020",
-                      "tag":  "LPCC  â€¢  WB1",
+                      "tag":  "LPCC  •  WB1",
                       "front":  "WB1 trap check 3: What tempting mistake should you reject?",
                       "back":  "Changing an answer because later case facts create hindsight rather than because the original evidence supported the change."
                   },
                   {
                       "id":  "021",
-                      "tag":  "LPCC  â€¢  WB1",
+                      "tag":  "LPCC  •  WB1",
                       "front":  "WB1: Which three self-check questions should you ask?",
-                      "back":  "What is the exact task word? â€¢ Which case section am I in? â€¢ What option fits the known facts without assumptions?"
+                      "back":  "What is the exact task word? • Which case section am I in? • What option fits the known facts without assumptions?"
                   },
                   {
                       "id":  "022",
-                      "tag":  "LPCC  â€¢  WB1",
+                      "tag":  "LPCC  •  WB1",
                       "front":  "WB1: What practice action should follow this review?",
                       "back":  "For each missed item, record the task word, section, overlooked clue, distractor type, and corrected rule."
                   },
                   {
                       "id":  "023",
-                      "tag":  "LPCC  â€¢  WB2",
+                      "tag":  "LPCC  •  WB2",
                       "front":  "WB2: What reasoning sequence anchors this topic?",
-                      "back":  "Legal Authority â†’ Actual Competence â†’ Self-Awareness â†’ Client Protection"
+                      "back":  "Legal Authority -\u003e Actual Competence -\u003e Self-Awareness -\u003e Client Protection"
                   },
                   {
                       "id":  "024",
-                      "tag":  "LPCC  â€¢  WB2",
+                      "tag":  "LPCC  •  WB2",
                       "front":  "WB2: Which CTA memory aid organizes decisions?",
                       "back":  "Professional Responsibility Sequence. Use it to organize the reasoning priorities in LPCC Identity, Scope, Competence, and Self-Awareness."
                   },
                   {
                       "id":  "025",
-                      "tag":  "LPCC  â€¢  WB2",
+                      "tag":  "LPCC  •  WB2",
                       "front":  "WB2 high-yield rule 1: What should you remember?",
                       "back":  "Confirm that the activity is legally within the LPCC role before asking whether the counselor is competent to provide it."
                   },
                   {
                       "id":  "026",
-                      "tag":  "LPCC  â€¢  WB2",
+                      "tag":  "LPCC  •  WB2",
                       "front":  "WB2 high-yield rule 2: What should you remember?",
-                      "back":  "Competence depends on relevant education, training, supervised experience, skill, and current circumstancesâ€”not confidence alone."
+                      "back":  "Competence depends on relevant education, training, supervised experience, skill, and current circumstances-not confidence alone."
                   },
                   {
                       "id":  "027",
-                      "tag":  "LPCC  â€¢  WB2",
+                      "tag":  "LPCC  •  WB2",
                       "front":  "WB2 high-yield rule 3: What should you remember?",
                       "back":  "Use consultation, supervision, training, collaboration, modification, referral, or transfer in proportion to the limitation and risk."
                   },
                   {
                       "id":  "028",
-                      "tag":  "LPCC  â€¢  WB2",
+                      "tag":  "LPCC  •  WB2",
                       "front":  "WB2 trap check 1: What tempting mistake should you reject?",
                       "back":  "Assuming licensure, years of experience, client consent, or supervisor approval expands statutory scope."
                   },
                   {
                       "id":  "029",
-                      "tag":  "LPCC  â€¢  WB2",
+                      "tag":  "LPCC  •  WB2",
                       "front":  "WB2 trap check 2: What tempting mistake should you reject?",
                       "back":  "Treating countertransference, bias, stress, or impairment as moral failure rather than information requiring assessment and action."
                   },
                   {
                       "id":  "030",
-                      "tag":  "LPCC  â€¢  WB2",
+                      "tag":  "LPCC  •  WB2",
                       "front":  "WB2 trap check 3: What tempting mistake should you reject?",
-                      "back":  "Referring automatically when consultation or supported care could protect the clientâ€”or continuing when a safe correction is not possible."
+                      "back":  "Referring automatically when consultation or supported care could protect the client-or continuing when a safe correction is not possible."
                   },
                   {
                       "id":  "031",
-                      "tag":  "LPCC  â€¢  WB2",
+                      "tag":  "LPCC  •  WB2",
                       "front":  "WB2: Which three self-check questions should you ask?",
-                      "back":  "Is the service legally authorized for this role? â€¢ What evidence supports current competence? â€¢ What protective response matches the actual risk?"
+                      "back":  "Is the service legally authorized for this role? • What evidence supports current competence? • What protective response matches the actual risk?"
                   },
                   {
                       "id":  "032",
-                      "tag":  "LPCC  â€¢  WB2",
+                      "tag":  "LPCC  •  WB2",
                       "front":  "WB2: What practice action should follow this review?",
                       "back":  "State the difference between scope of practice and scope of competence, then name one proportionate corrective action."
                   },
                   {
                       "id":  "033",
-                      "tag":  "LPCC  â€¢  WB3",
+                      "tag":  "LPCC  •  WB3",
                       "front":  "WB3: What reasoning sequence anchors this topic?",
-                      "back":  "Client/Consent â†’ Engage â†’ Screen â†’ Clarify â†’ Integrate â†’ Plan"
+                      "back":  "Client/Consent -\u003e Engage -\u003e Screen -\u003e Clarify -\u003e Integrate -\u003e Plan"
                   },
                   {
                       "id":  "034",
-                      "tag":  "LPCC  â€¢  WB3",
+                      "tag":  "LPCC  •  WB3",
                       "front":  "WB3: Which CTA memory aid organizes decisions?",
                       "back":  "Intake + Assessment Sequence. Use it to organize the reasoning priorities in Intake, Consent, Interviewing, MSE, and Integrated Assessment."
                   },
                   {
                       "id":  "035",
-                      "tag":  "LPCC  â€¢  WB3",
+                      "tag":  "LPCC  •  WB3",
                       "front":  "WB3 high-yield rule 1: What should you remember?",
                       "back":  "Establish who the client is, purpose of services, participants, privacy limits, communication expectations, and informed consent."
                   },
                   {
                       "id":  "036",
-                      "tag":  "LPCC  â€¢  WB3",
+                      "tag":  "LPCC  •  WB3",
                       "front":  "WB3 high-yield rule 2: What should you remember?",
                       "back":  "Move from broad, respectful inquiry to focused clarification; explain sensitive questions and preserve choice."
                   },
                   {
                       "id":  "037",
-                      "tag":  "LPCC  â€¢  WB3",
+                      "tag":  "LPCC  •  WB3",
                       "front":  "WB3 high-yield rule 3: What should you remember?",
                       "back":  "Separate MSE observation from inference, integrate multiple sources, and use tools only when they improve a clinical decision."
                   },
                   {
                       "id":  "038",
-                      "tag":  "LPCC  â€¢  WB3",
+                      "tag":  "LPCC  •  WB3",
                       "front":  "WB3 trap check 1: What tempting mistake should you reject?",
                       "back":  "Collecting extensive history or collateral information before purpose, consent, and authorization are clear."
                   },
                   {
                       "id":  "039",
-                      "tag":  "LPCC  â€¢  WB3",
+                      "tag":  "LPCC  •  WB3",
                       "front":  "WB3 trap check 2: What tempting mistake should you reject?",
                       "back":  "Treating one test score, one behavior, or one cultural assumption as the whole assessment."
                   },
                   {
                       "id":  "040",
-                      "tag":  "LPCC  â€¢  WB3",
+                      "tag":  "LPCC  •  WB3",
                       "front":  "WB3 trap check 3: What tempting mistake should you reject?",
                       "back":  "Documenting diagnostic conclusions that exceed the available timeline, corroboration, or observed evidence."
                   },
                   {
                       "id":  "041",
-                      "tag":  "LPCC  â€¢  WB3",
+                      "tag":  "LPCC  •  WB3",
                       "front":  "WB3: Which three self-check questions should you ask?",
-                      "back":  "What intake structure must be clarified first? â€¢ What is observed, reported, inferred, or still missing? â€¢ Will this question, measure, or collateral source change the next decision?"
+                      "back":  "What intake structure must be clarified first? • What is observed, reported, inferred, or still missing? • Will this question, measure, or collateral source change the next decision?"
                   },
                   {
                       "id":  "042",
-                      "tag":  "LPCC  â€¢  WB3",
+                      "tag":  "LPCC  •  WB3",
                       "front":  "WB3: What practice action should follow this review?",
                       "back":  "Write a six-domain assessment note: presenting concern, context, functioning, risk, strengths, and missing data."
                   },
                   {
                       "id":  "043",
-                      "tag":  "LPCC  â€¢  WB4",
+                      "tag":  "LPCC  •  WB4",
                       "front":  "WB4: What reasoning sequence anchors this topic?",
-                      "back":  "Stabilize â†’ Assess Directly â†’ Formulate Acuity â†’ Execute â†’ Reconnect/Record"
+                      "back":  "Stabilize -\u003e Assess Directly -\u003e Formulate Acuity -\u003e Execute -\u003e Reconnect/Record"
                   },
                   {
                       "id":  "044",
-                      "tag":  "LPCC  â€¢  WB4",
+                      "tag":  "LPCC  •  WB4",
                       "front":  "WB4: Which CTA memory aid organizes decisions?",
                       "back":  "SAFER Crisis Sequence. Use it to organize the reasoning priorities in Crisis, Trauma, Abuse, Violence, and Level-of-Care Decisions."
                   },
                   {
                       "id":  "045",
-                      "tag":  "LPCC  â€¢  WB4",
+                      "tag":  "LPCC  •  WB4",
                       "front":  "WB4 high-yield rule 1: What should you remember?",
                       "back":  "When risk is unclear, assess directly. When imminent danger, medical urgency, or a controlling duty is established, act proportionately."
                   },
                   {
                       "id":  "046",
-                      "tag":  "LPCC  â€¢  WB4",
+                      "tag":  "LPCC  •  WB4",
                       "front":  "WB4 high-yield rule 2: What should you remember?",
                       "back":  "Translate labels into facts: ideation, intent, plan, means, timing, history, capacity, exposure, protective factors, location, and reachability."
                   },
                   {
                       "id":  "047",
-                      "tag":  "LPCC  â€¢  WB4",
+                      "tag":  "LPCC  •  WB4",
                       "front":  "WB4 high-yield rule 3: What should you remember?",
                       "back":  "Match level of care to acuity and feasibility; include handoff, continuity, documentation, and follow-up."
                   },
                   {
                       "id":  "048",
-                      "tag":  "LPCC  â€¢  WB4",
+                      "tag":  "LPCC  •  WB4",
                       "front":  "WB4 trap check 1: What tempting mistake should you reject?",
                       "back":  "Using reassurance, a no-harm promise, or a generic resource list instead of direct assessment."
                   },
                   {
                       "id":  "049",
-                      "tag":  "LPCC  â€¢  WB4",
+                      "tag":  "LPCC  •  WB4",
                       "front":  "WB4 trap check 2: What tempting mistake should you reject?",
                       "back":  "Selecting the most restrictive option before evaluating threshold, capacity, supports, and feasible alternatives."
                   },
                   {
                       "id":  "050",
-                      "tag":  "LPCC  â€¢  WB4",
+                      "tag":  "LPCC  •  WB4",
                       "front":  "WB4 trap check 3: What tempting mistake should you reject?",
                       "back":  "Pressing trauma detail, confronting a possible victim, or delaying a required protective/reporting response."
                   },
                   {
                       "id":  "051",
-                      "tag":  "LPCC  â€¢  WB4",
+                      "tag":  "LPCC  •  WB4",
                       "front":  "WB4: Which three self-check questions should you ask?",
-                      "back":  "What immediate signal needs clarification? â€¢ What facts determine acuity, duty, and level of care? â€¢ Can the safety plan actually be reached and used?"
+                      "back":  "What immediate signal needs clarification? • What facts determine acuity, duty, and level of care? • Can the safety plan actually be reached and used?"
                   },
                   {
                       "id":  "052",
-                      "tag":  "LPCC  â€¢  WB4",
+                      "tag":  "LPCC  •  WB4",
                       "front":  "WB4: What practice action should follow this review?",
                       "back":  "Practice stating the next two direct questions and the threshold that would change the response."
                   },
                   {
                       "id":  "053",
-                      "tag":  "LPCC  â€¢  WB5",
+                      "tag":  "LPCC  •  WB5",
                       "front":  "WB5: What reasoning sequence anchors this topic?",
-                      "back":  "Pattern â†’ Timeline â†’ Impact â†’ Exclusions â†’ Alternatives â†’ Status"
+                      "back":  "Pattern -\u003e Timeline -\u003e Impact -\u003e Exclusions -\u003e Alternatives -\u003e Status"
                   },
                   {
                       "id":  "054",
-                      "tag":  "LPCC  â€¢  WB5",
+                      "tag":  "LPCC  •  WB5",
                       "front":  "WB5: Which CTA memory aid organizes decisions?",
                       "back":  "Working Diagnostic Formulation. Use it to organize the reasoning priorities in Diagnosis and Differential Diagnosis I."
                   },
                   {
                       "id":  "055",
-                      "tag":  "LPCC  â€¢  WB5",
+                      "tag":  "LPCC  •  WB5",
                       "front":  "WB5 high-yield rule 1: What should you remember?",
                       "back":  "Diagnosis is a working conclusion based on syndrome pattern, duration, severity, impairment, context, and exclusions."
                   },
                   {
                       "id":  "056",
-                      "tag":  "LPCC  â€¢  WB5",
+                      "tag":  "LPCC  •  WB5",
                       "front":  "WB5 high-yield rule 2: What should you remember?",
                       "back":  "Differentiate by chronology and mechanism: episodic activation vs chronic anxiety; intrusion/avoidance vs psychosis; obsession/compulsion vs generalized worry."
                   },
                   {
                       "id":  "057",
-                      "tag":  "LPCC  â€¢  WB5",
+                      "tag":  "LPCC  •  WB5",
                       "front":  "WB5 high-yield rule 3: What should you remember?",
                       "back":  "Use provisional, rule-out, other specified, unspecified, and deferred status only when the evidence supports that level of certainty."
                   },
                   {
                       "id":  "058",
-                      "tag":  "LPCC  â€¢  WB5",
+                      "tag":  "LPCC  •  WB5",
                       "front":  "WB5 trap check 1: What tempting mistake should you reject?",
                       "back":  "Diagnosing from the most dramatic symptom or selecting the most severe-sounding label."
                   },
                   {
                       "id":  "059",
-                      "tag":  "LPCC  â€¢  WB5",
+                      "tag":  "LPCC  •  WB5",
                       "front":  "WB5 trap check 2: What tempting mistake should you reject?",
                       "back":  "Ignoring baseline, sleep, substances, medications, medical conditions, trauma timing, or periods of remission."
                   },
                   {
                       "id":  "060",
-                      "tag":  "LPCC  â€¢  WB5",
+                      "tag":  "LPCC  •  WB5",
                       "front":  "WB5 trap check 3: What tempting mistake should you reject?",
                       "back":  "Forcing one diagnosis to explain cultural meaning, relational context, environmental stress, or co-occurring conditions."
                   },
                   {
                       "id":  "061",
-                      "tag":  "LPCC  â€¢  WB5",
+                      "tag":  "LPCC  •  WB5",
                       "front":  "WB5: Which three self-check questions should you ask?",
-                      "back":  "What is the full pattern and chronology? â€¢ Which exclusion or competing explanation remains? â€¢ Is the evidence sufficient to diagnose, gather more, or refer?"
+                      "back":  "What is the full pattern and chronology? • Which exclusion or competing explanation remains? • Is the evidence sufficient to diagnose, gather more, or refer?"
                   },
                   {
                       "id":  "062",
-                      "tag":  "LPCC  â€¢  WB5",
+                      "tag":  "LPCC  •  WB5",
                       "front":  "WB5: What practice action should follow this review?",
                       "back":  "Write one working formulation, two competing explanations, and the next fact needed to distinguish them."
                   },
                   {
                       "id":  "063",
-                      "tag":  "LPCC  â€¢  WB6",
+                      "tag":  "LPCC  •  WB6",
                       "front":  "WB6: What reasoning sequence anchors this topic?",
-                      "back":  "Urgency â†’ Substance/Medical â†’ Development/Pattern â†’ Comorbidity â†’ Care Level"
+                      "back":  "Urgency -\u003e Substance/Medical -\u003e Development/Pattern -\u003e Comorbidity -\u003e Care Level"
                   },
                   {
                       "id":  "064",
-                      "tag":  "LPCC  â€¢  WB6",
+                      "tag":  "LPCC  •  WB6",
                       "front":  "WB6: Which CTA memory aid organizes decisions?",
                       "back":  "Complex Differential Sequence. Use it to organize the reasoning priorities in Diagnosis and Differential Diagnosis II."
                   },
                   {
                       "id":  "065",
-                      "tag":  "LPCC  â€¢  WB6",
+                      "tag":  "LPCC  •  WB6",
                       "front":  "WB6 high-yield rule 1: What should you remember?",
                       "back":  "Address intoxication, withdrawal, delirium, severe nutritional compromise, medication effects, and other medical red flags before routine diagnosis."
                   },
                   {
                       "id":  "066",
-                      "tag":  "LPCC  â€¢  WB6",
+                      "tag":  "LPCC  •  WB6",
                       "front":  "WB6 high-yield rule 2: What should you remember?",
-                      "back":  "Personality and neurodevelopmental formulations require longitudinal, cross-context patternsâ€”not one difficult interaction."
+                      "back":  "Personality and neurodevelopmental formulations require longitudinal, cross-context patterns-not one difficult interaction."
                   },
                   {
                       "id":  "067",
-                      "tag":  "LPCC  â€¢  WB6",
+                      "tag":  "LPCC  •  WB6",
                       "front":  "WB6 high-yield rule 3: What should you remember?",
                       "back":  "Assess co-occurrence, functional impact, stage of change, and the need for coordinated or specialized care."
                   },
                   {
                       "id":  "068",
-                      "tag":  "LPCC  â€¢  WB6",
+                      "tag":  "LPCC  •  WB6",
                       "front":  "WB6 trap check 1: What tempting mistake should you reject?",
                       "back":  "Calling behavior manipulative, resistant, or personality-disordered without developmental and contextual assessment."
                   },
                   {
                       "id":  "069",
-                      "tag":  "LPCC  â€¢  WB6",
+                      "tag":  "LPCC  •  WB6",
                       "front":  "WB6 trap check 2: What tempting mistake should you reject?",
                       "back":  "Assuming a psychiatric explanation when sleep, substance, neurological, endocrine, medication, or other medical factors remain plausible."
                   },
                   {
                       "id":  "070",
-                      "tag":  "LPCC  â€¢  WB6",
+                      "tag":  "LPCC  •  WB6",
                       "front":  "WB6 trap check 3: What tempting mistake should you reject?",
                       "back":  "Using outpatient talk therapy as the default when withdrawal risk, eating-disorder acuity, psychosis, or medical instability requires more."
                   },
                   {
                       "id":  "071",
-                      "tag":  "LPCC  â€¢  WB6",
+                      "tag":  "LPCC  •  WB6",
                       "front":  "WB6: Which three self-check questions should you ask?",
-                      "back":  "Is there a medical or withdrawal priority? â€¢ Is the pattern persistent across time and settings? â€¢ What co-occurring condition or care-level need changes the plan?"
+                      "back":  "Is there a medical or withdrawal priority? • Is the pattern persistent across time and settings? • What co-occurring condition or care-level need changes the plan?"
                   },
                   {
                       "id":  "072",
-                      "tag":  "LPCC  â€¢  WB6",
+                      "tag":  "LPCC  •  WB6",
                       "front":  "WB6: What practice action should follow this review?",
                       "back":  "Build a differential grid with evidence for, evidence against, missing data, urgency, and referral/coordination needs."
                   },
                   {
                       "id":  "073",
-                      "tag":  "LPCC  â€¢  WB7",
+                      "tag":  "LPCC  •  WB7",
                       "front":  "WB7: What reasoning sequence anchors this topic?",
-                      "back":  "Formulation â†’ Goals â†’ Objectives â†’ Intervention â†’ Measure â†’ Review â†’ Transition"
+                      "back":  "Formulation -\u003e Goals -\u003e Objectives -\u003e Intervention -\u003e Measure -\u003e Review -\u003e Transition"
                   },
                   {
                       "id":  "074",
-                      "tag":  "LPCC  â€¢  WB7",
+                      "tag":  "LPCC  •  WB7",
                       "front":  "WB7: Which CTA memory aid organizes decisions?",
                       "back":  "Plan-Review-Continuity Loop. Use it to organize the reasoning priorities in Conceptualization, Planning, Measurement, Progress, and Termination."
                   },
                   {
                       "id":  "075",
-                      "tag":  "LPCC  â€¢  WB7",
+                      "tag":  "LPCC  •  WB7",
                       "front":  "WB7 high-yield rule 1: What should you remember?",
                       "back":  "Connect presenting problems, contributing and maintaining factors, strengths, barriers, and protective factors to the plan."
                   },
                   {
                       "id":  "076",
-                      "tag":  "LPCC  â€¢  WB7",
+                      "tag":  "LPCC  •  WB7",
                       "front":  "WB7 high-yield rule 2: What should you remember?",
                       "back":  "Make goals collaborative and meaningful; make objectives observable, time-linked, and feasible; select interventions that target the stated mechanism."
                   },
                   {
                       "id":  "077",
-                      "tag":  "LPCC  â€¢  WB7",
+                      "tag":  "LPCC  •  WB7",
                       "front":  "WB7 high-yield rule 3: What should you remember?",
                       "back":  "Use baseline and repeated data. Nonresponse triggers reassessment of formulation, alliance, implementation, access, dose, and level of care."
                   },
                   {
                       "id":  "078",
-                      "tag":  "LPCC  â€¢  WB7",
+                      "tag":  "LPCC  •  WB7",
                       "front":  "WB7 trap check 1: What tempting mistake should you reject?",
-                      "back":  "Writing vague goals such as â€œfeel betterâ€ without indicators, timing, or client-defined meaning."
+                      "back":  "Writing vague goals such as “feel better” without indicators, timing, or client-defined meaning."
                   },
                   {
                       "id":  "079",
-                      "tag":  "LPCC  â€¢  WB7",
+                      "tag":  "LPCC  •  WB7",
                       "front":  "WB7 trap check 2: What tempting mistake should you reject?",
                       "back":  "Changing techniques repeatedly without checking whether the original plan was implemented or accessible."
                   },
                   {
                       "id":  "080",
-                      "tag":  "LPCC  â€¢  WB7",
+                      "tag":  "LPCC  •  WB7",
                       "front":  "WB7 trap check 3: What tempting mistake should you reject?",
                       "back":  "Ending solely because symptoms improved, attendance declined, or coverage changed without continuity, relapse prevention, and follow-up."
                   },
                   {
                       "id":  "081",
-                      "tag":  "LPCC  â€¢  WB7",
+                      "tag":  "LPCC  •  WB7",
                       "front":  "WB7: Which three self-check questions should you ask?",
-                      "back":  "What mechanism or barrier is the plan targeting? â€¢ How will change be measured and when reviewed? â€¢ What transition or relapse-prevention step protects continuity?"
+                      "back":  "What mechanism or barrier is the plan targeting? • How will change be measured and when reviewed? • What transition or relapse-prevention step protects continuity?"
                   },
                   {
                       "id":  "082",
-                      "tag":  "LPCC  â€¢  WB7",
+                      "tag":  "LPCC  •  WB7",
                       "front":  "WB7: What practice action should follow this review?",
-                      "back":  "Complete one chain: formulation factor â†’ goal â†’ measurable objective â†’ intervention â†’ measure â†’ review date."
+                      "back":  "Complete one chain: formulation factor -\u003e goal -\u003e measurable objective -\u003e intervention -\u003e measure -\u003e review date."
                   },
                   {
                       "id":  "083",
-                      "tag":  "LPCC  â€¢  WB8",
+                      "tag":  "LPCC  •  WB8",
                       "front":  "WB8: What reasoning sequence anchors this topic?",
-                      "back":  "Client Meaning â†’ Maintaining Mechanism â†’ Alliance Need â†’ Theory-Consistent Skill â†’ Response"
+                      "back":  "Client Meaning -\u003e Maintaining Mechanism -\u003e Alliance Need -\u003e Theory-Consistent Skill -\u003e Response"
                   },
                   {
                       "id":  "084",
-                      "tag":  "LPCC  â€¢  WB8",
+                      "tag":  "LPCC  •  WB8",
                       "front":  "WB8: Which CTA memory aid organizes decisions?",
                       "back":  "Theory + Relationship Fit. Use it to organize the reasoning priorities in Counseling Theories, Alliance, and Core Counseling Skills."
                   },
                   {
                       "id":  "085",
-                      "tag":  "LPCC  â€¢  WB8",
+                      "tag":  "LPCC  •  WB8",
                       "front":  "WB8 high-yield rule 1: What should you remember?",
                       "back":  "Theory is a testable map linking observations, mechanism, target, intervention, and expected response."
                   },
                   {
                       "id":  "086",
-                      "tag":  "LPCC  â€¢  WB8",
+                      "tag":  "LPCC  •  WB8",
                       "front":  "WB8 high-yield rule 2: What should you remember?",
-                      "back":  "Alliance requires empathy, collaboration, cultural humility, boundaries, and repairâ€”not agreement with every belief or avoidance of challenge."
+                      "back":  "Alliance requires empathy, collaboration, cultural humility, boundaries, and repair-not agreement with every belief or avoidance of challenge."
                   },
                   {
                       "id":  "087",
-                      "tag":  "LPCC  â€¢  WB8",
+                      "tag":  "LPCC  •  WB8",
                       "front":  "WB8 high-yield rule 3: What should you remember?",
                       "back":  "Choose the micro-skill that fits the moment: reflection, clarification, immediacy, summarizing, gentle discrepancy, psychoeducation, or collaborative problem solving."
                   },
                   {
                       "id":  "088",
-                      "tag":  "LPCC  â€¢  WB8",
+                      "tag":  "LPCC  •  WB8",
                       "front":  "WB8 trap check 1: What tempting mistake should you reject?",
                       "back":  "Matching a diagnosis or vocabulary word to a theory without identifying the mechanism."
                   },
                   {
                       "id":  "089",
-                      "tag":  "LPCC  â€¢  WB8",
+                      "tag":  "LPCC  •  WB8",
                       "front":  "WB8 trap check 2: What tempting mistake should you reject?",
                       "back":  "Using confrontation, interpretation, advice, or silence before sufficient safety and alliance exist."
                   },
                   {
                       "id":  "090",
-                      "tag":  "LPCC  â€¢  WB8",
+                      "tag":  "LPCC  •  WB8",
                       "front":  "WB8 trap check 3: What tempting mistake should you reject?",
                       "back":  "Treating rupture as client resistance rather than checking counselor impact, misunderstanding, power, culture, and treatment fit."
                   },
                   {
                       "id":  "091",
-                      "tag":  "LPCC  â€¢  WB8",
+                      "tag":  "LPCC  •  WB8",
                       "front":  "WB8: Which three self-check questions should you ask?",
-                      "back":  "What mechanism is the theory explaining? â€¢ What does the alliance need in this moment? â€¢ Which skill advances the clientâ€™s goal without exceeding readiness?"
+                      "back":  "What mechanism is the theory explaining? • What does the alliance need in this moment? • Which skill advances the client’s goal without exceeding readiness?"
                   },
                   {
                       "id":  "092",
-                      "tag":  "LPCC  â€¢  WB8",
+                      "tag":  "LPCC  •  WB8",
                       "front":  "WB8: What practice action should follow this review?",
                       "back":  "For one vignette, name the mechanism, alliance task, selected skill, and expected observable response."
                   },
                   {
                       "id":  "093",
-                      "tag":  "LPCC  â€¢  WB9",
+                      "tag":  "LPCC  •  WB9",
                       "front":  "WB9: What reasoning sequence anchors this topic?",
-                      "back":  "Safety â†’ Target â†’ Mechanism â†’ Readiness â†’ Method/Dose â†’ Measure â†’ Adjust"
+                      "back":  "Safety -\u003e Target -\u003e Mechanism -\u003e Readiness -\u003e Method/Dose -\u003e Measure -\u003e Adjust"
                   },
                   {
                       "id":  "094",
-                      "tag":  "LPCC  â€¢  WB9",
+                      "tag":  "LPCC  •  WB9",
                       "front":  "WB9: Which CTA memory aid organizes decisions?",
                       "back":  "Intervention Fit Sequence. Use it to organize the reasoning priorities in Evidence-Based and Evidence-Informed Interventions."
                   },
                   {
                       "id":  "095",
-                      "tag":  "LPCC  â€¢  WB9",
+                      "tag":  "LPCC  •  WB9",
                       "front":  "WB9 high-yield rule 1: What should you remember?",
                       "back":  "Evidence-based care integrates research, counselor competence, clinical judgment, client characteristics, values, preferences, and context."
                   },
                   {
                       "id":  "096",
-                      "tag":  "LPCC  â€¢  WB9",
+                      "tag":  "LPCC  •  WB9",
                       "front":  "WB9 high-yield rule 2: What should you remember?",
                       "back":  "Match the method to a defined target and mechanism; sequence stabilization, skills, exposure/processing, recovery, or relapse prevention deliberately."
                   },
                   {
                       "id":  "097",
-                      "tag":  "LPCC  â€¢  WB9",
+                      "tag":  "LPCC  •  WB9",
                       "front":  "WB9 high-yield rule 3: What should you remember?",
                       "back":  "For nonresponse, reassess diagnosis, risk, alliance, adherence, access, treatment dose, competing needs, and care level before technique shopping."
                   },
                   {
                       "id":  "098",
-                      "tag":  "LPCC  â€¢  WB9",
+                      "tag":  "LPCC  •  WB9",
                       "front":  "WB9 trap check 1: What tempting mistake should you reject?",
                       "back":  "Choosing a familiar intervention because it is popular rather than because it fits the formulation."
                   },
                   {
                       "id":  "099",
-                      "tag":  "LPCC  â€¢  WB9",
+                      "tag":  "LPCC  •  WB9",
                       "front":  "WB9 trap check 2: What tempting mistake should you reject?",
                       "back":  "Beginning exposure, trauma processing, conjoint work, or behavior change before safety, consent, readiness, and implementation supports are present."
                   },
                   {
                       "id":  "100",
-                      "tag":  "LPCC  â€¢  WB9",
+                      "tag":  "LPCC  •  WB9",
                       "front":  "WB9 trap check 3: What tempting mistake should you reject?",
                       "back":  "Calling an intervention ineffective without measuring fidelity, participation, barriers, and outcome."
                   },
                   {
                       "id":  "101",
-                      "tag":  "LPCC  â€¢  WB9",
+                      "tag":  "LPCC  •  WB9",
                       "front":  "WB9: Which three self-check questions should you ask?",
-                      "back":  "What exact target and mechanism must change? â€¢ Is the client ready and able to use this method? â€¢ What result and review point will show whether to continue or adjust?"
+                      "back":  "What exact target and mechanism must change? • Is the client ready and able to use this method? • What result and review point will show whether to continue or adjust?"
                   },
                   {
                       "id":  "102",
-                      "tag":  "LPCC  â€¢  WB9",
+                      "tag":  "LPCC  •  WB9",
                       "front":  "WB9: What practice action should follow this review?",
                       "back":  "Write a target-mechanism-method-measure statement for one CBT, MI, DBT-skills, trauma, substance-use, or career intervention."
                   },
                   {
                       "id":  "103",
-                      "tag":  "LPCC  â€¢  WB10",
+                      "tag":  "LPCC  •  WB10",
                       "front":  "WB10: What reasoning sequence anchors this topic?",
-                      "back":  "Client Meaning â†’ Power/Context â†’ Development â†’ Adaptation â†’ Access â†’ Outcome"
+                      "back":  "Client Meaning -\u003e Power/Context -\u003e Development -\u003e Adaptation -\u003e Access -\u003e Outcome"
                   },
                   {
                       "id":  "104",
-                      "tag":  "LPCC  â€¢  WB10",
+                      "tag":  "LPCC  •  WB10",
                       "front":  "WB10: Which CTA memory aid organizes decisions?",
                       "back":  "Ask-Adapt-Access-Evaluate. Use it to organize the reasoning priorities in Multicultural, Developmental, Career, Spiritual, Disability, and Context-Responsive Counseling."
                   },
                   {
                       "id":  "105",
-                      "tag":  "LPCC  â€¢  WB10",
+                      "tag":  "LPCC  •  WB10",
                       "front":  "WB10 high-yield rule 1: What should you remember?",
                       "back":  "Ask how the client understands identity, distress, family/community expectations, spirituality, work, disability, and help-seeking."
                   },
                   {
                       "id":  "106",
-                      "tag":  "LPCC  â€¢  WB10",
+                      "tag":  "LPCC  •  WB10",
                       "front":  "WB10 high-yield rule 2: What should you remember?",
                       "back":  "Context must change delivery: language, pacing, examples, modality, participants, materials, goals, and decision-making process."
                   },
                   {
                       "id":  "107",
-                      "tag":  "LPCC  â€¢  WB10",
+                      "tag":  "LPCC  •  WB10",
                       "front":  "WB10 high-yield rule 3: What should you remember?",
                       "back":  "Treat cost, transportation, technology, housing, work schedules, caregiving, language, discrimination, and disability access as treatment variables."
                   },
                   {
                       "id":  "108",
-                      "tag":  "LPCC  â€¢  WB10",
+                      "tag":  "LPCC  •  WB10",
                       "front":  "WB10 trap check 1: What tempting mistake should you reject?",
                       "back":  "Assuming needs, values, or preferences from a demographic category or developmental label."
                   },
                   {
                       "id":  "109",
-                      "tag":  "LPCC  â€¢  WB10",
+                      "tag":  "LPCC  •  WB10",
                       "front":  "WB10 trap check 2: What tempting mistake should you reject?",
                       "back":  "Pathologizing culturally meaningful behavior, spiritual belief, disability response, or career concern without impairment and context."
                   },
                   {
                       "id":  "110",
-                      "tag":  "LPCC  â€¢  WB10",
+                      "tag":  "LPCC  •  WB10",
                       "front":  "WB10 trap check 3: What tempting mistake should you reject?",
                       "back":  "Labeling missed appointments or limited follow-through as resistance when access, power, safety, or accommodation is the controlling issue."
                   },
                   {
                       "id":  "111",
-                      "tag":  "LPCC  â€¢  WB10",
+                      "tag":  "LPCC  •  WB10",
                       "front":  "WB10: Which three self-check questions should you ask?",
-                      "back":  "What meaning does the client assign to this issue? â€¢ What power, developmental, or access condition changes delivery? â€¢ What concrete adaptation will be evaluated?"
+                      "back":  "What meaning does the client assign to this issue? • What power, developmental, or access condition changes delivery? • What concrete adaptation will be evaluated?"
                   },
                   {
                       "id":  "112",
-                      "tag":  "LPCC  â€¢  WB10",
+                      "tag":  "LPCC  •  WB10",
                       "front":  "WB10: What practice action should follow this review?",
                       "back":  "Name one client-led adaptation and the observable outcome that would show it improved access, alliance, or effectiveness."
                   },
                   {
                       "id":  "113",
-                      "tag":  "LPCC  â€¢  WB11",
+                      "tag":  "LPCC  •  WB11",
                       "front":  "WB11: What reasoning sequence anchors this topic?",
-                      "back":  "Purpose â†’ Safety/Consent â†’ Readiness â†’ Role/Scope â†’ Coordination â†’ Follow-Up"
+                      "back":  "Purpose -\u003e Safety/Consent -\u003e Readiness -\u003e Role/Scope -\u003e Coordination -\u003e Follow-Up"
                   },
                   {
                       "id":  "114",
-                      "tag":  "LPCC  â€¢  WB11",
+                      "tag":  "LPCC  •  WB11",
                       "front":  "WB11: Which CTA memory aid organizes decisions?",
                       "back":  "Modality + Continuity Decision. Use it to organize the reasoning priorities in Individual, Group, Couple/Family, Referral, Continuity, and Collaboration."
                   },
                   {
                       "id":  "115",
-                      "tag":  "LPCC  â€¢  WB11",
+                      "tag":  "LPCC  •  WB11",
                       "front":  "WB11 high-yield rule 1: What should you remember?",
-                      "back":  "Select individual, group, couple/family, or coordinated care because the treatment unit and mechanism fit the caseâ€”not by default."
+                      "back":  "Select individual, group, couple/family, or coordinated care because the treatment unit and mechanism fit the case-not by default."
                   },
                   {
                       "id":  "116",
-                      "tag":  "LPCC  â€¢  WB11",
+                      "tag":  "LPCC  •  WB11",
                       "front":  "WB11 high-yield rule 2: What should you remember?",
                       "back":  "Screen group purpose, composition, readiness, confidentiality limits, process risk, and facilitation plan."
                   },
                   {
                       "id":  "117",
-                      "tag":  "LPCC  â€¢  WB11",
+                      "tag":  "LPCC  •  WB11",
                       "front":  "WB11 high-yield rule 3: What should you remember?",
                       "back":  "A referral does not end responsibility: explain the rationale, support access, share only authorized/necessary information, and confirm continuity."
                   },
                   {
                       "id":  "118",
-                      "tag":  "LPCC  â€¢  WB11",
+                      "tag":  "LPCC  •  WB11",
                       "front":  "WB11 trap check 1: What tempting mistake should you reject?",
                       "back":  "Beginning conjoint or family work when violence, coercion, privacy, consent, or LPCC role/scope concerns have not been addressed."
                   },
                   {
                       "id":  "119",
-                      "tag":  "LPCC  â€¢  WB11",
+                      "tag":  "LPCC  •  WB11",
                       "front":  "WB11 trap check 2: What tempting mistake should you reject?",
                       "back":  "Placing a client in a group without screening fit, acuity, expectations, or ability to participate safely."
                   },
                   {
                       "id":  "120",
-                      "tag":  "LPCC  â€¢  WB11",
+                      "tag":  "LPCC  •  WB11",
                       "front":  "WB11 trap check 3: What tempting mistake should you reject?",
                       "back":  "Assuming consultation transfers responsibility or permits broad information sharing."
                   },
                   {
                       "id":  "121",
-                      "tag":  "LPCC  â€¢  WB11",
+                      "tag":  "LPCC  •  WB11",
                       "front":  "WB11: Which three self-check questions should you ask?",
-                      "back":  "Which treatment unit best matches the target? â€¢ Are safety, consent, readiness, and scope established? â€¢ Who owns each next step and how will follow-up be confirmed?"
+                      "back":  "Which treatment unit best matches the target? • Are safety, consent, readiness, and scope established? • Who owns each next step and how will follow-up be confirmed?"
                   },
                   {
                       "id":  "122",
-                      "tag":  "LPCC  â€¢  WB11",
+                      "tag":  "LPCC  •  WB11",
                       "front":  "WB11: What practice action should follow this review?",
                       "back":  "Complete a continuity statement: purpose, referral/collaborator role, authorization, information shared, access barrier, and follow-up date."
                   },
                   {
                       "id":  "123",
-                      "tag":  "LPCC  â€¢  WB12",
+                      "tag":  "LPCC  •  WB12",
                       "front":  "WB12: What reasoning sequence anchors this topic?",
-                      "back":  "Issue â†’ Current Authority â†’ Client/Safety Facts â†’ Options â†’ Least Harm â†’ Document/Review"
+                      "back":  "Issue -\u003e Current Authority -\u003e Client/Safety Facts -\u003e Options -\u003e Least Harm -\u003e Document/Review"
                   },
                   {
                       "id":  "124",
-                      "tag":  "LPCC  â€¢  WB12",
+                      "tag":  "LPCC  •  WB12",
                       "front":  "WB12: Which CTA memory aid organizes decisions?",
                       "back":  "Legal-Ethical Practice Sequence. Use it to organize the reasoning priorities in California Legal, Ethical, Documentation, Technology, and Professional Practice."
                   },
                   {
                       "id":  "125",
-                      "tag":  "LPCC  â€¢  WB12",
+                      "tag":  "LPCC  •  WB12",
                       "front":  "WB12 high-yield rule 1: What should you remember?",
                       "back":  "Identify the controlling legal or ethical issue, verify current official authority when rules may have changed, and distinguish legal requirements from best practice."
                   },
                   {
                       "id":  "126",
-                      "tag":  "LPCC  â€¢  WB12",
+                      "tag":  "LPCC  •  WB12",
                       "front":  "WB12 high-yield rule 2: What should you remember?",
                       "back":  "Use informed consent as an ongoing process; disclose privacy limits, fees, communication/technology practices, emergencies, records, and material treatment changes."
                   },
                   {
                       "id":  "127",
-                      "tag":  "LPCC  â€¢  WB12",
+                      "tag":  "LPCC  •  WB12",
                       "front":  "WB12 high-yield rule 3: What should you remember?",
                       "back":  "Document clinically relevant facts, reasoning, actions, consultation, coordination, and follow-up with objective, respectful, minimum-necessary detail."
                   },
                   {
                       "id":  "128",
-                      "tag":  "LPCC  â€¢  WB12",
+                      "tag":  "LPCC  •  WB12",
                       "front":  "WB12 trap check 1: What tempting mistake should you reject?",
-                      "back":  "Relying on an outdated school rule, memory, social-media summary, employer custom, or another professionâ€™s practice act."
+                      "back":  "Relying on an outdated school rule, memory, social-media summary, employer custom, or another profession’s practice act."
                   },
                   {
                       "id":  "129",
-                      "tag":  "LPCC  â€¢  WB12",
+                      "tag":  "LPCC  •  WB12",
                       "front":  "WB12 trap check 2: What tempting mistake should you reject?",
                       "back":  "Treating confidentiality as absolute or disclosing broadly because an exception, authorization, or collaboration exists."
                   },
                   {
                       "id":  "130",
-                      "tag":  "LPCC  â€¢  WB12",
+                      "tag":  "LPCC  •  WB12",
                       "front":  "WB12 trap check 3: What tempting mistake should you reject?",
                       "back":  "Using telehealth, texting, social media, recording, AI tools, or electronic records without consent, security, competence, jurisdiction, and contingency planning."
                   },
                   {
                       "id":  "131",
-                      "tag":  "LPCC  â€¢  WB12",
+                      "tag":  "LPCC  •  WB12",
                       "front":  "WB12: Which three self-check questions should you ask?",
-                      "back":  "What exact legal/ethical issue and current authority apply? â€¢ What facts determine duty, permission, or prohibition? â€¢ What documentation, consultation, notification, or follow-up is required?"
+                      "back":  "What exact legal/ethical issue and current authority apply? • What facts determine duty, permission, or prohibition? • What documentation, consultation, notification, or follow-up is required?"
                   },
                   {
                       "id":  "132",
-                      "tag":  "LPCC  â€¢  WB12",
+                      "tag":  "LPCC  •  WB12",
                       "front":  "WB12: What practice action should follow this review?",
                       "back":  "Write a brief ethical decision record: issue, authority checked, facts, options, risks, consultation, decision, and review plan."
                   }

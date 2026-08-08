@@ -12,7 +12,10 @@ function Get-DocxLines($docxPath) {
   try {
     Copy-Item $docxPath (Join-Path $tmp "f.zip")
     Expand-Archive (Join-Path $tmp "f.zip") -DestinationPath (Join-Path $tmp "out") -Force
-    $xml = Get-Content (Join-Path $tmp "out\word\document.xml") -Raw
+    # DOCX document.xml is UTF-8. Read explicitly as UTF-8 - never rely on the
+    # Windows default (often Windows-1252), which double-encodes bullets/quotes.
+    $xmlPath = Join-Path $tmp "out\word\document.xml"
+    $xml = [System.IO.File]::ReadAllText($xmlPath, [System.Text.UTF8Encoding]::new($false))
     $text = [regex]::Replace($xml, "</w:p>", "`n")
     $text = [regex]::Replace($text, "<[^>]+>", "")
     $text = [System.Net.WebUtility]::HtmlDecode($text)
@@ -23,14 +26,28 @@ function Get-DocxLines($docxPath) {
   }
 }
 
+# Tag separator class: middle dot (U+00B7), bullet (U+2022), or ASCII period.
+# Built from codepoints so Windows PowerShell 5.1 can parse this .ps1 even when
+# the file is loaded as the system ANSI code page (no UTF-8 BOM).
+function Get-ClinicalTagSepClass {
+  return ("[" + [char]0x00B7 + [char]0x2022 + "\.]")
+}
+
+function Test-ClinicalTagLine([string]$line) {
+  return [bool]($line -match ("^(LPCC|LCSW|LMFT)\s*" + (Get-ClinicalTagSepClass)))
+}
+
 function Convert-ClinicalStyle($lines) {
   $cards = New-Object System.Collections.Generic.List[object]
   $i = 0
   $currentTag = ""
+  $tagLineRx = "^(LPCC|LCSW|LMFT)\s*" + (Get-ClinicalTagSepClass) + "\s*(.+)$"
+  $bullet = [char]0x2022
   while ($i -lt $lines.Count) {
     $line = $lines[$i]
-    if ($line -match "^(LPCC|LCSW|LMFT)\s*[·•\.]\s*(.+)$") {
-      $currentTag = $line
+    if ($line -match $tagLineRx) {
+      # Normalize to "PROGRAM • SECTION" with a proper UTF-8 bullet.
+      $currentTag = ("{0}  {1}  {2}" -f $Matches[1], $bullet, $Matches[2].Trim())
       $i++
       continue
     }
@@ -43,7 +60,7 @@ function Convert-ClinicalStyle($lines) {
       $qParts = New-Object System.Collections.Generic.List[string]
       $j++
       while ($j -lt $lines.Count -and $lines[$j] -ne "ANSWER" -and $lines[$j] -notmatch "COVER OR FOLD" -and $lines[$j] -notmatch "^\d{3}$") {
-        if ($lines[$j] -notmatch "^(LPCC|LCSW|LMFT)\s*[·•]") { $qParts.Add($lines[$j]) }
+        if (-not (Test-ClinicalTagLine $lines[$j])) { $qParts.Add($lines[$j]) }
         $j++
       }
       while ($j -lt $lines.Count -and $lines[$j] -ne "ANSWER") { $j++ }
@@ -53,7 +70,7 @@ function Convert-ClinicalStyle($lines) {
       while ($j -lt $lines.Count) {
         $nl = $lines[$j]
         if ($nl -match "^\d{3}$") { break }
-        if ($nl -match "^(LPCC|LCSW|LMFT)\s*[·•]") { break }
+        if (Test-ClinicalTagLine $nl) { break }
         if ($nl -eq "QUESTION" -or $nl -eq "ANSWER") { break }
         if ($nl -match "COVER OR FOLD") { $j++; continue }
         $aParts.Add($nl)
