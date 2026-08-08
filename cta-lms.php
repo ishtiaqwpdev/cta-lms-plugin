@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.173' );
+	define( 'CTA_VERSION', '1.0.174' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -945,6 +945,17 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				}
 			}
 
+			// URGENT: CTA-EP-002 LCSW Law & Ethics was found Published with purchases while Stage 5E incomplete.
+			// Force Draft + launch hold. Do NOT touch memberships/orders/purchases.
+			if ( version_compare( $installed, '1.0.174', '<' ) ) {
+				if ( class_exists( 'CTA_Course_Catalog' ) ) {
+					CTA_Course_Catalog::unpublish_all_exam_prep_pending_launch();
+				}
+				if ( function_exists( 'cta_force_draft_lcsw_law_ethics_ep' ) ) {
+					cta_force_draft_lcsw_law_ethics_ep();
+				}
+			}
+
 			// Decouple supervision application pending from general account / CE access.
 			if ( version_compare( $installed, '1.0.90', '<' ) && class_exists( 'CTA_Associate_Access' ) ) {
 				$query = new WP_User_Query(
@@ -1046,6 +1057,93 @@ if ( ! function_exists( 'cta_maybe_heal_lpcc_law_ethics' ) ) {
 
 if ( function_exists( 'cta_maybe_heal_lpcc_law_ethics' ) && ! has_action( 'plugins_loaded', 'cta_maybe_heal_lpcc_law_ethics' ) ) {
 	add_action( 'plugins_loaded', 'cta_maybe_heal_lpcc_law_ethics', 7 );
+}
+
+if ( ! function_exists( 'cta_force_draft_lcsw_law_ethics_ep' ) ) {
+	/**
+	 * Force CTA-EP-002 LCSW California Law & Ethics Exam Prep to Draft + launch hold.
+	 *
+	 * Does not modify memberships, orders, or purchase history.
+	 *
+	 * @return int Course ID updated, or 0.
+	 */
+	function cta_force_draft_lcsw_law_ethics_ep() {
+		global $wpdb;
+
+		$table = $wpdb->prefix . 'cta_courses';
+		$slugs = array(
+			'lcsw-california-law-ethics-exam-preparation',
+		);
+		$titles = array(
+			'CTA LCSW California Law & Ethics Exam Preparation Program',
+			'LCSW California Law & Ethics Exam Preparation',
+		);
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$row = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT * FROM {$table} WHERE slug = %s ORDER BY id ASC LIMIT 1",
+				$slugs[0]
+			)
+		);
+
+		if ( ! $row ) {
+			foreach ( $titles as $title ) {
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$row = $wpdb->get_row(
+					$wpdb->prepare(
+						"SELECT * FROM {$table} WHERE title = %s ORDER BY id ASC LIMIT 1",
+						$title
+					)
+				);
+				if ( $row ) {
+					break;
+				}
+			}
+		}
+
+		if ( ! $row ) {
+			return 0;
+		}
+
+		$meta = array();
+		if ( ! empty( $row->syllabus_meta ) ) {
+			$decoded = json_decode( (string) $row->syllabus_meta, true );
+			$meta    = is_array( $decoded ) ? $decoded : array();
+		}
+		$meta['course_code']            = 'CTA-EP-002';
+		$meta['public_title']           = 'LCSW California Law & Ethics Exam Preparation';
+		$meta['course_classification']  = 'Exam Preparation Only — No CE Credit';
+		$meta['launch_pending_testing'] = true;
+		$meta['launch_status']          = 'draft_pending_testing';
+		$meta['development_draft']      = true;
+		$meta['open_access_exam_prep']  = true;
+		// Keep content_pending until full sync lands; still blocks misunderstanding of readiness.
+		if ( ! isset( $meta['content_pending'] ) ) {
+			$meta['content_pending'] = true;
+		}
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$wpdb->update(
+			$table,
+			array(
+				'status'       => 'draft',
+				'product_type' => 'exam_prep',
+				'slug'         => 'lcsw-california-law-ethics-exam-preparation',
+				'syllabus_meta'=> wp_json_encode( $meta ),
+			),
+			array( 'id' => (int) $row->id ),
+			array( '%s', '%s', '%s', '%s' ),
+			array( '%d' )
+		);
+
+		return (int) $row->id;
+	}
+}
+
+if ( function_exists( 'cta_force_draft_lcsw_law_ethics_ep' ) && ! has_action( 'plugins_loaded', 'cta_force_draft_lcsw_law_ethics_ep' ) ) {
+	// Run every load until Stage 5E written release — Stripe only sells published courses.
+	add_action( 'plugins_loaded', 'cta_force_draft_lcsw_law_ethics_ep', 8 );
 }
 
 if ( function_exists( 'cta_maybe_sync_ce_prices_from_catalog' ) && ! has_action( 'plugins_loaded', 'cta_maybe_sync_ce_prices_from_catalog' ) ) {
