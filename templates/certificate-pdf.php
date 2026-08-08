@@ -129,44 +129,83 @@ $signature_url = ! empty( $signature_url ) ? $signature_url : '';
 		}
 		.meta p { margin: 1px 0; }
 		.divider {
-			width: 200px;
-			height: 2px;
-			background: #122B51;
-			margin: 12px auto;
+			width: 160px;
+			height: 1px;
+			background: #c5a572;
+			margin: 12px auto 10px;
 			border: 0;
 			font-size: 1px;
 			line-height: 1px;
 		}
+		.provider-line {
+			font-size: 12px;
+			line-height: 1.45;
+			margin: 0 auto 14px;
+			max-width: 620px;
+			color: #475467;
+		}
 		.signature-block {
-			margin-top: 10px;
+			margin: 2px auto 0;
+			width: 320px;
+			text-align: center;
+		}
+		.signature-mark {
+			height: 56px;
+			margin: 0 auto;
 			text-align: center;
 		}
 		.signature-image {
 			display: block;
-			max-width: 280px;
-			max-height: 72px;
-			width: 280px;
+			max-width: 230px;
+			max-height: 54px;
+			width: 230px;
 			height: auto;
-			margin: 0 auto 2px;
+			margin: 0 auto;
 		}
-		.signature-line {
-			width: 300px;
+		.signature-rule {
+			width: 200px;
+			height: 0;
+			margin: 2px auto 8px;
+			border: 0;
 			border-top: 1px solid #122B51;
-			margin: 0 auto 4px;
-			padding-top: 6px;
-			font-size: 13px;
-			line-height: 1.4;
-			color: #122B51;
+			border-bottom: 1px solid #c5a572;
+			padding: 0;
+			font-size: 1px;
+			line-height: 1px;
 		}
-		.verify {
-			margin-top: 10px;
+		.signature-name {
+			margin: 0 0 2px;
 			font-size: 13px;
 			font-weight: bold;
+			letter-spacing: 0.02em;
+			color: #122B51;
+			line-height: 1.3;
+		}
+		.signature-title {
+			margin: 0 0 1px;
+			font-size: 11px;
+			font-style: italic;
+			color: #475467;
+			line-height: 1.3;
+		}
+		.signature-org {
+			margin: 0;
+			font-size: 10px;
+			letter-spacing: 0.04em;
+			text-transform: uppercase;
+			color: #667085;
+			line-height: 1.35;
+		}
+		.verify {
+			margin-top: 14px;
+			font-size: 12px;
+			font-weight: bold;
+			letter-spacing: 0.03em;
 			color: #122B51;
 		}
 		.footer {
-			margin-top: 6px;
-			font-size: 11px;
+			margin-top: 5px;
+			font-size: 10px;
 			color: #667085;
 		}
 	</style>
@@ -199,7 +238,7 @@ $signature_url = ! empty( $signature_url ) ? $signature_url : '';
 
 			<div class="divider">&nbsp;</div>
 
-			<p class="meta">
+			<p class="provider-line">
 				<?php
 				echo esc_html(
 					class_exists( 'CTA_Certificates' )
@@ -216,19 +255,20 @@ $signature_url = ! empty( $signature_url ) ? $signature_url : '';
 						? esc_attr( $signature_url )
 						: esc_url( $signature_url );
 					?>
-					<img
-						class="signature-image"
-						src="<?php echo $sig_src; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped above ?>"
-						alt="<?php echo esc_attr( sprintf( /* translators: %s: signer name */ __( 'Signature of %s', 'cta-lms' ), $signature_name ) ); ?>"
-						width="280"
-						height="72"
-					>
+					<div class="signature-mark">
+						<img
+							class="signature-image"
+							src="<?php echo $sig_src; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped above ?>"
+							alt="<?php echo esc_attr( sprintf( /* translators: %s: signer name */ __( 'Signature of %s', 'cta-lms' ), $signature_name ) ); ?>"
+							width="230"
+							height="54"
+						>
+					</div>
 				<?php endif; ?>
-				<div class="signature-line">
-					<?php echo esc_html( $signature_name ); ?><br>
-					<?php echo esc_html( $administrator_title ); ?><br>
-					<?php echo esc_html( $organization_name ); ?>
-				</div>
+				<hr class="signature-rule" />
+				<p class="signature-name"><?php echo esc_html( $signature_name ); ?></p>
+				<p class="signature-title"><?php echo esc_html( $administrator_title ); ?></p>
+				<p class="signature-org"><?php echo esc_html( $organization_name ); ?></p>
 			</div>
 
 			<p class="verify">
