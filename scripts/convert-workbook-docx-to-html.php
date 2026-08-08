@@ -21,6 +21,7 @@ $programs = array(
 	'lmft-clinical'    => $root . '/assets/course-materials/lmft-clinical/workbooks',
 	'lmft-amftrb'      => $root . '/assets/course-materials/lmft-amftrb/workbooks',
 	'lpcc-law-ethics'  => $root . '/assets/course-materials/lpcc-law-ethics/workbooks',
+	'lcsw-law-ethics'  => $root . '/assets/course-materials/lcsw-law-ethics/workbooks',
 );
 
 /**

@@ -29,6 +29,7 @@ class CTA_Flashcards {
 			'lpcc-ncmhce-exam-preparation'                   => 'assets/course-materials/lpcc-ncmhce/study-tools/flashcards.json',
 			'lpcc-california-clinical-exam-preparation'      => 'assets/course-materials/lpcc-ncmhce/study-tools/flashcards.json',
 			'lpcc-california-law-ethics-exam-preparation'    => 'assets/course-materials/lpcc-law-ethics/study-tools/flashcards.json',
+			'lcsw-california-law-ethics-exam-preparation'    => 'assets/course-materials/lcsw-law-ethics/study-tools/flashcards.json',
 			'lcsw-aswb-clinical-exam-preparation'            => 'assets/course-materials/lcsw-aswb/study-tools/flashcards.json',
 			'lcsw-california-clinical-exam-preparation'      => 'assets/course-materials/lcsw-aswb/study-tools/flashcards.json',
 			'lmft-california-clinical-exam-preparation'      => 'assets/course-materials/lmft-clinical/study-tools/flashcards.json',

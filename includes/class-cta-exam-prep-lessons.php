@@ -29,6 +29,7 @@ class CTA_Exam_Prep_Lessons {
 			'lpcc-ncmhce-exam-preparation'                   => 'lpcc-ncmhce',
 			'lpcc-california-clinical-exam-preparation'      => 'lpcc-ncmhce',
 			'lpcc-california-law-ethics-exam-preparation'    => 'lpcc-law-ethics',
+			'lcsw-california-law-ethics-exam-preparation'    => 'lcsw-law-ethics',
 			'lcsw-aswb-clinical-exam-preparation'            => 'lcsw-aswb',
 			'lcsw-california-clinical-exam-preparation'      => 'lcsw-aswb',
 			'lmft-california-clinical-exam-preparation'      => 'lmft-clinical',

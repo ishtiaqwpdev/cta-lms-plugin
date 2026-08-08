@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.174' );
+	define( 'CTA_VERSION', '1.0.175' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -94,6 +94,7 @@ $cta_required_files = array(
 	'includes/class-cta-lmft-amftrb-sync.php',
 	'includes/class-cta-lpcc-ncmhce-sync.php',
 	'includes/class-cta-lpcc-law-ethics-sync.php',
+	'includes/class-cta-lcsw-law-ethics-sync.php',
 	'includes/class-cta-law-ethics-module-sync.php',
 	'includes/class-cta-law-ethics-evaluation-sync.php',
 	'includes/class-cta-database.php',
@@ -956,6 +957,28 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				}
 			}
 
+			// CTA-EP-002 LCSW California Law & Ethics — load Stage 5D content; keep Draft.
+			if ( version_compare( $installed, '1.0.175', '<' ) ) {
+				if ( function_exists( 'set_time_limit' ) ) {
+					@set_time_limit( 600 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+				}
+				if ( class_exists( 'CTA_Exam_Access' ) ) {
+					CTA_Exam_Access::seed_default_programs();
+				}
+				if ( function_exists( 'cta_force_draft_lcsw_law_ethics_ep' ) ) {
+					cta_force_draft_lcsw_law_ethics_ep();
+				}
+				if ( class_exists( 'CTA_Lcsw_Law_Ethics_Sync' ) ) {
+					CTA_Lcsw_Law_Ethics_Sync::sync( true );
+				}
+				if ( class_exists( 'CTA_Course_Catalog' ) ) {
+					CTA_Course_Catalog::unpublish_all_exam_prep_pending_launch();
+				}
+				if ( function_exists( 'cta_force_draft_lcsw_law_ethics_ep' ) ) {
+					cta_force_draft_lcsw_law_ethics_ep();
+				}
+			}
+
 			// Decouple supervision application pending from general account / CE access.
 			if ( version_compare( $installed, '1.0.90', '<' ) && class_exists( 'CTA_Associate_Access' ) ) {
 				$query = new WP_User_Query(
@@ -1118,10 +1141,7 @@ if ( ! function_exists( 'cta_force_draft_lcsw_law_ethics_ep' ) ) {
 		$meta['launch_status']          = 'draft_pending_testing';
 		$meta['development_draft']      = true;
 		$meta['open_access_exam_prep']  = true;
-		// Keep content_pending until full sync lands; still blocks misunderstanding of readiness.
-		if ( ! isset( $meta['content_pending'] ) ) {
-			$meta['content_pending'] = true;
-		}
+		// Do not flip content_pending here — content sync owns that flag.
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$wpdb->update(
@@ -1144,6 +1164,21 @@ if ( ! function_exists( 'cta_force_draft_lcsw_law_ethics_ep' ) ) {
 if ( function_exists( 'cta_force_draft_lcsw_law_ethics_ep' ) && ! has_action( 'plugins_loaded', 'cta_force_draft_lcsw_law_ethics_ep' ) ) {
 	// Run every load until Stage 5E written release — Stripe only sells published courses.
 	add_action( 'plugins_loaded', 'cta_force_draft_lcsw_law_ethics_ep', 8 );
+}
+
+if ( ! function_exists( 'cta_maybe_heal_lcsw_law_ethics' ) ) {
+	/**
+	 * Re-run CTA-EP-002 content sync when the Draft shell is still empty after deploy.
+	 */
+	function cta_maybe_heal_lcsw_law_ethics() {
+		if ( class_exists( 'CTA_Lcsw_Law_Ethics_Sync' ) ) {
+			CTA_Lcsw_Law_Ethics_Sync::maybe_heal_incomplete_content();
+		}
+	}
+}
+
+if ( function_exists( 'cta_maybe_heal_lcsw_law_ethics' ) && ! has_action( 'plugins_loaded', 'cta_maybe_heal_lcsw_law_ethics' ) ) {
+	add_action( 'plugins_loaded', 'cta_maybe_heal_lcsw_law_ethics', 9 );
 }
 
 if ( function_exists( 'cta_maybe_sync_ce_prices_from_catalog' ) && ! has_action( 'plugins_loaded', 'cta_maybe_sync_ce_prices_from_catalog' ) ) {
