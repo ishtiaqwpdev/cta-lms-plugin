@@ -26,12 +26,13 @@ class CTA_Exam_Prep_Lessons {
 	 */
 	public static function get_program_map() {
 		return array(
-			'lpcc-ncmhce-exam-preparation'              => 'lpcc-ncmhce',
-			'lpcc-california-clinical-exam-preparation' => 'lpcc-ncmhce',
-			'lcsw-aswb-clinical-exam-preparation'       => 'lcsw-aswb',
-			'lcsw-california-clinical-exam-preparation' => 'lcsw-aswb',
-			'lmft-california-clinical-exam-preparation' => 'lmft-clinical',
-			'lmft-amftrb-national-exam-preparation'     => 'lmft-amftrb',
+			'lpcc-ncmhce-exam-preparation'                   => 'lpcc-ncmhce',
+			'lpcc-california-clinical-exam-preparation'      => 'lpcc-ncmhce',
+			'lpcc-california-law-ethics-exam-preparation'    => 'lpcc-law-ethics',
+			'lcsw-aswb-clinical-exam-preparation'            => 'lcsw-aswb',
+			'lcsw-california-clinical-exam-preparation'      => 'lcsw-aswb',
+			'lmft-california-clinical-exam-preparation'      => 'lmft-clinical',
+			'lmft-amftrb-national-exam-preparation'          => 'lmft-amftrb',
 		);
 	}
 
@@ -96,8 +97,22 @@ class CTA_Exam_Prep_Lessons {
 		}
 
 		$program = self::program_key_for_course( $course );
-		$num     = self::workbook_number_from_module( $module );
-		$path    = self::lesson_path( $program, $num );
+		if ( '' === $program ) {
+			return null;
+		}
+
+		$title = is_object( $module ) ? (string) ( $module->title ?? '' ) : '';
+		$num   = self::workbook_number_from_module( $module );
+		$path  = '';
+
+		// Start Here / license-specific orientation lesson (non-workbook module).
+		if ( preg_match( '/^\s*Start\s+Here\s*:/i', $title ) ) {
+			$path = CTA_PLUGIN_DIR . 'assets/course-materials/' . $program . '/lessons/start-here.html';
+			$num  = 0;
+		} else {
+			$path = self::lesson_path( $program, $num );
+		}
+
 		if ( '' === $path || ! is_readable( $path ) ) {
 			return null;
 		}
@@ -114,9 +129,9 @@ class CTA_Exam_Prep_Lessons {
 		}
 
 		return array(
-			'html'          => $html,
-			'workbook_num'  => $num,
-			'program'       => $program,
+			'html'         => $html,
+			'workbook_num' => $num,
+			'program'      => $program,
 		);
 	}
 
@@ -147,6 +162,7 @@ class CTA_Exam_Prep_Lessons {
 			'th'      => array( 'colspan' => true, 'rowspan' => true ),
 			'td'      => array( 'colspan' => true, 'rowspan' => true ),
 			'br'      => array(),
+			'hr'      => array( 'class' => true ),
 			'strong'  => array(),
 			'em'      => array(),
 			'b'       => array(),

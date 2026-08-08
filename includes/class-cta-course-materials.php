@@ -875,6 +875,11 @@ class CTA_Course_Materials {
 			// LPCC audio supplement admin references — never learner-facing.
 			'/00_admin/',
 			'00_admin/',
+			'/admin-only/',
+			'admin-only/',
+			'/chapter-tests-admin/',
+			'chapter-tests-admin/',
+			'lms_admin_only',
 			'recording_guide',
 			'completion_record',
 			'audio_review_supplement_recording',

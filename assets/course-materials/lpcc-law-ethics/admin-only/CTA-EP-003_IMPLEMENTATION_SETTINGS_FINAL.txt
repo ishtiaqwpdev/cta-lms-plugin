@@ -1,0 +1,14 @@
+CTA-EP-003 IMPLEMENTATION SETTINGS — FINAL
+
+Public title: LPCC California Law & Ethics Exam Preparation
+Price: $199
+Access: Six months
+No CE credit, evaluation, attestation, or certificate
+All learner-facing materials open at enrollment
+No sequential/module/media/score/remediation/Practice A/Practice B/Final access locks
+Unlimited assessment attempts
+70% chapter-test technical threshold may record score but must not gate content
+80% CTA readiness benchmark is study guidance only
+Post-attempt display/release of controlled keys and rationales
+Protect all internal manifests, reserve records, master IDs, CSV/JSON developer data, and controlled source files
+LPCC NCMHCE program remains separate

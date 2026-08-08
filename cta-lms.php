@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.171' );
+	define( 'CTA_VERSION', '1.0.172' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -93,6 +93,7 @@ $cta_required_files = array(
 	'includes/class-cta-lmft-clinical-sync.php',
 	'includes/class-cta-lmft-amftrb-sync.php',
 	'includes/class-cta-lpcc-ncmhce-sync.php',
+	'includes/class-cta-lpcc-law-ethics-sync.php',
 	'includes/class-cta-law-ethics-module-sync.php',
 	'includes/class-cta-law-ethics-evaluation-sync.php',
 	'includes/class-cta-database.php',
@@ -913,6 +914,16 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				}
 				if ( class_exists( 'CTA_Certificates' ) && method_exists( 'CTA_Certificates', 'refresh_all_certificates' ) ) {
 					CTA_Certificates::refresh_all_certificates();
+				}
+			}
+
+			// CTA-EP-003 LPCC California Law & Ethics Exam Prep — load full content; keep Draft.
+			if ( version_compare( $installed, '1.0.172', '<' ) ) {
+				if ( class_exists( 'CTA_Lpcc_Law_Ethics_Sync' ) ) {
+					CTA_Lpcc_Law_Ethics_Sync::sync( true );
+				}
+				if ( class_exists( 'CTA_Course_Catalog' ) ) {
+					CTA_Course_Catalog::unpublish_all_exam_prep_pending_launch();
 				}
 			}
 

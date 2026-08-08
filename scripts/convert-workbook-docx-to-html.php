@@ -16,10 +16,11 @@ if ( PHP_SAPI !== 'cli' ) {
 $root = dirname( __DIR__ );
 
 $programs = array(
-	'lpcc-ncmhce'   => $root . '/assets/course-materials/lpcc-ncmhce/workbooks',
-	'lcsw-aswb'     => $root . '/assets/course-materials/lcsw-aswb/workbooks',
-	'lmft-clinical' => $root . '/assets/course-materials/lmft-clinical/workbooks',
-	'lmft-amftrb'   => $root . '/assets/course-materials/lmft-amftrb/workbooks',
+	'lpcc-ncmhce'      => $root . '/assets/course-materials/lpcc-ncmhce/workbooks',
+	'lcsw-aswb'        => $root . '/assets/course-materials/lcsw-aswb/workbooks',
+	'lmft-clinical'    => $root . '/assets/course-materials/lmft-clinical/workbooks',
+	'lmft-amftrb'      => $root . '/assets/course-materials/lmft-amftrb/workbooks',
+	'lpcc-law-ethics'  => $root . '/assets/course-materials/lpcc-law-ethics/workbooks',
 );
 
 /**

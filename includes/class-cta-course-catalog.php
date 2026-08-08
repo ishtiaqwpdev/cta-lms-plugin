@@ -151,7 +151,6 @@ class CTA_Course_Catalog {
 				'category'               => 'Exam Preparation',
 				'public_title'           => 'LPCC California Law & Ethics Exam Preparation',
 				'launch_pending_testing' => true,
-				'content_pending'        => true,
 				'match_titles'           => array(
 					'CTA LPCC California Law & Ethics Exam Preparation Program',
 					'LPCC California Law & Ethics Exam Preparation',
