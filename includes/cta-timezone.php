@@ -70,9 +70,17 @@ if ( ! function_exists( 'cta_lms_ensure_pacific_timezone' ) ) {
 			$cta = $desired;
 		}
 
-		$wp_tz = (string) get_option( 'timezone_string', '' );
-		if ( '' === $wp_tz || cta_lms_is_non_cta_server_timezone( $wp_tz ) ) {
-			update_option( 'timezone_string', $cta, false );
+		$wp_tz      = (string) get_option( 'timezone_string', '' );
+		$gmt_offset = (float) get_option( 'gmt_offset', 0 );
+		// Heal WP when empty, blocked (e.g. Asia/Karachi), or offset-only Pakistan/India (+5 / +5.5).
+		$heal_wp    = (
+			'' === $wp_tz
+			|| cta_lms_is_non_cta_server_timezone( $wp_tz )
+			|| ( '' === $wp_tz && ( 5.0 === $gmt_offset || 5.5 === $gmt_offset ) )
+		);
+
+		if ( $heal_wp ) {
+			update_option( 'timezone_string', $desired, false );
 			// gmt_offset is ignored when timezone_string is set; clear stale offset.
 			update_option( 'gmt_offset', 0, false );
 		}
@@ -285,6 +293,40 @@ if ( ! function_exists( 'cta_lms_format_local_date' ) ) {
 		}
 
 		return cta_lms_date( $format, $parsed->getTimestamp(), $tz );
+	}
+}
+
+if ( ! function_exists( 'cta_lms_format_certificate_issued_at' ) ) {
+	/**
+	 * Format a CE certificate "Issued" timestamp.
+	 *
+	 * Always America/Los_Angeles (PST/PDT). Never uses the learner browser zone,
+	 * PHP date.timezone, WordPress Settings → General, or the cta_timezone option
+	 * — those produced PKT when the host/WP/eval timezone was Asia/Karachi.
+	 *
+	 * @param string|int|null $value MySQL datetime (WP site tz via current_time), unix ts, or null = now.
+	 * @return string e.g. "August 8, 2026 at 10:15 AM PDT"
+	 */
+	function cta_lms_format_certificate_issued_at( $value = null ) {
+		$la = new DateTimeZone( 'America/Los_Angeles' );
+
+		if ( null === $value || '' === $value ) {
+			$dt = new DateTimeImmutable( 'now', $la );
+		} elseif ( is_numeric( $value ) ) {
+			$dt = ( new DateTimeImmutable( '@' . (int) $value ) )->setTimezone( $la );
+		} else {
+			$parsed = cta_lms_parse_datetime( (string) $value );
+			if ( ! $parsed ) {
+				$dt = new DateTimeImmutable( 'now', $la );
+			} else {
+				$dt = $parsed->setTimezone( $la );
+			}
+		}
+
+		$abbr = ( '1' === $dt->format( 'I' ) ) ? 'PDT' : 'PST';
+
+		// Format without wp_date() / format('T') so host PHP tz cannot inject PKT.
+		return $dt->format( 'F j, Y' ) . ' at ' . $dt->format( 'g:i A' ) . ' ' . $abbr;
 	}
 }
 

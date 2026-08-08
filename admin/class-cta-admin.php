@@ -2613,7 +2613,9 @@ class CTA_Admin {
 		$student_name       = 'Sample Student, LMFT';
 		$course_title       = 'Sample CE Course';
 		$ce_hours           = '2';
-		$completion_date    = cta_lms_format_local_date( null, 'F j, Y', cta_lms_get_timezone() );
+		$completion_date    = function_exists( 'cta_lms_format_certificate_issued_at' )
+			? cta_lms_format_certificate_issued_at( null )
+			: cta_lms_format_local_date( null, 'F j, Y \a\t g:i A T', new DateTimeZone( 'America/Los_Angeles' ) );
 		$license_number     = 'LMFT12345';
 		$provider_number    = (string) get_option( 'cta_camft_provider_number', get_option( 'cta_cepa_provider_number', '' ) );
 		$certificate_number = 'CTA-' . cta_lms_current_date( 'Y' ) . '-000000';

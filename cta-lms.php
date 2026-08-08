@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.168' );
+	define( 'CTA_VERSION', '1.0.169' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -196,6 +196,11 @@ if ( ! function_exists( 'cta_lms_init' ) ) {
 
 if ( function_exists( 'cta_lms_init' ) && ! has_action( 'plugins_loaded', 'cta_lms_init' ) ) {
 	add_action( 'plugins_loaded', 'cta_lms_init' );
+}
+
+// Keep CTA + WP timezone healed to Pacific even when upgrade hooks already ran.
+if ( function_exists( 'cta_lms_ensure_pacific_timezone' ) && ! has_action( 'plugins_loaded', 'cta_lms_ensure_pacific_timezone' ) ) {
+	add_action( 'plugins_loaded', 'cta_lms_ensure_pacific_timezone', 4 );
 }
 
 if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
@@ -891,6 +896,20 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 					cta_lms_ensure_pacific_timezone();
 				} else {
 					update_option( 'cta_timezone', 'America/Los_Angeles', false );
+				}
+				if ( class_exists( 'CTA_Certificates' ) && method_exists( 'CTA_Certificates', 'refresh_all_certificates' ) ) {
+					CTA_Certificates::refresh_all_certificates();
+				}
+			}
+
+			// Re-heal Pacific + rewrite certificate HTML with hard-locked LA Issued stamps.
+			// (1.0.168 may have been marked installed before live files were updated.)
+			if ( version_compare( $installed, '1.0.169', '<' ) ) {
+				if ( function_exists( 'cta_lms_ensure_pacific_timezone' ) ) {
+					cta_lms_ensure_pacific_timezone();
+				} else {
+					update_option( 'cta_timezone', 'America/Los_Angeles', false );
+					update_option( 'timezone_string', 'America/Los_Angeles', false );
 				}
 				if ( class_exists( 'CTA_Certificates' ) && method_exists( 'CTA_Certificates', 'refresh_all_certificates' ) ) {
 					CTA_Certificates::refresh_all_certificates();

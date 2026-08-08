@@ -468,11 +468,13 @@ class CTA_Emails {
 			);
 		}
 		if ( '' === $completion_date && ! empty( $certificate->issued_at ) ) {
-			$completion_date = cta_lms_format_local_date(
-				$certificate->issued_at,
-				'F j, Y \a\t g:i A T',
-				cta_lms_get_timezone()
-			);
+			$completion_date = function_exists( 'cta_lms_format_certificate_issued_at' )
+				? cta_lms_format_certificate_issued_at( $certificate->issued_at )
+				: cta_lms_format_local_date(
+					$certificate->issued_at,
+					'F j, Y \a\t g:i A T',
+					new DateTimeZone( 'America/Los_Angeles' )
+				);
 		}
 
 		$subject = sprintf(

@@ -569,6 +569,14 @@ class CTA_Quiz {
 		if ( $timezone && ! $this->is_valid_timezone( $timezone ) ) {
 			$timezone = '';
 		}
+		// Never persist PKT / Asia/Karachi (or similar) — certificates must stay Pacific.
+		if (
+			$timezone
+			&& function_exists( 'cta_lms_is_non_cta_server_timezone' )
+			&& cta_lms_is_non_cta_server_timezone( $timezone )
+		) {
+			$timezone = '';
+		}
 
 		$user         = get_userdata( $user_id );
 		$student_name = function_exists( 'cta_lms_get_user_legal_name' )

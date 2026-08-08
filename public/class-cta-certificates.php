@@ -368,9 +368,10 @@ class CTA_Certificates {
 	/**
 	 * Format the certificate issue / completion datetime for print and email.
 	 *
-	 * Uses the stored issue instant only (never "now"). Always displays in the
-	 * CTA Pacific timezone (America/Los_Angeles → PST/PDT) — never the learner's
-	 * browser timezone (which produced PKT / Asia/Karachi labels on certificates).
+	 * Uses the stored issue instant only (never "now"). Always displays in
+	 * America/Los_Angeles (PST/PDT) via cta_lms_format_certificate_issued_at() —
+	 * never the learner browser zone, PHP date.timezone, or WP General timezone
+	 * (those produced PKT / Asia/Karachi labels on certificates).
 	 *
 	 * @param string      $issued_at   MySQL datetime from the certificate row.
 	 * @param object|null $evaluation  Evaluation row (optional; submitted_at fallback).
@@ -390,11 +391,25 @@ class CTA_Certificates {
 			return '';
 		}
 
-		return cta_lms_format_local_date(
-			$issue_source,
-			'F j, Y \a\t g:i A T',
-			cta_lms_get_timezone()
-		);
+		if ( function_exists( 'cta_lms_format_certificate_issued_at' ) ) {
+			return cta_lms_format_certificate_issued_at( $issue_source );
+		}
+
+		// Fallback if helpers failed to load — still force Los Angeles.
+		try {
+			$la     = new DateTimeZone( 'America/Los_Angeles' );
+			$parsed = function_exists( 'cta_lms_parse_datetime' )
+				? cta_lms_parse_datetime( $issue_source )
+				: new DateTimeImmutable( $issue_source, $la );
+			if ( ! $parsed ) {
+				$parsed = new DateTimeImmutable( 'now', $la );
+			}
+			$dt   = $parsed->setTimezone( $la );
+			$abbr = ( '1' === $dt->format( 'I' ) ) ? 'PDT' : 'PST';
+			return $dt->format( 'F j, Y' ) . ' at ' . $dt->format( 'g:i A' ) . ' ' . $abbr;
+		} catch ( Exception $e ) {
+			return '';
+		}
 	}
 
 	/**
