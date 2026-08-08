@@ -6647,15 +6647,27 @@ button.pagination__item:disabled {
   color: var(--color-navy);
 }
 
+.cta-plugin-wrapper .cta-flashcards__stage {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
 .cta-plugin-wrapper .cta-flashcards__card {
   display: flex;
   flex-direction: column;
   align-items: stretch;
   gap: var(--space-sm);
+  box-sizing: border-box;
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   min-height: 14rem;
   padding: var(--space-xl);
   text-align: left;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
   color: var(--color-navy);
   background: #fff;
   border: 2px solid rgba(15, 40, 71, 0.12);
@@ -6680,6 +6692,7 @@ button.pagination__item:disabled {
 .cta-plugin-wrapper .cta-flashcards__tag {
   display: inline-flex;
   align-self: flex-start;
+  box-sizing: border-box;
   max-width: 100%;
   padding: 0.25rem 0.6rem;
   font-size: var(--font-size-xs);
@@ -6687,6 +6700,8 @@ button.pagination__item:disabled {
   color: var(--color-primary);
   background: rgba(37, 99, 235, 0.08);
   border-radius: var(--radius-full);
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .cta-plugin-wrapper .cta-flashcards__label {
@@ -6698,11 +6713,19 @@ button.pagination__item:disabled {
 }
 
 .cta-plugin-wrapper .cta-flashcards__text {
-  flex: 1;
+  display: block;
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 100%;
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
   line-height: 1.45;
   color: var(--color-navy);
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
 }
 
 .cta-plugin-wrapper .cta-flashcards__hint {
