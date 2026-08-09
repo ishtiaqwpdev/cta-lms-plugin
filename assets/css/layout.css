@@ -6913,9 +6913,17 @@ button.pagination__item:disabled {
   line-height: 1.65;
 }
 
+.cta-plugin-wrapper .cta-exam-lesson__body .cta-lesson-table-wrap {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 0 1.25rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 .cta-plugin-wrapper .cta-exam-lesson__body .cta-lesson-table {
   width: 100%;
-  margin: 0 0 1.25rem;
+  margin: 0;
   border-collapse: collapse;
   font-size: var(--font-size-sm);
 }
@@ -6925,6 +6933,12 @@ button.pagination__item:disabled {
   padding: 0.55rem 0.65rem;
   border: 1px solid rgba(15, 40, 71, 0.14);
   vertical-align: top;
+  text-align: left;
+}
+
+.cta-plugin-wrapper .cta-exam-lesson__body .cta-lesson-table th {
+  font-weight: var(--font-weight-bold);
+  background: rgba(15, 40, 71, 0.05);
 }
 
 .cta-plugin-wrapper .cta-exam-lesson__body .cta-lesson-table tr:nth-child(even) td {
@@ -6969,8 +6983,12 @@ button.pagination__item:disabled {
   }
 
   .cta-plugin-wrapper .cta-exam-lesson__body .cta-lesson-table {
+    display: table;
+    width: 100%;
+  }
+
+  .cta-plugin-wrapper .cta-exam-lesson__body .cta-lesson-table-wrap {
     display: block;
     overflow-x: auto;
-    font-size: var(--font-size-sm);
   }
 }

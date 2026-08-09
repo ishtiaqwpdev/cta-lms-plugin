@@ -143,12 +143,24 @@ class CTA_Exam_Prep_Lessons {
 	 * @return string
 	 */
 	public static function sanitize_lesson_html( $html ) {
+		if ( function_exists( 'cta_lms_sanitize_utf8_text' ) ) {
+			$html = cta_lms_sanitize_utf8_text( (string) $html );
+		}
+
+		// Safety net for legacy glued banner labels already stored in HTML.
+		$html = preg_replace(
+			'/\b(MATERIAL|NOTICE|WELCOME|LOCKS|PROGRAM|IMPORTANT|REPAIR|CONTROL|SEQUENCE|REASONING|LAB)(?=[A-Z][a-z])/u',
+			'$1 ',
+			(string) $html
+		);
+
 		$allowed = array(
 			'article' => array(
 				'class'         => true,
 				'data-program'  => true,
 				'data-workbook' => true,
 			),
+			'div'     => array( 'class' => true ),
 			'h2'      => array( 'class' => true ),
 			'h3'      => array( 'class' => true ),
 			'h4'      => array( 'class' => true ),
