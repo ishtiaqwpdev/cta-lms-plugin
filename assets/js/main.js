@@ -2567,17 +2567,102 @@
       });
     });
 
-    if (!markBtn || markBtn.disabled || !markBtn.getAttribute("data-module-id")) {
-      return;
+    function handleModuleCompleteSuccess(response, moduleId, markButton) {
+      if (markButton) {
+        markButton.innerHTML = CTA_ICON_CHECK_CIRCLE + " Completed";
+        if ("disabled" in markButton) {
+          markButton.disabled = true;
+        }
+      }
+
+      var moduleItem = playerRoot
+        ? playerRoot.querySelector('.cta-module-list__item[data-module-id="' + moduleId + '"]')
+        : null;
+
+      if (moduleItem) {
+        moduleItem.classList.add("cta-module-list__item--complete");
+        moduleItem.classList.remove("cta-module-list__item--current");
+        var icon = moduleItem.querySelector(".cta-module-list__icon");
+        if (icon) {
+          icon.innerHTML = CTA_ICON_CHECK_CIRCLE;
+        }
+      }
+
+      if (response.data && response.data.next_module_url) {
+        window.location.href = response.data.next_module_url;
+        return;
+      }
+
+      if (response.data && response.data.quiz_unlocked) {
+        var lockedMsg = document.querySelector(".cta-quiz-locked-message");
+        var unlockedMsg = document.querySelector(".cta-quiz-unlocked-message");
+
+        if (lockedMsg) {
+          lockedMsg.hidden = true;
+        }
+        if (unlockedMsg) {
+          unlockedMsg.hidden = false;
+        }
+
+        var isExamPrepPlayer =
+          !!(response.data.is_exam_prep) ||
+          (playerRoot && playerRoot.getAttribute("data-exam-prep") === "1");
+
+        if (!isExamPrepPlayer) {
+          var notice = document.createElement("p");
+          notice.className = "course-player__notice course-player__notice--success";
+          notice.setAttribute("role", "status");
+          notice.textContent = "Course Complete! Take the quiz to earn your certificate.";
+          var actions = document.querySelector("[data-course-player-actions]");
+          if (actions && !document.querySelector(".course-player__notice--success")) {
+            actions.insertAdjacentElement("afterend", notice);
+          }
+        }
+      }
+
+      window.location.reload();
     }
 
-    markBtn.addEventListener("click", function () {
-      var courseId = markBtn.getAttribute("data-course-id");
-      var moduleId = markBtn.getAttribute("data-module-id");
-      var originalText = markBtn.textContent;
+    function setTriggerBusy(triggerEl, busy, originalText) {
+      if (!triggerEl) {
+        return;
+      }
 
-      markBtn.disabled = true;
-      markBtn.textContent = "Saving...";
+      if (busy) {
+        triggerEl.setAttribute("aria-busy", "true");
+        if ("disabled" in triggerEl) {
+          triggerEl.disabled = true;
+        } else {
+          triggerEl.setAttribute("aria-disabled", "true");
+          triggerEl.dataset.ctaOriginalText = originalText || triggerEl.textContent;
+        }
+        if (triggerEl.classList.contains("btn")) {
+          triggerEl.textContent = "Saving...";
+        }
+        return;
+      }
+
+      triggerEl.removeAttribute("aria-busy");
+      if ("disabled" in triggerEl) {
+        triggerEl.disabled = false;
+      } else {
+        triggerEl.removeAttribute("aria-disabled");
+      }
+      if (triggerEl.dataset.ctaOriginalText) {
+        triggerEl.textContent = triggerEl.dataset.ctaOriginalText;
+        delete triggerEl.dataset.ctaOriginalText;
+      } else if (originalText) {
+        triggerEl.textContent = originalText;
+      }
+    }
+
+    function submitModuleComplete(courseId, moduleId, triggerEl, redirectUrl) {
+      if (!courseId || !moduleId) {
+        return;
+      }
+
+      var originalText = triggerEl ? triggerEl.textContent : "";
+      setTriggerBusy(triggerEl, true, originalText);
 
       $.post(ctaAjax.ajaxUrl, {
         action: "cta_complete_module",
@@ -2592,73 +2677,46 @@
                 ? response.data.message
                 : "Unable to mark module complete."
             );
-            markBtn.disabled = false;
-            markBtn.textContent = originalText;
+            setTriggerBusy(triggerEl, false, originalText);
             return;
           }
 
-          markBtn.innerHTML = CTA_ICON_CHECK_CIRCLE + " Completed";
-
-          var moduleItem = playerRoot
-            ? playerRoot.querySelector('.cta-module-list__item[data-module-id="' + moduleId + '"]')
-            : null;
-
-          if (moduleItem) {
-            moduleItem.classList.add("cta-module-list__item--complete");
-            moduleItem.classList.remove("cta-module-list__item--current");
-            var icon = moduleItem.querySelector(".cta-module-list__icon");
-            if (icon) {
-              icon.innerHTML = CTA_ICON_CHECK_CIRCLE;
-            }
+          if (redirectUrl) {
+            response.data = response.data || {};
+            response.data.next_module_url = redirectUrl;
           }
 
-          if (response.data.quiz_unlocked) {
-            var lockedMsg = document.querySelector(".cta-quiz-locked-message");
-            var unlockedMsg = document.querySelector(".cta-quiz-unlocked-message");
-
-            if (lockedMsg) {
-              lockedMsg.hidden = true;
-            }
-            if (unlockedMsg) {
-              unlockedMsg.hidden = false;
-            }
-
-            var isExamPrepPlayer =
-              !!(response.data.is_exam_prep) ||
-              (playerRoot && playerRoot.getAttribute("data-exam-prep") === "1");
-
-            // Exam Prep assessments are open-access — never claim "all modules complete".
-            if (isExamPrepPlayer) {
-              if (response.data.next_module_url) {
-                setTimeout(function () {
-                  window.location.href = response.data.next_module_url;
-                }, 1000);
-              }
-              return;
-            }
-
-            var notice = document.createElement("p");
-            notice.className = "course-player__notice course-player__notice--success";
-            notice.setAttribute("role", "status");
-            notice.textContent = "Course Complete! Take the quiz to earn your certificate.";
-            var actions = document.querySelector("[data-course-player-actions]");
-            if (actions && !document.querySelector(".course-player__notice--success")) {
-              actions.insertAdjacentElement("afterend", notice);
-            }
-            return;
-          }
-
-          if (response.data.next_module_url) {
-            setTimeout(function () {
-              window.location.href = response.data.next_module_url;
-            }, 1000);
-          }
+          handleModuleCompleteSuccess(response, moduleId, triggerEl);
         })
         .fail(function () {
           window.alert("Something went wrong. Please try again.");
-          markBtn.disabled = false;
-          markBtn.textContent = originalText;
+          setTriggerBusy(triggerEl, false, originalText);
         });
+    }
+
+    document.querySelectorAll(".cta-next-module-link[data-cta-require-complete]").forEach(function (link) {
+      link.addEventListener("click", function (event) {
+        event.preventDefault();
+        submitModuleComplete(
+          link.getAttribute("data-course-id"),
+          link.getAttribute("data-module-id"),
+          link,
+          link.getAttribute("href")
+        );
+      });
+    });
+
+    if (!markBtn || markBtn.disabled || !markBtn.getAttribute("data-module-id")) {
+      return;
+    }
+
+    markBtn.addEventListener("click", function () {
+      submitModuleComplete(
+        markBtn.getAttribute("data-course-id"),
+        markBtn.getAttribute("data-module-id"),
+        markBtn,
+        null
+      );
     });
   }
 

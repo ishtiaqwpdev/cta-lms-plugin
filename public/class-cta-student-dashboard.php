@@ -383,7 +383,14 @@ class CTA_Student_Dashboard {
 		if ( class_exists( 'CTA_Law_Ethics_Exam_Sync' ) ) {
 			$law_ethics_course = CTA_Law_Ethics_Exam_Sync::find_course();
 			if ( $law_ethics_course && (int) $law_ethics_course->id === (int) $course_id ) {
-				CTA_Law_Ethics_Exam_Sync::ensure();
+				try {
+					CTA_Law_Ethics_Exam_Sync::ensure();
+				} catch ( Throwable $e ) {
+					if ( defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ) {
+						// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+						error_log( 'CTA Law Ethics exam ensure failed: ' . $e->getMessage() );
+					}
+				}
 			}
 		}
 
