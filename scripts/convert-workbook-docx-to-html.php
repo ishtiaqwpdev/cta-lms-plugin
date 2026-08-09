@@ -406,7 +406,21 @@ function cta_workbook_num_from_name( $name ) {
 }
 
 /**
- * Write a lesson HTML file.
+ * Normalize learner-facing organization branding in converted HTML.
+ *
+ * @param string $html HTML fragment.
+ * @return string
+ */
+function cta_normalize_org_branding( $html ) {
+	$correct = 'Clinical Training and Supervision Academy';
+	$html    = str_replace( 'Clinical Training &amp; Supervision Academy', $correct, $html );
+	$html    = str_replace( 'Clinical Training & Supervision Academy', $correct, $html );
+	$html    = str_replace( 'Clinical Training Academy', $correct, $html );
+
+	return $html;
+}
+
+/**
  *
  * @param string $out_path Output path.
  * @param string $program Program key.
@@ -416,6 +430,7 @@ function cta_workbook_num_from_name( $name ) {
  * @return void
  */
 function cta_write_lesson_file( $out_path, $program, $num, $html, $source_note = '' ) {
+	$html = cta_normalize_org_branding( $html );
 	$html = cta_wrap_lists( $html );
 	$label = $num > 0 ? ( 'workbook ' . (int) $num ) : 'start-here';
 	$wrapped = "<!-- CTA Exam Prep lesson: {$program} {$label} -->\n";

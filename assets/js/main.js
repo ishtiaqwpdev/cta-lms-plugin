@@ -1612,7 +1612,7 @@
           ".footer{margin-top:40px;font-size:12px;color:#666;text-align:center;}",
           "</style></head><body>",
           "<h1>Certificate of Completion</h1>",
-          "<p>Clinical Training &amp; Supervision Academy</p>",
+          "<p>Clinical Training and Supervision Academy</p>",
           "<p><strong>" + recipient + "</strong></p>",
           "<p>has successfully completed</p>",
           "<p><strong>" + course + "</strong></p>",
