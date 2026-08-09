@@ -146,8 +146,8 @@ class CTA_Quiz {
 
 		if ( ! $quiz || empty( $questions ) ) {
 			return $this->render_message_state(
-				__( 'Quiz Coming Soon', 'cta-lms' ),
-				__( 'The final quiz for this course has not been published yet. Please check back soon.', 'cta-lms' ),
+				__( 'Final Examination Coming Soon', 'cta-lms' ),
+				__( 'The final examination for this course has not been published yet. Please check back soon.', 'cta-lms' ),
 				$this->get_player_url( $course_id ),
 				__( 'Back to Course', 'cta-lms' )
 			);

@@ -185,7 +185,7 @@ $next_url = $next_module
 
 				<section class="course-player__quiz-section" aria-labelledby="course-quiz-title">
 					<h2 class="dashboard-section__title" id="course-quiz-title">
-						<?php echo ! empty( $is_exam_prep ) ? esc_html__( 'Assessments', 'cta-lms' ) : esc_html__( 'Course Quiz', 'cta-lms' ); ?>
+						<?php echo ! empty( $is_exam_prep ) ? esc_html__( 'Assessments', 'cta-lms' ) : esc_html__( 'Final Examination', 'cta-lms' ); ?>
 					</h2>
 					<?php if ( ! $quiz_available ) : ?>
 						<div class="cta-quiz-coming-soon">
@@ -193,7 +193,7 @@ $next_url = $next_module
 								<?php
 								echo ! empty( $is_exam_prep )
 									? esc_html__( 'Assessments coming soon. Practice / Form A / Form B have not been published yet — you can keep working through the modules in the meantime.', 'cta-lms' )
-									: esc_html__( 'Quiz coming soon. The final quiz for this course has not been published yet — you can keep working through the modules in the meantime.', 'cta-lms' );
+									: esc_html__( 'Final examination coming soon. The final examination for this course has not been published yet — you can keep working through the modules in the meantime.', 'cta-lms' );
 								?>
 							</p>
 						</div>
@@ -237,13 +237,13 @@ $next_url = $next_module
 							</div>
 						<?php else : ?>
 							<div class="cta-quiz-locked-message" <?php echo $quiz_unlocked ? 'hidden' : ''; ?>>
-								<p><?php echo esc_html__( 'Complete all modules to unlock the quiz', 'cta-lms' ); ?></p>
+								<p><?php echo esc_html__( 'Complete all instructional modules, including the Course Integration Capstone, to unlock the final examination.', 'cta-lms' ); ?></p>
 							</div>
 							<div class="cta-quiz-unlocked-message" <?php echo $quiz_unlocked ? '' : 'hidden'; ?>>
-								<p><?php echo esc_html__( 'All modules complete! Take the final quiz (70% to pass, unlimited attempts, no time limit) to earn your certificate.', 'cta-lms' ); ?></p>
+								<p><?php echo esc_html__( 'All modules complete! Take the final examination (70% to pass, unlimited attempts, no time limit) to continue to the course evaluation and certificate.', 'cta-lms' ); ?></p>
 								<?php if ( $quiz_page_id && $quiz_url && '#' !== $quiz_url ) : ?>
 									<a href="<?php echo esc_url( ! empty( $quiz_cards[0]['url'] ) ? $quiz_cards[0]['url'] : $quiz_url ); ?>" class="btn btn-primary cta-quiz-btn">
-										<?php echo esc_html__( 'Take Quiz', 'cta-lms' ); ?>
+										<?php echo esc_html__( 'Take Final Examination', 'cta-lms' ); ?>
 									</a>
 								<?php else : ?>
 									<p class="cta-empty-state"><?php echo esc_html__( 'Quiz page is not configured. Ask the site admin to assign the Quiz Page in CTA LMS Settings.', 'cta-lms' ); ?></p>
