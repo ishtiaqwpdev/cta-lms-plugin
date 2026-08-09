@@ -852,9 +852,52 @@
     }
   }
 
+  /**
+   * Course player workbook/module list: narrower on desktop, collapsible on tablet/mobile.
+   */
+  function initCoursePlayerNav(root) {
+    var playerLayout = root.querySelector("[data-cta-player-layout]");
+    var toggle = root.querySelector("[data-cta-player-nav-toggle]");
+    if (!playerLayout || !toggle) {
+      return;
+    }
+
+    var labelEl = toggle.querySelector("[data-cta-player-nav-label]");
+    var isExamPrep = root.getAttribute("data-exam-prep") === "1";
+    var labelHide = isExamPrep ? "Hide workbook list" : "Hide module list";
+    var labelShow = isExamPrep ? "Show workbook list" : "Show module list";
+    var mq = window.matchMedia("(max-width: 1100px)");
+
+    function setCollapsed(collapsed) {
+      playerLayout.classList.toggle("is-nav-collapsed", collapsed);
+      toggle.setAttribute("aria-expanded", collapsed ? "false" : "true");
+      if (labelEl) {
+        labelEl.textContent = collapsed ? labelShow : labelHide;
+      }
+    }
+
+    function applyDefaultForViewport() {
+      setCollapsed(mq.matches);
+    }
+
+    toggle.addEventListener("click", function () {
+      setCollapsed(!playerLayout.classList.contains("is-nav-collapsed"));
+    });
+
+    applyDefaultForViewport();
+
+    if (typeof mq.addEventListener === "function") {
+      mq.addEventListener("change", applyDefaultForViewport);
+    } else if (typeof mq.addListener === "function") {
+      mq.addListener(applyDefaultForViewport);
+    }
+  }
+
   function initCoursePlayer() {
     var layout = document.querySelector("[data-course-player]");
     if (!layout) return;
+
+    initCoursePlayerNav(layout);
 
     var video = layout.querySelector(".course-player__video");
     var markBtn = layout.querySelector("[data-mark-complete]");

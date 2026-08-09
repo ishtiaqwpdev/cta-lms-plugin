@@ -3951,9 +3951,47 @@ button.pagination__item:disabled {
 
 .cta-plugin-wrapper .course-player-layout {
   display: grid;
-  grid-template-columns: 1fr 320px;
-  gap: var(--space-xl);
+  grid-template-columns: minmax(0, 1fr) minmax(11.5rem, 14.5rem);
+  gap: var(--space-lg);
   align-items: start;
+  width: 100%;
+}
+
+.cta-plugin-wrapper .course-player-layout.is-nav-collapsed {
+  grid-template-columns: minmax(0, 1fr) 10.75rem;
+}
+
+.cta-plugin-wrapper .course-player__content {
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+}
+
+.cta-plugin-wrapper .course-player__nav-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  width: 100%;
+  margin-bottom: var(--space-sm);
+  padding: 0.55rem 0.75rem;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-navy);
+  background: var(--color-bg-light, #f4f8ff);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+
+.cta-plugin-wrapper .course-player__nav-toggle:hover,
+.cta-plugin-wrapper .course-player__nav-toggle:focus-visible {
+  border-color: var(--color-primary);
+  outline: none;
+}
+
+.cta-plugin-wrapper .course-player-layout.is-nav-collapsed .course-player__modules {
+  display: none;
 }
 
 .cta-plugin-wrapper .course-player__video-wrap {
@@ -4237,6 +4275,9 @@ button.pagination__item:disabled {
 .cta-plugin-wrapper .course-player__sidebar {
   position: sticky;
   top: var(--space-lg);
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
 }
 
 .cta-plugin-wrapper .course-player__modules {
@@ -4334,6 +4375,18 @@ button.pagination__item:disabled {
 
 .cta-plugin-wrapper .course-player__module-status--lock {
   color: var(--color-text-muted);
+}
+
+/* Tablet + large phones: full-width reading column; nav stacks above and collapses. */
+@media (max-width: 1100px) {
+  .cta-plugin-wrapper .course-player-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cta-plugin-wrapper .course-player__sidebar {
+    position: static;
+    order: -1;
+  }
 }
 
 @media (max-width: 992px) {
@@ -4489,11 +4542,16 @@ button.pagination__item:disabled {
   }
 
   .cta-plugin-wrapper .course-player-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .cta-plugin-wrapper .course-player__sidebar {
     position: static;
+    order: -1; /* Keep collapsible workbook/module nav above reading content */
+  }
+
+  .cta-plugin-wrapper .course-player-layout.is-nav-collapsed .course-player__modules {
+    display: none;
   }
 
   .cta-plugin-wrapper .course-player__nav-links {
@@ -6788,6 +6846,8 @@ button.pagination__item:disabled {
    -------------------------------------------------------------------------- */
 .cta-plugin-wrapper .cta-exam-lesson {
   margin: var(--space-lg) 0 var(--space-xl);
+  width: 100%;
+  max-width: 100%;
 }
 
 .cta-plugin-wrapper .cta-exam-lesson__download {
@@ -6806,35 +6866,40 @@ button.pagination__item:disabled {
 }
 
 .cta-plugin-wrapper .cta-exam-lesson__body {
-  max-width: 48rem;
+  width: 100%;
+  max-width: none;
   color: var(--color-navy);
-  line-height: 1.65;
+  font-size: 1.0625rem; /* ~17px — comfortable long-form reading */
+  line-height: 1.7;
 }
 
 .cta-plugin-wrapper .cta-exam-lesson__body .cta-lesson-h2 {
   margin: 1.75rem 0 0.75rem;
-  font-size: var(--font-size-lg);
+  font-size: clamp(1.25rem, 1.1rem + 0.4vw, 1.5rem);
   font-weight: var(--font-weight-bold);
   color: var(--color-navy);
+  line-height: 1.3;
 }
 
 .cta-plugin-wrapper .cta-exam-lesson__body .cta-lesson-h3 {
   margin: 1.4rem 0 0.55rem;
-  font-size: var(--font-size-md);
+  font-size: clamp(1.125rem, 1.05rem + 0.25vw, 1.25rem);
   font-weight: var(--font-weight-bold);
+  line-height: 1.35;
 }
 
 .cta-plugin-wrapper .cta-exam-lesson__body .cta-lesson-h4 {
   margin: 1.15rem 0 0.45rem;
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-bold);
   text-transform: uppercase;
   letter-spacing: 0.02em;
 }
 
 .cta-plugin-wrapper .cta-exam-lesson__body .cta-lesson-p {
-  margin: 0 0 0.85rem;
-  font-size: var(--font-size-sm);
+  margin: 0 0 1rem;
+  font-size: 1.0625rem;
+  line-height: 1.7;
 }
 
 .cta-plugin-wrapper .cta-exam-lesson__body .cta-lesson-ul {
@@ -6843,15 +6908,16 @@ button.pagination__item:disabled {
 }
 
 .cta-plugin-wrapper .cta-exam-lesson__body .cta-lesson-li {
-  margin: 0 0 0.4rem;
-  font-size: var(--font-size-sm);
+  margin: 0 0 0.5rem;
+  font-size: 1.0625rem;
+  line-height: 1.65;
 }
 
 .cta-plugin-wrapper .cta-exam-lesson__body .cta-lesson-table {
   width: 100%;
   margin: 0 0 1.25rem;
   border-collapse: collapse;
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
 }
 
 .cta-plugin-wrapper .cta-exam-lesson__body .cta-lesson-table td,
@@ -6893,8 +6959,18 @@ button.pagination__item:disabled {
     text-align: center;
   }
 
+  .cta-plugin-wrapper .cta-exam-lesson__body {
+    font-size: 1rem;
+  }
+
+  .cta-plugin-wrapper .cta-exam-lesson__body .cta-lesson-p,
+  .cta-plugin-wrapper .cta-exam-lesson__body .cta-lesson-li {
+    font-size: 1rem;
+  }
+
   .cta-plugin-wrapper .cta-exam-lesson__body .cta-lesson-table {
     display: block;
     overflow-x: auto;
+    font-size: var(--font-size-sm);
   }
 }

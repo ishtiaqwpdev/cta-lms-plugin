@@ -848,10 +848,18 @@ body.cta-lms-page:not(.admin-bar) {
 
   .cta-plugin-wrapper .course-player-layout {
     display: grid !important;
-    grid-template-columns: minmax(0, 1fr) 320px !important;
-    gap: var(--space-xl) !important;
+    grid-template-columns: minmax(0, 1fr) minmax(11.5rem, 14.5rem) !important;
+    gap: var(--space-lg) !important;
     align-items: start !important;
     width: 100% !important;
+  }
+
+  .cta-plugin-wrapper .course-player-layout.is-nav-collapsed {
+    grid-template-columns: minmax(0, 1fr) 10.75rem !important;
+  }
+
+  .cta-plugin-wrapper .course-player-layout.is-nav-collapsed .course-player__modules {
+    display: none !important;
   }
 
   .cta-plugin-wrapper .course-player__sidebar {
@@ -859,6 +867,7 @@ body.cta-lms-page:not(.admin-bar) {
     top: calc(var(--header-height, 80px) + 16px) !important;
     width: 100% !important;
     min-width: 0 !important;
+    max-width: 100% !important;
   }
 
   .cta-plugin-wrapper .cta-supervision-booking__layout {
@@ -997,6 +1006,31 @@ body.cta-lms-page:not(.admin-bar) {
   color: var(--color-text-muted) !important;
 }
 
+@media (min-width: 993px) and (max-width: 1100px) {
+  .cta-plugin-wrapper .course-player-layout {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: var(--space-lg) !important;
+  }
+
+  .cta-plugin-wrapper .course-player__sidebar {
+    position: static !important;
+    order: -1 !important;
+    top: auto !important;
+  }
+
+  .cta-plugin-wrapper .course-player-layout.is-nav-collapsed .course-player__modules {
+    display: none !important;
+  }
+
+  .cta-plugin-wrapper .cta-exam-lesson,
+  .cta-plugin-wrapper .cta-exam-lesson__body,
+  .cta-plugin-wrapper .course-player__content {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
 @media (max-width: 992px) {
   /* Block layout avoids fixed sidebar competing for grid/flex track space. */
   .cta-plugin-wrapper .dashboard-layout,
@@ -1075,6 +1109,21 @@ body.cta-lms-page:not(.admin-bar) {
     display: grid !important;
     grid-template-columns: minmax(0, 1fr) !important;
     gap: var(--space-lg) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .cta-plugin-wrapper .course-player__sidebar {
+    order: -1 !important;
+  }
+
+  .cta-plugin-wrapper .course-player-layout.is-nav-collapsed .course-player__modules {
+    display: none !important;
+  }
+
+  .cta-plugin-wrapper .cta-exam-lesson,
+  .cta-plugin-wrapper .cta-exam-lesson__body,
+  .cta-plugin-wrapper .course-player__content {
     width: 100% !important;
     max-width: 100% !important;
   }

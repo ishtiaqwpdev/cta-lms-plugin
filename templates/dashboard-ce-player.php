@@ -95,7 +95,7 @@ $next_url = $next_module
 			</p>
 		<?php endif; ?>
 
-		<div class="course-player-layout">
+		<div class="course-player-layout" data-cta-player-layout>
 			<div class="course-player__content">
 				<?php echo $video_markup; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in get_module_video_markup(). ?>
 
@@ -307,7 +307,22 @@ $next_url = $next_module
 			</div>
 
 			<aside class="course-player__sidebar" aria-label="<?php echo ! empty( $is_exam_prep ) ? esc_attr__( 'Program workbooks', 'cta-lms' ) : esc_attr__( 'Course modules', 'cta-lms' ); ?>">
-				<div class="course-player__modules">
+				<button
+					type="button"
+					class="course-player__nav-toggle"
+					data-cta-player-nav-toggle
+					aria-expanded="true"
+					aria-controls="cta-player-module-nav"
+				>
+					<span data-cta-player-nav-label>
+						<?php
+						echo ! empty( $is_exam_prep )
+							? esc_html__( 'Hide workbook list', 'cta-lms' )
+							: esc_html__( 'Hide module list', 'cta-lms' );
+						?>
+					</span>
+				</button>
+				<div class="course-player__modules" id="cta-player-module-nav">
 					<div class="course-player__modules-header">
 						<?php
 						echo esc_html(
