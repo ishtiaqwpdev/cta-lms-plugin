@@ -79,8 +79,8 @@ class CTA_Flashcards {
 			if ( ! is_array( $card ) ) {
 				continue;
 			}
-			$front = isset( $card['front'] ) ? trim( wp_strip_all_tags( (string) $card['front'] ) ) : '';
-			$back  = isset( $card['back'] ) ? trim( wp_strip_all_tags( (string) $card['back'] ) ) : '';
+			$front = isset( $card['front'] ) ? self::sanitize_card_text( (string) $card['front'] ) : '';
+			$back  = isset( $card['back'] ) ? self::sanitize_card_text( (string) $card['back'] ) : '';
 			if ( '' === $front || '' === $back ) {
 				continue;
 			}
@@ -103,6 +103,62 @@ class CTA_Flashcards {
 			'count' => count( $cards ),
 			'cards' => $cards,
 		);
+	}
+
+	/**
+	 * Sanitize flashcard face text while preserving intentional line breaks.
+	 *
+	 * Source decks often separate concepts with newlines. Do not collapse those
+	 * into a single wrapped paragraph — CSS uses white-space: pre-wrap.
+	 *
+	 * @param string $text Raw front/back text.
+	 * @return string
+	 */
+	private static function sanitize_card_text( $text ) {
+		$text = (string) $text;
+		if ( '' === $text ) {
+			return '';
+		}
+
+		// Repair mojibake / charset issues (separate from layout wrapping).
+		if ( function_exists( 'cta_lms_sanitize_utf8_text' ) ) {
+			$text = cta_lms_sanitize_utf8_text( $text );
+		}
+
+		// Normalize line endings and turn break tags into newlines before stripping.
+		$text = str_replace( array( "\r\n", "\r" ), "\n", $text );
+		$text = preg_replace( '/<\s*br\s*\/?\s*>/i', "\n", $text );
+		$text = preg_replace( '/<\/\s*p\s*>/i', "\n", $text );
+
+		// Keep newlines (second arg false). Strip tags only.
+		$text = wp_strip_all_tags( $text, false );
+
+		// Trim edges; collapse runs of spaces/tabs within a line, not across lines.
+		$lines = explode( "\n", $text );
+		$lines = array_map(
+			static function ( $line ) {
+				$line = preg_replace( '/[ \t]+/', ' ', (string) $line );
+				return trim( (string) $line );
+			},
+			$lines
+		);
+
+		// Preserve blank lines between paragraphs (max one empty line in a row).
+		$out   = array();
+		$blank = false;
+		foreach ( $lines as $line ) {
+			if ( '' === $line ) {
+				if ( ! $blank && ! empty( $out ) ) {
+					$out[] = '';
+					$blank = true;
+				}
+				continue;
+			}
+			$out[] = $line;
+			$blank = false;
+		}
+
+		return trim( implode( "\n", $out ) );
 	}
 }
 }

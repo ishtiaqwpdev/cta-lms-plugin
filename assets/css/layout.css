@@ -6663,11 +6663,16 @@ button.pagination__item:disabled {
   max-width: 100%;
   min-width: 0;
   min-height: 14rem;
+  max-height: min(70vh, 36rem);
   padding: var(--space-xl);
   text-align: left;
-  white-space: normal;
-  overflow-wrap: break-word;
+  /* Beat UA / theme button nowrap so long answers wrap inside the card. */
+  white-space: normal !important;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overflow-wrap: anywhere;
   word-wrap: break-word;
+  word-break: break-word;
   color: var(--color-navy);
   background: #fff;
   border: 2px solid rgba(15, 40, 71, 0.12);
@@ -6719,10 +6724,11 @@ button.pagination__item:disabled {
   max-width: 100%;
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
-  line-height: 1.45;
+  line-height: 1.55;
   color: var(--color-navy);
-  white-space: normal;
-  overflow-wrap: break-word;
+  /* Preserve source newlines (distinct concepts) while still wrapping long lines. */
+  white-space: pre-wrap !important;
+  overflow-wrap: anywhere;
   word-wrap: break-word;
   word-break: break-word;
   hyphens: auto;
@@ -6747,6 +6753,12 @@ button.pagination__item:disabled {
   cursor: not-allowed;
 }
 
+@media (max-width: 1024px) {
+  .cta-plugin-wrapper .cta-flashcards__card {
+    max-height: min(72vh, 34rem);
+  }
+}
+
 @media (max-width: 640px) {
   .cta-plugin-wrapper .cta-flashcards {
     padding: var(--space-md);
@@ -6754,7 +6766,12 @@ button.pagination__item:disabled {
 
   .cta-plugin-wrapper .cta-flashcards__card {
     min-height: 12rem;
+    max-height: min(75vh, 32rem);
     padding: var(--space-lg);
+  }
+
+  .cta-plugin-wrapper .cta-flashcards__text {
+    font-size: var(--font-size-sm);
   }
 
   .cta-plugin-wrapper .cta-flashcards__controls {

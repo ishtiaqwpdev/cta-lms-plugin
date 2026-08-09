@@ -1387,3 +1387,21 @@ footer .cta-auth-button-wrap,
     white-space: normal;
   }
 }
+
+/* Exam Prep interactive flashcards — isolate from Elementor/button chrome. */
+.cta-plugin-wrapper button.cta-flashcards__card,
+body.elementor-kit-15 .cta-plugin-wrapper button.cta-flashcards__card {
+  text-transform: none !important;
+  white-space: normal !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  max-width: 100% !important;
+}
+
+.cta-plugin-wrapper button.cta-flashcards__card .cta-flashcards__text,
+body.elementor-kit-15 .cta-plugin-wrapper button.cta-flashcards__card .cta-flashcards__text {
+  text-transform: none !important;
+  white-space: pre-wrap !important;
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+}
