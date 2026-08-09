@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.180' );
+	define( 'CTA_VERSION', '1.0.181' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -979,6 +979,11 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				}
 			}
 
+			// Unify Form A/B learner titles with downloadable Comprehensive Simulation naming.
+			if ( version_compare( $installed, '1.0.181', '<' ) && function_exists( 'cta_lms_unify_form_ab_simulation_titles' ) ) {
+				cta_lms_unify_form_ab_simulation_titles();
+			}
+
 			// Decouple supervision application pending from general account / CE access.
 			if ( version_compare( $installed, '1.0.90', '<' ) && class_exists( 'CTA_Associate_Access' ) ) {
 				$query = new WP_User_Query(
@@ -1003,6 +1008,82 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 		// Always stamp the version so a failed one-shot migration cannot boot-loop the site.
 		update_option( 'cta_lms_version', CTA_VERSION );
 		delete_transient( 'cta_lms_upgrading' );
+	}
+}
+
+if ( ! function_exists( 'cta_lms_unify_form_ab_simulation_titles' ) ) {
+	/**
+	 * Align online Form A/B quiz titles with downloadable Comprehensive Simulation labels.
+	 *
+	 * Package/README/DOCX wording uses "Comprehensive Simulation"; older LMS quiz
+	 * titles used "Full-Length Simulation (N Questions)".
+	 *
+	 * @return int Number of quiz rows updated.
+	 */
+	function cta_lms_unify_form_ab_simulation_titles() {
+		global $wpdb;
+
+		if ( ! isset( $wpdb ) || ! is_object( $wpdb ) ) {
+			return 0;
+		}
+
+		$courses_table = $wpdb->prefix . 'cta_courses';
+		$quizzes_table = $wpdb->prefix . 'cta_quizzes';
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$courses       = $wpdb->get_results( "SELECT id, slug FROM {$courses_table}" );
+		if ( empty( $courses ) ) {
+			return 0;
+		}
+
+		$title_map = array(
+			'lmft-california-clinical-exam-preparation' => array(
+				'form_a' => 'Form A — 150-Question Comprehensive Simulation',
+				'form_b' => 'Form B — 150-Question Comprehensive Simulation',
+			),
+			'lcsw-aswb-clinical-exam-preparation'       => array(
+				'form_a' => 'Form A — 122-Question Comprehensive Simulation',
+				'form_b' => 'Form B — 122-Question Comprehensive Simulation',
+			),
+			'lcsw-california-clinical-exam-preparation' => array(
+				'form_a' => 'Form A — 122-Question Comprehensive Simulation',
+				'form_b' => 'Form B — 122-Question Comprehensive Simulation',
+			),
+			'lpcc-ncmhce-exam-preparation'              => array(
+				'form_a' => 'Form A — 143-Question Comprehensive Simulation (Candidate Exam)',
+				'form_b' => 'Form B — 143-Question Comprehensive Simulation (Candidate Exam)',
+			),
+			'lpcc-california-clinical-exam-preparation' => array(
+				'form_a' => 'Form A — 143-Question Comprehensive Simulation (Candidate Exam)',
+				'form_b' => 'Form B — 143-Question Comprehensive Simulation (Candidate Exam)',
+			),
+		);
+
+		$updated = 0;
+		foreach ( $courses as $course ) {
+			$slug = sanitize_title( (string) ( $course->slug ?? '' ) );
+			if ( ! isset( $title_map[ $slug ] ) ) {
+				continue;
+			}
+			$course_id = absint( $course->id );
+			foreach ( $title_map[ $slug ] as $quiz_type => $title ) {
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$result = $wpdb->update(
+					$quizzes_table,
+					array( 'title' => $title ),
+					array(
+						'course_id' => $course_id,
+						'quiz_type' => $quiz_type,
+					),
+					array( '%s' ),
+					array( '%d', '%s' )
+				);
+				if ( false !== $result ) {
+					$updated += (int) $result;
+				}
+			}
+		}
+
+		return $updated;
 	}
 }
 

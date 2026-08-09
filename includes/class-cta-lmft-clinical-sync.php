@@ -406,14 +406,14 @@ class CTA_Lmft_Clinical_Sync {
 		$form_a = self::replace_form_quiz(
 			$course_id,
 			'form_a',
-			'Form A — Full-Length Simulation (150 Questions)',
+			'Form A — 150-Question Comprehensive Simulation',
 			20,
 			$questions_a
 		);
 		$form_b = self::replace_form_quiz(
 			$course_id,
 			'form_b',
-			'Form B — Full-Length Simulation (150 Questions)',
+			'Form B — 150-Question Comprehensive Simulation',
 			30,
 			$questions_b
 		);

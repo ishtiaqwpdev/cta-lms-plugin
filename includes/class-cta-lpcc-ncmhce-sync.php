@@ -462,7 +462,7 @@ class CTA_Lpcc_Ncmhce_Sync {
 		);
 		$defs[] = array(
 			'quiz_type' => 'form_a',
-			'title'     => 'Form A — Full-Length Simulation (143 Questions)',
+			'title'     => 'Form A — 143-Question Comprehensive Simulation (Candidate Exam)',
 			'sort'      => 20,
 			'time'      => 240,
 			'file'      => 'lpcc-ncmhce-form-a.php',
@@ -472,7 +472,7 @@ class CTA_Lpcc_Ncmhce_Sync {
 		);
 		$defs[] = array(
 			'quiz_type' => 'form_b',
-			'title'     => 'Form B — Full-Length Simulation (143 Questions)',
+			'title'     => 'Form B — 143-Question Comprehensive Simulation (Candidate Exam)',
 			'sort'      => 30,
 			'time'      => 240,
 			'file'      => 'lpcc-ncmhce-form-b.php',

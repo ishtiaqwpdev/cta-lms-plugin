@@ -563,8 +563,8 @@ if ( $course ) {
 					<label for="cta-quiz-type"><strong><?php esc_html_e( 'Assessment type', 'cta-lms' ); ?></strong></label><br>
 					<select id="cta-quiz-type">
 						<option value="practice" <?php selected( (string) ( $quiz->quiz_type ?? 'practice' ), 'practice' ); ?>><?php esc_html_e( 'Practice Assessment', 'cta-lms' ); ?></option>
-						<option value="form_a" <?php selected( (string) ( $quiz->quiz_type ?? '' ), 'form_a' ); ?>><?php esc_html_e( 'Form A — Full-Length Simulation', 'cta-lms' ); ?></option>
-						<option value="form_b" <?php selected( (string) ( $quiz->quiz_type ?? '' ), 'form_b' ); ?>><?php esc_html_e( 'Form B — Full-Length Simulation', 'cta-lms' ); ?></option>
+						<option value="form_a" <?php selected( (string) ( $quiz->quiz_type ?? '' ), 'form_a' ); ?>><?php esc_html_e( 'Form A — Comprehensive Simulation', 'cta-lms' ); ?></option>
+						<option value="form_b" <?php selected( (string) ( $quiz->quiz_type ?? '' ), 'form_b' ); ?>><?php esc_html_e( 'Form B — Comprehensive Simulation', 'cta-lms' ); ?></option>
 						<option value="custom" <?php selected( (string) ( $quiz->quiz_type ?? '' ), 'custom' ); ?>><?php esc_html_e( 'Custom', 'cta-lms' ); ?></option>
 					</select>
 				</p>

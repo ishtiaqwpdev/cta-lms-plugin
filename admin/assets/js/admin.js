@@ -550,10 +550,10 @@
       handleAddAssessment("practice", "Practice Assessment");
     });
     $("#cta-add-assessment-form-a").on("click", function () {
-      handleAddAssessment("form_a", "Form A — Full-Length Simulation");
+      handleAddAssessment("form_a", "Form A — Comprehensive Simulation");
     });
     $("#cta-add-assessment-form-b").on("click", function () {
-      handleAddAssessment("form_b", "Form B — Full-Length Simulation");
+      handleAddAssessment("form_b", "Form B — Comprehensive Simulation");
     });
     $("#cta-add-assessment-custom").on("click", function () {
       var title = window.prompt("Custom assessment title:", "Custom Assessment");

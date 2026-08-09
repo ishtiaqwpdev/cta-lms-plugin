@@ -1448,12 +1448,12 @@ class CTA_Database {
 			),
 			array(
 				'quiz_type'  => 'form_a',
-				'title'      => __( 'Form A — Full-Length Simulation', 'cta-lms' ),
+				'title'      => __( 'Form A — Comprehensive Simulation', 'cta-lms' ),
 				'sort_order' => 20,
 			),
 			array(
 				'quiz_type'  => 'form_b',
-				'title'      => __( 'Form B — Full-Length Simulation', 'cta-lms' ),
+				'title'      => __( 'Form B — Comprehensive Simulation', 'cta-lms' ),
 				'sort_order' => 30,
 			),
 		);

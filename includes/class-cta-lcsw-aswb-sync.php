@@ -404,14 +404,14 @@ class CTA_Lcsw_Aswb_Sync {
 		$form_a = self::replace_form_quiz(
 			$course_id,
 			'form_a',
-			'Form A — Full-Length Simulation (122 Questions)',
+			'Form A — 122-Question Comprehensive Simulation',
 			20,
 			$questions_a
 		);
 		$form_b = self::replace_form_quiz(
 			$course_id,
 			'form_b',
-			'Form B — Full-Length Simulation (122 Questions)',
+			'Form B — 122-Question Comprehensive Simulation',
 			30,
 			$questions_b
 		);
