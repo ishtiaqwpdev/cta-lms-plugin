@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.184' );
+	define( 'CTA_VERSION', '1.0.185' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -97,6 +97,7 @@ $cta_required_files = array(
 	'includes/class-cta-lcsw-law-ethics-sync.php',
 	'includes/class-cta-law-ethics-module-sync.php',
 	'includes/class-cta-law-ethics-evaluation-sync.php',
+	'includes/class-cta-law-ethics-exam-sync.php',
 	'includes/class-cta-database.php',
 	'includes/class-cta-syllabus-sync.php',
 	'includes/class-cta-course-catalog.php',
@@ -982,6 +983,16 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 			// Unify Form A/B learner titles with downloadable Comprehensive Simulation naming.
 			if ( version_compare( $installed, '1.0.181', '<' ) && function_exists( 'cta_lms_unify_form_ab_simulation_titles' ) ) {
 				cta_lms_unify_form_ab_simulation_titles();
+			}
+
+			// CTA-CE-001 Law & Ethics: official 25-question final exam (staging only; CEPA hold).
+			if ( version_compare( $installed, '1.0.185', '<' ) ) {
+				if ( class_exists( 'CTA_Law_Ethics_Exam_Sync' ) ) {
+					CTA_Law_Ethics_Exam_Sync::sync( true );
+				}
+				if ( class_exists( 'CTA_Course_Catalog' ) ) {
+					CTA_Course_Catalog::unpublish_all_ce_courses_pending_cepa();
+				}
 			}
 
 			// Decouple supervision application pending from general account / CE access.
