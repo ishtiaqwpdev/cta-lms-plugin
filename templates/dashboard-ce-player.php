@@ -286,7 +286,7 @@ $next_url = $next_module
 				?>
 				<?php if ( $show_player_course_info ) : ?>
 					<section class="course-section" aria-labelledby="cta-player-course-info-title">
-						<h2 class="dashboard-section__title" id="cta-player-course-info-title"><?php esc_html_e( 'Course Information', 'cta-lms' ); ?></h2>
+						<h2 class="dashboard-section__title" id="cta-player-course-info-title"><?php echo ! empty( $is_exam_prep ) ? esc_html__( 'Program Information', 'cta-lms' ) : esc_html__( 'Course Information', 'cta-lms' ); ?></h2>
 						<ul class="course-info-list">
 							<?php if ( ! empty( $syllabus_meta_player['course_code'] ) ) : ?>
 								<li><strong><?php esc_html_e( 'Course Code:', 'cta-lms' ); ?></strong> <?php echo esc_html( $syllabus_meta_player['course_code'] ); ?></li>

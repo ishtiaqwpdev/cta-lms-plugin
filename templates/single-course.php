@@ -173,7 +173,7 @@ $audio_combined_runtime = ! empty( $syllabus_meta['audio_combined_runtime'] )
 
 				<?php if ( $has_course_info ) : ?>
 					<section class="course-section" aria-labelledby="course-info-title">
-						<h2 class="course-section__title" id="course-info-title"><?php esc_html_e( 'Course Information', 'cta-lms' ); ?></h2>
+						<h2 class="course-section__title" id="course-info-title"><?php echo $is_exam_prep ? esc_html__( 'Program Information', 'cta-lms' ) : esc_html__( 'Course Information', 'cta-lms' ); ?></h2>
 						<ul class="course-info-list">
 							<?php if ( ! empty( $syllabus_meta['course_code'] ) ) : ?>
 								<li><strong><?php esc_html_e( 'Course Code:', 'cta-lms' ); ?></strong> <?php echo esc_html( $syllabus_meta['course_code'] ); ?></li>
