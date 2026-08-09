@@ -19,6 +19,68 @@ if ( ! class_exists( 'CTA_Course_Catalog' ) ) {
 
 class CTA_Course_Catalog {
 
+	const EXAM_PREP_LAUNCH_OPTION = 'cta_exam_prep_launch_approved';
+
+	/**
+	 * Whether written CTA approval has cleared all Exam Prep programs for public sale.
+	 *
+	 * @return bool
+	 */
+	public static function exam_prep_launch_approved() {
+		return (bool) get_option( self::EXAM_PREP_LAUNCH_OPTION, false );
+	}
+
+	/**
+	 * Published vs draft status for Exam Prep rows after launch approval.
+	 *
+	 * @return string
+	 */
+	public static function exam_prep_status_for_launch() {
+		return self::exam_prep_launch_approved() ? 'published' : 'draft';
+	}
+
+	/**
+	 * Strip launch-hold meta so checkout and catalog can proceed.
+	 *
+	 * @param array $meta Syllabus meta array.
+	 * @return array
+	 */
+	public static function apply_exam_prep_launch_meta( array $meta ) {
+		unset(
+			$meta['launch_pending_testing'],
+			$meta['development_draft'],
+			$meta['commercial_pending'],
+			$meta['pricing_status'],
+			$meta['content_pending']
+		);
+		$meta['launch_status']    = 'published';
+		$meta['exam_prep_launched'] = true;
+		return $meta;
+	}
+
+	/**
+	 * Normalize Exam Prep course row before insert/update (respects launch approval).
+	 *
+	 * @param array       $fields Course row fields (may include status).
+	 * @param array|string $meta  Syllabus meta array or JSON string.
+	 * @return array
+	 */
+	public static function prepare_exam_prep_course_row( array $fields, $meta ) {
+		if ( is_string( $meta ) ) {
+			$decoded = json_decode( $meta, true );
+			$meta    = is_array( $decoded ) ? $decoded : array();
+		}
+
+		if ( self::exam_prep_launch_approved() ) {
+			$fields['status']        = 'published';
+			$fields['syllabus_meta'] = wp_json_encode( self::apply_exam_prep_launch_meta( $meta ) );
+		} else {
+			$fields['syllabus_meta'] = wp_json_encode( $meta );
+		}
+
+		return $fields;
+	}
+
 	/**
 	 * Exact CE course commercial data (client-provided).
 	 *
@@ -116,105 +178,95 @@ class CTA_Course_Catalog {
 	public static function get_exam_prep_catalog() {
 		return array(
 			array(
-				'title'                  => 'CTA LMFT California Law & Ethics Exam Preparation Program',
-				'slug'                   => 'california-law-ethics-exam-preparation',
-				'price'                  => 199.00,
-				'access_period_months'   => 6,
-				'category'               => 'Exam Preparation',
-				'public_title'           => 'LMFT California Law & Ethics Exam Preparation',
-				'launch_pending_testing' => true,
-				'match_titles'           => array(
+				'title'                => 'CTA LMFT California Law & Ethics Exam Preparation Program',
+				'slug'                 => 'california-law-ethics-exam-preparation',
+				'price'                => 199.00,
+				'access_period_months' => 6,
+				'category'             => 'Exam Preparation',
+				'public_title'         => 'LMFT California Law & Ethics Exam Preparation',
+				'match_titles'         => array(
 					'CTA LMFT California Law & Ethics Exam Preparation Program',
 					'LMFT California Law & Ethics Exam Preparation',
 					'California Law & Ethics Exam Preparation',
 				),
 			),
 			array(
-				'title'                  => 'CTA LCSW California Law & Ethics Exam Preparation Program',
-				'slug'                   => 'lcsw-california-law-ethics-exam-preparation',
-				'price'                  => 199.00,
-				'access_period_months'   => 6,
-				'category'               => 'Exam Preparation',
-				'public_title'           => 'LCSW California Law & Ethics Exam Preparation',
-				'launch_pending_testing' => true,
-				'match_titles'           => array(
+				'title'                => 'CTA LCSW California Law & Ethics Exam Preparation Program',
+				'slug'                 => 'lcsw-california-law-ethics-exam-preparation',
+				'price'                => 199.00,
+				'access_period_months' => 6,
+				'category'             => 'Exam Preparation',
+				'public_title'         => 'LCSW California Law & Ethics Exam Preparation',
+				'match_titles'         => array(
 					'CTA LCSW California Law & Ethics Exam Preparation Program',
 					'LCSW California Law & Ethics Exam Preparation',
 				),
 			),
 			array(
-				'title'                  => 'CTA LPCC California Law & Ethics Exam Preparation Program',
-				'slug'                   => 'lpcc-california-law-ethics-exam-preparation',
-				'price'                  => 199.00,
-				'access_period_months'   => 6,
-				'category'               => 'Exam Preparation',
-				'public_title'           => 'LPCC California Law & Ethics Exam Preparation',
-				'launch_pending_testing' => true,
-				'match_titles'           => array(
+				'title'                => 'CTA LPCC California Law & Ethics Exam Preparation Program',
+				'slug'                 => 'lpcc-california-law-ethics-exam-preparation',
+				'price'                => 199.00,
+				'access_period_months' => 6,
+				'category'             => 'Exam Preparation',
+				'public_title'         => 'LPCC California Law & Ethics Exam Preparation',
+				'match_titles'         => array(
 					'CTA LPCC California Law & Ethics Exam Preparation Program',
 					'LPCC California Law & Ethics Exam Preparation',
 				),
 			),
 			array(
-				'title'                  => 'CTA LMFT AMFTRB National Exam Preparation Program',
-				'slug'                   => 'lmft-amftrb-national-exam-preparation',
-				'price'                  => 329.00,
-				'access_period_months'   => 6,
-				'category'               => 'Exam Preparation',
-				'public_title'           => 'LMFT AMFTRB National Exam Preparation',
-				'launch_pending_testing' => true,
-				'match_titles'           => array(
+				'title'                => 'CTA LMFT AMFTRB National Exam Preparation Program',
+				'slug'                 => 'lmft-amftrb-national-exam-preparation',
+				'price'                => 329.00,
+				'access_period_months' => 6,
+				'category'             => 'Exam Preparation',
+				'public_title'         => 'LMFT AMFTRB National Exam Preparation',
+				'match_titles'         => array(
 					'CTA LMFT AMFTRB National Exam Preparation Program',
 					'LMFT AMFTRB National Exam Preparation',
 				),
 			),
 			array(
-				'title'                  => 'CTA LMFT California Clinical Exam Preparation Program',
-				'slug'                   => 'lmft-california-clinical-exam-preparation',
-				// Commercial terms pending client confirmation — do not publish assumed LCSW-matching price.
-				'price'                  => 0.00,
-				'access_period_months'   => 6,
-				'category'               => 'Exam Preparation',
-				'commercial_pending'     => true,
-				'launch_pending_testing' => true,
-				'public_title'           => 'LMFT California Clinical Exam Preparation',
-				'match_titles'           => array(
+				'title'                => 'CTA LMFT California Clinical Exam Preparation Program',
+				'slug'                 => 'lmft-california-clinical-exam-preparation',
+				'price'                => 249.00,
+				'access_period_months' => 6,
+				'category'             => 'Exam Preparation',
+				'public_title'         => 'LMFT California Clinical Exam Preparation',
+				'match_titles'         => array(
 					'CTA LMFT California Clinical Exam Preparation Program',
 					'LMFT California Clinical Exam Preparation',
 				),
 			),
 			array(
-				'title'                  => 'CTA LCSW ASWB Clinical Exam Preparation Program',
-				'slug'                   => 'lcsw-aswb-clinical-exam-preparation',
-				'price'                  => 249.00,
-				'access_period_months'   => 6,
-				'category'               => 'Exam Preparation',
-				'launch_pending_testing' => true,
-				'public_title'           => 'LCSW ASWB Clinical Exam Preparation',
-				// Migrate legacy California Clinical label → public ASWB title/slug.
-				'match_slugs'            => array(
+				'title'                => 'CTA LCSW ASWB Clinical Exam Preparation Program',
+				'slug'                 => 'lcsw-aswb-clinical-exam-preparation',
+				'price'                => 249.00,
+				'access_period_months' => 6,
+				'category'             => 'Exam Preparation',
+				'public_title'         => 'LCSW ASWB Clinical Exam Preparation',
+				'match_slugs'          => array(
 					'lcsw-aswb-clinical-exam-preparation',
 					'lcsw-california-clinical-exam-preparation',
 				),
-				'match_titles'           => array(
+				'match_titles'         => array(
 					'CTA LCSW ASWB Clinical Exam Preparation Program',
 					'LCSW ASWB Clinical Exam Preparation',
 					'LCSW California Clinical Exam Preparation',
 				),
 			),
 			array(
-				'title'                  => 'CTA LPCC NCMHCE Exam Preparation Program',
-				'slug'                   => 'lpcc-ncmhce-exam-preparation',
-				'price'                  => 249.00,
-				'access_period_months'   => 6,
-				'category'               => 'Exam Preparation',
-				'launch_pending_testing' => true,
-				'public_title'           => 'LPCC NCMHCE Exam Preparation',
-				'match_slugs'            => array(
+				'title'                => 'CTA LPCC NCMHCE Exam Preparation Program',
+				'slug'                 => 'lpcc-ncmhce-exam-preparation',
+				'price'                => 249.00,
+				'access_period_months' => 6,
+				'category'             => 'Exam Preparation',
+				'public_title'         => 'LPCC NCMHCE Exam Preparation',
+				'match_slugs'          => array(
 					'lpcc-ncmhce-exam-preparation',
 					'lpcc-california-clinical-exam-preparation',
 				),
-				'match_titles'           => array(
+				'match_titles'         => array(
 					'CTA LPCC NCMHCE Exam Preparation Program',
 					'LPCC NCMHCE Exam Preparation',
 					'LPCC California Clinical Exam Preparation',
@@ -694,17 +746,21 @@ class CTA_Course_Catalog {
 			$formats = array( '%s', '%s', '%f', '%s', '%d', '%f', '%s', '%d', '%d' );
 
 			$force_draft = false;
+			$launch_ok   = self::exam_prep_launch_approved();
 			// Pending commercial confirmation: keep draft; do not publish a live price.
-			if ( ! empty( $entry['commercial_pending'] ) ) {
+			if ( ! $launch_ok && ! empty( $entry['commercial_pending'] ) ) {
 				$data['price'] = 0.0;
 				$force_draft   = true;
 			}
 			// Launch testing incomplete: keep draft (configured price preserved for go-live).
-			if ( ! empty( $entry['launch_pending_testing'] ) ) {
+			if ( ! $launch_ok && ! empty( $entry['launch_pending_testing'] ) ) {
 				$force_draft = true;
 			}
 			if ( $force_draft ) {
 				$data['status'] = 'draft';
+				$formats[]      = '%s';
+			} elseif ( $launch_ok ) {
+				$data['status'] = 'published';
 				$formats[]      = '%s';
 			}
 
@@ -724,7 +780,8 @@ class CTA_Course_Catalog {
 					if ( ! empty( $entry['public_title'] )
 						|| ! empty( $entry['content_pending'] )
 						|| ! empty( $entry['launch_pending_testing'] )
-						|| ! empty( $entry['commercial_pending'] ) ) {
+						|| ! empty( $entry['commercial_pending'] )
+						|| $launch_ok ) {
 						$meta = array();
 						if ( ! empty( $course->syllabus_meta ) ) {
 							$decoded = json_decode( (string) $course->syllabus_meta, true );
@@ -734,19 +791,23 @@ class CTA_Course_Catalog {
 						if ( ! empty( $entry['public_title'] ) ) {
 							$meta['public_title'] = sanitize_text_field( (string) $entry['public_title'] );
 						}
-						if ( ! empty( $entry['content_pending'] ) || ! empty( $entry['launch_pending_testing'] ) ) {
-							$meta['development_draft'] = true;
-						}
-						if ( ! empty( $entry['launch_pending_testing'] ) ) {
-							$meta['launch_pending_testing'] = true;
-							$meta['launch_status']          = 'draft_pending_testing';
-						}
-						if ( ! empty( $entry['content_pending'] ) ) {
-							$meta['content_pending'] = true;
-						}
-						if ( ! empty( $entry['commercial_pending'] ) ) {
-							$meta['commercial_pending'] = true;
-							$meta['pricing_status']    = 'pending_client_confirmation';
+						if ( $launch_ok ) {
+							$meta = self::apply_exam_prep_launch_meta( $meta );
+						} else {
+							if ( ! empty( $entry['content_pending'] ) || ! empty( $entry['launch_pending_testing'] ) ) {
+								$meta['development_draft'] = true;
+							}
+							if ( ! empty( $entry['launch_pending_testing'] ) ) {
+								$meta['launch_pending_testing'] = true;
+								$meta['launch_status']          = 'draft_pending_testing';
+							}
+							if ( ! empty( $entry['content_pending'] ) ) {
+								$meta['content_pending'] = true;
+							}
+							if ( ! empty( $entry['commercial_pending'] ) ) {
+								$meta['commercial_pending'] = true;
+								$meta['pricing_status']    = 'pending_client_confirmation';
+							}
 						}
 						$row_data['syllabus_meta'] = wp_json_encode( $meta );
 						$row_formats[]             = '%s';
@@ -930,6 +991,16 @@ class CTA_Course_Catalog {
 	 * @return array{updated:array<int,array{id:int,title:string,previous:string}>,already_draft:array<int,array{id:int,title:string}>,ce_untouched:int}
 	 */
 	public static function unpublish_all_exam_prep_pending_launch() {
+		if ( self::exam_prep_launch_approved() ) {
+			return array(
+				'skipped'       => true,
+				'reason'        => 'exam_prep_launch_approved',
+				'updated'       => array(),
+				'already_draft' => array(),
+				'ce_untouched'  => 0,
+			);
+		}
+
 		global $wpdb;
 
 		$table  = $wpdb->prefix . 'cta_courses';
@@ -997,6 +1068,89 @@ class CTA_Course_Catalog {
 
 		update_option( 'cta_exam_prep_forced_draft_launch_gate', wp_json_encode( $report ), false );
 		update_option( 'cta_exam_prep_publish_confirm_required', 1, false );
+
+		return $report;
+	}
+
+	/**
+	 * Publish every Exam Preparation program for public catalog and checkout.
+	 *
+	 * Clears launch-hold meta, restores approved pricing, and records written launch approval
+	 * so future migrations do not re-draft Exam Prep rows. CE courses are untouched.
+	 *
+	 * @return array{published:array<int,array{id:int,title:string,previous:string}>,already_published:array<int,array{id:int,title:string}>,ce_untouched:int,pricing:array}
+	 */
+	public static function publish_all_exam_prep_programs() {
+		update_option( self::EXAM_PREP_LAUNCH_OPTION, 1, false );
+		update_option( 'cta_exam_prep_launch_approved_at', current_time( 'mysql' ), false );
+		delete_option( 'cta_exam_prep_publish_confirm_required' );
+
+		$pricing = self::restore_exam_prep_pricing();
+
+		global $wpdb;
+
+		$table  = $wpdb->prefix . 'cta_courses';
+		$report = array(
+			'published'          => array(),
+			'already_published'  => array(),
+			'ce_untouched'       => 0,
+			'pricing'            => $pricing,
+			'launched_at'        => current_time( 'mysql' ),
+		);
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$rows = $wpdb->get_results( "SELECT id, title, status, product_type, syllabus_meta FROM {$table} ORDER BY id ASC" );
+
+		foreach ( (array) $rows as $row ) {
+			$is_exam = class_exists( 'CTA_Exam_Access' )
+				? CTA_Exam_Access::is_exam_prep( $row )
+				: ( 'exam_prep' === (string) $row->product_type );
+
+			if ( ! $is_exam ) {
+				++$report['ce_untouched'];
+				continue;
+			}
+
+			$title  = (string) $row->title;
+			$status = (string) $row->status;
+			$meta   = array();
+			if ( ! empty( $row->syllabus_meta ) ) {
+				$decoded = json_decode( (string) $row->syllabus_meta, true );
+				$meta    = is_array( $decoded ) ? $decoded : array();
+			}
+			$meta = self::apply_exam_prep_launch_meta( $meta );
+
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$ok = $wpdb->update(
+				$table,
+				array(
+					'status'        => 'published',
+					'syllabus_meta' => wp_json_encode( $meta ),
+				),
+				array( 'id' => (int) $row->id ),
+				array( '%s', '%s' ),
+				array( '%d' )
+			);
+
+			if ( false === $ok ) {
+				continue;
+			}
+
+			if ( 'published' === $status ) {
+				$report['already_published'][] = array(
+					'id'    => (int) $row->id,
+					'title' => $title,
+				);
+			} else {
+				$report['published'][] = array(
+					'id'       => (int) $row->id,
+					'title'    => $title,
+					'previous' => $status,
+				);
+			}
+		}
+
+		update_option( 'cta_exam_prep_launch_report', wp_json_encode( $report ), false );
 
 		return $report;
 	}

@@ -74,7 +74,7 @@ class CTA_Lcsw_Aswb_Sync {
 
 		$description = self::get_program_description_html();
 		$objectives  = wp_json_encode( self::get_learning_objectives() );
-		$meta        = wp_json_encode( self::get_syllabus_meta() );
+		$meta_array  = self::get_syllabus_meta();
 
 		$fields = array(
 			'title'                => self::TITLE,
@@ -84,14 +84,15 @@ class CTA_Lcsw_Aswb_Sync {
 			'price'                => (float) self::PRICE,
 			'category'             => 'Exam Preparation',
 			'learning_objectives'  => $objectives,
-			'syllabus_meta'        => $meta,
-			// Hard gate: remain draft until learner testing + written CTA launch approval.
 			'status'               => 'draft',
 			'product_type'         => 'exam_prep',
 			'access_period_months' => (int) self::ACCESS_MONTHS,
 			'awards_ce_hours'      => 0,
 			'has_ce_certificate'   => 0,
 		);
+		$fields = class_exists( 'CTA_Course_Catalog' )
+			? CTA_Course_Catalog::prepare_exam_prep_course_row( $fields, $meta_array )
+			: array_merge( $fields, array( 'syllabus_meta' => wp_json_encode( $meta_array ) ) );
 
 		$formats = array( '%s', '%s', '%s', '%f', '%f', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%d' );
 

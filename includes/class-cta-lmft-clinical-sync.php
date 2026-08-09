@@ -25,10 +25,10 @@ class CTA_Lmft_Clinical_Sync {
 	const PUBLIC_TITLE             = 'LMFT California Clinical Exam Preparation';
 	const LEGACY_TITLE             = 'LMFT California Clinical Exam Preparation';
 	const MATERIALS_REL            = 'assets/course-materials/lmft-clinical/';
-	const PRICE_PENDING            = true;
+	const PRICE_PENDING            = false;
 	const SUGGESTED_PRICE          = 249.00;
 	const SUGGESTED_ACCESS_MONTHS  = 6;
-	const LIVE_PRICE               = 0.00;
+	const LIVE_PRICE               = 249.00;
 	const ACCESS_MONTHS_DB         = 6;
 
 	/**
@@ -78,7 +78,7 @@ class CTA_Lmft_Clinical_Sync {
 
 		$description = self::get_program_description_html();
 		$objectives  = wp_json_encode( self::get_learning_objectives() );
-		$meta        = wp_json_encode( self::get_syllabus_meta() );
+		$meta_array  = self::get_syllabus_meta();
 
 		$fields = array(
 			'title'                => self::TITLE,
@@ -88,13 +88,15 @@ class CTA_Lmft_Clinical_Sync {
 			'price'                => (float) self::LIVE_PRICE,
 			'category'             => 'Exam Preparation',
 			'learning_objectives'  => $objectives,
-			'syllabus_meta'        => $meta,
 			'status'               => 'draft',
 			'product_type'         => 'exam_prep',
 			'access_period_months' => (int) self::ACCESS_MONTHS_DB,
 			'awards_ce_hours'      => 0,
 			'has_ce_certificate'   => 0,
 		);
+		$fields = class_exists( 'CTA_Course_Catalog' )
+			? CTA_Course_Catalog::prepare_exam_prep_course_row( $fields, $meta_array )
+			: array_merge( $fields, array( 'syllabus_meta' => wp_json_encode( $meta_array ) ) );
 
 		$formats = array( '%s', '%s', '%s', '%f', '%f', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%d' );
 

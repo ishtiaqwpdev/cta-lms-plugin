@@ -77,7 +77,7 @@ class CTA_Lcsw_Law_Ethics_Sync {
 
 		$description = self::get_program_description_html();
 		$objectives  = wp_json_encode( self::get_learning_objectives() );
-		$meta        = wp_json_encode( self::get_syllabus_meta() );
+		$meta_array  = self::get_syllabus_meta();
 
 		$fields = array(
 			'title'                => self::TITLE,
@@ -87,13 +87,15 @@ class CTA_Lcsw_Law_Ethics_Sync {
 			'price'                => (float) self::PRICE,
 			'category'             => 'Exam Preparation',
 			'learning_objectives'  => $objectives,
-			'syllabus_meta'        => $meta,
 			'status'               => 'draft',
 			'product_type'         => 'exam_prep',
 			'access_period_months' => (int) self::ACCESS_MONTHS,
 			'awards_ce_hours'      => 0,
 			'has_ce_certificate'   => 0,
 		);
+		$fields = class_exists( 'CTA_Course_Catalog' )
+			? CTA_Course_Catalog::prepare_exam_prep_course_row( $fields, $meta_array )
+			: array_merge( $fields, array( 'syllabus_meta' => wp_json_encode( $meta_array ) ) );
 
 		$formats = array( '%s', '%s', '%s', '%f', '%f', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%d' );
 
@@ -618,16 +620,18 @@ class CTA_Lcsw_Law_Ethics_Sync {
 			error_log( 'CTA LCSW Law & Ethics sync failed: ' . (string) ( $assessments['message'] ?? 'unknown' ) );
 		}
 
-		// Always keep Draft after sync attempts.
-		global $wpdb;
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-		$wpdb->update(
-			$wpdb->prefix . 'cta_courses',
-			array( 'status' => 'draft' ),
-			array( 'id' => $course_id ),
-			array( '%s' ),
-			array( '%d' )
-		);
+		// Keep Draft after sync unless Exam Prep launch has been approved.
+		if ( ! class_exists( 'CTA_Course_Catalog' ) || ! CTA_Course_Catalog::exam_prep_launch_approved() ) {
+			global $wpdb;
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$wpdb->update(
+				$wpdb->prefix . 'cta_courses',
+				array( 'status' => 'draft' ),
+				array( 'id' => $course_id ),
+				array( '%s' ),
+				array( '%d' )
+			);
+		}
 
 		return array(
 			'ok'        => $ok,
