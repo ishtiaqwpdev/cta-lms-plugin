@@ -138,7 +138,7 @@ $next_url = $next_module
 							<?php echo $exam_lesson['html']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitized via CTA_Exam_Prep_Lessons::sanitize_lesson_html(). ?>
 						</div>
 
-						<div class="cta-exam-lesson__nav">
+						<div class="cta-exam-lesson__nav" data-cta-workbook-nav>
 							<?php if ( $prev_url ) : ?>
 								<a href="<?php echo esc_url( $prev_url ); ?>" class="btn btn-outline">&larr; <?php echo esc_html__( 'Previous Workbook', 'cta-lms' ); ?></a>
 							<?php else : ?>
@@ -173,14 +173,31 @@ $next_url = $next_module
 						</button>
 					<?php endif; ?>
 
-					<div class="course-player__nav-links">
-						<?php if ( $prev_url ) : ?>
-							<a href="<?php echo esc_url( $prev_url ); ?>" class="btn btn-outline course-player__action-btn">&larr; <?php echo esc_html__( 'Previous Module', 'cta-lms' ); ?></a>
-						<?php endif; ?>
-						<?php if ( $next_url ) : ?>
-							<a href="<?php echo esc_url( $next_url ); ?>" class="btn btn-outline course-player__action-btn cta-next-module-link"><?php echo esc_html__( 'Next Module', 'cta-lms' ); ?> &rarr;</a>
-						<?php endif; ?>
-					</div>
+					<?php
+					/*
+					 * Exam Prep: show Previous/Next Workbook once only.
+					 * When online lesson HTML is present, nav lives in .cta-exam-lesson__nav above.
+					 * When missing, show Workbook-labeled links here. Never show "Module" labels on EP.
+					 * CE courses keep Previous/Next Module in this action row.
+					 */
+					$show_player_nav_links = empty( $is_exam_prep ) || empty( $exam_lesson['html'] );
+					$nav_prev_label        = ! empty( $is_exam_prep )
+						? __( 'Previous Workbook', 'cta-lms' )
+						: __( 'Previous Module', 'cta-lms' );
+					$nav_next_label        = ! empty( $is_exam_prep )
+						? __( 'Next Workbook', 'cta-lms' )
+						: __( 'Next Module', 'cta-lms' );
+					?>
+					<?php if ( $show_player_nav_links ) : ?>
+						<div class="course-player__nav-links" data-cta-workbook-nav>
+							<?php if ( $prev_url ) : ?>
+								<a href="<?php echo esc_url( $prev_url ); ?>" class="btn btn-outline course-player__action-btn">&larr; <?php echo esc_html( $nav_prev_label ); ?></a>
+							<?php endif; ?>
+							<?php if ( $next_url ) : ?>
+								<a href="<?php echo esc_url( $next_url ); ?>" class="btn btn-outline course-player__action-btn cta-next-module-link"><?php echo esc_html( $nav_next_label ); ?> &rarr;</a>
+							<?php endif; ?>
+						</div>
+					<?php endif; ?>
 				</div>
 
 				<section class="course-player__quiz-section" aria-labelledby="course-quiz-title">
