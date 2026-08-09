@@ -38,7 +38,12 @@ $prev_url = $prev_module
 	)
 	: '';
 
-$next_url = $next_module
+$next_accessible = true;
+if ( empty( $is_exam_prep ) && $next_module ) {
+	$next_accessible = $dashboard->is_module_accessible( $modules, $completed_ids, (int) $next_module->id, $course );
+}
+
+$next_url = ( $next_module && $next_accessible )
 	? add_query_arg(
 		array(
 			'course_id' => (int) $course->id,
@@ -195,6 +200,10 @@ $next_url = $next_module
 							<?php endif; ?>
 							<?php if ( $next_url ) : ?>
 								<a href="<?php echo esc_url( $next_url ); ?>" class="btn btn-outline course-player__action-btn cta-next-module-link"><?php echo esc_html( $nav_next_label ); ?> &rarr;</a>
+							<?php elseif ( $next_module && empty( $is_exam_prep ) && ! $next_accessible ) : ?>
+								<span class="btn btn-outline course-player__action-btn" aria-disabled="true" title="<?php echo esc_attr__( 'Mark this module complete to continue', 'cta-lms' ); ?>">
+									<?php echo esc_html( $nav_next_label ); ?> &rarr;
+								</span>
 							<?php endif; ?>
 						</div>
 					<?php endif; ?>

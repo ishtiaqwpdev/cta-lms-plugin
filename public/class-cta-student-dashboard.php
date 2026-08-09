@@ -379,6 +379,14 @@ class CTA_Student_Dashboard {
 		$quiz_url       = $this->get_quiz_url( $course_id );
 		$quiz_page_id   = absint( get_option( 'cta_quiz_page_id', 0 ) );
 
+		// Self-heal CTA-CE-001 final exam when staging/live missed the 1.0.185 upgrade seed.
+		if ( class_exists( 'CTA_Law_Ethics_Exam_Sync' ) ) {
+			$law_ethics_course = CTA_Law_Ethics_Exam_Sync::find_course();
+			if ( $law_ethics_course && (int) $law_ethics_course->id === (int) $course_id ) {
+				CTA_Law_Ethics_Exam_Sync::ensure();
+			}
+		}
+
 		// Exam Prep can have multiple assessments; CE still uses the primary quiz.
 		$course_quizzes = CTA_Database::get_quizzes_by_course( $course_id, true );
 		$quiz_cards     = array();
@@ -528,7 +536,9 @@ class CTA_Student_Dashboard {
 			: '';
 
 		$is_exam_prep = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course );
-		$quiz_unlocked = ( $progress >= 100 );
+		$quiz_unlocked = class_exists( 'CTA_CE_Completion' )
+			? CTA_CE_Completion::modules_complete( $user_id, $course_id, null )
+			: ( $progress >= 100 );
 		if ( $is_exam_prep && class_exists( 'CTA_Exam_Access' ) && ! CTA_Exam_Access::uses_assessment_gates( $course ) ) {
 			$quiz_unlocked = true;
 		}

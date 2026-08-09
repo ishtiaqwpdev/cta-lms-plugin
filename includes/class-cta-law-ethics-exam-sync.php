@@ -94,6 +94,41 @@ class CTA_Law_Ethics_Exam_Sync {
 	}
 
 	/**
+	 * Ensure the final exam exists with a full question bank (self-heal after deploy).
+	 *
+	 * @return array{ok:bool,course_id:int,quiz_id:int,questions:int,message:string}
+	 */
+	public static function ensure() {
+		$course = self::find_course();
+		if ( ! $course || ! class_exists( 'CTA_Database' ) ) {
+			return array(
+				'ok'        => false,
+				'course_id' => 0,
+				'quiz_id'   => 0,
+				'questions' => 0,
+				'message'   => 'law_ethics_course_not_found',
+			);
+		}
+
+		$course_id = (int) $course->id;
+		$quizzes   = CTA_Database::get_quizzes_by_course( $course_id, true );
+		foreach ( (array) $quizzes as $qrow ) {
+			$questions = CTA_Database::get_quiz_questions( (int) $qrow->id );
+			if ( count( $questions ) >= 25 ) {
+				return array(
+					'ok'        => true,
+					'course_id' => $course_id,
+					'quiz_id'   => (int) $qrow->id,
+					'questions' => count( $questions ),
+					'message'   => 'already_present',
+				);
+			}
+		}
+
+		return self::sync( true );
+	}
+
+	/**
 	 * Seed/replace Law & Ethics final exam. Does not publish the CE course.
 	 *
 	 * @param bool $force Re-run even if already seeded at this version.

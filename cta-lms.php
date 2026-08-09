@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.185' );
+	define( 'CTA_VERSION', '1.0.186' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -993,6 +993,11 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				if ( class_exists( 'CTA_Course_Catalog' ) ) {
 					CTA_Course_Catalog::unpublish_all_ce_courses_pending_cepa();
 				}
+			}
+
+			// Re-run Law & Ethics exam seed if 1.0.185 upgrade ran before the course/quiz existed.
+			if ( version_compare( $installed, '1.0.186', '<' ) && class_exists( 'CTA_Law_Ethics_Exam_Sync' ) ) {
+				CTA_Law_Ethics_Exam_Sync::ensure();
 			}
 
 			// Decouple supervision application pending from general account / CE access.
