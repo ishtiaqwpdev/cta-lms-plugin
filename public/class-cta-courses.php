@@ -290,6 +290,41 @@ class CTA_Courses {
 	}
 
 	/**
+	 * Whether a course may render on the [cta_single_course] page.
+	 *
+	 * Mirrors Exam Prep catalog rules: published rows always viewable; draft
+	 * exam_prep rows viewable when they are canonical catalog programs or
+	 * commercial-pending; site admins may preview any course row.
+	 *
+	 * @param object|null $course Course row.
+	 * @return bool
+	 */
+	public function course_is_viewable_on_single_page( $course ) {
+		if ( ! $course ) {
+			return false;
+		}
+
+		if ( 'published' === (string) ( $course->status ?? '' ) ) {
+			return true;
+		}
+
+		if ( current_user_can( 'manage_options' ) ) {
+			return true;
+		}
+
+		if ( ! class_exists( 'CTA_Exam_Access' ) || ! CTA_Exam_Access::is_exam_prep( $course ) ) {
+			return false;
+		}
+
+		$slug          = sanitize_title( (string) ( $course->slug ?? '' ) );
+		$canonical     = $this->get_canonical_exam_prep_slugs();
+		$is_canonical  = $slug && in_array( $slug, $canonical, true );
+		$is_commercial = CTA_Exam_Access::commercial_terms_pending( $course );
+
+		return $is_canonical || $is_commercial;
+	}
+
+	/**
 	 * Render single course detail shortcode.
 	 *
 	 * @param array $atts Shortcode attributes.
@@ -305,7 +340,7 @@ class CTA_Courses {
 
 		$course = CTA_Database::get_course( $course_id );
 
-		if ( ! $course || 'published' !== $course->status ) {
+		if ( ! $this->course_is_viewable_on_single_page( $course ) ) {
 			return '<div class="cta-empty-state"><p>' . esc_html__( 'Course not found.', 'cta-lms' ) . '</p></div>';
 		}
 
