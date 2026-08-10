@@ -24,6 +24,10 @@ $access_counts = isset( $access_counts ) ? $access_counts : array();
 			<a class="page-title-action" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=cta_sync_syllabus' ), 'cta_sync_syllabus' ) ); ?>">
 				<?php esc_html_e( 'Restore Prices + Sync Syllabus', 'cta-lms' ); ?>
 			</a>
+		<?php else : ?>
+			<a class="page-title-action" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=cta_publish_all_exam_prep' ), 'cta_publish_all_exam_prep' ) ); ?>">
+				<?php esc_html_e( 'Publish All Exam Prep', 'cta-lms' ); ?>
+			</a>
 		<?php endif; ?>
 	</div>
 
@@ -35,10 +39,10 @@ $access_counts = isset( $access_counts ) ? $access_counts : array();
 			</p>
 		</div>
 	<?php else : ?>
-		<div class="notice notice-warning">
+		<div class="notice notice-info">
 			<p>
-				<strong><?php esc_html_e( 'Exam Prep release gate:', 'cta-lms' ); ?></strong>
-				<?php esc_html_e( 'All Exam Preparation programs must remain Draft/Unpublished (not publicly purchasable) until final learner testing is verified AND written approval from CTA has been received. Publishing requires an explicit confirmation. See docs/EXAM_PREP_RELEASE_GATE.md.', 'cta-lms' ); ?>
+				<strong><?php esc_html_e( 'Exam Prep launch:', 'cta-lms' ); ?></strong>
+				<?php esc_html_e( 'All Exam Preparation programs should be Published for public purchase. Use “Publish All Exam Prep” if any row is still Draft. CE courses remain Draft until CAMFT CEPA approval.', 'cta-lms' ); ?>
 			</p>
 		</div>
 	<?php endif; ?>
@@ -74,6 +78,19 @@ $access_counts = isset( $access_counts ) ? $access_counts : array();
 						$miss_q
 					);
 				}
+				?>
+			</p>
+		</div>
+	<?php elseif ( 'exam_prep_published_all' === $notice ) : ?>
+		<div class="notice notice-success is-dismissible">
+			<p>
+				<?php
+				printf(
+					/* translators: 1: newly published count, 2: already published count */
+					esc_html__( 'Exam Prep publish complete. Newly published: %1$d. Already published: %2$d.', 'cta-lms' ),
+					absint( wp_unslash( $_GET['published'] ?? 0 ) ),
+					absint( wp_unslash( $_GET['already'] ?? 0 ) )
+				);
 				?>
 			</p>
 		</div>

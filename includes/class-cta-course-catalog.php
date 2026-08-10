@@ -1073,6 +1073,47 @@ class CTA_Course_Catalog {
 	}
 
 	/**
+	 * Count Exam Prep programs still in draft.
+	 *
+	 * @return int
+	 */
+	public static function count_draft_exam_prep_programs() {
+		global $wpdb;
+
+		$table = $wpdb->prefix . 'cta_courses';
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$rows  = $wpdb->get_results( "SELECT id, status, product_type FROM {$table}" );
+		$count = 0;
+		foreach ( (array) $rows as $row ) {
+			$is_exam = class_exists( 'CTA_Exam_Access' )
+				? CTA_Exam_Access::is_exam_prep( $row )
+				: ( 'exam_prep' === (string) $row->product_type );
+			if ( $is_exam && 'published' !== (string) $row->status ) {
+				++$count;
+			}
+		}
+		return $count;
+	}
+
+	/**
+	 * Publish any remaining draft Exam Prep rows (idempotent).
+	 *
+	 * @return array
+	 */
+	public static function ensure_all_exam_prep_published() {
+		if ( self::count_draft_exam_prep_programs() <= 0 ) {
+			return array(
+				'published'         => array(),
+				'already_published' => array(),
+				'ce_untouched'      => 0,
+				'message'           => 'all_published',
+			);
+		}
+
+		return self::publish_all_exam_prep_programs();
+	}
+
+	/**
 	 * Publish every Exam Preparation program for public catalog and checkout.
 	 *
 	 * Clears launch-hold meta, restores approved pricing, and records written launch approval

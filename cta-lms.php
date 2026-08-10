@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.188' );
+	define( 'CTA_VERSION', '1.0.189' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -1003,6 +1003,11 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 			// Publish all Exam Preparation programs (written CTA launch approval).
 			if ( version_compare( $installed, '1.0.188', '<' ) && class_exists( 'CTA_Course_Catalog' ) ) {
 				CTA_Course_Catalog::publish_all_exam_prep_programs();
+			}
+
+			// Re-assert publish on any Exam Prep rows still draft after deploy.
+			if ( version_compare( $installed, '1.0.189', '<' ) && class_exists( 'CTA_Course_Catalog' ) ) {
+				CTA_Course_Catalog::ensure_all_exam_prep_published();
 			}
 
 			// Decouple supervision application pending from general account / CE access.

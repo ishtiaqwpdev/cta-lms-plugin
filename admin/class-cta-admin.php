@@ -36,6 +36,7 @@ class CTA_Admin {
 		add_action( 'admin_post_cta_save_course', array( $this, 'save_course' ) );
 		add_action( 'admin_post_cta_delete_course', array( $this, 'delete_course' ) );
 		add_action( 'admin_post_cta_toggle_course', array( $this, 'toggle_course_status' ) );
+		add_action( 'admin_post_cta_publish_all_exam_prep', array( $this, 'publish_all_exam_prep' ) );
 		add_action( 'admin_post_cta_sync_syllabus', array( $this, 'sync_syllabus' ) );
 		add_action( 'admin_post_cta_save_settings', array( $this, 'save_settings' ) );
 		add_action( 'admin_post_cta_save_email_settings', array( $this, 'save_email_settings' ) );
@@ -368,6 +369,11 @@ class CTA_Admin {
 		$product_type = sanitize_text_field( wp_unslash( $_GET['product_type'] ?? 'ce' ) );
 		if ( ! in_array( $product_type, array( 'ce', 'exam_prep', 'all' ), true ) ) {
 			$product_type = 'ce';
+		}
+
+		// Auto-publish any remaining draft Exam Prep rows when viewing the Exam Prep admin list.
+		if ( 'exam_prep' === $product_type && class_exists( 'CTA_Course_Catalog' ) && CTA_Course_Catalog::count_draft_exam_prep_programs() > 0 ) {
+			CTA_Course_Catalog::ensure_all_exam_prep_published();
 		}
 
 		$table  = $wpdb->prefix . 'cta_courses';
@@ -1856,6 +1862,33 @@ class CTA_Admin {
 				array(
 					'page'       => 'cta-lms-courses',
 					'cta_notice' => 'status_updated',
+				),
+				admin_url( 'admin.php' )
+			)
+		);
+		exit;
+	}
+
+	/**
+	 * Publish every Exam Preparation program (bulk admin action).
+	 */
+	public function publish_all_exam_prep() {
+		$this->verify_admin_request( 'cta_publish_all_exam_prep' );
+
+		if ( ! class_exists( 'CTA_Course_Catalog' ) ) {
+			wp_die( esc_html__( 'Catalog helper unavailable.', 'cta-lms' ) );
+		}
+
+		$report = CTA_Course_Catalog::publish_all_exam_prep_programs();
+
+		wp_safe_redirect(
+			add_query_arg(
+				array(
+					'page'         => 'cta-lms-courses',
+					'product_type' => 'exam_prep',
+					'cta_notice'   => 'exam_prep_published_all',
+					'published'    => count( $report['published'] ?? array() ),
+					'already'      => count( $report['already_published'] ?? array() ),
 				),
 				admin_url( 'admin.php' )
 			)
