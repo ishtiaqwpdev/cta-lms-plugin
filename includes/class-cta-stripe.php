@@ -710,19 +710,6 @@ class CTA_Stripe {
 			);
 		}
 
-		if (
-			class_exists( 'CTA_Exam_Access' )
-			&& CTA_Exam_Access::is_exam_prep( $course )
-			&& CTA_Exam_Access::launch_pending_testing( $course )
-		) {
-			wp_send_json_error(
-				array(
-					'message' => __( 'This Exam Preparation program is not available for purchase yet.', 'cta-lms' ),
-					'code'    => 'exam_prep_launch_pending',
-				)
-			);
-		}
-
 		$user_id = get_current_user_id();
 
 		$already_has_access = false;
@@ -1533,19 +1520,6 @@ class CTA_Stripe {
 			wp_send_json_error(
 				array(
 					'message' => __( 'Course not found.', 'cta-lms' ),
-				)
-			);
-		}
-
-		if (
-			class_exists( 'CTA_Exam_Access' )
-			&& CTA_Exam_Access::is_exam_prep( $course )
-			&& CTA_Exam_Access::launch_pending_testing( $course )
-		) {
-			wp_send_json_error(
-				array(
-					'message' => __( 'This Exam Preparation program is not available for purchase yet.', 'cta-lms' ),
-					'code'    => 'exam_prep_launch_pending',
 				)
 			);
 		}

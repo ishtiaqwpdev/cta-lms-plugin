@@ -571,12 +571,6 @@ class CTA_Exam_Access {
 					$formats[]             = '%s';
 				}
 
-				// Commercial terms unconfirmed OR launch testing incomplete: keep / force draft.
-				if ( ! empty( $program['commercial_pending'] ) || ! empty( $program['launch_pending_testing'] ) ) {
-					$update['status'] = 'draft';
-					$formats[]        = '%s';
-				}
-
 				$meta_json = self::merge_public_title_meta( $existing_id, $program );
 				if ( null !== $meta_json ) {
 					$update['syllabus_meta'] = $meta_json;
@@ -693,14 +687,31 @@ class CTA_Exam_Access {
 
 		$table = $wpdb->prefix . 'cta_courses';
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-		$raw = $wpdb->get_var(
-			$wpdb->prepare( "SELECT syllabus_meta FROM {$table} WHERE id = %d LIMIT 1", $course_id )
+		$row = $wpdb->get_row(
+			$wpdb->prepare( "SELECT status, syllabus_meta FROM {$table} WHERE id = %d LIMIT 1", $course_id )
 		);
+		if ( ! $row ) {
+			return null;
+		}
 
+		$raw = (string) ( $row->syllabus_meta ?? '' );
 		$meta = array();
-		if ( is_string( $raw ) && '' !== $raw ) {
+		if ( '' !== $raw ) {
 			$decoded = json_decode( $raw, true );
 			$meta    = is_array( $decoded ) ? $decoded : array();
+		}
+
+		if ( 'published' === (string) ( $row->status ?? '' ) && class_exists( 'CTA_Course_Catalog' ) ) {
+			$meta = CTA_Course_Catalog::apply_exam_prep_launch_meta( $meta );
+			if ( ! empty( $program['public_title'] ) ) {
+				$meta['public_title'] = sanitize_text_field( (string) $program['public_title'] );
+			}
+			if ( ! empty( $program['course_classification'] ) ) {
+				$meta['course_classification'] = sanitize_text_field( (string) $program['course_classification'] );
+			} elseif ( empty( $meta['course_classification'] ) ) {
+				$meta['course_classification'] = 'Exam Preparation Only — No CE Credit';
+			}
+			return wp_json_encode( $meta );
 		}
 
 		$defaults = self::program_syllabus_meta_defaults( $program );
@@ -730,6 +741,10 @@ class CTA_Exam_Access {
 			return false;
 		}
 
+		if ( 'published' === (string) ( $course->status ?? '' ) && (float) ( $course->price ?? 0 ) > 0 ) {
+			return false;
+		}
+
 		if ( empty( $course->syllabus_meta ) ) {
 			return false;
 		}
@@ -751,6 +766,10 @@ class CTA_Exam_Access {
 	 */
 	public static function launch_pending_testing( $course ) {
 		if ( ! $course ) {
+			return false;
+		}
+
+		if ( 'published' === (string) ( $course->status ?? '' ) ) {
 			return false;
 		}
 

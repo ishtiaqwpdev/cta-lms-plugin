@@ -65,20 +65,67 @@ class CTA_Course_Catalog {
 	 * @param array|string $meta  Syllabus meta array or JSON string.
 	 * @return array
 	 */
-	public static function prepare_exam_prep_course_row( array $fields, $meta ) {
+	public static function prepare_exam_prep_course_row( array $fields, $meta, $existing_course = null ) {
 		if ( is_string( $meta ) ) {
 			$decoded = json_decode( $meta, true );
 			$meta    = is_array( $decoded ) ? $decoded : array();
 		}
 
-		if ( self::exam_prep_launch_approved() ) {
-			$fields['status']        = 'published';
-			$fields['syllabus_meta'] = wp_json_encode( self::apply_exam_prep_launch_meta( $meta ) );
-		} else {
-			$fields['syllabus_meta'] = wp_json_encode( $meta );
+		// Content sync must never override admin publish/draft on existing rows.
+		if ( null !== $existing_course ) {
+			unset( $fields['status'] );
+			if ( 'published' === (string) ( $existing_course->status ?? '' ) ) {
+				$meta = self::apply_exam_prep_launch_meta( $meta );
+			}
 		}
 
+		$fields['syllabus_meta'] = wp_json_encode( $meta );
 		return $fields;
+	}
+
+	/**
+	 * Clear launch/commercial hold meta on published Exam Prep rows.
+	 *
+	 * @return int Rows updated.
+	 */
+	public static function heal_published_exam_prep_meta() {
+		global $wpdb;
+
+		$table = $wpdb->prefix . 'cta_courses';
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$rows  = $wpdb->get_results(
+			"SELECT id, status, product_type, syllabus_meta FROM {$table} WHERE status = 'published'"
+		);
+		$updated = 0;
+
+		foreach ( (array) $rows as $row ) {
+			$is_exam = class_exists( 'CTA_Exam_Access' )
+				? CTA_Exam_Access::is_exam_prep( $row )
+				: ( 'exam_prep' === (string) $row->product_type );
+			if ( ! $is_exam ) {
+				continue;
+			}
+
+			$meta = array();
+			if ( ! empty( $row->syllabus_meta ) ) {
+				$decoded = json_decode( (string) $row->syllabus_meta, true );
+				$meta    = is_array( $decoded ) ? $decoded : array();
+			}
+			$meta = self::apply_exam_prep_launch_meta( $meta );
+
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			if ( false !== $wpdb->update(
+				$table,
+				array( 'syllabus_meta' => wp_json_encode( $meta ) ),
+				array( 'id' => (int) $row->id ),
+				array( '%s' ),
+				array( '%d' )
+			) ) {
+				++$updated;
+			}
+		}
+
+		return $updated;
 	}
 
 	/**
@@ -745,25 +792,6 @@ class CTA_Course_Catalog {
 			);
 			$formats = array( '%s', '%s', '%f', '%s', '%d', '%f', '%s', '%d', '%d' );
 
-			$force_draft = false;
-			$launch_ok   = self::exam_prep_launch_approved();
-			// Pending commercial confirmation: keep draft; do not publish a live price.
-			if ( ! $launch_ok && ! empty( $entry['commercial_pending'] ) ) {
-				$data['price'] = 0.0;
-				$force_draft   = true;
-			}
-			// Launch testing incomplete: keep draft (configured price preserved for go-live).
-			if ( ! $launch_ok && ! empty( $entry['launch_pending_testing'] ) ) {
-				$force_draft = true;
-			}
-			if ( $force_draft ) {
-				$data['status'] = 'draft';
-				$formats[]      = '%s';
-			} elseif ( $launch_ok ) {
-				$data['status'] = 'published';
-				$formats[]      = '%s';
-			}
-
 			if ( ! empty( $courses ) ) {
 				$seen = array();
 				foreach ( $courses as $course ) {
@@ -777,11 +805,15 @@ class CTA_Course_Catalog {
 					$row_data    = $data;
 					$row_formats = $formats;
 
+					$launch_ok = self::exam_prep_launch_approved();
+					$is_published = 'published' === (string) ( $course->status ?? '' );
+
 					if ( ! empty( $entry['public_title'] )
 						|| ! empty( $entry['content_pending'] )
 						|| ! empty( $entry['launch_pending_testing'] )
 						|| ! empty( $entry['commercial_pending'] )
-						|| $launch_ok ) {
+						|| $launch_ok
+						|| $is_published ) {
 						$meta = array();
 						if ( ! empty( $course->syllabus_meta ) ) {
 							$decoded = json_decode( (string) $course->syllabus_meta, true );
@@ -791,12 +823,10 @@ class CTA_Course_Catalog {
 						if ( ! empty( $entry['public_title'] ) ) {
 							$meta['public_title'] = sanitize_text_field( (string) $entry['public_title'] );
 						}
-						if ( $launch_ok ) {
+						if ( $is_published || $launch_ok ) {
 							$meta = self::apply_exam_prep_launch_meta( $meta );
-						} else {
-							if ( ! empty( $entry['content_pending'] ) || ! empty( $entry['launch_pending_testing'] ) ) {
-								$meta['development_draft'] = true;
-							}
+						} elseif ( ! empty( $entry['content_pending'] ) || ! empty( $entry['launch_pending_testing'] ) ) {
+							$meta['development_draft'] = true;
 							if ( ! empty( $entry['launch_pending_testing'] ) ) {
 								$meta['launch_pending_testing'] = true;
 								$meta['launch_status']          = 'draft_pending_testing';

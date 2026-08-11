@@ -146,59 +146,15 @@ class CTA_Courses {
 			)
 		);
 
-		$published = $this->get_courses(
+		return $this->get_courses(
 			array(
-				'limit'        => -1,
+				'limit'        => $args['limit'],
 				'search'       => $args['search'],
 				'sort'         => $args['sort'],
 				'status'       => 'published',
 				'product_type' => 'exam_prep',
 			)
 		);
-
-		$drafts = $this->get_courses(
-			array(
-				'limit'        => -1,
-				'search'       => $args['search'],
-				'sort'         => $args['sort'],
-				'status'       => 'draft',
-				'product_type' => 'exam_prep',
-			)
-		);
-
-		$canonical_slugs = $this->get_canonical_exam_prep_slugs();
-		$courses         = array();
-		$seen            = array();
-
-		foreach ( array_merge( (array) $published, (array) $drafts ) as $course ) {
-			$id = (int) $course->id;
-			if ( isset( $seen[ $id ] ) ) {
-				continue;
-			}
-
-			$slug   = sanitize_title( (string) ( $course->slug ?? '' ) );
-			$status = (string) ( $course->status ?? '' );
-
-			// Published Exam Prep always lists.
-			// Drafts list only when they are a known catalog program (avoids random draft shells).
-			if ( 'published' !== $status ) {
-				$is_canonical = $slug && in_array( $slug, $canonical_slugs, true );
-				$is_commercial_pending = class_exists( 'CTA_Exam_Access' )
-					&& CTA_Exam_Access::commercial_terms_pending( $course );
-				if ( ! $is_canonical && ! $is_commercial_pending ) {
-					continue;
-				}
-			}
-
-			$seen[ $id ] = true;
-			$courses[]   = $course;
-		}
-
-		if ( $args['limit'] > 0 && count( $courses ) > (int) $args['limit'] ) {
-			$courses = array_slice( $courses, 0, (int) $args['limit'] );
-		}
-
-		return $courses;
 	}
 
 	/**
@@ -292,9 +248,7 @@ class CTA_Courses {
 	/**
 	 * Whether a course may render on the [cta_single_course] page.
 	 *
-	 * Mirrors Exam Prep catalog rules: published rows always viewable; draft
-	 * exam_prep rows viewable when they are canonical catalog programs or
-	 * commercial-pending; site admins may preview any course row.
+	 * Published rows are public; draft rows are admin-preview only.
 	 *
 	 * @param object|null $course Course row.
 	 * @return bool
@@ -308,20 +262,7 @@ class CTA_Courses {
 			return true;
 		}
 
-		if ( current_user_can( 'manage_options' ) ) {
-			return true;
-		}
-
-		if ( ! class_exists( 'CTA_Exam_Access' ) || ! CTA_Exam_Access::is_exam_prep( $course ) ) {
-			return false;
-		}
-
-		$slug          = sanitize_title( (string) ( $course->slug ?? '' ) );
-		$canonical     = $this->get_canonical_exam_prep_slugs();
-		$is_canonical  = $slug && in_array( $slug, $canonical, true );
-		$is_commercial = CTA_Exam_Access::commercial_terms_pending( $course );
-
-		return $is_canonical || $is_commercial;
+		return current_user_can( 'manage_options' );
 	}
 
 	/**
@@ -342,14 +283,6 @@ class CTA_Courses {
 
 		if ( ! $this->course_is_viewable_on_single_page( $course ) ) {
 			return '<div class="cta-empty-state"><p>' . esc_html__( 'Course not found.', 'cta-lms' ) . '</p></div>';
-		}
-
-		// Exam Prep on launch HOLD: not publicly purchasable (direct URL still readable only for admins).
-		if ( class_exists( 'CTA_Exam_Access' )
-			&& CTA_Exam_Access::is_exam_prep( $course )
-			&& CTA_Exam_Access::launch_pending_testing( $course )
-			&& ! current_user_can( 'manage_options' ) ) {
-			return '<div class="cta-empty-state"><p>' . esc_html__( 'This Exam Preparation program is not available for purchase yet.', 'cta-lms' ) . '</p></div>';
 		}
 
 		$modules     = CTA_Database::get_course_modules( $course_id );

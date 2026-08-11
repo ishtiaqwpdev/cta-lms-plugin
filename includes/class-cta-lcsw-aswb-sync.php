@@ -91,7 +91,7 @@ class CTA_Lcsw_Aswb_Sync {
 			'has_ce_certificate'   => 0,
 		);
 		$fields = class_exists( 'CTA_Course_Catalog' )
-			? CTA_Course_Catalog::prepare_exam_prep_course_row( $fields, $meta_array )
+			? CTA_Course_Catalog::prepare_exam_prep_course_row( $fields, $meta_array, $course )
 			: array_merge( $fields, array( 'syllabus_meta' => wp_json_encode( $meta_array ) ) );
 
 		$formats = array( '%s', '%s', '%s', '%f', '%f', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%d' );

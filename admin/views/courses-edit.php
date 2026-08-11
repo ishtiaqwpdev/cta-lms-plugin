@@ -354,22 +354,6 @@ if ( $course ) {
 					return;
 				}
 				if (isExam) {
-					if (!examConfirmField) {
-						return;
-					}
-					var okExam = window.confirm(
-						'Exam Prep release gate:\n\n' +
-						'This Exam Preparation program will become publicly visible and purchasable.\n' +
-						'Do NOT publish until:\n' +
-						'1) Final learner testing has been completed and verified, AND\n' +
-						'2) Written approval from CTA has been received.\n\n' +
-						'Publish this Exam Prep program anyway?'
-					);
-					if (!okExam) {
-						e.preventDefault();
-						return;
-					}
-					examConfirmField.value = '1';
 					return;
 				}
 				if (!confirmField) {

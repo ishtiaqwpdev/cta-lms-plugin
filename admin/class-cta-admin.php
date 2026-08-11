@@ -371,11 +371,6 @@ class CTA_Admin {
 			$product_type = 'ce';
 		}
 
-		// Auto-publish any remaining draft Exam Prep rows when viewing the Exam Prep admin list.
-		if ( 'exam_prep' === $product_type && class_exists( 'CTA_Course_Catalog' ) && CTA_Course_Catalog::count_draft_exam_prep_programs() > 0 ) {
-			CTA_Course_Catalog::ensure_all_exam_prep_published();
-		}
-
 		$table  = $wpdb->prefix . 'cta_courses';
 		$where  = array( '1=1' );
 		$params = array();
@@ -1314,17 +1309,10 @@ class CTA_Admin {
 		$status     = sanitize_text_field( wp_unslash( $_POST['status'] ?? 'draft' ) );
 		$status     = in_array( $status, array( 'published', 'draft' ), true ) ? $status : 'draft';
 
+		// Exam Prep: admin controls publish/draft directly (no release-gate confirm).
 		// CE publish requires explicit confirm checkbox/field (CAMFT CEPA compliance).
 		if ( 'published' === $status && 'ce' === $product_type ) {
 			$confirmed = ! empty( $_POST['cta_confirm_ce_publish'] );
-			if ( ! $confirmed ) {
-				$status = 'draft';
-			}
-		}
-
-		// Exam Prep publish requires explicit confirm (learner testing + written CTA approval).
-		if ( 'published' === $status && 'exam_prep' === $product_type ) {
-			$confirmed = ! empty( $_POST['cta_confirm_exam_prep_publish'] );
 			if ( ! $confirmed ) {
 				$status = 'draft';
 			}
@@ -1406,8 +1394,11 @@ class CTA_Admin {
 		);
 
 		// Confirmed Exam Prep publish clears launch-pending flags so checkout can proceed.
-		if ( 'published' === $status && 'exam_prep' === $product_type && ! empty( $_POST['cta_confirm_exam_prep_publish'] ) ) {
-			unset( $syllabus_meta['launch_pending_testing'], $syllabus_meta['development_draft'], $syllabus_meta['launch_status'] );
+		if ( 'published' === $status && 'exam_prep' === $product_type ) {
+			unset( $syllabus_meta['launch_pending_testing'], $syllabus_meta['development_draft'], $syllabus_meta['launch_status'], $syllabus_meta['commercial_pending'], $syllabus_meta['pricing_status'] );
+			if ( class_exists( 'CTA_Course_Catalog' ) ) {
+				$syllabus_meta = CTA_Course_Catalog::apply_exam_prep_launch_meta( $syllabus_meta );
+			}
 		}
 
 		if ( '' === $title ) {
@@ -1822,29 +1813,20 @@ class CTA_Admin {
 			}
 		}
 
-		// Exam Prep publish requires explicit confirm (testing verified + written CTA approval).
-		if ( 'published' === $new_status && $is_exam ) {
-			$confirmed = ! empty( $_GET['cta_confirm_exam_prep_publish'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- nonce checked in verify_admin_request.
-			if ( ! $confirmed ) {
-				wp_die(
-					esc_html__( 'Publishing an Exam Preparation program requires confirmation. Final learner testing must be verified and written CTA approval received before any Exam Prep program may be offered for public purchase.', 'cta-lms' ),
-					esc_html__( 'Exam Prep publish blocked', 'cta-lms' ),
-					array( 'response' => 403 )
-				);
-			}
-		}
-
-		$update = array( 'status' => $new_status );
+		// Exam Prep: admin controls publish/draft directly.
+		$update  = array( 'status' => $new_status );
 		$formats = array( '%s' );
 
-		// Confirmed Exam Prep publish: clear launch-pending meta so checkout is not blocked.
 		if ( 'published' === $new_status && $is_exam ) {
 			$meta = array();
 			if ( ! empty( $course->syllabus_meta ) ) {
 				$decoded = json_decode( (string) $course->syllabus_meta, true );
 				$meta    = is_array( $decoded ) ? $decoded : array();
 			}
-			unset( $meta['launch_pending_testing'], $meta['development_draft'], $meta['launch_status'] );
+			unset( $meta['launch_pending_testing'], $meta['development_draft'], $meta['launch_status'], $meta['commercial_pending'], $meta['pricing_status'] );
+			if ( class_exists( 'CTA_Course_Catalog' ) ) {
+				$meta = CTA_Course_Catalog::apply_exam_prep_launch_meta( $meta );
+			}
 			$update['syllabus_meta'] = wp_json_encode( $meta );
 			$formats[]              = '%s';
 		}
