@@ -98,7 +98,11 @@ $next_url = $next_module
 	<div class="dashboard-main">
 		<?php if ( $dashboard_url ) : ?>
 			<p class="course-player__back">
-				<a href="<?php echo esc_url( $dashboard_url ); ?>">&larr; <?php echo esc_html__( 'Back to My Courses', 'cta-lms' ); ?></a>
+				<?php if ( ! empty( $is_exam_prep ) && ! empty( $player_base ) ) : ?>
+					<a href="<?php echo esc_url( add_query_arg( array( 'course_id' => (int) $course->id, 'view' => 'home' ), $player_base ) ); ?>">&larr; <?php echo esc_html__( 'Back to Course Home', 'cta-lms' ); ?></a>
+				<?php else : ?>
+					<a href="<?php echo esc_url( $dashboard_url ); ?>">&larr; <?php echo esc_html__( 'Back to My Courses', 'cta-lms' ); ?></a>
+				<?php endif; ?>
 			</p>
 		<?php endif; ?>
 

@@ -150,7 +150,7 @@ class CTA_Student_Dashboard {
 				'completed_count' => count( $completed_ids ),
 				'next_module_id'  => $next_module ? (int) $next_module->id : 0,
 				'certificate'     => $is_exam ? null : $certificate,
-				'player_url'      => ( ! $has_access ) ? '' : $this->get_player_url( (int) $course->id, $next_module ? (int) $next_module->id : 0 ),
+				'player_url'      => ( ! $has_access ) ? '' : ( $is_exam ? $this->get_player_home_url( (int) $course->id ) : $this->get_player_url( (int) $course->id, $next_module ? (int) $next_module->id : 0 ) ),
 				'is_exam_prep'    => $is_exam,
 				'has_active_access' => $has_access,
 				'access'          => $access,
@@ -333,6 +333,17 @@ class CTA_Student_Dashboard {
 			return ob_get_clean();
 		}
 
+		$view         = sanitize_key( wp_unslash( $_GET['view'] ?? '' ) );
+		$is_exam_prep = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course );
+
+		if ( $is_exam_prep && 'workbooks' === $view ) {
+			return $this->render_exam_prep_workbooks_list( $course, $modules, $enrollment, $completed_ids );
+		}
+
+		if ( $is_exam_prep && ( 'home' === $view || ! $module_id ) ) {
+			return $this->render_exam_prep_course_home( $course, $modules, $enrollment, $completed_ids );
+		}
+
 		if ( ! $module_id ) {
 			$next_module = $this->get_next_module( $modules, $completed_ids );
 			$module_id   = $next_module ? (int) $next_module->id : (int) $modules[0]->id;
@@ -436,6 +447,26 @@ class CTA_Student_Dashboard {
 			$resources = CTA_Course_Materials::filter_student_visible_resources( $resources );
 		}
 		$is_exam_prep   = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course );
+
+		if ( $is_exam_prep ) {
+			$home_url      = $this->get_player_home_url( $course_id );
+			$workbooks_url = class_exists( 'CTA_Exam_Prep_Workbooks' )
+				? CTA_Exam_Prep_Workbooks::get_workbooks_list_url( $course_id, $player_base )
+				: $home_url;
+			$workbook_resource = class_exists( 'CTA_Exam_Prep_Lessons' )
+				? CTA_Exam_Prep_Lessons::find_workbook_resource( $resources, $module )
+				: null;
+			$practice_bank_resource = class_exists( 'CTA_Exam_Prep_Workbooks' )
+				? CTA_Exam_Prep_Workbooks::find_practice_bank_resource( $resources, $module )
+				: null;
+			$workbook_quiz_cards = class_exists( 'CTA_Exam_Prep_Workbooks' )
+				? CTA_Exam_Prep_Workbooks::get_workbook_quiz_cards( $course, $module, $quiz_cards, $user_id_player )
+				: array();
+
+			ob_start();
+			include CTA_PLUGIN_DIR . 'templates/exam-prep-workbook.php';
+			return ob_get_clean();
+		}
 
 		ob_start();
 		include CTA_PLUGIN_DIR . 'templates/dashboard-ce-player.php';
@@ -1002,6 +1033,132 @@ class CTA_Student_Dashboard {
 		}
 
 		return -1;
+	}
+
+	/**
+	 * Build exam prep Course Home dashboard URL.
+	 *
+	 * @param int $course_id Course ID.
+	 * @return string
+	 */
+	public function get_player_home_url( $course_id ) {
+		$base = $this->get_player_page_url();
+
+		if ( ! $base ) {
+			return '';
+		}
+
+		return add_query_arg(
+			array(
+				'course_id' => $course_id,
+				'view'      => 'home',
+			),
+			$base
+		);
+	}
+
+	/**
+	 * Build exam prep workbooks list URL.
+	 *
+	 * @param int $course_id Course ID.
+	 * @return string
+	 */
+	public function get_player_workbooks_url( $course_id ) {
+		$base = $this->get_player_page_url();
+
+		if ( ! $base ) {
+			return '';
+		}
+
+		return class_exists( 'CTA_Exam_Prep_Workbooks' )
+			? CTA_Exam_Prep_Workbooks::get_workbooks_list_url( $course_id, $base )
+			: add_query_arg(
+				array(
+					'course_id' => $course_id,
+					'view'      => 'workbooks',
+				),
+				$base
+			);
+	}
+
+	/**
+	 * Render exam prep workbooks overview list.
+	 *
+	 * @param object $course        Course row.
+	 * @param array  $modules       Module rows.
+	 * @param object $enrollment    Enrollment row.
+	 * @param array  $completed_ids Completed module IDs.
+	 * @return string
+	 */
+	private function render_exam_prep_workbooks_list( $course, $modules, $enrollment, $completed_ids ) {
+		$course_id = (int) $course->id;
+
+		if ( class_exists( 'CTA_CE_Completion' ) ) {
+			$progress = CTA_CE_Completion::sync_progress( get_current_user_id(), $course_id, $enrollment );
+		} else {
+			$progress = (int) $enrollment->progress;
+		}
+
+		$dashboard_url  = $this->get_dashboard_url();
+		$player_base    = $this->get_player_page_url();
+		$home_url       = $this->get_player_home_url( $course_id );
+		$active         = 'workbooks';
+		$user           = wp_get_current_user();
+		$dashboard_user = $this->get_dashboard_user_data( $user );
+		$workbook_items = class_exists( 'CTA_Exam_Prep_Workbooks' )
+			? CTA_Exam_Prep_Workbooks::get_workbook_list_items( $course, $modules, $completed_ids, $player_base )
+			: array();
+
+		ob_start();
+		include CTA_PLUGIN_DIR . 'templates/exam-prep-workbooks-list.php';
+		return ob_get_clean();
+	}
+
+	/**
+	 * Render exam prep Course Home dashboard (Getting Started landing).
+	 *
+	 * @param object $course        Course row.
+	 * @param array  $modules       Module rows.
+	 * @param object $enrollment    Enrollment row.
+	 * @param array  $completed_ids Completed module IDs.
+	 * @return string
+	 */
+	private function render_exam_prep_course_home( $course, $modules, $enrollment, $completed_ids ) {
+		$course_id = (int) $course->id;
+
+		if ( class_exists( 'CTA_CE_Completion' ) ) {
+			$progress = CTA_CE_Completion::sync_progress( get_current_user_id(), $course_id, $enrollment );
+		} else {
+			$progress = (int) $enrollment->progress;
+		}
+
+		$resources = CTA_Database::get_downloadable_resources( $course_id );
+		if ( class_exists( 'CTA_Course_Materials' ) ) {
+			$resources = CTA_Course_Materials::filter_student_visible_resources( $resources );
+		}
+
+		$getting_started = class_exists( 'CTA_Exam_Prep_Getting_Started' )
+			? CTA_Exam_Prep_Getting_Started::get_config_for_course( $course, $resources )
+			: array();
+
+		$first_module       = ! empty( $modules[0] ) ? $modules[0] : null;
+		$workbooks_list_url = $this->get_player_workbooks_url( $course_id );
+		$first_workbook_url = $first_module
+			? $this->get_player_url( $course_id, (int) $first_module->id )
+			: $workbooks_list_url;
+		$course_home_url    = $this->get_player_home_url( $course_id );
+
+		$dashboard_url  = $this->get_dashboard_url();
+		$player_base    = $this->get_player_page_url();
+		$user           = wp_get_current_user();
+		$logout_url     = wp_logout_url( $dashboard_url ? $dashboard_url : home_url( '/' ) );
+		$home_url       = home_url( '/' );
+		$dashboard_user = $this->get_dashboard_user_data( $user );
+		$dashboard      = $this;
+
+		ob_start();
+		include CTA_PLUGIN_DIR . 'templates/exam-prep-course-home.php';
+		return ob_get_clean();
 	}
 
 	/**

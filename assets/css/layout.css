@@ -6992,3 +6992,471 @@ button.pagination__item:disabled {
     overflow-x: auto;
   }
 }
+
+/* Exam Prep Course Home — Getting Started / Exam Strategy */
+.cta-plugin-wrapper .cta-exam-prep-home__hero {
+  margin-bottom: var(--space-lg, 1.5rem);
+}
+
+.cta-plugin-wrapper .cta-exam-prep-home__badge {
+  display: inline-block;
+  margin: 0 0 0.35rem;
+  padding: 0.2rem 0.65rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-navy, #122b51);
+  background: #eef4fb;
+  border-radius: 999px;
+}
+
+.cta-plugin-wrapper .cta-exam-prep-home__title {
+  margin: 0 0 0.75rem;
+  font-size: clamp(1.35rem, 2.5vw, 1.85rem);
+  color: var(--color-navy, #122b51);
+}
+
+.cta-plugin-wrapper .cta-exam-prep-home__meta {
+  max-width: 28rem;
+}
+
+.cta-plugin-wrapper .cta-ep-getting-started {
+  margin-bottom: var(--space-xl, 2rem);
+  padding: var(--space-lg, 1.5rem);
+  background: #fff;
+  border: 1px solid var(--color-border, #d0d5dd);
+  border-radius: var(--radius-lg, 12px);
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+.cta-plugin-wrapper .cta-ep-getting-started__eyebrow {
+  margin: 0 0 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-gold, #c9a227);
+}
+
+.cta-plugin-wrapper .cta-ep-getting-started__title {
+  margin: 0 0 0.65rem;
+  font-size: 1.25rem;
+  color: var(--color-navy, #122b51);
+}
+
+.cta-plugin-wrapper .cta-ep-getting-started__intro,
+.cta-plugin-wrapper .cta-ep-getting-started__lede {
+  margin: 0 0 0.75rem;
+  max-width: 52rem;
+  line-height: 1.55;
+  color: var(--color-text-muted, #475467);
+}
+
+.cta-plugin-wrapper .cta-ep-getting-started__heading {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+  color: var(--color-navy, #122b51);
+}
+
+.cta-plugin-wrapper .cta-ep-getting-started__block {
+  margin-top: var(--space-lg, 1.5rem);
+}
+
+.cta-plugin-wrapper .cta-ep-getting-started__block--card {
+  padding: var(--space-md, 1rem);
+  background: #f9fafb;
+  border: 1px solid var(--color-border, #e4e7ec);
+  border-radius: var(--radius-md, 8px);
+}
+
+.cta-plugin-wrapper .cta-ep-getting-started__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-md, 1rem);
+  margin-top: var(--space-lg, 1.5rem);
+}
+
+.cta-plugin-wrapper .cta-ep-getting-started__grid--tools {
+  margin-top: var(--space-md, 1rem);
+}
+
+.cta-plugin-wrapper .cta-ep-roadmap {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-sm, 0.75rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cta-plugin-wrapper .cta-ep-roadmap__step {
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-start;
+  padding: 0.75rem;
+  background: #f9fafb;
+  border: 1px solid var(--color-border, #e4e7ec);
+  border-radius: var(--radius-md, 8px);
+}
+
+.cta-plugin-wrapper .cta-ep-roadmap__marker {
+  flex: 0 0 1.65rem;
+  width: 1.65rem;
+  height: 1.65rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--color-navy, #122b51);
+  border-radius: 999px;
+}
+
+.cta-plugin-wrapper .cta-ep-roadmap__content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.cta-plugin-wrapper .cta-ep-roadmap__label {
+  font-size: 0.92rem;
+  color: var(--color-navy, #122b51);
+}
+
+.cta-plugin-wrapper .cta-ep-roadmap__desc {
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: var(--color-text-muted, #667085);
+}
+
+.cta-plugin-wrapper .cta-ep-sequence {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.cta-plugin-wrapper .cta-ep-sequence__item {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.cta-plugin-wrapper .cta-ep-sequence__num {
+  flex: 0 0 1.5rem;
+  font-weight: 700;
+  color: var(--color-gold, #c9a227);
+}
+
+.cta-plugin-wrapper .cta-ep-sequence__item p {
+  margin: 0.2rem 0 0;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: var(--color-text-muted, #667085);
+}
+
+.cta-plugin-wrapper .cta-ep-exam-overview__name,
+.cta-plugin-wrapper .cta-ep-exam-overview__format {
+  margin: 0 0 0.65rem;
+  line-height: 1.5;
+}
+
+.cta-plugin-wrapper .cta-ep-exam-overview__domains {
+  margin: 0.35rem 0 0;
+  padding-left: 1.1rem;
+}
+
+.cta-plugin-wrapper .cta-ep-exam-overview__domains li {
+  margin-bottom: 0.25rem;
+  line-height: 1.45;
+}
+
+.cta-plugin-wrapper .cta-ep-schedule-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.cta-plugin-wrapper .cta-ep-getting-started__note {
+  margin: 0.65rem 0 0;
+  font-size: 0.85rem;
+}
+
+.cta-plugin-wrapper .cta-ep-getting-started__note--muted {
+  color: var(--color-text-muted, #667085);
+}
+
+.cta-plugin-wrapper .cta-ep-getting-started__cta {
+  margin-top: var(--space-lg, 1.5rem);
+  padding-top: var(--space-md, 1rem);
+  border-top: 1px solid var(--color-border, #e4e7ec);
+}
+
+.cta-plugin-wrapper .cta-exam-prep-home__workbooks {
+  margin-top: var(--space-xl, 2rem);
+}
+
+.cta-plugin-wrapper .cta-exam-prep-home__workbooks-hint {
+  margin: -0.35rem 0 0.75rem;
+  font-size: 0.88rem;
+  color: var(--color-text-muted, #667085);
+}
+
+.cta-plugin-wrapper .cta-ep-home-workbook-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.cta-plugin-wrapper .cta-ep-home-workbook-list__item a {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.75rem 0.85rem;
+  text-decoration: none;
+  color: inherit;
+  background: #fff;
+  border: 1px solid var(--color-border, #d0d5dd);
+  border-radius: var(--radius-md, 8px);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.cta-plugin-wrapper .cta-ep-home-workbook-list__item a:hover {
+  border-color: var(--color-navy, #122b51);
+  box-shadow: 0 1px 3px rgba(16, 24, 40, 0.08);
+}
+
+.cta-plugin-wrapper .cta-ep-home-workbook-list__item.is-complete a {
+  border-color: #abefc6;
+  background: #f6fef9;
+}
+
+.cta-plugin-wrapper .cta-ep-home-workbook-list__index {
+  flex: 0 0 1.5rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-navy, #122b51);
+}
+
+.cta-plugin-wrapper .cta-ep-home-workbook-list__title {
+  flex: 1;
+  font-size: 0.9rem;
+  line-height: 1.35;
+}
+
+.cta-plugin-wrapper .cta-ep-home-workbook-list__status {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #067647;
+}
+
+@media (max-width: 960px) {
+  .cta-plugin-wrapper .cta-ep-getting-started__grid,
+  .cta-plugin-wrapper .cta-ep-roadmap,
+  .cta-plugin-wrapper .cta-ep-home-workbook-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .cta-plugin-wrapper .cta-ep-getting-started {
+    padding: var(--space-md, 1rem);
+  }
+
+  .cta-plugin-wrapper .cta-ep-schedule-links {
+    flex-direction: column;
+  }
+
+  .cta-plugin-wrapper .cta-ep-schedule-links__btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .cta-plugin-wrapper .cta-ep-getting-started__cta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .cta-plugin-wrapper .cta-ep-getting-started__cta .btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* Exam Prep dashboard section nav */
+.cta-plugin-wrapper .cta-ep-dashboard-nav {
+  margin: 0 0 var(--space-lg, 1.5rem);
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-border, #e4e7ec);
+  overflow-x: auto;
+}
+
+.cta-plugin-wrapper .cta-ep-dashboard-nav__list {
+  display: flex;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cta-plugin-wrapper .cta-ep-dashboard-nav__link {
+  display: inline-block;
+  padding: 0.45rem 0.85rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--color-navy, #122b51);
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.cta-plugin-wrapper .cta-ep-dashboard-nav__link.is-active {
+  color: #fff;
+  background: var(--color-navy, #122b51);
+}
+
+/* Workbooks list view */
+.cta-plugin-wrapper .cta-ep-workbooks__header {
+  margin-bottom: var(--space-lg, 1.5rem);
+}
+
+.cta-plugin-wrapper .cta-ep-workbooks__eyebrow {
+  margin: 0 0 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-gold, #c9a227);
+}
+
+.cta-plugin-wrapper .cta-ep-workbooks__title {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.25rem, 2.2vw, 1.75rem);
+  color: var(--color-navy, #122b51);
+}
+
+.cta-plugin-wrapper .cta-ep-workbooks__summary {
+  margin: 0;
+  color: var(--color-text-muted, #667085);
+}
+
+.cta-plugin-wrapper .cta-ep-workbooks-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-md, 1rem);
+}
+
+.cta-plugin-wrapper .cta-ep-workbooks-grid__card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: var(--space-md, 1rem);
+  background: #fff;
+  border: 1px solid var(--color-border, #d0d5dd);
+  border-radius: var(--radius-md, 8px);
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+.cta-plugin-wrapper .cta-ep-workbooks-grid__card.is-complete {
+  border-color: #abefc6;
+  background: #f6fef9;
+}
+
+.cta-plugin-wrapper .cta-ep-workbooks-grid__card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.cta-plugin-wrapper .cta-ep-workbooks-grid__label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-navy, #122b51);
+}
+
+.cta-plugin-wrapper .cta-ep-workbooks-grid__status {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #067647;
+}
+
+.cta-plugin-wrapper .cta-ep-workbooks-grid__card-title {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.cta-plugin-wrapper .cta-ep-workbooks-grid__card-title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.cta-plugin-wrapper .cta-ep-workbooks-grid__card-title a:hover {
+  color: var(--color-navy, #122b51);
+  text-decoration: underline;
+}
+
+.cta-plugin-wrapper .cta-ep-workbooks-grid__desc {
+  margin: 0;
+  flex: 1;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: var(--color-text-muted, #667085);
+}
+
+.cta-plugin-wrapper .cta-ep-workbooks-grid__open {
+  align-self: flex-start;
+  margin-top: 0.25rem;
+}
+
+.cta-plugin-wrapper .cta-ep-home-section {
+  margin-top: var(--space-xl, 2rem);
+  padding: var(--space-lg, 1.5rem);
+  background: #fff;
+  border: 1px solid var(--color-border, #d0d5dd);
+  border-radius: var(--radius-lg, 12px);
+}
+
+.cta-plugin-wrapper .cta-ep-home-section__lede {
+  margin: 0 0 0.85rem;
+  color: var(--color-text-muted, #667085);
+}
+
+.cta-plugin-wrapper .course-player__back-sep {
+  margin: 0 0.45rem;
+  color: var(--color-text-muted, #98a2b3);
+}
+
+.cta-plugin-wrapper .cta-ep-workbook-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 0 var(--space-md, 1rem);
+}
+
+.cta-plugin-wrapper .cta-ep-workbook-practice {
+  margin-top: var(--space-lg, 1.5rem);
+  padding-top: var(--space-md, 1rem);
+  border-top: 1px solid var(--color-border, #e4e7ec);
+}
+
+@media (max-width: 960px) {
+  .cta-plugin-wrapper .cta-ep-workbooks-grid {
+    grid-template-columns: 1fr;
+  }
+}

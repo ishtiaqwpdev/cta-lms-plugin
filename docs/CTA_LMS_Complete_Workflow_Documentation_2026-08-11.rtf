@@ -1,0 +1,873 @@
+{\rtf1\ansi\deff0{\fonttbl{\f0 Calibri;}}\f0\fs22
+\pard\qc\sb480\sa240\fs40\b CTA LMS Plugin — Complete Workflow Documentation\b0\fs22\par
+\pard\qc\sa480\fs24 Generated: 2026-08-11 | Plugin Version: 1.0.190\par
+\page
+\pard\sb240\sa120\fs32\b 1. System Overview\b0\fs22\par
+\pard\sa120\fs22 The CTA Academy LMS is a custom WordPress plugin (CTA Academy LMS v1.0.190) that powers the Clinical Training and Supervision Academy learning platform at clinicaltrainingacademy.com. It requires WordPress 5.8+, PHP 7.4+, and uses custom database tables (not Custom Post Types) for courses, enrollments, assessments, certificates, payments, bundles, exam access, and supervision data.\par
+\pard\sb240\sa120\fs28\b 1.1 Architecture\b0\fs22\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Bootstrap: cta-plugin.php loads cta-lms.php; version constant CTA_VERSION; db upgrades on plugins_loaded via cta_maybe_upgrade_db().\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Data layer: includes/class-cta-database.php creates and migrates 16 custom tables.\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Public layer: shortcode-driven pages (catalogs, dashboards, player, quiz, supervision).\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Admin layer: top-level CTA LMS menu (Dashboard, Courses, Users, Approvals, Bookings, Settings, Evaluation, Email, Shortcodes).\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Commerce: includes/class-cta-stripe.php (Stripe Checkout + webhooks); optional payments bypass for staging.\par
+\pard\sb240\sa120\fs28\b 1.2 Custom User Roles\b0\fs22\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab cta_licensed_professional — CE and Exam Prep learner access; certificate downloads.\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab cta_associate — Supervision program (booking, BBS document uploads) plus general learner access when approved.\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Note: Custom capabilities (cta_access_courses, etc.) are declared on roles but enforcement uses enrollment/payment/business-logic checks; wp-admin requires manage_options.\par
+\pard\sb240\sa120\fs28\b 1.3 Two Product Types — Core Behavioral Difference\b0\fs22\par
+\pard\sa120\fs22 CE Courses (product_type = ce): Sequential module locks; final examination; CAMFT-style course evaluation (all sections); completion attestation; CE certificate with provider line and electronic signature; permanent access on individual purchase or membership-gated access.\par
+\pard\sa120\fs22 Exam Preparation Programs (product_type = exam_prep): No CE credit, no certificate, no evaluation, no attestation. All modules and assessments open from enrollment (Access Correction Notice v1.0). Timed access (default 6 months) stored in cta_exam_access table. Workbook HTML lessons, downloadable DOCX/PDF, chapter tests, Practice Exam A/B, Comprehensive Final, flashcards, and study toolkits.\par
+\page
+\pard\sb240\sa120\fs32\b 2. Database Schema\b0\fs22\par
+\pard\sa120\fs22 All tables use the WordPress table prefix (typically wp_). Primary relationships: cta_courses → modules, quizzes, resources, enrollments, exam_access; users → enrollments/exam_access/attempts/evaluations/attestations/certificates/payments.\par
+\pard\sb240\sa120\fs24\b cta_courses\b0\fs22\par
+\pard\sa120\fs22 Central product table (CE + Exam Prep): title, slug, description, ce_hours, price, category, learning_objectives, syllabus_meta (JSON), modules_count, status (draft/published), thumbnail_url, vimeo_id, video_url, product_type, access_period_months, awards_ce_hours, has_ce_certificate.\par
+\pard\sb240\sa120\fs24\b cta_course_modules\b0\fs22\par
+\pard\sa120\fs22 Course modules: course_id, title, description, video_url, duration_mins, order_index, is_locked.\par
+\pard\sb240\sa120\fs24\b cta_enrollments\b0\fs22\par
+\pard\sa120\fs22 CE learner enrollments: user_id, course_id, status, progress, modules_completed (JSON), enrolled_at, completed_at, expires_at, payment_id, access_source (purchase|membership).\par
+\pard\sb240\sa120\fs24\b cta_exam_access\b0\fs22\par
+\pard\sa120\fs22 Exam Prep timed access: user_id, course_id, purchased_at, expires_at, original_expires_at, extended_by_admin_id, extension_notes.\par
+\pard\sb240\sa120\fs24\b cta_quizzes\b0\fs22\par
+\pard\sa120\fs22 Assessments per course: course_id, title, quiz_type (final, form_a, form_b, wbN_bank, checkpoint_N, comprehensive_final, etc.), sort_order, passing_score, time_limit_mins, max_attempts, status.\par
+\pard\sb240\sa120\fs24\b cta_quiz_questions\b0\fs22\par
+\pard\sa120\fs22 Quiz items: quiz_id, question_text, options A–D, correct_option, explanation, order_index.\par
+\pard\sb240\sa120\fs24\b cta_quiz_attempts\b0\fs22\par
+\pard\sa120\fs22 Learner attempts: user_id, quiz_id, course_id, answers (JSON), score, passed, attempt_number, started_at, completed_at. Retakes allowed (no unique user+quiz constraint).\par
+\pard\sb240\sa120\fs24\b cta_evaluations\b0\fs22\par
+\pard\sa120\fs22 CE course evaluation submissions: user_id, course_id, rating fields, responses (JSON), timezone, status, course_title, student_name, student_email, submitted_at.\par
+\pard\sb240\sa120\fs24\b cta_evaluation_questions\b0\fs22\par
+\pard\sa120\fs22 Per-course or shared (course_id=0) evaluation question bank: question_key, section_label, label, question_type, options_json, is_required, summary_field, order_index, source_type.\par
+\pard\sb240\sa120\fs24\b cta_course_attestations\b0\fs22\par
+\pard\sa120\fs22 CE completion attestations: user_id, course_id, student_name (e-signature), signature_date, attestation_text, ip_address, user_agent, attested_at. UNIQUE(user_id, course_id).\par
+\pard\sb240\sa120\fs24\b cta_certificates\b0\fs22\par
+\pard\sa120\fs22 CE certificates: user_id, course_id, enrollment_id, certificate_number, issued_at, file_path, file_url.\par
+\pard\sb240\sa120\fs24\b cta_downloadable_resources\b0\fs22\par
+\pard\sa120\fs22 Course downloads: course_id, module_id, attachment_id, title, file_url, file_path, file_type, order_index, is_practice_test, unlock_after_quiz_type (CE gates only).\par
+\pard\sb240\sa120\fs24\b cta_payments\b0\fs22\par
+\pard\sa120\fs22 Stripe payment records: user_id, stripe_payment_id, amount, currency, payment_type, product_type, product_id, plan_name, plan_details, status.\par
+\pard\sb240\sa120\fs24\b cta_bundles\b0\fs22\par
+\pard\sa120\fs22 Bundles/memberships: name, slug, plan_type (bundle|annual|subscription), price, billing_cycle, included_courses (JSON course IDs), stripe_price_id, is_featured, status, sort_order.\par
+\pard\sb240\sa120\fs24\b cta_bookings\b0\fs22\par
+\pard\sa120\fs22 Supervision session bookings: user_id, session_type, session_date/time, duration_mins, seats_total/booked, status, stripe_sub_id, notes.\par
+\pard\sb240\sa120\fs24\b cta_documents\b0\fs22\par
+\pard\sa120\fs22 Associate BBS document uploads: user_id, file_name/url, doc_category, review_status, reviewed_at/by.\par
+\pard\sa120\fs22 Uninstall note: uninstall.php drops 14 tables but omits cta_exam_access and cta_downloadable_resources (known gap).\par
+\page
+\pard\sb240\sa120\fs32\b 3. CE Course Workflow (Full, As Currently Built)\b0\fs22\par
+\pard\sb240\sa120\fs28\b 3.1 Admin Creation\b0\fs22\par
+\pard\sa120\fs22 Admin → CTA LMS → Courses → Add/Edit. Product type CE. Fields: title, slug, category, CE hours, price, description, learning objectives, thumbnail, preview video (Vimeo/YouTube/URL), status. Syllabus meta: course code, level, audience, instructional method, presenter, goals, completion requirements, references, attestation required. Modules panel: title, description, video, duration, is_locked checkbox. Single Final Examination quiz. Downloadable resources with optional unlock_after_quiz_type. Per-course evaluation questions (sync from CAMFT template or learning objectives).\par
+\pard\sa120\fs22 Publish hold: All CE courses default to Draft. unpublish_all_ce_courses_pending_cepa() forces draft on upgrades. Admin publish requires explicit CEPA confirmation checkbox (CAMFT provider approval required before public CE offering).\par
+\pard\sb240\sa120\fs28\b 3.2 Learner Journey — Sequence\b0\fs22\par
+\pard\sa120\fs22 Required order (CTA_CE_Completion): Modules (including Capstone) → Final Examination (pass) → Course Evaluation → Attestation → Certificate.\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Enrollment: Stripe checkout or payments bypass; cta_enrollments row; access_source purchase (permanent) or membership (expires with subscription).\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Module progression: Sequential unlock — module N+1 opens after module N marked complete (cta_complete_module AJAX). Vimeo embeds for CE video modules.\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Final exam: Available after all modules complete; default passing score 70%; unlimited attempts until pass; retakes blocked after first pass; rationales hidden for CE finals by default.\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Evaluation: CAMFT-style multi-section form from cta_evaluation_questions; types include rating, radio, checkbox, short_text, paragraph, dropdown, info. CTA-CE-001 Law & Ethics includes inline attestation in evaluation Section 9.\par
+\pard\sb240\sa120\fs24\b 3.2.1 Evaluation Form Structure (CAMFT Template)\b0\fs22\par
+\pard\sa120\fs22 Shared template stored at course_id=0 in cta_evaluation_questions, copied per course on sync. Typical sections: Participant Information (name, email, license type/number), Course Information, Learning Objectives (one rating question per LO synced from course learning_objectives JSON), Overall Course Rating, Instructor/Presenter Rating, Recommendations, Comments, Attestation (CE-001 inline). All required fields validated server-side on cta_submit_evaluation AJAX. Responses stored as JSON in cta_evaluations.responses with summary fields mapped via summary_field column.\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Attestation: Typed electronic signature (student_name), signature date, mandatory compliance text, IP and user agent logged in cta_course_attestations.\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Certificate: Issued only when all gates pass. Number format CTA-\{YEAR\}-\{6-digit random\}. HTML stored in uploads; PDF via Dompdf. Issue timestamp always formatted in America/Los_Angeles (Pacific Time). Provider line: CAMFT-Approved Continuing Education Provider | CEPA Provider #003369 (configurable via cta_cepa_provider_number). Electronic signature: Candice Fuimaono image from assets/certificate-signature.png (or URL option cta_certificate_signature_image_url); signature name from cta_certificate_signature_name or cta_admin_name. Certificate refresh updates license line after account edits.\par
+\pard\sb240\sa120\fs28\b 3.3 Supervision Program (Associate Workflow)\b0\fs22\par
+\pard\sa120\fs22 Separate from CE/Exam Prep commerce. Role cta_associate assigned at registration. Requires application approval (CTA_Associate_Access), Stripe subscription payment, then access to supervision dashboard, session booking (cta_bookings table), and BBS document uploads (cta_documents). Group supervision $260/mo; Supervision + CE All-Access $350/mo hybrid plan. Pending application does not block purchased CE course access (decoupled v1.0.90+).\par
+\page
+\pard\sb240\sa120\fs32\b 4. Exam Preparation Program Workflow (Full, As Currently Built)\b0\fs22\par
+\pard\sb240\sa120\fs28\b 4.1 Configuration Fields\b0\fs22\par
+\pard\sa120\fs22 Product type exam_prep. Fields: formal/internal title, public display name (syllabus_meta.public_title), price, access_period_months (default 6), category Exam Preparation, description, learning objectives, status. Classification: Exam Preparation Only — No CE Credit. Admin publish/unpublish controls visibility directly (v1.0.190 simplified workflow — no launch confirmation dialog).\par
+\pard\sb240\sa120\fs28\b 4.2 No-Locks Access Model\b0\fs22\par
+\pard\sa120\fs22 From enrollment with active cta_exam_access: all modules immediately accessible; all assessments open; all downloads open (unlock_after_quiz_type ignored for exam prep per Access Correction v1.0). No evaluation, attestation, or certificate. Quiz rationales revealed after submit. Unlimited retakes after pass.\par
+\pard\sb240\sa120\fs28\b 4.3 Workbooks & Player\b0\fs22\par
+\pard\sa120\fs22 Workbook HTML at assets/course-materials/\{program\}/lessons/wb\{NN\}.html plus start-here.html. Player template dashboard-ce-player.php. Previous/Next Workbook navigation labels on Exam Prep player. No video embeds in exam prep player. Printable DOCX workbooks available as downloads.\par
+\pard\sb240\sa120\fs28\b 4.4 Assessment Structure (Varies by Program)\b0\fs22\par
+\trowd
+\cellx2200
+\cellx3600
+\cellx4800
+\cellx6000
+\cellx7200
+\cellx10400
+Program\cell
+Price\cell
+Assessments / Content\cell
+Slug\cell
+\row
+\trowd
+\cellx2200
+\cellx3600
+\cellx4800
+\cellx6000
+\cellx7200
+\cellx10400
+LMFT California Law & Ethics\cell
+$199\cell
+License module + 9 workbooks (45 chapters), chapter tests, Practice A/B 50q each, Comprehensive Final 100q, flashcards, 6 toolkits\cell
+california-law-ethics-exam-preparation\cell
+\row
+\trowd
+\cellx2200
+\cellx3600
+\cellx4800
+\cellx6000
+\cellx7200
+\cellx10400
+LCSW California Law & Ethics (CTA-EP-002)\cell
+$199\cell
+License module + 9 workbooks (45 chapters), workbook banks, Practice A/B 50q, Comprehensive Final 100q, flashcards, toolkits\cell
+lcsw-california-law-ethics-exam-preparation\cell
+\row
+\trowd
+\cellx2200
+\cellx3600
+\cellx4800
+\cellx6000
+\cellx7200
+\cellx10400
+LPCC California Law & Ethics (CTA-EP-003)\cell
+$199\cell
+License module + 9 workbooks (45 chapters), 45 chapter tests, Practice A/B 50q, Comprehensive Final 100q, 807-card flashcard system, 6 toolkits\cell
+lpcc-california-law-ethics-exam-preparation\cell
+\row
+\trowd
+\cellx2200
+\cellx3600
+\cellx4800
+\cellx6000
+\cellx7200
+\cellx10400
+LMFT AMFTRB National\cell
+$329\cell
+12 workbooks, 12×17q banks, 3 checkpoints, Form A/B 180q / 240min, 12 audio reviews, flashcards, quick refs\cell
+lmft-amftrb-national-exam-preparation\cell
+\row
+\trowd
+\cellx2200
+\cellx3600
+\cellx4800
+\cellx6000
+\cellx7200
+\cellx10400
+LMFT California Clinical\cell
+$249\cell
+12 workbooks, practice banks, Form A/B 150q each (California clinical format), flashcards, toolkits\cell
+lmft-california-clinical-exam-preparation\cell
+\row
+\trowd
+\cellx2200
+\cellx3600
+\cellx4800
+\cellx6000
+\cellx7200
+\cellx10400
+LCSW ASWB Clinical\cell
+$249\cell
+12 workbooks, practice banks, Form A/B 122q each (2026 ASWB format), flashcards, toolkits\cell
+lcsw-aswb-clinical-exam-preparation\cell
+\row
+\trowd
+\cellx2200
+\cellx3600
+\cellx4800
+\cellx6000
+\cellx7200
+\cellx10400
+LPCC NCMHCE\cell
+$249\cell
+12 workbooks, 12 practice bank pairs, 3 checkpoints, Form A/B 143q simulations, flashcards, quick refs\cell
+lpcc-ncmhce-exam-preparation\cell
+\row
+\pard\sb240\sa120\fs28\b 4.5 Answer Keys / Rationales\b0\fs22\par
+\pard\sa120\fs22 Online quizzes show rationales after attempt for Exam Prep. Downloadable answer keys and detailed rationales exist as protected resources. Legacy preserved-attempt gating (mark printable attempt) remains in class-cta-course-materials.php for some rationale downloads on programs that still use unlock_after_quiz_type in DB, but runtime exam prep download access is open when enrolled (Access Correction v1.0).\par
+\pard\sb240\sa120\fs28\b 4.7 Study Toolkits and Downloads\b0\fs22\par
+\pard\sa120\fs22 Downloadable resources registered in cta_downloadable_resources and served via admin-post.php?action=cta_serve_resource (gated endpoint, not direct URLs). Includes printable workbooks (DOCX), answer keys, detailed rationales, remediation workbooks, performance analysis sheets, quick-reference sheets, study schedules, and printable flashcard HTML. Sync classes in includes/class-cta-*-sync.php seed resource rows per program.\par
+\pard\sb240\sa120\fs28\b 4.8 Flashcard Deck Slug Map (Code-Defined)\b0\fs22\par
+\trowd
+\cellx4000
+\cellx9200
+Course Slug\cell
+JSON Path\cell
+\row
+\trowd
+\cellx4000
+\cellx9200
+lpcc-ncmhce-exam-preparation\cell
+lpcc-ncmhce/study-tools/flashcards.json\cell
+\row
+\trowd
+\cellx4000
+\cellx9200
+lpcc-california-law-ethics-exam-preparation\cell
+lpcc-law-ethics/study-tools/flashcards.json\cell
+\row
+\trowd
+\cellx4000
+\cellx9200
+lcsw-california-law-ethics-exam-preparation\cell
+lcsw-law-ethics/study-tools/flashcards.json\cell
+\row
+\trowd
+\cellx4000
+\cellx9200
+lcsw-aswb-clinical-exam-preparation\cell
+lcsw-aswb/study-tools/flashcards.json\cell
+\row
+\trowd
+\cellx4000
+\cellx9200
+lmft-california-clinical-exam-preparation\cell
+lmft-clinical/study-tools/flashcards.json\cell
+\row
+\trowd
+\cellx4000
+\cellx9200
+lmft-amftrb-national-exam-preparation\cell
+lmft-amftrb/study-tools/flashcards.json\cell
+\row
+\trowd
+\cellx4000
+\cellx9200
+california-law-ethics-exam-preparation\cell
+NOT in deck map — printable flashcards only\cell
+\row
+\page
+\pard\sb240\sa120\fs32\b 5. Every Existing Product — Full Inventory\b0\fs22\par
+\pard\sa120\fs22 Note: Numeric database IDs are assigned at runtime and vary by environment. Publish status is admin-controlled in wp_cta_courses.status. Code defaults all products to Draft on create/sync. Live publish status must be verified in Admin → Courses. Product codes below are from codebase definitions.\par
+\pard\sb240\sa120\fs28\b 5.1 CE Courses\b0\fs22\par
+\trowd
+\cellx3600
+\cellx4800
+\cellx5600
+\cellx6400
+\cellx7800
+\cellx11000
+Title\cell
+Code\cell
+Price\cell
+CE Hrs\cell
+Default Status\cell
+Content Today\cell
+\row
+\trowd
+\cellx3600
+\cellx4800
+\cellx5600
+\cellx6400
+\cellx7800
+\cellx11000
+California Law & Ethics for Mental Health Professionals\cell
+CTA-CE-001\cell
+$79\cell
+6.0 hrs\cell
+Draft (CEPA hold)\cell
+Full syllabus sync: 6 modules + capstone, Vimeo videos, 25-question final exam seeded, evaluation + attestation\cell
+\row
+\trowd
+\cellx3600
+\cellx4800
+\cellx5600
+\cellx6400
+\cellx7800
+\cellx11000
+Clinical and Ethical Excellence in Telehealth (California Framework)\cell
+CTA-CE-002\cell
+$45\cell
+3.0 hrs\cell
+Draft (CEPA hold)\cell
+Full syllabus sync, final exam, evaluation\cell
+\row
+\trowd
+\cellx3600
+\cellx4800
+\cellx5600
+\cellx6400
+\cellx7800
+\cellx11000
+Advanced Suicide Risk Assessment\cell
+—\cell
+$79\cell
+6.0 hrs\cell
+Draft (CEPA hold)\cell
+Syllabus sync content\cell
+\row
+\trowd
+\cellx3600
+\cellx4800
+\cellx5600
+\cellx6400
+\cellx7800
+\cellx11000
+Alcoholism & Other Chemical Substance Dependency\cell
+—\cell
+$149\cell
+15.0 hrs\cell
+Draft (CEPA hold)\cell
+15 modules; development_draft flag — instructional content marked incomplete\cell
+\row
+\trowd
+\cellx3600
+\cellx4800
+\cellx5600
+\cellx6400
+\cellx7800
+\cellx11000
+Child Abuse Assessment & Mandated Reporting\cell
+—\cell
+$89\cell
+7.0 hrs\cell
+Draft (CEPA hold)\cell
+Syllabus sync content\cell
+\row
+\trowd
+\cellx3600
+\cellx4800
+\cellx5600
+\cellx6400
+\cellx7800
+\cellx11000
+HIV/AIDS and Mental Health\cell
+—\cell
+$89\cell
+7.0 hrs\cell
+Draft (CEPA hold)\cell
+Syllabus sync content\cell
+\row
+\trowd
+\cellx3600
+\cellx4800
+\cellx5600
+\cellx6400
+\cellx7800
+\cellx11000
+Human Sexuality & Clinical Practice\cell
+—\cell
+$99\cell
+10.0 hrs\cell
+Draft (CEPA hold)\cell
+Syllabus sync content\cell
+\row
+\trowd
+\cellx3600
+\cellx4800
+\cellx5600
+\cellx6400
+\cellx7800
+\cellx11000
+Fundamentals of Clinical Supervision\cell
+—\cell
+$169\cell
+15.0 hrs\cell
+Draft (CEPA hold)\cell
+In commercial catalog; NOT in syllabus sync data — shell/stub only\cell
+\row
+\pard\sb240\sa120\fs28\b 5.2 Exam Preparation Programs\b0\fs22\par
+\trowd
+\cellx3600
+\cellx4800
+\cellx5600
+\cellx6400
+\cellx7800
+\cellx11000
+Title\cell
+Code\cell
+Price\cell
+Access\cell
+Status\cell
+Content Today\cell
+\row
+\trowd
+\cellx3600
+\cellx4800
+\cellx5600
+\cellx6400
+\cellx7800
+\cellx11000
+LMFT California Law & Ethics Exam Preparation\cell
+—\cell
+$199\cell
+6 mo\cell
+Admin-controlled\cell
+Full content sync; first Law & Ethics EP program\cell
+\row
+\trowd
+\cellx3600
+\cellx4800
+\cellx5600
+\cellx6400
+\cellx7800
+\cellx11000
+LCSW California Law & Ethics Exam Preparation\cell
+CTA-EP-002\cell
+$199\cell
+6 mo\cell
+Admin-controlled\cell
+Stage 5D content loaded; 9 workbooks, assessments, flashcards\cell
+\row
+\trowd
+\cellx3600
+\cellx4800
+\cellx5600
+\cellx6400
+\cellx7800
+\cellx11000
+LPCC California Law & Ethics Exam Preparation\cell
+CTA-EP-003\cell
+$199\cell
+6 mo\cell
+Admin-controlled\cell
+Full content sync; 807-card flashcard deck\cell
+\row
+\trowd
+\cellx3600
+\cellx4800
+\cellx5600
+\cellx6400
+\cellx7800
+\cellx11000
+LMFT AMFTRB National Exam Preparation\cell
+—\cell
+$329\cell
+6 mo\cell
+Admin-controlled\cell
+12 workbooks, audio tracks, Form A/B 180q\cell
+\row
+\trowd
+\cellx3600
+\cellx4800
+\cellx5600
+\cellx6400
+\cellx7800
+\cellx11000
+LMFT California Clinical Exam Preparation\cell
+—\cell
+$249\cell
+6 mo\cell
+Admin-controlled\cell
+Form A/B 150q; no recorded audio/video at launch per sync notes\cell
+\row
+\trowd
+\cellx3600
+\cellx4800
+\cellx5600
+\cellx6400
+\cellx7800
+\cellx11000
+LCSW ASWB Clinical Exam Preparation\cell
+—\cell
+$249\cell
+6 mo\cell
+Admin-controlled\cell
+Form A/B 122q; legacy slug lcsw-california-clinical-exam-preparation\cell
+\row
+\trowd
+\cellx3600
+\cellx4800
+\cellx5600
+\cellx6400
+\cellx7800
+\cellx11000
+LPCC NCMHCE Exam Preparation\cell
+—\cell
+$249\cell
+6 mo\cell
+Admin-controlled\cell
+Form A/B 143q; optional audio gated by audio_public_advertising_approved()\cell
+\row
+\page
+\pard\sb240\sa120\fs32\b 6. Bundles, Memberships, and Pricing\b0\fs22\par
+\pard\sa120\fs22 Source: CTA_Bundle_Catalog (Master Pricing Catalog v3.5). Bundles resolve included_courses by 1-based index into get_ce_catalog(). Indices 9–27 are reserved future CE courses — several bundles reference courses not yet defined, so only currently-defined CE courses attach at purchase time.\par
+\trowd
+\cellx3600
+\cellx4600
+\cellx6200
+\cellx10000
+Name\cell
+Price\cell
+Course #s\cell
+Resolvable Today\cell
+\row
+\trowd
+\cellx3600
+\cellx4600
+\cellx6200
+\cellx10000
+First Renewal Bundle\cell
+$139\cell
+5,6\cell
+Child Abuse + HIV/AIDS\cell
+\row
+\trowd
+\cellx3600
+\cellx4600
+\cellx6200
+\cellx10000
+Clinical Foundations Bundle\cell
+$179\cell
+1,2,3\cell
+Law & Ethics + Telehealth + Suicide Risk\cell
+\row
+\trowd
+\cellx3600
+\cellx4600
+\cellx6200
+\cellx10000
+Behavioral Health Specialty Bundle\cell
+$299\cell
+4,6,7\cell
+Alcoholism + HIV/AIDS + Human Sexuality\cell
+\row
+\trowd
+\cellx3600
+\cellx4600
+\cellx6200
+\cellx10000
+California Renewal Essentials Bundle\cell
+$279\cell
+1,2,3,5,6 + future 23-25\cell
+Six live courses now; three future placeholders\cell
+\row
+\trowd
+\cellx3600
+\cellx4600
+\cellx6200
+\cellx10000
+First Renewal Compliance Bundle\cell
+$349\cell
+1-6\cell
+All CE except Supervision & Sexuality\cell
+\row
+\trowd
+\cellx3600
+\cellx4600
+\cellx6200
+\cellx10000
+Risk Management & Clinical Protection Bundle\cell
+$299\cell
+1,2,3,5,8 + future 24,25,27\cell
+Five live + three future\cell
+\row
+\trowd
+\cellx3600
+\cellx4600
+\cellx6200
+\cellx10000
+Neurodivergent Child Therapist Pathway\cell
+$399\cell
+9-18,2,15\cell
+Only Telehealth (#2) resolves today\cell
+\row
+\trowd
+\cellx3600
+\cellx4600
+\cellx6200
+\cellx10000
+Child & Adolescent Treatment Specialist Pathway\cell
+$399\cell
+14-18,5,2,9,10,12\cell
+Telehealth + Child Abuse only\cell
+\row
+\trowd
+\cellx3600
+\cellx4600
+\cellx6200
+\cellx10000
+Clinical Supervision Leadership Pathway\cell
+$449\cell
+8,19-22,1,3,2\cell
+Supervision + Law & Ethics + Suicide + Telehealth\cell
+\row
+\trowd
+\cellx3600
+\cellx4600
+\cellx6200
+\cellx10000
+Addiction & Recovery Specialist Pathway\cell
+$399\cell
+4,3,6,7\cell
+All four resolve\cell
+\row
+\trowd
+\cellx3600
+\cellx4600
+\cellx6200
+\cellx10000
+Modern Clinical Practice Pathway\cell
+$399\cell
+23-27,6,7,3,2\cell
+Four live CE courses\cell
+\row
+\trowd
+\cellx3600
+\cellx4600
+\cellx6200
+\cellx10000
+Clinical Excellence Annual All-Access Pass\cell
+$299/yr\cell
+All async CE\cell
+Excludes live supervision and Exam Prep\cell
+\row
+\trowd
+\cellx3600
+\cellx4600
+\cellx6200
+\cellx10000
+Supervision + CE All-Access Program\cell
+$350/mo\cell
+All CE + supervision\cell
+From CTA_Supervision_Plans hybrid plan\cell
+\row
+\trowd
+\cellx3600
+\cellx4600
+\cellx6200
+\cellx10000
+Group Supervision\cell
+$260/mo\cell
+Supervision only\cell
+CTA_Supervision_Plans group plan\cell
+\row
+\pard\sa120\fs22 Mismatch flags: Specialty pathways reference course numbers 9–27 not in get_ce_catalog() — purchasers get only currently-published matching courses. Obsolete bundle SKUs deactivated (Clinical Focus, Crisis & Risk, First Renewal Starter, Annual All-Access legacy).\par
+\page
+\pard\sb240\sa120\fs32\b 7. Website Structure\b0\fs22\par
+\pard\sb240\sa120\fs28\b 7.1 Public Pages (WordPress pages linked via options)\b0\fs22\par
+\trowd
+\cellx2000
+\cellx3600
+\cellx5800
+\cellx9400
+Page\cell
+Slug\cell
+Shortcode\cell
+Purpose\cell
+\row
+\trowd
+\cellx2000
+\cellx3600
+\cellx5800
+\cellx9400
+CE Courses\cell
+/ce-courses/\cell
+[cta_course_catalog]\cell
+CE course grid catalog\cell
+\row
+\trowd
+\cellx2000
+\cellx3600
+\cellx5800
+\cellx9400
+Exam Preparation\cell
+/exam-preparation/\cell
+[cta_exam_prep_catalog]\cell
+Exam Prep program grid (published only)\cell
+\row
+\trowd
+\cellx2000
+\cellx3600
+\cellx5800
+\cellx9400
+Single Course / Program\cell
+linked page\cell
+[cta_single_course]\cell
+?course_id=X product detail + checkout\cell
+\row
+\trowd
+\cellx2000
+\cellx3600
+\cellx5800
+\cellx9400
+Memberships\cell
+/memberships-page/\cell
+[cta_membership_pricing]\cell
+Bundles and membership cards\cell
+\row
+\trowd
+\cellx2000
+\cellx3600
+\cellx5800
+\cellx9400
+Clinical Supervision\cell
+/supervision-booking/\cell
+[cta_supervision_booking]\cell
+Supervision marketing + booking\cell
+\row
+\trowd
+\cellx2000
+\cellx3600
+\cellx5800
+\cellx9400
+Login / Register\cell
+auto-linked\cell
+[cta_login_form]\cell
+Authentication\cell
+\row
+\trowd
+\cellx2000
+\cellx3600
+\cellx5800
+\cellx9400
+About, FAQ, Contact, Policies\cell
+theme pages\cell
+theme content\cell
+Linked via cta_about_page_id, cta_faq_page_id, etc.\cell
+\row
+\pard\sb240\sa120\fs28\b 7.2 Internal App Pages (excluded from public nav)\b0\fs22\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab [cta_student_dashboard] — CE learner portal\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab [cta_supervision_dashboard] — Associate supervision portal\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab [cta_course_player] — Module/workbook player\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab [cta_quiz] — Quiz, evaluation, attestation\par
+\pard\sb240\sa120\fs28\b 7.3 All Registered Shortcodes\b0\fs22\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab [cta_header]\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab [cta_footer]\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab [cta_auth_button]\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab [cta_login_form]\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab [cta_course_catalog]\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab [cta_exam_prep_catalog]\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab [cta_single_course]\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab [cta_supervision_booking]\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab [cta_membership_pricing]\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab [cta_student_dashboard]\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab [cta_supervision_dashboard]\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab [cta_course_player]\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab [cta_quiz]\par
+\pard\sb240\sa120\fs28\b 7.4 Navigation\b0\fs22\par
+\pard\sa120\fs22 Hello Elementor theme menu location menu-1 (primary). CTA_Pages::sync_primary_nav_menu() auto-adds: CE Courses, Supervision, Memberships, About, FAQ, Contact, Policies, Login. Logged-in users see Login rewritten to My Dashboard. Exam Preparation page exists but is not in default auto-menu (reachable via catalog links). Mobile uses same WordPress menu (theme responsive). Legacy URL redirects: /courses → /ce-courses; ?product_type=exam_prep on CE catalog → /exam-preparation.\par
+\page
+\pard\sb240\sa120\fs32\b 8. Admin Workflow\b0\fs22\par
+\pard\sb240\sa120\fs28\b 8.1 CE Course Admin\b0\fs22\par
+\pard\sa120\fs22 Create course → set product_type CE → add modules with lock flags → seed/build Final Examination quiz → configure evaluation questions (sync CAMFT template) → attach downloadable resources with optional unlock gates → set price/CE hours/category → publish only after CEPA confirmation checkbox.\par
+\pard\sb240\sa120\fs28\b 8.2 Exam Prep Admin\b0\fs22\par
+\pard\sa120\fs22 Programs seeded by sync classes (Lcsw/Lpcc Law Ethics, AMFTRB, LMFT Clinical, LCSW ASWB, LPCC NCMHCE). Admin can edit title, public display name, price, access months, description, status. Content sync via plugin upgrades or manual Sync actions — sync does NOT override admin publish/draft on existing rows (v1.0.190). Publish clears launch_pending_testing meta. Bulk action: Publish All Exam Prep. Exam access extension panel for manual month extensions per learner.\par
+\pard\sb240\sa120\fs28\b 8.3 Other Admin Areas\b0\fs22\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Users — learner accounts, roles, license info\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Approvals — associate supervision applications\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Bookings — supervision session calendar\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Settings — Stripe, page links, CAMFT provider #, certificate signature, timezone\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Email Settings — per-type templates\par
+\pard\sb240\sa120\fs28\b 8.4 Settings Screen Options (admin/views/settings.php)\b0\fs22\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Stripe mode, secret key, publishable key, webhook secret, billing portal configuration ID\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Payments bypass toggle (default yes — staging only)\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Page assignments: login, CE catalog, exam prep catalog, single course, supervision booking, memberships, student dashboard, supervision dashboard, course player, quiz\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab CAMFT/CEPA provider number (default #003369)\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Certificate signature name, signature image URL, header/footer text\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Admin display name, support email, timezone\par
+\pard\sb240\sa120\fs28\b 8.5 Key Source Files by Feature\b0\fs22\par
+\trowd
+\cellx3600
+\cellx9200
+Feature\cell
+Primary File\cell
+\row
+\trowd
+\cellx3600
+\cellx9200
+CE access / membership\cell
+includes/class-cta-ce-access.php\cell
+\row
+\trowd
+\cellx3600
+\cellx9200
+Exam access / timed window\cell
+includes/class-cta-exam-access.php\cell
+\row
+\trowd
+\cellx3600
+\cellx9200
+Completion gates\cell
+includes/class-cta-ce-completion.php\cell
+\row
+\trowd
+\cellx3600
+\cellx9200
+Certificates\cell
+public/class-cta-certificates.php\cell
+\row
+\trowd
+\cellx3600
+\cellx9200
+Stripe checkout/webhooks\cell
+includes/class-cta-stripe.php\cell
+\row
+\trowd
+\cellx3600
+\cellx9200
+Course catalog pricing\cell
+includes/class-cta-course-catalog.php\cell
+\row
+\trowd
+\cellx3600
+\cellx9200
+Bundle catalog v3.5\cell
+includes/class-cta-bundle-catalog.php\cell
+\row
+\trowd
+\cellx3600
+\cellx9200
+Student player/dashboard\cell
+public/class-cta-student-dashboard.php\cell
+\row
+\trowd
+\cellx3600
+\cellx9200
+Quiz/evaluation/attestation UI\cell
+public/class-cta-quiz.php\cell
+\row
+\trowd
+\cellx3600
+\cellx9200
+Downloadable materials gate\cell
+includes/class-cta-course-materials.php\cell
+\row
+\trowd
+\cellx3600
+\cellx9200
+Flashcards\cell
+includes/class-cta-flashcards.php\cell
+\row
+\trowd
+\cellx3600
+\cellx9200
+Workbook HTML loader\cell
+includes/class-cta-exam-prep-lessons.php\cell
+\row
+\page
+\pard\sb240\sa120\fs32\b 9. Integrations\b0\fs22\par
+\pard\sb240\sa120\fs28\b 9.1 Stripe\b0\fs22\par
+\pard\sa120\fs22 Options: cta_stripe_mode (test|live), secret/publishable keys, webhook secret. Webhook: /wp-json/cta-lms/v1/stripe-webhook. Events: checkout.session.completed, customer.subscription.updated/deleted, invoice.paid, invoice.payment_failed. Checkout AJAX: cta_create_checkout (courses/exam prep), cta_create_subscription (supervision), bundle checkout sessions. Success URL finalizes enrollment via finalize_checkout_session(). cta_payments_bypass defaults to yes — must disable on production for real payments.\par
+\pard\sb240\sa120\fs28\b 9.2 Email\b0\fs22\par
+\pard\sa120\fs22 Class CTA_Emails. Configurable types: welcome, enrollment_confirmation, booking_confirmation, session_reminder (daily cron), certificate_ready, payment_receipt, payment_failed, supervision_locked. From: cta_admin_name + cta_support_email (default support@clinicaltrainingacademy.com). Hardcoded: agency_representative_approval emails with PDF attachments.\par
+\pard\sb240\sa120\fs28\b 9.3 Vimeo\b0\fs22\par
+\pard\sa120\fs22 CE courses only. player.vimeo.com embed via CTA_Student_Dashboard::get_vimeo_responsive_embed(). Module video_url or course vimeo_id column. Official Vimeo IDs seeded for CTA-CE-001 and CTA-CE-002. Exam Prep player returns no video markup.\par
+\page
+\pard\sb240\sa120\fs32\b 10. Known Issues, Limitations, and Pending Items\b0\fs22\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab All CE courses forced Draft pending CAMFT CEPA provider approval — cannot publish without admin CEPA confirmation.\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Exam Prep publish status is admin-controlled (v1.0.190). Prior launch-hold meta may remain on draft rows until admin publishes.\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Clinical Supervision CE course in catalog but lacks syllabus sync — stub/shell only.\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Alcoholism CE marked development_draft — 15 modules with incomplete instructional content flag.\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab LMFT California Clinical had commercial_pending / $0 seed price historically; catalog restore sets $249.\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Several specialty bundles/pathways reference CE course numbers 9–27 not yet in catalog — partial fulfillment only.\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab cta_payments_bypass defaults to yes — production must set to no for live Stripe.\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Uninstall omits cta_exam_access and cta_downloadable_resources tables.\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Custom role capabilities declared but not checked via current_user_can — access enforced by business logic.\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Legacy unlock_after_quiz_type values may remain in DB for exam prep but ignored at runtime (Access Correction v1.0).\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Preserved printable attempt UI still exists for some rationale download paths; primarily relevant to printable/offline workflows.\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab LCSW Law & Ethics (CTA-EP-002): historically found Published with purchases while content incomplete — v1.0.174 forced draft; purchase records preserved (not modified by force-draft retire in 1.0.190).\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Flashcard JSON decks exist for 7 program slug mappings; LMFT California Law & Ethics (california-law-ethics-exam-preparation) has no entry in CTA_Flashcards deck map — flashcards via printable downloads only unless deck added.\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab No literal Phase 2 / Course Home Dashboard code found — deferred architecture not implemented in codebase.\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Recorded audio/video not included at launch for several Exam Prep programs (noted in sync class descriptions).\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab LPCC NCMHCE audio advertising gated by audio_public_advertising_approved() helper.\par
+\page
+\pard\sb240\sa120\fs32\b 11. Change Log Summary\b0\fs22\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Early Milestone 2 — Core LMS tables, enrollments, Stripe checkout, student dashboard, module player.\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab CE catalog v3.5 — Eight CE courses priced; bundles/memberships synced; alcoholism category migration.\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab California Law & Ethics CE (CTA-CE-001) — Full module sync, Vimeo videos, 25-question final exam, evaluation + attestation, certificate template with CEPA provider line and electronic signature, Pacific Time issue stamps.\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Telehealth CE (CTA-CE-002) — Syllabus sync and final exam.\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Four original Exam Prep programs — LMFT Law & Ethics, LCSW ASWB Clinical, LPCC NCMHCE, LMFT California Clinical content packages and sync classes.\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Exam Prep catalog page and [cta_exam_prep_catalog] shortcode; dual-format workbook HTML + DOCX downloads.\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab In-browser flashcard viewer with DOCX-derived JSON decks; UTF-8 encoding fixes.\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Website/navigation corrections — page auto-provisioning, legacy URL redirects, header menu sync, org name standardization.\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Certificate fixes — master template, provider line CAMFT-Approved CEPA wording, Fuimaono electronic signature, America/Los_Angeles timestamps.\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Three Law & Ethics Exam Prep programs — LCSW (CTA-EP-002), LPCC (CTA-EP-003), plus LMFT California Law & Ethics; Form A/B title unification with downloadable Comprehensive Simulation naming.\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab LMFT AMFTRB National Exam Prep — 12-workbook program with audio tracks and 180-question simulations.\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Access Correction Notice v1.0 — Exam Prep open-access model (no CE-style locks); clear material unlock gates.\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab Exam Prep launch gate and bulk publish tooling (v1.0.188–189).\par
+\pard\fi-360\li720\sa60\fs22\bullet\tab v1.0.190 — Simplify Exam Prep workflow: admin publish/draft control only; remove auto-draft sync overrides and force-draft hooks; heal published meta on upgrade.\par
+\pard\sa120\fs22 End of document.\par
+}
