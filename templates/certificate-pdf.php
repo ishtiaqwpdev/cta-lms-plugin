@@ -13,7 +13,11 @@
  * @var string $ce_hours
  * @var string $completion_date
  * @var string $license_number
+ * @var string $provider_name
  * @var string $provider_number
+ * @var string $provider_line
+ * @var string $provider_address
+ * @var string $cepa_stamp_url
  * @var string $certificate_number
  * @var string $logo_url
  * @var string $header_text
@@ -34,6 +38,10 @@ $footer_text         = ! empty( $footer_text ) ? $footer_text : 'clinicaltrainin
 $signature_name      = ! empty( $signature_name ) ? $signature_name : __( 'Program Administrator', 'cta-lms' );
 $organization_name   = ! empty( $organization_name ) ? $organization_name : __( 'Clinical Training and Supervision Academy', 'cta-lms' );
 $administrator_title = ! empty( $administrator_title ) ? $administrator_title : __( 'Program Administrator', 'cta-lms' );
+$provider_name       = ! empty( $provider_name ) ? $provider_name : __( 'Clinical Training & Supervision Academy', 'cta-lms' );
+$provider_line       = ! empty( $provider_line ) ? $provider_line : __( 'CAMFT-Approved Continuing Education Provider #122418', 'cta-lms' );
+$provider_address    = ! empty( $provider_address ) ? $provider_address : '';
+$cepa_stamp_url      = ! empty( $cepa_stamp_url ) ? $cepa_stamp_url : '';
 if ( empty( $signature_url ) && class_exists( 'CTA_Certificates' ) ) {
 	$signature_url = CTA_Certificates::get_signature_data_uri();
 }
@@ -140,9 +148,42 @@ $signature_url = ! empty( $signature_url ) ? $signature_url : '';
 		.provider-line {
 			font-size: 12px;
 			line-height: 1.45;
-			margin: 0 auto 14px;
+			margin: 0;
 			max-width: 620px;
 			color: #475467;
+		}
+		.provider-approval {
+			width: 520px;
+			margin: 0 auto 10px;
+			border-collapse: collapse;
+		}
+		.provider-stamp-cell {
+			width: 76px;
+			padding: 0 12px 0 0;
+			vertical-align: middle;
+		}
+		.provider-copy-cell {
+			padding: 0;
+			text-align: left;
+			vertical-align: middle;
+		}
+		.provider-stamp {
+			display: block;
+			width: 68px;
+			height: 68px;
+			margin: 0;
+		}
+		.provider-name {
+			margin: 0 0 3px;
+			font-size: 13px;
+			font-weight: bold;
+			color: #122B51;
+		}
+		.provider-address {
+			margin: 3px 0 0;
+			font-size: 10px;
+			line-height: 1.35;
+			color: #667085;
 		}
 		.signature-block {
 			margin: 2px auto 0;
@@ -238,15 +279,33 @@ $signature_url = ! empty( $signature_url ) ? $signature_url : '';
 
 			<div class="divider">&nbsp;</div>
 
-			<p class="provider-line">
-				<?php
-				echo esc_html(
-					class_exists( 'CTA_Certificates' )
-						? CTA_Certificates::get_provider_line()
-						: __( 'CAMFT-Approved Continuing Education Provider | CEPA Provider #003369', 'cta-lms' )
-				);
-				?>
-			</p>
+			<table class="provider-approval" role="presentation">
+				<tr>
+					<?php if ( ! empty( $cepa_stamp_url ) ) : ?>
+						<td class="provider-stamp-cell">
+							<?php
+							$stamp_src = ( 0 === strpos( (string) $cepa_stamp_url, 'data:' ) )
+								? esc_attr( $cepa_stamp_url )
+								: esc_url( $cepa_stamp_url );
+							?>
+							<img
+								class="provider-stamp"
+								src="<?php echo $stamp_src; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped above ?>"
+								width="68"
+								height="68"
+								alt="<?php echo esc_attr( __( 'CAMFT Approved Continuing Education Provider', 'cta-lms' ) ); ?>"
+							>
+						</td>
+					<?php endif; ?>
+					<td class="provider-copy-cell">
+						<p class="provider-name"><?php echo esc_html( $provider_name ); ?></p>
+						<p class="provider-line"><?php echo esc_html( $provider_line ); ?></p>
+						<?php if ( ! empty( $provider_address ) ) : ?>
+							<p class="provider-address"><?php echo esc_html( $provider_address ); ?></p>
+						<?php endif; ?>
+					</td>
+				</tr>
+			</table>
 
 			<div class="signature-block">
 				<?php if ( ! empty( $signature_url ) ) : ?>

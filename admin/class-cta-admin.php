@@ -1970,7 +1970,8 @@ class CTA_Admin {
 			update_option( $option_key, absint( wp_unslash( $_POST[ $option_key ] ?? 0 ) ) );
 		}
 
-		update_option( 'cta_camft_provider_number', cta_lms_sanitize_utf8_text( sanitize_text_field( wp_unslash( $_POST['cta_camft_provider_number'] ?? '' ) ) ) );
+		update_option( 'cta_camft_provider_number', '#122418' );
+		update_option( 'cta_cepa_provider_number', '#122418' );
 		update_option( 'cta_admin_name', cta_lms_sanitize_utf8_text( sanitize_text_field( wp_unslash( $_POST['cta_admin_name'] ?? '' ) ) ) );
 		update_option( 'cta_support_email', sanitize_email( wp_unslash( $_POST['cta_support_email'] ?? '' ) ) );
 
@@ -1996,6 +1997,7 @@ class CTA_Admin {
 
 		update_option( 'cta_certificate_header_text', cta_lms_sanitize_utf8_text( sanitize_text_field( wp_unslash( $_POST['cta_certificate_header_text'] ?? '' ) ) ) );
 		update_option( 'cta_certificate_footer_text', cta_lms_sanitize_utf8_text( sanitize_text_field( wp_unslash( $_POST['cta_certificate_footer_text'] ?? '' ) ) ) );
+		update_option( 'cta_certificate_provider_address', cta_lms_sanitize_utf8_text( sanitize_textarea_field( wp_unslash( $_POST['cta_certificate_provider_address'] ?? '' ) ) ) );
 		update_option( 'cta_certificate_signature_name', cta_lms_sanitize_utf8_text( sanitize_text_field( wp_unslash( $_POST['cta_certificate_signature_name'] ?? '' ) ) ) );
 		update_option( 'cta_certificate_signature_image_url', esc_url_raw( wp_unslash( $_POST['cta_certificate_signature_image_url'] ?? '' ) ) );
 
@@ -2632,7 +2634,11 @@ class CTA_Admin {
 			? cta_lms_format_certificate_issued_at( null )
 			: cta_lms_format_local_date( null, 'F j, Y \a\t g:i A T', new DateTimeZone( 'America/Los_Angeles' ) );
 		$license_number     = 'LMFT12345';
-		$provider_number    = (string) get_option( 'cta_camft_provider_number', get_option( 'cta_cepa_provider_number', '' ) );
+		$provider_name      = CTA_Certificates::get_provider_name();
+		$provider_number    = CTA_Certificates::get_provider_number();
+		$provider_line      = CTA_Certificates::get_provider_line();
+		$provider_address   = CTA_Certificates::get_provider_address();
+		$cepa_stamp_url     = CTA_Certificates::get_cepa_stamp_data_uri();
 		$certificate_number = 'CTA-' . cta_lms_current_date( 'Y' ) . '-000000';
 		$header_text        = (string) get_option( 'cta_certificate_header_text', __( 'Certificate of Completion', 'cta-lms' ) );
 		$footer_text        = (string) get_option( 'cta_certificate_footer_text', 'clinicaltrainingacademy.com' );
@@ -2640,12 +2646,13 @@ class CTA_Admin {
 		if ( '' === $signature_name ) {
 			$signature_name = (string) get_option( 'cta_admin_name', 'Candice Fuimaono, MS, LMFT' );
 		}
-		$organization_name   = __( 'Clinical Training and Supervision Academy', 'cta-lms' );
+		$organization_name   = $provider_name;
 		$administrator_title = __( 'Program Administrator', 'cta-lms' );
 		$logo_url            = class_exists( 'CTA_Certificates' ) ? CTA_Certificates::get_logo_data_uri() : '';
 		if ( '' === $logo_url ) {
 			$logo_url = cta_lms_get_logo_url();
 		}
+		$signature_url = CTA_Certificates::get_signature_data_uri();
 		$auto_print = false;
 
 		ob_start();

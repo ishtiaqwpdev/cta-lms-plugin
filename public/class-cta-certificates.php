@@ -270,6 +270,10 @@ class CTA_Certificates {
 			return false;
 		}
 
+		if ( ! self::is_ce_certificate_course( $course ) ) {
+			return false;
+		}
+
 		$evaluation = CTA_Database::get_course_evaluation( $user_id, $course_id );
 		$issued_at  = ! empty( $certificate->issued_at ) ? (string) $certificate->issued_at : current_time( 'mysql' );
 		$number     = (string) $certificate->certificate_number;
@@ -424,6 +428,10 @@ class CTA_Certificates {
 	 * @return string
 	 */
 	public static function build_html( $user_id, $course, $certificate_number, $issued_at, $evaluation = null, $args = array() ) {
+		if ( ! self::is_ce_certificate_course( $course ) ) {
+			return '';
+		}
+
 		$user = get_userdata( $user_id );
 
 		// Always print the real certificate issue instant from storage.
@@ -442,10 +450,11 @@ class CTA_Certificates {
 		}
 
 		$license_number  = cta_lms_get_user_license_number( $user_id );
-		$provider_number = (string) get_option( 'cta_camft_provider_number', '' );
-		if ( '' === $provider_number ) {
-			$provider_number = (string) get_option( 'cta_cepa_provider_number', '' );
-		}
+		$provider_name    = self::get_provider_name();
+		$provider_number  = self::get_provider_number();
+		$provider_line    = self::get_provider_line();
+		$provider_address = self::get_provider_address();
+		$cepa_stamp_url   = self::get_cepa_stamp_data_uri();
 
 		$header_text = (string) get_option( 'cta_certificate_header_text', '' );
 		if ( '' === $header_text ) {
@@ -465,7 +474,7 @@ class CTA_Certificates {
 			$signature_name = 'Candice Fuimaono, MS, LMFT';
 		}
 
-		$organization_name   = __( 'Clinical Training and Supervision Academy', 'cta-lms' );
+		$organization_name   = $provider_name;
 		$administrator_title = __( 'Program Administrator', 'cta-lms' );
 		$logo_url            = self::get_logo_data_uri();
 		if ( '' === $logo_url ) {
@@ -487,28 +496,73 @@ class CTA_Certificates {
 	}
 
 	/**
-	 * Master CE certificate provider line (CAMFT-approved wording).
+	 * Whether a course belongs to the CE certificate workflow.
 	 *
-	 * Uses the configured provider number when present; defaults to #003369.
+	 * This guard is intentionally repeated at render/download time so a legacy
+	 * certificate row can never apply CEPA branding to an Exam Prep program.
+	 *
+	 * @param object|null $course Course row.
+	 * @return bool
+	 */
+	public static function is_ce_certificate_course( $course ) {
+		if ( ! $course ) {
+			return false;
+		}
+
+		if ( class_exists( 'CTA_Exam_Access' ) ) {
+			return ! CTA_Exam_Access::is_exam_prep( $course )
+				&& CTA_Exam_Access::has_ce_certificate( $course );
+		}
+
+		return ! isset( $course->has_ce_certificate ) || ! empty( $course->has_ce_certificate );
+	}
+
+	/**
+	 * Official CAMFT CEPA provider name for CE certificates.
+	 *
+	 * @return string
+	 */
+	public static function get_provider_name() {
+		return 'Clinical Training & Supervision Academy';
+	}
+
+	/**
+	 * Official CAMFT CEPA provider number.
+	 *
+	 * @return string
+	 */
+	public static function get_provider_number() {
+		return '#122418';
+	}
+
+	/**
+	 * Configured provider mailing address for CE certificates.
+	 *
+	 * @return string
+	 */
+	public static function get_provider_address() {
+		return trim( (string) get_option( 'cta_certificate_provider_address', '' ) );
+	}
+
+	/**
+	 * Master CE certificate provider line (CAMFT-approved wording).
 	 *
 	 * @return string
 	 */
 	public static function get_provider_line() {
-		$raw = (string) get_option( 'cta_camft_provider_number', '' );
-		if ( '' === trim( $raw ) ) {
-			$raw = (string) get_option( 'cta_cepa_provider_number', '' );
-		}
+		return 'CAMFT-Approved Continuing Education Provider ' . self::get_provider_number();
+	}
 
-		$number = '#003369';
-		if ( preg_match( '/#?\s*(\d{3,})/', $raw, $m ) ) {
-			$number = '#' . $m[1];
-		}
-
-		return sprintf(
-			/* translators: %s: CEPA provider number, e.g. #003369 */
-			__( 'CAMFT-Approved Continuing Education Provider | CEPA Provider %s', 'cta-lms' ),
-			$number
-		);
+	/**
+	 * Official CAMFT CEPA approval stamp as a data URI.
+	 *
+	 * The bundled source image is embedded byte-for-byte; templates constrain
+	 * only its rendered box while preserving the intrinsic aspect ratio.
+	 *
+	 * @return string
+	 */
+	public static function get_cepa_stamp_data_uri() {
+		return self::path_to_data_uri( CTA_PLUGIN_DIR . 'assets/img/CEPA_R_Stamp.png' );
 	}
 
 	/**
@@ -883,6 +937,10 @@ class CTA_Certificates {
 			wp_die( esc_html__( 'Course not found.', 'cta-lms' ), 404 );
 		}
 
+		if ( ! self::is_ce_certificate_course( $course ) ) {
+			wp_die( esc_html__( 'CE certificates are not available for Exam Preparation programs.', 'cta-lms' ), 404 );
+		}
+
 		$is_download = ! empty( $_GET['download'] );
 		$number      = (string) $certificate->certificate_number;
 
@@ -962,6 +1020,13 @@ class CTA_Certificates {
 	 * @return string|WP_Error PDF binary or error.
 	 */
 	public static function build_pdf( $user_id, $course, $certificate_number, $issued_at, $evaluation = null ) {
+		if ( ! self::is_ce_certificate_course( $course ) ) {
+			return new WP_Error(
+				'cta_certificate_scope',
+				__( 'CE certificates are not available for Exam Preparation programs.', 'cta-lms' )
+			);
+		}
+
 		if ( ! self::can_generate_pdf() ) {
 			return new WP_Error(
 				'cta_pdf_unavailable',

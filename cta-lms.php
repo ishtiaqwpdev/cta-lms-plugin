@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.203' );
+	define( 'CTA_VERSION', '1.0.204' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -1023,6 +1023,16 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 			if ( version_compare( $installed, '1.0.190', '<' ) && class_exists( 'CTA_Course_Catalog' ) ) {
 				CTA_Course_Catalog::heal_published_exam_prep_meta();
 				CTA_Course_Catalog::restore_exam_prep_pricing();
+			}
+
+			// CAMFT CEPA approval: CE-only provider #122418 + official stamp.
+			if ( version_compare( $installed, '1.0.204', '<' ) ) {
+				update_option( 'cta_camft_provider_number', '#122418', false );
+				update_option( 'cta_cepa_provider_number', '#122418', false );
+				add_option( 'cta_certificate_provider_address', '' );
+				if ( class_exists( 'CTA_Certificates' ) ) {
+					CTA_Certificates::refresh_all_certificates();
+				}
 			}
 
 			// Decouple supervision application pending from general account / CE access.

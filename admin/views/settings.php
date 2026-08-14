@@ -137,7 +137,10 @@ $notice = sanitize_text_field( wp_unslash( $_GET['cta_notice'] ?? '' ) );
 				</tr>
 				<tr>
 					<th><label for="cta_camft_provider_number"><?php esc_html_e( 'CAMFT CEPA Provider Number', 'cta-lms' ); ?></label></th>
-					<td><input type="text" class="regular-text" id="cta_camft_provider_number" name="cta_camft_provider_number" value="<?php echo esc_attr( get_option( 'cta_camft_provider_number', '' ) ); ?>"></td>
+					<td>
+						<input type="text" class="regular-text" id="cta_camft_provider_number" name="cta_camft_provider_number" value="#122418" readonly>
+						<p class="description"><?php esc_html_e( 'Official provider number used only on CE completion certificates.', 'cta-lms' ); ?></p>
+					</td>
 				</tr>
 				<tr>
 					<th><label for="cta_admin_name"><?php esc_html_e( 'Program Administrator Name', 'cta-lms' ); ?></label></th>
@@ -153,6 +156,13 @@ $notice = sanitize_text_field( wp_unslash( $_GET['cta_notice'] ?? '' ) );
 		<div class="cta-admin-panel">
 			<h2><?php esc_html_e( 'Certificate Settings', 'cta-lms' ); ?></h2>
 			<table class="form-table">
+				<tr>
+					<th><label for="cta_certificate_provider_address"><?php esc_html_e( 'Provider Mailing Address', 'cta-lms' ); ?></label></th>
+					<td>
+						<textarea class="large-text" rows="2" id="cta_certificate_provider_address" name="cta_certificate_provider_address"><?php echo esc_textarea( get_option( 'cta_certificate_provider_address', '' ) ); ?></textarea>
+						<p class="description"><?php esc_html_e( 'Printed on CE certificates only. Enter the exact approved mailing address; do not use a placeholder.', 'cta-lms' ); ?></p>
+					</td>
+				</tr>
 				<tr>
 					<th><label for="cta_certificate_header_text"><?php esc_html_e( 'Certificate Header Text', 'cta-lms' ); ?></label></th>
 					<td><input type="text" class="regular-text" id="cta_certificate_header_text" name="cta_certificate_header_text" value="<?php echo esc_attr( get_option( 'cta_certificate_header_text', 'Certificate of Completion' ) ); ?>"></td>

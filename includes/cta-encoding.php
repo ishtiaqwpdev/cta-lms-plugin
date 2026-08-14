@@ -158,6 +158,7 @@ if ( ! function_exists( 'cta_lms_repair_stored_utf8_content_inner' ) ) {
 			'cta_supervision_product_description',
 			'cta_certificate_header_text',
 			'cta_certificate_footer_text',
+			'cta_certificate_provider_address',
 			'cta_certificate_signature_name',
 			'cta_admin_name',
 			'cta_cepa_provider_number',

@@ -97,7 +97,7 @@ class CTA_Activator {
 		add_option( 'cta_supervision_dashboard_page_id', 0 );
 		add_option( 'cta_single_course_page_id', 0 );
 		add_option( 'cta_quiz_page_id', 0 );
-		add_option( 'cta_camft_provider_number', '' );
+		add_option( 'cta_camft_provider_number', '#122418' );
 		add_option( 'cta_certificate_upload_dir', 'cta-certificates' );
 		add_option( 'cta_stripe_secret_key', '' );
 		add_option( 'cta_stripe_publishable_key', '' );
@@ -114,11 +114,12 @@ class CTA_Activator {
 		} elseif ( '' === (string) get_option( 'timezone_string', '' ) ) {
 			update_option( 'timezone_string', 'America/Los_Angeles' );
 		}
-		add_option( 'cta_cepa_provider_number', '#003369' );
+		add_option( 'cta_cepa_provider_number', '#122418' );
 		add_option( 'cta_admin_name', 'Candice Fuimaono, MS, LMFT' );
 		add_option( 'cta_support_email', 'support@clinicaltrainingacademy.com' );
 		add_option( 'cta_certificate_header_text', 'Certificate of Completion' );
 		add_option( 'cta_certificate_footer_text', 'clinicaltrainingacademy.com' );
+		add_option( 'cta_certificate_provider_address', '' );
 		add_option( 'cta_certificate_signature_name', 'Candice Fuimaono, MS, LMFT' );
 		add_option( 'cta_certificate_signature_image_url', '' );
 
