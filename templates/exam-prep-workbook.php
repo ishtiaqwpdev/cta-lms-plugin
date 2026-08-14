@@ -92,104 +92,67 @@ if ( $practice_bank_resource && class_exists( 'CTA_Course_Materials' ) ) {
 			<div class="course-player__content">
 				<h1 class="course-player__lesson-title"><?php echo esc_html( (string) $module->title ); ?></h1>
 
-				<?php if ( $wb_download_url || $bank_download_url ) : ?>
-					<div class="cta-ep-workbook-actions">
-						<?php if ( $wb_download_url ) : ?>
-							<a class="btn btn-outline btn--sm" href="<?php echo esc_url( $wb_download_url ); ?>" target="_blank" rel="noopener noreferrer">
-								<?php esc_html_e( 'Download Printable Workbook (DOCX)', 'cta-lms' ); ?>
-							</a>
-						<?php endif; ?>
-						<?php if ( $bank_download_url ) : ?>
-							<a class="btn btn-outline btn--sm" href="<?php echo esc_url( $bank_download_url ); ?>" target="_blank" rel="noopener noreferrer">
-								<?php echo esc_html( (string) $practice_bank_resource->title ); ?>
-							</a>
-						<?php endif; ?>
-					</div>
-				<?php endif; ?>
+				<?php
+				$workbook_tabs = array();
+				if ( ! empty( $exam_lesson['html'] ) && class_exists( 'CTA_Exam_Prep_Workbook_Sections' ) ) {
+					$workbook_tabs = CTA_Exam_Prep_Workbook_Sections::build_tabs(
+						$exam_lesson['html'],
+						array(
+							'quiz_cards'        => $workbook_quiz_cards ?? array(),
+							'bank_download_url' => $bank_download_url,
+							'bank_title'        => $practice_bank_resource ? (string) $practice_bank_resource->title : '',
+							'quiz_page_id'      => $quiz_page_id ?? 0,
+						)
+					);
+				} elseif ( ! empty( $workbook_quiz_cards ) || $bank_download_url ) {
+					$workbook_tabs = class_exists( 'CTA_Exam_Prep_Workbook_Sections' )
+						? CTA_Exam_Prep_Workbook_Sections::build_tabs(
+							'',
+							array(
+								'quiz_cards'        => $workbook_quiz_cards ?? array(),
+								'bank_download_url' => $bank_download_url,
+								'bank_title'        => $practice_bank_resource ? (string) $practice_bank_resource->title : '',
+								'quiz_page_id'      => $quiz_page_id ?? 0,
+							)
+						)
+						: array();
+				}
 
-				<?php if ( ! empty( $exam_lesson['html'] ) ) : ?>
+				if ( ! empty( $workbook_tabs ) ) {
+					include CTA_PLUGIN_DIR . 'templates/partials/exam-prep-workbook-tabbed.php';
+				} elseif ( ! empty( $exam_lesson['html'] ) ) {
+					?>
 					<div class="cta-exam-lesson">
 						<div class="cta-exam-lesson__body">
 							<?php echo $exam_lesson['html']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						</div>
 					</div>
-				<?php else : ?>
+					<div class="course-player__lesson-actions" data-course-player-actions>
+						<?php if ( $module_complete ) : ?>
+							<button type="button" class="btn btn-primary course-player__action-btn" id="cta-mark-complete" disabled>
+								<?php echo esc_html__( 'Completed', 'cta-lms' ); ?>
+							</button>
+						<?php else : ?>
+							<button
+								type="button"
+								class="btn btn-primary course-player__action-btn"
+								id="cta-mark-complete"
+								data-module-id="<?php echo esc_attr( (int) $module->id ); ?>"
+								data-course-id="<?php echo esc_attr( (int) $course->id ); ?>"
+							>
+								<?php esc_html_e( 'Mark Workbook Complete', 'cta-lms' ); ?>
+							</button>
+						<?php endif; ?>
+					</div>
+					<?php
+				} else {
+					?>
 					<p class="cta-exam-lesson__missing">
 						<?php esc_html_e( 'Online lesson text is not available for this workbook yet. Use the printable download above if available.', 'cta-lms' ); ?>
 					</p>
-				<?php endif; ?>
-
-				<?php if ( ! empty( $workbook_quiz_cards ) ) : ?>
-					<section class="cta-ep-workbook-practice" aria-labelledby="cta-ep-workbook-practice-title">
-						<h2 class="dashboard-section__title" id="cta-ep-workbook-practice-title"><?php esc_html_e( 'Practice Bank / Knowledge Check', 'cta-lms' ); ?></h2>
-						<ul class="cta-exam-assessment-list">
-							<?php foreach ( $workbook_quiz_cards as $card ) : ?>
-								<li class="cta-exam-assessment-list__item">
-									<div class="cta-exam-assessment-list__meta">
-										<strong><?php echo esc_html( $card['quiz']->title ); ?></strong>
-										<?php if ( $card['passed'] ) : ?>
-											<span class="badge badge--success"><?php echo esc_html__( 'Passed', 'cta-lms' ); ?> — <?php echo esc_html( (string) (int) $card['best']->score ); ?>%</span>
-										<?php elseif ( $card['best'] ) : ?>
-											<span class="badge"><?php echo esc_html__( 'Best score', 'cta-lms' ); ?>: <?php echo esc_html( (string) (int) $card['best']->score ); ?>%</span>
-										<?php else : ?>
-											<span class="badge"><?php echo esc_html__( 'Not started', 'cta-lms' ); ?></span>
-										<?php endif; ?>
-									</div>
-									<?php if ( $quiz_page_id && ! empty( $card['url'] ) && '#' !== $card['url'] ) : ?>
-										<a href="<?php echo esc_url( $card['url'] ); ?>" class="btn btn-primary btn--sm cta-quiz-btn">
-											<?php echo $card['passed'] ? esc_html__( 'Retake', 'cta-lms' ) : esc_html__( 'Start Practice Bank', 'cta-lms' ); ?>
-										</a>
-									<?php endif; ?>
-								</li>
-							<?php endforeach; ?>
-						</ul>
-					</section>
-				<?php elseif ( $bank_download_url ) : ?>
-					<section class="cta-ep-workbook-practice" aria-labelledby="cta-ep-workbook-practice-dl-title">
-						<h2 class="dashboard-section__title" id="cta-ep-workbook-practice-dl-title"><?php esc_html_e( 'Practice Bank / Knowledge Check', 'cta-lms' ); ?></h2>
-						<p><?php esc_html_e( 'Take this workbook\'s practice questions using the downloadable question bank above, or check back when the online quiz is published for this program.', 'cta-lms' ); ?></p>
-					</section>
-				<?php endif; ?>
-
-				<div class="course-player__lesson-actions" data-course-player-actions>
-					<?php if ( $module_complete ) : ?>
-						<button type="button" class="btn btn-primary course-player__action-btn" id="cta-mark-complete" disabled>
-							<?php echo esc_html__( 'Completed', 'cta-lms' ); ?>
-						</button>
-					<?php else : ?>
-						<button
-							type="button"
-							class="btn btn-primary course-player__action-btn"
-							id="cta-mark-complete"
-							data-module-id="<?php echo esc_attr( (int) $module->id ); ?>"
-							data-course-id="<?php echo esc_attr( (int) $course->id ); ?>"
-						>
-							<?php esc_html_e( 'Mark Workbook Complete', 'cta-lms' ); ?>
-						</button>
-					<?php endif; ?>
-
-					<div class="course-player__nav-links" data-cta-workbook-nav>
-						<?php if ( $prev_url ) : ?>
-							<a href="<?php echo esc_url( $prev_url ); ?>" class="btn btn-outline course-player__action-btn">&larr; <?php esc_html_e( 'Previous Workbook', 'cta-lms' ); ?></a>
-						<?php endif; ?>
-						<?php if ( $next_url ) : ?>
-							<a href="<?php echo esc_url( $next_url ); ?>" class="btn btn-outline course-player__action-btn cta-next-module-link"><?php esc_html_e( 'Next Workbook', 'cta-lms' ); ?> &rarr;</a>
-						<?php endif; ?>
-					</div>
-				</div>
-
-				<?php if ( ! empty( $exam_lesson['html'] ) ) : ?>
-					<div class="cta-exam-lesson__nav" data-cta-workbook-nav>
-						<?php if ( $prev_url ) : ?>
-							<a href="<?php echo esc_url( $prev_url ); ?>" class="btn btn-outline">&larr; <?php esc_html_e( 'Previous Workbook', 'cta-lms' ); ?></a>
-						<?php else : ?>
-							<span></span>
-						<?php endif; ?>
-						<?php if ( $next_url ) : ?>
-							<a href="<?php echo esc_url( $next_url ); ?>" class="btn btn-primary cta-next-module-link"><?php esc_html_e( 'Next Workbook', 'cta-lms' ); ?> &rarr;</a>
-						<?php endif; ?>
-					</div>
-				<?php endif; ?>
+					<?php
+				}
+				?>
 			</div>
 
 			<aside class="course-player__sidebar" aria-label="<?php esc_attr_e( 'Program workbooks', 'cta-lms' ); ?>">

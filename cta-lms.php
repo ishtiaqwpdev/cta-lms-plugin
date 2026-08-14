@@ -88,6 +88,7 @@ $cta_required_files = array(
 	'includes/class-cta-exam-prep-lessons.php',
 	'includes/class-cta-exam-prep-getting-started.php',
 	'includes/class-cta-exam-prep-workbooks.php',
+	'includes/class-cta-exam-prep-workbook-sections.php',
 	'includes/class-cta-exam-prep-sidebar-nav.php',
 	'includes/class-cta-evaluation-questions.php',
 	'includes/class-cta-course-attestation.php',

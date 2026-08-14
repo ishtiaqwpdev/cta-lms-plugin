@@ -7482,6 +7482,166 @@ button.pagination__item:disabled {
   border-top: 1px solid var(--color-border, #e4e7ec);
 }
 
+/* Exam Prep — in-page workbook section tabs */
+.cta-plugin-wrapper .cta-ep-workbook-tabbed {
+  margin-top: 0.5rem;
+}
+
+.cta-plugin-wrapper .cta-ep-workbook-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 15;
+  margin: 0 0 var(--space-md, 1rem);
+  padding: var(--space-md, 1rem);
+  background: #fff;
+  border: 1px solid var(--color-border, #e4e7ec);
+  border-radius: var(--radius-lg, 12px);
+  box-shadow: 0 1px 3px rgba(16, 24, 40, 0.06);
+}
+
+.cta-plugin-wrapper .cta-ep-workbook-actions--toolbar {
+  margin-bottom: 0.75rem;
+}
+
+.cta-plugin-wrapper .cta-ep-workbook-toolbar__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.85rem;
+}
+
+.cta-plugin-wrapper .cta-ep-workbook-progress {
+  margin-bottom: 0.85rem;
+}
+
+.cta-plugin-wrapper .cta-ep-workbook-progress__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.35rem;
+}
+
+.cta-plugin-wrapper .cta-ep-workbook-progress__label {
+  font-size: 0.8125rem;
+  font-weight: var(--font-weight-medium, 500);
+  color: var(--color-text-muted, #667085);
+}
+
+.cta-plugin-wrapper .cta-ep-workbook-progress__track {
+  height: 0.35rem;
+  background: #eef2f6;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.cta-plugin-wrapper .cta-ep-workbook-progress__bar {
+  height: 100%;
+  background: var(--color-primary, #1a56db);
+  border-radius: 999px;
+  transition: width 0.25s ease;
+}
+
+.cta-plugin-wrapper .cta-ep-workbook-tabs {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.35rem;
+  overflow-x: auto;
+  padding-bottom: 0.15rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.cta-plugin-wrapper .cta-ep-workbook-tabs__tab {
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0.5rem 0.85rem;
+  font-family: inherit;
+  font-size: 0.8125rem;
+  font-weight: var(--font-weight-medium, 500);
+  line-height: 1.25;
+  color: var(--color-text-muted, #667085);
+  background: #f9fafb;
+  border: 1px solid var(--color-border, #e4e7ec);
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.cta-plugin-wrapper .cta-ep-workbook-tabs__tab:hover,
+.cta-plugin-wrapper .cta-ep-workbook-tabs__tab:focus-visible {
+  color: var(--color-navy, #122b51);
+  border-color: #c7d7fe;
+  background: #eef4ff;
+}
+
+.cta-plugin-wrapper .cta-ep-workbook-tabs__tab.is-active {
+  color: #fff;
+  background: var(--color-primary, #1a56db);
+  border-color: var(--color-primary, #1a56db);
+}
+
+.cta-plugin-wrapper .cta-ep-workbook-panels {
+  min-height: 12rem;
+}
+
+.cta-plugin-wrapper .cta-ep-workbook-panel {
+  animation: ctaEpWbPanelIn 0.22s ease;
+}
+
+.cta-plugin-wrapper .cta-ep-workbook-panel[hidden] {
+  display: none !important;
+}
+
+@keyframes ctaEpWbPanelIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cta-plugin-wrapper .cta-ep-workbook-section {
+  padding: var(--space-md, 1rem);
+  background: #fff;
+  border: 1px solid var(--color-border, #e4e7ec);
+  border-radius: var(--radius-lg, 12px);
+}
+
+.cta-plugin-wrapper .cta-ep-workbook-section__body {
+  padding-top: 0.25rem;
+}
+
+.cta-plugin-wrapper .cta-ep-workbook-tabbed__actions {
+  margin-top: var(--space-md, 1rem);
+  padding-top: var(--space-md, 1rem);
+  border-top: 1px solid var(--color-border, #e4e7ec);
+}
+
+@media (max-width: 768px) {
+  .cta-plugin-wrapper .cta-ep-workbook-toolbar {
+    position: static;
+    padding: var(--space-sm, 0.75rem);
+  }
+
+  .cta-plugin-wrapper .cta-ep-workbook-toolbar__nav .btn {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+
+  .cta-plugin-wrapper .cta-ep-workbook-tabs__tab {
+    font-size: 0.75rem;
+    padding: 0.45rem 0.7rem;
+  }
+}
+
 @media (max-width: 960px) {
   .cta-plugin-wrapper .cta-ep-workbooks-grid {
     grid-template-columns: 1fr;

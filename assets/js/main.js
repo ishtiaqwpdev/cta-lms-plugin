@@ -686,6 +686,81 @@
     });
   }
 
+  function initExamPrepWorkbookTabs() {
+    document.querySelectorAll("[data-cta-ep-workbook-tabs]").forEach(function (root) {
+      var tabs = root.querySelectorAll("[data-cta-ep-workbook-tab]");
+      var panels = root.querySelectorAll("[data-cta-ep-workbook-panel]");
+      var progressLabel = root.querySelector("[data-cta-ep-workbook-progress-label]");
+      var progressBar = root.querySelector("[data-cta-ep-workbook-progress-bar]");
+      var total = tabs.length;
+
+      if (!tabs.length || !panels.length) {
+        return;
+      }
+
+      function activateTab(tabKey, tabIndex) {
+        tabs.forEach(function (tab) {
+          var isActive = tab.getAttribute("data-cta-ep-workbook-tab") === tabKey;
+          tab.classList.toggle("is-active", isActive);
+          tab.setAttribute("aria-selected", isActive ? "true" : "false");
+        });
+
+        panels.forEach(function (panel) {
+          var isActive = panel.getAttribute("data-cta-ep-workbook-panel") === tabKey;
+          panel.classList.toggle("is-active", isActive);
+          if (isActive) {
+            panel.removeAttribute("hidden");
+          } else {
+            panel.setAttribute("hidden", "");
+          }
+        });
+
+        if (progressLabel && tabIndex) {
+          progressLabel.textContent = "Section " + tabIndex + " of " + total;
+        }
+
+        if (progressBar && tabIndex) {
+          progressBar.style.width = Math.round((tabIndex / total) * 100) + "%";
+        }
+
+        if (window.history && window.history.replaceState) {
+          var url = new URL(window.location.href);
+          url.searchParams.set("wb_section", tabKey);
+          window.history.replaceState(null, "", url.toString());
+        }
+      }
+
+      tabs.forEach(function (tab) {
+        tab.addEventListener("click", function () {
+          activateTab(
+            tab.getAttribute("data-cta-ep-workbook-tab"),
+            parseInt(tab.getAttribute("data-tab-index"), 10) || 1
+          );
+        });
+      });
+
+      var params = new URLSearchParams(window.location.search);
+      var requested = params.get("wb_section");
+      var matched = false;
+
+      if (requested) {
+        tabs.forEach(function (tab) {
+          if (tab.getAttribute("data-cta-ep-workbook-tab") === requested) {
+            activateTab(requested, parseInt(tab.getAttribute("data-tab-index"), 10) || 1);
+            matched = true;
+          }
+        });
+      }
+
+      if (!matched && tabs[0]) {
+        activateTab(
+          tabs[0].getAttribute("data-cta-ep-workbook-tab"),
+          parseInt(tabs[0].getAttribute("data-tab-index"), 10) || 1
+        );
+      }
+    });
+  }
+
   function initExamPrepSidebarNav() {
     var HOVER_CLOSE_DELAY = 280;
     var hoverMedia = window.matchMedia("(hover: hover) and (pointer: fine)");
@@ -4902,6 +4977,7 @@
     initDashboardUser();
     initCertificateDownload();
     initDashboardNav();
+    initExamPrepWorkbookTabs();
     initExamPrepSidebarNav();
     initDashboardMobileMenu();
     initDashboardSettings();
