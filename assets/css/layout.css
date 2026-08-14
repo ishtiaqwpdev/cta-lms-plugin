@@ -1904,7 +1904,21 @@ button.pagination__item:disabled {
 
 .cta-plugin-wrapper .course-module-list__info {
   min-width: 0;
-  overflow-wrap: anywhere;
+}
+
+/*
+ * Theme compat applies overflow-wrap:anywhere to course detail copy, which drops
+ * min-content width to a single character and lets these tracks collapse into a
+ * sliver on phones. Break only when a word would actually overflow.
+ */
+.cta-plugin-wrapper .course-module-list__info,
+.cta-plugin-wrapper .course-module-list__title,
+.cta-plugin-wrapper .course-module-list__desc,
+.cta-plugin-wrapper .course-module-list__summary,
+.cta-plugin-wrapper .course-module-list__summary li,
+.cta-plugin-wrapper .course-module-list__summary-label {
+  overflow-wrap: break-word;
+  word-break: normal;
 }
 
 /* Materials rows (shared course-materials partial) share the module-list shell. */
