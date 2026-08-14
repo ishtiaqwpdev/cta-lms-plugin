@@ -97,11 +97,9 @@ class CTA_Exam_Prep_Sidebar_Nav {
 			);
 		}
 
-		$flashcard_deck = class_exists( 'CTA_Flashcards' )
-			? CTA_Flashcards::get_deck_for_course( $course )
-			: null;
+		$show_flashcard_center = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course );
 
-		if ( $flashcard_deck ) {
+		if ( $show_flashcard_center ) {
 			$sections[] = self::section(
 				'flashcards',
 				__( 'Flashcard Study Center', 'cta-lms' ),

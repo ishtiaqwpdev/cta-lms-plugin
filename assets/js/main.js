@@ -4804,6 +4804,546 @@
   }
 
   /**
+   * Exam Prep Flashcard Study Center (landing / study / browse modes).
+   */
+  function initExamPrepFlashcardCenter() {
+    var roots = document.querySelectorAll("[data-cta-fsc]");
+    if (!roots.length) {
+      return;
+    }
+
+    roots.forEach(function (root) {
+      if (root.getAttribute("data-cta-fsc-ready") === "1") {
+        return;
+      }
+
+      var deckEl = root.querySelector("[data-cta-fsc-deck]");
+      if (!deckEl) {
+        return;
+      }
+
+      var deck;
+      try {
+        deck = JSON.parse(deckEl.textContent || "{}");
+      } catch (err) {
+        return;
+      }
+
+      var cards = Array.isArray(deck.cards) ? deck.cards : [];
+      var domains = Array.isArray(deck.domains) ? deck.domains : [];
+      var hasContent = !!deck.has_content && cards.length > 0;
+      var domainLabels = { all: "All domains" };
+
+      domains.forEach(function (domain) {
+        if (domain && domain.key) {
+          domainLabels[domain.key] = domain.label || domain.key;
+        }
+      });
+
+      cards.forEach(function (card) {
+        if (card && card.domain && !domainLabels[card.domain]) {
+          domainLabels[card.domain] = card.domain;
+        }
+      });
+
+      var panels = {
+        landing: root.querySelector('[data-cta-fsc-panel="landing"]'),
+        study: root.querySelector('[data-cta-fsc-panel="study"]'),
+        browse: root.querySelector('[data-cta-fsc-panel="browse"]'),
+      };
+
+      var storageKey = root.getAttribute("data-storage-key") || "cta_fsc";
+      var progress = { knowIt: [], reviewAgain: [] };
+
+      try {
+        var saved = JSON.parse(localStorage.getItem(storageKey) || "{}");
+        if (Array.isArray(saved.knowIt)) {
+          progress.knowIt = saved.knowIt.slice();
+        }
+        if (Array.isArray(saved.reviewAgain)) {
+          progress.reviewAgain = saved.reviewAgain.slice();
+        }
+      } catch (storageErr) {
+        progress = { knowIt: [], reviewAgain: [] };
+      }
+
+      function saveProgress() {
+        try {
+          localStorage.setItem(
+            storageKey,
+            JSON.stringify({
+              knowIt: progress.knowIt,
+              reviewAgain: progress.reviewAgain,
+            })
+          );
+        } catch (saveErr) {
+          /* ignore quota errors */
+        }
+      }
+
+      function domainLabel(key) {
+        return domainLabels[key] || key || "";
+      }
+
+      function cardMatches(card, domainKey, searchTerm) {
+        if (domainKey && domainKey !== "all" && card.domain !== domainKey) {
+          return false;
+        }
+        if (!searchTerm) {
+          return true;
+        }
+        var haystack = (
+          (card.front || "") +
+          " " +
+          (card.back || "") +
+          " " +
+          (card.memory_cue || "") +
+          " " +
+          domainLabel(card.domain)
+        ).toLowerCase();
+        return haystack.indexOf(searchTerm) !== -1;
+      }
+
+      var state = {
+        panel: "landing",
+        domain: "all",
+        search: "",
+        order: [],
+        index: 0,
+        flipped: false,
+      };
+
+      function buildDomainChips(container) {
+        if (!container) {
+          return;
+        }
+        var html =
+          '<button type="button" class="cta-fsc__domain-chip is-active" data-cta-fsc-domain="all">All domains</button>';
+        domains.forEach(function (domain) {
+          if (!domain || !domain.key || !(domain.count > 0)) {
+            return;
+          }
+          html +=
+            '<button type="button" class="cta-fsc__domain-chip" data-cta-fsc-domain="' +
+            domain.key +
+            '">' +
+            domain.label +
+            "</button>";
+        });
+        container.innerHTML = html;
+      }
+
+      root.querySelectorAll("[data-cta-fsc-domain-filters]").forEach(buildDomainChips);
+
+      function filteredIndices() {
+        var searchTerm = state.search.trim().toLowerCase();
+        var indices = [];
+        cards.forEach(function (card, idx) {
+          if (cardMatches(card, state.domain, searchTerm)) {
+            indices.push(idx);
+          }
+        });
+        return indices;
+      }
+
+      function rebuildOrder() {
+        state.order = filteredIndices();
+        if (state.index >= state.order.length) {
+          state.index = Math.max(0, state.order.length - 1);
+        }
+      }
+
+      function currentCard() {
+        if (!state.order.length) {
+          return null;
+        }
+        return cards[state.order[state.index]] || null;
+      }
+
+      function setPanel(name) {
+        state.panel = name;
+        Object.keys(panels).forEach(function (key) {
+          if (!panels[key]) {
+            return;
+          }
+          panels[key].hidden = key !== name;
+        });
+        root.querySelectorAll("[data-cta-fsc-mode]").forEach(function (tab) {
+          var active = tab.getAttribute("data-cta-fsc-mode") === name;
+          tab.classList.toggle("is-active", active);
+          tab.setAttribute("aria-selected", active ? "true" : "false");
+        });
+        if (name === "study") {
+          renderStudy();
+        } else if (name === "browse") {
+          renderBrowse();
+        }
+      }
+
+      function syncFiltersFromPanel(panelEl) {
+        if (!panelEl) {
+          return;
+        }
+        var searchInput = panelEl.querySelector("[data-cta-fsc-search]");
+        if (searchInput && searchInput.value !== state.search) {
+          searchInput.value = state.search;
+        }
+        panelEl.querySelectorAll("[data-cta-fsc-domain]").forEach(function (chip) {
+          var active = chip.getAttribute("data-cta-fsc-domain") === state.domain;
+          chip.classList.toggle("is-active", active);
+        });
+      }
+
+      function renderStudy(resetFlip) {
+        var panel = panels.study;
+        if (!panel) {
+          return;
+        }
+
+        syncFiltersFromPanel(panel);
+        rebuildOrder();
+
+        var flipBtn = panel.querySelector("[data-cta-fsc-flip]");
+        var frontEl = panel.querySelector("[data-cta-fsc-front]");
+        var backEl = panel.querySelector("[data-cta-fsc-back]");
+        var frontDomain = panel.querySelector("[data-cta-fsc-front-domain]");
+        var backDomain = panel.querySelector("[data-cta-fsc-back-domain]");
+        var cueWrap = panel.querySelector("[data-cta-fsc-memory-cue-wrap]");
+        var cueEl = panel.querySelector("[data-cta-fsc-memory-cue]");
+        var progressLabel = panel.querySelector("[data-cta-fsc-progress-label]");
+        var progressDomain = panel.querySelector("[data-cta-fsc-progress-domain]");
+        var progressBar = panel.querySelector("[data-cta-fsc-progress-bar]");
+        var prevBtn = panel.querySelector("[data-cta-fsc-prev]");
+        var nextBtn = panel.querySelector("[data-cta-fsc-next]");
+        var knowBtn = panel.querySelector("[data-cta-fsc-know]");
+        var reviewBtn = panel.querySelector("[data-cta-fsc-review]");
+
+        if (resetFlip !== false) {
+          state.flipped = false;
+          if (flipBtn) {
+            flipBtn.classList.remove("is-flipped");
+            flipBtn.setAttribute("aria-pressed", "false");
+          }
+        }
+
+        var card = currentCard();
+
+        if (!card) {
+          if (frontEl) {
+            frontEl.textContent = "No cards match your filters.";
+          }
+          if (backEl) {
+            backEl.textContent = "";
+          }
+          if (progressLabel) {
+            progressLabel.textContent = "0 cards";
+          }
+          if (progressBar) {
+            progressBar.style.width = "0%";
+          }
+          if (prevBtn) {
+            prevBtn.disabled = true;
+          }
+          if (nextBtn) {
+            nextBtn.disabled = true;
+          }
+          return;
+        }
+
+        if (frontEl) {
+          frontEl.textContent = card.front || "";
+        }
+        if (backEl) {
+          backEl.textContent = card.back || "";
+        }
+        if (frontDomain) {
+          frontDomain.textContent = domainLabel(card.domain);
+        }
+        if (backDomain) {
+          backDomain.textContent = domainLabel(card.domain);
+        }
+        if (cueWrap && cueEl) {
+          var cue = card.memory_cue || "";
+          cueEl.textContent = cue;
+          cueWrap.hidden = !cue;
+        }
+
+        if (progressLabel) {
+          progressLabel.textContent =
+            "Card " + (state.index + 1) + " of " + state.order.length;
+        }
+        if (progressDomain) {
+          progressDomain.textContent = domainLabel(card.domain);
+        }
+        if (progressBar) {
+          progressBar.style.width =
+            Math.round(((state.index + 1) / state.order.length) * 100) + "%";
+        }
+        if (prevBtn) {
+          prevBtn.disabled = state.index <= 0;
+        }
+        if (nextBtn) {
+          nextBtn.disabled = state.index >= state.order.length - 1;
+        }
+
+        if (knowBtn) {
+          knowBtn.classList.toggle("is-marked-know", progress.knowIt.indexOf(card.id) !== -1);
+        }
+        if (reviewBtn) {
+          reviewBtn.classList.toggle(
+            "is-marked-review",
+            progress.reviewAgain.indexOf(card.id) !== -1
+          );
+        }
+      }
+
+      function renderBrowse() {
+        var panel = panels.browse;
+        if (!panel) {
+          return;
+        }
+
+        syncFiltersFromPanel(panel);
+        var indices = filteredIndices();
+        var grid = panel.querySelector("[data-cta-fsc-browse-grid]");
+        var meta = panel.querySelector("[data-cta-fsc-browse-meta]");
+
+        if (meta) {
+          meta.textContent = indices.length + " card" + (indices.length === 1 ? "" : "s") + " shown";
+        }
+
+        if (!grid) {
+          return;
+        }
+
+        if (!indices.length) {
+          grid.innerHTML =
+            '<p class="cta-fsc__browse-empty">No cards match your filters. Try another domain or search term.</p>';
+          return;
+        }
+
+        grid.innerHTML = indices
+          .map(function (idx) {
+            var card = cards[idx];
+            var status = "";
+            if (progress.knowIt.indexOf(card.id) !== -1) {
+              status =
+                '<span class="cta-fsc__browse-card-status cta-fsc__browse-card-status--know">Know It</span>';
+            } else if (progress.reviewAgain.indexOf(card.id) !== -1) {
+              status =
+                '<span class="cta-fsc__browse-card-status cta-fsc__browse-card-status--review">Review Again</span>';
+            }
+            return (
+              '<button type="button" class="cta-fsc__browse-card" data-cta-fsc-browse-card="' +
+              idx +
+              '">' +
+              '<span class="cta-fsc__browse-card-badge">' +
+              domainLabel(card.domain) +
+              "</span>" +
+              status +
+              '<span class="cta-fsc__browse-card-front">' +
+              escapeHtml(card.front || "") +
+              "</span>" +
+              '<span class="cta-fsc__browse-card-back" hidden>' +
+              escapeHtml(card.back || "") +
+              "</span>" +
+              (card.memory_cue
+                ? '<span class="cta-fsc__browse-card-cue" hidden><strong>Memory Cue:</strong> ' +
+                  escapeHtml(card.memory_cue) +
+                  "</span>"
+                : "") +
+              "</button>"
+            );
+          })
+          .join("");
+      }
+
+      function escapeHtml(text) {
+        return String(text)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      function markCard(cardId, type) {
+        if (!cardId) {
+          return;
+        }
+        var knowIdx = progress.knowIt.indexOf(cardId);
+        var reviewIdx = progress.reviewAgain.indexOf(cardId);
+
+        if (type === "know") {
+          if (knowIdx === -1) {
+            progress.knowIt.push(cardId);
+          } else {
+            progress.knowIt.splice(knowIdx, 1);
+          }
+          if (reviewIdx !== -1) {
+            progress.reviewAgain.splice(reviewIdx, 1);
+          }
+        } else if (type === "review") {
+          if (reviewIdx === -1) {
+            progress.reviewAgain.push(cardId);
+          } else {
+            progress.reviewAgain.splice(reviewIdx, 1);
+          }
+          if (knowIdx !== -1) {
+            progress.knowIt.splice(knowIdx, 1);
+          }
+        }
+
+        saveProgress();
+        if (state.panel === "study") {
+          renderStudy(false);
+        } else if (state.panel === "browse") {
+          renderBrowse();
+        }
+      }
+
+      root.querySelectorAll("[data-cta-fsc-start]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          if (!hasContent) {
+            return;
+          }
+          var mode = btn.getAttribute("data-cta-fsc-start") || "study";
+          state.index = 0;
+          state.flipped = false;
+          rebuildOrder();
+          setPanel(mode);
+        });
+      });
+
+      root.querySelectorAll("[data-cta-fsc-back]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          setPanel("landing");
+        });
+      });
+
+      root.querySelectorAll("[data-cta-fsc-mode]").forEach(function (tab) {
+        tab.addEventListener("click", function () {
+          if (!hasContent) {
+            return;
+          }
+          var mode = tab.getAttribute("data-cta-fsc-mode") || "study";
+          setPanel(mode);
+        });
+      });
+
+      root.addEventListener("input", function (e) {
+        var target = e.target;
+        if (!target || !target.matches("[data-cta-fsc-search]")) {
+          return;
+        }
+        state.search = target.value || "";
+        root.querySelectorAll("[data-cta-fsc-search]").forEach(function (input) {
+          if (input !== target) {
+            input.value = state.search;
+          }
+        });
+        state.index = 0;
+        state.flipped = false;
+        if (state.panel === "study") {
+          renderStudy();
+        } else if (state.panel === "browse") {
+          renderBrowse();
+        }
+      });
+
+      root.addEventListener("click", function (e) {
+        var target = e.target;
+        if (!target) {
+          return;
+        }
+
+        var domainChip = target.closest("[data-cta-fsc-domain]");
+        if (domainChip) {
+          state.domain = domainChip.getAttribute("data-cta-fsc-domain") || "all";
+          root.querySelectorAll("[data-cta-fsc-domain]").forEach(function (chip) {
+            chip.classList.toggle(
+              "is-active",
+              chip.getAttribute("data-cta-fsc-domain") === state.domain
+            );
+          });
+          state.index = 0;
+          state.flipped = false;
+          if (state.panel === "study") {
+            renderStudy();
+          } else if (state.panel === "browse") {
+            renderBrowse();
+          }
+          return;
+        }
+
+        if (target.matches("[data-cta-fsc-flip]") || target.closest("[data-cta-fsc-flip]")) {
+          var flipBtn = target.closest("[data-cta-fsc-flip]");
+          if (!flipBtn || state.panel !== "study") {
+            return;
+          }
+          state.flipped = !state.flipped;
+          flipBtn.classList.toggle("is-flipped", state.flipped);
+          flipBtn.setAttribute("aria-pressed", state.flipped ? "true" : "false");
+          return;
+        }
+
+        if (target.matches("[data-cta-fsc-prev]")) {
+          if (state.index > 0) {
+            state.index -= 1;
+            renderStudy();
+          }
+          return;
+        }
+
+        if (target.matches("[data-cta-fsc-next]")) {
+          if (state.index < state.order.length - 1) {
+            state.index += 1;
+            renderStudy();
+          }
+          return;
+        }
+
+        if (target.matches("[data-cta-fsc-shuffle]")) {
+          for (var i = state.order.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var tmp = state.order[i];
+            state.order[i] = state.order[j];
+            state.order[j] = tmp;
+          }
+          state.index = 0;
+          state.flipped = false;
+          renderStudy();
+          return;
+        }
+
+        if (target.matches("[data-cta-fsc-know]") || target.matches("[data-cta-fsc-review]")) {
+          var card = currentCard();
+          if (!card) {
+            return;
+          }
+          markCard(card.id, target.matches("[data-cta-fsc-know]") ? "know" : "review");
+          return;
+        }
+
+        var browseCard = target.closest("[data-cta-fsc-browse-card]");
+        if (browseCard) {
+          var back = browseCard.querySelector(".cta-fsc__browse-card-back");
+          var cue = browseCard.querySelector(".cta-fsc__browse-card-cue");
+          var expanded = browseCard.classList.toggle("is-expanded");
+          if (back) {
+            back.hidden = !expanded;
+          }
+          if (cue) {
+            cue.hidden = !expanded;
+          }
+        }
+      });
+
+      root.setAttribute("data-cta-fsc-ready", "1");
+      rebuildOrder();
+    });
+  }
+
+  /**
    * In-browser Exam Prep flashcards (flip / prev / next / shuffle).
    */
   function initCtaFlashcards() {
@@ -4968,6 +5508,7 @@
     initCtaWpCoursePlayer();
     initCtaQuiz();
     initCtaFlashcards();
+    initExamPrepFlashcardCenter();
     initCtaDashboardSettings();
     initCtaCertificateDownload();
     initCtaSupervisionDashboard();

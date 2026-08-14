@@ -85,10 +85,10 @@ $home_url_player = $course_home_url ?? add_query_arg(
 		<section class="cta-ep-home-section cta-ep-section-view" aria-labelledby="cta-ep-section-view-title">
 			<h2 class="dashboard-section__title" id="cta-ep-section-view-title"><?php echo esc_html( $page_title ); ?></h2>
 
-			<?php if ( 'flashcards' === $section_view && ! empty( $section_data['flashcard_deck'] ) ) : ?>
+			<?php if ( 'flashcards' === $section_view ) : ?>
 				<?php
-				$flashcard_deck = $section_data['flashcard_deck'];
-				include CTA_PLUGIN_DIR . 'templates/partials/flashcard-viewer.php';
+				$flashcard_center_deck = $section_data['flashcard_center_deck'] ?? null;
+				include CTA_PLUGIN_DIR . 'templates/partials/exam-prep-flashcard-center.php';
 				?>
 			<?php elseif ( 'exams' === $section_view && ! empty( $section_data['quiz_cards'] ) ) : ?>
 				<p class="cta-ep-home-section__lede"><?php esc_html_e( 'Launch a full-length simulation or checkpoint assessment. Your best attempt score is tracked for each exam.', 'cta-lms' ); ?></p>

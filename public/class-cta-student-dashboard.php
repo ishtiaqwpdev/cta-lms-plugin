@@ -1292,8 +1292,8 @@ class CTA_Student_Dashboard {
 
 		$section_data = array();
 
-		if ( 'flashcards' === $section_view && class_exists( 'CTA_Flashcards' ) ) {
-			$section_data['flashcard_deck'] = CTA_Flashcards::get_deck_for_course( $course );
+		if ( 'flashcards' === $section_view && class_exists( 'CTA_Exam_Prep_Flashcard_Center' ) ) {
+			$section_data['flashcard_center_deck'] = CTA_Exam_Prep_Flashcard_Center::get_deck_for_course( $course );
 		}
 
 		if ( 'exams' === $section_view ) {
