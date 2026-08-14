@@ -400,6 +400,11 @@ body.cta-lms-page .elementor-shortcode {
   color: var(--color-white) !important;
 }
 
+.cta-lms .cta-ep-sidebar-nav__course-label,
+.cta-plugin-wrapper .dashboard-sidebar .cta-ep-sidebar-nav__course-label {
+  color: var(--color-white, #fff) !important;
+}
+
 .cta-lms .course-detail__layout,
 .cta-lms .course-hero__layout {
   width: 100%;
