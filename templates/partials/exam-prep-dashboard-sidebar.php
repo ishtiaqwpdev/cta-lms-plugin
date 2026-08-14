@@ -14,6 +14,25 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( empty( $sidebar_nav ) || empty( $sidebar_nav['course'] ) ) {
+	?>
+	<aside class="dashboard-sidebar" aria-label="<?php echo esc_attr__( 'Dashboard navigation', 'cta-lms' ); ?>">
+		<div class="dashboard-sidebar__user">
+			<div class="dashboard-sidebar__avatar" aria-hidden="true"><?php echo esc_html( $dashboard_user['initials'] ?? '' ); ?></div>
+			<div class="dashboard-sidebar__user-info">
+				<p class="dashboard-sidebar__name"><?php echo esc_html( $dashboard_user['displayName'] ?? '' ); ?></p>
+				<p class="dashboard-sidebar__license"><?php echo esc_html( $dashboard_user['licenseNumber'] ?? '' ); ?></p>
+			</div>
+		</div>
+		<nav class="dashboard-sidebar__nav">
+			<?php if ( ! empty( $dashboard_url ) ) : ?>
+				<a href="<?php echo esc_url( $dashboard_url ); ?>" class="dashboard-sidebar__link">
+					<?php echo esc_html__( 'My Courses', 'cta-lms' ); ?>
+				</a>
+			<?php endif; ?>
+		</nav>
+		<?php include CTA_PLUGIN_DIR . 'templates/partials/dashboard-sidebar-footer.php'; ?>
+	</aside>
+	<?php
 	return;
 }
 

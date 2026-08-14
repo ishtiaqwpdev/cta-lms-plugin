@@ -1146,7 +1146,15 @@ class CTA_Student_Dashboard {
 			$context['quiz_id'] = absint( $_GET['quiz_id'] ?? 0 );
 		}
 
-		return CTA_Exam_Prep_Sidebar_Nav::build( $course, $modules, $completed_ids, $this, $context );
+		try {
+			return CTA_Exam_Prep_Sidebar_Nav::build( $course, $modules, $completed_ids, $this, $context );
+		} catch ( Throwable $e ) {
+			if ( defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ) {
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+				error_log( 'CTA exam prep sidebar nav build failed: ' . $e->getMessage() );
+			}
+			return array();
+		}
 	}
 
 	/**
@@ -1598,7 +1606,7 @@ class CTA_Student_Dashboard {
 	 *
 	 * @return string
 	 */
-	private function get_dashboard_url() {
+	public function get_dashboard_url() {
 		$page_id = absint( get_option( 'cta_student_dashboard_page_id', 0 ) );
 
 		if ( ! $page_id ) {
@@ -1615,7 +1623,7 @@ class CTA_Student_Dashboard {
 	 *
 	 * @return string
 	 */
-	private function get_player_page_url() {
+	public function get_player_page_url() {
 		$page_id = absint( get_option( 'cta_course_player_page_id', 0 ) );
 
 		if ( ! $page_id ) {
