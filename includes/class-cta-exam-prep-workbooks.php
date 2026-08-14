@@ -289,6 +289,89 @@ class CTA_Exam_Prep_Workbooks {
 			$player_base
 		);
 	}
+
+	/**
+	 * Resolve the primary Practice Bank action for a workbook toolbar button.
+	 *
+	 * Prefers in-app quiz URL, then in-page knowledge/practice tab, then DOCX download.
+	 *
+	 * @param array       $workbook_quiz_cards      Workbook-scoped quiz cards.
+	 * @param array       $workbook_tabs            Built in-page section tabs.
+	 * @param string      $workbook_page_url        Current workbook player URL.
+	 * @param string      $bank_download_url        Optional DOCX practice bank download URL.
+	 * @param object|null $practice_bank_resource   Practice bank resource row.
+	 * @return array<string,mixed>|null
+	 */
+	public static function resolve_practice_bank_action( $workbook_quiz_cards, $workbook_tabs, $workbook_page_url, $bank_download_url = '', $practice_bank_resource = null ) {
+		$fallback_label = $practice_bank_resource && ! empty( $practice_bank_resource->title )
+			? (string) $practice_bank_resource->title
+			: __( 'Practice Bank', 'cta-lms' );
+		$docx_url = (string) $bank_download_url;
+
+		foreach ( (array) $workbook_quiz_cards as $card ) {
+			$url = (string) ( $card['url'] ?? '' );
+			if ( '' === $url || '#' === $url ) {
+				continue;
+			}
+
+			$quiz  = $card['quiz'] ?? null;
+			$label = ( $quiz && ! empty( $quiz->title ) ) ? (string) $quiz->title : $fallback_label;
+
+			return array(
+				'mode'     => 'quiz',
+				'url'      => $url,
+				'label'    => $label,
+				'docx_url' => $docx_url,
+			);
+		}
+
+		$tab_priority = array( 'practice', 'knowledge' );
+		foreach ( $tab_priority as $tab_key ) {
+			foreach ( (array) $workbook_tabs as $tab ) {
+				if ( (string) ( $tab['key'] ?? '' ) !== $tab_key ) {
+					continue;
+				}
+
+				$label = (string) ( $tab['label'] ?? $fallback_label );
+				if ( 'practice' === $tab_key && $practice_bank_resource && ! empty( $practice_bank_resource->title ) ) {
+					$label = (string) $practice_bank_resource->title;
+				}
+				if ( 'practice' === $tab_key && ! empty( $tab['quiz_cards'] ) ) {
+					foreach ( (array) $tab['quiz_cards'] as $card ) {
+						$url = (string) ( $card['url'] ?? '' );
+						if ( '' !== $url && '#' !== $url ) {
+							$quiz = $card['quiz'] ?? null;
+							return array(
+								'mode'     => 'quiz',
+								'url'      => $url,
+								'label'    => ( $quiz && ! empty( $quiz->title ) ) ? (string) $quiz->title : $fallback_label,
+								'docx_url' => $docx_url,
+							);
+						}
+					}
+				}
+
+				return array(
+					'mode'     => 'tab',
+					'url'      => add_query_arg( 'wb_section', $tab_key, (string) $workbook_page_url ),
+					'label'    => $label,
+					'docx_url' => $docx_url,
+					'tab_key'  => $tab_key,
+				);
+			}
+		}
+
+		if ( '' !== $docx_url ) {
+			return array(
+				'mode'     => 'download',
+				'url'      => $docx_url,
+				'label'    => $fallback_label,
+				'docx_url' => '',
+			);
+		}
+
+		return null;
+	}
 }
 
 }

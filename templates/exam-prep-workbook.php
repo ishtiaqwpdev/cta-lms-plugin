@@ -119,6 +119,22 @@ if ( $practice_bank_resource && class_exists( 'CTA_Course_Materials' ) ) {
 				}
 
 				if ( ! empty( $workbook_tabs ) ) {
+					$workbook_page_url = add_query_arg(
+						array(
+							'course_id' => (int) $course->id,
+							'module_id' => (int) $module->id,
+						),
+						$player_base
+					);
+					$practice_bank_action = class_exists( 'CTA_Exam_Prep_Workbooks' )
+						? CTA_Exam_Prep_Workbooks::resolve_practice_bank_action(
+							$workbook_quiz_cards ?? array(),
+							$workbook_tabs,
+							$workbook_page_url,
+							$bank_download_url,
+							$practice_bank_resource
+						)
+						: null;
 					include CTA_PLUGIN_DIR . 'templates/partials/exam-prep-workbook-tabbed.php';
 				} elseif ( ! empty( $exam_lesson['html'] ) ) {
 					?>

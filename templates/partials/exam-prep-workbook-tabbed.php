@@ -7,6 +7,7 @@
  * @var array  $workbook_tabs     Tabs from CTA_Exam_Prep_Workbook_Sections::build_tabs().
  * @var string $wb_download_url   Printable workbook URL.
  * @var string $bank_download_url Practice bank download URL.
+ * @var array|null $practice_bank_action Resolved practice bank toolbar action.
  * @var object|null $practice_bank_resource Practice bank resource row.
  * @var string $prev_url          Previous workbook URL.
  * @var string $next_url          Next workbook URL.
@@ -41,17 +42,36 @@ foreach ( $workbook_tabs as $tab ) {
 	data-tab-count="<?php echo esc_attr( (string) $tab_count ); ?>"
 >
 	<div class="cta-ep-workbook-toolbar" data-cta-ep-workbook-toolbar>
-		<?php if ( $wb_download_url || $bank_download_url ) : ?>
+		<?php if ( $wb_download_url || ! empty( $practice_bank_action ) ) : ?>
 			<div class="cta-ep-workbook-actions cta-ep-workbook-actions--toolbar">
 				<?php if ( $wb_download_url ) : ?>
 					<a class="btn btn-outline btn--sm" href="<?php echo esc_url( $wb_download_url ); ?>" target="_blank" rel="noopener noreferrer">
 						<?php esc_html_e( 'Download Printable Workbook (DOCX)', 'cta-lms' ); ?>
 					</a>
 				<?php endif; ?>
-				<?php if ( $bank_download_url ) : ?>
-					<a class="btn btn-outline btn--sm" href="<?php echo esc_url( $bank_download_url ); ?>" target="_blank" rel="noopener noreferrer">
-						<?php echo esc_html( $practice_bank_resource ? (string) $practice_bank_resource->title : __( 'Practice Bank (DOCX)', 'cta-lms' ) ); ?>
+				<?php if ( ! empty( $practice_bank_action ) ) : ?>
+					<?php
+					$pb_mode   = (string) ( $practice_bank_action['mode'] ?? '' );
+					$pb_url    = (string) ( $practice_bank_action['url'] ?? '' );
+					$pb_label  = (string) ( $practice_bank_action['label'] ?? __( 'Practice Bank', 'cta-lms' ) );
+					$pb_docx   = (string) ( $practice_bank_action['docx_url'] ?? '' );
+					$pb_class  = ( 'download' === $pb_mode ) ? 'btn btn-outline btn--sm' : 'btn btn-primary btn--sm';
+					$pb_target = ( 'download' === $pb_mode ) ? '_blank' : '';
+					?>
+					<a
+						class="<?php echo esc_attr( $pb_class ); ?>"
+						href="<?php echo esc_url( $pb_url ); ?>"
+						<?php if ( $pb_target ) : ?>
+							target="<?php echo esc_attr( $pb_target ); ?>" rel="noopener noreferrer"
+						<?php endif; ?>
+					>
+						<?php echo esc_html( $pb_label ); ?>
 					</a>
+					<?php if ( '' !== $pb_docx && 'download' !== $pb_mode ) : ?>
+						<a class="btn btn-outline btn--sm" href="<?php echo esc_url( $pb_docx ); ?>" target="_blank" rel="noopener noreferrer">
+							<?php esc_html_e( 'Download Practice Bank (DOCX)', 'cta-lms' ); ?>
+						</a>
+					<?php endif; ?>
 				<?php endif; ?>
 			</div>
 		<?php endif; ?>
