@@ -73,12 +73,6 @@ $workbooks_list_url = $workbooks_list_url ?? ( class_exists( 'CTA_Exam_Prep_Work
 		</header>
 
 		<?php
-		$home_url = $home_url_player;
-		$active   = 'home';
-		include CTA_PLUGIN_DIR . 'templates/partials/exam-prep-dashboard-nav.php';
-		?>
-
-		<?php
 		include CTA_PLUGIN_DIR . 'templates/partials/exam-prep-getting-started.php';
 		?>
 

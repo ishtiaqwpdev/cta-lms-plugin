@@ -82,11 +82,6 @@ $home_url_player = $course_home_url ?? add_query_arg(
 			</div>
 		</header>
 
-		<?php
-		$home_url = $home_url_player;
-		include CTA_PLUGIN_DIR . 'templates/partials/exam-prep-dashboard-nav.php';
-		?>
-
 		<section class="cta-ep-home-section cta-ep-section-view" aria-labelledby="cta-ep-section-view-title">
 			<h2 class="dashboard-section__title" id="cta-ep-section-view-title"><?php echo esc_html( $page_title ); ?></h2>
 

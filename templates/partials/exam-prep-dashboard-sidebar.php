@@ -55,9 +55,6 @@ $active_section   = (string) ( $sidebar_nav['active_section'] ?? '' );
 		<?php if ( $my_courses_url ) : ?>
 			<div class="cta-ep-sidebar-nav__root<?php echo ! empty( $enrolled_courses ) ? ' has-submenu' : ''; ?>">
 				<a href="<?php echo esc_url( $my_courses_url ); ?>" class="dashboard-sidebar__link cta-ep-sidebar-nav__root-link">
-					<span class="dashboard-sidebar__icon" aria-hidden="true">
-						<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-					</span>
 					<?php echo esc_html__( 'My Courses', 'cta-lms' ); ?>
 				</a>
 
@@ -107,9 +104,9 @@ $active_section   = (string) ( $sidebar_nav['active_section'] ?? '' );
 					>
 						<div class="cta-ep-sidebar-nav__tab-row">
 							<a
-								class="dashboard-sidebar__link cta-ep-sidebar-nav__tab-link<?php echo $is_active && ! $has_children ? ' dashboard-sidebar__link--active' : ''; ?><?php echo $is_active ? ' is-active-section' : ''; ?>"
+								class="dashboard-sidebar__link cta-ep-sidebar-nav__tab-link<?php echo $is_active ? ' is-active-section' : ''; ?>"
 								href="<?php echo esc_url( (string) ( $section['url'] ?? '' ) ); ?>"
-								<?php echo $is_active && ! $has_children ? 'aria-current="page"' : ''; ?>
+								<?php echo $is_active ? 'aria-current="page"' : ''; ?>
 							>
 								<?php echo esc_html( (string) ( $section['label'] ?? '' ) ); ?>
 							</a>

@@ -41,8 +41,6 @@ $total_count = count( (array) $workbook_items );
 			<a href="<?php echo esc_url( $home_url ); ?>">&larr; <?php echo esc_html__( 'Back to Course Home', 'cta-lms' ); ?></a>
 		</p>
 
-		<?php include CTA_PLUGIN_DIR . 'templates/partials/exam-prep-dashboard-nav.php'; ?>
-
 		<header class="cta-ep-workbooks__header">
 			<p class="cta-ep-workbooks__eyebrow"><?php esc_html_e( 'Workbooks / Learning Modules', 'cta-lms' ); ?></p>
 			<h1 class="cta-ep-workbooks__title"><?php echo esc_html( $display_title ); ?></h1>

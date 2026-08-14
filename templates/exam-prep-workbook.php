@@ -83,11 +83,6 @@ if ( $practice_bank_resource && class_exists( 'CTA_Course_Materials' ) ) {
 			<a href="<?php echo esc_url( $home_url ); ?>"><?php echo esc_html__( 'Course Home', 'cta-lms' ); ?></a>
 		</p>
 
-		<?php
-		$active = 'workbooks';
-		include CTA_PLUGIN_DIR . 'templates/partials/exam-prep-dashboard-nav.php';
-		?>
-
 		<div class="course-player-layout" data-cta-player-layout>
 			<div class="course-player__content">
 				<h1 class="course-player__lesson-title"><?php echo esc_html( (string) $module->title ); ?></h1>
