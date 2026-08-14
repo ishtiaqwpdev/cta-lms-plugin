@@ -290,7 +290,7 @@ class CTA_Admin {
 			'cta-admin',
 			CTA_PLUGIN_URL . 'admin/assets/css/admin.css',
 			array( 'cta-admin-fonts' ),
-			CTA_VERSION
+			CTA_Loader::asset_version( 'admin/assets/css/admin.css' )
 		);
 
 		wp_enqueue_script( 'jquery-ui-sortable' );
@@ -299,7 +299,7 @@ class CTA_Admin {
 			'cta-admin',
 			CTA_PLUGIN_URL . 'admin/assets/js/admin.js',
 			array( 'jquery', 'jquery-ui-sortable' ),
-			CTA_VERSION,
+			CTA_Loader::asset_version( 'admin/assets/js/admin.js' ),
 			true
 		);
 

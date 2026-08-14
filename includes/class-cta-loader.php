@@ -139,6 +139,30 @@ class CTA_Loader {
 	}
 
 	/**
+	 * Build a cache-busting version for a plugin asset.
+	 *
+	 * Deploys that ship assets without bumping CTA_VERSION would otherwise keep
+	 * serving stale CSS/JS from browser and page caches, so fall back to the
+	 * file modification time whenever it is readable.
+	 *
+	 * @param string $relative_path Asset path relative to the plugin root.
+	 * @return string Version string for wp_enqueue_*.
+	 */
+	public static function asset_version( $relative_path ) {
+		$absolute = CTA_PLUGIN_DIR . ltrim( (string) $relative_path, '/\\' );
+
+		if ( is_readable( $absolute ) ) {
+			$mtime = filemtime( $absolute );
+
+			if ( $mtime ) {
+				return CTA_VERSION . '.' . $mtime;
+			}
+		}
+
+		return CTA_VERSION;
+	}
+
+	/**
 	 * Enqueue CTA frontend CSS/JS (idempotent).
 	 *
 	 * Safe to call from shortcodes rendered in Elementor theme headers
@@ -164,28 +188,28 @@ class CTA_Loader {
 			'cta-variables',
 			CTA_PLUGIN_URL . 'assets/css/variables.css',
 			array(),
-			CTA_VERSION
+			self::asset_version( 'assets/css/variables.css' )
 		);
 
 		wp_enqueue_style(
 			'cta-global',
 			CTA_PLUGIN_URL . 'assets/css/global.css',
 			array( 'cta-variables' ),
-			CTA_VERSION
+			self::asset_version( 'assets/css/global.css' )
 		);
 
 		wp_enqueue_style(
 			'cta-components',
 			CTA_PLUGIN_URL . 'assets/css/components.css',
 			array( 'cta-global' ),
-			CTA_VERSION
+			self::asset_version( 'assets/css/components.css' )
 		);
 
 		wp_enqueue_style(
 			'cta-layout',
 			CTA_PLUGIN_URL . 'assets/css/layout.css',
 			array( 'cta-components' ),
-			CTA_VERSION
+			self::asset_version( 'assets/css/layout.css' )
 		);
 
 		$compat_deps = array( 'cta-layout' );
@@ -198,14 +222,14 @@ class CTA_Loader {
 			'cta-theme-compat',
 			CTA_PLUGIN_URL . 'assets/css/theme-compat.css',
 			$compat_deps,
-			CTA_VERSION
+			self::asset_version( 'assets/css/theme-compat.css' )
 		);
 
 		wp_enqueue_script(
 			'cta-main',
 			CTA_PLUGIN_URL . 'assets/js/main.js',
 			array( 'jquery' ),
-			CTA_VERSION,
+			self::asset_version( 'assets/js/main.js' ),
 			true
 		);
 
