@@ -70,10 +70,10 @@ $has_readiness  = '' !== $readiness_url;
 					<?php foreach ( $study_sequence as $seq_index => $item ) : ?>
 						<li class="cta-ep-sequence__item">
 							<span class="cta-ep-sequence__num"><?php echo esc_html( (string) ( (int) $seq_index + 1 ) ); ?></span>
-							<div>
-								<strong><?php echo esc_html( (string) ( $item['title'] ?? '' ) ); ?></strong>
+							<div class="cta-ep-sequence__body">
+								<strong class="cta-ep-sequence__title"><?php echo esc_html( (string) ( $item['title'] ?? '' ) ); ?></strong>
 								<?php if ( ! empty( $item['description'] ) ) : ?>
-									<p><?php echo esc_html( (string) $item['description'] ); ?></p>
+									<p class="cta-ep-sequence__desc"><?php echo esc_html( (string) $item['description'] ); ?></p>
 								<?php endif; ?>
 							</div>
 						</li>

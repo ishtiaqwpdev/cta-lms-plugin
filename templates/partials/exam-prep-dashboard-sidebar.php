@@ -113,7 +113,7 @@ $active_section   = (string) ( $sidebar_nav['active_section'] ?? '' );
 							<?php if ( $has_children ) : ?>
 								<button
 									type="button"
-									class="cta-ep-sidebar-nav__expand"
+									class="cta-ep-sidebar-nav__expand cta-ep-sidebar-nav__expand--touch-only"
 									data-cta-ep-sidebar-expand
 									aria-expanded="false"
 									aria-label="<?php echo esc_attr( sprintf( __( 'Expand %s', 'cta-lms' ), (string) ( $section['label'] ?? '' ) ) ); ?>"

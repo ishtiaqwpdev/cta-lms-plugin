@@ -403,23 +403,41 @@ body.cta-lms-page .elementor-shortcode {
 
 /* Exam prep sidebar — keep chevron on same row as tab label; hide on desktop (hover flyout). */
 .cta-lms .dashboard-sidebar .cta-ep-sidebar-nav__tab-row {
-  display: grid !important;
-  grid-template-columns: minmax(0, 1fr) 2rem !important;
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
   align-items: center !important;
 }
 
 .cta-lms .dashboard-sidebar .cta-ep-sidebar-nav__tab-link {
+  display: flex !important;
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
   width: auto !important;
   max-width: 100% !important;
 }
 
-@media (hover: hover) and (pointer: fine) and (min-width: 993px) {
-  .cta-lms .dashboard-sidebar .cta-ep-sidebar-nav__expand {
-    display: none !important;
-  }
+.cta-lms .dashboard-sidebar .cta-ep-sidebar-nav__expand,
+.cta-lms .dashboard-sidebar .cta-ep-sidebar-nav__expand--touch-only {
+  flex: 0 0 2rem !important;
+  align-self: center !important;
+}
 
-  .cta-lms .dashboard-sidebar .cta-ep-sidebar-nav__tab-row {
-    grid-template-columns: minmax(0, 1fr) !important;
+@media (hover: hover) and (pointer: fine) and (min-width: 993px) {
+  .cta-lms .dashboard-sidebar .cta-ep-sidebar-nav__expand,
+  .cta-lms .dashboard-sidebar .cta-ep-sidebar-nav__expand--touch-only,
+  .cta-plugin-wrapper .dashboard-sidebar .cta-ep-sidebar-nav__expand--touch-only {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
   }
 }
 
@@ -1486,4 +1504,116 @@ body.elementor-kit-15 .cta-plugin-wrapper button.cta-flashcards__card .cta-flash
   white-space: pre-wrap !important;
   overflow-wrap: anywhere !important;
   word-break: break-word !important;
+}
+
+/* --------------------------------------------------------------------------
+   Exam Prep — harden roadmap, sequence, and sidebar against theme overrides
+   (Elementor / theme often forces `a { display:block; width:100% }` and
+   `li { display:list-item }`, which breaks flex/grid exam-prep layouts).
+   -------------------------------------------------------------------------- */
+.cta-lms .cta-ep-roadmap,
+.cta-plugin-wrapper .cta-ep-roadmap,
+body.cta-lms-page .cta-ep-roadmap {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 0.75rem !important;
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  padding-left: 0 !important;
+}
+
+.cta-lms .cta-ep-roadmap__step,
+.cta-plugin-wrapper .cta-ep-roadmap__step,
+body.cta-lms-page .cta-ep-roadmap__step {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: flex-start !important;
+  gap: 0.65rem !important;
+  list-style: none !important;
+}
+
+.cta-lms .cta-ep-roadmap__marker,
+.cta-plugin-wrapper .cta-ep-roadmap__marker {
+  display: inline-flex !important;
+  flex: 0 0 1.65rem !important;
+  width: 1.65rem !important;
+  height: 1.65rem !important;
+}
+
+.cta-lms .cta-ep-roadmap__content,
+.cta-plugin-wrapper .cta-ep-roadmap__content {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.15rem !important;
+  min-width: 0 !important;
+}
+
+.cta-lms .cta-ep-roadmap__label,
+.cta-lms .cta-ep-roadmap__desc,
+.cta-plugin-wrapper .cta-ep-roadmap__label,
+.cta-plugin-wrapper .cta-ep-roadmap__desc {
+  display: block !important;
+}
+
+.cta-lms .cta-ep-sequence,
+.cta-plugin-wrapper .cta-ep-sequence,
+body.cta-lms-page .cta-ep-sequence {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.75rem !important;
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  padding-left: 0 !important;
+}
+
+.cta-lms .cta-ep-sequence__item,
+.cta-plugin-wrapper .cta-ep-sequence__item,
+body.cta-lms-page .cta-ep-sequence__item {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: flex-start !important;
+  gap: 0.75rem !important;
+  list-style: none !important;
+}
+
+.cta-lms .cta-ep-sequence__num,
+.cta-plugin-wrapper .cta-ep-sequence__num {
+  display: block !important;
+  flex: 0 0 1.5rem !important;
+  width: 1.5rem !important;
+}
+
+.cta-lms .cta-ep-sequence__body,
+.cta-plugin-wrapper .cta-ep-sequence__body {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.2rem !important;
+  min-width: 0 !important;
+}
+
+.cta-lms .cta-ep-sequence__title,
+.cta-lms .cta-ep-sequence__desc,
+.cta-plugin-wrapper .cta-ep-sequence__title,
+.cta-plugin-wrapper .cta-ep-sequence__desc {
+  display: block !important;
+}
+
+.cta-lms .dashboard-sidebar .dashboard-sidebar__link.cta-ep-sidebar-nav__tab-link,
+.cta-plugin-wrapper .dashboard-sidebar .dashboard-sidebar__link.cta-ep-sidebar-nav__tab-link,
+body.cta-lms-page .dashboard-sidebar .cta-ep-sidebar-nav__tab-link {
+  display: flex !important;
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  width: auto !important;
+  max-width: 100% !important;
+}
+
+@media (max-width: 960px) {
+  .cta-lms .cta-ep-roadmap,
+  .cta-plugin-wrapper .cta-ep-roadmap,
+  body.cta-lms-page .cta-ep-roadmap {
+    grid-template-columns: 1fr !important;
+  }
 }
