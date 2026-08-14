@@ -45,28 +45,7 @@ $workbooks_list_url = $workbooks_list_url ?? ( class_exists( 'CTA_Exam_Prep_Work
 <div class="cta-plugin-wrapper">
 <div class="cta-lms cta-exam-prep-home dashboard-layout" data-exam-prep-home data-course-id="<?php echo esc_attr( (int) $course->id ); ?>">
 
-	<aside class="dashboard-sidebar" aria-label="<?php echo esc_attr__( 'Dashboard navigation', 'cta-lms' ); ?>">
-		<div class="dashboard-sidebar__user">
-			<div class="dashboard-sidebar__avatar" aria-hidden="true"><?php echo esc_html( $dashboard_user['initials'] ); ?></div>
-			<div class="dashboard-sidebar__user-info">
-				<p class="dashboard-sidebar__name"><?php echo esc_html( $dashboard_user['displayName'] ); ?></p>
-				<p class="dashboard-sidebar__license"><?php echo esc_html( $dashboard_user['licenseNumber'] ); ?></p>
-			</div>
-		</div>
-
-		<nav class="dashboard-sidebar__nav">
-			<?php if ( $dashboard_url ) : ?>
-				<a href="<?php echo esc_url( $dashboard_url ); ?>" class="dashboard-sidebar__link">
-					<span class="dashboard-sidebar__icon" aria-hidden="true">
-						<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-					</span>
-					<?php echo esc_html__( 'My Courses', 'cta-lms' ); ?>
-				</a>
-			<?php endif; ?>
-		</nav>
-
-		<?php include CTA_PLUGIN_DIR . 'templates/partials/dashboard-sidebar-footer.php'; ?>
-	</aside>
+	<?php include CTA_PLUGIN_DIR . 'templates/partials/exam-prep-dashboard-sidebar.php'; ?>
 
 	<?php include CTA_PLUGIN_DIR . 'templates/partials/dashboard-mobile-bar.php'; ?>
 

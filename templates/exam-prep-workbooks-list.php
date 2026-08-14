@@ -32,23 +32,7 @@ $total_count = count( (array) $workbook_items );
 <div class="cta-plugin-wrapper">
 <div class="cta-lms cta-exam-prep-workbooks dashboard-layout" data-exam-prep-workbooks data-course-id="<?php echo esc_attr( (int) $course->id ); ?>">
 
-	<aside class="dashboard-sidebar" aria-label="<?php echo esc_attr__( 'Dashboard navigation', 'cta-lms' ); ?>">
-		<div class="dashboard-sidebar__user">
-			<div class="dashboard-sidebar__avatar" aria-hidden="true"><?php echo esc_html( $dashboard_user['initials'] ); ?></div>
-			<div class="dashboard-sidebar__user-info">
-				<p class="dashboard-sidebar__name"><?php echo esc_html( $dashboard_user['displayName'] ); ?></p>
-				<p class="dashboard-sidebar__license"><?php echo esc_html( $dashboard_user['licenseNumber'] ); ?></p>
-			</div>
-		</div>
-		<nav class="dashboard-sidebar__nav">
-			<?php if ( $dashboard_url ) : ?>
-				<a href="<?php echo esc_url( $dashboard_url ); ?>" class="dashboard-sidebar__link">
-					<?php echo esc_html__( 'My Courses', 'cta-lms' ); ?>
-				</a>
-			<?php endif; ?>
-		</nav>
-		<?php include CTA_PLUGIN_DIR . 'templates/partials/dashboard-sidebar-footer.php'; ?>
-	</aside>
+	<?php include CTA_PLUGIN_DIR . 'templates/partials/exam-prep-dashboard-sidebar.php'; ?>
 
 	<?php include CTA_PLUGIN_DIR . 'templates/partials/dashboard-mobile-bar.php'; ?>
 

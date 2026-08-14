@@ -336,6 +336,12 @@ class CTA_Student_Dashboard {
 		$view         = sanitize_key( wp_unslash( $_GET['view'] ?? '' ) );
 		$is_exam_prep = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course );
 
+		$section_views = array( 'flashcards', 'exams', 'resources', 'downloads', 'audio', 'progress' );
+
+		if ( $is_exam_prep && in_array( $view, $section_views, true ) ) {
+			return $this->render_exam_prep_section( $course, $modules, $enrollment, $completed_ids, $view );
+		}
+
 		if ( $is_exam_prep && 'workbooks' === $view ) {
 			return $this->render_exam_prep_workbooks_list( $course, $modules, $enrollment, $completed_ids );
 		}
@@ -462,6 +468,15 @@ class CTA_Student_Dashboard {
 			$workbook_quiz_cards = class_exists( 'CTA_Exam_Prep_Workbooks' )
 				? CTA_Exam_Prep_Workbooks::get_workbook_quiz_cards( $course, $module, $quiz_cards, $user_id_player )
 				: array();
+			$sidebar_nav = $this->get_exam_prep_sidebar_nav(
+				$course,
+				$modules,
+				$completed_ids,
+				array(
+					'view'      => '',
+					'module_id' => $module_id,
+				)
+			);
 
 			ob_start();
 			include CTA_PLUGIN_DIR . 'templates/exam-prep-workbook.php';
@@ -1082,6 +1097,59 @@ class CTA_Student_Dashboard {
 	}
 
 	/**
+	 * Build exam prep player URL for a named section view.
+	 *
+	 * @param int    $course_id Course ID.
+	 * @param string $view      Section view key.
+	 * @return string
+	 */
+	public function get_player_view_url( $course_id, $view ) {
+		$base = $this->get_player_page_url();
+
+		if ( ! $base ) {
+			return '';
+		}
+
+		return add_query_arg(
+			array(
+				'course_id' => absint( $course_id ),
+				'view'      => sanitize_key( (string) $view ),
+			),
+			$base
+		);
+	}
+
+	/**
+	 * Build sidebar navigation tree for an exam-prep course view.
+	 *
+	 * @param object $course        Course row.
+	 * @param array  $modules       Module rows.
+	 * @param array  $completed_ids Completed module IDs.
+	 * @param array  $context       Optional page context overrides.
+	 * @return array<string,mixed>
+	 */
+	public function get_exam_prep_sidebar_nav( $course, $modules, $completed_ids, array $context = array() ) {
+		if ( ! class_exists( 'CTA_Exam_Prep_Sidebar_Nav' ) ) {
+			return array();
+		}
+
+		if ( ! isset( $context['view'] ) ) {
+			$context['view'] = sanitize_key( wp_unslash( $_GET['view'] ?? '' ) );
+		}
+		if ( ! isset( $context['module_id'] ) ) {
+			$context['module_id'] = absint( $_GET['module_id'] ?? 0 );
+		}
+		if ( ! isset( $context['resource_id'] ) ) {
+			$context['resource_id'] = absint( $_GET['resource_id'] ?? 0 );
+		}
+		if ( ! isset( $context['quiz_id'] ) ) {
+			$context['quiz_id'] = absint( $_GET['quiz_id'] ?? 0 );
+		}
+
+		return CTA_Exam_Prep_Sidebar_Nav::build( $course, $modules, $completed_ids, $this, $context );
+	}
+
+	/**
 	 * Render exam prep workbooks overview list.
 	 *
 	 * @param object $course        Course row.
@@ -1108,6 +1176,15 @@ class CTA_Student_Dashboard {
 		$workbook_items = class_exists( 'CTA_Exam_Prep_Workbooks' )
 			? CTA_Exam_Prep_Workbooks::get_workbook_list_items( $course, $modules, $completed_ids, $player_base )
 			: array();
+		$sidebar_nav    = $this->get_exam_prep_sidebar_nav(
+			$course,
+			$modules,
+			$completed_ids,
+			array(
+				'view'      => 'workbooks',
+				'module_id' => 0,
+			)
+		);
 
 		ob_start();
 		include CTA_PLUGIN_DIR . 'templates/exam-prep-workbooks-list.php';
@@ -1155,9 +1232,113 @@ class CTA_Student_Dashboard {
 		$home_url       = home_url( '/' );
 		$dashboard_user = $this->get_dashboard_user_data( $user );
 		$dashboard      = $this;
+		$sidebar_nav    = $this->get_exam_prep_sidebar_nav(
+			$course,
+			$modules,
+			$completed_ids,
+			array(
+				'view'      => 'home',
+				'module_id' => 0,
+			)
+		);
 
 		ob_start();
 		include CTA_PLUGIN_DIR . 'templates/exam-prep-course-home.php';
+		return ob_get_clean();
+	}
+
+	/**
+	 * Render an exam prep section view (flashcards, exams, resources, etc.).
+	 *
+	 * @param object $course        Course row.
+	 * @param array  $modules       Module rows.
+	 * @param object $enrollment    Enrollment row.
+	 * @param array  $completed_ids Completed module IDs.
+	 * @param string $section_view  Section view key.
+	 * @return string
+	 */
+	private function render_exam_prep_section( $course, $modules, $enrollment, $completed_ids, $section_view ) {
+		$course_id    = (int) $course->id;
+		$section_view = sanitize_key( (string) $section_view );
+
+		if ( class_exists( 'CTA_CE_Completion' ) ) {
+			$progress = CTA_CE_Completion::sync_progress( get_current_user_id(), $course_id, $enrollment );
+		} else {
+			$progress = (int) $enrollment->progress;
+		}
+
+		$resources = CTA_Database::get_downloadable_resources( $course_id );
+		if ( class_exists( 'CTA_Course_Materials' ) ) {
+			$resources = CTA_Course_Materials::filter_student_visible_resources( $resources );
+		}
+
+		$getting_started = class_exists( 'CTA_Exam_Prep_Getting_Started' )
+			? CTA_Exam_Prep_Getting_Started::get_config_for_course( $course, $resources )
+			: array();
+
+		$context = array(
+			'view'      => $section_view,
+			'module_id' => 0,
+		);
+		$sidebar_nav = $this->get_exam_prep_sidebar_nav( $course, $modules, $completed_ids, $context );
+
+		$section_data = array();
+
+		if ( 'flashcards' === $section_view && class_exists( 'CTA_Flashcards' ) ) {
+			$section_data['flashcard_deck'] = CTA_Flashcards::get_deck_for_course( $course );
+		}
+
+		if ( 'exams' === $section_view ) {
+			$quiz_cards = array();
+			$user_id    = get_current_user_id();
+			foreach ( CTA_Database::get_quizzes_by_course( $course_id, true ) as $qrow ) {
+				if ( empty( CTA_Database::get_quiz_questions( (int) $qrow->id ) ) ) {
+					continue;
+				}
+				if ( class_exists( 'CTA_Exam_Prep_Workbooks' ) && ! CTA_Exam_Prep_Workbooks::is_program_level_quiz( $qrow ) ) {
+					continue;
+				}
+				$attempts = CTA_Database::get_user_quiz_attempts( $user_id, (int) $qrow->id );
+				$best     = null;
+				foreach ( $attempts as $att ) {
+					if ( null === $best || (int) $att->score > (int) $best->score ) {
+						$best = $att;
+					}
+				}
+				$quiz_cards[] = array(
+					'quiz'   => $qrow,
+					'url'    => $this->get_quiz_url( $course_id, (int) $qrow->id ),
+					'best'   => $best,
+					'passed' => $best && (int) $best->passed,
+				);
+			}
+			$section_data['quiz_cards'] = $quiz_cards;
+		}
+
+		if ( in_array( $section_view, array( 'resources', 'downloads', 'audio', 'progress' ), true ) && ! empty( $sidebar_nav['sections'] ) ) {
+			foreach ( (array) $sidebar_nav['sections'] as $nav_section ) {
+				if ( (string) ( $nav_section['key'] ?? '' ) !== $section_view ) {
+					continue;
+				}
+				if ( 'progress' === $section_view ) {
+					$section_data['readiness_items'] = isset( $nav_section['children'] ) ? (array) $nav_section['children'] : array();
+				} else {
+					$section_data['resource_items'] = isset( $nav_section['children'] ) ? (array) $nav_section['children'] : array();
+				}
+				break;
+			}
+		}
+
+		$dashboard_url      = $this->get_dashboard_url();
+		$player_base        = $this->get_player_page_url();
+		$course_home_url    = $this->get_player_home_url( $course_id );
+		$workbooks_list_url = $this->get_player_workbooks_url( $course_id );
+		$user               = wp_get_current_user();
+		$dashboard_user     = $this->get_dashboard_user_data( $user );
+		$dashboard          = $this;
+
+		ob_start();
+		include CTA_PLUGIN_DIR . 'templates/exam-prep-section.php';
 		return ob_get_clean();
 	}
 
@@ -1499,7 +1680,7 @@ class CTA_Student_Dashboard {
 	 * @param int $quiz_id   Optional quiz/assessment ID.
 	 * @return string
 	 */
-	private function get_quiz_url( $course_id, $quiz_id = 0 ) {
+	public function get_quiz_url( $course_id, $quiz_id = 0 ) {
 		$page_id = absint( get_option( 'cta_quiz_page_id', 0 ) );
 
 		if ( ! $page_id ) {
