@@ -8544,3 +8544,290 @@ button.pagination__item:disabled {
     justify-content: center;
   }
 }
+
+/* Exam Prep — Practice Exams (Exam Center) */
+.cta-plugin-wrapper .cta-ec {
+  margin-top: 0.5rem;
+}
+
+.cta-plugin-wrapper .cta-ec__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 1.25rem 0;
+}
+
+.cta-plugin-wrapper .cta-ec__stat-card {
+  padding: 1rem 1.1rem;
+  border-radius: var(--radius-md, 8px);
+  background: linear-gradient(165deg, #f7f9fc 0%, #eef3f8 100%);
+  border: 1px solid rgba(15, 40, 71, 0.08);
+  text-align: center;
+}
+
+.cta-plugin-wrapper .cta-ec__stat-value {
+  display: block;
+  font-size: 1.75rem;
+  font-weight: var(--font-weight-bold, 700);
+  line-height: 1.1;
+  color: var(--color-navy, #122b51);
+}
+
+.cta-plugin-wrapper .cta-ec__stat-label {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.82rem;
+  color: var(--color-text-muted, #667085);
+}
+
+.cta-plugin-wrapper .cta-ec__empty {
+  margin: 0 0 1.25rem;
+  padding: 1.25rem;
+  border-radius: var(--radius-md, 8px);
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+}
+
+.cta-plugin-wrapper .cta-ec__empty-title {
+  margin: 0 0 0.35rem;
+  font-weight: var(--font-weight-semibold, 600);
+  color: #92400e;
+}
+
+.cta-plugin-wrapper .cta-ec__empty-text {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #78350f;
+  line-height: 1.5;
+}
+
+.cta-plugin-wrapper .cta-ec__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+  gap: 1rem;
+}
+
+.cta-plugin-wrapper .cta-ec__card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.15rem 1.25rem;
+  border-radius: var(--radius-lg, 12px);
+  background: #fff;
+  border: 1px solid var(--color-border, #e4e7ec);
+  box-shadow: 0 1px 3px rgba(16, 24, 40, 0.06);
+}
+
+.cta-plugin-wrapper .cta-ec__card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.cta-plugin-wrapper .cta-ec__card-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.cta-plugin-wrapper .cta-ec__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: var(--font-weight-semibold, 600);
+  line-height: 1.3;
+}
+
+.cta-plugin-wrapper .cta-ec__badge--type {
+  color: var(--color-navy, #122b51);
+  background: rgba(26, 86, 219, 0.08);
+}
+
+.cta-plugin-wrapper .cta-ec__badge--count {
+  color: var(--color-text-muted, #667085);
+  background: #f2f4f7;
+}
+
+.cta-plugin-wrapper .cta-ec__score-block {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.cta-plugin-wrapper .cta-ec__score {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.1rem;
+}
+
+.cta-plugin-wrapper .cta-ec__score-label {
+  font-size: 0.68rem;
+  font-weight: var(--font-weight-medium, 500);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted, #667085);
+}
+
+.cta-plugin-wrapper .cta-ec__score-value {
+  font-size: 1.15rem;
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--color-navy, #122b51);
+}
+
+.cta-plugin-wrapper .cta-ec__score-value.is-passed {
+  color: #067647;
+}
+
+.cta-plugin-wrapper .cta-ec__passed-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: var(--font-weight-semibold, 600);
+  color: #067647;
+  background: #ecfdf3;
+}
+
+.cta-plugin-wrapper .cta-ec__card-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: var(--font-weight-semibold, 600);
+  line-height: 1.35;
+  color: var(--color-navy, #122b51);
+}
+
+.cta-plugin-wrapper .cta-ec__attempt-meta {
+  margin: -0.25rem 0 0;
+  font-size: 0.82rem;
+  color: var(--color-text-muted, #667085);
+}
+
+.cta-plugin-wrapper .cta-ec__card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+.cta-plugin-wrapper .cta-ec__card-actions .btn {
+  flex: 1 1 auto;
+  min-width: 7.5rem;
+  text-align: center;
+}
+
+.cta-plugin-wrapper .cta-ec__review-links {
+  padding-top: 0.65rem;
+  border-top: 1px solid var(--color-border, #e4e7ec);
+}
+
+.cta-plugin-wrapper .cta-ec__review-heading {
+  margin: 0 0 0.4rem;
+  font-size: 0.78rem;
+  font-weight: var(--font-weight-semibold, 600);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted, #667085);
+}
+
+.cta-plugin-wrapper .cta-ec__review-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.cta-plugin-wrapper .cta-ec__review-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  font-weight: var(--font-weight-medium, 500);
+  color: var(--color-primary, #1a56db);
+  text-decoration: none;
+}
+
+.cta-plugin-wrapper .cta-ec__review-link:hover {
+  text-decoration: underline;
+}
+
+.cta-plugin-wrapper .cta-ec__review-link--locked {
+  color: var(--color-text-muted, #667085);
+  cursor: not-allowed;
+}
+
+.cta-plugin-wrapper .cta-ec__lock-icon {
+  font-size: 0.75rem;
+}
+
+.cta-plugin-wrapper .cta-ec__history {
+  margin-top: 0.15rem;
+}
+
+.cta-plugin-wrapper .cta-ec__history-toggle {
+  font-size: 0.82rem;
+  font-weight: var(--font-weight-medium, 500);
+  color: var(--color-primary, #1a56db);
+  cursor: pointer;
+  user-select: none;
+}
+
+.cta-plugin-wrapper .cta-ec__history-toggle:hover {
+  text-decoration: underline;
+}
+
+.cta-plugin-wrapper .cta-ec__history-list {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.cta-plugin-wrapper .cta-ec__history-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.82rem;
+}
+
+.cta-plugin-wrapper .cta-ec__history-score {
+  min-width: 2.75rem;
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--color-navy, #122b51);
+}
+
+.cta-plugin-wrapper .cta-ec__history-score.is-passed {
+  color: #067647;
+}
+
+.cta-plugin-wrapper .cta-ec__history-meta {
+  color: var(--color-text-muted, #667085);
+}
+
+@media (max-width: 640px) {
+  .cta-plugin-wrapper .cta-ec__stats {
+    grid-template-columns: 1fr;
+  }
+
+  .cta-plugin-wrapper .cta-ec__card-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cta-plugin-wrapper .cta-ec__score-block {
+    justify-content: flex-start;
+  }
+
+  .cta-plugin-wrapper .cta-ec__card-actions .btn {
+    flex: 1 1 100%;
+  }
+}

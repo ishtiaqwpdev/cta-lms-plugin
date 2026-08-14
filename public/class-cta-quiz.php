@@ -210,6 +210,13 @@ class CTA_Quiz {
 
 		$dashboard_url = $this->get_dashboard_url();
 		$player_url    = $this->get_player_url( $course_id );
+		if ( $is_exam_prep && class_exists( 'CTA_Student_Dashboard' ) ) {
+			$dash = new CTA_Student_Dashboard();
+			$exams_url = $dash->get_player_view_url( $course_id, 'exams' );
+			if ( $exams_url ) {
+				$player_url = $exams_url;
+			}
+		}
 		$quiz_handler  = $this;
 		$question_count = count( $questions );
 		// Quizzes are untimed by policy; ignore any legacy time_limit_mins values.

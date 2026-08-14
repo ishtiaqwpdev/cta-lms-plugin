@@ -111,7 +111,9 @@ class CTA_Exam_Prep_Sidebar_Nav {
 			);
 		}
 
-		if ( ! empty( $quiz_cards ) ) {
+		$show_exam_center = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course );
+
+		if ( $show_exam_center ) {
 			$children = array();
 			foreach ( $quiz_cards as $card ) {
 				$quiz      = $card['quiz'];

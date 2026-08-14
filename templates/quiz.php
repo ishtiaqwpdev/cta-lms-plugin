@@ -43,7 +43,7 @@ if ( empty( $evaluation_questions ) || ! is_array( $evaluation_questions ) ) {
 	<div class="cta-quiz-header">
 		<p class="course-player__back">
 			<?php if ( $player_url ) : ?>
-				<a href="<?php echo esc_url( $player_url ); ?>">&larr; <?php echo esc_html__( 'Back to Course', 'cta-lms' ); ?></a>
+				<a href="<?php echo esc_url( $player_url ); ?>">&larr; <?php echo ! empty( $is_exam_prep ) ? esc_html__( 'Back to Practice Exams', 'cta-lms' ) : esc_html__( 'Back to Course', 'cta-lms' ); ?></a>
 			<?php endif; ?>
 		</p>
 		<h1 class="cta-quiz-course-title"><?php echo esc_html( $display_title ); ?></h1>
@@ -553,7 +553,7 @@ if ( empty( $evaluation_questions ) || ! is_array( $evaluation_questions ) ) {
 			<?php endif; ?>
 			<button type="button" class="btn btn-primary" id="cta-retake-exam-quiz"><?php echo esc_html__( 'Retake This Assessment', 'cta-lms' ); ?></button>
 			<?php if ( $player_url ) : ?>
-				<a href="<?php echo esc_url( $player_url ); ?>" class="btn btn-outline"><?php echo esc_html__( 'Back to Assessments', 'cta-lms' ); ?></a>
+				<a href="<?php echo esc_url( $player_url ); ?>" class="btn btn-outline"><?php echo esc_html__( 'Back to Practice Exams', 'cta-lms' ); ?></a>
 			<?php endif; ?>
 			<?php if ( $dashboard_url ) : ?>
 				<a href="<?php echo esc_url( $dashboard_url ); ?>" class="btn btn-outline"><?php echo esc_html__( 'Return to Dashboard', 'cta-lms' ); ?></a>

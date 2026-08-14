@@ -90,35 +90,11 @@ $home_url_player = $course_home_url ?? add_query_arg(
 				$flashcard_center_deck = $section_data['flashcard_center_deck'] ?? null;
 				include CTA_PLUGIN_DIR . 'templates/partials/exam-prep-flashcard-center.php';
 				?>
-			<?php elseif ( 'exams' === $section_view && ! empty( $section_data['quiz_cards'] ) ) : ?>
-				<p class="cta-ep-home-section__lede"><?php esc_html_e( 'Launch a full-length simulation or checkpoint assessment. Your best attempt score is tracked for each exam.', 'cta-lms' ); ?></p>
-				<ul class="cta-ep-section-cards">
-					<?php foreach ( (array) $section_data['quiz_cards'] as $card ) : ?>
-						<?php $quiz = $card['quiz'] ?? null; ?>
-						<?php if ( ! $quiz ) : continue; endif; ?>
-						<li class="cta-ep-section-cards__item">
-							<div class="cta-ep-section-cards__body">
-								<h3 class="cta-ep-section-cards__title"><?php echo esc_html( (string) $quiz->title ); ?></h3>
-								<?php if ( ! empty( $card['passed'] ) ) : ?>
-									<p class="cta-ep-section-cards__meta cta-ep-section-cards__meta--passed"><?php esc_html_e( 'Passed', 'cta-lms' ); ?></p>
-								<?php elseif ( ! empty( $card['best'] ) ) : ?>
-									<p class="cta-ep-section-cards__meta">
-										<?php
-										printf(
-											/* translators: %d: best score percentage */
-											esc_html__( 'Best score: %d%%', 'cta-lms' ),
-											(int) $card['best']->score
-										);
-										?>
-									</p>
-								<?php endif; ?>
-							</div>
-							<a class="btn btn-primary btn--sm" href="<?php echo esc_url( (string) $card['url'] ); ?>">
-								<?php esc_html_e( 'Start Exam', 'cta-lms' ); ?>
-							</a>
-						</li>
-					<?php endforeach; ?>
-				</ul>
+			<?php elseif ( 'exams' === $section_view ) : ?>
+				<?php
+				$exam_center_data = $section_data['exam_center_data'] ?? null;
+				include CTA_PLUGIN_DIR . 'templates/partials/exam-prep-exam-center.php';
+				?>
 			<?php elseif ( in_array( $section_view, array( 'resources', 'downloads', 'audio' ), true ) && ! empty( $section_data['resource_items'] ) ) : ?>
 				<p class="cta-ep-home-section__lede">
 					<?php

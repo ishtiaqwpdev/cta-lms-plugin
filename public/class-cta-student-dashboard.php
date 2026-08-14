@@ -1296,31 +1296,8 @@ class CTA_Student_Dashboard {
 			$section_data['flashcard_center_deck'] = CTA_Exam_Prep_Flashcard_Center::get_deck_for_course( $course );
 		}
 
-		if ( 'exams' === $section_view ) {
-			$quiz_cards = array();
-			$user_id    = get_current_user_id();
-			foreach ( CTA_Database::get_quizzes_by_course( $course_id, true ) as $qrow ) {
-				if ( empty( CTA_Database::get_quiz_questions( (int) $qrow->id ) ) ) {
-					continue;
-				}
-				if ( class_exists( 'CTA_Exam_Prep_Workbooks' ) && ! CTA_Exam_Prep_Workbooks::is_program_level_quiz( $qrow ) ) {
-					continue;
-				}
-				$attempts = CTA_Database::get_user_quiz_attempts( $user_id, (int) $qrow->id );
-				$best     = null;
-				foreach ( $attempts as $att ) {
-					if ( null === $best || (int) $att->score > (int) $best->score ) {
-						$best = $att;
-					}
-				}
-				$quiz_cards[] = array(
-					'quiz'   => $qrow,
-					'url'    => $this->get_quiz_url( $course_id, (int) $qrow->id ),
-					'best'   => $best,
-					'passed' => $best && (int) $best->passed,
-				);
-			}
-			$section_data['quiz_cards'] = $quiz_cards;
+		if ( 'exams' === $section_view && class_exists( 'CTA_Exam_Prep_Exam_Center' ) ) {
+			$section_data['exam_center_data'] = CTA_Exam_Prep_Exam_Center::get_center_data_for_course( $course, $this );
 		}
 
 		if ( in_array( $section_view, array( 'resources', 'downloads', 'audio', 'progress' ), true ) && ! empty( $sidebar_nav['sections'] ) ) {
