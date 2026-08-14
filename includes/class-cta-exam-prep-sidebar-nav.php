@@ -153,7 +153,12 @@ class CTA_Exam_Prep_Sidebar_Nav {
 			);
 		}
 
-		$download_children = self::build_download_children( $resources, $modules );
+		if ( class_exists( 'CTA_Exam_Prep_Downloads' ) ) {
+			$downloads_data     = CTA_Exam_Prep_Downloads::get_center_data_for_course( $course, (array) $modules, $dashboard );
+			$download_children  = CTA_Exam_Prep_Downloads::get_sidebar_children( $downloads_data, $context );
+		} else {
+			$download_children = self::build_download_children( $resources, $modules );
+		}
 		if ( ! empty( $download_children ) ) {
 			$sections[] = self::section(
 				'downloads',
@@ -166,7 +171,12 @@ class CTA_Exam_Prep_Sidebar_Nav {
 			);
 		}
 
-		$audio_children = self::build_audio_children( $resources );
+		if ( class_exists( 'CTA_Exam_Prep_Audio_Review' ) ) {
+			$audio_data     = CTA_Exam_Prep_Audio_Review::get_center_data_for_course( $course, (array) $modules, $dashboard );
+			$audio_children = CTA_Exam_Prep_Audio_Review::get_sidebar_children( $audio_data );
+		} else {
+			$audio_children = self::build_audio_children( $resources );
+		}
 		if ( ! empty( $audio_children ) ) {
 			$sections[] = self::section(
 				'audio',
@@ -183,7 +193,7 @@ class CTA_Exam_Prep_Sidebar_Nav {
 			'progress',
 			__( 'Progress / Readiness', 'cta-lms' ),
 			$dashboard->get_player_view_url( $course_id, 'progress' ),
-			self::build_progress_children( $getting_started, $resources, $context ),
+			self::build_progress_children( $context, $dashboard, $course_id ),
 			'progress' === $active_section,
 			$active_child,
 			'progress'
@@ -465,42 +475,32 @@ class CTA_Exam_Prep_Sidebar_Nav {
 	/**
 	 * Progress / readiness nested items.
 	 *
-	 * @param array $getting_started Getting started config.
-	 * @param array $resources       Resource rows.
-	 * @param array $context         Page context.
+	 * @param array                 $context   Page context.
+	 * @param CTA_Student_Dashboard $dashboard Dashboard instance.
+	 * @param int                   $course_id Course ID.
 	 * @return array<int,array<string,mixed>>
 	 */
-	private static function build_progress_children( array $getting_started, array $resources, array $context ) {
-		$children = array();
-		$readiness = isset( $getting_started['readiness'] ) ? (array) $getting_started['readiness'] : array();
+	private static function build_progress_children( array $context, $dashboard, $course_id ) {
+		$base_url = $dashboard->get_player_view_url( $course_id, 'progress' );
 
-		if ( ! empty( $readiness['url'] ) ) {
-			$key = 'readiness-tool';
-			$children[] = array(
-				'key'       => $key,
-				'label'     => ! empty( $readiness['title'] )
-					? (string) $readiness['title']
-					: __( 'Readiness Self-Assessment', 'cta-lms' ),
-				'title'     => ! empty( $readiness['title'] )
-					? (string) $readiness['title']
-					: __( 'Readiness Self-Assessment', 'cta-lms' ),
-				'url'       => (string) $readiness['url'],
-				'is_active' => self::child_is_active( 'progress', $key, $context ),
-				'external'  => true,
-			);
-		}
-
-		foreach ( $resources as $resource ) {
-			$title = strtolower( (string) ( $resource->title ?? '' ) );
-			if ( false === strpos( $title, 'readiness' ) && false === strpos( $title, 'progress tracker' ) ) {
-				continue;
-			}
-
-			$key = 'resource-' . (int) $resource->id;
-			$children[] = self::resource_child( $resource, 'progress', $key, $context );
-		}
-
-		return $children;
+		return array(
+			array(
+				'key'       => 'readiness-tools',
+				'label'     => __( 'Readiness Tools', 'cta-lms' ),
+				'title'     => __( 'Readiness Tools', 'cta-lms' ),
+				'url'       => $base_url . '#cta-pr-readiness',
+				'is_active' => self::child_is_active( 'progress', 'readiness-tools', $context ),
+				'external'  => false,
+			),
+			array(
+				'key'       => 'remediation-guidance',
+				'label'     => __( 'Remediation Guidance', 'cta-lms' ),
+				'title'     => __( 'Remediation Guidance', 'cta-lms' ),
+				'url'       => $base_url . '#cta-pr-remediation',
+				'is_active' => self::child_is_active( 'progress', 'remediation-guidance', $context ),
+				'external'  => false,
+			),
+		);
 	}
 
 	/**

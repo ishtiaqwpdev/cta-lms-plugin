@@ -127,7 +127,8 @@ if ( $practice_bank_resource && class_exists( 'CTA_Course_Materials' ) ) {
 							$workbook_tabs,
 							$workbook_page_url,
 							$bank_download_url,
-							$practice_bank_resource
+							$practice_bank_resource,
+							$module
 						)
 						: null;
 					include CTA_PLUGIN_DIR . 'templates/partials/exam-prep-workbook-tabbed.php';

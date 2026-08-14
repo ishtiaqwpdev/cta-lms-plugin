@@ -39,11 +39,23 @@ class CTA_Exam_Prep_Exam_Center {
 			$resources = CTA_Course_Materials::filter_student_visible_resources( $resources );
 		}
 
-		$exams           = self::build_exam_cards( $course_id, $user_id, $dashboard, $resources );
+		$all_cards       = self::build_exam_cards( $course_id, $user_id, $dashboard, $resources );
+		$simulations     = array();
+		$cumulative_banks = array();
+
+		foreach ( $all_cards as $card ) {
+			$category = (string) ( $card['category'] ?? 'full_simulation' );
+			if ( 'cumulative_bank' === $category ) {
+				$cumulative_banks[] = $card;
+			} else {
+				$simulations[] = $card;
+			}
+		}
+
 		$attempted_count = 0;
 		$passed_count    = 0;
 
-		foreach ( $exams as $exam ) {
+		foreach ( $all_cards as $exam ) {
 			if ( ! empty( $exam['attempt_count'] ) ) {
 				++$attempted_count;
 			}
@@ -53,12 +65,18 @@ class CTA_Exam_Prep_Exam_Center {
 		}
 
 		$data = array(
-			'exams'           => $exams,
-			'exam_count'      => count( $exams ),
-			'attempted_count' => $attempted_count,
-			'passed_count'    => $passed_count,
-			'has_exams'       => ! empty( $exams ),
-			'exams_url'       => $dashboard->get_player_view_url( $course_id, 'exams' ),
+			'exams'              => $all_cards,
+			'simulations'        => $simulations,
+			'cumulative_banks'   => $cumulative_banks,
+			'exam_count'         => count( $all_cards ),
+			'simulation_count'   => count( $simulations ),
+			'cumulative_count'   => count( $cumulative_banks ),
+			'attempted_count'    => $attempted_count,
+			'passed_count'       => $passed_count,
+			'has_exams'          => ! empty( $all_cards ),
+			'has_simulations'    => ! empty( $simulations ),
+			'has_cumulative'     => ! empty( $cumulative_banks ),
+			'exams_url'          => $dashboard->get_player_view_url( $course_id, 'exams' ),
 		);
 
 		/**
@@ -78,12 +96,18 @@ class CTA_Exam_Prep_Exam_Center {
 	 */
 	public static function empty_center_data() {
 		return array(
-			'exams'           => array(),
-			'exam_count'      => 0,
-			'attempted_count' => 0,
-			'passed_count'    => 0,
-			'has_exams'       => false,
-			'exams_url'       => '',
+			'exams'              => array(),
+			'simulations'        => array(),
+			'cumulative_banks'   => array(),
+			'exam_count'         => 0,
+			'simulation_count'   => 0,
+			'cumulative_count'   => 0,
+			'attempted_count'    => 0,
+			'passed_count'       => 0,
+			'has_exams'          => false,
+			'has_simulations'    => false,
+			'has_cumulative'     => false,
+			'exams_url'          => '',
 		);
 	}
 
@@ -108,6 +132,14 @@ class CTA_Exam_Prep_Exam_Center {
 				continue;
 			}
 
+			$category = class_exists( 'CTA_Exam_Prep_Workbooks' )
+				? CTA_Exam_Prep_Workbooks::get_assessment_category( $qrow )
+				: 'full_simulation';
+
+			if ( 'workbook_bank' === $category ) {
+				continue;
+			}
+
 			$quiz_id   = (int) $qrow->id;
 			$attempts  = CTA_Database::get_user_quiz_attempts( $user_id, $quiz_id );
 			$best      = self::get_best_attempt( $attempts );
@@ -117,25 +149,29 @@ class CTA_Exam_Prep_Exam_Center {
 			$has_tried = ! empty( $attempts );
 
 			$cards[] = array(
-				'quiz'            => $qrow,
-				'quiz_id'         => $quiz_id,
-				'title'           => (string) $qrow->title,
-				'question_count'  => $q_count,
-				'type_label'      => self::get_exam_type_label( $qrow ),
-				'url'             => $quiz_url,
-				'review_url'      => $quiz_url,
-				'attempts'        => self::normalize_attempts( $attempts ),
-				'attempt_count'   => count( $attempts ),
-				'best'            => $best,
-				'latest'          => $latest,
-				'best_score'      => $best ? (int) $best->score : null,
-				'latest_score'    => $latest ? (int) $latest->score : null,
-				'passed'          => $best && (int) $best->passed,
-				'has_attempts'    => $has_tried,
-				'review_materials'=> $has_tried
+				'quiz'             => $qrow,
+				'quiz_id'          => $quiz_id,
+				'title'            => (string) $qrow->title,
+				'question_count'   => $q_count,
+				'category'         => $category,
+				'category_label'   => class_exists( 'CTA_Exam_Prep_Workbooks' )
+					? CTA_Exam_Prep_Workbooks::get_assessment_category_label( $category, $qrow )
+					: '',
+				'type_label'       => self::get_exam_type_label( $qrow ),
+				'url'              => $quiz_url,
+				'review_url'       => $quiz_url,
+				'attempts'         => self::normalize_attempts( $attempts ),
+				'attempt_count'    => count( $attempts ),
+				'best'             => $best,
+				'latest'           => $latest,
+				'best_score'       => $best ? (int) $best->score : null,
+				'latest_score'     => $latest ? (int) $latest->score : null,
+				'passed'           => $best && (int) $best->passed,
+				'has_attempts'     => $has_tried,
+				'review_materials' => $has_tried
 					? self::get_review_materials( $course_id, $user_id, $qrow, $resources )
 					: array(),
-				'sort_weight'     => self::get_quiz_sort_weight( $qrow ),
+				'sort_weight'      => self::get_quiz_sort_weight( $qrow ),
 			);
 		}
 

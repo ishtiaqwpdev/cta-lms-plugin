@@ -743,6 +743,35 @@ class CTA_Course_Materials {
 	}
 
 	/**
+	 * Public gated URL that explicitly downloads a resource as an attachment.
+	 *
+	 * Use this only for download-focused UI. Other sections should continue to
+	 * use get_serve_url() so browser-viewable files can open inline.
+	 *
+	 * @param int $resource_id Resource ID.
+	 * @return string
+	 */
+	public static function get_download_url( $resource_id ) {
+		$resource_id = absint( $resource_id );
+
+		if ( ! $resource_id ) {
+			return '';
+		}
+
+		return wp_nonce_url(
+			add_query_arg(
+				array(
+					'action'       => 'cta_serve_resource',
+					'resource_id'  => $resource_id,
+					'cta_download' => 1,
+				),
+				admin_url( 'admin-post.php' )
+			),
+			'cta_serve_resource_' . $resource_id
+		);
+	}
+
+	/**
 	 * Absolute path to the protected materials root (creates dir + deny rules).
 	 *
 	 * @return string|WP_Error
@@ -1348,6 +1377,7 @@ class CTA_Course_Materials {
 	 */
 	public static function handle_serve_request() {
 		$resource_id = absint( wp_unslash( $_GET['resource_id'] ?? 0 ) );
+		$download    = ! empty( $_GET['cta_download'] );
 
 		if ( ! $resource_id || ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'cta_serve_resource_' . $resource_id ) ) {
 			wp_die( esc_html__( 'Invalid download request.', 'cta-lms' ), 403 );
@@ -1393,7 +1423,7 @@ class CTA_Course_Materials {
 
 			nocache_headers();
 			header( 'Content-Type: ' . $type );
-			header( 'Content-Disposition: inline; filename="' . $filename . '"' );
+			header( 'Content-Disposition: ' . ( $download ? 'attachment' : 'inline' ) . '; filename="' . $filename . '"' );
 			header( 'X-Content-Type-Options: nosniff' );
 			header( 'Accept-Ranges: bytes' );
 
@@ -1451,6 +1481,47 @@ class CTA_Course_Materials {
 		// Legacy external URL fallback (still gated by enrollment above).
 		$url = (string) ( $resource->file_url ?? '' );
 		if ( $url && 0 !== strpos( $url, 'cta-protected://' ) ) {
+			if ( $download ) {
+				$tmp = wp_tempnam( $url );
+				if ( ! $tmp ) {
+					wp_die( esc_html__( 'Unable to prepare this download.', 'cta-lms' ), 500 );
+				}
+
+				$response = wp_safe_remote_get(
+					$url,
+					array(
+						'timeout'     => 60,
+						'redirection' => 3,
+						'stream'      => true,
+						'filename'    => $tmp,
+					)
+				);
+
+				if ( is_wp_error( $response ) || 200 !== (int) wp_remote_retrieve_response_code( $response ) || ! is_readable( $tmp ) ) {
+					wp_delete_file( $tmp );
+					wp_die( esc_html__( 'The external file is unavailable.', 'cta-lms' ), 404 );
+				}
+
+				$url_path = (string) wp_parse_url( $url, PHP_URL_PATH );
+				$filename = sanitize_file_name( basename( $url_path ) );
+				if ( '' === $filename ) {
+					$filename = 'cta-resource-' . $resource_id;
+				}
+				$type = wp_remote_retrieve_header( $response, 'content-type' );
+				$type = $type ? sanitize_text_field( (string) $type ) : 'application/octet-stream';
+				$size = (int) filesize( $tmp );
+
+				nocache_headers();
+				header( 'Content-Type: ' . $type );
+				header( 'Content-Disposition: attachment; filename="' . $filename . '"' );
+				header( 'X-Content-Type-Options: nosniff' );
+				header( 'Content-Length: ' . (string) $size );
+				// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_readfile
+				readfile( $tmp );
+				wp_delete_file( $tmp );
+				exit;
+			}
+
 			wp_safe_redirect( esc_url_raw( $url ) );
 			exit;
 		}

@@ -5493,6 +5493,121 @@
     });
   }
 
+  /**
+   * Audio Review players: speed controls, duration hydration, and one-at-a-time playback.
+   */
+  function initExamPrepAudioReview() {
+    var roots = document.querySelectorAll("[data-cta-audio-review]");
+    if (!roots.length) {
+      return;
+    }
+
+    roots.forEach(function (root) {
+      if (root.getAttribute("data-cta-audio-ready") === "1") {
+        return;
+      }
+
+      var players = Array.prototype.slice.call(
+        root.querySelectorAll("[data-cta-audio-player]")
+      );
+
+      function formatDuration(seconds) {
+        if (!Number.isFinite(seconds) || seconds <= 0) {
+          return "";
+        }
+        var rounded = Math.round(seconds);
+        var hours = Math.floor(rounded / 3600);
+        var minutes = Math.floor((rounded % 3600) / 60);
+        var secs = rounded % 60;
+        return hours > 0
+          ? hours + ":" + String(minutes).padStart(2, "0") + ":" + String(secs).padStart(2, "0")
+          : minutes + ":" + String(secs).padStart(2, "0");
+      }
+
+      players.forEach(function (player) {
+        var track = player.closest("[data-cta-audio-track]");
+        var speed = track ? track.querySelector("[data-cta-audio-speed]") : null;
+        var duration = track ? track.querySelector("[data-cta-audio-duration]") : null;
+
+        player.addEventListener("play", function () {
+          players.forEach(function (other) {
+            if (other !== player && !other.paused) {
+              other.pause();
+            }
+          });
+        });
+
+        player.addEventListener("loadedmetadata", function () {
+          if (duration && duration.getAttribute("data-known-duration") !== "1") {
+            var label = formatDuration(player.duration);
+            if (label) {
+              duration.textContent = label;
+            }
+          }
+        });
+
+        if (speed) {
+          speed.addEventListener("change", function () {
+            var rate = parseFloat(speed.value || "1");
+            player.playbackRate = Number.isFinite(rate) ? rate : 1;
+          });
+        }
+      });
+
+      root.setAttribute("data-cta-audio-ready", "1");
+    });
+  }
+
+  /**
+   * Hydrate Progress / Readiness with browser-local flashcard progress.
+   */
+  function initExamPrepProgressReadiness() {
+    var roots = document.querySelectorAll("[data-cta-progress-readiness]");
+    if (!roots.length) {
+      return;
+    }
+
+    roots.forEach(function (root) {
+      if (root.getAttribute("data-cta-pr-ready") === "1") {
+        return;
+      }
+
+      var valueEl = root.querySelector("[data-cta-pr-flashcard-reviewed]");
+      var noteEl = root.querySelector("[data-cta-pr-flashcard-note]");
+      var storageKey = root.getAttribute("data-flashcard-storage-key") || "";
+      var total = parseInt(root.getAttribute("data-flashcard-total") || "0", 10);
+      var known = [];
+      var review = [];
+
+      if (storageKey) {
+        try {
+          var saved = JSON.parse(localStorage.getItem(storageKey) || "{}");
+          known = Array.isArray(saved.knowIt) ? saved.knowIt : [];
+          review = Array.isArray(saved.reviewAgain) ? saved.reviewAgain : [];
+        } catch (storageErr) {
+          known = [];
+          review = [];
+        }
+      }
+
+      var reviewedMap = {};
+      known.concat(review).forEach(function (cardId) {
+        reviewedMap[String(cardId)] = true;
+      });
+      var reviewed = Object.keys(reviewedMap).length;
+
+      if (valueEl) {
+        valueEl.textContent = reviewed + "/" + total;
+      }
+      if (noteEl && total > 0) {
+        noteEl.textContent =
+          known.length + " known · " + review.length + " marked review · saved in this browser";
+      }
+
+      root.setAttribute("data-cta-pr-ready", "1");
+    });
+  }
+
   function init() {
     initMobileMenu();
     initAccordion();
@@ -5510,6 +5625,8 @@
     initCtaQuiz();
     initCtaFlashcards();
     initExamPrepFlashcardCenter();
+    initExamPrepAudioReview();
+    initExamPrepProgressReadiness();
     initCtaDashboardSettings();
     initCtaCertificateDownload();
     initCtaSupervisionDashboard();

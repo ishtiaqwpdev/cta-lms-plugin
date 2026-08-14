@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.198' );
+	define( 'CTA_VERSION', '1.0.203' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -87,6 +87,9 @@ $cta_required_files = array(
 	'includes/class-cta-flashcards.php',
 	'includes/class-cta-exam-prep-flashcard-center.php',
 	'includes/class-cta-exam-prep-exam-center.php',
+	'includes/class-cta-exam-prep-progress-readiness.php',
+	'includes/class-cta-exam-prep-downloads.php',
+	'includes/class-cta-exam-prep-audio-review.php',
 	'includes/class-cta-exam-prep-lessons.php',
 	'includes/class-cta-exam-prep-getting-started.php',
 	'includes/class-cta-exam-prep-workbooks.php',

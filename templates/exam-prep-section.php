@@ -95,17 +95,19 @@ $home_url_player = $course_home_url ?? add_query_arg(
 				$exam_center_data = $section_data['exam_center_data'] ?? null;
 				include CTA_PLUGIN_DIR . 'templates/partials/exam-prep-exam-center.php';
 				?>
-			<?php elseif ( in_array( $section_view, array( 'resources', 'downloads', 'audio' ), true ) && ! empty( $section_data['resource_items'] ) ) : ?>
+			<?php elseif ( 'downloads' === $section_view ) : ?>
+				<?php
+				$downloads_data = $section_data['downloads_data'] ?? null;
+				include CTA_PLUGIN_DIR . 'templates/partials/exam-prep-downloads.php';
+				?>
+			<?php elseif ( 'audio' === $section_view ) : ?>
+				<?php
+				$audio_review_data = $section_data['audio_review_data'] ?? null;
+				include CTA_PLUGIN_DIR . 'templates/partials/exam-prep-audio-review.php';
+				?>
+			<?php elseif ( 'resources' === $section_view && ! empty( $section_data['resource_items'] ) ) : ?>
 				<p class="cta-ep-home-section__lede">
-					<?php
-					if ( 'audio' === $section_view ) {
-						esc_html_e( 'Stream or download audio review tracks for this program.', 'cta-lms' );
-					} elseif ( 'downloads' === $section_view ) {
-						esc_html_e( 'Printable workbooks and practice banks for offline study.', 'cta-lms' );
-					} else {
-						esc_html_e( 'Program guides, schedules, toolkits, and reference downloads.', 'cta-lms' );
-					}
-					?>
+					<?php esc_html_e( 'Program guides, schedules, toolkits, and reference downloads.', 'cta-lms' ); ?>
 				</p>
 				<ul class="cta-ep-section-resources">
 					<?php foreach ( (array) $section_data['resource_items'] as $item ) : ?>
@@ -121,39 +123,10 @@ $home_url_player = $course_home_url ?? add_query_arg(
 					<?php endforeach; ?>
 				</ul>
 			<?php elseif ( 'progress' === $section_view ) : ?>
-				<p class="cta-ep-home-section__lede"><?php esc_html_e( 'Track your program completion and use readiness tools to gauge exam preparedness.', 'cta-lms' ); ?></p>
-				<div class="cta-ep-progress-summary">
-					<p class="cta-ep-progress-summary__stat">
-						<strong><?php echo esc_html( (string) (int) $progress ); ?>%</strong>
-						<?php esc_html_e( 'modules complete', 'cta-lms' ); ?>
-					</p>
-					<p class="cta-ep-progress-summary__count">
-						<?php
-						printf(
-							/* translators: 1: completed count, 2: total count */
-							esc_html__( '%1$d of %2$d workbooks completed', 'cta-lms' ),
-							count( (array) $completed_ids ),
-							count( (array) $modules )
-						);
-						?>
-					</p>
-				</div>
-				<?php if ( ! empty( $section_data['readiness_items'] ) ) : ?>
-					<ul class="cta-ep-section-resources">
-						<?php foreach ( (array) $section_data['readiness_items'] as $item ) : ?>
-							<li class="cta-ep-section-resources__item">
-								<a
-									class="cta-ep-section-resources__link"
-									href="<?php echo esc_url( (string) ( $item['url'] ?? '' ) ); ?>"
-									target="_blank"
-									rel="noopener noreferrer"
-								>
-									<?php echo esc_html( (string) ( $item['label'] ?? '' ) ); ?>
-								</a>
-							</li>
-						<?php endforeach; ?>
-					</ul>
-				<?php endif; ?>
+				<?php
+				$progress_readiness_data = $section_data['progress_readiness_data'] ?? null;
+				include CTA_PLUGIN_DIR . 'templates/partials/exam-prep-progress-readiness.php';
+				?>
 			<?php else : ?>
 				<p class="cta-ep-home-section__lede"><?php esc_html_e( 'Content for this section will appear here when available for your program.', 'cta-lms' ); ?></p>
 			<?php endif; ?>

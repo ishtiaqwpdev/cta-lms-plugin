@@ -22,16 +22,184 @@ class CTA_Exam_Prep_Workbooks {
 	 * @return string[]
 	 */
 	public static function program_level_quiz_types() {
+		return array_merge(
+			self::full_simulation_quiz_types(),
+			self::cumulative_quiz_types()
+		);
+	}
+
+	/**
+	 * Full-length program simulations (Exam Center — primary section).
+	 *
+	 * @return string[]
+	 */
+	public static function full_simulation_quiz_types() {
 		return array(
 			'form_a',
 			'form_b',
 			'practice_a',
 			'practice_b',
 			'comprehensive_final',
+		);
+	}
+
+	/**
+	 * Cumulative / multi-workbook practice banks (Exam Center — secondary section).
+	 *
+	 * @return string[]
+	 */
+	public static function cumulative_quiz_types() {
+		return array(
 			'checkpoint_1',
 			'checkpoint_2',
 			'checkpoint_3',
 		);
+	}
+
+	/**
+	 * Assessment category slug for a quiz row.
+	 *
+	 * @param object|null $quiz Quiz row.
+	 * @return string workbook_bank|cumulative_bank|full_simulation|other
+	 */
+	public static function get_assessment_category( $quiz ) {
+		if ( ! $quiz ) {
+			return 'other';
+		}
+
+		if ( self::is_workbook_quiz( $quiz ) ) {
+			return 'workbook_bank';
+		}
+
+		if ( self::is_cumulative_quiz( $quiz ) ) {
+			return 'cumulative_bank';
+		}
+
+		if ( self::is_full_simulation_quiz( $quiz ) ) {
+			return 'full_simulation';
+		}
+
+		return 'other';
+	}
+
+	/**
+	 * Whether a quiz is a workbook-scoped practice bank (not program-wide).
+	 *
+	 * @param object|null $quiz Quiz row.
+	 * @return bool
+	 */
+	public static function is_workbook_quiz( $quiz ) {
+		if ( ! $quiz || self::is_cumulative_quiz( $quiz ) || self::is_full_simulation_quiz( $quiz ) ) {
+			return false;
+		}
+
+		$type = sanitize_key( (string) ( $quiz->quiz_type ?? '' ) );
+		if ( preg_match( '/^wb\d+_bank$/', $type ) ) {
+			return true;
+		}
+
+		return self::workbook_number_from_quiz( $quiz ) > 0;
+	}
+
+	/**
+	 * Whether a quiz is a cumulative checkpoint / topic bank.
+	 *
+	 * @param object|null $quiz Quiz row.
+	 * @return bool
+	 */
+	public static function is_cumulative_quiz( $quiz ) {
+		if ( ! $quiz ) {
+			return false;
+		}
+
+		$type = sanitize_key( (string) ( $quiz->quiz_type ?? '' ) );
+		if ( in_array( $type, self::cumulative_quiz_types(), true ) ) {
+			return true;
+		}
+
+		$title = strtolower( (string) ( $quiz->title ?? '' ) );
+		return false !== strpos( $title, 'checkpoint' );
+	}
+
+	/**
+	 * Whether a quiz is a full-length program simulation.
+	 *
+	 * @param object|null $quiz Quiz row.
+	 * @return bool
+	 */
+	public static function is_full_simulation_quiz( $quiz ) {
+		if ( ! $quiz ) {
+			return false;
+		}
+
+		$type = sanitize_key( (string) ( $quiz->quiz_type ?? '' ) );
+		if ( in_array( $type, self::full_simulation_quiz_types(), true ) ) {
+			return true;
+		}
+
+		$title = strtolower( (string) ( $quiz->title ?? '' ) );
+
+		return false !== strpos( $title, 'form a' )
+			|| false !== strpos( $title, 'form b' )
+			|| false !== strpos( $title, 'comprehensive simulation' )
+			|| false !== strpos( $title, 'comprehensive final' )
+			|| false !== strpos( $title, 'practice exam a' )
+			|| false !== strpos( $title, 'practice exam b' );
+	}
+
+	/**
+	 * Short category label for UI tags (workbook toolbar, exam cards, etc.).
+	 *
+	 * @param string      $category Category slug from get_assessment_category().
+	 * @param object|null $quiz     Optional quiz for workbook number context.
+	 * @return string
+	 */
+	public static function get_assessment_category_label( $category, $quiz = null ) {
+		switch ( sanitize_key( (string) $category ) ) {
+			case 'workbook_bank':
+				$wb = $quiz ? self::workbook_number_from_quiz( $quiz ) : 0;
+				if ( $wb > 0 ) {
+					return sprintf(
+						/* translators: %d: workbook number */
+						__( 'Workbook %d Practice Bank', 'cta-lms' ),
+						$wb
+					);
+				}
+				return __( 'Workbook Practice Bank', 'cta-lms' );
+			case 'cumulative_bank':
+				return __( 'Cumulative Practice Bank', 'cta-lms' );
+			case 'full_simulation':
+				return __( 'Full Simulation', 'cta-lms' );
+			default:
+				return __( 'Practice Assessment', 'cta-lms' );
+		}
+	}
+
+	/**
+	 * Primary toolbar button label for a workbook practice bank.
+	 *
+	 * @param object|null $module Module row.
+	 * @param object|null $quiz   Optional linked quiz row.
+	 * @return string
+	 */
+	public static function get_workbook_practice_bank_button_label( $module = null, $quiz = null ) {
+		$wb_num = 0;
+		if ( $module && class_exists( 'CTA_Exam_Prep_Lessons' ) ) {
+			$wb_num = CTA_Exam_Prep_Lessons::workbook_number_from_module( $module );
+		}
+		if ( $wb_num <= 0 && $quiz ) {
+			$wb_num = self::workbook_number_from_quiz( $quiz );
+		}
+
+		if ( $wb_num > 0 ) {
+			return sprintf(
+				/* translators: %d: workbook number */
+				__( 'Workbook %d Practice Bank', 'cta-lms' ),
+				$wb_num
+			);
+		}
+
+		return __( 'Practice Bank', 'cta-lms' );
 	}
 
 	/**
@@ -45,25 +213,11 @@ class CTA_Exam_Prep_Workbooks {
 			return true;
 		}
 
-		$type = isset( $quiz->quiz_type ) ? sanitize_key( (string) $quiz->quiz_type ) : '';
-
-		if ( in_array( $type, self::program_level_quiz_types(), true ) ) {
-			return true;
+		if ( self::is_workbook_quiz( $quiz ) ) {
+			return false;
 		}
 
-		$title = strtolower( (string) ( $quiz->title ?? '' ) );
-
-		if ( false !== strpos( $title, 'form a' )
-			|| false !== strpos( $title, 'form b' )
-			|| false !== strpos( $title, 'comprehensive simulation' )
-			|| false !== strpos( $title, 'comprehensive final' )
-			|| false !== strpos( $title, 'practice exam a' )
-			|| false !== strpos( $title, 'practice exam b' )
-			|| false !== strpos( $title, 'checkpoint' ) ) {
-			return true;
-		}
-
-		return false;
+		return self::is_cumulative_quiz( $quiz ) || self::is_full_simulation_quiz( $quiz );
 	}
 
 	/**
@@ -300,12 +454,14 @@ class CTA_Exam_Prep_Workbooks {
 	 * @param string      $workbook_page_url        Current workbook player URL.
 	 * @param string      $bank_download_url        Optional DOCX practice bank download URL.
 	 * @param object|null $practice_bank_resource   Practice bank resource row.
+	 * @param object|null $module                   Workbook module row (for consistent labels).
 	 * @return array<string,mixed>|null
 	 */
-	public static function resolve_practice_bank_action( $workbook_quiz_cards, $workbook_tabs, $workbook_page_url, $bank_download_url = '', $practice_bank_resource = null ) {
-		$fallback_label = $practice_bank_resource && ! empty( $practice_bank_resource->title )
-			? (string) $practice_bank_resource->title
-			: __( 'Practice Bank', 'cta-lms' );
+	public static function resolve_practice_bank_action( $workbook_quiz_cards, $workbook_tabs, $workbook_page_url, $bank_download_url = '', $practice_bank_resource = null, $module = null ) {
+		$fallback_label = self::get_workbook_practice_bank_button_label( $module );
+		if ( $practice_bank_resource && ! empty( $practice_bank_resource->title ) && ! $module ) {
+			$fallback_label = (string) $practice_bank_resource->title;
+		}
 		$docx_url = (string) $bank_download_url;
 
 		foreach ( (array) $workbook_quiz_cards as $card ) {
@@ -315,13 +471,15 @@ class CTA_Exam_Prep_Workbooks {
 			}
 
 			$quiz  = $card['quiz'] ?? null;
-			$label = ( $quiz && ! empty( $quiz->title ) ) ? (string) $quiz->title : $fallback_label;
+			$label = self::get_workbook_practice_bank_button_label( $module, $quiz );
 
 			return array(
-				'mode'     => 'quiz',
-				'url'      => $url,
-				'label'    => $label,
-				'docx_url' => $docx_url,
+				'mode'            => 'quiz',
+				'url'             => $url,
+				'label'           => $label,
+				'category'        => 'workbook_bank',
+				'category_label'  => self::get_assessment_category_label( 'workbook_bank', $quiz ),
+				'docx_url'        => $docx_url,
 			);
 		}
 
@@ -333,8 +491,8 @@ class CTA_Exam_Prep_Workbooks {
 				}
 
 				$label = (string) ( $tab['label'] ?? $fallback_label );
-				if ( 'practice' === $tab_key && $practice_bank_resource && ! empty( $practice_bank_resource->title ) ) {
-					$label = (string) $practice_bank_resource->title;
+				if ( 'practice' === $tab_key ) {
+					$label = self::get_workbook_practice_bank_button_label( $module );
 				}
 				if ( 'practice' === $tab_key && ! empty( $tab['quiz_cards'] ) ) {
 					foreach ( (array) $tab['quiz_cards'] as $card ) {
@@ -342,31 +500,37 @@ class CTA_Exam_Prep_Workbooks {
 						if ( '' !== $url && '#' !== $url ) {
 							$quiz = $card['quiz'] ?? null;
 							return array(
-								'mode'     => 'quiz',
-								'url'      => $url,
-								'label'    => ( $quiz && ! empty( $quiz->title ) ) ? (string) $quiz->title : $fallback_label,
-								'docx_url' => $docx_url,
+								'mode'           => 'quiz',
+								'url'            => $url,
+								'label'          => self::get_workbook_practice_bank_button_label( $module, $quiz ),
+								'category'       => 'workbook_bank',
+								'category_label' => self::get_assessment_category_label( 'workbook_bank', $quiz ),
+								'docx_url'       => $docx_url,
 							);
 						}
 					}
 				}
 
 				return array(
-					'mode'     => 'tab',
-					'url'      => add_query_arg( 'wb_section', $tab_key, (string) $workbook_page_url ),
-					'label'    => $label,
-					'docx_url' => $docx_url,
-					'tab_key'  => $tab_key,
+					'mode'           => 'tab',
+					'url'            => add_query_arg( 'wb_section', $tab_key, (string) $workbook_page_url ),
+					'label'          => $label,
+					'category'       => 'workbook_bank',
+					'category_label' => self::get_assessment_category_label( 'workbook_bank' ),
+					'docx_url'       => $docx_url,
+					'tab_key'        => $tab_key,
 				);
 			}
 		}
 
 		if ( '' !== $docx_url ) {
 			return array(
-				'mode'     => 'download',
-				'url'      => $docx_url,
-				'label'    => $fallback_label,
-				'docx_url' => '',
+				'mode'           => 'download',
+				'url'            => $docx_url,
+				'label'          => $fallback_label,
+				'category'       => 'workbook_bank',
+				'category_label' => self::get_assessment_category_label( 'workbook_bank' ),
+				'docx_url'       => '',
 			);
 		}
 

@@ -54,19 +54,23 @@ foreach ( $workbook_tabs as $tab ) {
 					$pb_mode   = (string) ( $practice_bank_action['mode'] ?? '' );
 					$pb_url    = (string) ( $practice_bank_action['url'] ?? '' );
 					$pb_label  = (string) ( $practice_bank_action['label'] ?? __( 'Practice Bank', 'cta-lms' ) );
+					$pb_tag    = (string) ( $practice_bank_action['category_label'] ?? __( 'Workbook Practice Bank', 'cta-lms' ) );
 					$pb_docx   = (string) ( $practice_bank_action['docx_url'] ?? '' );
 					$pb_class  = ( 'download' === $pb_mode ) ? 'btn btn-outline btn--sm' : 'btn btn-primary btn--sm';
 					$pb_target = ( 'download' === $pb_mode ) ? '_blank' : '';
 					?>
-					<a
-						class="<?php echo esc_attr( $pb_class ); ?>"
-						href="<?php echo esc_url( $pb_url ); ?>"
-						<?php if ( $pb_target ) : ?>
-							target="<?php echo esc_attr( $pb_target ); ?>" rel="noopener noreferrer"
-						<?php endif; ?>
-					>
-						<?php echo esc_html( $pb_label ); ?>
-					</a>
+					<div class="cta-ep-workbook-practice-bank">
+						<span class="cta-assessment-tag cta-assessment-tag--workbook"><?php echo esc_html( $pb_tag ); ?></span>
+						<a
+							class="<?php echo esc_attr( $pb_class ); ?>"
+							href="<?php echo esc_url( $pb_url ); ?>"
+							<?php if ( $pb_target ) : ?>
+								target="<?php echo esc_attr( $pb_target ); ?>" rel="noopener noreferrer"
+							<?php endif; ?>
+						>
+							<?php echo esc_html( $pb_label ); ?>
+						</a>
+					</div>
 					<?php if ( '' !== $pb_docx && 'download' !== $pb_mode ) : ?>
 						<a class="btn btn-outline btn--sm" href="<?php echo esc_url( $pb_docx ); ?>" target="_blank" rel="noopener noreferrer">
 							<?php esc_html_e( 'Download Practice Bank (DOCX)', 'cta-lms' ); ?>
@@ -147,13 +151,31 @@ foreach ( $workbook_tabs as $tab ) {
 						$qpid  = absint( $tab['quiz_page_id'] ?? $quiz_page_id ?? 0 );
 						?>
 						<div class="cta-ep-workbook-section__body">
-							<h2 class="dashboard-section__title"><?php esc_html_e( 'Practice Bank / Knowledge Check', 'cta-lms' ); ?></h2>
+							<?php
+							$wb_bank_label = class_exists( 'CTA_Exam_Prep_Workbooks' )
+								? CTA_Exam_Prep_Workbooks::get_workbook_practice_bank_button_label( $module ?? null )
+								: __( 'Practice Bank', 'cta-lms' );
+							$wb_bank_tag = class_exists( 'CTA_Exam_Prep_Workbooks' )
+								? CTA_Exam_Prep_Workbooks::get_assessment_category_label( 'workbook_bank', ! empty( $cards[0]['quiz'] ) ? $cards[0]['quiz'] : null )
+								: __( 'Workbook Practice Bank', 'cta-lms' );
+							?>
+							<span class="cta-assessment-tag cta-assessment-tag--workbook"><?php echo esc_html( $wb_bank_tag ); ?></span>
+							<h2 class="dashboard-section__title"><?php echo esc_html( $wb_bank_label ); ?></h2>
+							<p class="cta-ep-workbook-section__hint">
+								<?php esc_html_e( 'This practice bank covers only this workbook — not the full program exam.', 'cta-lms' ); ?>
+							</p>
 							<?php if ( ! empty( $cards ) ) : ?>
 								<ul class="cta-exam-assessment-list">
 									<?php foreach ( $cards as $card ) : ?>
+										<?php
+										$card_quiz = $card['quiz'] ?? null;
+										$card_label = class_exists( 'CTA_Exam_Prep_Workbooks' )
+											? CTA_Exam_Prep_Workbooks::get_workbook_practice_bank_button_label( $module ?? null, $card_quiz )
+											: ( $card_quiz ? (string) $card_quiz->title : $wb_bank_label );
+										?>
 										<li class="cta-exam-assessment-list__item">
 											<div class="cta-exam-assessment-list__meta">
-												<strong><?php echo esc_html( $card['quiz']->title ); ?></strong>
+												<strong><?php echo esc_html( $card_label ); ?></strong>
 												<?php if ( ! empty( $card['passed'] ) ) : ?>
 													<span class="badge badge--success"><?php echo esc_html__( 'Passed', 'cta-lms' ); ?> — <?php echo esc_html( (string) (int) $card['best']->score ); ?>%</span>
 												<?php elseif ( ! empty( $card['best'] ) ) : ?>

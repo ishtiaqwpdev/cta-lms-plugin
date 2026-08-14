@@ -1300,16 +1300,37 @@ class CTA_Student_Dashboard {
 			$section_data['exam_center_data'] = CTA_Exam_Prep_Exam_Center::get_center_data_for_course( $course, $this );
 		}
 
-		if ( in_array( $section_view, array( 'resources', 'downloads', 'audio', 'progress' ), true ) && ! empty( $sidebar_nav['sections'] ) ) {
+		if ( 'progress' === $section_view && class_exists( 'CTA_Exam_Prep_Progress_Readiness' ) ) {
+			$section_data['progress_readiness_data'] = CTA_Exam_Prep_Progress_Readiness::get_dashboard_data(
+				$course,
+				(array) $modules,
+				(array) $completed_ids,
+				$this
+			);
+		}
+
+		if ( 'downloads' === $section_view && class_exists( 'CTA_Exam_Prep_Downloads' ) ) {
+			$section_data['downloads_data'] = CTA_Exam_Prep_Downloads::get_center_data_for_course(
+				$course,
+				(array) $modules,
+				$this
+			);
+		}
+
+		if ( 'audio' === $section_view && class_exists( 'CTA_Exam_Prep_Audio_Review' ) ) {
+			$section_data['audio_review_data'] = CTA_Exam_Prep_Audio_Review::get_center_data_for_course(
+				$course,
+				(array) $modules,
+				$this
+			);
+		}
+
+		if ( 'resources' === $section_view && ! empty( $sidebar_nav['sections'] ) ) {
 			foreach ( (array) $sidebar_nav['sections'] as $nav_section ) {
 				if ( (string) ( $nav_section['key'] ?? '' ) !== $section_view ) {
 					continue;
 				}
-				if ( 'progress' === $section_view ) {
-					$section_data['readiness_items'] = isset( $nav_section['children'] ) ? (array) $nav_section['children'] : array();
-				} else {
-					$section_data['resource_items'] = isset( $nav_section['children'] ) ? (array) $nav_section['children'] : array();
-				}
+				$section_data['resource_items'] = isset( $nav_section['children'] ) ? (array) $nav_section['children'] : array();
 				break;
 			}
 		}
