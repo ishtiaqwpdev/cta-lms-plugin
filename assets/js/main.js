@@ -5029,8 +5029,11 @@
         var card = currentCard();
 
         if (!card) {
+          var emptyMsg = hasContent
+            ? "No cards match your filters."
+            : "Flashcard deck coming soon. Check back when cards are published for this program.";
           if (frontEl) {
-            frontEl.textContent = "No cards match your filters.";
+            frontEl.textContent = emptyMsg;
           }
           if (backEl) {
             backEl.textContent = "";
@@ -5118,7 +5121,11 @@
 
         if (!indices.length) {
           grid.innerHTML =
-            '<p class="cta-fsc__browse-empty">No cards match your filters. Try another domain or search term.</p>';
+            '<p class="cta-fsc__browse-empty">' +
+            (hasContent
+              ? "No cards match your filters. Try another domain or search term."
+              : "Flashcard deck coming soon. Check back when cards are published for this program.") +
+            "</p>";
           return;
         }
 
@@ -5203,9 +5210,6 @@
 
       root.querySelectorAll("[data-cta-fsc-start]").forEach(function (btn) {
         btn.addEventListener("click", function () {
-          if (!hasContent) {
-            return;
-          }
           var mode = btn.getAttribute("data-cta-fsc-start") || "study";
           state.index = 0;
           state.flipped = false;
@@ -5222,9 +5226,6 @@
 
       root.querySelectorAll("[data-cta-fsc-mode]").forEach(function (tab) {
         tab.addEventListener("click", function () {
-          if (!hasContent) {
-            return;
-          }
           var mode = tab.getAttribute("data-cta-fsc-mode") || "study";
           setPanel(mode);
         });

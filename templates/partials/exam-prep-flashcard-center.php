@@ -116,10 +116,10 @@ $deck_json = wp_json_encode(
 		<?php endif; ?>
 
 		<div class="cta-fsc__landing-actions">
-			<button type="button" class="btn btn-primary" data-cta-fsc-start="study" <?php disabled( ! $has_content ); ?>>
+			<button type="button" class="btn btn-primary" data-cta-fsc-start="study">
 				<?php esc_html_e( 'Start Study Mode', 'cta-lms' ); ?>
 			</button>
-			<button type="button" class="btn btn-outline" data-cta-fsc-start="browse" <?php disabled( ! $has_content ); ?>>
+			<button type="button" class="btn btn-outline" data-cta-fsc-start="browse">
 				<?php esc_html_e( 'Browse / Review Mode', 'cta-lms' ); ?>
 			</button>
 		</div>
