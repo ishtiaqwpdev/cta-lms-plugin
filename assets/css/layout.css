@@ -7686,6 +7686,8 @@ button.pagination__item:disabled {
   text-transform: uppercase;
   line-height: 1.4;
   color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  opacity: 1 !important;
 }
 
 .cta-plugin-wrapper .cta-ep-sidebar-nav__tabs {
