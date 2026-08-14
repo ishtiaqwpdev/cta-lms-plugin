@@ -401,8 +401,10 @@ body.cta-lms-page .elementor-shortcode {
 }
 
 .cta-lms .cta-ep-sidebar-nav__course-label,
-.cta-plugin-wrapper .dashboard-sidebar .cta-ep-sidebar-nav__course-label {
-  color: var(--color-white, #fff) !important;
+.cta-plugin-wrapper .dashboard-sidebar .cta-ep-sidebar-nav__course-label,
+body.cta-lms-page .dashboard-sidebar .cta-ep-sidebar-nav__course-label {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
 .cta-lms .course-detail__layout,

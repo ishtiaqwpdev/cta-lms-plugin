@@ -7678,15 +7678,14 @@ button.pagination__item:disabled {
 }
 
 .cta-plugin-wrapper .cta-ep-sidebar-nav__course-label {
-  margin: 0.85rem 0 0.55rem;
-  padding: 0 0.65rem 0.55rem;
-  font-size: 0.72rem;
+  margin: 0.35rem 0 0.15rem;
+  padding: 0 0.65rem;
+  font-size: 0.7rem;
   font-weight: 600;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  line-height: 1.45;
-  color: #fff;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  line-height: 1.4;
+  color: #ffffff !important;
 }
 
 .cta-plugin-wrapper .cta-ep-sidebar-nav__tabs {
