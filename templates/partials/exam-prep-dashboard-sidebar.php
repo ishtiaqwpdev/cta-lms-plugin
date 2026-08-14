@@ -80,7 +80,7 @@ $active_section   = (string) ( $sidebar_nav['active_section'] ?? '' );
 		<?php endif; ?>
 
 		<?php if ( ! empty( $course_nav['title'] ) ) : ?>
-			<div class="cta-ep-sidebar-nav__course-label" style="color:#ffffff !important;-webkit-text-fill-color:#ffffff !important;"><?php echo esc_html( (string) $course_nav['title'] ); ?></div>
+			<p class="dashboard-sidebar__license cta-ep-sidebar-nav__course-label"><?php echo esc_html( (string) $course_nav['title'] ); ?></p>
 		<?php endif; ?>
 
 		<?php if ( ! empty( $sections ) ) : ?>

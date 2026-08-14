@@ -396,8 +396,31 @@ body.cta-lms-page .elementor-shortcode {
 }
 
 .cta-lms .dashboard-sidebar__name,
-.cta-lms .dashboard-sidebar__license {
+.cta-lms .dashboard-sidebar__license,
+.cta-lms .dashboard-sidebar__license.cta-ep-sidebar-nav__course-label {
   color: var(--color-white) !important;
+}
+
+/* Exam prep sidebar — keep chevron on same row as tab label; hide on desktop (hover flyout). */
+.cta-lms .dashboard-sidebar .cta-ep-sidebar-nav__tab-row {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 2rem !important;
+  align-items: center !important;
+}
+
+.cta-lms .dashboard-sidebar .cta-ep-sidebar-nav__tab-link {
+  width: auto !important;
+  max-width: 100% !important;
+}
+
+@media (hover: hover) and (pointer: fine) and (min-width: 993px) {
+  .cta-lms .dashboard-sidebar .cta-ep-sidebar-nav__expand {
+    display: none !important;
+  }
+
+  .cta-lms .dashboard-sidebar .cta-ep-sidebar-nav__tab-row {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
 }
 
 .cta-lms .cta-ep-sidebar-nav__course-label,
