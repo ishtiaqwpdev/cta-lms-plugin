@@ -687,11 +687,16 @@
   }
 
   function initExamPrepSidebarNav() {
-    var HOVER_CLOSE_DELAY = 250;
+    var HOVER_CLOSE_DELAY = 280;
     var hoverMedia = window.matchMedia("(hover: hover) and (pointer: fine)");
+    var mobileMedia = window.matchMedia("(max-width: 992px)");
 
     document.querySelectorAll("[data-cta-ep-sidebar-nav]").forEach(function (nav) {
       var closeTimers = new WeakMap();
+
+      function isTouchMode() {
+        return !hoverMedia.matches || mobileMedia.matches;
+      }
 
       function clearCloseTimer(el) {
         var timer = closeTimers.get(el);
@@ -712,168 +717,103 @@
         );
       }
 
-      function openFlyout(flyout) {
-        if (!flyout) return;
-        flyout.classList.add("is-hover-open");
-      }
+      function setExpanded(container, expanded) {
+        if (!container) return;
+        container.classList.toggle("is-expanded", expanded);
+        container.classList.toggle("is-hover-open", expanded && !isTouchMode());
 
-      function closeFlyout(flyout) {
-        if (!flyout) return;
-        flyout.classList.remove("is-hover-open");
-      }
+        var submenu = container.querySelector("[data-cta-ep-sidebar-submenu]");
+        var expandBtn = container.querySelector("[data-cta-ep-sidebar-expand]");
 
-      function isTouchMode() {
-        return !hoverMedia.matches || window.matchMedia("(max-width: 992px)").matches;
-      }
-
-      function toggleMobileOpen(el, shouldOpen) {
-        if (!el) return;
-        if (typeof shouldOpen === "boolean") {
-          el.classList.toggle("is-open", shouldOpen);
-        } else {
-          el.classList.toggle("is-open");
+        if (submenu) {
+          submenu.hidden = !expanded;
+        }
+        if (expandBtn) {
+          expandBtn.setAttribute("aria-expanded", expanded ? "true" : "false");
         }
       }
 
-      nav.querySelectorAll(".cta-ep-sidebar-nav__item--has-children").forEach(function (item) {
-        var flyout = item.querySelector("[data-cta-ep-sidebar-flyout]");
-        var subtoggle = item.querySelector("[data-cta-ep-sidebar-subtoggle]");
-
-        if (hoverMedia.matches) {
-          item.addEventListener("mouseenter", function () {
-            clearCloseTimer(item);
-            openFlyout(flyout);
-          });
-
-          item.addEventListener("mouseleave", function () {
-            scheduleClose(item, function () {
-              closeFlyout(flyout);
-            });
-          });
-
-          if (flyout) {
-            flyout.addEventListener("mouseenter", function () {
-              clearCloseTimer(item);
-              openFlyout(flyout);
-            });
-            flyout.addEventListener("mouseleave", function () {
-              scheduleClose(item, function () {
-                closeFlyout(flyout);
-              });
-            });
+      function collapseAllExcept(navRoot, keepOpen) {
+        navRoot.querySelectorAll(".cta-ep-sidebar-nav__tab.is-expanded, .cta-ep-sidebar-nav__root.is-expanded").forEach(function (el) {
+          if (el !== keepOpen) {
+            setExpanded(el, false);
           }
-        }
+        });
+      }
 
-        if (subtoggle) {
-          subtoggle.addEventListener("click", function (e) {
-            if (!isTouchMode()) return;
-            e.preventDefault();
-            e.stopPropagation();
-            var willOpen = !item.classList.contains("is-open");
-            toggleMobileOpen(item, willOpen);
-            if (flyout) {
-              toggleMobileOpen(flyout, willOpen);
-            }
-            subtoggle.setAttribute("aria-expanded", willOpen ? "true" : "false");
+      function bindHoverContainer(container) {
+        if (!container || isTouchMode()) return;
+
+        container.addEventListener("mouseenter", function () {
+          clearCloseTimer(container);
+          setExpanded(container, true);
+        });
+
+        container.addEventListener("mouseleave", function () {
+          scheduleClose(container, function () {
+            setExpanded(container, false);
           });
-        }
-      });
+        });
 
-      nav.querySelectorAll(".cta-ep-sidebar-nav__root--has-flyout").forEach(function (root) {
-        var flyout = root.querySelector("[data-cta-ep-sidebar-flyout]");
-
-        if (hoverMedia.matches) {
-          root.addEventListener("mouseenter", function () {
-            clearCloseTimer(root);
-            openFlyout(flyout);
+        var submenu = container.querySelector("[data-cta-ep-sidebar-submenu]");
+        if (submenu) {
+          submenu.addEventListener("mouseenter", function () {
+            clearCloseTimer(container);
+            setExpanded(container, true);
           });
-          root.addEventListener("mouseleave", function () {
-            scheduleClose(root, function () {
-              closeFlyout(flyout);
+          submenu.addEventListener("mouseleave", function () {
+            scheduleClose(container, function () {
+              setExpanded(container, false);
             });
           });
-          if (flyout) {
-            flyout.addEventListener("mouseenter", function () {
-              clearCloseTimer(root);
-              openFlyout(flyout);
-            });
-            flyout.addEventListener("mouseleave", function () {
-              scheduleClose(root, function () {
-                closeFlyout(flyout);
-              });
-            });
-          }
         }
+      }
+
+      nav.querySelectorAll(".cta-ep-sidebar-nav__root.has-submenu").forEach(function (root) {
+        bindHoverContainer(root);
 
         var rootLink = root.querySelector(".cta-ep-sidebar-nav__root-link");
         if (rootLink) {
           rootLink.addEventListener("click", function (e) {
             if (!isTouchMode()) return;
-            if (!flyout) return;
             e.preventDefault();
-            var willOpen = !root.classList.contains("is-open");
-            toggleMobileOpen(root, willOpen);
-            toggleMobileOpen(flyout, willOpen);
+            var willOpen = !root.classList.contains("is-expanded");
+            collapseAllExcept(nav, willOpen ? root : null);
+            setExpanded(root, willOpen);
           });
         }
       });
 
-      nav.querySelectorAll("[data-cta-ep-sidebar-branch]").forEach(function (branch) {
-        var trigger = branch.querySelector("[data-cta-ep-sidebar-trigger]");
-        var panel = branch.querySelector("[data-cta-ep-sidebar-panel]");
+      nav.querySelectorAll(".cta-ep-sidebar-nav__tab.has-children").forEach(function (tab) {
+        bindHoverContainer(tab);
 
-        if (!trigger) return;
+        var expandBtn = tab.querySelector("[data-cta-ep-sidebar-expand]");
+        var tabLink = tab.querySelector(".cta-ep-sidebar-nav__tab-link");
 
-        if (hoverMedia.matches && panel) {
-          branch.addEventListener("mouseenter", function () {
-            clearCloseTimer(branch);
-            openFlyout(panel);
-          });
-          branch.addEventListener("mouseleave", function () {
-            scheduleClose(branch, function () {
-              closeFlyout(panel);
-            });
-          });
-          panel.addEventListener("mouseenter", function () {
-            clearCloseTimer(branch);
-            openFlyout(panel);
-          });
-          panel.addEventListener("mouseleave", function () {
-            scheduleClose(branch, function () {
-              closeFlyout(panel);
-            });
-          });
-        }
-
-        trigger.addEventListener("click", function (e) {
+        function toggleTab(e) {
           if (!isTouchMode()) return;
-          e.preventDefault();
-          var willOpen = !branch.classList.contains("is-open");
-          toggleMobileOpen(branch, willOpen);
-          trigger.setAttribute("aria-expanded", willOpen ? "true" : "false");
-          if (panel) {
-            toggleMobileOpen(panel, willOpen);
+          if (e) {
+            e.preventDefault();
+            e.stopPropagation();
           }
-        });
+          var willOpen = !tab.classList.contains("is-expanded");
+          collapseAllExcept(nav, willOpen ? tab : null);
+          setExpanded(tab, willOpen);
+        }
 
-        if (branch.classList.contains("is-open") && panel && isTouchMode()) {
-          panel.classList.add("is-open");
+        if (expandBtn) {
+          expandBtn.addEventListener("click", toggleTab);
+        }
+
+        if (tab.classList.contains("is-active") && isTouchMode()) {
+          collapseAllExcept(nav, tab);
+          setExpanded(tab, true);
         }
       });
 
-      nav.querySelectorAll(".cta-ep-sidebar-nav__item.is-active-branch").forEach(function (item) {
-        if (isTouchMode()) {
-          item.classList.add("is-open");
-          var flyout = item.querySelector("[data-cta-ep-sidebar-flyout]");
-          if (flyout) flyout.classList.add("is-open");
-          var subtoggle = item.querySelector("[data-cta-ep-sidebar-subtoggle]");
-          if (subtoggle) subtoggle.setAttribute("aria-expanded", "true");
-        }
-      });
-
-      nav.querySelectorAll(".cta-ep-sidebar-nav__link").forEach(function (link) {
+      nav.querySelectorAll(".cta-ep-sidebar-nav__tab-link, .cta-ep-sidebar-nav__submenu-link, .cta-ep-sidebar-nav__root-link").forEach(function (link) {
         link.addEventListener("click", function () {
-          if (isTouchMode() && window.matchMedia("(max-width: 992px)").matches) {
+          if (isTouchMode() && mobileMedia.matches) {
             var layout = nav.closest(".dashboard-layout");
             if (layout) {
               layout.classList.remove("dashboard-layout--menu-open");
