@@ -493,7 +493,9 @@ aside.dashboard-sidebar .cta-ep-sidebar-nav__course-label,
 
 .cta-plugin-wrapper .course-hero__media--exam-prep,
 .cta-lms .course-hero__media--exam-prep {
-  aspect-ratio: 16 / 9 !important;
+  aspect-ratio: auto !important;
+  height: auto !important;
+  background-color: transparent !important;
 }
 
 .cta-plugin-wrapper .course-hero__media > img,
@@ -514,7 +516,11 @@ aside.dashboard-sidebar .cta-ep-sidebar-nav__course-label,
 .cta-lms .course-hero__media--exam-prep > img,
 .cta-lms .course-hero__media--exam-prep .course-hero__video-thumb,
 .cta-lms .course-hero__media--exam-prep .cta-exam-prep-artwork {
-  object-fit: contain !important;
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+  object-fit: unset !important;
+  object-position: center center !important;
 }
 
 .cta-lms .course-sidebar__card {
