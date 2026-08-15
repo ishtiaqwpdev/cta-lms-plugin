@@ -17,6 +17,7 @@
  * @var string $provider_number
  * @var string $provider_line
  * @var string $provider_address
+ * @var array  $provider_address_lines
  * @var string $cepa_stamp_url
  * @var string $certificate_number
  * @var string $logo_url
@@ -40,7 +41,16 @@ $organization_name   = ! empty( $organization_name ) ? $organization_name : __( 
 $administrator_title = ! empty( $administrator_title ) ? $administrator_title : __( 'Program Administrator', 'cta-lms' );
 $provider_name       = ! empty( $provider_name ) ? $provider_name : __( 'Clinical Training & Supervision Academy', 'cta-lms' );
 $provider_line       = ! empty( $provider_line ) ? $provider_line : __( 'CAMFT-Approved Continuing Education Provider #122418', 'cta-lms' );
-$provider_address    = ! empty( $provider_address ) ? $provider_address : '';
+$provider_address       = ! empty( $provider_address ) ? $provider_address : '';
+$provider_address_lines = isset( $provider_address_lines ) && is_array( $provider_address_lines )
+	? array_values( array_filter( array_map( 'strval', $provider_address_lines ) ) )
+	: array();
+if ( empty( $provider_address_lines ) && class_exists( 'CTA_Certificates' ) ) {
+	$provider_address_lines = CTA_Certificates::get_provider_address_lines();
+} elseif ( empty( $provider_address_lines ) && '' !== $provider_address ) {
+	$provider_address_lines = preg_split( '/\r\n|\r|\n/', $provider_address );
+	$provider_address_lines = array_values( array_filter( array_map( 'trim', (array) $provider_address_lines ) ) );
+}
 $cepa_stamp_url      = ! empty( $cepa_stamp_url ) ? $cepa_stamp_url : '';
 if ( empty( $signature_url ) && class_exists( 'CTA_Certificates' ) ) {
 	$signature_url = CTA_Certificates::get_signature_data_uri();
@@ -300,9 +310,9 @@ $signature_url = ! empty( $signature_url ) ? $signature_url : '';
 					<td class="provider-copy-cell">
 						<p class="provider-name"><?php echo esc_html( $provider_name ); ?></p>
 						<p class="provider-line"><?php echo esc_html( $provider_line ); ?></p>
-						<?php if ( ! empty( $provider_address ) ) : ?>
-							<p class="provider-address"><?php echo esc_html( $provider_address ); ?></p>
-						<?php endif; ?>
+						<?php foreach ( $provider_address_lines as $address_line ) : ?>
+							<p class="provider-address"><?php echo esc_html( $address_line ); ?></p>
+						<?php endforeach; ?>
 					</td>
 				</tr>
 			</table>

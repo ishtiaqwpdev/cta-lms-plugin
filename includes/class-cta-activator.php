@@ -119,7 +119,7 @@ class CTA_Activator {
 		add_option( 'cta_support_email', 'support@clinicaltrainingacademy.com' );
 		add_option( 'cta_certificate_header_text', 'Certificate of Completion' );
 		add_option( 'cta_certificate_footer_text', 'clinicaltrainingacademy.com' );
-		add_option( 'cta_certificate_provider_address', '' );
+		add_option( 'cta_certificate_provider_address', "6296 Magnolia Ave #1077\nRiverside, CA 92506" );
 		add_option( 'cta_certificate_signature_name', 'Candice Fuimaono, MS, LMFT' );
 		add_option( 'cta_certificate_signature_image_url', '' );
 

@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.207' );
+	define( 'CTA_VERSION', '1.0.208' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -1054,6 +1054,20 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 			// Exam Prep: restore per-assessment gates on protected answer keys / rationales only.
 			if ( version_compare( $installed, '1.0.207', '<' ) && class_exists( 'CTA_Course_Materials' ) ) {
 				CTA_Course_Materials::restore_exam_prep_protected_rationale_gates();
+			}
+
+			// CE certificates: approved Riverside business mailing address on provider block.
+			if ( version_compare( $installed, '1.0.208', '<' ) ) {
+				if ( '' === trim( (string) get_option( 'cta_certificate_provider_address', '' ) ) ) {
+					update_option(
+						'cta_certificate_provider_address',
+						"6296 Magnolia Ave #1077\nRiverside, CA 92506",
+						false
+					);
+				}
+				if ( class_exists( 'CTA_Certificates' ) && method_exists( 'CTA_Certificates', 'refresh_all_certificates' ) ) {
+					CTA_Certificates::refresh_all_certificates();
+				}
 			}
 
 			// Decouple supervision application pending from general account / CE access.

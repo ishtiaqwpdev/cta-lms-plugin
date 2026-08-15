@@ -453,8 +453,9 @@ class CTA_Certificates {
 		$provider_name    = self::get_provider_name();
 		$provider_number  = self::get_provider_number();
 		$provider_line    = self::get_provider_line();
-		$provider_address = self::get_provider_address();
-		$cepa_stamp_url   = self::get_cepa_stamp_data_uri();
+		$provider_address       = self::get_provider_address();
+		$provider_address_lines = self::get_provider_address_lines();
+		$cepa_stamp_url         = self::get_cepa_stamp_data_uri();
 
 		$header_text = (string) get_option( 'cta_certificate_header_text', '' );
 		if ( '' === $header_text ) {
@@ -536,12 +537,66 @@ class CTA_Certificates {
 	}
 
 	/**
+	 * Default CE provider mailing address (street + city; org name is shown separately).
+	 *
+	 * @return string
+	 */
+	public static function get_default_provider_address() {
+		return "6296 Magnolia Ave #1077\nRiverside, CA 92506";
+	}
+
+	/**
 	 * Configured provider mailing address for CE certificates.
+	 *
+	 * Falls back to the approved Riverside business address when unset.
 	 *
 	 * @return string
 	 */
 	public static function get_provider_address() {
-		return trim( (string) get_option( 'cta_certificate_provider_address', '' ) );
+		$address = trim( (string) get_option( 'cta_certificate_provider_address', '' ) );
+		if ( '' === $address ) {
+			$address = self::get_default_provider_address();
+		}
+
+		return $address;
+	}
+
+	/**
+	 * Provider mailing address as printable lines (no duplicate org name).
+	 *
+	 * @return array<int,string>
+	 */
+	public static function get_provider_address_lines() {
+		$lines = preg_split( '/\r\n|\r|\n/', self::get_provider_address() );
+		$lines = array_values(
+			array_filter(
+				array_map(
+					static function ( $line ) {
+						return trim( (string) $line );
+					},
+					(array) $lines
+				)
+			)
+		);
+
+		if ( empty( $lines ) ) {
+			return array();
+		}
+
+		$provider_variants = array(
+			self::get_provider_name(),
+			'Clinical Training and Supervision Academy',
+			'Clinical Training & Supervision Academy',
+		);
+
+		foreach ( $provider_variants as $variant ) {
+			if ( 0 === strcasecmp( (string) $lines[0], $variant ) ) {
+				array_shift( $lines );
+				break;
+			}
+		}
+
+		return $lines;
 	}
 
 	/**

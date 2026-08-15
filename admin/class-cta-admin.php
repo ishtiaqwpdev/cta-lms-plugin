@@ -2637,8 +2637,9 @@ class CTA_Admin {
 		$provider_name      = CTA_Certificates::get_provider_name();
 		$provider_number    = CTA_Certificates::get_provider_number();
 		$provider_line      = CTA_Certificates::get_provider_line();
-		$provider_address   = CTA_Certificates::get_provider_address();
-		$cepa_stamp_url     = CTA_Certificates::get_cepa_stamp_data_uri();
+		$provider_address       = CTA_Certificates::get_provider_address();
+		$provider_address_lines = CTA_Certificates::get_provider_address_lines();
+		$cepa_stamp_url         = CTA_Certificates::get_cepa_stamp_data_uri();
 		$certificate_number = 'CTA-' . cta_lms_current_date( 'Y' ) . '-000000';
 		$header_text        = (string) get_option( 'cta_certificate_header_text', __( 'Certificate of Completion', 'cta-lms' ) );
 		$footer_text        = (string) get_option( 'cta_certificate_footer_text', 'clinicaltrainingacademy.com' );

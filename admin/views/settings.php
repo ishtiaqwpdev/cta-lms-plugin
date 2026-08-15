@@ -159,8 +159,14 @@ $notice = sanitize_text_field( wp_unslash( $_GET['cta_notice'] ?? '' ) );
 				<tr>
 					<th><label for="cta_certificate_provider_address"><?php esc_html_e( 'Provider Mailing Address', 'cta-lms' ); ?></label></th>
 					<td>
-						<textarea class="large-text" rows="2" id="cta_certificate_provider_address" name="cta_certificate_provider_address"><?php echo esc_textarea( get_option( 'cta_certificate_provider_address', '' ) ); ?></textarea>
-						<p class="description"><?php esc_html_e( 'Printed on CE certificates only. Enter the exact approved mailing address; do not use a placeholder.', 'cta-lms' ); ?></p>
+						<?php
+						$default_provider_address = class_exists( 'CTA_Certificates' )
+							? CTA_Certificates::get_default_provider_address()
+							: "6296 Magnolia Ave #1077\nRiverside, CA 92506";
+						$stored_provider_address = (string) get_option( 'cta_certificate_provider_address', '' );
+						?>
+						<textarea class="large-text" rows="3" id="cta_certificate_provider_address" name="cta_certificate_provider_address" placeholder="<?php echo esc_attr( $default_provider_address ); ?>"><?php echo esc_textarea( $stored_provider_address ); ?></textarea>
+						<p class="description"><?php esc_html_e( 'Printed on CE certificates only, below the provider name and CAMFT approval line. Use the business mailing address (street + city/state/ZIP). The organization name is already shown above this block.', 'cta-lms' ); ?></p>
 					</td>
 				</tr>
 				<tr>

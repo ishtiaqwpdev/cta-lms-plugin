@@ -55,7 +55,11 @@ $license_number      = 'LMFT123456';
 $provider_name       = 'Clinical Training & Supervision Academy';
 $provider_number     = '#122418';
 $provider_line       = 'CAMFT-Approved Continuing Education Provider #122418';
-$provider_address    = '123 Sample Provider Way, Sacramento, CA 95814';
+$provider_address       = "6296 Magnolia Ave #1077\nRiverside, CA 92506";
+$provider_address_lines = array(
+	'6296 Magnolia Ave #1077',
+	'Riverside, CA 92506',
+);
 $header_text         = 'Certificate of Completion';
 $footer_text         = 'clinicaltrainingacademy.com';
 $signature_name      = 'Candice Fuimaono, MS, LMFT';
@@ -132,7 +136,8 @@ $required_values     = array(
 	$license_number,
 	$provider_name,
 	$provider_line,
-	$provider_address,
+	'6296 Magnolia Ave #1077',
+	'Riverside, CA 92506',
 	$signature_name,
 	$certificate_number,
 );
