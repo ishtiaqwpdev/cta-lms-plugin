@@ -6107,6 +6107,7 @@ button.pagination__item:disabled {
   height: auto;
   overflow: visible;
   background-color: transparent;
+  padding-bottom: calc(56px + var(--space-sm));
 }
 
 .cta-plugin-wrapper .course-card--catalog.course-card--exam-prep .course-card__media img,
@@ -6124,6 +6125,9 @@ button.pagination__item:disabled {
 
 .cta-plugin-wrapper .course-card--catalog.course-card--exam-prep .course-card__price,
 .cta-plugin-wrapper .course-card--catalog.course-card--exam-prep .cta-course-card__price {
+  top: auto;
+  bottom: 0;
+  transform: none;
   z-index: 4;
 }
 
