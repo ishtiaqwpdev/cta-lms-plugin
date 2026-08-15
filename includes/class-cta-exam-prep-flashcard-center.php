@@ -45,6 +45,32 @@ class CTA_Exam_Prep_Flashcard_Center {
 	}
 
 	/**
+	 * Course slugs allowed to reuse legacy flashcards.json when Study Center JSON is empty.
+	 *
+	 * Programs with an approved blueprint-aligned Study Center deck must NOT appear here.
+	 *
+	 * @return array<int,string>
+	 */
+	public static function get_legacy_fallback_slugs() {
+		$slugs = array(
+			'lpcc-ncmhce-exam-preparation',
+			'lpcc-california-clinical-exam-preparation',
+			'lpcc-california-law-ethics-exam-preparation',
+			'lcsw-california-law-ethics-exam-preparation',
+			'lcsw-aswb-clinical-exam-preparation',
+			'lcsw-california-clinical-exam-preparation',
+			'lmft-amftrb-national-exam-preparation',
+		);
+
+		/**
+		 * Filter slugs that may fall back to legacy flashcards.json decks.
+		 *
+		 * @param array<int,string> $slugs Course slugs.
+		 */
+		return apply_filters( 'cta_exam_prep_flashcard_study_center_legacy_fallback_slugs', $slugs );
+	}
+
+	/**
 	 * Default empty deck payload for a course.
 	 *
 	 * @param object|null $course Course row.
@@ -94,10 +120,14 @@ class CTA_Exam_Prep_Flashcard_Center {
 		$path = CTA_PLUGIN_DIR . ltrim( $map[ $slug ], '/' );
 		$data = self::read_deck_file( $path );
 
-		// The Study Center files were introduced before their card data was
-		// populated. Reuse the matching program's legacy interactive deck until
-		// a richer Study Center deck is available; never fall back across licenses.
-		if ( ( ! is_array( $data ) || empty( $data['cards'] ) ) && class_exists( 'CTA_Flashcards' ) ) {
+		// Some programs ship a dedicated Study Center deck that must remain
+		// separate from the legacy printable/interactive flashcards.json library.
+		$legacy_fallback_slugs = self::get_legacy_fallback_slugs();
+		if (
+			( ! is_array( $data ) || empty( $data['cards'] ) )
+			&& class_exists( 'CTA_Flashcards' )
+			&& in_array( $slug, $legacy_fallback_slugs, true )
+		) {
 			$legacy_map = CTA_Flashcards::get_deck_map();
 			if ( isset( $legacy_map[ $slug ] ) ) {
 				$data = self::read_deck_file( CTA_PLUGIN_DIR . ltrim( $legacy_map[ $slug ], '/' ) );

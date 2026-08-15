@@ -40,6 +40,22 @@ class CTA_Exam_Prep_Exam_Center {
 		}
 
 		$all_cards       = self::build_exam_cards( $course_id, $user_id, $dashboard, $resources );
+		$enrollment      = class_exists( 'CTA_Database' )
+			? CTA_Database::get_user_enrollment( $user_id, $course_id )
+			: null;
+		$modules_complete = class_exists( 'CTA_CE_Completion' )
+			? CTA_CE_Completion::modules_complete( $user_id, $course_id, $enrollment )
+			: ( $enrollment && (int) $enrollment->progress >= 100 );
+
+		foreach ( $all_cards as &$card ) {
+			$has_active_attempt  = ! empty( $card['has_active_attempt'] );
+			$card['entry_locked'] = ! $modules_complete && ! $has_active_attempt;
+			$card['lock_message'] = $card['entry_locked']
+				? __( 'Complete all program workbooks before starting this assessment.', 'cta-lms' )
+				: '';
+		}
+		unset( $card );
+
 		$simulations     = array();
 		$cumulative_banks = array();
 
@@ -142,6 +158,7 @@ class CTA_Exam_Prep_Exam_Center {
 
 			$quiz_id   = (int) $qrow->id;
 			$attempts  = CTA_Database::get_user_quiz_attempts( $user_id, $quiz_id );
+			$active    = CTA_Database::get_active_quiz_attempt( $user_id, $quiz_id );
 			$best      = self::get_best_attempt( $attempts );
 			$latest    = ! empty( $attempts ) ? $attempts[0] : null;
 			$q_count   = count( CTA_Database::get_quiz_questions( $quiz_id ) );
@@ -168,6 +185,7 @@ class CTA_Exam_Prep_Exam_Center {
 				'latest_score'     => $latest ? (int) $latest->score : null,
 				'passed'           => $best && (int) $best->passed,
 				'has_attempts'     => $has_tried,
+				'has_active_attempt' => (bool) $active,
 				'review_materials' => $has_tried
 					? self::get_review_materials( $course_id, $user_id, $qrow, $resources )
 					: array(),

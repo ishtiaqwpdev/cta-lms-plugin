@@ -388,11 +388,6 @@ class CTA_Student_Dashboard {
 		$quiz_unlocked = class_exists( 'CTA_CE_Completion' )
 			? CTA_CE_Completion::modules_complete( get_current_user_id(), $course_id, $enrollment )
 			: ( class_exists( 'CTA_Certificates' ) && CTA_Certificates::user_completed_all_modules( get_current_user_id(), $course_id, $enrollment ) );
-		// LPCC Access Correction / open Exam Prep: assessments available from enrollment.
-		if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course )
-			&& ! CTA_Exam_Access::uses_assessment_gates( $course ) ) {
-			$quiz_unlocked = true;
-		}
 		$quiz_url       = $this->get_quiz_url( $course_id );
 		$quiz_page_id   = absint( get_option( 'cta_quiz_page_id', 0 ) );
 
@@ -421,6 +416,7 @@ class CTA_Student_Dashboard {
 				continue;
 			}
 			$attempts = CTA_Database::get_user_quiz_attempts( $user_id_player, (int) $qrow->id );
+			$active   = CTA_Database::get_active_quiz_attempt( $user_id_player, (int) $qrow->id );
 			$best     = null;
 			foreach ( $attempts as $att ) {
 				if ( null === $best || (int) $att->score > (int) $best->score ) {
@@ -432,10 +428,13 @@ class CTA_Student_Dashboard {
 				'quiz'     => $qrow,
 				'url'      => $this->get_quiz_url( $course_id, (int) $qrow->id ),
 				'attempts' => $attempts,
+				'active'   => $active,
 				'best'     => $best,
 				'passed'   => $best && (int) $best->passed,
-				'locked'   => false,
-				'lock_msg' => '',
+				'locked'   => ! $quiz_unlocked && ! $active,
+				'lock_msg' => ! $quiz_unlocked && ! $active
+					? __( 'Complete all program workbooks before starting this assessment.', 'cta-lms' )
+					: '',
 			);
 		}
 		$quiz_available = ! empty( $quiz_cards );
@@ -592,9 +591,6 @@ class CTA_Student_Dashboard {
 		$quiz_unlocked = class_exists( 'CTA_CE_Completion' )
 			? CTA_CE_Completion::modules_complete( $user_id, $course_id, null )
 			: ( $progress >= 100 );
-		if ( $is_exam_prep && class_exists( 'CTA_Exam_Access' ) && ! CTA_Exam_Access::uses_assessment_gates( $course ) ) {
-			$quiz_unlocked = true;
-		}
 
 		wp_send_json_success(
 			array(

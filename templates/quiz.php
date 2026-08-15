@@ -98,6 +98,9 @@ if ( empty( $evaluation_questions ) || ! is_array( $evaluation_questions ) ) {
 
 	<div class="cta-quiz-panel <?php echo 'in_progress' === $view_state ? 'cta-quiz-panel--active' : ''; ?>" data-quiz-panel="questions" <?php echo 'in_progress' !== $view_state ? 'hidden' : ''; ?>>
 		<p class="cta-quiz-progress" id="cta-quiz-progress"><?php echo esc_html__( 'Questions answered: 0 of 0', 'cta-lms' ); ?></p>
+		<p class="cta-quiz-save-status" id="cta-quiz-save-status" role="status" aria-live="polite">
+			<?php esc_html_e( 'Answers are saved automatically.', 'cta-lms' ); ?>
+		</p>
 		<form id="cta-quiz-form" class="cta-quiz-form">
 			<div id="cta-quiz-questions">
 				<?php

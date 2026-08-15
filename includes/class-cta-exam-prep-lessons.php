@@ -154,6 +154,26 @@ class CTA_Exam_Prep_Lessons {
 			(string) $html
 		);
 
+		// Learner lesson files may include authoring labels immediately before
+		// knowledge-check questions (ID, cognitive type, difficulty, and primary
+		// concept). A primary concept can reveal the answer, so omit only the
+		// rendered label. The original lesson/package files remain untouched for
+		// production and content-audit use.
+		$html = preg_replace(
+			'#<p\b[^>]*>\s*(?:<strong>)?\s*[^<]*?\|\s*(?:Recall|Application|Analysis|Comprehension|Knowledge)\s*\|\s*(?:Easy|Moderate|Medium|Hard)\s*\|\s*Primary\s+concept\s*:\s*[^<]+(?:</strong>)?\s*</p>#iu',
+			'',
+			(string) $html
+		);
+
+		// Strip embedded answer-key / rationale chapters from every learner path
+		// (tabbed and non-tabbed). Source HTML packages keep these sections for
+		// staff QA; online assessments reveal keyed feedback only after submit.
+		$html = preg_replace(
+			'#<h2\b[^>]*>\s*Answer\s+Key(?:\s+and\s+Detailed\s+Rationales)?\s*</h2>.*?(?=<h2\b|</article>|$)#isu',
+			'',
+			(string) $html
+		);
+
 		$allowed = array(
 			'article' => array(
 				'class'         => true,

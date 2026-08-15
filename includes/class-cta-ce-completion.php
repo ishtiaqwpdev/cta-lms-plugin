@@ -102,7 +102,7 @@ class CTA_CE_Completion {
 			return new WP_Error(
 				'cta_seq_modules',
 				$is_exam
-					? __( 'Complete all program modules before starting assessments.', 'cta-lms' )
+					? __( 'Complete all program workbooks before starting this assessment.', 'cta-lms' )
 					: __( 'Complete all instructional modules, including the Course Integration Capstone, before starting the final examination.', 'cta-lms' )
 			);
 		}

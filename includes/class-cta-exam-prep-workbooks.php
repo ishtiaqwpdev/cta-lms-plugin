@@ -465,6 +465,18 @@ class CTA_Exam_Prep_Workbooks {
 		$docx_url = (string) $bank_download_url;
 
 		foreach ( (array) $workbook_quiz_cards as $card ) {
+			if ( ! empty( $card['locked'] ) ) {
+				return array(
+					'mode'            => 'locked',
+					'url'             => '',
+					'label'           => __( 'Complete Workbooks to Unlock', 'cta-lms' ),
+					'category'        => 'workbook_bank',
+					'category_label'  => self::get_assessment_category_label( 'workbook_bank', $card['quiz'] ?? null ),
+					'docx_url'        => '',
+					'lock_message'    => (string) ( $card['lock_msg'] ?? '' ),
+				);
+			}
+
 			$url = (string) ( $card['url'] ?? '' );
 			if ( '' === $url || '#' === $url ) {
 				continue;

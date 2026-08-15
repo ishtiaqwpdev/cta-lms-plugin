@@ -30,6 +30,9 @@ $category         = sanitize_key( (string) ( $exam['category'] ?? 'full_simulati
 $title            = (string) ( $exam['title'] ?? '' );
 $review_materials = isset( $exam['review_materials'] ) ? (array) $exam['review_materials'] : array();
 $attempts         = isset( $exam['attempts'] ) ? (array) $exam['attempts'] : array();
+$entry_locked     = ! empty( $exam['entry_locked'] );
+$has_active       = ! empty( $exam['has_active_attempt'] );
+$lock_message     = (string) ( $exam['lock_message'] ?? '' );
 $card_id          = 'cta-ec-card-' . (int) ( $exam['quiz_id'] ?? 0 );
 $start_label      = ! empty( $start_label ) ? (string) $start_label : __( 'Start Exam', 'cta-lms' );
 $retake_label     = ! empty( $retake_label ) ? (string) $retake_label : __( 'Retake Exam', 'cta-lms' );
@@ -94,9 +97,13 @@ $badge_class      = 'cta-ec__badge--category cta-ec__badge--' . str_replace( '_'
 	<?php endif; ?>
 
 	<div class="cta-ec__card-actions">
-		<?php if ( $quiz_url && '#' !== $quiz_url ) : ?>
+		<?php if ( $entry_locked ) : ?>
+			<span class="btn btn-outline" aria-disabled="true">
+				<?php esc_html_e( 'Complete Workbooks to Unlock', 'cta-lms' ); ?>
+			</span>
+		<?php elseif ( $quiz_url && '#' !== $quiz_url ) : ?>
 			<a class="btn btn-primary" href="<?php echo esc_url( $quiz_url ); ?>">
-				<?php echo esc_html( $has_attempts ? $retake_label : $start_label ); ?>
+				<?php echo esc_html( $has_active ? __( 'Resume Assessment', 'cta-lms' ) : ( $has_attempts ? $retake_label : $start_label ) ); ?>
 			</a>
 		<?php endif; ?>
 
@@ -106,6 +113,9 @@ $badge_class      = 'cta-ec__badge--category cta-ec__badge--' . str_replace( '_'
 			</a>
 		<?php endif; ?>
 	</div>
+	<?php if ( $entry_locked && '' !== $lock_message ) : ?>
+		<p class="cta-ec__lock-message"><?php echo esc_html( $lock_message ); ?></p>
+	<?php endif; ?>
 
 	<?php if ( $has_attempts && ! empty( $review_materials ) ) : ?>
 		<div class="cta-ec__review-links">

@@ -61,15 +61,21 @@ foreach ( $workbook_tabs as $tab ) {
 					?>
 					<div class="cta-ep-workbook-practice-bank">
 						<span class="cta-assessment-tag cta-assessment-tag--workbook"><?php echo esc_html( $pb_tag ); ?></span>
-						<a
-							class="<?php echo esc_attr( $pb_class ); ?>"
-							href="<?php echo esc_url( $pb_url ); ?>"
-							<?php if ( $pb_target ) : ?>
-								target="<?php echo esc_attr( $pb_target ); ?>" rel="noopener noreferrer"
-							<?php endif; ?>
-						>
-							<?php echo esc_html( $pb_label ); ?>
-						</a>
+						<?php if ( 'locked' === $pb_mode ) : ?>
+							<span class="btn btn-outline btn--sm" aria-disabled="true" title="<?php echo esc_attr( (string) ( $practice_bank_action['lock_message'] ?? '' ) ); ?>">
+								<?php echo esc_html( $pb_label ); ?>
+							</span>
+						<?php else : ?>
+							<a
+								class="<?php echo esc_attr( $pb_class ); ?>"
+								href="<?php echo esc_url( $pb_url ); ?>"
+								<?php if ( $pb_target ) : ?>
+									target="<?php echo esc_attr( $pb_target ); ?>" rel="noopener noreferrer"
+								<?php endif; ?>
+							>
+								<?php echo esc_html( $pb_label ); ?>
+							</a>
+						<?php endif; ?>
 					</div>
 					<?php if ( '' !== $pb_docx && 'download' !== $pb_mode ) : ?>
 						<a class="btn btn-outline btn--sm" href="<?php echo esc_url( $pb_docx ); ?>" target="_blank" rel="noopener noreferrer">
@@ -184,9 +190,17 @@ foreach ( $workbook_tabs as $tab ) {
 													<span class="badge"><?php echo esc_html__( 'Not started', 'cta-lms' ); ?></span>
 												<?php endif; ?>
 											</div>
-											<?php if ( $qpid && ! empty( $card['url'] ) && '#' !== $card['url'] ) : ?>
+											<?php if ( ! empty( $card['locked'] ) ) : ?>
+												<span class="btn btn-outline btn--sm" aria-disabled="true" title="<?php echo esc_attr( (string) ( $card['lock_msg'] ?? '' ) ); ?>">
+													<?php esc_html_e( 'Complete Workbooks to Unlock', 'cta-lms' ); ?>
+												</span>
+											<?php elseif ( $qpid && ! empty( $card['url'] ) && '#' !== $card['url'] ) : ?>
 												<a href="<?php echo esc_url( $card['url'] ); ?>" class="btn btn-primary btn--sm cta-quiz-btn">
-													<?php echo ! empty( $card['passed'] ) ? esc_html__( 'Retake', 'cta-lms' ) : esc_html__( 'Start Practice Bank', 'cta-lms' ); ?>
+													<?php
+													echo ! empty( $card['active'] )
+														? esc_html__( 'Resume Assessment', 'cta-lms' )
+														: ( ! empty( $card['passed'] ) ? esc_html__( 'Retake', 'cta-lms' ) : esc_html__( 'Start Practice Bank', 'cta-lms' ) );
+													?>
 												</a>
 											<?php endif; ?>
 										</li>

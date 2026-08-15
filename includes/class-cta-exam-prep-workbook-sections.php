@@ -56,7 +56,10 @@ class CTA_Exam_Prep_Workbook_Sections {
 		$order        = array_keys( $labels );
 
 		foreach ( $order as $group_key ) {
-			if ( 'practice' === $group_key ) {
+			// Practice is added below from the authenticated quiz cards. Answer
+			// keys/rationales stay in source materials for staff QA and are not
+			// rendered to learners before they submit an online assessment.
+			if ( in_array( $group_key, array( 'practice', 'answers' ), true ) ) {
 				continue;
 			}
 			if ( empty( $grouped[ $group_key ] ) ) {

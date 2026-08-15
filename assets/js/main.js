@@ -2957,6 +2957,10 @@
     var timerEl = document.getElementById("cta-quiz-timer");
     var timerInterval = null;
     var secondsRemaining = 0;
+    var autosaveTimer = null;
+    var saveInFlight = false;
+    var saveQueued = false;
+    var submissionInFlight = false;
 
     if (timerEl) {
       timerEl.hidden = true;
@@ -3048,6 +3052,69 @@
       });
 
       return answers;
+    }
+
+    function setSaveStatus(message, isError) {
+      var statusEl = document.getElementById("cta-quiz-save-status");
+      if (!statusEl) {
+        return;
+      }
+      statusEl.textContent = message;
+      statusEl.classList.toggle("cta-quiz-save-status--error", !!isError);
+    }
+
+    function saveQuizProgress() {
+      if (!attemptId || submissionInFlight) {
+        return jQuery.Deferred().resolve().promise();
+      }
+
+      if (saveInFlight) {
+        saveQueued = true;
+        return jQuery.Deferred().resolve().promise();
+      }
+
+      if (autosaveTimer) {
+        window.clearTimeout(autosaveTimer);
+        autosaveTimer = null;
+      }
+
+      saveInFlight = true;
+      setSaveStatus("Saving answers\u2026", false);
+
+      return $.post(ctaAjax.ajaxUrl, {
+        action: "cta_save_quiz_progress",
+        nonce: ctaAjax.nonce,
+        attempt_id: attemptId,
+        answers: collectAnswers()
+      })
+        .done(function (response) {
+          if (response && response.success) {
+            setSaveStatus("Answers saved.", false);
+          } else {
+            setSaveStatus("Could not save answers. Keep this page open and try again.", true);
+          }
+        })
+        .fail(function () {
+          setSaveStatus("Could not save answers. Keep this page open and try again.", true);
+        })
+        .always(function () {
+          saveInFlight = false;
+          if (saveQueued && !submissionInFlight) {
+            saveQueued = false;
+            autosaveTimer = window.setTimeout(saveQuizProgress, 100);
+          }
+        });
+    }
+
+    function scheduleQuizAutosave() {
+      if (!attemptId || submissionInFlight) {
+        return;
+      }
+      if (autosaveTimer) {
+        window.clearTimeout(autosaveTimer);
+      }
+      setSaveStatus("Saving answers\u2026", false);
+      autosaveTimer = window.setTimeout(saveQuizProgress, 500);
     }
 
     function revealResults(results) {
@@ -3212,46 +3279,79 @@
         }
       }
 
-      stopTimer();
-
+      // Persist the complete answer map before final submission so a scoring
+      // failure never strands unsaved answers in the browser only.
       if (submitBtn) {
         submitBtn.disabled = true;
-        submitBtn.textContent = autoSubmit ? "Time expired \u2014 submitting\u2026" : "Submitting...";
+        submitBtn.textContent = autoSubmit ? "Saving answers\u2026" : "Saving answers\u2026";
       }
 
-      $.post(ctaAjax.ajaxUrl, {
-        action: "cta_submit_quiz",
-        nonce: ctaAjax.nonce,
-        attempt_id: attemptId,
-        answers: collectAnswers()
-      })
-        .done(function (response) {
-          if (!response.success || !response.data) {
-            window.alert(
-              response.data && response.data.message
-                ? response.data.message
-                : "Unable to submit quiz."
-            );
+      saveQuizProgress().always(function () {
+        submissionInFlight = true;
+        stopTimer();
+
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = autoSubmit ? "Time expired \u2014 submitting\u2026" : "Submitting...";
+        }
+
+        $.post(ctaAjax.ajaxUrl, {
+          action: "cta_submit_quiz",
+          nonce: ctaAjax.nonce,
+          attempt_id: attemptId,
+          answers: collectAnswers()
+        })
+          .done(function (response) {
+            if (!response.success || !response.data) {
+              submissionInFlight = false;
+              window.alert(
+                response.data && response.data.message
+                  ? response.data.message
+                  : "Unable to submit quiz."
+              );
+              if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = "Submit Quiz";
+              }
+              scheduleQuizAutosave();
+              return;
+            }
+
+            revealResults(response.data.results);
+            renderResult(response.data);
+          })
+          .fail(function () {
+            submissionInFlight = false;
+            window.alert("Something went wrong. Please try again.");
             if (submitBtn) {
               submitBtn.disabled = false;
               submitBtn.textContent = "Submit Quiz";
             }
-            return;
-          }
-
-          revealResults(response.data.results);
-          renderResult(response.data);
-        })
-        .fail(function () {
-          window.alert("Something went wrong. Please try again.");
-          if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.textContent = "Submit Quiz";
-          }
-        });
+            scheduleQuizAutosave();
+          });
+      });
     }
 
-    $(app).on("change", '.cta-quiz-question input[type="radio"]', updateAnswerCounter);
+    $(app).on("change", '.cta-quiz-question input[type="radio"]', function () {
+      updateAnswerCounter();
+      scheduleQuizAutosave();
+    });
+
+    window.addEventListener("pagehide", function () {
+      if (!attemptId || submissionInFlight || !navigator.sendBeacon) {
+        return;
+      }
+
+      var payload = new URLSearchParams();
+      payload.append("action", "cta_save_quiz_progress");
+      payload.append("nonce", ctaAjax.nonce);
+      payload.append("attempt_id", String(attemptId));
+      var answers = collectAnswers();
+      Object.keys(answers).forEach(function (questionId) {
+        payload.append("answers[" + questionId + "]", answers[questionId]);
+      });
+      navigator.sendBeacon(ctaAjax.ajaxUrl, payload);
+    });
 
     var startBtn = document.getElementById("cta-start-quiz");
     var retakeBtn = document.getElementById("cta-retake-exam-quiz");

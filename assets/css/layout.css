@@ -6311,8 +6311,18 @@ button.pagination__item:disabled {
 }
 
 .cta-plugin-wrapper .cta-quiz-progress {
-  margin-bottom: var(--space-md);
+  margin-bottom: var(--space-xs);
   font-weight: var(--font-weight-medium);
+}
+
+.cta-plugin-wrapper .cta-quiz-save-status {
+  margin: 0 0 var(--space-md);
+  color: var(--color-text-gray);
+  font-size: var(--font-size-sm);
+}
+
+.cta-plugin-wrapper .cta-quiz-save-status--error {
+  color: var(--color-danger);
 }
 
 .cta-plugin-wrapper .cta-quiz-form {

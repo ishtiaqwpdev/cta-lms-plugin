@@ -23,6 +23,7 @@ class CTA_Quiz {
 		add_shortcode( 'cta_quiz', array( $this, 'render_quiz' ) );
 
 		add_action( 'wp_ajax_cta_start_quiz', array( $this, 'ajax_start_quiz' ) );
+		add_action( 'wp_ajax_cta_save_quiz_progress', array( $this, 'ajax_save_quiz_progress' ) );
 		add_action( 'wp_ajax_cta_submit_quiz', array( $this, 'ajax_submit_quiz' ) );
 		add_action( 'wp_ajax_cta_submit_evaluation', array( $this, 'ajax_submit_evaluation' ) );
 		add_action( 'wp_ajax_cta_submit_attestation', array( $this, 'ajax_submit_attestation' ) );
@@ -122,20 +123,27 @@ class CTA_Quiz {
 			$enrollment = CTA_Database::get_user_enrollment( $user_id, $course_id );
 		}
 
+		// A previously created attempt is an authorization snapshot: always let
+		// the learner resume and submit it, even if course progress changes later.
+		$active_attempt = $quiz
+			? CTA_Database::get_active_quiz_attempt( $user_id, (int) $quiz->id )
+			: null;
+
 		$modules_done = class_exists( 'CTA_CE_Completion' )
 			? CTA_CE_Completion::modules_complete( $user_id, $course_id, $enrollment )
 			: ( class_exists( 'CTA_Certificates' ) && CTA_Certificates::user_completed_all_modules( $user_id, $course_id, $enrollment ) );
 
 		$is_exam_prep = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course );
-		// Access Correction Notice: all Exam Prep assessments are open from enrollment.
-		$open_exam_prep = $is_exam_prep;
 
-		// CE requires modules first. Exam Prep does not.
-		if ( ! $modules_done && ! $open_exam_prep ) {
+		// Prerequisites belong at entry, before a new attempt can be created.
+		// Existing attempts are resumable so prior learner work is never stranded.
+		if ( ! $modules_done && ! $active_attempt ) {
 			return $this->render_message_state(
-				__( 'Complete All Modules First', 'cta-lms' ),
 				$is_exam_prep
-					? __( 'Finish every program module before starting assessments. The online Form A / Form B experience is the primary way to take these simulations.', 'cta-lms' )
+					? __( 'Complete All Workbooks First', 'cta-lms' )
+					: __( 'Complete All Modules First', 'cta-lms' ),
+				$is_exam_prep
+					? __( 'Complete all program workbooks before starting this assessment. Your completed workbooks are saved, and the assessment will unlock automatically.', 'cta-lms' )
 					: __( 'Finish every instructional module, including the Course Integration Capstone, before starting the final examination.', 'cta-lms' ),
 				$this->get_player_url( $course_id ),
 				__( 'Back to Course', 'cta-lms' )
@@ -154,7 +162,6 @@ class CTA_Quiz {
 		}
 
 		$attempts        = CTA_Database::get_user_quiz_attempts( $user_id, (int) $quiz->id );
-		$active_attempt  = CTA_Database::get_active_quiz_attempt( $user_id, (int) $quiz->id );
 		$evaluation      = CTA_Database::get_course_evaluation( $user_id, $course_id );
 		$attestation     = class_exists( 'CTA_Course_Attestation' )
 			? CTA_Course_Attestation::get( $user_id, $course_id )
@@ -168,7 +175,7 @@ class CTA_Quiz {
 		$attestation_text     = class_exists( 'CTA_Course_Attestation' )
 			? CTA_Course_Attestation::default_attestation_text( $course ? (string) $course->title : '' )
 			: '';
-		// $is_exam_prep already resolved above for module-gate bypass.
+		// $is_exam_prep already resolved above.
 
 		// Non-AJAX Start/Retry: create attempt on POST so Start never depends on admin-ajax alone.
 		if (
@@ -253,18 +260,19 @@ class CTA_Quiz {
 				CTA_Database::maybe_ensure_quiz_attempt_schema();
 			}
 
-			// Exam Prep and CE both require modules complete before assessments.
-			$check = $this->validate_quiz_access( $user_id, $course_id, true, $quiz_id );
+			// Validate enrollment/product access first so an existing attempt can
+			// always be resumed. Module prerequisites are checked only before a
+			// brand-new attempt is created.
+			$check = $this->validate_quiz_access( $user_id, $course_id, false, $quiz_id );
 
 			if ( is_wp_error( $check ) ) {
 				wp_send_json_error( array( 'message' => $check->get_error_message() ) );
 			}
 
 			/** @var object $quiz */
-			$quiz     = $check['quiz'];
-			$course   = isset( $check['course'] ) ? $check['course'] : $course;
-			$attempts = CTA_Database::get_user_quiz_attempts( $user_id, (int) $quiz->id );
-			$active   = CTA_Database::get_active_quiz_attempt( $user_id, (int) $quiz->id );
+			$quiz   = $check['quiz'];
+			$course = isset( $check['course'] ) ? $check['course'] : $course;
+			$active = CTA_Database::get_active_quiz_attempt( $user_id, (int) $quiz->id );
 
 			if ( $active ) {
 				$payload = $this->build_attempt_payload( $quiz, $active );
@@ -273,6 +281,15 @@ class CTA_Quiz {
 				}
 				wp_send_json_success( $payload );
 			}
+
+			$entry_check = $this->validate_quiz_access( $user_id, $course_id, true, $quiz_id );
+			if ( is_wp_error( $entry_check ) ) {
+				wp_send_json_error( array( 'message' => $entry_check->get_error_message() ) );
+			}
+
+			$quiz     = $entry_check['quiz'];
+			$course   = isset( $entry_check['course'] ) ? $entry_check['course'] : $course;
+			$attempts = CTA_Database::get_user_quiz_attempts( $user_id, (int) $quiz->id );
 
 			// CE: block after a pass. Exam Prep assessments may be retaken independently.
 			if ( ! $is_exam_prep && $this->get_passed_attempt( $attempts ) ) {
@@ -316,6 +333,68 @@ class CTA_Quiz {
 	}
 
 	/**
+	 * AJAX: persist in-progress answers so interrupted assessments can resume.
+	 */
+	public function ajax_save_quiz_progress() {
+		check_ajax_referer( 'cta_nonce', 'nonce' );
+
+		if ( ! is_user_logged_in() ) {
+			wp_send_json_error( array( 'message' => __( 'Please log in to save your progress.', 'cta-lms' ) ) );
+		}
+
+		$attempt_id = absint( wp_unslash( $_POST['attempt_id'] ?? 0 ) );
+		$user_id    = get_current_user_id();
+		$answers_in = isset( $_POST['answers'] ) ? wp_unslash( $_POST['answers'] ) : array();
+
+		if ( ! is_array( $answers_in ) ) {
+			$answers_in = array();
+		}
+
+		global $wpdb;
+
+		$attempt = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT * FROM {$wpdb->prefix}cta_quiz_attempts WHERE id = %d AND user_id = %d",
+				$attempt_id,
+				$user_id
+			)
+		);
+
+		if ( ! $attempt || ! $this->is_attempt_in_progress( $attempt ) ) {
+			wp_send_json_error( array( 'message' => __( 'This assessment attempt is no longer active.', 'cta-lms' ) ) );
+		}
+
+		$questions = CTA_Database::get_quiz_questions( (int) $attempt->quiz_id );
+		if ( empty( $questions ) ) {
+			wp_send_json_error( array( 'message' => __( 'Assessment questions were not found.', 'cta-lms' ) ) );
+		}
+
+		$sanitized = $this->sanitize_quiz_answers( $answers_in, $questions, false );
+		$updated   = $wpdb->query(
+			$wpdb->prepare(
+				"UPDATE {$wpdb->prefix}cta_quiz_attempts
+				SET answers = %s
+				WHERE id = %d AND user_id = %d
+					AND (completed_at IS NULL OR completed_at = '0000-00-00 00:00:00' OR completed_at = '0000-00-00')",
+				wp_json_encode( $sanitized ),
+				$attempt_id,
+				$user_id
+			)
+		);
+
+		if ( false === $updated ) {
+			wp_send_json_error( array( 'message' => __( 'Unable to save assessment progress.', 'cta-lms' ) ) );
+		}
+
+		wp_send_json_success(
+			array(
+				'saved_count' => count( $sanitized ),
+				'saved_at'    => current_time( 'mysql' ),
+			)
+		);
+	}
+
+	/**
 	 * AJAX: submit quiz answers.
 	 */
 	public function ajax_submit_quiz() {
@@ -343,16 +422,8 @@ class CTA_Quiz {
 			)
 		);
 
-		if ( ! $attempt || ! empty( $attempt->completed_at ) ) {
+		if ( ! $attempt || ! $this->is_attempt_in_progress( $attempt ) ) {
 			wp_send_json_error( array( 'message' => __( 'Invalid quiz attempt.', 'cta-lms' ) ) );
-		}
-
-		// Re-assert module completion so an in-flight attempt cannot bypass Capstone / sequence.
-		if ( class_exists( 'CTA_CE_Completion' ) ) {
-			$seq = CTA_CE_Completion::assert_can_access_exam( $user_id, (int) $attempt->course_id );
-			if ( is_wp_error( $seq ) ) {
-				wp_send_json_error( array( 'message' => $seq->get_error_message() ) );
-			}
 		}
 
 		$quiz      = $wpdb->get_row(
@@ -367,7 +438,7 @@ class CTA_Quiz {
 			wp_send_json_error( array( 'message' => __( 'Quiz not found.', 'cta-lms' ) ) );
 		}
 
-		$sanitized = array();
+		$sanitized = $this->sanitize_quiz_answers( $answers_in, $questions, true );
 		$correct   = 0;
 		$total     = count( $questions );
 		$revealed  = array();
@@ -384,10 +455,7 @@ class CTA_Quiz {
 
 		foreach ( $questions as $question ) {
 			$qid    = (int) $question->id;
-			$answer = isset( $answers_in[ $qid ] ) ? sanitize_text_field( $answers_in[ $qid ] ) : '';
-			$answer = in_array( $answer, array( 'a', 'b', 'c', 'd' ), true ) ? $answer : '';
-
-			$sanitized[ $qid ] = $answer;
+			$answer = isset( $sanitized[ $qid ] ) ? $sanitized[ $qid ] : '';
 
 			if ( $answer && $answer === $question->correct_option ) {
 				++$correct;
@@ -405,18 +473,24 @@ class CTA_Quiz {
 		$score  = $total > 0 ? (int) round( ( $correct / $total ) * 100 ) : 0;
 		$passed = $score >= (int) $quiz->passing_score ? 1 : 0;
 
-		$wpdb->update(
-			$wpdb->prefix . 'cta_quiz_attempts',
-			array(
-				'answers'      => wp_json_encode( $sanitized ),
-				'score'        => $score,
-				'passed'       => $passed,
-				'completed_at' => current_time( 'mysql' ),
-			),
-			array( 'id' => $attempt_id ),
-			array( '%s', '%d', '%d', '%s' ),
-			array( '%d' )
+		$completed = $wpdb->query(
+			$wpdb->prepare(
+				"UPDATE {$wpdb->prefix}cta_quiz_attempts
+				SET answers = %s, score = %d, passed = %d, completed_at = %s
+				WHERE id = %d AND user_id = %d
+					AND (completed_at IS NULL OR completed_at = '0000-00-00 00:00:00' OR completed_at = '0000-00-00')",
+				wp_json_encode( $sanitized ),
+				$score,
+				$passed,
+				current_time( 'mysql' ),
+				$attempt_id,
+				$user_id
+			)
 		);
+
+		if ( false === $completed || 0 === (int) $completed ) {
+			wp_send_json_error( array( 'message' => __( 'This assessment was already submitted or could not be saved. Please refresh to review your attempt.', 'cta-lms' ) ) );
+		}
 
 		if ( $passed ) {
 			$course    = $course_for_reveal;
@@ -1076,6 +1150,47 @@ class CTA_Quiz {
 	}
 
 	/**
+	 * Whether an attempt row is still open for autosave/submission.
+	 *
+	 * @param object|null $attempt Attempt row.
+	 * @return bool
+	 */
+	private function is_attempt_in_progress( $attempt ) {
+		if ( ! $attempt ) {
+			return false;
+		}
+
+		$completed_at = isset( $attempt->completed_at ) ? trim( (string) $attempt->completed_at ) : '';
+		return '' === $completed_at
+			|| '0000-00-00' === $completed_at
+			|| '0000-00-00 00:00:00' === $completed_at;
+	}
+
+	/**
+	 * Keep only answers for questions belonging to this assessment.
+	 *
+	 * @param array $answers_in    Raw submitted answer map.
+	 * @param array $questions     Quiz question rows.
+	 * @param bool  $include_empty Include unanswered question IDs.
+	 * @return array<int,string>
+	 */
+	private function sanitize_quiz_answers( array $answers_in, array $questions, $include_empty = false ) {
+		$sanitized = array();
+
+		foreach ( $questions as $question ) {
+			$qid    = (int) $question->id;
+			$answer = isset( $answers_in[ $qid ] ) ? sanitize_text_field( $answers_in[ $qid ] ) : '';
+			$answer = in_array( $answer, array( 'a', 'b', 'c', 'd' ), true ) ? $answer : '';
+
+			if ( '' !== $answer || $include_empty ) {
+				$sanitized[ $qid ] = $answer;
+			}
+		}
+
+		return $sanitized;
+	}
+
+	/**
 	 * Validate quiz access for a user and course.
 	 *
 	 * @param int  $user_id           User ID.
@@ -1102,26 +1217,20 @@ class CTA_Quiz {
 		}
 
 		if ( $require_complete ) {
-			$skip_module_gate = class_exists( 'CTA_Exam_Access' )
-				&& CTA_Exam_Access::is_exam_prep( $course )
-				&& ! CTA_Exam_Access::uses_assessment_gates( $course );
-
-			if ( ! $skip_module_gate ) {
-				if ( class_exists( 'CTA_CE_Completion' ) ) {
-					CTA_CE_Completion::sync_progress( $user_id, $course_id, $enrollment );
-					$enrollment = CTA_Database::get_user_enrollment( $user_id, $course_id );
-					$seq        = CTA_CE_Completion::assert_can_access_exam( $user_id, $course_id );
-					if ( is_wp_error( $seq ) ) {
-						return $seq;
-					}
-				} elseif ( class_exists( 'CTA_Certificates' ) && ! CTA_Certificates::user_completed_all_modules( $user_id, $course_id, $enrollment ) ) {
-					return new WP_Error(
-						'incomplete',
-						__( 'Complete all instructional modules, including the Course Integration Capstone, before starting the final examination.', 'cta-lms' )
-					);
-				} elseif ( (int) $enrollment->progress < 100 ) {
-					return new WP_Error( 'incomplete', __( 'Complete all modules first.', 'cta-lms' ) );
+			if ( class_exists( 'CTA_CE_Completion' ) ) {
+				CTA_CE_Completion::sync_progress( $user_id, $course_id, $enrollment );
+				$enrollment = CTA_Database::get_user_enrollment( $user_id, $course_id );
+				$seq        = CTA_CE_Completion::assert_can_access_exam( $user_id, $course_id );
+				if ( is_wp_error( $seq ) ) {
+					return $seq;
 				}
+			} elseif ( class_exists( 'CTA_Certificates' ) && ! CTA_Certificates::user_completed_all_modules( $user_id, $course_id, $enrollment ) ) {
+				return new WP_Error(
+					'incomplete',
+					__( 'Complete all instructional modules before starting this assessment.', 'cta-lms' )
+				);
+			} elseif ( (int) $enrollment->progress < 100 ) {
+				return new WP_Error( 'incomplete', __( 'Complete all modules before starting this assessment.', 'cta-lms' ) );
 			}
 		}
 
