@@ -737,9 +737,24 @@ body.elementor-kit-15 .cta-plugin-wrapper a.cta-pill .cta-pill__label,
 
 .cta-lms.cta-exam-prep-catalog .course-card--exam-prep .course-card__media,
 .cta-lms.cta-exam-prep-catalog .course-card--exam-prep .cta-course-card__thumb {
-  aspect-ratio: 16 / 9 !important;
-  overflow: hidden !important;
-  background-color: var(--color-bg-muted, #f3f4f6) !important;
+  aspect-ratio: auto !important;
+  height: auto !important;
+  overflow: visible !important;
+  background-color: transparent !important;
+}
+
+.cta-lms.cta-exam-prep-catalog .course-card--exam-prep .course-card__media img,
+.cta-lms.cta-exam-prep-catalog .course-card--exam-prep .cta-exam-prep-artwork {
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+  object-fit: unset !important;
+  object-position: center center !important;
+}
+
+.cta-lms.cta-exam-prep-catalog .course-card--exam-prep .course-card__price,
+.cta-lms.cta-exam-prep-catalog .course-card--exam-prep .cta-course-card__price {
+  z-index: 4 !important;
 }
 
 .cta-lms.cta-course-catalog .course-card--catalog .course-card__media img {
@@ -749,12 +764,6 @@ body.elementor-kit-15 .cta-plugin-wrapper a.cta-pill .cta-pill__label,
   object-fit: cover;
   display: block;
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-}
-
-.cta-lms.cta-exam-prep-catalog .course-card--exam-prep .course-card__media img,
-.cta-lms.cta-exam-prep-catalog .course-card--exam-prep .cta-exam-prep-artwork {
-  object-fit: contain !important;
-  object-position: center center !important;
 }
 
 .cta-lms.cta-course-catalog .course-card--catalog .course-card__price,

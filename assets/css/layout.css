@@ -5858,7 +5858,19 @@ button.pagination__item:disabled {
 
 .cta-plugin-wrapper .course-card--exam-prep .cta-course-card__thumb img,
 .cta-plugin-wrapper .course-card--exam-prep .cta-course-card__thumb.course-card__media img {
-  object-fit: contain;
+  width: 100%;
+  height: auto;
+  max-height: none;
+  object-fit: unset;
+  object-position: center center;
+}
+
+.cta-plugin-wrapper .course-card--exam-prep .cta-course-card__thumb,
+.cta-plugin-wrapper .course-card--exam-prep .cta-course-card__thumb.course-card__media {
+  aspect-ratio: auto;
+  height: auto;
+  overflow: visible;
+  background-color: transparent;
 }
 
 .cta-plugin-wrapper .cta-course-card__desc,
@@ -6087,27 +6099,32 @@ button.pagination__item:disabled {
   background-repeat: no-repeat;
 }
 
-/* Exam Prep program artwork — full banner visible (no cover crop on bottom badges/text).
-   Root cause: catalog/hero containers used object-fit:cover with shorter aspect ratios
-   (16/10, 370/250, 770/460) than the approved 16:9 artwork, clipping the bottom band. */
+/* Exam Prep program artwork — full banner at natural aspect ratio (catalog + dashboard). */
+.cta-plugin-wrapper .course-card--catalog.course-card--exam-prep .course-card__media,
 .cta-plugin-wrapper .course-card--exam-prep .course-card__media,
 .cta-plugin-wrapper .course-card--exam-prep .cta-course-card__thumb {
-  aspect-ratio: 16 / 9;
+  aspect-ratio: auto;
   height: auto;
-  overflow: hidden;
-  background-color: var(--color-bg-muted, #f3f4f6);
+  overflow: visible;
+  background-color: transparent;
 }
 
+.cta-plugin-wrapper .course-card--catalog.course-card--exam-prep .course-card__media img,
 .cta-plugin-wrapper .course-card--exam-prep .course-card__media img,
 .cta-plugin-wrapper .course-card--exam-prep .cta-course-card__thumb img,
 .cta-plugin-wrapper .dashboard-course-card__thumb img.cta-exam-prep-artwork,
 .cta-plugin-wrapper .cta-exam-prep-card .cta-exam-prep-artwork {
   display: block;
   width: 100%;
-  height: 100%;
+  height: auto;
   max-height: none;
-  object-fit: contain;
+  object-fit: unset;
   object-position: center center;
+}
+
+.cta-plugin-wrapper .course-card--catalog.course-card--exam-prep .course-card__price,
+.cta-plugin-wrapper .course-card--catalog.course-card--exam-prep .cta-course-card__price {
+  z-index: 4;
 }
 
 .cta-plugin-wrapper .course-hero__media--exam-prep {
@@ -6131,7 +6148,12 @@ button.pagination__item:disabled {
 
 .cta-plugin-wrapper .dashboard-course-card__thumb img.cta-exam-prep-artwork {
   height: auto;
-  object-fit: contain;
+  object-fit: unset;
+}
+
+.cta-plugin-wrapper .cta-exam-prep-card .dashboard-course-card__thumb,
+.cta-plugin-wrapper .dashboard-course-card.cta-exam-prep-card .dashboard-course-card__thumb {
+  overflow: visible;
 }
 
 .cta-plugin-wrapper .dashboard-course-card__thumb--placeholder {
