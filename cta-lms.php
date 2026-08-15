@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.204' );
+	define( 'CTA_VERSION', '1.0.205' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -104,6 +104,7 @@ $cta_required_files = array(
 	'includes/class-cta-lpcc-ncmhce-sync.php',
 	'includes/class-cta-lpcc-law-ethics-sync.php',
 	'includes/class-cta-lcsw-law-ethics-sync.php',
+	'includes/class-cta-lmft-law-ethics-sync.php',
 	'includes/class-cta-law-ethics-module-sync.php',
 	'includes/class-cta-law-ethics-evaluation-sync.php',
 	'includes/class-cta-law-ethics-exam-sync.php',
@@ -1035,6 +1036,11 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				}
 			}
 
+			// LMFT California Law & Ethics Exam Prep dashboard scaffold (placeholder shell).
+			if ( version_compare( $installed, '1.0.205', '<' ) && class_exists( 'CTA_Lmft_Law_Ethics_Sync' ) ) {
+				CTA_Lmft_Law_Ethics_Sync::sync( true );
+			}
+
 			// Decouple supervision application pending from general account / CE access.
 			if ( version_compare( $installed, '1.0.90', '<' ) && class_exists( 'CTA_Associate_Access' ) ) {
 				$query = new WP_User_Query(
@@ -1241,6 +1247,21 @@ if ( ! function_exists( 'cta_maybe_heal_lcsw_law_ethics' ) ) {
 
 if ( function_exists( 'cta_maybe_heal_lcsw_law_ethics' ) && ! has_action( 'plugins_loaded', 'cta_maybe_heal_lcsw_law_ethics' ) ) {
 	add_action( 'plugins_loaded', 'cta_maybe_heal_lcsw_law_ethics', 9 );
+}
+
+if ( ! function_exists( 'cta_maybe_heal_lmft_law_ethics' ) ) {
+	/**
+	 * Seed LMFT California Law & Ethics dashboard scaffold when modules are still empty.
+	 */
+	function cta_maybe_heal_lmft_law_ethics() {
+		if ( class_exists( 'CTA_Lmft_Law_Ethics_Sync' ) ) {
+			CTA_Lmft_Law_Ethics_Sync::maybe_heal_incomplete_content();
+		}
+	}
+}
+
+if ( function_exists( 'cta_maybe_heal_lmft_law_ethics' ) && ! has_action( 'plugins_loaded', 'cta_maybe_heal_lmft_law_ethics' ) ) {
+	add_action( 'plugins_loaded', 'cta_maybe_heal_lmft_law_ethics', 8 );
 }
 
 if ( function_exists( 'cta_maybe_sync_ce_prices_from_catalog' ) && ! has_action( 'plugins_loaded', 'cta_maybe_sync_ce_prices_from_catalog' ) ) {

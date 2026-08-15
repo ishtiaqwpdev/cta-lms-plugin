@@ -26,6 +26,7 @@ class CTA_Exam_Prep_Lessons {
 	 */
 	public static function get_program_map() {
 		return array(
+			'california-law-ethics-exam-preparation'         => 'lmft-law-ethics',
 			'lpcc-ncmhce-exam-preparation'                   => 'lpcc-ncmhce',
 			'lpcc-california-clinical-exam-preparation'      => 'lpcc-ncmhce',
 			'lpcc-california-law-ethics-exam-preparation'    => 'lpcc-law-ethics',

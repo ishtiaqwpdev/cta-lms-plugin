@@ -300,7 +300,7 @@ class CTA_Exam_Prep_Getting_Started {
 			),
 			'lmft-law-ethics' => array(
 				'orientation' => array(
-					'intro' => __( 'Prepare for the California LMFT Law & Ethics Exam with license-specific orientation, 9 workbooks (45 chapters), chapter tests, flashcards, and Form A/B practice exams plus a comprehensive final. Review the program structure below and download study planning tools from your materials library.', 'cta-lms' ),
+					'intro' => __( 'This dashboard uses clearly labeled placeholder workbook shells so you can test the full Exam Prep navigation. Final LMFT California Law & Ethics workbooks, chapter tests, flashcards, practice exams, and downloadable materials will replace these placeholders when client content is delivered.', 'cta-lms' ),
 				),
 				'roadmap_steps' => self::law_ethics_roadmap_steps(),
 				'study_sequence' => self::law_ethics_study_sequence( 'LMFT' ),

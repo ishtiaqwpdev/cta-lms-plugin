@@ -26,6 +26,7 @@ class CTA_Exam_Prep_Flashcard_Center {
 	 */
 	public static function get_deck_path_map() {
 		$map = array(
+			'california-law-ethics-exam-preparation'      => 'assets/course-materials/lmft-law-ethics/study-tools/flashcard-study-center.json',
 			'lmft-california-clinical-exam-preparation'   => 'assets/course-materials/lmft-clinical/study-tools/flashcard-study-center.json',
 			'lmft-amftrb-national-exam-preparation'       => 'assets/course-materials/lmft-amftrb/study-tools/flashcard-study-center.json',
 			'lcsw-aswb-clinical-exam-preparation'         => 'assets/course-materials/lcsw-aswb/study-tools/flashcard-study-center.json',
