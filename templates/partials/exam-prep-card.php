@@ -38,7 +38,7 @@ foreach ( (array) ( $item->resources ?? array() ) as $resource ) {
 <article class="card dashboard-course-card cta-progress-card cta-exam-prep-card" data-course-id="<?php echo esc_attr( $course->id ); ?>">
 	<?php if ( ! empty( $course->thumbnail_url ) ) : ?>
 		<div class="dashboard-course-card__thumb">
-			<img src="<?php echo esc_url( $course->thumbnail_url ); ?>" alt="">
+			<img src="<?php echo esc_url( $course->thumbnail_url ); ?>" alt="" class="cta-exam-prep-artwork">
 		</div>
 	<?php else : ?>
 		<div class="dashboard-course-card__thumb dashboard-course-card__thumb--placeholder" aria-hidden="true"></div>

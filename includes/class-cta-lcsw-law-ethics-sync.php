@@ -305,8 +305,18 @@ class CTA_Lcsw_Law_Ethics_Sync {
 			$source      = CTA_PLUGIN_DIR . self::MATERIALS_REL . $rel;
 			$module_id   = 0;
 			$is_practice = ! empty( $item['is_practice_test'] ) ? 1 : 0;
-			// Exam Prep open access: never persist material unlock gates.
-			$unlock      = '';
+			$unlock      = class_exists( 'CTA_Course_Materials' )
+				? CTA_Course_Materials::infer_protected_rationale_unlock_type(
+					(object) array(
+						'title'     => $title,
+						'file_path' => $rel,
+						'file_url'  => '',
+					)
+				)
+				: '';
+			if ( ! empty( $item['unlock_after_quiz_type'] ) ) {
+				$unlock = sanitize_text_field( (string) $item['unlock_after_quiz_type'] );
+			}
 
 			// Never attach admin-only / DO_NOT_PUBLISH / archive package trees.
 			if ( class_exists( 'CTA_Course_Materials' )

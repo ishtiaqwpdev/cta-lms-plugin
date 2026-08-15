@@ -1,8 +1,8 @@
 <?php
 /**
- * Verify Access Correction Notice: Exam Prep open from enrollment; CE gates remain; admin deny intact.
+ * Verify Exam Prep open enrollment access with protected rationale gates only.
  *
- * Run: C:\xampp\php\php.exe scripts/test-exam-prep-access-correction.php
+ * Run: php scripts/test-exam-prep-access-correction.php
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -32,6 +32,12 @@ if ( ! function_exists( 'wp_json_encode' ) ) {
 		return json_encode( $d );
 	}
 }
+if ( ! function_exists( 'get_user_meta' ) ) {
+	function get_user_meta( $user_id, $key, $single = false ) {
+		unset( $user_id, $key, $single );
+		return '';
+	}
+}
 
 class CTA_Exam_Access {
 	const PRODUCT_TYPE_EXAM_PREP = 'exam_prep';
@@ -48,8 +54,10 @@ class CTA_Exam_Access {
 		return true;
 	}
 	public static function uses_assessment_gates( $course ) {
-		unset( $course );
-		return false;
+		if ( ! is_object( $course ) ) {
+			return false;
+		}
+		return 'lmft-amftrb-national-exam-preparation' === (string) ( $course->slug ?? '' );
 	}
 }
 
@@ -76,6 +84,30 @@ class CTA_Database {
 	}
 }
 
+class CTA_Fake_Wpdb {
+	public $prefix = 'wp_';
+	public function prepare( $query, ...$args ) {
+		if ( empty( $args ) ) {
+			return $query;
+		}
+		$i = 0;
+		return preg_replace_callback(
+			'/%[ds]/',
+			static function () use ( $args, &$i ) {
+				$val = $args[ $i++ ] ?? '';
+				return is_numeric( $val ) ? (string) (int) $val : "'" . addslashes( (string) $val ) . "'";
+			},
+			$query
+		);
+	}
+	public function get_var( $query ) {
+		return 0;
+	}
+}
+
+$GLOBALS['wpdb'] = new CTA_Fake_Wpdb();
+global $wpdb;
+
 require_once CTA_PLUGIN_DIR . 'includes/class-cta-course-materials.php';
 require_once CTA_PLUGIN_DIR . 'includes/class-cta-lmft-amftrb-sync.php';
 require_once CTA_PLUGIN_DIR . 'includes/class-cta-lpcc-ncmhce-sync.php';
@@ -101,31 +133,45 @@ $lcsw   = (object) array( 'id' => 4, 'product_type' => 'exam_prep', 'slug' => 'l
 $lmft   = (object) array( 'id' => 5, 'product_type' => 'exam_prep', 'slug' => 'lmft-california-clinical-exam-preparation' );
 $ce     = (object) array( 'id' => 3, 'product_type' => 'ce', 'slug' => 'some-ce' );
 
-assert_true( ! CTA_Exam_Access::uses_assessment_gates( $amftrb ), 'AMFTRB uses_assessment_gates = false' );
+assert_true( CTA_Exam_Access::uses_assessment_gates( $amftrb ), 'AMFTRB uses_assessment_gates = true' );
 assert_true( ! CTA_Exam_Access::uses_assessment_gates( $lpcc ), 'LPCC uses_assessment_gates = false' );
 assert_true( ! CTA_Exam_Access::uses_assessment_gates( $lcsw ), 'LCSW uses_assessment_gates = false' );
 assert_true( ! CTA_Exam_Access::uses_assessment_gates( $lmft ), 'LMFT Clinical uses_assessment_gates = false' );
 
 CTA_Database::$enrollment = (object) array( 'status' => 'active' );
 
+$open_toolkit = (object) array(
+	'id'        => 2,
+	'course_id' => 4,
+	'title'     => 'Student Roadmap and Study Schedules',
+	'file_path' => 'student-support/schedules.docx',
+	'file_url'  => '',
+);
+
 foreach ( array( $amftrb, $lpcc, $lcsw, $lmft ) as $course ) {
 	CTA_Database::$course = $course;
-	foreach ( array( 'form_a', 'form_b', 'form_b_ready', 'wb1_bank', 'checkpoint_1', 'modules_complete', 'form_a_remediation' ) as $gate ) {
+	$open_toolkit->course_id = (int) $course->id;
+	assert_true(
+		CTA_Course_Materials::user_can_access( 9, $open_toolkit ),
+		$course->slug . ' toolkit open from enrollment'
+	);
+
+	foreach ( array( 'form_a', 'form_b', 'checkpoint_1', 'wb1_bank', 'comprehensive_final' ) as $gate ) {
 		$res = (object) array(
 			'id'                     => 1,
 			'course_id'              => (int) $course->id,
-			'title'                  => 'Rationale ' . $gate,
+			'title'                  => 'Form A — Answer Key and Detailed Rationales',
 			'file_path'              => 'rationales/sample.docx',
 			'file_url'               => '',
 			'unlock_after_quiz_type' => $gate,
 		);
 		assert_true(
-			CTA_Course_Materials::user_can_access( 9, $res ),
-			$course->slug . " open despite legacy gate={$gate}"
+			! CTA_Course_Materials::user_can_access( 9, $res ),
+			$course->slug . " protected rationale locked for gate={$gate}"
 		);
 		assert_true(
-			'' === CTA_Course_Materials::get_unlock_lock_message( 9, $res ),
-			$course->slug . " no lock message for gate={$gate}"
+			'' !== CTA_Course_Materials::get_unlock_lock_message( 9, $res ),
+			$course->slug . " lock message for gate={$gate}"
 		);
 	}
 }
@@ -154,31 +200,6 @@ assert_true(
 	CTA_Course_Materials::is_admin_restricted_source_path( '03_INTERNAL_CONTROLS/x.docx' ),
 	'Internal controls still denied'
 );
-
-// Material maps: no unlock keys remain on AMFTRB / LCSW / LMFT / LPCC maps.
-$maps = array(
-	'CTA_Lmft_Amftrb_Sync'   => 'get_material_map',
-	'CTA_Lpcc_Ncmhce_Sync'   => 'get_material_map',
-	'CTA_Lcsw_Aswb_Sync'     => 'get_material_map',
-	'CTA_Lmft_Clinical_Sync' => 'get_material_map',
-);
-foreach ( $maps as $class => $method ) {
-	$ref = new ReflectionClass( $class );
-	$m   = $ref->getMethod( $method );
-	$m->setAccessible( true );
-	$items = $m->invoke( null );
-	$bad   = 0;
-	foreach ( $items as $it ) {
-		if ( ! empty( $it['unlock_after_quiz_type'] ) ) {
-			++$bad;
-		}
-	}
-	assert_true( 0 === $bad, "{$class} material map has zero unlock gates" );
-}
-
-$tpl = file_get_contents( CTA_PLUGIN_DIR . 'templates/partials/course-materials.php' );
-assert_true( false !== strpos( $tpl, 'cta-materials-advisory' ), 'Advisory Form A→B banner present' );
-assert_true( false !== strpos( $tpl, 'guidance only' ), 'Advisory text says guidance only' );
 
 echo "\n{$pass} passed, {$fail} failed\n";
 exit( $fail > 0 ? 1 : 0 );

@@ -474,6 +474,7 @@ class CTA_Exam_Access {
 					'CTA LCSW ASWB Clinical Exam Preparation Program',
 					'LCSW ASWB Clinical Exam Preparation',
 					'LCSW California Clinical Exam Preparation',
+					'CTA LCSW California Clinical Exam Preparation Program',
 				),
 			),
 			array(
@@ -794,14 +795,21 @@ class CTA_Exam_Access {
 	 * or rationale-hide locks. All learner-facing content is open from enrollment.
 	 * CE courses remain the only products that use required progression locks.
 	 *
-	 * Kept for backward-compatible call sites; always returns false for Exam Prep.
+	 * Kept for backward-compatible call sites. AMFTRB still uses preserved-attempt
+	 * recording for printable candidate banks; all other Exam Prep programs gate
+	 * protected rationales on online quiz submission only.
 	 *
 	 * @param object|null $course Course row.
 	 * @return bool
 	 */
 	public static function uses_assessment_gates( $course ) {
-		unset( $course );
-		return false;
+		if ( ! is_object( $course ) ) {
+			return false;
+		}
+
+		$slug = isset( $course->slug ) ? (string) $course->slug : '';
+
+		return 'lmft-amftrb-national-exam-preparation' === $slug;
 	}
 
 	/**

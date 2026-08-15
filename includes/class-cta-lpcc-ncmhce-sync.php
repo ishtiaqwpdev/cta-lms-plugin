@@ -296,8 +296,18 @@ class CTA_Lpcc_Ncmhce_Sync {
 			$source      = CTA_PLUGIN_DIR . self::MATERIALS_REL . $rel;
 			$module_id   = 0;
 			$is_practice = ! empty( $item['is_practice_test'] ) ? 1 : 0;
-			// Access Correction Notice: never persist material unlock gates for Exam Prep.
-			$unlock      = '';
+			$unlock      = class_exists( 'CTA_Course_Materials' )
+				? CTA_Course_Materials::infer_protected_rationale_unlock_type(
+					(object) array(
+						'title'     => $title,
+						'file_path' => $rel,
+						'file_url'  => '',
+					)
+				)
+				: '';
+			if ( ! empty( $item['unlock_after_quiz_type'] ) ) {
+				$unlock = sanitize_text_field( (string) $item['unlock_after_quiz_type'] );
+			}
 
 			// Never attach 90_Admin_Restricted / DO_NOT_PUBLISH / archive package trees.
 			if ( class_exists( 'CTA_Course_Materials' )

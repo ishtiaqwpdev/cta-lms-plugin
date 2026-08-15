@@ -73,6 +73,10 @@ class CTA_Shortcodes {
 				'option' => 'cta_courses_page_id',
 			),
 			array(
+				'label'  => __( 'Exam Preparation', 'cta-lms' ),
+				'option' => 'cta_exam_prep_page_id',
+			),
+			array(
 				'label'  => __( 'Supervision', 'cta-lms' ),
 				'option' => 'cta_supervision_page_id',
 			),

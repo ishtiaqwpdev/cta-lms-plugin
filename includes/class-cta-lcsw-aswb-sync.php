@@ -22,6 +22,9 @@ class CTA_Lcsw_Aswb_Sync {
 	const PUBLIC_TITLE  = 'LCSW ASWB Clinical Exam Preparation';
 	const LEGACY_SLUG   = 'lcsw-california-clinical-exam-preparation';
 	const LEGACY_TITLE  = 'LCSW California Clinical Exam Preparation';
+	const LEGACY_FORMAL = 'CTA LCSW California Clinical Exam Preparation Program';
+	const THUMBNAIL_REL = 'assets/course-images/lcsw-aswb/CTA_LCSW_ASWB_Clinical_Exam_Preparation_Program_Website_Image_v1.0.png';
+	const IDENTITY_HEAL = 'cta_lcsw_aswb_identity_healed_1_0_206';
 	const PRICE         = 249.00;
 	const ACCESS_MONTHS = 6;
 	const MATERIALS_REL = 'assets/course-materials/lcsw-aswb/';
@@ -41,6 +44,7 @@ class CTA_Lcsw_Aswb_Sync {
 			array( 'slug', self::LEGACY_SLUG ),
 			array( 'title', self::TITLE ),
 			array( 'title', self::LEGACY_TITLE ),
+			array( 'title', self::LEGACY_FORMAL ),
 		);
 
 		foreach ( $candidates as $pair ) {
@@ -282,8 +286,18 @@ class CTA_Lcsw_Aswb_Sync {
 			$source     = CTA_PLUGIN_DIR . self::MATERIALS_REL . $rel;
 			$module_id  = 0;
 			$is_practice = ! empty( $item['is_practice_test'] ) ? 1 : 0;
-			// Access Correction Notice: never persist material unlock gates for Exam Prep.
-			$unlock     = '';
+			$unlock      = class_exists( 'CTA_Course_Materials' )
+				? CTA_Course_Materials::infer_protected_rationale_unlock_type(
+					(object) array(
+						'title'     => $title,
+						'file_path' => $rel,
+						'file_url'  => '',
+					)
+				)
+				: '';
+			if ( ! empty( $item['unlock_after_quiz_type'] ) ) {
+				$unlock = sanitize_text_field( (string) $item['unlock_after_quiz_type'] );
+			}
 
 			if ( class_exists( 'CTA_Course_Materials' )
 				&& CTA_Course_Materials::is_admin_restricted_source_path( $source . ' ' . $rel ) ) {
@@ -993,6 +1007,265 @@ class CTA_Lcsw_Aswb_Sync {
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.NotPrepared
 			$wpdb->query( "ALTER TABLE {$table} MODIFY {$col} text NOT NULL" );
 		}
+	}
+
+	/**
+	 * Approved learner-facing titles that must map to the ASWB product identity.
+	 *
+	 * @return string[]
+	 */
+	public static function get_stale_display_titles() {
+		return array(
+			self::LEGACY_TITLE,
+			self::LEGACY_FORMAL,
+		);
+	}
+
+	/**
+	 * Whether a stored title/public_title still uses the pre-ASWB California Clinical label.
+	 *
+	 * @param string $value Title or public_title value.
+	 * @return bool
+	 */
+	public static function is_stale_display_title( $value ) {
+		$value = sanitize_text_field( (string) $value );
+		if ( '' === $value ) {
+			return false;
+		}
+
+		return in_array( $value, self::get_stale_display_titles(), true );
+	}
+
+	/**
+	 * Force the approved ASWB product identity: title, slug, syllabus meta, and artwork.
+	 *
+	 * @param bool $force Re-run even if already healed at this version.
+	 * @return array{ok:bool,course_id:int,message:string,changes:array<string,bool>}
+	 */
+	public static function heal_product_identity( $force = false ) {
+		global $wpdb;
+
+		if ( ! $force && get_option( self::IDENTITY_HEAL ) ) {
+			return array(
+				'ok'        => true,
+				'course_id' => 0,
+				'message'   => 'already_healed',
+				'changes'   => array(),
+			);
+		}
+
+		$course = self::find_course();
+		if ( ! $course ) {
+			return array(
+				'ok'        => false,
+				'course_id' => 0,
+				'message'   => 'course_not_found',
+				'changes'   => array(),
+			);
+		}
+
+		$course_id = (int) $course->id;
+		$changes   = array(
+			'title'         => false,
+			'slug'          => false,
+			'syllabus_meta' => false,
+			'thumbnail'     => false,
+		);
+
+		$update = array();
+		$formats = array();
+
+		if ( self::TITLE !== (string) ( $course->title ?? '' ) ) {
+			$update['title'] = self::TITLE;
+			$formats[]       = '%s';
+			$changes['title'] = true;
+		}
+
+		$slug = sanitize_title( (string) ( $course->slug ?? '' ) );
+		if ( self::SLUG !== $slug ) {
+			$update['slug'] = self::SLUG;
+			$formats[]      = '%s';
+			$changes['slug'] = true;
+		}
+
+		$meta = array();
+		if ( ! empty( $course->syllabus_meta ) ) {
+			$decoded = json_decode( (string) $course->syllabus_meta, true );
+			$meta    = is_array( $decoded ) ? $decoded : array();
+		}
+
+		$identity_meta = self::get_syllabus_meta();
+		$identity_keys = array(
+			'public_title',
+			'image_alt',
+			'seo_title',
+			'meta_description',
+			'short_description',
+		);
+
+		foreach ( $identity_keys as $key ) {
+			if ( ! isset( $identity_meta[ $key ] ) ) {
+				continue;
+			}
+			if ( ! isset( $meta[ $key ] ) || $meta[ $key ] !== $identity_meta[ $key ] ) {
+				$meta[ $key ]           = $identity_meta[ $key ];
+				$changes['syllabus_meta'] = true;
+			}
+		}
+
+		if ( $changes['syllabus_meta'] ) {
+			$update['syllabus_meta'] = wp_json_encode( $meta );
+			$formats[]               = '%s';
+		}
+
+		if ( ! empty( $update ) ) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$wpdb->update(
+				$wpdb->prefix . 'cta_courses',
+				$update,
+				array( 'id' => $course_id ),
+				$formats,
+				array( '%d' )
+			);
+		}
+
+		$thumb = self::sync_thumbnail( true );
+		if ( ! empty( $thumb['ok'] ) ) {
+			$changes['thumbnail'] = true;
+		}
+
+		update_option(
+			self::IDENTITY_HEAL,
+			array(
+				'at'        => current_time( 'mysql' ),
+				'course_id' => $course_id,
+				'changes'   => $changes,
+			),
+			false
+		);
+
+		return array(
+			'ok'        => true,
+			'course_id' => $course_id,
+			'message'   => 'healed',
+			'changes'   => $changes,
+		);
+	}
+
+	/**
+	 * Self-heal stale California Clinical labels on an existing course row.
+	 *
+	 * @return void
+	 */
+	public static function maybe_heal_stale_product_identity() {
+		if ( get_transient( 'cta_lcsw_aswb_identity_heal_lock' ) || get_option( self::IDENTITY_HEAL ) ) {
+			return;
+		}
+
+		$course = self::find_course();
+		if ( ! $course ) {
+			return;
+		}
+
+		$needs_heal = self::SLUG !== sanitize_title( (string) ( $course->slug ?? '' ) )
+			|| self::is_stale_display_title( (string) ( $course->title ?? '' ) );
+
+		if ( ! $needs_heal && ! empty( $course->syllabus_meta ) ) {
+			$decoded = json_decode( (string) $course->syllabus_meta, true );
+			$meta    = is_array( $decoded ) ? $decoded : array();
+			if ( ! empty( $meta['public_title'] ) && self::is_stale_display_title( (string) $meta['public_title'] ) ) {
+				$needs_heal = true;
+			}
+		}
+
+		if ( ! $needs_heal ) {
+			return;
+		}
+
+		set_transient( 'cta_lcsw_aswb_identity_heal_lock', 1, 10 * MINUTE_IN_SECONDS );
+		self::heal_product_identity( true );
+	}
+
+	/**
+	 * Attach the approved LCSW ASWB course artwork to thumbnail_url.
+	 *
+	 * @param bool $force Re-run even if already applied at this seed key.
+	 * @return array{ok:bool,course_id:int,thumbnail_url:string,message:string}
+	 */
+	public static function sync_thumbnail( $force = false ) {
+		$seed_option = 'cta_lcsw_aswb_thumbnail_1_0_206';
+
+		if ( ! $force && get_option( $seed_option ) ) {
+			return array(
+				'ok'            => true,
+				'course_id'     => 0,
+				'thumbnail_url' => '',
+				'message'       => 'already_seeded',
+			);
+		}
+
+		$course = self::find_course();
+		if ( ! $course ) {
+			return array(
+				'ok'            => false,
+				'course_id'     => 0,
+				'thumbnail_url' => '',
+				'message'       => 'lcsw_aswb_course_not_found',
+			);
+		}
+
+		$thumbnail_url = self::resolve_approved_thumbnail_url();
+		if ( '' === $thumbnail_url ) {
+			return array(
+				'ok'            => false,
+				'course_id'     => (int) $course->id,
+				'thumbnail_url' => '',
+				'message'       => 'thumbnail_asset_not_found',
+			);
+		}
+
+		global $wpdb;
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$updated = $wpdb->update(
+			$wpdb->prefix . 'cta_courses',
+			array( 'thumbnail_url' => $thumbnail_url ),
+			array( 'id' => (int) $course->id ),
+			array( '%s' ),
+			array( '%d' )
+		);
+
+		if ( false === $updated ) {
+			return array(
+				'ok'            => false,
+				'course_id'     => (int) $course->id,
+				'thumbnail_url' => $thumbnail_url,
+				'message'       => 'update_failed',
+			);
+		}
+
+		update_option( $seed_option, 1, false );
+
+		return array(
+			'ok'            => true,
+			'course_id'     => (int) $course->id,
+			'thumbnail_url' => $thumbnail_url,
+			'message'       => 'synced',
+		);
+	}
+
+	/**
+	 * Resolve approved LCSW ASWB course image URL (bundled plugin asset).
+	 *
+	 * @return string
+	 */
+	public static function resolve_approved_thumbnail_url() {
+		$bundled = CTA_PLUGIN_DIR . self::THUMBNAIL_REL;
+		if ( is_readable( $bundled ) ) {
+			return esc_url_raw( CTA_PLUGIN_URL . self::THUMBNAIL_REL );
+		}
+
+		return '';
 	}
 }
 

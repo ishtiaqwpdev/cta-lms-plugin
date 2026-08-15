@@ -141,13 +141,18 @@ class CTA_Exam_Prep_Downloads {
 			if ( $resource_id <= 0 || ! class_exists( 'CTA_Course_Materials' ) ) {
 				continue;
 			}
-			if ( ! CTA_Course_Materials::user_can_access( get_current_user_id(), $resource ) ) {
+
+			$user_id       = get_current_user_id();
+			$can_access    = CTA_Course_Materials::user_can_access( $user_id, $resource );
+			$requires_gate = CTA_Course_Materials::resource_requires_quiz_unlock( $resource );
+
+			if ( ! $can_access && ! $requires_gate ) {
 				continue;
 			}
 
 			$local        = CTA_Course_Materials::resolve_local_path( $resource );
 			$external_url = self::get_external_file_url( $resource );
-			if ( ! $local && '' === $external_url ) {
+			if ( ! $local && '' === $external_url && $can_access ) {
 				continue;
 			}
 
@@ -179,19 +184,23 @@ class CTA_Exam_Prep_Downloads {
 			$category  = self::classify_resource( $resource, $extension );
 
 			$items[] = array(
-				'resource_id' => $resource_id,
-				'title'       => (string) ( $resource->title ?? $filename ),
-				'filename'    => sanitize_file_name( $filename ),
-				'extension'   => '' !== $extension ? strtoupper( $extension ) : __( 'FILE', 'cta-lms' ),
-				'size_bytes'  => $file_size,
-				'size_label'  => $file_size > 0 ? size_format( $file_size, 1 ) : '',
-				'category'    => $category,
-				'module_id'   => $module_id,
-				'sort_order'  => isset( $module_order[ $module_id ] )
+				'resource_id'  => $resource_id,
+				'title'        => (string) ( $resource->title ?? $filename ),
+				'filename'     => sanitize_file_name( $filename ),
+				'extension'    => '' !== $extension ? strtoupper( $extension ) : __( 'FILE', 'cta-lms' ),
+				'size_bytes'   => $file_size,
+				'size_label'   => $file_size > 0 ? size_format( $file_size, 1 ) : '',
+				'category'     => $category,
+				'module_id'    => $module_id,
+				'sort_order'   => isset( $module_order[ $module_id ] )
 					? (int) $module_order[ $module_id ]
 					: 1000 + (int) ( $resource->order_index ?? 0 ),
-				'url'         => CTA_Course_Materials::get_download_url( $resource_id ),
-				'is_external' => ! $local && '' !== $external_url,
+				'url'          => $can_access ? CTA_Course_Materials::get_download_url( $resource_id ) : '',
+				'is_external'  => ! $local && '' !== $external_url,
+				'locked'       => ! $can_access,
+				'lock_message' => ( ! $can_access )
+					? CTA_Course_Materials::get_unlock_lock_message( $user_id, $resource )
+					: '',
 			);
 		}
 

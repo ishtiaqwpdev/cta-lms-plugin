@@ -131,8 +131,12 @@ class CTA_Course_Materials {
 			if ( ! CTA_Exam_Access::has_active_access( $user_id, $course_id ) ) {
 				return false;
 			}
-			// Access Correction Notice: Exam Prep materials are open from enrollment.
-			// unlock_after_quiz_type is ignored for Exam Prep (CE gates still apply below).
+			// Exam Prep: workbooks, schedules, and candidate exams stay open from enrollment.
+			// Protected answer keys / rationales unlock only after the matching assessment is submitted.
+			if ( self::resource_requires_quiz_unlock( $resource ) ) {
+				$unlock_type = self::get_resource_unlock_gate_type( $resource );
+				return self::user_meets_unlock_gate( $user_id, $course_id, $unlock_type );
+			}
 			return true;
 		} elseif ( class_exists( 'CTA_CE_Access' ) && CTA_CE_Access::is_ce_course( $course ) ) {
 			if ( ! CTA_CE_Access::has_active_access( $user_id, $course_id ) ) {
@@ -198,21 +202,12 @@ class CTA_Course_Materials {
 			return self::user_has_completed_form_a_remediation( $user_id, $course_id );
 		}
 
-		// AMFTRB: require a preserved first attempt (online quiz submit OR printable attempt mark).
-		// Do not open protected rationales when no online quiz exists yet.
+		// AMFTRB: preserved printable attempts also satisfy protected rationale gates.
 		$course_for_gate = class_exists( 'CTA_Database' ) ? CTA_Database::get_course( $course_id ) : null;
 		if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::uses_assessment_gates( $course_for_gate ) ) {
 			if ( self::user_has_preserved_attempt( $user_id, $course_id, $unlock_type ) ) {
 				return true;
 			}
-			if ( class_exists( 'CTA_Lcsw_Aswb_Sync' ) ) {
-				return CTA_Lcsw_Aswb_Sync::user_has_completed_quiz_type( $user_id, $course_id, $unlock_type );
-			}
-			return self::user_has_completed_quiz_type( $user_id, $course_id, $unlock_type );
-		}
-
-		if ( class_exists( 'CTA_Lcsw_Aswb_Sync' ) ) {
-			return CTA_Lcsw_Aswb_Sync::user_has_completed_quiz_type( $user_id, $course_id, $unlock_type );
 		}
 
 		return self::user_has_completed_quiz_type( $user_id, $course_id, $unlock_type );
@@ -529,6 +524,148 @@ class CTA_Course_Materials {
 	}
 
 	/**
+	 * Whether a resource is gated until a matching assessment attempt is submitted.
+	 *
+	 * @param object|null $resource Resource row.
+	 * @return bool
+	 */
+	public static function resource_requires_quiz_unlock( $resource ) {
+		return '' !== self::get_resource_unlock_gate_type( $resource );
+	}
+
+	/**
+	 * Resolve the quiz gate key for a protected answer-key / rationale resource.
+	 *
+	 * Uses stored unlock_after_quiz_type when present; otherwise infers from title/path.
+	 *
+	 * @param object|null $resource Resource row.
+	 * @return string Gate key or empty string.
+	 */
+	public static function get_resource_unlock_gate_type( $resource ) {
+		return self::infer_protected_rationale_unlock_type( $resource );
+	}
+
+	/**
+	 * Infer unlock_after_quiz_type for protected answer keys and rationales.
+	 *
+	 * @param object|null $resource Resource row.
+	 * @return string Gate key or empty string.
+	 */
+	public static function infer_protected_rationale_unlock_type( $resource ) {
+		if ( ! $resource || ! self::is_protected_rationale_resource( $resource ) ) {
+			return '';
+		}
+
+		$stored = isset( $resource->unlock_after_quiz_type )
+			? sanitize_text_field( (string) $resource->unlock_after_quiz_type )
+			: '';
+		if ( '' !== $stored ) {
+			return $stored;
+		}
+
+		$title = (string) ( $resource->title ?? '' );
+		$hay   = $title . ' ' .
+			(string) ( $resource->file_path ?? '' ) . ' ' .
+			(string) ( $resource->file_url ?? '' );
+
+		if ( false !== stripos( $hay, 'Comprehensive Final' ) ) {
+			return 'comprehensive_final';
+		}
+
+		if ( preg_match( '/Workbook\s+(\d+)/i', $title, $m )
+			&& ( false !== stripos( $hay, 'Answer Key' )
+				|| false !== stripos( $hay, 'Answer_Key' )
+				|| false !== stripos( $hay, 'Rationale' ) ) ) {
+			return 'wb' . (int) $m[1] . '_bank';
+		}
+
+		if ( preg_match( '/Checkpoint\s+(\d+)/i', $title, $m )
+			&& false !== stripos( $hay, 'Rationale' ) ) {
+			return 'checkpoint_' . (int) $m[1];
+		}
+
+		if ( ( false !== stripos( $hay, 'Form B' ) || false !== stripos( $hay, 'Form_B' ) )
+			&& ( false !== stripos( $hay, 'Answer Key' )
+				|| false !== stripos( $hay, 'Answer_Key' )
+				|| false !== stripos( $hay, 'Rationale' )
+				|| false !== stripos( $hay, 'Controlled Answer' ) ) ) {
+			return 'form_b';
+		}
+
+		if ( ( false !== stripos( $hay, 'Form A' ) || false !== stripos( $hay, 'Form_A' ) )
+			&& ( false !== stripos( $hay, 'Answer Key' )
+				|| false !== stripos( $hay, 'Answer_Key' )
+				|| false !== stripos( $hay, 'Rationale' )
+				|| false !== stripos( $hay, 'Controlled Answer' ) ) ) {
+			return 'form_a';
+		}
+
+		return '';
+	}
+
+	/**
+	 * Re-apply unlock_after_quiz_type on Exam Prep protected rationale rows.
+	 *
+	 * @return int Rows updated.
+	 */
+	public static function restore_exam_prep_protected_rationale_gates() {
+		global $wpdb;
+
+		$courses = $wpdb->prefix . 'cta_courses';
+		$res     = $wpdb->prefix . 'cta_downloadable_resources';
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$rows = $wpdb->get_results(
+			"SELECT r.* FROM {$res} r
+			INNER JOIN {$courses} c ON c.id = r.course_id
+			WHERE c.product_type = 'exam_prep'"
+		);
+
+		$updated = 0;
+		foreach ( (array) $rows as $row ) {
+			$unlock = self::infer_protected_rationale_unlock_type_from_content(
+				(string) ( $row->title ?? '' ),
+				(string) ( $row->file_path ?? '' ) . ' ' . (string) ( $row->file_url ?? '' )
+			);
+			$current = isset( $row->unlock_after_quiz_type )
+				? sanitize_text_field( (string) $row->unlock_after_quiz_type )
+				: '';
+			if ( $unlock === $current ) {
+				continue;
+			}
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$wpdb->update(
+				$res,
+				array( 'unlock_after_quiz_type' => $unlock ),
+				array( 'id' => (int) $row->id ),
+				array( '%s' ),
+				array( '%d' )
+			);
+			++$updated;
+		}
+
+		return $updated;
+	}
+
+	/**
+	 * Infer a protected rationale gate from title/path only (ignores stored DB value).
+	 *
+	 * @param string $title Resource title.
+	 * @param string $path  File path / URL haystack.
+	 * @return string Gate key or empty string.
+	 */
+	private static function infer_protected_rationale_unlock_type_from_content( $title, $path ) {
+		return self::infer_protected_rationale_unlock_type(
+			(object) array(
+				'title'                  => $title,
+				'file_path'              => $path,
+				'file_url'               => '',
+				'unlock_after_quiz_type' => '',
+			)
+		);
+	}
+
+	/**
 	 * Form B access check for Exam Prep programs.
 	 *
 	 * Form B is open independently of Form A (and of Form A Remediation). Enrollment /
@@ -638,14 +775,7 @@ class CTA_Course_Materials {
 			? CTA_Database::get_course( (int) $resource->course_id )
 			: null;
 
-		// Exam Prep: no lock copy (Access Correction Notice — open from enrollment).
-		if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course ) ) {
-			return '';
-		}
-
-		$type = isset( $resource->unlock_after_quiz_type )
-			? sanitize_text_field( (string) $resource->unlock_after_quiz_type )
-			: '';
+		$type = self::get_resource_unlock_gate_type( $resource );
 
 		if ( '' === $type ) {
 			return '';
@@ -671,45 +801,51 @@ class CTA_Course_Materials {
 		}
 		if ( 'form_a' === $type ) {
 			if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::uses_assessment_gates( $course ) ) {
-				return __( 'Available after you submit Comprehensive Simulation Form A, or record your preserved Form A attempt.', 'cta-lms' );
+				return __( 'Complete Form A (or record your preserved Form A attempt) to unlock the Answer Key and Rationales.', 'cta-lms' );
 			}
-			return __( 'Available after you submit Comprehensive Simulation Form A.', 'cta-lms' );
+			return __( 'Complete Form A to unlock the Answer Key and Rationales.', 'cta-lms' );
 		}
 		if ( 'form_b' === $type ) {
 			if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::uses_assessment_gates( $course ) ) {
-				return __( 'Available after you submit Comprehensive Simulation Form B, or record your preserved Form B attempt.', 'cta-lms' );
+				return __( 'Complete Form B (or record your preserved Form B attempt) to unlock the Answer Key and Rationales.', 'cta-lms' );
 			}
-			return __( 'Available after you submit Comprehensive Simulation Form B.', 'cta-lms' );
+			return __( 'Complete Form B to unlock the Answer Key and Rationales.', 'cta-lms' );
+		}
+		if ( 'comprehensive_final' === $type ) {
+			if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::uses_assessment_gates( $course ) ) {
+				return __( 'Complete the Comprehensive Final (or record your preserved attempt) to unlock the Answer Key and Rationales.', 'cta-lms' );
+			}
+			return __( 'Complete the Comprehensive Final to unlock the Answer Key and Rationales.', 'cta-lms' );
 		}
 		if ( 'checkpoint_1' === $type ) {
 			if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::uses_assessment_gates( $course ) ) {
-				return __( 'Available after you submit Checkpoint 1, or record your preserved Checkpoint 1 attempt.', 'cta-lms' );
+				return __( 'Complete Checkpoint 1 (or record your preserved attempt) to unlock the Answer Rationales.', 'cta-lms' );
 			}
-			return __( 'Available after you submit Checkpoint 1.', 'cta-lms' );
+			return __( 'Complete Checkpoint 1 to unlock the Answer Rationales.', 'cta-lms' );
 		}
 		if ( 'checkpoint_2' === $type ) {
 			if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::uses_assessment_gates( $course ) ) {
-				return __( 'Available after you submit Checkpoint 2, or record your preserved Checkpoint 2 attempt.', 'cta-lms' );
+				return __( 'Complete Checkpoint 2 (or record your preserved attempt) to unlock the Answer Rationales.', 'cta-lms' );
 			}
-			return __( 'Available after you submit Checkpoint 2.', 'cta-lms' );
+			return __( 'Complete Checkpoint 2 to unlock the Answer Rationales.', 'cta-lms' );
 		}
 		if ( 'checkpoint_3' === $type ) {
 			if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::uses_assessment_gates( $course ) ) {
-				return __( 'Available after you submit Checkpoint 3, or record your preserved Checkpoint 3 attempt.', 'cta-lms' );
+				return __( 'Complete Checkpoint 3 (or record your preserved attempt) to unlock the Answer Rationales.', 'cta-lms' );
 			}
-			return __( 'Available after you submit Checkpoint 3.', 'cta-lms' );
+			return __( 'Complete Checkpoint 3 to unlock the Answer Rationales.', 'cta-lms' );
 		}
 		if ( preg_match( '/^wb(\d+)_bank$/', $type, $m ) ) {
 			if ( class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::uses_assessment_gates( $course ) ) {
 				return sprintf(
 					/* translators: %d: workbook number */
-					__( 'Available after you submit Workbook %d Practice Bank, or record your preserved attempt for that bank.', 'cta-lms' ),
+					__( 'Complete Workbook %1$d Practice Bank (or record your preserved attempt) to unlock the Answer Key and Rationales.', 'cta-lms' ),
 					(int) $m[1]
 				);
 			}
 			return sprintf(
 				/* translators: %d: workbook number */
-				__( 'Available after you submit Workbook %d Practice Bank.', 'cta-lms' ),
+				__( 'Complete Workbook %1$d Practice Bank to unlock the Answer Key and Rationales.', 'cta-lms' ),
 				(int) $m[1]
 			);
 		}

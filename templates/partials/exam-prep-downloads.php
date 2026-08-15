@@ -70,13 +70,16 @@ $has_downloads  = ! empty( $center['has_downloads'] ) && ! empty( $categories );
 
 				<div class="cta-dl__list">
 					<?php foreach ( $items as $item ) : ?>
-						<article class="cta-dl__item">
+						<article class="cta-dl__item<?php echo ! empty( $item['locked'] ) ? ' cta-dl__item--locked' : ''; ?>">
 							<div class="cta-dl__file-icon cta-dl__file-icon--<?php echo esc_attr( strtolower( (string) ( $item['extension'] ?? 'file' ) ) ); ?>" aria-hidden="true">
 								<?php echo esc_html( (string) ( $item['extension'] ?? __( 'FILE', 'cta-lms' ) ) ); ?>
 							</div>
 							<div class="cta-dl__file-copy">
 								<h4><?php echo esc_html( (string) ( $item['title'] ?? '' ) ); ?></h4>
 								<p class="cta-dl__filename"><?php echo esc_html( (string) ( $item['filename'] ?? '' ) ); ?></p>
+								<?php if ( ! empty( $item['locked'] ) && ! empty( $item['lock_message'] ) ) : ?>
+									<p class="cta-dl__lock-message"><?php echo esc_html( (string) $item['lock_message'] ); ?></p>
+								<?php endif; ?>
 								<p class="cta-dl__meta">
 									<span><?php echo esc_html( (string) ( $item['extension'] ?? __( 'File', 'cta-lms' ) ) ); ?></span>
 									<?php if ( ! empty( $item['size_label'] ) ) : ?>
@@ -89,14 +92,21 @@ $has_downloads  = ! empty( $center['has_downloads'] ) && ! empty( $categories );
 									<?php endif; ?>
 								</p>
 							</div>
-							<a
-								class="btn btn-primary btn--sm cta-dl__download"
-								href="<?php echo esc_url( (string) ( $item['url'] ?? '' ) ); ?>"
-								aria-label="<?php echo esc_attr( sprintf( __( 'Download %s', 'cta-lms' ), (string) ( $item['title'] ?? '' ) ) ); ?>"
-							>
-								<span aria-hidden="true">↓</span>
-								<?php esc_html_e( 'Download', 'cta-lms' ); ?>
-							</a>
+							<?php if ( ! empty( $item['locked'] ) ) : ?>
+								<span class="btn btn-outline btn--sm cta-dl__download cta-dl__download--locked" aria-disabled="true">
+									<span aria-hidden="true">🔒</span>
+									<?php esc_html_e( 'Locked', 'cta-lms' ); ?>
+								</span>
+							<?php else : ?>
+								<a
+									class="btn btn-primary btn--sm cta-dl__download"
+									href="<?php echo esc_url( (string) ( $item['url'] ?? '' ) ); ?>"
+									aria-label="<?php echo esc_attr( sprintf( __( 'Download %s', 'cta-lms' ), (string) ( $item['title'] ?? '' ) ) ); ?>"
+								>
+									<span aria-hidden="true">↓</span>
+									<?php esc_html_e( 'Download', 'cta-lms' ); ?>
+								</a>
+							<?php endif; ?>
 						</article>
 					<?php endforeach; ?>
 				</div>

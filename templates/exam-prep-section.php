@@ -111,14 +111,23 @@ $home_url_player = $course_home_url ?? add_query_arg(
 				</p>
 				<ul class="cta-ep-section-resources">
 					<?php foreach ( (array) $section_data['resource_items'] as $item ) : ?>
-						<li class="cta-ep-section-resources__item">
-							<a
-								class="cta-ep-section-resources__link"
-								href="<?php echo esc_url( (string) ( $item['url'] ?? '' ) ); ?>"
-								<?php echo ! empty( $item['external'] ) ? 'target="_blank" rel="noopener noreferrer"' : ''; ?>
-							>
-								<?php echo esc_html( (string) ( $item['label'] ?? '' ) ); ?>
-							</a>
+						<li class="cta-ep-section-resources__item<?php echo ! empty( $item['locked'] ) ? ' cta-ep-section-resources__item--locked' : ''; ?>">
+							<?php if ( ! empty( $item['locked'] ) ) : ?>
+								<span class="cta-ep-section-resources__link cta-ep-section-resources__link--locked" aria-disabled="true">
+									<?php echo esc_html( (string) ( $item['label'] ?? '' ) ); ?>
+								</span>
+								<?php if ( ! empty( $item['lock_message'] ) ) : ?>
+									<p class="cta-ep-section-resources__lock-message"><?php echo esc_html( (string) $item['lock_message'] ); ?></p>
+								<?php endif; ?>
+							<?php else : ?>
+								<a
+									class="cta-ep-section-resources__link"
+									href="<?php echo esc_url( (string) ( $item['url'] ?? '' ) ); ?>"
+									<?php echo ! empty( $item['external'] ) ? 'target="_blank" rel="noopener noreferrer"' : ''; ?>
+								>
+									<?php echo esc_html( (string) ( $item['label'] ?? '' ) ); ?>
+								</a>
+							<?php endif; ?>
 						</li>
 					<?php endforeach; ?>
 				</ul>

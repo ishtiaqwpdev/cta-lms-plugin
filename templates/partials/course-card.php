@@ -66,6 +66,7 @@ $display_title      = function_exists( 'cta_lms_get_course_display_title' )
 			<img
 				src="<?php echo esc_url( $course->thumbnail_url ); ?>"
 				alt="<?php echo esc_attr( $card_alt ); ?>"
+				class="<?php echo $is_exam_prep ? 'cta-exam-prep-artwork' : ''; ?>"
 				loading="lazy"
 			>
 		<?php else : ?>

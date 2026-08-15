@@ -321,6 +321,10 @@ class CTA_Pages {
 				'option' => 'cta_courses_page_id',
 			),
 			array(
+				'title'  => __( 'Exam Preparation', 'cta-lms' ),
+				'option' => 'cta_exam_prep_page_id',
+			),
+			array(
 				'title'  => __( 'Supervision', 'cta-lms' ),
 				'option' => 'cta_supervision_page_id',
 			),

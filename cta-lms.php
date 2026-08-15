@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.205' );
+	define( 'CTA_VERSION', '1.0.207' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -1041,6 +1041,21 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				CTA_Lmft_Law_Ethics_Sync::sync( true );
 			}
 
+			// LCSW ASWB Clinical: correct product identity (title, meta, artwork) from legacy California Clinical label.
+			if ( version_compare( $installed, '1.0.206', '<' ) ) {
+				if ( class_exists( 'CTA_Lcsw_Aswb_Sync' ) ) {
+					CTA_Lcsw_Aswb_Sync::heal_product_identity( true );
+				}
+				if ( class_exists( 'CTA_Course_Catalog' ) ) {
+					CTA_Course_Catalog::restore_exam_prep_pricing();
+				}
+			}
+
+			// Exam Prep: restore per-assessment gates on protected answer keys / rationales only.
+			if ( version_compare( $installed, '1.0.207', '<' ) && class_exists( 'CTA_Course_Materials' ) ) {
+				CTA_Course_Materials::restore_exam_prep_protected_rationale_gates();
+			}
+
 			// Decouple supervision application pending from general account / CE access.
 			if ( version_compare( $installed, '1.0.90', '<' ) && class_exists( 'CTA_Associate_Access' ) ) {
 				$query = new WP_User_Query(
@@ -1262,6 +1277,21 @@ if ( ! function_exists( 'cta_maybe_heal_lmft_law_ethics' ) ) {
 
 if ( function_exists( 'cta_maybe_heal_lmft_law_ethics' ) && ! has_action( 'plugins_loaded', 'cta_maybe_heal_lmft_law_ethics' ) ) {
 	add_action( 'plugins_loaded', 'cta_maybe_heal_lmft_law_ethics', 8 );
+}
+
+if ( ! function_exists( 'cta_maybe_heal_lcsw_aswb_identity' ) ) {
+	/**
+	 * Heal stale LCSW California Clinical labels on existing course rows.
+	 */
+	function cta_maybe_heal_lcsw_aswb_identity() {
+		if ( class_exists( 'CTA_Lcsw_Aswb_Sync' ) ) {
+			CTA_Lcsw_Aswb_Sync::maybe_heal_stale_product_identity();
+		}
+	}
+}
+
+if ( function_exists( 'cta_maybe_heal_lcsw_aswb_identity' ) && ! has_action( 'plugins_loaded', 'cta_maybe_heal_lcsw_aswb_identity' ) ) {
+	add_action( 'plugins_loaded', 'cta_maybe_heal_lcsw_aswb_identity', 10 );
 }
 
 if ( function_exists( 'cta_maybe_sync_ce_prices_from_catalog' ) && ! has_action( 'plugins_loaded', 'cta_maybe_sync_ce_prices_from_catalog' ) ) {
@@ -1597,10 +1627,20 @@ if ( ! function_exists( 'cta_lms_get_course_display_title' ) ) {
 		}
 
 		if ( ! empty( $meta['public_title'] ) ) {
-			return sanitize_text_field( (string) $meta['public_title'] );
+			$public = sanitize_text_field( (string) $meta['public_title'] );
+			if ( class_exists( 'CTA_Lcsw_Aswb_Sync' ) && CTA_Lcsw_Aswb_Sync::is_stale_display_title( $public ) ) {
+				return CTA_Lcsw_Aswb_Sync::PUBLIC_TITLE;
+			}
+
+			return $public;
 		}
 
-		return isset( $course->title ) ? (string) $course->title : '';
+		$formal = isset( $course->title ) ? (string) $course->title : '';
+		if ( class_exists( 'CTA_Lcsw_Aswb_Sync' ) && CTA_Lcsw_Aswb_Sync::is_stale_display_title( $formal ) ) {
+			return CTA_Lcsw_Aswb_Sync::PUBLIC_TITLE;
+		}
+
+		return $formal;
 	}
 }
 

@@ -128,15 +128,29 @@ $active_section   = (string) ( $sidebar_nav['active_section'] ?? '' );
 								<ul class="cta-ep-sidebar-nav__submenu-list">
 									<?php foreach ( (array) $section['children'] as $child ) : ?>
 										<li>
-											<a
-												class="cta-ep-sidebar-nav__submenu-link<?php echo ! empty( $child['is_active'] ) ? ' is-active' : ''; ?><?php echo ! empty( $child['is_complete'] ) ? ' is-complete' : ''; ?><?php echo ! empty( $child['passed'] ) ? ' is-passed' : ''; ?>"
-												href="<?php echo esc_url( (string) ( $child['url'] ?? '' ) ); ?>"
-												<?php echo ! empty( $child['external'] ) ? 'target="_blank" rel="noopener noreferrer"' : ''; ?>
-												<?php echo ! empty( $child['is_active'] ) ? 'aria-current="page"' : ''; ?>
-												<?php echo ! empty( $child['title'] ) && (string) $child['title'] !== (string) ( $child['label'] ?? '' ) ? 'title="' . esc_attr( (string) $child['title'] ) . '"' : ''; ?>
-											>
-												<?php echo esc_html( (string) ( $child['label'] ?? '' ) ); ?>
-											</a>
+											<?php if ( ! empty( $child['locked'] ) ) : ?>
+												<span
+													class="cta-ep-sidebar-nav__submenu-link cta-ep-sidebar-nav__submenu-link--locked"
+													role="note"
+													<?php echo ! empty( $child['lock_message'] ) ? 'title="' . esc_attr( (string) $child['lock_message'] ) . '"' : ''; ?>
+												>
+													<?php echo esc_html( (string) ( $child['label'] ?? '' ) ); ?>
+													<span class="screen-reader-text"><?php esc_html_e( '(locked)', 'cta-lms' ); ?></span>
+												</span>
+												<?php if ( ! empty( $child['lock_message'] ) ) : ?>
+													<p class="cta-ep-sidebar-nav__lock-message"><?php echo esc_html( (string) $child['lock_message'] ); ?></p>
+												<?php endif; ?>
+											<?php else : ?>
+												<a
+													class="cta-ep-sidebar-nav__submenu-link<?php echo ! empty( $child['is_active'] ) ? ' is-active' : ''; ?><?php echo ! empty( $child['is_complete'] ) ? ' is-complete' : ''; ?><?php echo ! empty( $child['passed'] ) ? ' is-passed' : ''; ?>"
+													href="<?php echo esc_url( (string) ( $child['url'] ?? '' ) ); ?>"
+													<?php echo ! empty( $child['external'] ) ? 'target="_blank" rel="noopener noreferrer"' : ''; ?>
+													<?php echo ! empty( $child['is_active'] ) ? 'aria-current="page"' : ''; ?>
+													<?php echo ! empty( $child['title'] ) && (string) $child['title'] !== (string) ( $child['label'] ?? '' ) ? 'title="' . esc_attr( (string) $child['title'] ) . '"' : ''; ?>
+												>
+													<?php echo esc_html( (string) ( $child['label'] ?? '' ) ); ?>
+												</a>
+											<?php endif; ?>
 										</li>
 									<?php endforeach; ?>
 								</ul>

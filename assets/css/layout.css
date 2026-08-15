@@ -1741,6 +1741,12 @@ button.pagination__item:disabled {
   object-position: center center;
 }
 
+.cta-plugin-wrapper .course-hero__media--exam-prep > img,
+.cta-plugin-wrapper .course-hero__media--exam-prep .course-hero__video-thumb {
+  object-fit: contain;
+  object-position: center center;
+}
+
 .cta-plugin-wrapper .course-hero__breadcrumb {
   display: flex;
   align-items: center;
@@ -3457,7 +3463,7 @@ button.pagination__item:disabled {
 
 .cta-plugin-wrapper .dashboard-sidebar__license {
   font-size: var(--font-size-xs);
-  color: var(--color-white-muted);
+  color: var(--color-white, #fff);
 }
 
 .cta-plugin-wrapper .dashboard-sidebar__nav {
@@ -3474,7 +3480,7 @@ button.pagination__item:disabled {
   padding: var(--space-sm) var(--space-md);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
-  color: var(--color-white-muted);
+  color: var(--color-white, #fff);
   border-radius: var(--radius-md);
   transition:
     background-color var(--transition-fast),
@@ -5847,6 +5853,11 @@ button.pagination__item:disabled {
   object-fit: cover;
 }
 
+.cta-plugin-wrapper .course-card--exam-prep .cta-course-card__thumb img,
+.cta-plugin-wrapper .course-card--exam-prep .cta-course-card__thumb.course-card__media img {
+  object-fit: contain;
+}
+
 .cta-plugin-wrapper .cta-course-card__desc,
 .cta-plugin-wrapper .cta-course-card__desc.course-card__text {
   overflow: hidden;
@@ -6071,6 +6082,47 @@ button.pagination__item:disabled {
   object-fit: contain;
   object-position: center center;
   background-repeat: no-repeat;
+}
+
+/* Exam Prep program artwork — full banner visible (no cover crop on bottom badges/text).
+   Root cause: catalog/hero containers used object-fit:cover with shorter aspect ratios
+   (16/10, 370/250, 770/460) than the approved 16:9 artwork, clipping the bottom band. */
+.cta-plugin-wrapper .course-card--exam-prep .course-card__media,
+.cta-plugin-wrapper .course-card--exam-prep .cta-course-card__thumb {
+  aspect-ratio: 16 / 9;
+  height: auto;
+  overflow: hidden;
+  background-color: var(--color-bg-muted, #f3f4f6);
+}
+
+.cta-plugin-wrapper .course-card--exam-prep .course-card__media img,
+.cta-plugin-wrapper .course-card--exam-prep .cta-course-card__thumb img,
+.cta-plugin-wrapper img.cta-exam-prep-artwork {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  object-fit: contain;
+  object-position: center center;
+}
+
+.cta-plugin-wrapper .course-hero__media--exam-prep {
+  aspect-ratio: 16 / 9;
+  max-height: none;
+  overflow: hidden;
+  background-color: var(--color-bg-muted, #f3f4f6);
+}
+
+.cta-plugin-wrapper .course-hero__media--exam-prep > img,
+.cta-plugin-wrapper .course-hero__media--exam-prep .course-hero__video-thumb,
+.cta-plugin-wrapper .course-hero__media--exam-prep .cta-exam-prep-artwork {
+  object-fit: contain;
+  object-position: center center;
+}
+
+.cta-plugin-wrapper .dashboard-course-card__thumb img.cta-exam-prep-artwork {
+  height: auto;
+  object-fit: contain;
 }
 
 .cta-plugin-wrapper .dashboard-course-card__thumb--placeholder {
@@ -7830,6 +7882,7 @@ button.pagination__item:disabled {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   line-height: 1.4;
+  color: var(--color-white, #fff);
 }
 
 .cta-plugin-wrapper .cta-ep-sidebar-nav__tabs {
@@ -7900,7 +7953,11 @@ button.pagination__item:disabled {
 }
 
 .cta-plugin-wrapper .cta-ep-sidebar-nav__root-link:not(:hover) {
-  color: var(--color-white-muted, rgba(255, 255, 255, 0.72));
+  color: var(--color-white, #fff);
+}
+
+.cta-plugin-wrapper .cta-ep-sidebar-nav__tab-link:not(:hover):not(.is-active-section) {
+  color: var(--color-white, #fff);
 }
 
 .cta-plugin-wrapper .cta-ep-sidebar-nav__expand {
@@ -7915,7 +7972,7 @@ button.pagination__item:disabled {
   padding: 0;
   border: 0;
   background: transparent;
-  color: var(--color-white-muted, rgba(255, 255, 255, 0.72));
+  color: var(--color-white, #fff);
   border-radius: 0 var(--radius-md, 8px) var(--radius-md, 8px) 0;
   cursor: pointer;
   transition:
@@ -7959,7 +8016,7 @@ button.pagination__item:disabled {
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--color-white-muted, rgba(255, 255, 255, 0.55));
+  color: var(--color-white, #fff);
 }
 
 .cta-plugin-wrapper .cta-ep-sidebar-nav__submenu-list {
@@ -7979,7 +8036,8 @@ button.pagination__item:disabled {
   font-size: 0.75rem;
   font-weight: var(--font-weight-regular, 400);
   line-height: 1.35;
-  color: rgba(255, 255, 255, 0.62);
+  color: var(--color-white, #fff);
+  text-decoration: none;
   border-radius: var(--radius-sm, 6px);
   transition:
     background-color var(--transition-fast, 0.15s ease),
@@ -8005,6 +8063,18 @@ button.pagination__item:disabled {
   margin-left: auto;
   font-size: 0.72rem;
   opacity: 0.85;
+}
+
+.cta-plugin-wrapper .cta-ep-sidebar-nav__submenu-link--locked {
+  cursor: not-allowed;
+  opacity: 0.72;
+}
+
+.cta-plugin-wrapper .cta-ep-sidebar-nav__lock-message {
+  margin: 0.2rem 0 0.45rem 0.75rem;
+  font-size: 0.72rem;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.78);
 }
 
 /* Desktop: hover flyouts — hide stray chevrons (theme forces nav links block-width) */
@@ -8153,6 +8223,19 @@ button.pagination__item:disabled {
 
 .cta-plugin-wrapper .cta-ep-section-resources__link:hover {
   border-color: var(--color-primary, #1a56db);
+}
+
+.cta-plugin-wrapper .cta-ep-section-resources__link--locked {
+  cursor: not-allowed;
+  opacity: 0.72;
+  background: #f9fafb;
+}
+
+.cta-plugin-wrapper .cta-ep-section-resources__lock-message {
+  margin: 0.35rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--color-text-muted, #667085);
 }
 
 .cta-plugin-wrapper .cta-ep-progress-summary {
@@ -9585,6 +9668,26 @@ button.pagination__item:disabled {
 
 .cta-plugin-wrapper .cta-dl__item:hover {
   background: #fcfcfd;
+}
+
+.cta-plugin-wrapper .cta-dl__item--locked {
+  opacity: 0.88;
+}
+
+.cta-plugin-wrapper .cta-dl__item--locked:hover {
+  background: #fff;
+}
+
+.cta-plugin-wrapper .cta-dl__lock-message {
+  margin: 0.35rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--color-text-muted, #667085);
+}
+
+.cta-plugin-wrapper .cta-dl__download--locked {
+  cursor: not-allowed;
+  opacity: 0.75;
 }
 
 .cta-plugin-wrapper .cta-dl__file-icon {

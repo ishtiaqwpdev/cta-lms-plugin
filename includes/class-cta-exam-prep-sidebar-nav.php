@@ -384,21 +384,39 @@ class CTA_Exam_Prep_Sidebar_Nav {
 				continue;
 			}
 
-			$url = class_exists( 'CTA_Course_Materials' )
-				? CTA_Course_Materials::get_serve_url( $resource_id )
-				: '';
+			$user_id      = get_current_user_id();
+			$can_access   = class_exists( 'CTA_Course_Materials' )
+				? CTA_Course_Materials::user_can_access( $user_id, $resource )
+				: true;
+			$requires_gate = class_exists( 'CTA_Course_Materials' )
+				? CTA_Course_Materials::resource_requires_quiz_unlock( $resource )
+				: false;
 
-			if ( ! $url ) {
+			if ( ! $can_access && ! $requires_gate ) {
 				continue;
 			}
 
+			$url = ( $can_access && class_exists( 'CTA_Course_Materials' ) )
+				? CTA_Course_Materials::get_serve_url( $resource_id )
+				: '';
+
+			if ( $can_access && ! $url ) {
+				continue;
+			}
+
+			$lock_message = ( ! $can_access && class_exists( 'CTA_Course_Materials' ) )
+				? CTA_Course_Materials::get_unlock_lock_message( $user_id, $resource )
+				: '';
+
 			$children[] = array(
-				'key'       => $key,
-				'label'     => (string) $resource->title,
-				'title'     => (string) $resource->title,
-				'url'       => $url,
-				'is_active' => self::child_is_active( 'resources', $key, $context ),
-				'external'  => true,
+				'key'          => $key,
+				'label'        => (string) $resource->title,
+				'title'        => (string) $resource->title,
+				'url'          => $can_access ? $url : '',
+				'is_active'    => self::child_is_active( 'resources', $key, $context ),
+				'external'     => $can_access,
+				'locked'       => ! $can_access,
+				'lock_message' => $lock_message,
 			);
 			$seen[ $key ] = true;
 		}
@@ -513,17 +531,26 @@ class CTA_Exam_Prep_Sidebar_Nav {
 	 * @return array<string,mixed>
 	 */
 	private static function resource_child( $resource, $section, $key, $context = null ) {
-		$url = class_exists( 'CTA_Course_Materials' )
+		$user_id      = get_current_user_id();
+		$can_access   = class_exists( 'CTA_Course_Materials' )
+			? CTA_Course_Materials::user_can_access( $user_id, $resource )
+			: true;
+		$url          = ( $can_access && class_exists( 'CTA_Course_Materials' ) )
 			? CTA_Course_Materials::get_serve_url( (int) $resource->id )
+			: '';
+		$lock_message = ( ! $can_access && class_exists( 'CTA_Course_Materials' ) )
+			? CTA_Course_Materials::get_unlock_lock_message( $user_id, $resource )
 			: '';
 
 		return array(
-			'key'       => $key,
-			'label'     => (string) $resource->title,
-			'title'     => (string) $resource->title,
-			'url'       => $url,
-			'is_active' => is_array( $context ) ? self::child_is_active( $section, $key, $context ) : false,
-			'external'  => true,
+			'key'          => $key,
+			'label'        => (string) $resource->title,
+			'title'        => (string) $resource->title,
+			'url'          => $url,
+			'is_active'    => is_array( $context ) ? self::child_is_active( $section, $key, $context ) : false,
+			'external'     => $can_access,
+			'locked'       => ! $can_access,
+			'lock_message' => $lock_message,
 		);
 	}
 

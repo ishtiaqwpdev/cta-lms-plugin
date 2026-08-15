@@ -43,6 +43,10 @@ $quick_links = array_values(
 				'url'   => cta_footer_get_page_url( 'cta_courses_page_id' ),
 			),
 			array(
+				'label' => __( 'Exam Preparation', 'cta-lms' ),
+				'url'   => cta_footer_get_page_url( 'cta_exam_prep_page_id' ),
+			),
+			array(
 				'label' => __( 'Supervision', 'cta-lms' ),
 				'url'   => cta_footer_get_page_url( 'cta_supervision_page_id' ),
 			),

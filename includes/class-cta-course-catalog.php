@@ -300,6 +300,7 @@ class CTA_Course_Catalog {
 					'CTA LCSW ASWB Clinical Exam Preparation Program',
 					'LCSW ASWB Clinical Exam Preparation',
 					'LCSW California Clinical Exam Preparation',
+					'CTA LCSW California Clinical Exam Preparation Program',
 				),
 			),
 			array(
