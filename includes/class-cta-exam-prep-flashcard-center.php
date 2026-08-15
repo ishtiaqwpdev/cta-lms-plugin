@@ -34,7 +34,6 @@ class CTA_Exam_Prep_Flashcard_Center {
 			'lpcc-ncmhce-exam-preparation'                => 'assets/course-materials/lpcc-ncmhce/study-tools/flashcard-study-center.json',
 			'lpcc-california-clinical-exam-preparation'   => 'assets/course-materials/lpcc-ncmhce/study-tools/flashcard-study-center.json',
 			'lpcc-california-law-ethics-exam-preparation' => 'assets/course-materials/lpcc-law-ethics/study-tools/flashcard-study-center.json',
-			'california-law-ethics-exam-preparation'      => 'assets/course-materials/lpcc-law-ethics/study-tools/flashcard-study-center.json',
 		);
 
 		/**
@@ -93,19 +92,18 @@ class CTA_Exam_Prep_Flashcard_Center {
 		}
 
 		$path = CTA_PLUGIN_DIR . ltrim( $map[ $slug ], '/' );
-		if ( ! is_readable( $path ) ) {
-			$deck = self::get_empty_deck( $course );
-			return apply_filters( 'cta_exam_prep_flashcard_study_center_deck', $deck, $course );
+		$data = self::read_deck_file( $path );
+
+		// The Study Center files were introduced before their card data was
+		// populated. Reuse the matching program's legacy interactive deck until
+		// a richer Study Center deck is available; never fall back across licenses.
+		if ( ( ! is_array( $data ) || empty( $data['cards'] ) ) && class_exists( 'CTA_Flashcards' ) ) {
+			$legacy_map = CTA_Flashcards::get_deck_map();
+			if ( isset( $legacy_map[ $slug ] ) ) {
+				$data = self::read_deck_file( CTA_PLUGIN_DIR . ltrim( $legacy_map[ $slug ], '/' ) );
+			}
 		}
 
-		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-		$raw = file_get_contents( $path );
-		if ( false === $raw || '' === $raw ) {
-			$deck = self::get_empty_deck( $course );
-			return apply_filters( 'cta_exam_prep_flashcard_study_center_deck', $deck, $course );
-		}
-
-		$data = json_decode( $raw, true );
 		if ( ! is_array( $data ) ) {
 			$deck = self::get_empty_deck( $course );
 			return apply_filters( 'cta_exam_prep_flashcard_study_center_deck', $deck, $course );
@@ -145,6 +143,27 @@ class CTA_Exam_Prep_Flashcard_Center {
 		 * @param object              $course Course row.
 		 */
 		return apply_filters( 'cta_exam_prep_flashcard_study_center_deck', $deck, $course );
+	}
+
+	/**
+	 * Read and decode a flashcard JSON file.
+	 *
+	 * @param string $path Absolute file path.
+	 * @return array<string,mixed>|null
+	 */
+	private static function read_deck_file( $path ) {
+		if ( ! is_readable( $path ) ) {
+			return null;
+		}
+
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+		$raw = file_get_contents( $path );
+		if ( false === $raw || '' === $raw ) {
+			return null;
+		}
+
+		$data = json_decode( $raw, true );
+		return is_array( $data ) ? $data : null;
 	}
 
 	/**
