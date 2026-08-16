@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.219' );
+	define( 'CTA_VERSION', '1.0.247' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -100,6 +100,13 @@ $cta_required_files = array(
 	'includes/class-cta-telehealth-exam-sync.php',
 	'includes/class-cta-lcsw-aswb-sync.php',
 	'includes/class-cta-lmft-clinical-sync.php',
+	'includes/class-cta-lmft-clinical-legacy-forms-archive.php',
+	'includes/class-cta-lmft-clinical-form-a-sync.php',
+	'includes/class-cta-lmft-clinical-comprehensive-scoring.php',
+	'includes/class-cta-lmft-clinical-comprehensive-review.php',
+	'includes/class-cta-lmft-clinical-form-a-answer-sync.php',
+	'includes/class-cta-lmft-clinical-form-b-sync.php',
+	'includes/class-cta-lmft-clinical-form-b-answer-sync.php',
 	'includes/class-cta-lmft-amftrb-sync.php',
 	'includes/class-cta-lpcc-ncmhce-sync.php',
 	'includes/class-cta-lpcc-law-ethics-sync.php',
@@ -187,11 +194,36 @@ if ( ! function_exists( 'cta_lms_init' ) ) {
 			add_filter(
 				'cta_lms_reveal_quiz_explanations',
 				static function ( $reveal, $quiz, $course ) {
+					if ( class_exists( 'CTA_Lmft_Clinical_Form_A_Answer_Sync' )
+						&& CTA_Lmft_Clinical_Form_A_Answer_Sync::should_suppress_learner_answer_reveal( $quiz, $course ) ) {
+						return false;
+					}
+					if ( class_exists( 'CTA_Lmft_Clinical_Form_B_Answer_Sync' )
+						&& CTA_Lmft_Clinical_Form_B_Answer_Sync::should_suppress_learner_answer_reveal( $quiz, $course ) ) {
+						return false;
+					}
 					if ( $reveal || ! $quiz || ! $course ) {
 						return $reveal;
 					}
 					if ( class_exists( 'CTA_Suicide_Risk_Exam_Sync' ) ) {
 						return CTA_Suicide_Risk_Exam_Sync::course_should_reveal_teaching_points( $course, $quiz );
+					}
+					return $reveal;
+				},
+				10,
+				3
+			);
+
+			add_filter(
+				'cta_lms_reveal_quiz_correct_answers',
+				static function ( $reveal, $quiz, $course ) {
+					if ( class_exists( 'CTA_Lmft_Clinical_Form_A_Answer_Sync' )
+						&& CTA_Lmft_Clinical_Form_A_Answer_Sync::should_suppress_learner_answer_reveal( $quiz, $course ) ) {
+						return false;
+					}
+					if ( class_exists( 'CTA_Lmft_Clinical_Form_B_Answer_Sync' )
+						&& CTA_Lmft_Clinical_Form_B_Answer_Sync::should_suppress_learner_answer_reveal( $quiz, $course ) ) {
+						return false;
 					}
 					return $reveal;
 				},
@@ -1180,6 +1212,146 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				if ( class_exists( 'CTA_Suicide_Risk_Certificate_Sync' ) ) {
 					CTA_Suicide_Risk_Certificate_Sync::ensure();
 				}
+			}
+
+			// LMFT California Clinical: archive legacy Form A/B (course_id=10) for replacement build.
+			if ( version_compare( $installed, '1.0.220', '<' ) && class_exists( 'CTA_Lmft_Clinical_Legacy_Forms_Archive' ) ) {
+				CTA_Lmft_Clinical_Legacy_Forms_Archive::archive_legacy_forms( CTA_Lmft_Clinical_Legacy_Forms_Archive::TARGET_COURSE_ID, true );
+			}
+
+			// LMFT California Clinical: import rebuilt Comprehensive Simulation Form A (PROMPT 01 items 1–25).
+			if ( version_compare( $installed, '1.0.221', '<' ) ) {
+				if ( class_exists( 'CTA_Lmft_Clinical_Legacy_Forms_Archive' ) ) {
+					CTA_Lmft_Clinical_Legacy_Forms_Archive::archive_legacy_forms( CTA_Lmft_Clinical_Legacy_Forms_Archive::TARGET_COURSE_ID, true );
+				}
+				if ( class_exists( 'CTA_Lmft_Clinical_Form_A_Sync' ) ) {
+					CTA_Lmft_Clinical_Form_A_Sync::sync( true );
+				}
+			}
+
+			// LMFT California Clinical: Form A items 26–50 (PROMPT 02).
+			if ( version_compare( $installed, '1.0.222', '<' ) && class_exists( 'CTA_Lmft_Clinical_Form_A_Sync' ) ) {
+				CTA_Lmft_Clinical_Form_A_Sync::sync( true );
+			}
+
+			// LMFT California Clinical: Form A items 51–75 (PROMPT 03).
+			if ( version_compare( $installed, '1.0.223', '<' ) && class_exists( 'CTA_Lmft_Clinical_Form_A_Sync' ) ) {
+				CTA_Lmft_Clinical_Form_A_Sync::sync( true );
+			}
+
+			// LMFT California Clinical: Form A items 76–100 (PROMPT 04).
+			if ( version_compare( $installed, '1.0.224', '<' ) && class_exists( 'CTA_Lmft_Clinical_Form_A_Sync' ) ) {
+				CTA_Lmft_Clinical_Form_A_Sync::sync( true );
+			}
+
+			// LMFT California Clinical: Form A items 101–125 (PROMPT 05).
+			if ( version_compare( $installed, '1.0.225', '<' ) && class_exists( 'CTA_Lmft_Clinical_Form_A_Sync' ) ) {
+				CTA_Lmft_Clinical_Form_A_Sync::sync( true );
+			}
+
+			// LMFT California Clinical: Form A items 126–150 (PROMPT 06) — full bank active.
+			if ( version_compare( $installed, '1.0.226', '<' ) && class_exists( 'CTA_Lmft_Clinical_Form_A_Sync' ) ) {
+				CTA_Lmft_Clinical_Form_A_Sync::sync( true );
+			}
+
+			// LMFT California Clinical: Form B items 1–25 (PROMPT 07).
+			if ( version_compare( $installed, '1.0.227', '<' ) ) {
+				if ( class_exists( 'CTA_Lmft_Clinical_Legacy_Forms_Archive' ) ) {
+					CTA_Lmft_Clinical_Legacy_Forms_Archive::archive_legacy_forms( CTA_Lmft_Clinical_Legacy_Forms_Archive::TARGET_COURSE_ID, true );
+				}
+				if ( class_exists( 'CTA_Lmft_Clinical_Form_B_Sync' ) ) {
+					CTA_Lmft_Clinical_Form_B_Sync::sync( true );
+				}
+			}
+
+			// LMFT California Clinical: Form B items 26–50 (PROMPT 08).
+			if ( version_compare( $installed, '1.0.228', '<' ) && class_exists( 'CTA_Lmft_Clinical_Form_B_Sync' ) ) {
+				CTA_Lmft_Clinical_Form_B_Sync::sync( true );
+			}
+
+			// LMFT California Clinical: Form B items 51–75 (PROMPT 09).
+			if ( version_compare( $installed, '1.0.229', '<' ) && class_exists( 'CTA_Lmft_Clinical_Form_B_Sync' ) ) {
+				CTA_Lmft_Clinical_Form_B_Sync::sync( true );
+			}
+
+			// LMFT California Clinical: Form B items 76–100 (PROMPT 10).
+			if ( version_compare( $installed, '1.0.230', '<' ) && class_exists( 'CTA_Lmft_Clinical_Form_B_Sync' ) ) {
+				CTA_Lmft_Clinical_Form_B_Sync::sync( true );
+			}
+
+			// LMFT California Clinical: Form B items 101–125 (PROMPT 11).
+			if ( version_compare( $installed, '1.0.231', '<' ) && class_exists( 'CTA_Lmft_Clinical_Form_B_Sync' ) ) {
+				CTA_Lmft_Clinical_Form_B_Sync::sync( true );
+			}
+
+			// LMFT California Clinical: Form B items 126–150 (PROMPT 12) — activates Form B.
+			if ( version_compare( $installed, '1.0.232', '<' ) && class_exists( 'CTA_Lmft_Clinical_Form_B_Sync' ) ) {
+				CTA_Lmft_Clinical_Form_B_Sync::sync( true );
+			}
+
+			// LMFT California Clinical: Form A admin answer keys 1–25 (PROMPT 13).
+			if ( version_compare( $installed, '1.0.233', '<' ) && class_exists( 'CTA_Lmft_Clinical_Form_A_Answer_Sync' ) ) {
+				CTA_Lmft_Clinical_Form_A_Answer_Sync::sync_answer_keys( true );
+			}
+
+			// LMFT California Clinical: Form A admin answer keys 26–50 (PROMPT 14).
+			if ( version_compare( $installed, '1.0.234', '<' ) && class_exists( 'CTA_Lmft_Clinical_Form_A_Answer_Sync' ) ) {
+				CTA_Lmft_Clinical_Form_A_Answer_Sync::sync_answer_keys( true );
+			}
+
+			// LMFT California Clinical: Form A admin answer keys 51–75 (PROMPT 15).
+			if ( version_compare( $installed, '1.0.235', '<' ) && class_exists( 'CTA_Lmft_Clinical_Form_A_Answer_Sync' ) ) {
+				CTA_Lmft_Clinical_Form_A_Answer_Sync::sync_answer_keys( true );
+			}
+
+			// LMFT California Clinical: Form A admin answer keys 76–100 (PROMPT 16).
+			if ( version_compare( $installed, '1.0.236', '<' ) && class_exists( 'CTA_Lmft_Clinical_Form_A_Answer_Sync' ) ) {
+				CTA_Lmft_Clinical_Form_A_Answer_Sync::sync_answer_keys( true );
+			}
+
+			// LMFT California Clinical: Form A admin answer keys 101–125 (PROMPT 17).
+			if ( version_compare( $installed, '1.0.237', '<' ) && class_exists( 'CTA_Lmft_Clinical_Form_A_Answer_Sync' ) ) {
+				CTA_Lmft_Clinical_Form_A_Answer_Sync::sync_answer_keys( true );
+			}
+
+			// LMFT California Clinical: Form A admin answer keys 126–150 (PROMPT 18) — completes Form A keys.
+			if ( version_compare( $installed, '1.0.238', '<' ) && class_exists( 'CTA_Lmft_Clinical_Form_A_Answer_Sync' ) ) {
+				CTA_Lmft_Clinical_Form_A_Answer_Sync::sync_answer_keys( true );
+			}
+
+			// LMFT California Clinical: Form B admin answer keys 1–25 (PROMPT 19).
+			if ( version_compare( $installed, '1.0.239', '<' ) && class_exists( 'CTA_Lmft_Clinical_Form_B_Answer_Sync' ) ) {
+				CTA_Lmft_Clinical_Form_B_Answer_Sync::sync_answer_keys( true );
+			}
+
+			// LMFT California Clinical: Form B admin answer keys 26–50 (PROMPT 20).
+			if ( version_compare( $installed, '1.0.240', '<' ) && class_exists( 'CTA_Lmft_Clinical_Form_B_Answer_Sync' ) ) {
+				CTA_Lmft_Clinical_Form_B_Answer_Sync::sync_answer_keys( true );
+			}
+
+			// LMFT California Clinical: Form B admin answer keys 51–75 (PROMPT 21).
+			if ( version_compare( $installed, '1.0.241', '<' ) && class_exists( 'CTA_Lmft_Clinical_Form_B_Answer_Sync' ) ) {
+				CTA_Lmft_Clinical_Form_B_Answer_Sync::sync_answer_keys( true );
+			}
+
+			// LMFT California Clinical: Form B admin answer keys 76–100 (PROMPT 22).
+			if ( version_compare( $installed, '1.0.242', '<' ) && class_exists( 'CTA_Lmft_Clinical_Form_B_Answer_Sync' ) ) {
+				CTA_Lmft_Clinical_Form_B_Answer_Sync::sync_answer_keys( true );
+			}
+
+			// LMFT California Clinical: Form B admin answer keys 101–125 (PROMPT 23).
+			if ( version_compare( $installed, '1.0.243', '<' ) && class_exists( 'CTA_Lmft_Clinical_Form_B_Answer_Sync' ) ) {
+				CTA_Lmft_Clinical_Form_B_Answer_Sync::sync_answer_keys( true );
+			}
+
+			// LMFT California Clinical: Form B admin answer keys 126–150 (PROMPT 24) — completes Form B keys.
+			if ( version_compare( $installed, '1.0.244', '<' ) && class_exists( 'CTA_Lmft_Clinical_Form_B_Answer_Sync' ) ) {
+				CTA_Lmft_Clinical_Form_B_Answer_Sync::sync_answer_keys( true );
+			}
+
+			// LMFT California Clinical: enable 240-minute timers on Form A and Form B.
+			if ( version_compare( $installed, '1.0.245', '<' ) && class_exists( 'CTA_Lmft_Clinical_Sync' ) ) {
+				CTA_Lmft_Clinical_Sync::sync_comprehensive_simulation_time_limits();
 			}
 
 			// Decouple supervision application pending from general account / CE access.

@@ -1,0 +1,557 @@
+{
+  "form": "B",
+  "type": "ADMIN_ONLY_answer_key_and_rationales",
+  "question_range": "1-25",
+  "records": [
+    {
+      "form": "B",
+      "q_num": 1,
+      "item_id": "B-CP-006-R2",
+      "area": "Area 4: Case Conceptualization and Planning",
+      "core_calibration_status": "Core",
+      "correct_answer": "A",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A service wants an ongoing therapy and psychoeducation group for adults recently diagnosed with chronic medical illnesses. Referrals arrive continuously, acute crises are treated elsewhere, and an eight-week modular curriculum repeats throughout the year. The goals are adjustment, self-management, and peer support. Which framework is MOST appropriate?",
+      "choices": {
+        "A": "Use rolling admission with full clinical screening; repeat orientation for every entrant; deliver the eight-week modular curriculum reliably under stable participation rules.",
+        "B": "Use closed eight-week cohorts with clinical screening; orient entrants before the start; deliver modules sequentially and delay admission until the next cycle.",
+        "C": "Use open drop-in attendance with broad eligibility screening; offer orientation to new members; let participants select topics without stable attendance expectations.",
+        "D": "Use rolling admission with routine and crisis-level members; screen members periodically; organize sessions around current needs rather than repeating the modular curriculum."
+      },
+      "rationales": {
+        "A": "Continuous referrals and a repeating eight-week modular curriculum make rolling admission appropriate. A preserves the necessary clinical safeguards by requiring eligibility screening, orientation for each entrant, a reliable curriculum, and stable participation rules.",
+        "B": "Closed cohorts could work for a sequential curriculum, but this curriculum repeats and was designed to accept continuous referrals. Delaying eligible participants until the next cohort creates an unnecessary access barrier.",
+        "C": "Open drop-in attendance and participant-selected topics would reduce continuity, group cohesion, orientation, and faithful delivery of the intended adjustment and self-management curriculum.",
+        "D": "Including both routine and crisis-level members creates an unsafe and clinically incoherent mix. Replacing the modular design with an entirely needs-driven process also departs from the stated program structure."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 2,
+      "item_id": "B-CE-004",
+      "area": "Area 1: Clinical Evaluation",
+      "core_calibration_status": "Core",
+      "correct_answer": "A",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client begins individual therapy and says, \u201cI need you to tell me whether I should divorce my spouse. I keep going back and forth and can't decide.\u201d What should the therapist do FIRST?",
+      "choices": {
+        "A": "Clarify the therapist\u2019s role, the client\u2019s values, concerns, and desired outcomes while supporting the client\u2019s own decision process.",
+        "B": "Use decisional balance to compare anticipated gains, losses, uncertainties, and information needed before choosing a direction.",
+        "C": "Review relationship strengths, recurring injuries, repair attempts, and current supports to determine whether more information is needed.",
+        "D": "Assess urgency, coercion or safety concerns, external pressure, and timeframe before structuring the decision work."
+      },
+      "rationales": {
+        "A": "The client expects the therapist to make a major personal decision. The therapist should clarify the professional role and help the client examine values, concerns, and desired outcomes while keeping ownership of the decision with the client.",
+        "B": "Decisional balance is a legitimate technique and may be useful later, but beginning with the technique does not first correct the client's expectation that the therapist will make the decision.",
+        "C": "Relationship history may provide important information, but gathering additional evidence about the marriage does not address the role misunderstanding at the center of the client's request.",
+        "D": "Urgency, coercion, and safety are important if indicated. The vignette does not establish those as the primary issue, so this option changes the assessment priority."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 3,
+      "item_id": "B-LE6-008",
+      "area": "Area 6: Managing Legal and Ethical Obligations",
+      "core_calibration_status": "Core",
+      "correct_answer": "B",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A therapist believes that strict consequences are the best approach to parenting adolescents. An adult client wants help developing a more collaborative parenting style. The therapist notices repeatedly steering the client toward harsher consequences even when the client says those recommendations do not fit the client's values or goals. What should the therapist do?",
+      "choices": {
+        "A": "Acknowledge the value difference, compare collaborative and consequence-based parenting strategies, and review clinical options through shared decision-making while keeping the client's goals central.",
+        "B": "Recognize the therapist's value interference, return treatment to the client's stated parenting goals, seek an outside perspective as needed, and check whether later recommendations remain consistently neutral.",
+        "C": "Acknowledge the value difference, explain the therapist's reasoning for stronger consequences, and keep offering both approaches while allowing the client to reject strategies that do not fit.",
+        "D": "Acknowledge the value mismatch, review the client's parenting goals, and offer referral if the therapist concludes that adequate neutrality cannot be maintained."
+      },
+      "rationales": {
+        "A": "Shared decision-making is client-centered, but the stem identifies a problem in the therapist's own values and prior steering. Comparing strategies does not directly manage that interference.",
+        "B": "Best answer. The therapist should recognize that personal values are shaping recommendations, return treatment to the client's goals, obtain an outside perspective when needed, and monitor later recommendations for neutrality.",
+        "C": "Allowing the client to reject advice does not correct the therapist's continued preference for harsher consequences or the repeated steering described in the stem.",
+        "D": "Referral may become necessary if the therapist cannot practice neutrally, but the first response is to address the therapist's own value interference rather than transfer the client automatically."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 4,
+      "item_id": "B-DI-005-R1",
+      "area": "Area 2: Developing a Diagnostic Impression",
+      "core_calibration_status": "Core",
+      "correct_answer": "A",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client spends several hours each day preoccupied with the belief that the nose is \u201cgrotesquely deformed,\u201d although others see no noticeable defect. The client repeatedly checks mirrors, compares photographs, seeks reassurance, and camouflages the nose. The concern has caused marked distress, repeated avoidance of social activities, and missed work. The concern is not focused on body weight. Which diagnosis is MOST supported?",
+      "choices": {
+        "A": "Body dysmorphic disorder",
+        "B": "Obsessive-compulsive disorder",
+        "C": "Delusional disorder, somatic type",
+        "D": "Anorexia nervosa"
+      },
+      "rationales": {
+        "A": "The client is preoccupied with a perceived appearance defect that others do not observe, engages in repetitive mirror checking, comparison, reassurance seeking, and camouflage, and experiences substantial distress and functional impairment. That is the characteristic body-dysmorphic pattern within the obsessive-compulsive-related family.",
+        "B": "General OCD is less specific because the obsession and repetitive behaviors are organized specifically around perceived physical appearance.",
+        "C": "The repetitive appearance-focused behaviors and retained recognition that the belief may be exaggerated make the OCD-related formulation more appropriate than a primary delusional disorder.",
+        "D": "The concern is not about body weight or fatness and is not embedded in a restrictive eating syndrome."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 5,
+      "item_id": "B-TX5D-007-R1",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Core",
+      "correct_answer": "C",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A bisexual adult is considering telling the parents about a current same-sex relationship before an upcoming family gathering. The client wants a more open relationship with the parents but worries about rejection because they have made dismissive comments about bisexual people in the past. The client is not financially dependent on them and reports no current safety threat. Which intervention should the therapist use?",
+      "choices": {
+        "A": "Rehearse a disclosure conversation and help the client choose a calm private time, emphasizing that openness can support authenticity and closeness.",
+        "B": "Delay disclosure until the parents show more acceptance, while strengthening support from affirming friends and a supportive sibling.",
+        "C": "Clarify the client\u2019s goals, likely family responses, support options, and timing, then let the client decide whether, when, and how to disclose.",
+        "D": "Explore how family beliefs shaped the client\u2019s fears, strengthen self-acceptance, and revisit disclosure after the client feels less emotionally reactive."
+      },
+      "rationales": {
+        "A": "Rehearsal can support a client who has decided to disclose, but this option assumes disclosure is the preferred next step before the client has completed an individualized risk-benefit and timing decision.",
+        "B": "Strengthening support is useful, but directing the client to delay disclosure substitutes the therapist\u2019s judgment for the client\u2019s autonomy when there is no acute safety condition requiring that recommendation.",
+        "C": "Best answer. The intervention affirms identity while helping the client evaluate goals, anticipated responses, supports, and timing so the disclosure decision remains individualized and autonomous.",
+        "D": "Exploring family influence and strengthening self-acceptance may help, but postponing the decision until the client is less reactive may imply that disclosure requires a particular emotional state rather than a values- and context-based choice."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 6,
+      "item_id": "B-TX5E-008-R1",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Calibration",
+      "correct_answer": "B",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client has frequently described the therapist as \u201cthe only person who really understands me.\u201d When the therapist must keep a previously discussed scheduling limit and cannot add an extra session, the client says, \u201cYou\u2019re just like everyone else. I can\u2019t rely on anyone,\u201d and reports feeling suddenly empty and disorganized. The therapist is using a self-psychology approach. Which intervention should the therapist use?",
+      "choices": {
+        "A": "Acknowledge the injury and interpret how therapist idealization protects the client from shame when important others feel disappointing.",
+        "B": "Empathically explore the repercussions of the scheduling limit on the client\u2019s sense of connection and self-cohesion before interpreting the rupture.",
+        "C": "Explore which selfobject functions the therapist has been serving and identify other relationships that might gradually provide similar experiences.",
+        "D": "Validate the disappointment, restate the scheduling limit, and strengthen independent coping so the client gradually relies less heavily on the therapist."
+      },
+      "rationales": {
+        "A": "Interpretation may eventually be useful, but self psychology prioritizes empathic understanding of the selfobject injury before moving quickly to a defensive explanation of idealization.",
+        "B": "Best answer. The limit has disrupted an idealizing selfobject experience and the client reports loss of cohesion, so empathic rupture work should first understand the injury and help restore a more cohesive sense of self.",
+        "C": "Identifying selfobject functions can inform longer-term treatment, but immediately redirecting those functions to other relationships risks bypassing the rupture that just occurred with the therapist.",
+        "D": "Validation and consistent limits are appropriate, but emphasizing reduced reliance and independent coping can miss the self-psychological task of understanding and repairing the selfobject disruption."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 7,
+      "item_id": "B-CP-008",
+      "area": "Area 4: Case Conceptualization and Planning",
+      "core_calibration_status": "Core",
+      "correct_answer": "D",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A perfectionistic client repeatedly states, \u201cI must never disappoint anyone, and if I fail, it proves I am worthless.\u201d Which treatment plan is MOST consistent with rational emotive behavior therapy?",
+      "choices": {
+        "A": "Identify habitual appraisals, examine evidence closely, and test balanced alternatives through behavioral practice across situations.",
+        "B": "Explore early criticism, examine evaluative transference closely, and interpret shame-based defenses within the clinical relationship.",
+        "C": "Offer empathic acceptance, clarify chosen values openly, and consistently support self-directed decisions without direct disputation.",
+        "D": "Identify demandingness and self-ratings, dispute these directly, and practice flexible rational beliefs with unconditional acceptance."
+      },
+      "rationales": {
+        "A": "Identifying automatic appraisals, examining evidence, and testing balanced alternatives is standard CBT. It does not as directly address demandingness and global self-rating.",
+        "B": "Exploring early criticism, evaluative transference, and shame-related defenses is psychodynamic.",
+        "C": "Empathic acceptance and nondirective values clarification are humanistic/client-centered. The option does not directly challenge the rigid beliefs maintaining the problem.",
+        "D": "The client\u2019s statements contain two especially characteristic REBT processes: demandingness\u2014\u201cI must never disappoint anyone\u201d\u2014and global self-rating\u2014\u201cfailure proves I am worthless.\u201d D directly identifies and disputes those beliefs and replaces them with flexible preferences and unconditional acceptance. REBT sources identify disputation, rigid \u201cmust\u201d demands, global evaluation, flexible preferences, and unconditional self-acceptance as central constructs."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 8,
+      "item_id": "B-LE6-015-R2",
+      "area": "Area 6: Managing Legal and Ethical Obligations",
+      "core_calibration_status": "Core",
+      "correct_answer": "B",
+      "source_status": "CONTROLLED SUCCESSOR",
+      "stem": "A client was referred to psychotherapy by probation. The client signed a written authorization allowing the therapist to verify attendance and whether the client is complying with the required number of sessions. The probation officer now asks for the client's diagnosis, symptoms, and details of what has been discussed in therapy. No court order or other disclosure authority is presented. What should the therapist do?",
+      "choices": {
+        "A": "Provide attendance plus a brief progress summary, limit the report to treatment-compliance concerns, document that diagnosis and session details were withheld, and explain that the report is limited to referral-monitoring purposes.",
+        "B": "Provide only the attendance and session-compliance information the client authorized; withhold diagnosis, symptoms, and treatment content unless another valid legal basis exists; document the limited disclosure.",
+        "C": "Refuse all probation communication despite the authorization, tell the client that confidentiality prevents any referral monitoring, and document the request and refusal clearly.",
+        "D": "Ask the client to broaden the authorization before responding further, withhold the already authorized attendance information, and document the request while the client decides."
+      },
+      "rationales": {
+        "A": "The authorization permits attendance and session-compliance reporting, not a progress summary. Probation referral status does not independently expand the disclosure scope.",
+        "B": "Best answer. The therapist should provide only the information covered by the client's authorization and withhold diagnosis, symptoms, and treatment content unless another valid legal basis is established.",
+        "C": "A blanket refusal ignores the client's existing authorization for attendance and compliance reporting.",
+        "D": "The therapist does not need a broader authorization to provide information already authorized. Withholding permitted attendance information while waiting for expansion is unnecessarily restrictive."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 9,
+      "item_id": "B-CR-002-R3",
+      "area": "Area 3: Managing Crisis Situations",
+      "core_calibration_status": "Core",
+      "correct_answer": "C",
+      "source_status": "CONTROLLED SUCCESSOR",
+      "stem": "A client with severe psychotic disorganization has repeatedly become lost in the community, has eaten very little for several days, has been sleeping outdoors despite available shelter, and cannot explain how food, shelter, or basic self-care will be maintained. Which action is BEST?",
+      "choices": {
+        "A": "Maintain observation, arrange same-day intensive case management, and provide meals, shelter, and continuous outreach.",
+        "B": "Maintain observation, arrange same-day medication-focused psychiatric stabilization, and provide supervised community supports.",
+        "C": "Maintain observation, transfer to a staffed crisis setting for same-day evaluation, and stabilize psychiatric and basic-needs functioning.",
+        "D": "Maintain observation, arrange supervised temporary housing, and obtain urgent psychiatric consultation with a scheduled next-day crisis reassessment."
+      },
+      "rationales": {
+        "A": "Meals, shelter, outreach, and case management may be necessary, but they still assume enough independent organization to use those supports safely.",
+        "B": "Medication-focused stabilization and supervised community support may be part of treatment, but the current inability to manage food, shelter, orientation, and self-care requires a staffed setting now.",
+        "C": "Severe disorganization is preventing reliable basic self-care and safe functioning. A staffed crisis setting can provide same-day assessment, observation, psychiatric stabilization, and direct support for basic needs.",
+        "D": "Temporary housing plus consultation does not provide sufficient immediate containment for the degree of disorganization and loss of self-care capacity established."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 10,
+      "item_id": "B-CP-017-R3",
+      "area": "Area 4: Case Conceptualization and Planning",
+      "core_calibration_status": "Calibration",
+      "correct_answer": "D",
+      "source_status": "CONTROLLED SUCCESSOR",
+      "stem": "A client abruptly stops attending and sends a brief message expressing dissatisfaction with treatment. No acute safety concern is known, and the client does not request additional contact. What should the therapist do?",
+      "choices": {
+        "A": "Send one respectful closure message with referrals and reentry information, then close the case after the standard response period without a reply, and document the closure rationale and referrals provided.",
+        "B": "Make several outreach attempts, offer a final session and referrals, and keep the case open until the client responds or enters other care.",
+        "C": "Send one feedback-focused message offering a final consultation and referrals, then close only after the client confirms the decision to stop.",
+        "D": "Make respectful outreach, offer a final session and continuity options, and document those efforts before closing if the client does not respond."
+      },
+      "rationales": {
+        "A": "A respectful closure message, referrals, and documentation are useful, but this pathway moves to closure without making the stronger continuity-oriented outreach and final-session offer warranted by abrupt disengagement and expressed dissatisfaction.",
+        "B": "Several outreach attempts may become intrusive or coercive when there is no known acute safety concern. Keeping the case open until the client responds also creates an indefinite administrative status dependent on participation the client has not requested.",
+        "C": "One feedback-focused message and an offer of consultation are appropriate, but requiring the client to confirm the decision before closure makes the ending dependent on a response that may never come.",
+        "D": "Reasonable, respectful outreach gives the client an opportunity to discuss dissatisfaction, complete a final session, and receive continuity information. Documenting those efforts and closing after no response balances nonabandonment with respect for the client\u2019s choice not to reengage."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 11,
+      "item_id": "B-TX5D-005-R2",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Core",
+      "correct_answer": "D",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A first-year college student began skipping a statistics class after failing the first exam. Embarrassed by missing material, the client avoids classmates and the instructor, then misses assignments and feels increasingly overwhelmed. There is no acute safety issue, and the distress is largely tied to this academic pattern. Which intervention should the therapist use to improve academic functioning?",
+      "choices": {
+        "A": "Schedule independent study blocks and use a self-reward plan after each completed overdue assignment.",
+        "B": "Arrange peer study sessions and use them to rebuild mastery before returning to regular class attendance.",
+        "C": "Challenge predictions of being judged in class and rehearse a coping statement for attending the next lecture.",
+        "D": "Use a graded return-to-class plan that begins with attending the next lecture and contacting the instructor about missed work."
+      },
+      "rationales": {
+        "A": "Study structure may improve task completion, but it does not directly reverse the avoidance cycle around class attendance and contact with the instructor.",
+        "B": "Peer support can improve mastery, but making return to class contingent on feeling more competent risks maintaining academic avoidance.",
+        "C": "Cognitive preparation can reduce anticipatory anxiety, but rehearsal alone does not create a graded behavioral return to the avoided academic setting.",
+        "D": "Correct. A graded return directly interrupts the avoidance cycle and reconnects the student with the class and instructor while the academic backlog is addressed."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 12,
+      "item_id": "B-TX5E-009-R1",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Core",
+      "correct_answer": "A",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client with a life-limiting illness says, \u201cI\u2019m not mainly afraid of dying. I\u2019m afraid I spent my life doing what I was supposed to do and never figured out what mattered to me.\u201d The client wants therapy to help make sense of the time that remains. The therapist is using a humanistic-existential approach. Which intervention should the therapist use?",
+      "choices": {
+        "A": "Explore what the client now experiences as meaningful and what choices remain for living the available time in closer alignment with those values.",
+        "B": "Invite the client to review major life decisions and identify where personal responsibility was avoided, accepted, or constrained by circumstances.",
+        "C": "Stay with the client\u2019s awareness of mortality and examine how confronting finitude changes the meaning of relationships, commitments, and unfinished goals.",
+        "D": "Invite the client to design a legacy activity that expresses important values and creates a concrete sense of purpose during remaining time."
+      },
+      "rationales": {
+        "A": "Best answer. The client explicitly wants to clarify meaning in the face of limited time, making exploration of values, choice, and how to live authentically within present limits the most responsive existential intervention.",
+        "B": "Responsibility and choice are important existential themes, but a retrospective accounting of past decisions risks shifting toward judgment rather than the client\u2019s stated wish to determine what matters now.",
+        "C": "Mortality and finitude are directly relevant and this intervention is highly plausible, but the client has already acknowledged death and is asking how to orient the remaining life around meaning.",
+        "D": "A legacy activity may eventually become meaningful, but prescribing a concrete project before the client identifies personally chosen meaning could substitute the therapist\u2019s structure for the client\u2019s existential exploration."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 13,
+      "item_id": "B-CE-013",
+      "area": "Area 1: Clinical Evaluation",
+      "core_calibration_status": "Core",
+      "correct_answer": "D",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client reports increasing cannabis use since a relationship ended six months ago. The client says cannabis \u201chelps me shut everything off,\u201d while work performance and contact with friends have declined. Which assessment is MOST appropriate?",
+      "choices": {
+        "A": "Assess breakup-related grief, depressive symptoms, loneliness, sleep, and whether cannabis use increases with distress.",
+        "B": "Assess tolerance, withdrawal, craving, impaired control, and continued use despite psychological or physical consequences.",
+        "C": "Review prior substance history, family substance history, peer use, beliefs about cannabis, earlier stress-related patterns, and previous periods of reduced use.",
+        "D": "Map amount and frequency of cannabis use, timing since the breakup, attempts to reduce use, and work and social functioning changes."
+      },
+      "rationales": {
+        "A": "Breakup distress could contribute to use, but beginning with grief and mood risks reducing substance use to a coping response before its independent pattern is assessed.",
+        "B": "Tolerance, withdrawal, craving, and impaired control are relevant, but this option underemphasizes the chronology and functional decline emphasized in the vignette.",
+        "C": "Substance history and family context may eventually inform formulation but are less immediately useful than assessing the current change in use and functioning.",
+        "D": "The presentation involves escalating cannabis use after a breakup together with occupational and social decline. Mapping use amount and frequency, timing, efforts to reduce use, and functional consequences directly evaluates that pattern."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 14,
+      "item_id": "B-CE-034",
+      "area": "Area 1: Clinical Evaluation",
+      "core_calibration_status": "Core",
+      "correct_answer": "C",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client describes profound grief after the disappearance of a close family member whose status remains unknown. Friends have become less supportive because they say the client should \u201cmove on,\u201d and the client reports difficulty explaining the loss to others. What should the therapist assess NEXT?",
+      "choices": {
+        "A": "Compare current symptoms, duration, role functioning, and social withdrawal with common bereavement patterns despite the uncertainty surrounding the loss.",
+        "B": "Assess whether family and friends recognize the loss, what support they provide, and whether invalidation has increased the client\u2019s isolation.",
+        "C": "Explore the meaning of the ambiguous loss, social recognition, cultural context, available support, and changes in current functioning over time.",
+        "D": "Review previous experiences of unresolved loss, coping strategies, spiritual beliefs, and whether earlier uncertainty affects the client\u2019s current response."
+      },
+      "rationales": {
+        "A": "Symptom duration and functioning are relevant but conventional bereavement comparisons may fit poorly when the status of the loved one remains unresolved.",
+        "B": "Lack of recognition and support is important, but it represents only one aspect of the client's experience.",
+        "C": "The family member's disappearance creates an ambiguous loss with limited social recognition. Evaluating the meaning of the loss, social recognition, cultural context, support, and current functioning best captures the client's grief experience.",
+        "D": "Previous unresolved losses and spiritual beliefs may provide useful historical context but are less directly responsive to the current ambiguous loss and its present effects."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 15,
+      "item_id": "B-DI-008-R3",
+      "area": "Area 2: Developing a Diagnostic Impression",
+      "core_calibration_status": "Core",
+      "correct_answer": "C",
+      "source_status": "CONTROLLED SUCCESSOR",
+      "stem": "During an annual religious ritual, a client reports hearing the voice of a deceased ancestor offering guidance. The experience is recognized within the client's spiritual community. Outside that setting, the client reports no similar experiences, has organized thought and behavior, maintains stable functioning, and experiences no distress. Which formulation is MOST appropriate?",
+      "choices": {
+        "A": "Psychotic-spectrum perceptual experience, interpreted as inconsistent with recognized cultural or spiritual context.",
+        "B": "Delusional-spectrum perceptual experience requiring a primary psychotic-disorder formulation.",
+        "C": "Culturally sanctioned perceptual experience that does not support a primary psychotic diagnosis.",
+        "D": "Dissociative perceptual experience occurring within a recognized spiritual or religious practice context."
+      },
+      "rationales": {
+        "A": "A schizophrenia-spectrum interpretation would require evidence beyond a culturally recognized perceptual experience confined to a ritual context; the added interpretive wording does not supply a broader psychotic syndrome.",
+        "B": "No delusional syndrome is established; the experience is limited to a recognized spiritual ritual and does not produce a broader psychotic presentation.",
+        "C": "The perceptual experience is culturally sanctioned, occurs only in the ritual context, and is not accompanied by distress, disorganization, or impaired functioning, so a primary psychotic diagnosis is not supported.",
+        "D": "The stem does not describe detachment, amnesia, identity disruption, or another dissociative syndrome; the religious context alone does not make the experience dissociative."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 16,
+      "item_id": "B-CP-013",
+      "area": "Area 4: Case Conceptualization and Planning",
+      "core_calibration_status": "Core",
+      "correct_answer": "A",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client speaks intellectually about unresolved grief but repeatedly shifts away from present emotion and has difficulty noticing bodily reactions during sessions. Which treatment plan is MOST consistent with Gestalt therapy?",
+      "choices": {
+        "A": "Review present-moment contact, employ experiential awareness of physical and emotional signals, and integrate unresolved grief.",
+        "B": "Explore developmental loss patterns, interpret avoidance in therapy relationships, and connect grief with unconscious conflict.",
+        "C": "Identify grief-related appraisals, test them through evidence review, and use activity scheduling to restore routines.",
+        "D": "Separate grief from identity, identify outcomes, and develop an alternative relational story of continuing bonds."
+      },
+      "rationales": {
+        "A": "The client intellectualizes unresolved grief, shifts away from immediate feeling, and has difficulty noticing physical responses. A focuses on present-moment contact, experiential awareness of bodily and emotional signals, and integration of unfinished grief. Gestalt therapy emphasizes contact, conscious awareness, experimentation, present experience, body awareness, and unfinished business.",
+        "B": "Developmental loss patterns, transference, avoidance, and unconscious conflict are psychodynamic.",
+        "C": "Identifying appraisals, evaluating evidence, and using activity scheduling is CBT.",
+        "D": "Separating grief from identity and developing an alternative story of continuing bonds is narrative."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 17,
+      "item_id": "B-TX5C-001",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Core",
+      "correct_answer": "A",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client recovering from a spinal injury has persistent pain and reduced stamina. On better days the client tries to complete all household chores, then spends the next day or two in bed. The client\u2019s partner says, \u201cI never know what you can actually do.\u201d Medical rehabilitation is established. Which intervention should the therapist use?",
+      "choices": {
+        "A": "Use activity pacing and renegotiate household roles around predictable limits to reduce the couple\u2019s boom-and-bust conflict.",
+        "B": "Use relaxation during pain flares and have the partner take extra chores on bad days.",
+        "C": "Process grief about lost physical capacity and postpone role negotiation until the client has greater acceptance of current limitations.",
+        "D": "Teach structured couple problem-solving for chore disagreements and leave physical pacing decisions to the established rehabilitation team."
+      },
+      "rationales": {
+        "A": "Best answer. Pacing addresses the illness- or injury-related stressor directly, while renegotiating roles helps the couple adapt relational expectations to the client\u2019s current and more predictable functional limits.",
+        "B": "Relaxation and temporary assistance may help during flares, but this keeps the household responding reactively to the boom-and-bust cycle rather than changing the overexertion pattern that contributes to it.",
+        "C": "Grief work may be appropriate, but delaying role adaptation leaves a current functional and relational problem untreated even though medical rehabilitation is already established.",
+        "D": "Couple problem-solving is useful, but psychotherapy can address behavioral pacing and its relational consequences while coordinating with rehabilitation rather than treating pacing as outside the therapeutic domain."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 18,
+      "item_id": "B-CE-005-R1",
+      "area": "Area 1: Clinical Evaluation",
+      "core_calibration_status": "Calibration",
+      "correct_answer": "C",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A parent is ordered to attend therapy after a family-court matter and states, \u201cI'm doing this because the judge said I have to. I don't have anything I want to work on.\u201d Which response is MOST appropriate?",
+      "choices": {
+        "A": "Clarify the court\u2019s stated concerns, the client\u2019s view of them, and whether areas of partial agreement could support an initial goal.",
+        "B": "Clarify the reporting boundaries, the client\u2019s understanding of the referral, and whether sessions should focus primarily on court concerns.",
+        "C": "Clarify the court requirements, the client\u2019s own perspective, and whether a personally meaningful goal can exist alongside mandated participation.",
+        "D": "Clarify consequences of nonparticipation, the client\u2019s priorities, and whether a practical, parenting, or relationship goal could support engagement."
+      },
+      "rationales": {
+        "A": "Areas of agreement with court concerns may be clinically useful, but making those concerns the starting framework risks allowing the referral source to define the client's therapy.",
+        "B": "Reporting boundaries must be clear, but deciding whether therapy should focus primarily on court concerns prematurely privileges the mandate over the client's clinical needs.",
+        "C": "Court-mandated participation establishes an external condition, not necessarily the client's therapeutic goal. C distinguishes the referral requirement from the client's perspective and explores whether meaningful treatment goals can exist within a mandated context.",
+        "D": "Practical, parenting, or relationship goals may ultimately emerge, but offering categories of goals before adequately exploring the client's own perspective can subtly impose treatment content."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 19,
+      "item_id": "B-TX5A-001-R1",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Core",
+      "correct_answer": "A",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A 13-year-old begins living with an aunt after the mother requires prolonged medical treatment. In the family\u2019s culture, care is commonly expressed through meals, shared chores, transportation, and dependable routines rather than frequent verbal affection. The adolescent says the aunt \u201cdoesn\u2019t say much\u201d but feels safest when those routines are maintained. After disagreements, both tend to retreat. Which intervention should the therapist use to strengthen attachment?",
+      "choices": {
+        "A": "Build conjoint work around the family\u2019s established caregiving routines and add a way to reconnect after disagreements that fits their relational style.",
+        "B": "Compare caregiving practices across family and community contexts, then have both choose which expressions of closeness they want to strengthen.",
+        "C": "Introduce a structured verbal-affection routine alongside existing caregiving behaviors and review which forms feel most connecting to each person.",
+        "D": "Explore the adolescent\u2019s caregiver disruption individually and use the aunt\u2019s routines mainly as stabilization while trust develops."
+      },
+      "rationales": {
+        "A": "Best answer. The adolescent already experiences the aunt\u2019s reliable routines as caring. Using those established practices as the attachment base and adding a repair process that fits the family\u2019s style is culturally responsive and clinically targeted.",
+        "B": "Exploring which expressions of closeness feel authentic can increase mutual understanding, but it is less direct than using the caregiving rituals that already function as attachment signals and addressing withdrawal after conflict.",
+        "C": "A verbal-affection routine may be well intended, but it risks privileging verbal reassurance over the family\u2019s existing culturally meaningful caregiving behaviors.",
+        "D": "Individual work on caregiver disruption may help the adolescent process change, but the stem already identifies a safe caregiver relationship that can be strengthened directly through dyadic treatment."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 20,
+      "item_id": "B-CE-017",
+      "area": "Area 1: Clinical Evaluation",
+      "core_calibration_status": "Core",
+      "correct_answer": "B",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A couple who recently retired after decades of full-time employment reports increased conflict about household roles, social activities, and how much time they should spend together. Which assessment would be MOST appropriate?",
+      "choices": {
+        "A": "Assess each partner\u2019s mood, health, daily structure, and whether individual adjustment difficulties are contributing to the couple\u2019s increased conflict.",
+        "B": "Assess changes in roles, routines, identity, intimacy, social connection, and expectations since both partners entered retirement.",
+        "C": "Assess financial changes, spending expectations, retirement resources, work loss, daily structure, and whether economic concerns are driving disagreements.",
+        "D": "Review pre-retirement relationship patterns, division of responsibilities, shared interests, and whether current disputes reflect longstanding couple dynamics."
+      },
+      "rationales": {
+        "A": "Individual mood and health may influence adjustment but do not sufficiently capture the couple's shared transition.",
+        "B": "Retirement has altered several major life-cycle dimensions at once\u2014roles, routines, identity, intimacy, social connection, and expectations. Evaluating those changes directly addresses the developmental transition described.",
+        "C": "Financial effects of retirement may be significant, but the vignette identifies a broader reorganization than economics alone.",
+        "D": "Earlier couple patterns provide useful history but should not be presumed to explain difficulties that emerged during a major new developmental stage."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 21,
+      "item_id": "B-CP-007",
+      "area": "Area 4: Case Conceptualization and Planning",
+      "core_calibration_status": "Core",
+      "correct_answer": "C",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "Following a major loss, a family discusses events only in factual terms and quickly changes the subject when emotion appears. Family members say they want greater closeness but remain distant and highly controlled in sessions. Which treatment plan is MOST consistent with experiential family therapy?",
+      "choices": {
+        "A": "Clarify boundaries and hierarchy, shift family alliances, and reorganize interactions through planned enactments in session.",
+        "B": "Map multigenerational loss patterns, strengthen differentiation, and support direct contact with extended-family members during stress.",
+        "C": "Enhance immediate emotional contact, use experiential enactments, and support fully congruent interpersonal expression among relatives.",
+        "D": "Map the avoidance sequence, prescribe structured conversations, and carefully revise directives from observed interactional responses."
+      },
+      "rationales": {
+        "A": "Hierarchy, boundaries, coalitions, and structural enactments constitute a structural family therapy plan.",
+        "B": "Multigenerational patterns and differentiation are Bowen-family-systems concepts.",
+        "C": "The family discusses the loss intellectually, avoids immediate emotion, and wants greater closeness while remaining controlled and distant in sessions. C targets the here-and-now experience through emotional contact, enactment, authenticity, and congruent expression. Experiential family therapy, including Satir\u2019s work, emphasizes present experience, human authenticity, and congruent communication.",
+        "D": "Identifying a maintaining sequence and prescribing structured conversations is strategic therapy."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 22,
+      "item_id": "B-LE6-004",
+      "area": "Area 6: Managing Legal and Ethical Obligations",
+      "core_calibration_status": "Core",
+      "correct_answer": "A",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "The estranged spouse of an adult psychotherapy client calls the therapist and says, \"I know my spouse is seeing you. I only need you to confirm whether the appointments are actually happening.\" The client has not authorized disclosure to the spouse. What is the therapist's BEST response?",
+      "choices": {
+        "A": "Decline to confirm attendance or client status, explain the confidentiality limit, and document the spouse's request without disclosing protected treatment information.",
+        "B": "Confirm the appointment dates but withhold treatment content, explain the confidentiality limit on additional information, and document the limited scheduling disclosure to the spouse.",
+        "C": "Confirm that the person is an active client but withhold attendance details, explain the confidentiality limit, and direct further treatment questions back to the client.",
+        "D": "Decline to answer during the call, contact the client to ask whether attendance may be confirmed, document the request, and respond to the spouse later only if valid authorization is provided."
+      },
+      "rationales": {
+        "A": "Best answer. Attendance and client status are protected treatment information. The spouse's statement that treatment is occurring does not create authority for the therapist to confirm it.",
+        "B": "Appointment dates disclose treatment participation and are not made permissible merely by withholding diagnosis or session content.",
+        "C": "Confirming that the person is an active client is itself a disclosure of protected treatment information.",
+        "D": "Seeking authorization could be appropriate if there is a genuine treatment reason for communication, but an unsolicited spouse request does not require the therapist to involve the client or create a new disclosure process. The therapist can simply preserve confidentiality."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 23,
+      "item_id": "B-CE-026",
+      "area": "Area 1: Clinical Evaluation",
+      "core_calibration_status": "Calibration",
+      "correct_answer": "C",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client performs well at work and interacts comfortably with coworkers but reports repeated conflicts with friends and says, \u201cI don\u2019t seem to keep friendships very long.\u201d Which assessment would be MOST useful?",
+      "choices": {
+        "A": "Use stable occupational relationships to compare how the client communicates, manages disagreement, and repairs tension differently with coworkers than with friends.",
+        "B": "Explore the most recent friendship rupture in detail, including expectations, communication, escalation, and whether the pattern resembles one earlier relationship.",
+        "C": "Review social history across friendships and close relationships, looking for recurring interaction patterns, ruptures, repair attempts, and periods of connection over time.",
+        "D": "Assess rejection sensitivity, social anxiety, emotion regulation, and interpersonal expectations to determine whether individual vulnerabilities contribute to repeated conflict."
+      },
+      "rationales": {
+        "A": "compares occupational and friendship behavior usefully but does not establish the pattern across the client\u2019s broader social history.",
+        "B": "relies too heavily on one recent rupture.",
+        "C": "The discrepancy between adequate occupational relationships and repeated friendship problems makes a broader social-history review necessary. Looking across relationships for recurring interaction patterns, ruptures, repair attempts, and periods of connection best evaluates the client\u2019s social functioning.",
+        "D": "moves toward explaining the pattern through individual vulnerabilities before adequately establishing the relational pattern itself."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 24,
+      "item_id": "B-TX5F-005-R1",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Core",
+      "correct_answer": "B",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "An elementary-school client has the same pattern of refusing nonpreferred tasks at home, school, and in treatment. With appropriate authorization in place, the therapist learns that the parent, teacher, and therapist are using different definitions of the target behavior and different reinforcement responses. Progress is inconsistent across settings. Which collaboration strategy should the therapist use?",
+      "choices": {
+        "A": "Bring the parent, teacher, and therapist together to compare behavior data, align separate definitions with each setting, and plan reinforcement around each environment\u2019s demands.",
+        "B": "Have the team standardize the target-behavior definition and reinforcement approach across home, school, and treatment.",
+        "C": "Bring the parent, teacher, and therapist together to review observations, revise the therapy plan, and maintain the current home and school approaches.",
+        "D": "Bring the parent, teacher, and therapist together to adopt the therapist\u2019s behavior definition, plan common reinforcement, and apply that approach across home and school."
+      },
+      "rationales": {
+        "A": "Comparing data is useful, but retaining different definitions and reinforcement approaches across settings preserves the inconsistency that is limiting progress.",
+        "B": "Best answer. Standardizing the target-behavior definition and reinforcement approach across home, school, and treatment directly addresses the cross-setting inconsistency.",
+        "C": "Sharing observations and revising only the therapy plan leaves the parent and teacher using the same inconsistent approaches that contributed to uneven progress.",
+        "D": "Applying the therapist's plan everywhere might increase consistency, but it is less collaborative and does not require the team to develop a shared operational definition and coordinated approach."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 25,
+      "item_id": "B-TX5F-002-R1",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Core",
+      "correct_answer": "C",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "An older adult wants to remain at home but is struggling with several practical barriers: preparing meals has become difficult, transportation to appointments is unreliable, and a family caregiver is increasingly overwhelmed. The client can still participate in treatment and does not require emergency intervention. Which community referral is most appropriate?",
+      "choices": {
+        "A": "Refer the client to a home-delivered meal program that can reduce meal-preparation demands and provide reliable nutrition at home.",
+        "B": "Refer the client to an accessible transportation program that can arrange reliable rides to health appointments and essential community destinations.",
+        "C": "Refer the client to an aging-services coordinator who can integrate the household\u2019s needs and connect the family with several community programs.",
+        "D": "Refer the family caregiver to a respite program that can provide planned relief and reduce strain associated with continuing care at home."
+      },
+      "rationales": {
+        "A": "Meal delivery addresses one identified barrier but does not coordinate the transportation and caregiver-strain needs that are also affecting the household.",
+        "B": "Accessible transportation addresses appointment access but leaves the meal-preparation and caregiver-burden concerns uncoordinated.",
+        "C": "Best answer. A care coordinator is suited to a client with several simultaneous aging-in-place barriers because the service can organize needs and connect the household to multiple programs.",
+        "D": "Respite directly addresses caregiver strain but does not integrate the client\u2019s transportation and meal needs into a broader support plan."
+      }
+    }
+  ]
+}

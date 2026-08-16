@@ -244,8 +244,11 @@ class CTA_Quiz {
 		}
 		$quiz_handler  = $this;
 		$question_count = count( $questions );
-		// Quizzes are untimed by policy; ignore any legacy time_limit_mins values.
-		$time_limit_label = __( 'No limit', 'cta-lms' );
+		$time_limit_mins = self::get_time_limit_mins( $quiz );
+		$time_limit_label = self::format_time_limit_label( $time_limit_mins );
+		$attempt_started_at = ( $active_attempt && ! empty( $active_attempt->started_at ) )
+			? (string) $active_attempt->started_at
+			: '';
 		$attempts_label   = __( 'Unlimited', 'cta-lms' );
 		$exam_instructions = class_exists( 'CTA_Suicide_Risk_Exam_Sync' )
 			? CTA_Suicide_Risk_Exam_Sync::get_exam_instructions_for_course( $course )
@@ -469,6 +472,8 @@ class CTA_Quiz {
 
 		$course_for_reveal = CTA_Database::get_course( (int) $attempt->course_id );
 		$is_exam_prep      = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course_for_reveal );
+		$uses_core_scoring = class_exists( 'CTA_Lmft_Clinical_Comprehensive_Scoring' )
+			&& CTA_Lmft_Clinical_Comprehensive_Scoring::uses_core_calibration_scoring( $quiz, $course_for_reveal );
 		// CE finals: store rationales for admin QA; do not reveal to learners until owner approves.
 		$reveal_explanations = (bool) apply_filters(
 			'cta_lms_reveal_quiz_explanations',
@@ -476,6 +481,19 @@ class CTA_Quiz {
 			$quiz,
 			$course_for_reveal
 		);
+		$reveal_correct = (bool) apply_filters(
+			'cta_lms_reveal_quiz_correct_answers',
+			$is_exam_prep,
+			$quiz,
+			$course_for_reveal
+		);
+
+		if ( class_exists( 'CTA_Lmft_Clinical_Comprehensive_Review' )
+			&& CTA_Lmft_Clinical_Comprehensive_Review::applies_to_quiz( $quiz, $course_for_reveal ) ) {
+			// Submitting this form is the unlock event for its own review content.
+			$reveal_explanations = true;
+			$reveal_correct      = true;
+		}
 
 		foreach ( $questions as $question ) {
 			$qid    = (int) $question->id;
@@ -485,17 +503,38 @@ class CTA_Quiz {
 				++$correct;
 			}
 
+			$explanation = '';
+			if ( $reveal_explanations ) {
+				if ( class_exists( 'CTA_Lmft_Clinical_Comprehensive_Review' )
+					&& CTA_Lmft_Clinical_Comprehensive_Review::applies_to_quiz( $quiz, $course_for_reveal ) ) {
+					$explanation = CTA_Lmft_Clinical_Comprehensive_Review::get_learner_explanation_for_question( $quiz, $question );
+				} else {
+					$explanation = (string) $question->explanation;
+				}
+			}
+
 			$revealed[] = array(
 				'question_id'    => $qid,
 				'user_answer'    => $answer,
-				'correct_option' => $question->correct_option,
-				'explanation'    => $reveal_explanations ? (string) $question->explanation : '',
+				'correct_option' => $reveal_correct ? (string) $question->correct_option : '',
+				'explanation'    => $explanation,
 				'is_correct'     => ( $answer === $question->correct_option ),
 			);
 		}
 
 		$score  = $total > 0 ? (int) round( ( $correct / $total ) * 100 ) : 0;
 		$passed = $score >= (int) $quiz->passing_score ? 1 : 0;
+
+		if ( $uses_core_scoring ) {
+			$core_score = CTA_Lmft_Clinical_Comprehensive_Scoring::calculate_display_score(
+				$questions,
+				$sanitized,
+				$quiz,
+				(int) $quiz->passing_score
+			);
+			$score  = (int) $core_score['score'];
+			$passed = ! empty( $core_score['passed'] ) ? 1 : 0;
+		}
 
 		$completed = $wpdb->query(
 			$wpdb->prepare(
@@ -1409,15 +1448,51 @@ class CTA_Quiz {
 	private function build_attempt_payload( $quiz, $attempt ) {
 		$questions = CTA_Database::get_quiz_questions( (int) $quiz->id );
 
+		$time_limit_mins = self::get_time_limit_mins( $quiz );
+
 		return array(
-			'quiz_id'         => (int) $quiz->id,
-			'attempt_id'      => (int) $attempt->id,
-			'course_id'       => (int) $attempt->course_id,
-			'time_limit_mins' => 0,
-			'passing_score'   => (int) $quiz->passing_score ?: 70,
-			'max_attempts'    => 0,
-			'question_count'  => count( $questions ),
-			'html'            => $this->render_quiz_questions( $quiz, $attempt, $questions ),
+			'quiz_id'            => (int) $quiz->id,
+			'attempt_id'         => (int) $attempt->id,
+			'course_id'          => (int) $attempt->course_id,
+			'time_limit_mins'    => $time_limit_mins,
+			'attempt_started_at' => ! empty( $attempt->started_at ) ? (string) $attempt->started_at : '',
+			'passing_score'      => (int) $quiz->passing_score ?: 70,
+			'max_attempts'       => 0,
+			'question_count'     => count( $questions ),
+			'html'               => $this->render_quiz_questions( $quiz, $attempt, $questions ),
+		);
+	}
+
+	/**
+	 * Resolve the effective quiz time limit in minutes (0 = untimed).
+	 *
+	 * @param object|null $quiz Quiz row.
+	 * @return int
+	 */
+	public static function get_time_limit_mins( $quiz ) {
+		if ( ! $quiz || ! isset( $quiz->time_limit_mins ) ) {
+			return 0;
+		}
+
+		return max( 0, absint( $quiz->time_limit_mins ) );
+	}
+
+	/**
+	 * Format a quiz time limit for the start panel.
+	 *
+	 * @param int $minutes Time limit in minutes.
+	 * @return string
+	 */
+	public static function format_time_limit_label( $minutes ) {
+		$minutes = max( 0, absint( $minutes ) );
+		if ( $minutes <= 0 ) {
+			return __( 'No limit', 'cta-lms' );
+		}
+
+		return sprintf(
+			/* translators: %d: number of minutes */
+			_n( '%d minute', '%d minutes', $minutes, 'cta-lms' ),
+			$minutes
 		);
 	}
 

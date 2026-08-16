@@ -163,7 +163,8 @@ class CTA_Exam_Prep_Exam_Center {
 			$latest    = ! empty( $attempts ) ? $attempts[0] : null;
 			$q_count   = count( CTA_Database::get_quiz_questions( $quiz_id ) );
 			$quiz_url  = $dashboard->get_quiz_url( $course_id, $quiz_id );
-			$has_tried = ! empty( $attempts );
+			$has_tried     = ! empty( $attempts );
+			$has_completed = self::user_has_completed_attempt( $attempts );
 
 			$cards[] = array(
 				'quiz'             => $qrow,
@@ -185,8 +186,9 @@ class CTA_Exam_Prep_Exam_Center {
 				'latest_score'     => $latest ? (int) $latest->score : null,
 				'passed'           => $best && (int) $best->passed,
 				'has_attempts'     => $has_tried,
+				'has_completed'    => $has_completed,
 				'has_active_attempt' => (bool) $active,
-				'review_materials' => $has_tried
+				'review_materials' => $has_completed
 					? self::get_review_materials( $course_id, $user_id, $qrow, $resources )
 					: array(),
 				'sort_weight'      => self::get_quiz_sort_weight( $qrow ),
@@ -272,6 +274,25 @@ class CTA_Exam_Prep_Exam_Center {
 		}
 
 		return 100 + (int) ( $quiz->sort_order ?? 0 );
+	}
+
+	/**
+	 * Whether any attempt row has a completed submission timestamp.
+	 *
+	 * @param array $attempts Attempt rows.
+	 * @return bool
+	 */
+	private static function user_has_completed_attempt( array $attempts ) {
+		foreach ( $attempts as $att ) {
+			$completed_at = isset( $att->completed_at ) ? trim( (string) $att->completed_at ) : '';
+			if ( '' !== $completed_at
+				&& '0000-00-00' !== $completed_at
+				&& '0000-00-00 00:00:00' !== $completed_at ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**

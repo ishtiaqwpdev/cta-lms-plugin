@@ -31,7 +31,10 @@ if ( empty( $evaluation_questions ) || ! is_array( $evaluation_questions ) ) {
 	data-course-id="<?php echo esc_attr( $course->id ); ?>"
 	data-quiz-id="<?php echo esc_attr( $quiz->id ); ?>"
 	data-attempt-id="<?php echo esc_attr( $active_attempt ? $active_attempt->id : 0 ); ?>"
-	data-time-limit="0"
+	data-time-limit="<?php echo esc_attr( (string) (int) ( $time_limit_mins ?? 0 ) ); ?>"
+	<?php if ( ! empty( $attempt_started_at ) ) : ?>
+	data-attempt-started-at="<?php echo esc_attr( $attempt_started_at ); ?>"
+	<?php endif; ?>
 	data-passing-score="<?php echo esc_attr( (int) $quiz->passing_score ?: 70 ); ?>"
 	data-question-count="<?php echo esc_attr( $question_count ); ?>"
 	data-view-state="<?php echo esc_attr( $view_state ); ?>"

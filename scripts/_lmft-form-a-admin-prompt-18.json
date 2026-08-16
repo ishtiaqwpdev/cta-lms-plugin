@@ -1,0 +1,557 @@
+{
+  "form": "A",
+  "type": "ADMIN_ONLY_answer_key_and_rationales",
+  "question_range": "126-150",
+  "records": [
+    {
+      "form": "A",
+      "q_num": 126,
+      "item_id": "A-CE-019",
+      "area": "Area 1: Clinical Evaluation",
+      "core_calibration_status": "Core",
+      "correct_answer": "C",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client who previously maintained stable employment begins missing work and having repeated disagreements with coworkers after the employer reorganizes the department and substantially changes the client's responsibilities. Which assessment would be MOST useful?",
+      "choices": {
+        "A": "Assess mood, sleep, anxiety, concentration, and whether symptoms changed around the workplace reorganization.",
+        "B": "Review supervisor conflict, coworker interactions, communication problems, and whether interpersonal difficulties occur in other employment or relationship settings.",
+        "C": "Compare prior work functioning with changes in duties, expectations, attendance, performance, and stress since the department reorganized.",
+        "D": "Review career satisfaction, financial pressures, alternative employment options, and whether remaining in the current position is worsening overall functioning."
+      },
+      "rationales": {
+        "A": "Mood and anxiety symptoms may accompany occupational problems, but this choice moves prematurely toward an individual psychiatric explanation.",
+        "B": "Coworker and supervisor conflict are relevant but capture only one portion of the occupational change.",
+        "C": "The occupational problem emerged after a workplace reorganization. Comparing previous functioning with changes in responsibilities, expectations, attendance, performance, and stress directly evaluates the employment-related change.",
+        "D": "Career satisfaction and alternative employment may eventually be important, but this option begins moving toward occupational decision-making before the current employment stress has been adequately evaluated."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 127,
+      "item_id": "A-LE6-015",
+      "area": "Area 6: Managing Legal and Ethical Obligations",
+      "core_calibration_status": "Calibration",
+      "correct_answer": "B",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "An adult client entered psychotherapy through an employee assistance program. The client's written authorization allows the therapist to tell the EAP only whether the client attended the authorized sessions and completed the referral. An employer representative contacts the therapist through the EAP and asks whether the client is emotionally ready to return to a high-pressure assignment. What is the therapist's BEST response?",
+      "choices": {
+        "A": "Provide the authorized attendance information plus a limited work-readiness opinion based on observed functioning, review the observed work factors, omit diagnosis and session details, explain the narrower purpose of the opinion, and document the rationale and disclosure to the EAP.",
+        "B": "Provide only the attendance and completion information already authorized by the client, explain that any work-readiness opinion requires separate authority, and document the exact disclosure scope to the EAP.",
+        "C": "Withhold all EAP information until the client decides whether to expand the authorization, explain the employer's request, review the client's decision before responding, and document the pending decision.",
+        "D": "Ask the client whether to authorize a work-readiness opinion, review the implications of taking that evaluative role, and respond after the client decides."
+      },
+      "rationales": {
+        "A": "A work-readiness opinion is additional clinical information outside the authorization described in the stem. Reviewing observed functioning and omitting diagnosis do not bring that opinion within the authorized disclosure scope.",
+        "B": "Best answer. The therapist should provide only the attendance and completion information already authorized and should not expand disclosure to a work-readiness opinion without separate authority.",
+        "C": "This prevents overdisclosure, but it unnecessarily withholds attendance and completion information that the client has already authorized the therapist to provide.",
+        "D": "A broader authorization and evaluative role could be discussed if the client independently wants that service and it is otherwise appropriate, but the therapist need not make expansion of the authorization the default response to an overbroad third-party request."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 128,
+      "item_id": "A-TX5E-001",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Core",
+      "correct_answer": "C",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A 16-year-old has begun missing school after recurring morning stomachaches. One parent quickly allows the adolescent to stay home, while the other criticizes both of them for \u201cgiving in.\u201d The parents then argue, the adolescent withdraws, and the next morning the same sequence repeats. The therapist is using a general systems approach. Which intervention should the therapist use?",
+      "choices": {
+        "A": "Map how each family member responds to school refusal and ask them to observe the sequence before changing it.",
+        "B": "Shift parental attention away from the adolescent and strengthen the couple relationship during discussions about school attendance.",
+        "C": "Interrupt the reciprocal school-refusal cycle by changing how parents respond when the adolescent begins avoiding school.",
+        "D": "Reframe the adolescent\u2019s refusal as serving a family-stabilizing function and explore when that function becomes less necessary."
+      },
+      "rationales": {
+        "A": "Mapping the sequence is consistent with systems thinking, but observation alone does not yet alter the reciprocal process that is maintaining the problem.",
+        "B": "The couple relationship is part of the system, but shifting attention away from the adolescent does not directly change the repeated school-refusal interaction described in the stem.",
+        "C": "Best answer. General systems treatment targets reciprocal interaction patterns. Changing the parents\u2019 responses at the point where avoidance begins directly interrupts the repeating cycle rather than locating the problem in one family member.",
+        "D": "A systemic reframe may reduce blame and increase curiosity, but exploring the possible function without changing the active sequence is less direct than intervening in the reciprocal pattern itself."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 129,
+      "item_id": "A-TX5C-002",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Core",
+      "correct_answer": "B",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client in treatment for panic symptoms agreed to complete brief interoceptive practice between sessions but tried it only once. The client says the exercise felt frightening, is unsure why it is necessary, and still wants therapy to help reduce panic. Which intervention should the therapist use next?",
+      "choices": {
+        "A": "Complete the interoceptive exercise in session, identify what made it frightening, and assign the same version with a coping plan.",
+        "B": "Review the client\u2019s concerns and treatment rationale, then agree on a smaller interoceptive step the client is willing to repeat.",
+        "C": "Use a week of symptom monitoring to identify panic triggers, then choose an exposure target from the pattern.",
+        "D": "Provide additional education about the panic cycle, demonstrate the exercise again, and assign the original practice with written instructions."
+      },
+      "rationales": {
+        "A": "In-session exposure may support learning, but simply sending home the same frightening assignment does not adequately address the client\u2019s uncertainty, concerns, or poor follow-through.",
+        "B": "Best answer. The therapist addresses the client\u2019s concerns and treatment rationale while collaboratively reducing the assignment to a manageable exposure step, increasing the likelihood of engagement without abandoning the treatment mechanism.",
+        "C": "Monitoring may provide information, but the problem is not lack of knowledge about panic triggers. The client needs a tolerable way to participate in the agreed exposure work.",
+        "D": "Additional education and demonstration may help understanding, but retaining the same assignment does not sufficiently respond to the barrier the client has already identified."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 130,
+      "item_id": "A-CP-007",
+      "area": "Area 4: Case Conceptualization and Planning",
+      "core_calibration_status": "Core",
+      "correct_answer": "C",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "An adolescent\u2019s symptoms intensify when the adolescent is recruited into a cross-generational coalition during parental conflict. The parents have difficulty functioning as a coordinated leadership team, and boundaries between the parental and child subsystems are diffuse. Which treatment plan is MOST consistent with structural family therapy?",
+      "choices": {
+        "A": "Map family triangles, support differentiation under stress, and reduce reactive involvement across relationships over time.",
+        "B": "Map maintaining sequences, assign strategic directives, and revise interactional tasks according to observed family responses.",
+        "C": "Map current family role patterns, reinforce parental leadership, and delineate boundaries around the cross-generational alliance.",
+        "D": "Map emotional avoidance, deepen congruent expression through enactments, and increase interpersonal contact among family members."
+      },
+      "rationales": {
+        "A": "Mapping triangles, strengthening differentiation, and reducing reactive involvement constitute a multigenerational/Bowen plan. Those interventions may illuminate the broader family emotional system but do not most directly reorganize the current parental and child subsystems.",
+        "B": "Identifying maintaining sequences and prescribing directives is consistent with strategic family therapy. The item\u2019s decisive formulation, however, is family structure rather than a symptom-maintaining sequence best altered through directives.",
+        "C": "The clinical formulation concerns the family\u2019s present organization: weakened parental leadership, poorly defined generational boundaries, and an adolescent participating in a cross-generational coalition. C directly targets those structural features by strengthening the parental subsystem, clarifying boundaries, and moving the adolescent out of an inappropriate relational position. Structural family therapy specifically conceptualizes families through subsystems, boundaries, hierarchy, coalitions, and interactional restructuring.",
+        "D": "Increasing authentic emotional expression and congruent relational contact is an experiential family therapy plan. It does not directly correct the hierarchy, boundaries, and coalition specified in the stem."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 131,
+      "item_id": "A-DI-005",
+      "area": "Area 2: Developing a Diagnostic Impression",
+      "core_calibration_status": "Core",
+      "correct_answer": "C",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client experiences recurrent intrusive thoughts that household surfaces are contaminated. The thoughts are unwanted and distressing. The client washes repeatedly and spends approximately two hours each day cleaning to reduce anxiety, while recognizing that the feared contamination may be exaggerated. Which diagnosis is MOST supported?",
+      "choices": {
+        "A": "Generalized anxiety disorder",
+        "B": "Obsessive-compulsive personality disorder",
+        "C": "Obsessive-compulsive disorder",
+        "D": "Delusional disorder"
+      },
+      "rationales": {
+        "A": "Generalized anxiety involves excessive worry but does not best explain the intrusive obsession plus ritualized compulsion pattern.",
+        "B": "Obsessive-compulsive personality disorder involves a pervasive personality style rather than unwanted obsessions and anxiety-reducing rituals.",
+        "C": "The client experiences recurrent unwanted contamination thoughts and repetitive washing rituals performed to reduce distress. That obsession-compulsion relationship is characteristic of OCD.",
+        "D": "The client recognizes that the contamination concern may be exaggerated, and the presentation is organized around obsessions and compulsions rather than a fixed psychotic belief."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 132,
+      "item_id": "A-CR-014-R1",
+      "area": "Area 3: Managing Crisis Situations",
+      "core_calibration_status": "Core",
+      "correct_answer": "A",
+      "source_status": "CONTROLLED SUCCESSOR",
+      "stem": "A parent has just received a serious medical diagnosis. Within two weeks, the family has lost its usual childcare arrangement, meals and school routines are inconsistent, both adults are sleeping poorly, and disagreements about responsibilities have increased. No family member is imminently unsafe. What should the therapist emphasize FIRST?",
+      "choices": {
+        "A": "Assess immediate family functioning and urgent routine disruptions, stabilize temporary roles, and mobilize practical supports for the near term.",
+        "B": "Assess family distress and communication, mobilize practical supports, and defer major role changes until emotional intensity decreases.",
+        "C": "Assess prior coping and family-role patterns, mobilize practical supports, and use historical strengths to guide current adaptation.",
+        "D": "Assess individual symptoms and coping, mobilize family supports, and coordinate psychiatric consultation for members with significant impairment."
+      },
+      "rationales": {
+        "A": "The immediate crisis is loss of basic family organization after a serious diagnosis. Stabilizing routines and temporary responsibilities while mobilizing practical support directly addresses the current functional disruption.",
+        "B": "Communication support can help, but delaying temporary role adjustments leaves the immediate childcare, meals, sleep, and responsibility problems unresolved.",
+        "C": "Historical coping strengths may inform later work, but the family first needs present-focused stabilization of disrupted roles and daily functioning.",
+        "D": "Individual symptom assessment and psychiatric consultation may be indicated for particular family members, but the stem does not establish an acute psychiatric problem as the organizing crisis."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 133,
+      "item_id": "A-TX5C-004",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Calibration",
+      "correct_answer": "D",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client with panic symptoms has begun leaving grocery stores as soon as dizziness or chest tightness appears and often calls a spouse from the parking lot for reassurance. Medical causes have been evaluated, and the client wants to remain in stores without relying on escape. Which intervention should the therapist use?",
+      "choices": {
+        "A": "Use graded store exposure with paced breathing and have the client remain through a planned interval while observing whether arousal settles over repeated visits.",
+        "B": "Use graded store exposure with cognitive reappraisal of dizziness and chest tightness while the client remains in the feared setting.",
+        "C": "Use graded store exposure during less crowded periods and extend visit duration as the client gains confidence across repetitions.",
+        "D": "Use graded store exposure through rising fear while reducing early exits and reassurance calls to the spouse."
+      },
+      "rationales": {
+        "A": "Paced breathing may reduce distress, but using symptom reduction to determine whether the client remains can preserve fear of bodily sensations and escape as a safety strategy.",
+        "B": "Cognitive reappraisal is helpful, but the maintaining pattern includes leaving the store and calling the spouse for reassurance, which this option does not directly reduce.",
+        "C": "Less crowded periods and gradually longer visits may increase tolerance, but they can preserve situational safety modifications and do not directly address reassurance seeking.",
+        "D": "Best answer. The response combines in-vivo exposure with reduction of the two maintaining safety behaviors identified in the stem: early escape and repeated reassurance calls."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 134,
+      "item_id": "A-TX5B-001",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Core",
+      "correct_answer": "A",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client\u2019s spouse died unexpectedly three months ago. The client remains able to work and care for the children but becomes tearful during evening prayers and says relatives are urging the client to \u201cmove on.\u201d In the client\u2019s faith community, remembrance rituals and ongoing bonds with the deceased are considered important parts of mourning. Which intervention should the therapist use?",
+      "choices": {
+        "A": "Explore grief through the client\u2019s faith tradition, support remembrance rituals, and help the client carry grief alongside daily responsibilities.",
+        "B": "Use grief-focused narrative reconstruction to revisit the death and identify emotionally unfinished material the client has not yet fully expressed.",
+        "C": "Help the client reorganize family responsibilities after the loss and use therapy mainly to support practical adaptation while spiritual remembrance rituals continue.",
+        "D": "Develop an individualized continuing-bond ritual with the children and establish responses to relatives who pressure premature emotional resolution."
+      },
+      "rationales": {
+        "A": "Best answer. The client\u2019s grief remains compatible with functioning, and the intervention respects culturally and spiritually meaningful mourning practices while supporting adaptation rather than pathologizing continuing bonds.",
+        "B": "Narrative grief work can be useful, but the stem does not indicate avoided or unfinished material. Beginning there could overlook the client\u2019s already meaningful spiritual mourning process.",
+        "C": "Practical family adaptation may be useful after a death, but the client is already maintaining responsibilities and is seeking space for a culturally meaningful grief process rather than primarily logistical help.",
+        "D": "A continuing-bond ritual and boundary-setting with relatives are reasonable interventions, but the client already has meaningful remembrance practices; treatment should first understand and support the existing mourning framework."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 135,
+      "item_id": "A-CR-002-R1",
+      "area": "Area 3: Managing Crisis Situations",
+      "core_calibration_status": "Core",
+      "correct_answer": "D",
+      "source_status": "CONTROLLED SUCCESSOR",
+      "stem": "A client with rapidly worsening psychiatric symptoms has eaten very little for several days, has stopped bathing, has been unable to obtain food independently, and cannot describe how basic needs will be met after leaving the office. The client denies current suicidal or homicidal intent. What is the BEST next action?",
+      "choices": {
+        "A": "Maintain observation, arrange same-day intensive outpatient stabilization, and add case-management and basic-needs support.",
+        "B": "Maintain observation, arrange same-day psychiatric medication evaluation, and provide supervised community support while stabilization begins.",
+        "C": "Maintain observation, arrange same-day supervised respite or housing, and provide daily crisis outreach with basic-needs assistance.",
+        "D": "Maintain observation, transfer to a staffed crisis setting, and obtain psychiatric assessment with basic-self-care stabilization."
+      },
+      "rationales": {
+        "A": "Intensive outpatient and case-management services still assume enough independent functioning to use community supports reliably. The stem establishes that the client cannot currently manage basic needs safely.",
+        "B": "Medication evaluation and supervised community support may become useful components of care, but this pathway does not provide the staffed stabilization required by the client's present self-care incapacity.",
+        "C": "Temporary housing, daily outreach, and basic-needs assistance address practical problems but still depend on a level of independent functioning the current presentation does not establish.",
+        "D": "The client cannot reliably obtain food, maintain hygiene, or describe a viable basic-needs plan. A staffed crisis setting can provide observation, psychiatric assessment, and immediate stabilization of basic self-care."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 136,
+      "item_id": "A-CE-035",
+      "area": "Area 1: Clinical Evaluation",
+      "core_calibration_status": "Core",
+      "correct_answer": "A",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client reports several episodes of yelling and damaging household objects during arguments over the past year. The client denies threatening or physically assaulting anyone and denies any current intent to harm another person. What should the therapist do NEXT?",
+      "choices": {
+        "A": "Clarify the frequency, triggers, escalation, consequences, relationship effects, and whether current intent or access indicates any change in danger at present.",
+        "B": "Assess impulsivity, anger tolerance, emotion regulation, remorse, and whether property destruction occurs in contexts other than interpersonal arguments.",
+        "C": "Assess substance use, sleep, mood changes, stress, and whether the outbursts reliably occur during intoxication or periods of psychological deterioration.",
+        "D": "Review legal history, family responses, prior aggression, treatment history, and whether consequences have altered the client\u2019s behavior over time."
+      },
+      "rationales": {
+        "A": "The client reports a pattern of aggressive behavior without established current imminent danger. The therapist should evaluate frequency, triggers, escalation, consequences, relational effects, and whether present circumstances indicate any change in risk.",
+        "B": "Impulsivity and emotion regulation may contribute to the behavior, but this option narrows the assessment toward one possible mechanism before the overall aggression pattern has been characterized.",
+        "C": "Substance use, sleep, mood, and stress may influence aggressive behavior, but none is established as the primary explanation.",
+        "D": "Legal consequences, family responses, and treatment history provide relevant contextual information but do not as directly characterize the current aggression pattern or clarify present danger."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 137,
+      "item_id": "A-CE-020",
+      "area": "Area 1: Clinical Evaluation",
+      "core_calibration_status": "Core",
+      "correct_answer": "B",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A veteran seeks couples therapy for emotional distance and frequent conflict after returning from a lengthy deployment. The veteran says military service \u201chas nothing to do with this\u201d and prefers to focus only on the partner's complaints. What should the therapist do NEXT?",
+      "choices": {
+        "A": "Assess trauma symptoms, sleep, avoidance, and whether deployment experiences contribute to current relationship difficulties.",
+        "B": "Explore military service, deployment experiences, reintegration, military culture, and changes in family and relationship functioning after return.",
+        "C": "Assess current couple conflict, emotional distance, communication patterns, intimacy, support, and whether similar difficulties existed before deployment.",
+        "D": "Obtain the partner\u2019s observations of post-deployment changes, family-role shifts, conflict patterns, and situations that seem to increase disconnection."
+      },
+      "rationales": {
+        "A": "Trauma symptoms should be assessed when indicated, but this response prematurely frames deployment primarily through a PTSD lens.",
+        "B": "The client returned from deployment before the relationship difficulties intensified. Exploring military service, deployment, reintegration, military culture, and changes in family functioning evaluates whether those experiences are clinically relevant without assuming a trauma diagnosis.",
+        "C": "Current couple interaction deserves assessment, but excluding military and reintegration context because the client minimizes its relevance would omit information specifically suggested by the chronology.",
+        "D": "The partner's observations may be valuable, but they should supplement rather than determine whether military experiences are clinically relevant."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 138,
+      "item_id": "A-TX5D-002",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Core",
+      "correct_answer": "B",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A couple with a 4-month-old first child reports escalating arguments about chores, nighttime care, and lack of couple time. Before the baby they divided responsibilities evenly, but both say the old \u201c50/50\u201d rule no longer fits their schedules or energy. Neither reports a longstanding relationship problem. Which intervention should the therapist use?",
+      "choices": {
+        "A": "Use a weekly planning meeting to restore the prior 50/50 division of infant care and household tasks and review whether both partners can sustain that arrangement.",
+        "B": "Use a weekly meeting to plan responsibilities by current capacity and protect recurring time for couple connection.",
+        "C": "Use a weekly planning meeting to clarify shared parenting values and create a new agreement for nighttime care, chores, and couple time.",
+        "D": "Use a weekly planning meeting to plan alternating recovery periods, recruit outside help for high-burden tasks, and review whether fatigue-related conflict changes."
+      },
+      "rationales": {
+        "A": "Returning to the prior equal split may sound fair, but it ignores the couple\u2019s report that the old arrangement no longer fits their current capacities during the transition to parenthood.",
+        "B": "Best answer. The conflict is occurring during a normative transition to parenthood. Redistributing responsibilities according to present capacity while protecting couple connection directly addresses role reorganization and relational strain.",
+        "C": "Clarifying values and creating a new agreement are useful, but this option is less direct about adapting responsibilities to the capacity changes that are driving the current conflict.",
+        "D": "Recovery periods and outside support may reduce fatigue, but they do not directly renegotiate the couple\u2019s shared parenting roles or preserve the couple bond as clearly as the keyed response."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 139,
+      "item_id": "A-CR-003-R1",
+      "area": "Area 3: Managing Crisis Situations",
+      "core_calibration_status": "Core",
+      "correct_answer": "C",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client reports superficial cutting several times during the past month after intense interpersonal conflict. The client consistently denies wanting to die, denies a suicide plan or preparatory behavior, has no medically serious injury, identifies the situations that trigger cutting, and can use supportive contacts when urges increase. Which intervention is MOST appropriate now?",
+      "choices": {
+        "A": "Reassess suicide risk directly, arrange a same-day crisis evaluation, and involve a support person in transfer.",
+        "B": "Reassess suicide risk directly, keep the routine outpatient frequency, and use identified supports if urges intensify.",
+        "C": "Reassess suicide risk directly, revise the self-harm safety plan, and increase near-term outpatient follow-up for now.",
+        "D": "Reassess suicide risk directly, restrict access to self-harm tools, and postpone coping work until urges decrease."
+      },
+      "rationales": {
+        "A": "Same-day crisis transfer is more restrictive than the established risk warrants because the stem does not establish suicidal intent, medically serious injury, inability to maintain safety, or another high-acute-risk feature.",
+        "B": "Keeping the routine outpatient frequency underresponds to recurrent self-injury during an elevated-risk period, even though emergency disposition is not established.",
+        "C": "The self-injury requires direct suicide reassessment and active intervention, but the stem does not establish suicidal intent, medically serious injury, inability to maintain safety, or another high-acute-risk feature. The overall acute-risk state supports intensified outpatient self-harm stabilization rather than automatic emergency transfer.",
+        "D": "Restricting access to self-harm tools may be useful, but postponing coping work and relying mainly on means restriction incompletely addresses the current self-injury pattern."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 140,
+      "item_id": "A-TX5A-001-R1",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Core",
+      "correct_answer": "D",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A 15-year-old adopted at age 8 after several caregiver changes is in therapy with the adoptive mother. When the mother sets a limit, the adolescent says, \u201cYou\u2019ll get tired of me too,\u201d pulls away, and then repeatedly messages friends for reassurance. The mother responds by avoiding the conflict for the rest of the day. Which intervention should the therapist use to improve attachment stability and relational functioning?",
+      "choices": {
+        "A": "Use attachment-focused family work to strengthen supportive peer contact after conflict and return the adolescent to the family discussion with a clear plan.",
+        "B": "Use attachment-focused family work to pair limits with reassurance, reduce the mother\u2019s disengagement, and review what happens when rejection fears appear.",
+        "C": "Use attachment-focused individual work to process caregiver losses and identify how rejection expectations shape the adolescent\u2019s current reactions.",
+        "D": "Use attachment-focused conjoint work to set predictable limits and establish a reliable reconnection process after conflict between mother and adolescent."
+      },
+      "rationales": {
+        "A": "Peer support can be protective, but relying on friends after family conflict does not strengthen the adoptive mother-adolescent attachment cycle that is destabilized by rejection fears.",
+        "B": "Pairing reassurance with limits is helpful, but the response does not establish a clear repair process after conflict and may leave the mother\u2019s disengagement pattern insufficiently changed.",
+        "C": "Processing caregiver loss is clinically relevant, but individual exploration alone does not address the live dyadic sequence occurring when the mother sets limits.",
+        "D": "Best answer. Predictable limits combined with reliable reconnection directly address the adolescent\u2019s fear of abandonment while changing the mother\u2019s withdrawal after conflict."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 141,
+      "item_id": "A-TX5B-003",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Core",
+      "correct_answer": "B",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A service member returned from a nine-month deployment two months ago. The couple expected reunion to feel easy, but they now argue about parenting routines, household decisions, and how much time the service member spends alone. Both say they want to reconnect and neither reports current violence or acute danger. Which intervention should the therapist use?",
+      "choices": {
+        "A": "Use reintegration work to explore deployment-related emotional distance, identify reactions that interfere with family contact, and compare how those reactions appear at home.",
+        "B": "Use reintegration work to plan current parenting and household roles and protect routines for alone time and couple reconnection.",
+        "C": "Use reintegration work to practice communication around one recurring disagreement and establish a shared method for household decisions.",
+        "D": "Use reintegration work to compare predeployment and current roles, clarify family values, and translate those values into household priorities."
+      },
+      "rationales": {
+        "A": "Deployment experiences may contribute to emotional distance, but the stem primarily describes family-role and routine disruption rather than a trauma-processing problem.",
+        "B": "Best answer. Postdeployment reintegration requires renegotiating current parenting, household, alone-time, and couple routines so the family can reorganize around the service member\u2019s return.",
+        "C": "Communication practice can help one disagreement, but it is narrower than the role and routine reorganization required by the family\u2019s broader reintegration transition.",
+        "D": "Comparing roles and values can deepen understanding, but it is less direct than actively updating the present family structure and reconnection routines."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 142,
+      "item_id": "A-CE-021",
+      "area": "Area 1: Clinical Evaluation",
+      "core_calibration_status": "Core",
+      "correct_answer": "C",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A family seeking therapy has received an eviction notice after a major reduction in household income. Family members report increased arguments, disrupted sleep, and difficulty concentrating at work and school. Which assessment approach is BEST?",
+      "choices": {
+        "A": "Assess anxiety, depressive symptoms, sleep, school or work impairment, and how each family member is responding emotionally to possible eviction.",
+        "B": "Assess family conflict, division of responsibilities, financial decision-making, communication, and whether relational strain is interfering with practical problem-solving.",
+        "C": "Assess housing stability, income loss, access to necessities, available supports, and effects of these stressors on individual and family functioning over time.",
+        "D": "Assess immediate resource needs, housing options, financial assistance, transportation, and whether practical barriers are limiting the family\u2019s available choices."
+      },
+      "rationales": {
+        "A": "Emotional symptoms are relevant consequences but do not sufficiently assess the economic and housing circumstances producing the stress.",
+        "B": "Family conflict is important, but this option risks treating the relationship process as the primary problem rather than assessing it within the socioeconomic context.",
+        "C": "The family's housing and economic instability is occurring alongside disrupted access to necessities and changes in individual and family functioning. This option directly evaluates those socioeconomic stressors and their effects.",
+        "D": "Practical resource needs matter and may require action, but this option moves toward resource intervention before adequately evaluating the broader clinical impact."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 143,
+      "item_id": "A-TX5A-006",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Calibration",
+      "correct_answer": "B",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A family includes two parents, a 15-year-old, and the maternal grandparents, who recently moved into the home. The grandparents frequently reverse the parents\u2019 limits, the parents argue with the grandparents about discipline, and the adolescent has begun seeking whichever adult is most likely to say yes. Which intervention should the therapist use?",
+      "choices": {
+        "A": "Define separate decision domains for parents and grandparents and practice how the adults will handle discipline, routines, and privileges within those domains.",
+        "B": "Restore parental leadership through private adult resolution of rule disagreements before consistent limits are presented to the adolescent.",
+        "C": "Create household rules and consequences for all adults to apply when the adolescent violates a limit.",
+        "D": "Create a four-adult consultation process for discipline decisions and practice reaching consensus before any limit is presented to the adolescent."
+      },
+      "rationales": {
+        "A": "Separate authority domains may reduce some conflict, but they can formalize competing parent and grandparent hierarchies rather than strengthening the parental subsystem.",
+        "B": "Best answer. The adolescent is using inconsistent adult authority. Restoring parental leadership and resolving adult disagreements outside the adolescent's involvement reduces triangulation and creates a coherent hierarchy.",
+        "C": "Shared rules may increase consistency, but making all adults equal enforcers does not address the blurred hierarchy created when grandparents reverse parental decisions.",
+        "D": "Four-adult consensus can sound collaborative, but it preserves the grandparents as coequal discipline decision-makers rather than clarifying parental authority."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 144,
+      "item_id": "A-CE-024",
+      "area": "Area 1: Clinical Evaluation",
+      "core_calibration_status": "Core",
+      "correct_answer": "A",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A transgender young adult reports strong acceptance from friends and coworkers but ongoing rejection from several relatives. The client says functioning varies considerably depending on which social environment the client is in. What should the therapist assess NEXT?",
+      "choices": {
+        "A": "Assess identity development, acceptance and rejection across settings, available supports, minority stress, and corresponding changes in functioning.",
+        "B": "Assess family rejection, dependence on relatives, housing stability, conflict patterns, safety concerns, and whether family interactions account for most current distress.",
+        "C": "Assess social or medical transition experiences, body-related concerns, healthcare support, and whether transition-related changes correspond with current functioning.",
+        "D": "Assess peer and workplace affirmation, community connection, coping resources, and whether supportive environments sufficiently buffer stress occurring within the family."
+      },
+      "rationales": {
+        "A": "The client's experiences differ dramatically across affirming and rejecting environments. Evaluating identity development, acceptance and rejection, available supports, minority stress, and changes in functioning directly addresses that contextual variation.",
+        "B": "Family rejection and dependence are important, but this option gives the rejecting environment disproportionate explanatory weight.",
+        "C": "Medical or social transition can be relevant for some clients, but the vignette does not establish transition status as the controlling issue.",
+        "D": "Affirming peers and coworkers are genuine protective factors, but assessing whether they sufficiently \u201cbuffer\u201d family stress narrows the evaluation toward resilience rather than the broader identity and minority-stress context."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 145,
+      "item_id": "A-CE-037",
+      "area": "Area 1: Clinical Evaluation",
+      "core_calibration_status": "Calibration",
+      "correct_answer": "B",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client under prolonged stress frequently seeks support from trusted friends but also spends entire weekends avoiding responsibilities by sleeping and watching television. The client says both strategies \u201chelp me get through it.\u201d What should the therapist assess NEXT?",
+      "choices": {
+        "A": "Classify each coping response by whether it is approach-based or avoidance-based, then compare how often each strategy is used during stress.",
+        "B": "Evaluate what each coping strategy accomplishes, its short- and longer-term effects, and whether it supports functioning or extends avoidance.",
+        "C": "Assess immediate relief, emotional intensity before and after coping, perceived control, and whether the client experiences each strategy as helpful.",
+        "D": "Review support quality, weekend routines, unfinished responsibilities, sleep, and whether demands influence coping choices."
+      },
+      "rationales": {
+        "A": "Approach versus avoidance can be a useful distinction, but categorizing strategies first does not establish whether each response is actually adaptive in this client's circumstances.",
+        "B": "The client uses both support-seeking and avoidance and experiences both as helpful. The therapist should evaluate each strategy according to its function and its short- and longer-term consequences rather than label coping solely by appearance or immediate relief.",
+        "C": "Immediate emotional relief is clinically relevant but cannot by itself establish whether a coping strategy supports longer-term functioning.",
+        "D": "Support, routines, sleep, and demands may influence coping choices, but the central unanswered question is what the coping behaviors accomplish and what consequences they produce."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 146,
+      "item_id": "A-TX5D-006-R2",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Core",
+      "correct_answer": "C",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A 42-year-old manager begins short-term therapy through an employee assistance program after a promotion. The EAP authorization and limits of information sharing are already documented. The client reports avoiding difficult conversations, doing subordinates\u2019 tasks rather than delegating, working late, then becoming resentful and less productive. Which intervention should the therapist use to improve workplace functioning?",
+      "choices": {
+        "A": "Use stress-inoculation and boundary-setting to reduce late work and prepare for difficult meetings with subordinates.",
+        "B": "Challenge beliefs that competent managers should complete tasks themselves and test those beliefs with one planned delegation.",
+        "C": "Rehearse assertive delegation in role-play and prepare coping responses for the stress that follows difficult workplace conversations.",
+        "D": "Create a workload-prioritization plan with EAP resources and set limits on after-hours work while keeping the current communication approach."
+      },
+      "rationales": {
+        "A": "Stress reduction and boundaries can reduce overload, but they do not directly change the avoidance of delegation and difficult conversations that is impairing management performance.",
+        "B": "Belief testing may help the client question over-responsibility, but the immediate functional deficit also requires practice of the interpersonal behavior the client avoids.",
+        "C": "Correct. Live rehearsal directly targets avoidance of delegation and difficult conversations, while coping preparation supports follow-through when stress rises after the interaction.",
+        "D": "Workload planning can reduce burden, but retaining the current communication approach leaves the central interpersonal management pattern unchanged."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 147,
+      "item_id": "A-TX5D-007-R3",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Core",
+      "correct_answer": "A",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A 20-year-old college student immigrated with the parents at age 10. The student reports repeated microaggressions at school and says the parents expect problems to be handled privately because \u201cfamily matters stay in the family.\u201d The student values family loyalty but also wants more independence and feels \u201ctoo American at home and too foreign at school.\u201d The parents agree to family sessions. Which intervention should the therapist use?",
+      "choices": {
+        "A": "Integrate discrimination and acculturation differences into family work while negotiating independence and family-loyalty expectations around shared priorities.",
+        "B": "Use the family\u2019s migration story to identify traditions that support the student, then build coping plans for school microaggressions around those strengths.",
+        "C": "Validate bicultural strain and practice responses to microaggressions while helping the student define how much independence is desired in specific situations.",
+        "D": "Facilitate a family discussion of cultural priorities and create respectful rules for handling disagreements about privacy, school stress, and independence."
+      },
+      "rationales": {
+        "A": "Best answer. This option integrates discrimination, acculturation differences, family loyalty, and the student's developmental push for independence, then uses those factors to guide family negotiation.",
+        "B": "The migration story and cultural traditions may provide strengths, but this approach does not directly address the family's acculturation differences or negotiate the student's independence needs.",
+        "C": "Bicultural validation and coping with microaggressions are appropriate, but the intervention remains primarily individual and does not sufficiently engage the family-level acculturation conflict.",
+        "D": "A respectful family discussion is plausible, but it underemphasizes the school discrimination and the acculturation differences linking the student's experiences across home and school."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 148,
+      "item_id": "A-CE-039",
+      "area": "Area 1: Clinical Evaluation",
+      "core_calibration_status": "Core",
+      "correct_answer": "A",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client describes functioning well during a previous period of treatment, but a prior treatment summary indicates substantial impairment during the same period. The discrepancy affects the therapist\u2019s understanding of the current presentation. What should the therapist do NEXT?",
+      "choices": {
+        "A": "With the client\u2019s authorization, review the prior record or consult the former provider about the specific discrepancy in functioning.",
+        "B": "Treat the prior record as the more reliable source because it documents functioning closer to the period being evaluated than the client\u2019s current recollection.",
+        "C": "Rely on the client\u2019s current account unless the discrepancy changes the diagnosis or creates an immediate safety concern.",
+        "D": "Seek a family member\u2019s account of the earlier period before contacting the former provider or reviewing treatment records."
+      },
+      "rationales": {
+        "A": "The therapist has identified a specific discrepancy between the client\u2019s current recollection and prior professional documentation. With appropriate authorization, focused record review or consultation with the former provider can clarify that particular question without assuming either source is automatically correct.",
+        "B": "Documentation created closer to the time may be informative, but temporal proximity does not make the former record inherently more accurate than the client.",
+        "C": "The discrepancy affects the therapist\u2019s understanding of functioning and therefore merits clarification even if it does not immediately change a diagnosis or create a safety concern.",
+        "D": "Family collateral could eventually add perspective, but professional records already relevant to the discrepancy provide a more focused next source of clarification."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 149,
+      "item_id": "A-TX5C-005",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Core",
+      "correct_answer": "B",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client with schizophrenia remains engaged in outpatient psychiatric care and reports occasional noncommand voices at night. Family members become alarmed and repeatedly ask whether the voices are getting worse; the client then retreats to a bedroom and stops interacting. There is no current safety concern. Which intervention should the therapist use?",
+      "choices": {
+        "A": "Teach grounding for voices, ask what helps, and have family members stop repeated questions when the client is stable and safe.",
+        "B": "Develop a coping plan for residual voices and coach family members to respond calmly without repeated checking that increases withdrawal.",
+        "C": "Focus family sessions on communication skills and leave management of psychotic symptoms entirely to the psychiatric provider.",
+        "D": "Help the client challenge the voice content and ask family members to provide reality-based reassurance whenever symptoms increase."
+      },
+      "rationales": {
+        "A": "Grounding may help, and reducing repeated questioning is reasonable, but simply stopping questions does not provide the family with a coordinated response when residual symptoms occur.",
+        "B": "Best answer. The intervention supports symptom management and modifies the family response that is contributing to withdrawal while remaining appropriate to ongoing outpatient psychiatric care.",
+        "C": "Communication work may help, but separating family treatment from symptom management ignores how the family\u2019s response to residual symptoms is affecting the client\u2019s interpersonal functioning.",
+        "D": "Reality-based discussion can sometimes help, but repeated family reassurance may intensify symptom monitoring and dependence rather than support a calm, consistent coping response."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 150,
+      "item_id": "A-TX5A-002-R2",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Core",
+      "correct_answer": "B",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "Parents of a 9-year-old with sensory and transition difficulties disagree sharply about discipline. One parent relies on highly structured routines; the other often changes expectations to prevent meltdowns. Both parents are exhausted, argue about each other\u2019s approach, and the child increasingly seeks a different answer from each parent. Which intervention should the therapist use to improve the parenting relationship?",
+      "choices": {
+        "A": "Map recurring parenting conflicts and have each parent practice consistent responses within separate household domains.",
+        "B": "Identify stress-driven differences and establish shared responses for recurring parenting challenges that predictably trigger conflict.",
+        "C": "Develop a joint behavior plan around the child\u2019s sensory triggers and use the same consequence sequence across both parents.",
+        "D": "Practice conflict-management skills between the parents while allowing each parent to keep an individualized discipline approach."
+      },
+      "rationales": {
+        "A": "This creates structure but preserves separate parenting systems, so the child can continue to triangulate between parents.",
+        "B": "Correct. The clinical problem is stress-amplified co-parenting inconsistency. Addressing the differences and creating shared responses directly improves the parenting relationship and reduces split responding.",
+        "C": "A sensory-informed behavior plan may help the child, but it does not directly repair the parents\u2019 conflict about how they respond.",
+        "D": "Conflict-management skills may reduce arguments, but allowing discipline to remain individualized leaves the controlling co-parenting inconsistency in place."
+      }
+    }
+  ]
+}

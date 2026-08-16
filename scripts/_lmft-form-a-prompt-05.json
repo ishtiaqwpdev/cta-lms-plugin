@@ -1,0 +1,257 @@
+{
+  "form": "A",
+  "type": "learner_facing_questions",
+  "question_range": "101-125",
+  "questions": [
+    {
+      "q_num": 101,
+      "stem": "A client's alcohol use has increased over the past year. The client has missed work, argues more frequently with a partner after drinking, and has unsuccessfully attempted to reduce use. Which assessment is MOST appropriate?",
+      "choices": {
+        "A": "Map changes in alcohol use, impaired control, attempts to cut down, and work and relationship consequences over the past year.",
+        "B": "Assess quantity, frequency, tolerance, withdrawal, morning use, and whether increasing amounts are needed for the same effect.",
+        "C": "Explore mood triggers, recent stressors, coping motives, relationship conflict, and whether use increases during emotional distress.",
+        "D": "Review partner concerns, workplace consequences, family history, prior treatment, and the client\u2019s previous attempts to change drinking."
+      }
+    },
+    {
+      "q_num": 102,
+      "stem": "A client whose parent recently died reports participating in mourning practices that several relatives criticize as \u201cdwelling on the loss.\u201d The client continues working but has withdrawn from some social activities and feels increasingly misunderstood by family members. What should the therapist assess NEXT?",
+      "choices": {
+        "A": "Compare grief intensity, duration, sleep, appetite, and functioning with common bereavement patterns to identify whether the response is unusually severe.",
+        "B": "Assess family criticism, conflict, available support, cultural expectations, and whether relatives\u2019 reactions are worsening the client\u2019s social withdrawal.",
+        "C": "Explore the meaning of the loss, cultural grieving practices, support, functional changes, and areas of conflict with family expectations.",
+        "D": "Review prior losses, coping responses, spiritual beliefs, rituals, and whether the current grief resembles or differs from earlier bereavement experiences."
+      }
+    },
+    {
+      "q_num": 103,
+      "stem": "A 41-year-old client presents with depression. After a recent antidepressant dose increase, the client became unusually energetic and slept less for several days. Further history reveals that four years earlier\u2014before taking psychiatric medication\u2014the client had an eight-day period of expansive mood, markedly reduced need for sleep, grandiosity, pressured speech, and impulsive business decisions that caused serious occupational impairment. Which diagnosis is MOST supported by the longitudinal history?",
+      "choices": {
+        "A": "Substance/medication-induced bipolar and related disorder",
+        "B": "Major depressive disorder with mixed features",
+        "C": "Bipolar I disorder",
+        "D": "Cyclothymic disorder"
+      }
+    },
+    {
+      "q_num": 104,
+      "stem": "Three months after one partner disclosed an emotional affair, the couple wants to repair the relationship. The injured partner repeatedly asks for details and checks the other partner\u2019s phone. The other partner becomes defensive and shuts down, which increases suspicion and leads to more questioning. Which intervention should the therapist use next?",
+      "choices": {
+        "A": "Set temporary transparency agreements and review whether predictable access to information reduces suspicion and repeated reassurance seeking.",
+        "B": "Explore dissatisfaction that preceded the affair and delay focused trust conversations until both partners understand the contributing relationship factors.",
+        "C": "Limit repeated discussion of the affair and emphasize current positive interactions so the couple can reduce conflict and rebuild connection.",
+        "D": "Structure focused repair conversations that address unanswered trust concerns while interrupting the accusation-withdrawal pattern that keeps the injury active."
+      }
+    },
+    {
+      "q_num": 105,
+      "stem": "A 16-year-old client with improving anxiety says a parent still checks every assignment, contacts teachers before the teen can do so, and answers questions for the teen during appointments. The teen wants more independence but worries about making mistakes. There is no current safety concern. Which intervention should the therapist use?",
+      "choices": {
+        "A": "Have the teen take over school communication immediately and ask the parent to stop monitoring assignments unless the teen requests help.",
+        "B": "Keep the current level of parent involvement while the teen practices anxiety-management skills, then reduce support after confidence improves.",
+        "C": "Explore the parent\u2019s fears about the teen becoming independent and postpone behavioral changes until both understand the source of the overinvolvement.",
+        "D": "Create graded independence tasks, define when the parent will step back, and review mistakes as practice rather than reasons to resume control over time."
+      }
+    },
+    {
+      "q_num": 106,
+      "stem": "An established client begins sending lengthy descriptions of trauma memories and relationship conflicts to the therapist's personal mobile number between sessions. The therapist previously used that number only for scheduling and has not established expectations for clinical messaging. What should the therapist do FIRST?",
+      "choices": {
+        "A": "Address the communication pattern, move clinical exchanges to an appropriate treatment channel, and establish clear response expectations after checking any immediate needs in the messages.",
+        "B": "Move the messages into the clinical record, continue responding briefly from the same number, and tell the client that detailed clinical work should occur during scheduled sessions.",
+        "C": "Ask the client to stop sending clinical material to the personal number, provide a secure messaging option, and explain that the therapist will read future messages only during business hours.",
+        "D": "Block clinical messages on the personal number, direct the client to use the emergency resources listed in the treatment agreement, and revisit between-session communication at the next appointment."
+      }
+    },
+    {
+      "q_num": 107,
+      "stem": "A client attends through an employee-assistance referral and states, \u201cI don't think I need therapy. I just need proof that I showed up.\u201d The client denies having any personal treatment goals. Which action should the therapist take FIRST?",
+      "choices": {
+        "A": "Clarify the employer\u2019s concerns, the client\u2019s agreement or disagreement, and whether work functioning is a meaningful therapy focus.",
+        "B": "Clarify documentation requirements, confidentiality limits, the client\u2019s expectations, and whether sessions should focus mainly on referral concerns.",
+        "C": "Clarify participation consequences, the client\u2019s reservations, practical concerns, and whether a short-term goal feels worth addressing now.",
+        "D": "Clarify referral requirements, the client\u2019s perspective, and whether a personally meaningful goal can coexist with mandated attendance."
+      }
+    },
+    {
+      "q_num": 108,
+      "stem": "A client reports a substantial decrease in sexual desire during the past four months. During the same period, the client started a new medication and the couple began having more frequent relationship conflict. Which assessment should the therapist conduct NEXT?",
+      "choices": {
+        "A": "Clarify the timing of desire changes relative to medication, health, relationship tension, sexual experiences, and the client\u2019s level of distress over time.",
+        "B": "Assess medication effects, other physical symptoms, sleep, energy, and whether desire changed before or after the recent treatment adjustment.",
+        "C": "Assess relationship satisfaction, conflict frequency, emotional closeness, sexual communication, and whether desire changes track periods of greater couple tension.",
+        "D": "Review prior sexual functioning, expectations about desire, cultural or relational meaning, and whether similar changes have occurred during earlier stressful periods."
+      }
+    },
+    {
+      "q_num": 109,
+      "stem": "A client had to leave an apartment unexpectedly after a major plumbing failure made it temporarily uninhabitable. During the past two weeks, the client has been staying with friends while searching for housing and reports muscle tension, irritability, difficulty sleeping, and trouble concentrating. There is no injury, trauma reexperiencing, or acute safety concern. Which intervention should the therapist use?",
+      "choices": {
+        "A": "Use stress-management treatment to restore sleep and activity routines and practice brief relaxation during predictable periods of displacement stress.",
+        "B": "Use acceptance-based treatment to reduce reactivity to housing uncertainty, plan regular social contact, and maintain flexible routines during displacement stress.",
+        "C": "Use problem-solving treatment to plan housing tasks, schedule administrative breaks, and organize daily search demands during displacement stress.",
+        "D": "Use behavioral activation to increase social support and restorative activities and review which routines improve functioning during displacement stress."
+      }
+    },
+    {
+      "q_num": 110,
+      "stem": "An adult daughter repeatedly mediates conflict between her parents and then becomes similarly overinvolved in disagreements within her own partnership. The pattern has persisted across generations and intensifies when family anxiety rises. Which treatment plan is MOST consistent with multigenerational family-systems theory?",
+      "choices": {
+        "A": "Map generational boundaries, strengthen parental leadership, and reduce interactions placing the daughter between familial subsystems.",
+        "B": "Identify the mediating sequence, prescribe tasks that interrupt it, and track whether conflict decreases consistently.",
+        "C": "Access attachment fears, shape responsive partner interactions, and reduce recurring withdrawal within the daughter\u2019s partnership.",
+        "D": "Map interlocking triangles, increase differentiation amidst family stress, and reduce reactive overfunctioning through direct contact."
+      }
+    },
+    {
+      "q_num": 111,
+      "stem": "A 17-year-old client is in therapy for longstanding body dissatisfaction. Over the past month, the client has begun skipping lunch several days a week, weighing themself repeatedly, and spending hours viewing fitness-content accounts. A recent medical visit found no acute instability, and a specialized eating-disorder consultation is already scheduled. Which intervention should the therapist use now to address the client\u2019s body-image treatment goal?",
+      "choices": {
+        "A": "Identify body features the client values and replace harsh appearance statements with balanced descriptions during daily self-observation.",
+        "B": "Map how appearance-focused media feeds restriction and build routines that broaden self-worth beyond body size and appearance comparisons.",
+        "C": "Set regular eating goals with the client and use weekly weight changes to evaluate body-image treatment progress.",
+        "D": "Explore family messages about appearance and delay behavior change until the client identifies the origin of body concerns."
+      }
+    },
+    {
+      "q_num": 112,
+      "stem": "A client with a chronic medical condition reports inconsistent adherence to treatment. Physical symptoms have worsened, family members have taken on additional caregiving responsibilities, and conflict has increased. What should the therapist clarify FIRST?",
+      "choices": {
+        "A": "Clarify the current medical regimen, adherence pattern, symptom change, daily functioning, and caregiving burden before interpreting family conflict.",
+        "B": "Clarify couple conflict, division of caregiving, illness beliefs, communication patterns, and whether relationship stress affects adherence.",
+        "C": "Clarify prior relationship functioning, caregiver stress, family roles, available support, and how conflict changed as symptoms worsened.",
+        "D": "Clarify medical history, treatment response, health literacy, access barriers, and beliefs about care before evaluating family effects."
+      }
+    },
+    {
+      "q_num": 113,
+      "stem": "A client has substantially restricted food intake for eight months and is now at significantly low body weight. The client has an intense fear of gaining weight, repeatedly checks body size, and continues restricting despite recommendations for weight restoration. Despite the low weight, the client describes the abdomen and thighs as \u201cstill too large\u201d and reports that self-worth depends heavily on maintaining strict control over weight and shape. There are no recurrent binge or purging episodes. Which diagnosis is MOST supported?",
+      "choices": {
+        "A": "Avoidant/restrictive food intake disorder",
+        "B": "Bulimia nervosa",
+        "C": "Anorexia nervosa",
+        "D": "Body dysmorphic disorder"
+      }
+    },
+    {
+      "q_num": 114,
+      "stem": "An engaged couple plans to marry next year. They repeatedly argue about how much money should remain separate, how often extended family should be involved in decisions, and what each expects marriage to change. Both remain committed to the relationship but say these conversations quickly become unproductive. Which premarital intervention should the therapist use?",
+      "choices": {
+        "A": "Clarify expectations about money, family involvement, and decision-making, then rehearse a structured negotiation process for recurring differences.",
+        "B": "Explore family-of-origin beliefs about marriage and identify how inherited expectations shape each partner\u2019s reactions during disagreements.",
+        "C": "Create a detailed household and financial plan first, then reassess commitment expectations after the couple has reduced practical uncertainty.",
+        "D": "Teach validation and reflective listening during conflict, then postpone major decisions until both partners can discuss differences with less escalation."
+      }
+    },
+    {
+      "q_num": 115,
+      "stem": "A therapist learns that an ongoing client has joined the same volunteer disaster-response committee on which the therapist coordinates team assignments. The client cannot reasonably switch committees, and the therapist will occasionally assign volunteers to tasks. Therapy has been effective. What is the therapist's BEST response?",
+      "choices": {
+        "A": "Keep both roles, arrange another coordinator for the client's assignments, document the client-role, privacy, confidentiality and power plan, and review treatment boundaries and clinical judgment if committee contact affects therapy.",
+        "B": "Discuss the overlapping roles, power and confidentiality risks, limit the therapist's committee authority over the client when feasible, set boundaries, and monitor clinical judgment.",
+        "C": "Review the dual-role, client-boundary, confidentiality, privacy and power concerns, document the client's preference about therapy, and use that preference when deciding whether the therapist keeps the coordinator role.",
+        "D": "Continue both roles, document the client-boundary, confidentiality, privacy and power plan, establish committee-only communication, and consider referral if clinical judgment concerns emerge."
+      }
+    },
+    {
+      "q_num": 116,
+      "stem": "A recently immigrated family faces possible forced separation. Family members have also experienced repeated discrimination, the parents are afraid to approach unfamiliar institutions, routines have deteriorated, and the children are becoming increasingly anxious. The family's preferred language is not English. Which intervention is MOST appropriate?",
+      "choices": {
+        "A": "Assess anxiety and family functioning, provide culturally responsive language-accessible support, and connect members with general mental-health resources.",
+        "B": "Assess practical needs and family functioning, provide culturally responsive language-accessible support, and clarify referral options without making legal predictions.",
+        "C": "Assess migration-separation history and family functioning, provide culturally responsive language-accessible support, and determine whether trauma-focused treatment is needed first.",
+        "D": "Assess discrimination and institutional mistrust, provide culturally responsive language-accessible support, and encourage use of trusted community services."
+      }
+    },
+    {
+      "q_num": 117,
+      "stem": "A client reports that friendships and romantic relationships frequently end after similar periods of escalating misunderstanding. The client says, \u201cEventually people always decide I\u2019m too much.\u201d Which assessment would BEST clarify the interpersonal pattern?",
+      "choices": {
+        "A": "Compare the most recent rupture with one earlier relationship, identifying similarities, differences, and whether the newest conflict is unusually severe.",
+        "B": "Assess personality features, emotion regulation, rejection sensitivity, interpersonal expectations, and whether stable traits may contribute to repeated relationship endings.",
+        "C": "Explore recurring sequences, expectations, communication patterns, repair attempts, and outcomes across several important friendships and romantic relationships.",
+        "D": "Review the client\u2019s longest-lasting relationships, protective behaviors, successful repairs, and conditions under which closeness has been maintained over time."
+      }
+    },
+    {
+      "q_num": 118,
+      "stem": "A client who immigrated several years ago reports discriminatory comments at work and increasing conflict with relatives whose expectations differ from the client's evolving cultural values. Which assessment approach is BEST?",
+      "choices": {
+        "A": "Explore migration history, cultural identities, workplace discrimination, family expectations, acculturation experiences, available supports, and how these factors affect current functioning.",
+        "B": "Explore workplace power dynamics, coping responses, employment alternatives, social support at work, and whether distress changes outside the occupational setting.",
+        "C": "Explore family values, intergenerational expectations, acculturation differences, relationship history, and whether family conflict was present before the current workplace problems.",
+        "D": "Explore mood and anxiety symptoms, immigration stress, available supports, and whether family or workplace difficulties are producing greater functional impairment."
+      }
+    },
+    {
+      "q_num": 119,
+      "stem": "Seven weeks after surviving a violent assault, a client reports recurrent involuntary memories and nightmares, avoids the location and conversations about the assault, and says that nowhere is safe. The client has become detached from family, has lost interest in previously valued activities, remains hypervigilant, and has persistent sleep disturbance. The symptoms substantially interfere with work and relationships. Which diagnosis is MOST supported?",
+      "choices": {
+        "A": "Posttraumatic stress disorder",
+        "B": "Acute stress disorder",
+        "C": "Panic disorder",
+        "D": "Adjustment disorder with anxiety"
+      }
+    },
+    {
+      "q_num": 120,
+      "stem": "A client in DBT describes an episode in which a delayed reply from the partner led to thoughts of abandonment, mounting anger, repeated texting, and then blocking the partner. The next day, the client regretted the exchange. There is no current safety concern. Which intervention should the therapist use next?",
+      "choices": {
+        "A": "Review the diary card, rank repeated texting as the current target, and set a measurable reduction goal for the coming week.",
+        "B": "Practice paced breathing and wise-mind attention, then plan to use those skills whenever rejection thoughts begin during future conflicts.",
+        "C": "Validate the client\u2019s sensitivity to rejection, complete a pros-and-cons exercise, and strengthen commitment to changing impulsive communication.",
+        "D": "Analyze the episode from prompting event through each link, then rehearse skills at points where the sequence could be interrupted."
+      }
+    },
+    {
+      "q_num": 121,
+      "stem": "An adult client is receiving individual psychotherapy. The client's mother pays the therapist directly for each session but is not a client and has no authorization to receive treatment information. The mother calls and asks whether therapy is helping and what the therapist thinks the client should do next. What is the therapist's BEST response?",
+      "choices": {
+        "A": "Explain that fee payment does not authorize disclosure of the client's treatment information, discuss what limited communication the client wants authorized, and document the client's decision.",
+        "B": "Tell the mother that attendance may be confirmed but confidential treatment content may not, then ask the client whether broader communication should be authorized.",
+        "C": "Give a general progress update that omits confidential session details and diagnosis, because the mother is paying for treatment.",
+        "D": "Tell the mother that no treatment information can be shared without client authorization and route future treatment questions through the client."
+      }
+    },
+    {
+      "q_num": 122,
+      "stem": "A therapist has been sleeping poorly for several weeks while caring for an ill family member. The therapist notices increasing difficulty concentrating in sessions, has forgotten two promised follow-up calls, and recently missed an important detail in a client's treatment history. What should the therapist do NEXT?",
+      "choices": {
+        "A": "Reduce high-complexity appointments, use written session checklists, and arrange administrative backup while keeping the overall clinical caseload unchanged and reviewing concentration each week.",
+        "B": "Shorten selected sessions, notify affected clients about reduced availability, and arrange follow-up coverage while monitoring concentration and missed tasks during the next several weeks.",
+        "C": "Move complex cases to earlier hours, delegate administrative work, and reduce same-day scheduling while monitoring whether the therapist can safely maintain the existing caseload.",
+        "D": "Reduce the workload to current safe capacity, arrange continuity for affected clients, and address the impairment before returning to the prior workload."
+      }
+    },
+    {
+      "q_num": 123,
+      "stem": "A client repeatedly tests partners\u2019 commitment, expects abandonment, and interprets ordinary separations as evidence that close others will disappear. These patterns are linked to inconsistent early caregiving. Which treatment plan is MOST consistent with an attachment-informed psychodynamic approach?",
+      "choices": {
+        "A": "Explore recurring fears of loss, use consistent therapeutic contact, and build reflective capacity during separations.",
+        "B": "Identify feared outcomes, test them through planned separations, and gradually reduce reassurance using behavioral experiments.",
+        "C": "Rank self-harm and relationship-testing targets, analyze behavior chains, and consistently teach distress-tolerance plus interpersonal skills.",
+        "D": "Identify exceptions to loss concerns, assess confidence in closeness, and develop strategies from helpful separations."
+      }
+    },
+    {
+      "q_num": 124,
+      "stem": "In couples therapy after one partner lost a job, that partner has become quiet and avoids discussing finances. The other partner responds with criticism: \u201cYou don\u2019t even seem to care what happens to us.\u201d As the therapist slows the exchange, the critical partner identifies fear about losing the home, while the withdrawn partner describes shame about feeling like a failure. The therapist is using emotionally focused therapy. Which intervention should the therapist use next?",
+      "choices": {
+        "A": "Map the criticism-withdrawal cycle and reframe the recurring interaction as their shared attachment problem rather than either partner\u2019s personal defect.",
+        "B": "Deepen each partner\u2019s fear and shame, then facilitate direct expressions of those vulnerable emotions and attachment needs to the other partner.",
+        "C": "Heighten the critical partner\u2019s anger and the withdrawn partner\u2019s need for distance so both can express the positions that organize the recurring cycle.",
+        "D": "Validate both partners\u2019 distress and ask each to identify one supportive response they can practice together when financial conversations become emotionally difficult."
+      }
+    },
+    {
+      "q_num": 125,
+      "stem": "A high-school student with a history of strong grades has experienced a substantial academic decline during the semester following a family relocation. The student says, \u201cI just can't get myself organized here.\u201d What should the therapist evaluate FIRST?",
+      "choices": {
+        "A": "Compare current and prior academic functioning, timing of the decline, school-transition demands, peer context, and organizational difficulties.",
+        "B": "Assess attention and executive history, earlier school performance, task completion, distractibility, and whether similar problems predated relocation.",
+        "C": "Assess mood, anxiety, sleep, social adjustment, family stress, and whether emotional changes began around the academic decline.",
+        "D": "Compare teacher reports, course demands, attendance, assignment completion, and performance across subjects since the student entered the new school."
+      }
+    }
+  ]
+}

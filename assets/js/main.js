@@ -2948,8 +2948,7 @@
     var courseId = app.getAttribute("data-course-id");
     var quizId = app.getAttribute("data-quiz-id");
     var attemptId = parseInt(app.getAttribute("data-attempt-id"), 10) || 0;
-    // Quizzes are untimed -- never start a countdown, even if legacy markup has a limit.
-    var timeLimitMins = 0;
+    var timeLimitMins = parseInt(app.getAttribute("data-time-limit"), 10) || 0;
     var passingScore = parseInt(app.getAttribute("data-passing-score"), 10) || 70;
     var questionCount = parseInt(app.getAttribute("data-question-count"), 10) || 0;
     var isExamPrep = app.getAttribute("data-exam-prep") === "1";
@@ -2963,7 +2962,22 @@
     var saveQueued = false;
     var submissionInFlight = false;
 
-    if (timerEl) {
+    function syncTimerMetadata(data) {
+      if (!data) {
+        return;
+      }
+
+      if (data.time_limit_mins) {
+        timeLimitMins = parseInt(data.time_limit_mins, 10) || 0;
+        app.setAttribute("data-time-limit", String(timeLimitMins));
+      }
+
+      if (data.attempt_started_at) {
+        app.setAttribute("data-attempt-started-at", String(data.attempt_started_at));
+      }
+    }
+
+    if (timerEl && (!timeLimitMins || timeLimitMins <= 0)) {
       timerEl.hidden = true;
       timerEl.setAttribute("aria-hidden", "true");
     }
@@ -2992,9 +3006,40 @@
     }
 
     function formatTime(seconds) {
-      var mins = Math.floor(seconds / 60);
+      var hrs = Math.floor(seconds / 3600);
+      var mins = Math.floor((seconds % 3600) / 60);
       var secs = seconds % 60;
+
+      if (hrs > 0) {
+        return (
+          String(hrs) +
+          ":" +
+          String(mins).padStart(2, "0") +
+          ":" +
+          String(secs).padStart(2, "0")
+        );
+      }
+
       return String(mins).padStart(2, "0") + ":" + String(secs).padStart(2, "0");
+    }
+
+    function getSecondsRemaining() {
+      if (!timeLimitMins || timeLimitMins <= 0) {
+        return 0;
+      }
+
+      var totalSeconds = timeLimitMins * 60;
+      var startedAt = app.getAttribute("data-attempt-started-at");
+
+      if (startedAt) {
+        var startedMs = Date.parse(String(startedAt).replace(" ", "T"));
+        if (!isNaN(startedMs)) {
+          var elapsed = Math.floor((Date.now() - startedMs) / 1000);
+          return Math.max(0, totalSeconds - elapsed);
+        }
+      }
+
+      return totalSeconds;
     }
 
     function stopTimer() {
@@ -3005,12 +3050,46 @@
     }
 
     function startTimer() {
-      // Intentionally disabled: course quizzes have no time limit.
       stopTimer();
-      if (timerEl) {
-        timerEl.hidden = true;
-        timerEl.textContent = "";
+
+      if (!timeLimitMins || timeLimitMins <= 0 || !timerEl) {
+        if (timerEl) {
+          timerEl.hidden = true;
+          timerEl.textContent = "";
+          timerEl.classList.remove("cta-quiz-timer--warning");
+        }
+        return;
       }
+
+      secondsRemaining = getSecondsRemaining();
+
+      if (secondsRemaining <= 0) {
+        timerEl.hidden = false;
+        timerEl.setAttribute("aria-hidden", "false");
+        timerEl.textContent = "00:00";
+        timerEl.classList.add("cta-quiz-timer--warning");
+        submitQuiz(true);
+        return;
+      }
+
+      function tick() {
+        if (secondsRemaining <= 0) {
+          stopTimer();
+          timerEl.textContent = "00:00";
+          timerEl.classList.add("cta-quiz-timer--warning");
+          submitQuiz(true);
+          return;
+        }
+
+        timerEl.hidden = false;
+        timerEl.setAttribute("aria-hidden", "false");
+        timerEl.textContent = formatTime(secondsRemaining);
+        timerEl.classList.toggle("cta-quiz-timer--warning", secondsRemaining <= 300);
+        secondsRemaining -= 1;
+      }
+
+      tick();
+      timerInterval = window.setInterval(tick, 1000);
     }
 
     function countAnswered() {
@@ -3139,9 +3218,9 @@
           var input = optionEl.querySelector('input[type="radio"]');
           optionEl.classList.remove("cta-quiz-option--correct", "cta-quiz-option--wrong");
 
-          if (input && input.value === item.correct_option) {
+          if (input && item.correct_option && input.value === item.correct_option) {
             optionEl.classList.add("cta-quiz-option--correct");
-          } else if (input && input.checked && input.value !== item.correct_option) {
+          } else if (input && input.checked && item.correct_option && input.value !== item.correct_option) {
             optionEl.classList.add("cta-quiz-option--wrong");
           }
         });
@@ -3153,9 +3232,11 @@
         if (feedback) {
           var html = item.is_correct
             ? "<p class=\"cta-quiz-feedback cta-quiz-feedback--correct\">Correct.</p>"
-            : "<p class=\"cta-quiz-feedback cta-quiz-feedback--wrong\">Incorrect. Correct answer: " +
-              String(item.correct_option).toUpperCase() +
-              ".</p>";
+            : item.correct_option
+              ? "<p class=\"cta-quiz-feedback cta-quiz-feedback--wrong\">Incorrect. Correct answer: " +
+                String(item.correct_option).toUpperCase() +
+                ".</p>"
+              : "<p class=\"cta-quiz-feedback cta-quiz-feedback--wrong\">Incorrect.</p>";
 
           if (item.explanation) {
             html +=
@@ -3423,6 +3504,7 @@
 
             attemptId = response.data.attempt_id;
             app.setAttribute("data-attempt-id", String(attemptId));
+            syncTimerMetadata(response.data);
 
             if (response.data.question_count) {
               questionCount = parseInt(response.data.question_count, 10) || questionCount;
@@ -3440,6 +3522,7 @@
             answeredCount = 0;
             updateAnswerCounter();
             showPanel("questions");
+            startTimer();
           } catch (err) {
             if (window.console && console.error) {
               console.error("cta_start_quiz render error", err);

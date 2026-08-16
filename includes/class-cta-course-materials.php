@@ -116,6 +116,10 @@ class CTA_Course_Materials {
 			return false;
 		}
 
+		if ( self::is_archived_resource( $resource ) ) {
+			return false;
+		}
+
 		$course_id  = (int) $resource->course_id;
 		$enrollment = class_exists( 'CTA_Database' )
 			? CTA_Database::get_user_enrollment( $user_id, $course_id )
@@ -1045,6 +1049,10 @@ class CTA_Course_Materials {
 			'/quiz-seeds/admin-only/',
 			'quiz-seeds/admin-only/',
 			'suicide-risk-final-exam-answer-key.php',
+			'lmft-clinical-form-a-answer-key.php',
+			'lmft-clinical-form-a-answer-key-',
+			'lmft-clinical-form-b-answer-key.php',
+			'lmft-clinical-form-b-answer-key-',
 			'/chapter-tests-admin/',
 			'chapter-tests-admin/',
 			'lms_admin_only',
@@ -1696,9 +1704,32 @@ class CTA_Course_Materials {
 			if ( self::is_admin_restricted_source_path( $path_bits ) ) {
 				continue;
 			}
+			if ( self::is_archived_resource( $resource ) ) {
+				continue;
+			}
 			$out[] = $resource;
 		}
 		return $out;
+	}
+
+	/**
+	 * Whether a downloadable resource has been flagged as archived for learners.
+	 *
+	 * @param object|null $resource Resource row.
+	 * @return bool
+	 */
+	public static function is_archived_resource( $resource ) {
+		if ( ! $resource ) {
+			return false;
+		}
+
+		if ( class_exists( 'CTA_Lmft_Clinical_Legacy_Forms_Archive' )
+			&& CTA_Lmft_Clinical_Legacy_Forms_Archive::is_archived_resource( $resource ) ) {
+			return true;
+		}
+
+		$title = trim( (string) ( $resource->title ?? '' ) );
+		return 0 === stripos( $title, '[archived]' );
 	}
 
 	/**

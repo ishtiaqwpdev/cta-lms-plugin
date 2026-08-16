@@ -30,6 +30,7 @@ class CTA_Lmft_Clinical_Sync {
 	const SUGGESTED_ACCESS_MONTHS  = 6;
 	const LIVE_PRICE               = 249.00;
 	const ACCESS_MONTHS_DB         = 6;
+	const FORM_TIME_LIMIT_MINS     = 240;
 
 	/**
 	 * Find the LMFT Clinical course by slug or title (current or legacy).
@@ -282,6 +283,14 @@ class CTA_Lmft_Clinical_Sync {
 		foreach ( self::get_material_map() as $item ) {
 			$title       = sanitize_text_field( (string) $item['title'] );
 			$rel         = ltrim( str_replace( '\\', '/', (string) $item['file'] ), '/' );
+
+			if ( class_exists( 'CTA_Lmft_Clinical_Legacy_Forms_Archive' )
+				&& CTA_Lmft_Clinical_Legacy_Forms_Archive::is_legacy_forms_archived( $course_id )
+				&& CTA_Lmft_Clinical_Legacy_Forms_Archive::resource_path_is_legacy_form( $rel . ' ' . $title ) ) {
+				++$order_index;
+				continue;
+			}
+
 			$source      = CTA_PLUGIN_DIR . self::MATERIALS_REL . $rel;
 			$module_id   = 0;
 			$is_practice = ! empty( $item['is_practice_test'] ) ? 1 : 0;
@@ -321,6 +330,15 @@ class CTA_Lmft_Clinical_Sync {
 			$existing_id = self::find_resource_id_by_title( $course_id, $title );
 
 			if ( $existing_id ) {
+				$existing_row = class_exists( 'CTA_Database' )
+					? CTA_Database::get_downloadable_resource( $existing_id )
+					: null;
+				if ( $existing_row
+					&& class_exists( 'CTA_Lmft_Clinical_Legacy_Forms_Archive' )
+					&& CTA_Lmft_Clinical_Legacy_Forms_Archive::is_archived_resource( $existing_row ) ) {
+					++$order_index;
+					continue;
+				}
 				$update = array(
 					'module_id'              => $module_id,
 					'order_index'            => $order_index,
@@ -401,6 +419,19 @@ class CTA_Lmft_Clinical_Sync {
 			);
 		}
 
+		if ( class_exists( 'CTA_Lmft_Clinical_Legacy_Forms_Archive' )
+			&& CTA_Lmft_Clinical_Legacy_Forms_Archive::is_legacy_forms_archived( $course_id ) ) {
+			$ids = CTA_Lmft_Clinical_Legacy_Forms_Archive::get_archived_quiz_ids( $course_id );
+			return array(
+				'ok'          => true,
+				'form_a'      => (int) ( $ids['form_a'] ?? 0 ),
+				'form_b'      => (int) ( $ids['form_b'] ?? 0 ),
+				'questions_a' => self::count_quiz_questions( (int) ( $ids['form_a'] ?? 0 ) ),
+				'questions_b' => self::count_quiz_questions( (int) ( $ids['form_b'] ?? 0 ) ),
+				'message'     => 'legacy_forms_archived',
+			);
+		}
+
 		$questions_a = self::load_form_questions( 'a' );
 		$questions_b = self::load_form_questions( 'b' );
 
@@ -448,6 +479,51 @@ class CTA_Lmft_Clinical_Sync {
 			'questions_a' => 150,
 			'questions_b' => 150,
 			'message'     => 'synced',
+		);
+	}
+
+	/**
+	 * Apply the 240-minute comprehensive simulation timer to Form A and Form B.
+	 *
+	 * @return array{ok:bool,course_id:int,updated:int,message:string}
+	 */
+	public static function sync_comprehensive_simulation_time_limits() {
+		global $wpdb;
+
+		$course = self::find_course();
+		if ( ! $course ) {
+			return array(
+				'ok'        => false,
+				'course_id' => 0,
+				'updated'   => 0,
+				'message'   => 'course_not_found',
+			);
+		}
+
+		$course_id = (int) $course->id;
+		$limit     = self::FORM_TIME_LIMIT_MINS;
+		if ( class_exists( 'CTA_Lmft_Clinical_Form_A_Sync' ) ) {
+			$limit = (int) CTA_Lmft_Clinical_Form_A_Sync::TIME_LIMIT_MINS;
+		}
+
+		$table = $wpdb->prefix . 'cta_quizzes';
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$updated = $wpdb->query(
+			$wpdb->prepare(
+				"UPDATE {$table}
+				SET time_limit_mins = %d
+				WHERE course_id = %d
+					AND quiz_type IN ('form_a', 'form_b')",
+				$limit,
+				$course_id
+			)
+		);
+
+		return array(
+			'ok'        => false !== $updated,
+			'course_id' => $course_id,
+			'updated'   => false === $updated ? 0 : (int) $updated,
+			'message'   => false === $updated ? 'update_failed' : 'synced',
 		);
 	}
 
@@ -981,6 +1057,19 @@ class CTA_Lmft_Clinical_Sync {
 		}
 
 		return $quiz_id;
+	}
+
+	/**
+	 * @param int $quiz_id Quiz ID.
+	 * @return int
+	 */
+	private static function count_quiz_questions( $quiz_id ) {
+		$quiz_id = absint( $quiz_id );
+		if ( ! $quiz_id || ! class_exists( 'CTA_Database' ) ) {
+			return 0;
+		}
+
+		return count( CTA_Database::get_quiz_questions( $quiz_id ) );
 	}
 
 	/**

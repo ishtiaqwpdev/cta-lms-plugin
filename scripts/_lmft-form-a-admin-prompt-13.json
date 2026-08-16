@@ -1,0 +1,557 @@
+{
+  "form": "A",
+  "type": "ADMIN_ONLY_answer_key_and_rationales",
+  "question_range": "1-25",
+  "records": [
+    {
+      "form": "A",
+      "q_num": 1,
+      "item_id": "A-DI-014",
+      "area": "Area 2: Developing a Diagnostic Impression",
+      "core_calibration_status": "Core",
+      "correct_answer": "A",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A transgender man reports for ten months a marked incongruence between his experienced gender and sex characteristics, intense distress about his chest and menstrual characteristics, and a persistent desire to be rid of those characteristics. The distress remains significant in affirming environments and interferes with work and social functioning. Which diagnosis is MOST supported?",
+      "choices": {
+        "A": "Gender dysphoria",
+        "B": "Adjustment disorder",
+        "C": "Major depressive disorder",
+        "D": "Body dysmorphic disorder"
+      },
+      "rationales": {
+        "A": "The client has more than six months of marked gender incongruence, distress regarding sex characteristics, a persistent desire to be rid of those characteristics, and clinically significant occupational/social impairment. APA requires at least two manifestations of marked incongruence for adolescents/adults, persistence of at least six months, and clinically significant distress or impairment.",
+        "B": "The distress is not merely a general reaction to an external stressor; it remains specifically related to sex characteristics even in affirming environments.",
+        "C": "Major depression does not adequately explain the persistent incongruence-specific distress established in the stem.",
+        "D": "Body dysmorphic disorder concerns a perceived defect in appearance; the concern here is specifically gender incongruence rather than a belief that a body feature is defective."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 2,
+      "item_id": "A-CE-036",
+      "area": "Area 1: Clinical Evaluation",
+      "core_calibration_status": "Core",
+      "correct_answer": "D",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client lost a job two months ago and reports understandable distress about finances. The client has maintained a daily routine, continues exercising, remains connected with friends and family, and has begun exploring new employment options. Which assessment would be MOST useful?",
+      "choices": {
+        "A": "Assess current distress, sleep, concentration, financial worry, and whether symptoms are beginning to impair work-seeking or self-care.",
+        "B": "Assess social support, frequency of contact, practical assistance, and whether relationships remain available when the client needs help.",
+        "C": "Assess coping behaviors, job-search activity, exercise, daily structure, and whether routines are sustaining or depleting the client\u2019s functioning.",
+        "D": "Assess how routines, support, problem-solving, and personal strengths are helping maintain functioning while identifying areas that remain vulnerable over time."
+      },
+      "rationales": {
+        "A": "Distress and impairment should be assessed, but giving them primary emphasis can obscure the protective processes specifically demonstrated in the vignette.",
+        "B": "Social support is an important protective factor, but resilience cannot be evaluated from interpersonal support alone.",
+        "C": "Daily structure, exercise, and job-search behavior are relevant coping behaviors, but the option does not adequately integrate interpersonal and personal protective resources or remaining vulnerabilities.",
+        "D": "The client is distressed but maintaining substantial functioning through routines, support, problem-solving, and personal strengths. The appropriate evaluation is to determine how those protective processes are working while also identifying areas that remain vulnerable."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 3,
+      "item_id": "A-CE-004",
+      "area": "Area 1: Clinical Evaluation",
+      "core_calibration_status": "Calibration",
+      "correct_answer": "A",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A couple requests therapy for \u201ccommunication problems.\u201d One partner describes repeated arguments about spending, while the other says the more important problem is feeling emotionally disconnected even when the couple is not arguing. What should the therapist do NEXT?",
+      "choices": {
+        "A": "Ask each partner for a recent interaction, what it meant, and what change would make therapy useful.",
+        "B": "Ask each partner about conflict frequency, escalation patterns, and which disagreements feel most damaging to the relationship.",
+        "C": "Ask each partner about family-of-origin communication, learned conflict roles, and similarities between past and current interactions.",
+        "D": "Ask each partner about current stress, mood, and coping to determine how individual factors affect communication."
+      },
+      "rationales": {
+        "A": "\u201cCommunication problems\u201d means different things to the two partners. Asking for concrete examples, subjective meaning, and desired change operationalizes the presenting concern before the therapist moves into explanations or interventions.",
+        "B": "Conflict frequency and escalation are relevant, but this option begins defining the problem around conflict mechanics when one partner has already described emotional disconnection outside arguments.",
+        "C": "Family-of-origin communication may later inform case formulation, but it does not first establish what each partner means by the current presenting problem.",
+        "D": "Individual stress and mood can influence communication, but assessing them first risks reframing a relational presentation as primarily individual before the couple's concerns have been clarified."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 4,
+      "item_id": "A-CR-012-R1",
+      "area": "Area 3: Managing Crisis Situations",
+      "core_calibration_status": "Core",
+      "correct_answer": "B",
+      "source_status": "CONTROLLED SUCCESSOR",
+      "stem": "An 8-year-old witnessed serious violence at school two weeks ago. Since then, the child has nightmares, asks repeatedly whether school is safe, becomes distressed when separated from a caregiver, and has difficulty returning to normal bedtime and school routines. The caregiver is calm and supportive. Which response is BEST?",
+      "choices": {
+        "A": "Use age-appropriate coping support, involve the caregiver in planning, and coordinate gradual school reentry while monitoring symptoms.",
+        "B": "Use age-appropriate reassurance and coping, involve the caregiver in support, and restore predictable routines while monitoring symptoms closely.",
+        "C": "Use structured therapeutic play and coping, involve the caregiver in support, and coordinate school planning around trauma reminders during recovery.",
+        "D": "Use clear behavioral expectations and coping, involve the caregiver in support, and restore school routines while monitoring regression."
+      },
+      "rationales": {
+        "A": "School reentry planning may be useful, but the child's broader crisis picture includes separation fears, nightmares, and disrupted home routines; restoration of predictable routines and safety is the more immediate developmental priority.",
+        "B": "A young child after school violence benefits from age-appropriate reassurance and coping, active caregiver support, predictable routines, and monitoring of recovery and functioning.",
+        "C": "Therapeutic play can be useful, but organizing early care around trauma reminders is less direct than restoring safety, caregiver support, and ordinary routines.",
+        "D": "Behavioral expectations may help structure routines, but framing regression primarily through behavior management underemphasizes the child's developmentally understandable trauma response."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 5,
+      "item_id": "A-TX5E-003-R1",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Core",
+      "correct_answer": "D",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A 32-year-old client has had almost no direct contact with the father for three years after repeated family conflict. The client still receives frequent updates through a sibling, asks the sibling to pass messages back to the father, and becomes highly anxious whenever direct contact is considered. The therapist is using a multigenerational family systems approach. Which intervention should the therapist use?",
+      "choices": {
+        "A": "Map recurring cutoff and triangulation patterns, identify when anxiety pulls the sibling into communication, and coach the client to observe that process.",
+        "B": "Coach the client to rehearse an I-position in session, practice regulating anxiety, and prepare for direct contact with the father.",
+        "C": "Map the sibling-mediated communication pattern, coach observation of family-system reactions, clarify how cutoff is maintained across relationships, and compare what changes when messages no longer pass through the sibling.",
+        "D": "Coach the client to state an I-position directly to the father, maintain self-definition during the exchange, and end the sibling\u2019s intermediary role in their relationship."
+      },
+      "rationales": {
+        "A": "Mapping the family pattern can increase awareness, but it keeps treatment at the observation level rather than increasing differentiated direct contact.",
+        "B": "Practicing an I-position is useful preparation, but the sibling remains part of the communication system and direct contact has not yet replaced the triangle.",
+        "C": "Ending messenger behavior and observing systemic reactions addresses triangulation, but it does not add the differentiated direct communication needed to work with emotional cutoff.",
+        "D": "Best answer. Directly stating an I-position while maintaining self-definition and ending sibling mediation combines differentiation with reduction of cutoff and triangulation."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 6,
+      "item_id": "A-TX5F-004-R1",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Core",
+      "correct_answer": "D",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client with chronic pain is receiving psychotherapy from the LMFT while also seeing a psychiatrist and a pain specialist. Current releases permit care coordination. The psychiatrist has encouraged greater behavioral activation, while the pain specialist recently advised reducing activity during a flare. The client is confused by the apparently conflicting recommendations and has stopped following either plan. Which coordination step should the therapist take?",
+      "choices": {
+        "A": "Coordinate with the psychiatrist and pain specialist separately, compare their explanations, review how each applies to the current flare, and plan an activity approach for the client from both recommendations.",
+        "B": "Coordinate with the psychiatrist and pain specialist by obtaining written activity parameters, then select the recommendation that best fits the client\u2019s current flare.",
+        "C": "Send both providers a shared case summary and integrate their separate written recommendations into psychotherapy.",
+        "D": "Convene both providers for a joint reconciliation of the activity recommendations and a shared set of treatment parameters."
+      },
+      "rationales": {
+        "A": "Separate consultations may clarify each provider's rationale, but the therapist would still be left to reconcile recommendations that should be coordinated among the treating providers.",
+        "B": "Selecting whichever recommendation seems to fit the current flare does not resolve the interdisciplinary conflict and places the therapist in the role of choosing between medical recommendations.",
+        "C": "A shared summary creates common information, but separate written replies can preserve the disagreement and leave integration to the therapist.",
+        "D": "Best answer. Bringing both providers into a joint reconciliation allows the apparently conflicting recommendations to be clarified and translated into shared treatment parameters."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 7,
+      "item_id": "A-CE-041",
+      "area": "Area 1: Clinical Evaluation",
+      "core_calibration_status": "Core",
+      "correct_answer": "B",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "An older adult reports gradually worsening difficulty managing finances and keeping track of complex appointments. Family members describe a similar decline, while a recent general medical evaluation did not identify an acute explanation. Which referral is MOST appropriate?",
+      "choices": {
+        "A": "Refer for psychiatric evaluation to determine whether an emerging mood or psychotic disorder is contributing to the cognitive complaints.",
+        "B": "Refer for specialized psychological or neurocognitive testing to clarify the pattern, severity, and functional significance of the client\u2019s cognitive difficulties.",
+        "C": "Repeat brief cognitive screening over several sessions and refer only if the scores show continued decline across time.",
+        "D": "Refer back to primary care for another general medical evaluation before considering specialized cognitive or psychological testing."
+      },
+      "rationales": {
+        "A": "Psychiatric evaluation could be indicated if prominent mood, psychotic, or other psychiatric features suggested that direction, but those features are not established here.",
+        "B": "Gradually worsening cognitive difficulties are affecting complex daily functioning, and a general medical evaluation has not resolved the concern. Specialized psychological or neurocognitive testing can characterize the pattern, severity, and functional implications of the deficits more precisely.",
+        "C": "Repeated brief screening may document change but would delay the more comprehensive specialized assessment already supported by progressive functional decline.",
+        "D": "Returning for another general medical evaluation repeats an assessment level that has already failed to clarify the specific cognitive concern."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 8,
+      "item_id": "A-CP-006-R2",
+      "area": "Area 4: Case Conceptualization and Planning",
+      "core_calibration_status": "Core",
+      "correct_answer": "D",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A clinic is designing a ten-week closed psychotherapy group for current caregivers of relatives with moderate-to-advanced dementia. Participants must be stable enough for outpatient group treatment; acute grief or crisis needs are handled separately. The goals are to reduce isolation, strengthen coping, practice communication and boundary strategies, and build practical caregiving skills. Which group framework is MOST appropriate?",
+      "choices": {
+        "A": "Use an open monthly support group for varied progressive-illness caregivers; offer rotating topics and peer discussion; repeat orientation for new members.",
+        "B": "Use a closed ten-week dementia-caregiver education group; provide fixed lessons and home practice; screen for caregiving status and overall clinical readiness.",
+        "C": "Use a closed ten-week grief group for current and bereaved caregivers; provide emotional processing and peer support; screen for general stability.",
+        "D": "Use a closed ten-week therapy group; combine peer support with practical skills; screen current dementia caregivers for clinical fit and stability."
+      },
+      "rationales": {
+        "A": "An open monthly group for caregivers of varied progressive illnesses may provide useful peer support, but it does not match the specified population, closed format, time period, or planned psychotherapy purpose.",
+        "B": "This is the strongest distractor. It matches the population, duration, and practical-skill goals, but it is primarily an education class with fixed lessons and home practice. It does not provide the peer-process and clinically screened psychotherapy structure needed for the stated isolation, coping, communication, and boundary outcomes.",
+        "C": "Combining current and bereaved caregivers changes both the population and principal clinical focus. A grief-centered group would not provide the coherent caregiver-adjustment and practical-skills framework specified.",
+        "D": "The requested service is a closed, time-limited psychotherapy group for current dementia caregivers. Its goals combine relational support, coping, communication and boundary work, and practical caregiving skills. D matches the intended population, includes a psychotherapy process rather than education alone, and screens for clinical fit and stability."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 9,
+      "item_id": "A-CE-027",
+      "area": "Area 1: Clinical Evaluation",
+      "core_calibration_status": "Core",
+      "correct_answer": "D",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "During couples therapy, one partner repeatedly presses for immediate discussion whenever conflict occurs. The other becomes quieter, gives shorter responses, and eventually leaves the room. The first partner then follows and increases efforts to obtain a response. What should the therapist assess NEXT?",
+      "choices": {
+        "A": "Determine which partner usually initiates conflict, what topics trigger arguments, and whether one person\u2019s behavior reliably predicts escalation.",
+        "B": "Explore childhood relationship models, attachment expectations, prior partners, conflict responses, repair patterns, and whether similar dynamics appeared in earlier relationships.",
+        "C": "Assess each partner\u2019s emotion regulation, conflict tolerance, communication skills, and whether individual vulnerabilities contribute to the recurring relationship pattern over time.",
+        "D": "Track a recent disagreement step by step, including each partner\u2019s response, interpretation, escalation, and effect on the other partner."
+      },
+      "rationales": {
+        "A": "focuses on identifying who starts conflict, which can obscure reciprocal maintenance.",
+        "B": "may eventually illuminate formative influences but moves to historical explanation before establishing the current pattern.",
+        "C": "evaluates individual vulnerabilities but similarly risks locating the problem within the partners rather than first clarifying their interaction.",
+        "D": "The vignette presents a reciprocal pursue-withdraw pattern. Tracking a recent disagreement sequentially allows the therapist to identify each partner\u2019s behavior, interpretation, escalation, and response to the other rather than assigning the pattern to one individual."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 10,
+      "item_id": "A-TX5C-006",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Core",
+      "correct_answer": "C",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "An 11-year-old with ADHD is medically stable and receives medication management from a pediatrician. Homework often turns into a 90-minute conflict: the parent gives repeated verbal reminders, the child becomes frustrated and leaves the table, and both end the evening angry. Which intervention should the therapist use?",
+      "choices": {
+        "A": "Divide assignments into child-chosen order, use a timer for sustained work, and provide one parent prompt when attention drifts.",
+        "B": "Move homework to a low-distraction space, set one work interval, and have the parent give feedback at the end of the interval.",
+        "C": "Break homework into short work intervals with a visible sequence, and have the parent use one neutral cue instead of repeated reminders.",
+        "D": "Use a point system for completed assignments, let the child record each finished task, and provide reinforcement after the homework period."
+      },
+      "rationales": {
+        "A": "Choice and a timer can support engagement, but one sustained work period does not adequately match the child\u2019s attentional difficulties and may leave the repeated-reminder pattern intact.",
+        "B": "Reducing distraction may help, but extended independent work does not directly support task sequencing or replace the repeated verbal prompting that is escalating parent-child conflict.",
+        "C": "Best answer. Short work intervals and a visible sequence support attention and executive functioning, while one neutral cue replaces repeated reminders that contribute to frustration and conflict.",
+        "D": "A reward system can increase motivation, but the stem primarily reflects task-organization and prompting difficulties rather than a simple lack of reinforcement."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 11,
+      "item_id": "A-CP-010",
+      "area": "Area 4: Case Conceptualization and Planning",
+      "core_calibration_status": "Calibration",
+      "correct_answer": "B",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "Acute danger has been stabilized, but a client continues to experience recurrent self-injury urges, rapid emotional escalation, impulsive behavior, and treatment-interfering absences. Which treatment plan is MOST consistent with dialectical behavior therapy?",
+      "choices": {
+        "A": "Sequence trauma memories during exposure, teach grounding strategies, and track symptoms to regulate processing intensity.",
+        "B": "Rank priority behaviors, analyze chains leading to self-injury/absence, and teach regulation plus crisis-survival skills.",
+        "C": "Identify rigid demands/global self-ratings, dispute them directly, and rehearse flexible beliefs during emotional activation.",
+        "D": "Explore relational expectations/unconscious conflict, examine the therapy relationship, and interpret the function of self-injury."
+      },
+      "rationales": {
+        "A": "Trauma-memory exposure may eventually be appropriate, but it places trauma processing ahead of current dangerous and treatment-interfering behaviors.",
+        "B": "The case includes recurrent self-injury urges, rapid emotional escalation, impulsive behavior, and treatment-interfering absences. B organizes treatment around a priority hierarchy, uses behavioral chain analysis to understand the problem behaviors, and develops regulation and crisis-survival skills. These are defining DBT planning structures.",
+        "C": "Disputing rigid demands and global self-ratings is REBT planning. It does not provide the behavioral hierarchy and skills-acquisition structure indicated here.",
+        "D": "Examining unconscious conflict and relational expectations is psychodynamic. Insight may be useful, but it does not directly organize the immediate behavioral priorities."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 12,
+      "item_id": "A-CE-012-R1",
+      "area": "Area 1: Clinical Evaluation",
+      "core_calibration_status": "Core",
+      "correct_answer": "B",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client has a history of psychiatric hospitalization, several medication changes, and multiple periods of outpatient therapy. The client now reports symptoms similar to those experienced several years ago. Which information would be MOST useful for understanding the mental-health history?",
+      "choices": {
+        "A": "Organize prior diagnoses, hospital admissions, treating clinicians, medications, and levels of care to compare earlier treatment periods.",
+        "B": "Reconstruct symptom onset, severity, treatment changes, response, remission or relapse, and functional change across the prior episodes.",
+        "C": "Review hospitalization triggers, discharge plans, post-discharge adherence, support availability, and whether baseline functioning returned afterward.",
+        "D": "Review medication trials, side effects, adherence, reasons for stopping, and which symptoms improved or persisted during each treatment period."
+      },
+      "rationales": {
+        "A": "Diagnoses, hospitalizations, clinicians, and medications provide historical data but do not establish how symptoms and functioning changed in relation to treatment.",
+        "B": "A useful mental-health treatment history requires understanding what happened over time\u2014symptom onset, severity, intervention, response, recurrence or remission, and functional change.",
+        "C": "The hospitalization period is important, but focusing primarily on the most intensive episode produces an incomplete longitudinal history.",
+        "D": "Medication response is an important component, but it captures only one part of a history that also includes psychotherapy, hospitalization, symptom course, and functioning."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 13,
+      "item_id": "A-CR-007-R1",
+      "area": "Area 3: Managing Crisis Situations",
+      "core_calibration_status": "Core",
+      "correct_answer": "C",
+      "source_status": "CONTROLLED SUCCESSOR",
+      "stem": "A 79-year-old client who depends on an adult caregiver arrives with untreated medical needs and reports frequently going without food and prescribed medication. The client also states that the caregiver has been withdrawing money from the client's account for personal purchases. The client says, \u201cPlease don't tell anyone until I can prove exactly what happened.\u201d What should the therapist do FIRST?",
+      "choices": {
+        "A": "Address immediate safety and health needs, obtain corroborating financial and medical records, and report if additional evidence supports abuse or neglect.",
+        "B": "Address immediate safety and health needs, clarify the concerns directly with the caregiver, and report if the explanation does not resolve the suspicion.",
+        "C": "Address immediate safety and health needs, make the required protective report promptly based on reasonable suspicion, and coordinate appropriate client support.",
+        "D": "Address immediate safety and health needs, arrange alternative care and practical resources, and allow the client to decide whether authorities are contacted."
+      },
+      "rationales": {
+        "A": "The therapist should address immediate health needs, but waiting for corroborating records imposes a proof threshold that is higher than the reporting standard and delays the protective response.",
+        "B": "Confronting the caregiver before reporting places investigation ahead of the mandated protective action and could also complicate the client's safety.",
+        "C": "The presentation provides reasonable suspicion of neglect and possible financial abuse along with current health and safety concerns. The appropriate response is to address those needs and make the protective report without waiting for definitive proof.",
+        "D": "Alternative care and resources may be necessary, but a mandated reporting duty is not optional based solely on the client's preference once the reporting threshold is met."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 14,
+      "item_id": "A-CR-004-R1",
+      "area": "Area 3: Managing Crisis Situations",
+      "core_calibration_status": "Core",
+      "correct_answer": "A",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client states an intention to die tonight, describes a specific suicide plan, has immediate access to the intended means, has already made preparations, and says, \u201cI don't think I can stop myself once I leave here.\u201d What should the therapist do FIRST?",
+      "choices": {
+        "A": "Maintain direct observation, initiate secure psychiatric transfer, and hand off the current suicide-risk findings directly to receiving staff.",
+        "B": "Maintain direct observation, have a support person remove the identified means, and transport the client to same-day psychiatric urgent care.",
+        "C": "Maintain direct observation, obtain emergency psychiatric consultation, and decide disposition after a fuller suicide-risk assessment.",
+        "D": "Maintain direct observation, complete crisis safety planning, and discharge with continuous support to next-day psychiatric care."
+      },
+      "rationales": {
+        "A": "Current intent to die, a specific plan, access to means, preparatory behavior, and inability to maintain safety constitute a high-acute-risk presentation. Direct observation and secure emergency psychiatric transfer match that level of risk.",
+        "B": "Removing one means and relying on a support person for transport still depends on informal support despite the client's stated inability to maintain safety independently.",
+        "C": "Additional consultation or fuller assessment delays disposition even though the stem already provides enough information to establish the need for secure emergency intervention.",
+        "D": "Safety planning and discharge with continuous support are inadequate when current suicidal intent and inability to maintain safety are already established."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 15,
+      "item_id": "A-LE6-001",
+      "area": "Area 6: Managing Legal and Ethical Obligations",
+      "core_calibration_status": "Core",
+      "correct_answer": "C",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A therapist has been providing conjoint therapy to a married couple whose stated treatment purpose is reconciliation. One partner privately asks the therapist to stop couple sessions and continue seeing only that partner for individual therapy. The therapist has not yet discussed this proposed change with the other partner. What should the therapist do FIRST?",
+      "choices": {
+        "A": "In a meeting with the requesting partner, explore treatment goals, client-role concerns, and privacy issues before discussing any treatment change with both partners.",
+        "B": "Pause conjoint treatment and meet separately with both partners to review client roles, informed consent, confidentiality expectations, records concerns, and whether either treatment structure remains clinically workable.",
+        "C": "With both partners, review treatment purpose, client roles, privacy expectations, records implications, future communication expectations, and the informed agreement governing the proposed treatment structure.",
+        "D": "Close conjoint treatment, review client-role and privacy implications with both partners, and consider later individual treatment only after a planned transition."
+      },
+      "rationales": {
+        "A": "This identifies relevant goals and role concerns, but another private meeting can create additional expectations before the therapist jointly clarifies the proposed change with both members of the current conjoint treatment.",
+        "B": "Separate meetings may sometimes be useful, but they can introduce new privacy expectations and are not necessary before the therapist jointly reviews the treatment-purpose and client-role change.",
+        "C": "Best answer. A move from conjoint therapy to one partner's individual therapy changes the treatment purpose, client roles, privacy expectations, and record implications. Those expectations should be reviewed with both current clients before the structure changes.",
+        "D": "Ending conjoint treatment may ultimately be appropriate, but automatic closure is not required simply because one partner requested a role change. The first task is clarification of the proposed treatment structure."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 16,
+      "item_id": "A-CE-026",
+      "area": "Area 1: Clinical Evaluation",
+      "core_calibration_status": "Calibration",
+      "correct_answer": "B",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client communicates online with dozens of people each week but reports, \u201cWhen something actually goes wrong, I don\u2019t know who I could call.\u201d The client denies feeling socially isolated because \u201cI talk to people constantly.\u201d Which assessment is MOST appropriate?",
+      "choices": {
+        "A": "Count regular online and in-person contacts, frequency of interaction, network size, and whether the client has enough social opportunities each week.",
+        "B": "Assess which relationships provide emotional support, practical help, reciprocity, dependable contact, and connection when the client experiences stress.",
+        "C": "Assess loneliness, social anxiety, avoidance, comfort with in-person contact, and whether online interaction substitutes for relationships the client actually wants.",
+        "D": "Identify the client\u2019s closest relationships, perceived intimacy, shared history, and whether those connections remain available when practical or emotional help is needed."
+      },
+      "rationales": {
+        "A": "substitutes network size and frequency for relationship quality.",
+        "B": "Frequent interaction does not necessarily equal meaningful social connection. Assessing which relationships provide reciprocity, dependable contact, emotional support, and practical assistance determines how the client\u2019s network actually functions during stress.",
+        "C": "introduces social anxiety and avoidance as possible explanations before evaluating the existing relationships themselves.",
+        "D": "appropriately assesses closeness but does not sufficiently examine the broader functional availability and reciprocity of the support network."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 17,
+      "item_id": "A-TX5F-001-R1",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Core",
+      "correct_answer": "B",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "In the fourth session of an interpersonal therapy group, two members disagree about one member repeatedly interrupting the other. Their voices rise slightly, but neither becomes threatening, and the group remains physically and emotionally safe. Several other members become quiet and look away. Which intervention should the group therapist use next?",
+      "choices": {
+        "A": "Invite the group to restate the disagreement as specific requests, use the exchange to identify what helps participation remain workable, and observe members\u2019 responses.",
+        "B": "Invite the group to examine the conflict as it unfolds, process its effect on participation, and connect the current interaction to the group\u2019s relational work.",
+        "C": "Invite the two members to connect their reactions to prior interpersonal patterns and ask the group what similar patterns they recognize.",
+        "D": "Invite the group to repair the current tension, practice one shared strategy for disagreement, and generate additional responses for future sessions."
+      },
+      "rationales": {
+        "A": "Specific requests may improve the immediate disagreement, but this option narrows the intervention to problem solving between two members rather than using the conflict as group-wide therapeutic material.",
+        "B": "Best answer. In an interpersonal group, a safe live conflict can be examined in the here-and-now for both the dyadic process and its effect on participation throughout the group.",
+        "C": "Prior interpersonal patterns may become relevant, but moving quickly to historical material bypasses the current interaction that is already available for therapeutic work.",
+        "D": "Repair strategies may be useful later, but generating future responses moves away from examining the live relational process and its impact on the whole group."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 18,
+      "item_id": "A-TX5E-004",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Core",
+      "correct_answer": "A",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client spends hours reviewing routine work before sending it to colleagues. The client predicts, \u201cIf I do not check everything several times, I will miss something obvious and everyone will think I am incompetent.\u201d Repeated checking reduces anxiety briefly but is causing missed deadlines. The therapist is using CBT. Which intervention most directly tests the maintaining belief and behavior?",
+      "choices": {
+        "A": "Test the feared mistake prediction while eliminating repeated checking during one planned work task.",
+        "B": "Record automatic thoughts before work tasks and generate balanced alternatives after each episode of repeated checking.",
+        "C": "Create a graded hierarchy of increasingly difficult work tasks and practice each level while keeping checking available initially.",
+        "D": "Review evidence for and against being incompetent and use coping statements whenever uncertainty triggers the urge to check."
+      },
+      "rationales": {
+        "A": "Best answer. A behavioral experiment that tests the feared prediction while dropping the safety behavior provides direct evidence about both the belief and the role of repeated checking in maintaining anxiety.",
+        "B": "Thought records can support cognitive restructuring, but completing them after repeated checking leaves the safety behavior intact and provides a weaker test of the feared prediction.",
+        "C": "Graded practice can be appropriate, but retaining checking during the experiment prevents the client from learning whether the feared outcome occurs without the safety behavior.",
+        "D": "Evidence review and coping statements are CBT-consistent, but they remain primarily verbal and do not directly test what happens when the client stops the maintaining checking behavior."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 19,
+      "item_id": "A-DI-003-R1",
+      "area": "Area 2: Developing a Diagnostic Impression",
+      "core_calibration_status": "Core",
+      "correct_answer": "B",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "Six weeks after giving birth, a client reports that for the past four weeks she has experienced depressed mood nearly every day, marked loss of interest, feelings of worthlessness, impaired concentration, psychomotor slowing, decreased appetite, and insomnia even when the infant is asleep. The symptoms substantially interfere with functioning. There is no history of mania or hypomania. Which diagnosis is MOST supported?",
+      "choices": {
+        "A": "Adjustment disorder with depressed mood",
+        "B": "Major depressive disorder",
+        "C": "Persistent depressive disorder",
+        "D": "Bipolar II disorder"
+      },
+      "rationales": {
+        "A": "Adjustment disorder would be less appropriate when a full major depressive syndrome is established.",
+        "B": "For four weeks postpartum, the client has persistent depressed mood, anhedonia, worthlessness, concentration problems, psychomotor slowing, appetite reduction, insomnia independent of infant waking, and substantial impairment. This is a full depressive syndrome rather than a transient postpartum emotional reaction. APA describes major depression as involving persistent depressed mood and/or loss of interest with associated cognitive, somatic, and functional symptoms.",
+        "C": "The course is far too brief for persistent depressive disorder, which APA defines as a depressive course of at least two years in adults.",
+        "D": "No manic or hypomanic history is provided."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 20,
+      "item_id": "A-LE6-008",
+      "area": "Area 6: Managing Legal and Ethical Obligations",
+      "core_calibration_status": "Calibration",
+      "correct_answer": "C",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A therapist strongly believes an adult client should leave a long-term relationship after repeated infidelity. The client has clearly stated that the current treatment goal is to decide what kind of relationship the client wants, not to be persuaded toward separation. The therapist notices becoming increasingly directive about ending the relationship. What should the therapist do?",
+      "choices": {
+        "A": "Use a neutral decisional-balance exercise, document the client's clinical treatment goals, compare staying and leaving, and keep recommendations limited to concerns the client identifies as relevant.",
+        "B": "Discuss the value conflict openly, document the client's clinical treatment goals, and offer referral while continuing care long enough to assess whether the therapist can remain neutral.",
+        "C": "Identify the therapist's value interference and return treatment to the client's stated goals, using consultation as needed for clinically neutral recommendations, document the treatment direction, and monitor whether later guidance remains aligned with the client's values.",
+        "D": "Explore safety, trust, and relationship consequences under the client's clinical treatment goals, document the preferred direction, and avoid recommending either staying or leaving unless new concerns arise."
+      },
+      "rationales": {
+        "A": "A balanced decision exercise may support autonomy, but it does not directly address the therapist's recognized pattern of allowing personal values to steer treatment recommendations.",
+        "B": "Referral can become appropriate if the therapist cannot practice neutrally, but the first response is to manage the therapist's value interference rather than make referral the default.",
+        "C": "Best answer. The therapist has recognized personal values influencing recommendations. Returning treatment to the client's goals, using outside clinical perspective as needed, documenting the direction, and monitoring later recommendations directly addresses the professional-management problem.",
+        "D": "This respects the client's goals, but it does not directly examine or manage the therapist's own value interference, which is already affecting recommendations."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 21,
+      "item_id": "A-DI-009-R1",
+      "area": "Area 2: Developing a Diagnostic Impression",
+      "core_calibration_status": "Core",
+      "correct_answer": "C",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "For eight months, a 24-year-old has shown progressive social withdrawal, loss of motivation, and substantial decline in work functioning. During the most recent two months, the client has also experienced voices commenting on behavior, fixed persecutory beliefs, and disorganized speech. There have been no sustained major mood episodes, and substance and medical evaluation do not explain the disturbance. Which diagnosis is MOST supported?",
+      "choices": {
+        "A": "Schizoaffective disorder, depressive type",
+        "B": "Major depressive disorder with psychotic features",
+        "C": "Schizophrenia",
+        "D": "Schizophreniform disorder"
+      },
+      "rationales": {
+        "A": "The presentation does not establish the necessary mood-psychosis relationship for schizoaffective disorder.",
+        "B": "There is no major depressive episode organizing the psychosis.",
+        "C": "The corrected stem establishes more than six months of continuous disturbance, including social/occupational deterioration and negative symptoms, together with a clear active period containing hallucinations, delusions, and disorganized speech. Mood, substance, and medical explanations are not supported. APA identifies hallucinations, delusions, disorganized speech/thinking, and impaired functioning among schizophrenia's central features.",
+        "D": "Schizophreniform disorder is the important duration distractor, but the continuous disturbance now exceeds the shorter schizophreniform course."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 22,
+      "item_id": "A-TX5E-007-R1",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Core",
+      "correct_answer": "A",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A graduate student seeks therapy for chronic procrastination. Most weeks, assignments are delayed until the deadline. The client reports one recent week when all work was completed early after studying at the library with a friend and dividing tasks into short blocks. The client says, \u201cI don\u2019t know why that week was different.\u201d The therapist is using a solution-oriented approach. Which intervention should the therapist use next?",
+      "choices": {
+        "A": "Examine the successful week in detail, identify what the client did differently, and choose one element to repeat before the next session.",
+        "B": "Use the miracle question to describe a day with manageable procrastination, then identify one observable sign that the preferred future has begun.",
+        "C": "Use coping questions to identify what has kept deadlines from being missed entirely, then build on one existing strength during the next assignment.",
+        "D": "Offer a compliment for the early completion and use a scaling question to identify the next realistic increase in follow-through."
+      },
+      "rationales": {
+        "A": "Best answer. Solution-oriented treatment emphasizes exceptions and what is already working. The successful week provides concrete evidence that can be examined and translated into a small, repeatable next step.",
+        "B": "The miracle question is consistent with the approach, but an actual recent exception is already available and gives more immediately usable information than constructing a hypothetical preferred future.",
+        "C": "Coping questions can highlight resilience, but they center on surviving the usual deadline-pressure pattern rather than expanding the successful exception the client has already demonstrated.",
+        "D": "Compliments and scaling are solution-oriented tools, but setting a larger productivity goal skips the more useful task of discovering what made the successful week possible and repeatable."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 23,
+      "item_id": "A-CE-002-R1",
+      "area": "Area 1: Clinical Evaluation",
+      "core_calibration_status": "Core",
+      "correct_answer": "C",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client attends therapy after an employer suggested using the company's employee-assistance program. During the first meeting, the client gives brief answers and says, \u201cHR thinks I have an anger problem. I don't know why I'm here.\u201d Which response would BEST support initial therapeutic engagement?",
+      "choices": {
+        "A": "Review the EAP purpose, confidentiality limits, and reporting expectations, then ask how the client understands the employer\u2019s concern.",
+        "B": "Acknowledge the client\u2019s reluctance, ask what feels inaccurate about the referral, and clarify what the client does not want from therapy.",
+        "C": "Acknowledge the referral and skepticism, invite the client\u2019s view of the concern, and identify any personally useful outcome from meeting.",
+        "D": "Clarify that participation can be explored without accepting the employer\u2019s view, then ask whether the client prefers discussing the incident or current stress first."
+      },
+      "rationales": {
+        "A": "Reviewing the EAP structure and confidentiality is appropriate, but the response remains more administratively focused and does less to establish a working therapeutic alliance with the reluctant client.",
+        "B": "Exploring what feels inaccurate is useful, but concentrating on what the client rejects or does not want is less effective than also identifying a possible personally meaningful purpose for participation.",
+        "C": "The client's skepticism and external referral make engagement the immediate task. C acknowledges the referral without adopting the employer's interpretation, elicits the client's own perspective, and looks for a personally meaningful reason to use treatment.",
+        "D": "Offering choices can support autonomy, but choosing between an incident and current stress before clarifying the client's own understanding of the problem moves into content selection before engagement is sufficiently established."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 24,
+      "item_id": "A-TX5C-003",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Core",
+      "correct_answer": "C",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client with chronic anxiety repeatedly texts a partner for reassurance whenever the partner is away. The client feels brief relief after each response, but the partner has become increasingly irritated and says the constant checking is straining the relationship. The client wants to change the pattern. Which intervention should the therapist use?",
+      "choices": {
+        "A": "Set one daily check-in and have the partner limit reassurance to that agreed time.",
+        "B": "Explore separation fears and have the partner validate distress without repeatedly confirming that everything is okay.",
+        "C": "Practice tolerating uncertainty by briefly delaying reassurance-seeking during separations while the partner responds consistently without repeated confirmation.",
+        "D": "Track anxious predictions and partner responses for one week to identify the situations that most strongly trigger checking."
+      },
+      "rationales": {
+        "A": "A scheduled check-in may reduce frequency, but it can preserve reassurance as the primary way the client regulates anxiety rather than changing the maintaining cycle.",
+        "B": "Validation is clinically useful and may reduce conflict, but exploring separation fears does not as directly target the repeated reassurance-seeking that is maintaining anxiety and relational strain.",
+        "C": "Best answer. The intervention targets the anxiety-maintaining behavior while also changing the partner response that reinforces the cycle, directly addressing both symptoms and their effect on the relationship.",
+        "D": "Tracking can improve awareness of triggers, but the client already recognizes the checking pattern and is ready for an intervention that changes it rather than another observation period."
+      }
+    },
+    {
+      "form": "A",
+      "q_num": 25,
+      "item_id": "A-CR-013",
+      "area": "Area 3: Managing Crisis Situations",
+      "core_calibration_status": "Core",
+      "correct_answer": "D",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A 16-year-old's close friend died suddenly. The adolescent reports guilt about not answering the friend's final text message, poor sleep, difficulty attending school, and feeling \u201cnumb.\u201d The adolescent denies current suicidal intent or plan. A supportive caregiver is available. What should the therapist prioritize?",
+      "choices": {
+        "A": "Assess grief plus suicide risk, involve the caregiver in support, and establish a structured school-attendance plan.",
+        "B": "Assess grief plus suicide risk, involve the caregiver in support, and arrange an urgent crisis evaluation because of guilt.",
+        "C": "Assess grief plus suicide risk, involve the caregiver in support, and use structured retelling to address guilt.",
+        "D": "Assess grief plus suicide risk, involve caregiver support, and provide age-appropriate grief care with functional restoration."
+      },
+      "rationales": {
+        "A": "School attendance and routine restoration matter, but focusing primarily on attendance underaddresses the adolescent's grief, guilt, sleep disruption, and crisis response.",
+        "B": "Peer death and guilt warrant continued direct safety assessment, but they do not by themselves establish imminent suicide risk requiring urgent crisis transfer.",
+        "C": "Structured retelling of the death is not required as the first intervention and may exceed the adolescent's readiness during the early grief crisis.",
+        "D": "Developmentally appropriate grief support, continued safety monitoring, caregiver involvement, and gradual restoration of functioning match the adolescent's current needs without overpathologizing or underresponding."
+      }
+    }
+  ]
+}

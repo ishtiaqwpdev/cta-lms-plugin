@@ -1,0 +1,257 @@
+{
+  "form": "A",
+  "type": "learner_facing_questions",
+  "question_range": "51-75",
+  "questions": [
+    {
+      "q_num": 51,
+      "stem": "A 29-year-old client currently reports three weeks of depressed mood, loss of interest, fatigue, impaired concentration, and feelings of worthlessness. Two years ago, the client experienced five days of unusually elevated mood, needed only three hours of sleep without fatigue, became markedly more talkative and productive, and spent impulsively. Friends noticed a clear change from baseline. The episode did not cause marked impairment, hospitalization, or psychosis. There is no history of a manic episode. Which diagnosis is MOST supported?",
+      "choices": {
+        "A": "Bipolar II disorder",
+        "B": "Major depressive disorder, recurrent",
+        "C": "Attention-deficit/hyperactivity disorder",
+        "D": "Cyclothymic disorder"
+      }
+    },
+    {
+      "q_num": 52,
+      "stem": "A father recently released after three years of incarceration is participating in court-supervised reunification with his 10-year-old daughter. Probation terms, release requirements, and permitted contact have already been clarified with the relevant professionals. During visits, the father presses for immediate closeness and the daughter becomes quiet; afterward he says, \u201cI\u2019m her dad; we should be back to normal.\u201d Which intervention should the therapist use to support family reintegration?",
+      "choices": {
+        "A": "Use graduated reunification visits that follow the daughter\u2019s approach and withdrawal cues while coaching the father to practice lower-pressure bids for closeness.",
+        "B": "Use graduated reunification visits to help the father give an age-appropriate account of incarceration and invite the daughter\u2019s questions.",
+        "C": "Use graduated reunification visits to add enjoyable shared activities and increase contact as the daughter shows greater familiarity and comfort.",
+        "D": "Use graduated reunification visits while the father processes guilt separately and practices expectations for developmentally appropriate parenting with the therapist."
+      }
+    },
+    {
+      "q_num": 53,
+      "stem": "A 27-year-old reports a longstanding pattern of making careless mistakes, difficulty sustaining attention, failing to finish tasks, disorganization, frequently losing necessary items, easy distractibility, and forgetfulness. School records and caregiver history document the same pattern before age 12, and the symptoms occurred at both home and school. They now impair work and home functioning. A traumatic event at age 22 temporarily worsened concentration but occurred long after the attentional pattern began. Which diagnosis is MOST supported?",
+      "choices": {
+        "A": "Posttraumatic stress disorder",
+        "B": "Generalized anxiety disorder",
+        "C": "Specific learning disorder",
+        "D": "Attention-deficit/hyperactivity disorder"
+      }
+    },
+    {
+      "q_num": 54,
+      "stem": "A couple seeks therapy four months after the birth of their first child. They report increased arguments, reduced intimacy, uncertainty about responsibilities, and very little time together. Neither describes significant relationship problems before becoming parents. What should the therapist assess NEXT?",
+      "choices": {
+        "A": "Assess each partner\u2019s mood, sleep, stress tolerance, and whether individual symptoms are disrupting adjustment to the new baby.",
+        "B": "Assess pre-baby conflict patterns, relationship satisfaction, prior role expectations, and whether longstanding difficulties intensified after childbirth.",
+        "C": "Assess infant sleep and feeding demands, outside support, childcare burden, and whether practical strain is driving recent disagreements.",
+        "D": "Assess changes in roles, expectations, support, intimacy, and caregiving since the transition to parenthood."
+      }
+    },
+    {
+      "q_num": 55,
+      "stem": "During an intake, a client\u2019s speech is understandable but becomes increasingly difficult to follow because the client abruptly shifts topics and does not consistently return to the original question. The client denies hallucinations. Which assessment would BEST clarify the relevant mental-status finding?",
+      "choices": {
+        "A": "Assess orientation, attention, and recent memory to determine whether cognitive impairment contributes to the interview difficulty.",
+        "B": "Assess unusual beliefs, perceptual experiences, and thought content to determine whether psychotic features accompany the presentation.",
+        "C": "Assess coherence, associations, and maintenance of goal direction during topic shifts in the interview.",
+        "D": "Assess reported mood, affective range, and emotional reactivity to determine whether affective disturbance explains the communication pattern."
+      }
+    },
+    {
+      "q_num": 56,
+      "stem": "A private-practice LMFT is moving from one electronic record system to another. The old vendor will deactivate the account in 30 days. The therapist has exported most records but has not verified that all required records, access controls, and electronic change history were preserved in the new system. What should the therapist do BEFORE the old system is deactivated?",
+      "choices": {
+        "A": "Export the remaining records, store them securely under the new system's access controls, document the migration, and verify missing information before the old account closes.",
+        "B": "Retain an encrypted archive with the old vendor, document vendor access and retention terms, migrate active records to the new system, and periodically verify that archived information remains retrievable and confidential.",
+        "C": "Create a complete read-only export, document record counts and retention dates, preserve the export securely, and use the new system prospectively while keeping the archived records available for required access.",
+        "D": "Complete the migration, document transfer and retention details, preserve required record integrity and confidentiality safeguards, and close the old account after verifying the new system."
+      }
+    },
+    {
+      "q_num": 57,
+      "stem": "A couple is caught in a pursue\u2013withdraw cycle in which criticism and defensiveness conceal fear of rejection and fear of failure. Which treatment plan is MOST consistent with emotionally focused couple therapy?",
+      "choices": {
+        "A": "Clarify couple boundaries, support subsystem leadership, and change alliances maintaining the pursue-withdraw pattern across sessions.",
+        "B": "Examine negative interactional cycles, access underlying fears and concerns, and shape emotionally responsive bonding exchanges.",
+        "C": "Identify conflict appraisals, test rejection and failure predictions, and regularly practice balanced communication during disagreements.",
+        "D": "Separate partners from the interactional cycle, identify reduced-influence moments, and build an alternative relationship story."
+      }
+    },
+    {
+      "q_num": 58,
+      "stem": "A client reports that an intimate partner controls access to money, regularly checks the client's phone, discourages contact with friends, threatens to take the children if the client leaves, and has recently begun blocking doorways during arguments. The client is alone in the therapist's office and says, \u201cI don't know whether this counts as abuse, but I'm getting scared.\u201d What should the therapist do NEXT?",
+      "choices": {
+        "A": "Assess current danger privately, recommend temporary separation, and connect the client with safety resources plus trusted supports.",
+        "B": "Assess current danger privately, map coercive-control escalation, and develop practical safety options that fit the client\u2019s priorities.",
+        "C": "Assess current danger privately, define criteria for possible conjoint work, and review emergency supports if controlling behavior escalates.",
+        "D": "Assess current danger privately, strengthen trusted supports, and arrange close safety-focused follow-up while the client considers relationship options."
+      }
+    },
+    {
+      "q_num": 59,
+      "stem": "Following a divorce, two children now move between households, grandparents have assumed more caregiving responsibility, and several extended-family relationships have changed. One parent says, \u201cThe whole family seems reorganized.\u201d What should the therapist assess NEXT?",
+      "choices": {
+        "A": "Assess coparenting agreements, parental conflict, each child's reactions, school functioning, and how the custody schedule affects the children across households.",
+        "B": "Assess each child's adjustment, loyalty concerns, relationship with each parent, behavioral changes, and differences in functioning across the two households.",
+        "C": "Assess the grandparents' caregiving role, boundary concerns, parental authority, communication with both households, and whether extended-family involvement is intensifying current family conflict.",
+        "D": "Assess caregiving roles, household membership, extended-family involvement, alliances, decision-making, and available support since the divorce reorganized the family's daily structure."
+      }
+    },
+    {
+      "q_num": 60,
+      "stem": "At the start of conjoint couple therapy, both partners agreed that the therapist would not promise to keep material relationship information secret and would work with a disclosing partner toward bringing such information into conjoint treatment or reconsidering whether conjoint work could continue. The agreement did not authorize the therapist to reveal one partner's private information without other legal authority. One partner now privately reports a major financial action that directly affects the couple's treatment goals and demands permanent secrecy. What should the therapist do?",
+      "choices": {
+        "A": "Review the agreement with the disclosing partner, continue conjoint treatment while holding the information private, and avoid using the financial issue unless the partner later chooses disclosure.",
+        "B": "Review the agreement, state that secrecy conflicts with conjoint work, and disclose the financial action if the partner refuses transparency.",
+        "C": "Review the agreement with the disclosing partner, pause conjoint treatment while secrecy remains, document the conflict, and terminate the couple work if authorization for disclosure is not provided.",
+        "D": "Review the agreement and safety concerns, help the disclosing partner plan their own disclosure, and reassess whether conjoint treatment can continue if the partner refuses."
+      }
+    },
+    {
+      "q_num": 61,
+      "stem": "A client witnessed a coworker being killed during workplace violence four days ago. The client is physically safe but reports poor sleep, difficulty concentrating, feeling \u201con edge,\u201d and uncertainty about returning to work. The client denies suicidal thoughts and is able to care for basic needs. What should the therapist prioritize?",
+      "choices": {
+        "A": "Assess immediate functioning and distress, provide stabilization and practical coping support, and plan gradual return to manageable daily activities.",
+        "B": "Assess acute trauma reactions and functioning, provide grounding and coping support, and schedule prompt close follow-up before deciding about work return.",
+        "C": "Assess event-discussion readiness and functioning, provide brief narrative support, and involve trusted supports during work reentry.",
+        "D": "Assess psychiatric stability and functioning, provide coping support, and arrange same-day crisis consultation before making work-return decisions."
+      }
+    },
+    {
+      "q_num": 62,
+      "stem": "A 34-year-old client is referred by a physician because of recurrent panic attacks. The client's partner attends the intake at the client's request. The client wants help reducing the panic attacks, while the partner reports that the episodes have changed the couple's routines and increased reassurance-seeking and conflict. Which action should the therapist take FIRST to determine the appropriate unit of treatment?",
+      "choices": {
+        "A": "Clarify panic severity, avoidance, medical or substance factors, functional impairment, and the client\u2019s goals before deciding whether partner involvement should continue.",
+        "B": "Clarify client and partner views of the panic, relationship effects, and goals before choosing the initial treatment unit.",
+        "C": "Clarify reassurance-seeking, conflict cycles, partner burden, communication patterns, and symptom effects before deciding whether conjoint assessment should take priority.",
+        "D": "Clarify confidentiality expectations, prior treatment, each person\u2019s concerns, and whether separate interviews are needed before selecting individual or conjoint work."
+      }
+    },
+    {
+      "q_num": 63,
+      "stem": "A licensed marriage and family therapist has general experience treating anxiety but has never been trained to provide a specialized exposure protocol requested by a client. The protocol is within the legal scope of marriage and family therapy, but the client cannot find another provider nearby. What is the therapist's BEST response?",
+      "choices": {
+        "A": "Explain limited experience, begin the specialized protocol with trained-clinician supervision, and monitor early response during the first sessions.",
+        "B": "Explain the competence limitation, complete training or consultation that establishes competence, review readiness to use the protocol, and maintain appropriate interim care.",
+        "C": "Explain the competence limitation, obtain informed consent about the therapist's training gap, and provide the protocol with specialist consultation and structured outcome monitoring.",
+        "D": "Explain the competence limitation, continue familiar anxiety treatment, document why the specialized protocol is not being used, review the client's response, and reconsider training or referral if progress remains inadequate."
+      }
+    },
+    {
+      "q_num": 64,
+      "stem": "A client describes spending hours trying to make every decision perfectly. While saying, \u201cI have to get it right,\u201d the client\u2019s jaw tightens, shoulders lift, and breathing becomes shallow. The client says, \u201cI didn\u2019t realize I was doing that.\u201d The therapist is using a Gestalt approach. Which intervention should the therapist use next?",
+      "choices": {
+        "A": "Ask the client to remain with the jaw tension and describe the sensations, emotions, and impulses that become noticeable in the moment.",
+        "B": "Invite a two-chair dialogue between the demanding perfectionistic voice and the part of the client that wants more flexibility and rest.",
+        "C": "Ask the client to complete the sentence \u201cIf I get it wrong...\u201d several times while noticing what thoughts, feelings, and images emerge.",
+        "D": "Invite the client to exaggerate the clenched jaw and raised shoulders while repeating the perfectionistic statement, then notice what changes."
+      }
+    },
+    {
+      "q_num": 65,
+      "stem": "A client reports occasionally thinking, \u201cIt would be easier not to wake up.\u201d The client denies suicidal intent, a suicide plan, preparatory behavior, and access to lethal means. The client remains engaged in treatment, identifies strong reasons for living, has dependable supports, and can maintain personal safety. Which intervention is BEST?",
+      "choices": {
+        "A": "Reassess acute risk, arrange same-day psychiatric evaluation, continue supervision until disposition is completed, and update available supports for the transition.",
+        "B": "Reassess acute risk, revise the outpatient safety and means-access plan, and increase near-term follow-up during the current risk period.",
+        "C": "Reassess acute risk, continue the usual treatment schedule with existing supports, and add no structured safety changes unless risk increases.",
+        "D": "Reassess acute risk, arrange continuous monitoring by a trusted support person, and defer independent safety planning until passive death wishes fully resolve."
+      }
+    },
+    {
+      "q_num": 66,
+      "stem": "A client\u2019s depressive symptoms have remained remitted for several months. The client has resumed work and relationships, uses treatment skills independently, and has not identified additional therapeutic goals. The client nevertheless requests indefinite weekly therapy because the sessions feel reassuring. Which plan is MOST appropriate?",
+      "choices": {
+        "A": "Continue weekly for three additional months; establish preventive wellness goals plus relapse indicators; reassess therapeutic benefit at a scheduled review.",
+        "B": "Shift to monthly maintenance sessions; monitor relapse signs plus independent coping; leave termination open until the client requests ending.",
+        "C": "Begin a planned step-down toward termination; explore reliance on weekly reassurance; verify independent use of gains between progressive follow-up sessions.",
+        "D": "Continue twice monthly for six months; add maintenance goals plus relapse planning; revisit termination after ending-related distress decreases."
+      }
+    },
+    {
+      "q_num": 67,
+      "stem": "An employee-assistance program authorizes six sessions for a client with longstanding work stress and relationship difficulties that are unlikely to resolve fully within the authorization period. Which treatment plan is MOST appropriate?",
+      "choices": {
+        "A": "Agree on broad work and relationship goals; use all six available visits for active treatment; evaluate continuing-care needs during the final appointment.",
+        "B": "Agree on focused client goals; explain the six-session limit at intake; begin continuity planning by mid-course when longer care appears indicated.",
+        "C": "Use the employer\u2019s concerns as primary goals; track workplace outcomes through six visits; reserve all transition planning for the final appointment.",
+        "D": "Provide stabilization during the six visits; arrange outside referral at intake; limit active treatment to support while transfer is being pursued."
+      }
+    },
+    {
+      "q_num": 68,
+      "stem": "A client who has consumed large amounts of alcohol daily for several years abruptly stopped drinking about 24 hours ago. During the session, the client has severe tremor, heavy sweating, a rapid pulse, increasing disorientation, and reports seeing insects moving across the wall. What should the therapist do FIRST?",
+      "choices": {
+        "A": "Keep the client supervised, activate emergency medical transport, and report suspected complicated withdrawal to receiving staff.",
+        "B": "Keep the client supervised, arrange urgent specialty withdrawal admission, and transfer after the receiving clinician accepts the client.",
+        "C": "Keep the client supervised, arrange urgent psychiatric evaluation, and request immediate medical screening on arrival.",
+        "D": "Keep the client supervised, obtain urgent medical consultation, and follow the resulting disposition plan while monitoring deterioration."
+      }
+    },
+    {
+      "q_num": 69,
+      "stem": "Since late adolescence, a client has shown a persistent pattern across friendships, romantic relationships, school, and work of unstable intense relationships, rapidly shifting views of others, an unstable sense of identity, chronic emptiness, impulsive behavior, and intense fear of abandonment. Mood shifts usually follow interpersonal events and last hours rather than occurring as distinct multiday periods of elevated mood and reduced need for sleep. Which diagnosis is MOST supported?",
+      "choices": {
+        "A": "Bipolar II disorder",
+        "B": "Borderline personality disorder",
+        "C": "Posttraumatic stress disorder",
+        "D": "Dependent personality disorder"
+      }
+    },
+    {
+      "q_num": 70,
+      "stem": "A 16-year-old wants closer friendships but has begun avoiding lunch, school activities, and invitations after classmates mocked the client in a group chat. The client spends evenings checking classmates\u2019 posts, compares social lives, and says, \u201cIf I go, they will notice how awkward I am.\u201d Which intervention should the therapist use next?",
+      "choices": {
+        "A": "Teach assertive responses to online harassment and plan when to block or report peers while monitoring whether anxiety changes.",
+        "B": "Schedule a temporary reduction in social-media checking and replace scrolling periods with structured offline activities that lower daily comparison.",
+        "C": "Build graded in-person social exposures while challenging feared judgment and the social-media comparison patterns that maintain avoidance.",
+        "D": "Process rejection experiences and build self-compassion before gradually increasing contact with peers the client already views as relatively safe."
+      }
+    },
+    {
+      "q_num": 71,
+      "stem": "A client reports ending previous psychotherapy because aspects of treatment conflicted with important family and cultural beliefs. The client is hesitant about beginning therapy again. What should the therapist do NEXT?",
+      "choices": {
+        "A": "Explore which prior treatment elements conflicted with family or cultural beliefs and how that experience shapes current expectations now.",
+        "B": "Clarify current family and cultural values, preferred adaptations, and treatment practices the client expects to avoid or modify.",
+        "C": "Review prior therapy goals, interventions, helpful elements, difficult elements, and reasons the client ultimately ended treatment.",
+        "D": "Explore family attitudes toward therapy, what the client disclosed, available support, and effects on prior attendance and continuation."
+      }
+    },
+    {
+      "q_num": 72,
+      "stem": "Within three months, a client becomes the primary caregiver for an ill parent, relocates to a new city, and experiences the end of a long-term relationship. The client reports headaches, irritability, poor sleep, and reduced contact with friends. What should the therapist do NEXT?",
+      "choices": {
+        "A": "Assess caregiving burden, parent-child history, available respite, medical demands, and how the caregiving role is affecting the client\u2019s daily functioning.",
+        "B": "Assess grief and attachment reactions to the relationship ending, current support, loneliness, and whether breakup-related distress explains the recent symptoms.",
+        "C": "Assess relocation stress, community connection, occupational adjustment, disrupted routines, and whether the new environment has reduced the client\u2019s available support.",
+        "D": "Map how caregiving, relocation, and relationship loss coincide with symptom, support, and functioning changes."
+      }
+    },
+    {
+      "q_num": 73,
+      "stem": "A client is the primary caregiver for a father with a progressive neurological illness. The client says, \u201cIf I rest, I\u2019m failing him,\u201d refuses help from siblings, has begun canceling personal medical appointments, and sleeps four to five hours most nights. The father\u2019s care needs are stable and there is no immediate medical emergency. Which intervention should the therapist use?",
+      "choices": {
+        "A": "Reframe self-blame and plan respite or sibling help for the periods of highest caregiving demand each week.",
+        "B": "Develop a detailed caregiving schedule with sibling assignments and monitor whether the client completes the planned care tasks.",
+        "C": "Use grief-focused work to process anticipatory loss and identify how sadness influences the client\u2019s willingness to accept family help.",
+        "D": "Prioritize the client\u2019s medical appointments and sleep routine while maintaining primary responsibility for the father\u2019s daily care."
+      }
+    },
+    {
+      "q_num": 74,
+      "stem": "An adult client requests a copy of the client's psychotherapy record. The therapist believes several accurate notes could be emotionally difficult for the client to read, but the therapist does not identify a substantial risk of significant adverse or detrimental consequences from access. What should the therapist do?",
+      "choices": {
+        "A": "Offer to review the record with the client, explain the therapist's concern about upsetting material, and provide the copy after that review occurs.",
+        "B": "Prepare a treatment summary first, explain why it may be more useful clinically, and provide the underlying record if the client still requests it.",
+        "C": "Process the requested copy under the applicable access rules and timelines, do not condition access on therapeutic review because the notes may be upsetting, and offer discussion if desired.",
+        "D": "Delay direct access while another licensed clinician reviews the notes for treatment-disruption risk, document that assessment, discuss the findings, and provide the record only if the reviewer finds no significant concern."
+      }
+    },
+    {
+      "q_num": 75,
+      "stem": "A client who had a stroke six months ago follows couple-session discussions but has persistent word-finding difficulty and slow verbal expression. When trying to describe feelings, the client often gives up and the partner begins answering instead. Both want the client to participate more fully in treatment. Which adjunct referral would best support this goal?",
+      "choices": {
+        "A": "Refer to neuropsychology for assessment of attention, memory, and executive demands that may complicate participation in difficult couple conversations.",
+        "B": "Refer to occupational therapy for adaptive routines and practical communication supports that improve participation in shared home and relationship activities.",
+        "C": "Refer to speech-language pathology for aphasia-specific rehabilitation and partner-supported conversational communication strategies for emotionally complex relationship discussions.",
+        "D": "Refer to rehabilitation psychology for adjustment work addressing frustration, disability identity, coping, and emotional reactions that arise during communication with the partner."
+      }
+    }
+  ]
+}
