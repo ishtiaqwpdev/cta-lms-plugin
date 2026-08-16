@@ -125,7 +125,7 @@ $has_readiness  = '' !== $readiness_url;
 							</a>
 						<?php endforeach; ?>
 					</div>
-					<?php if ( ! empty( $study_schedules['combined_title'] ) ) : ?>
+					<?php if ( ! empty( $study_schedules['combined_title'] ) && ! preg_match( '/\bworkbook\s*\d+/i', (string) $study_schedules['combined_title'] ) ) : ?>
 						<p class="cta-ep-getting-started__note">
 							<a href="<?php echo esc_url( $schedule_url ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( (string) $study_schedules['combined_title'] ); ?></a>
 						</p>

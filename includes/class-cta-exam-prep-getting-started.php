@@ -125,35 +125,32 @@ class CTA_Exam_Prep_Getting_Started {
 	 * @return array
 	 */
 	private static function attach_resource_links( array $config, $resources ) {
-		$schedules_url    = '';
-		$readiness_url    = '';
-		$schedules_title  = '';
-		$readiness_title  = '';
-
-		$schedule_needles = array( 'study schedule', 'roadmap', '10', '14', '18', 'start here' );
-		$readiness_needles = array( 'readiness', 'progress tracker' );
+		$schedules_url   = '';
+		$readiness_url   = '';
+		$schedules_title = '';
+		$readiness_title = '';
 
 		foreach ( (array) $resources as $resource ) {
-			$title = strtolower( (string) ( $resource->title ?? '' ) );
+			$title = (string) ( $resource->title ?? '' );
 
-			if ( ! $schedules_url && self::title_matches_any( $title, $schedule_needles ) ) {
+			if ( ! $schedules_url && self::is_study_schedule_resource_title( $title ) ) {
 				if ( class_exists( 'CTA_Course_Materials' ) ) {
 					$schedules_url   = CTA_Course_Materials::get_serve_url( (int) $resource->id );
-					$schedules_title = (string) $resource->title;
+					$schedules_title = $title;
 				}
 			}
 
-			if ( ! $readiness_url && self::title_matches_any( $title, $readiness_needles ) ) {
+			if ( ! $readiness_url && self::is_readiness_resource_title( $title ) ) {
 				if ( class_exists( 'CTA_Course_Materials' ) ) {
 					$readiness_url   = CTA_Course_Materials::get_serve_url( (int) $resource->id );
-					$readiness_title = (string) $resource->title;
+					$readiness_title = $title;
 				}
 			}
 		}
 
 		if ( empty( $config['study_schedules']['combined_url'] ) && $schedules_url ) {
-			$config['study_schedules']['combined_url']   = $schedules_url;
-			$config['study_schedules']['combined_title'] = $schedules_title;
+			$config['study_schedules']['combined_url']    = $schedules_url;
+			$config['study_schedules']['combined_title']  = $schedules_title;
 		}
 
 		if ( empty( $config['readiness']['url'] ) && $readiness_url ) {
@@ -162,6 +159,75 @@ class CTA_Exam_Prep_Getting_Started {
 		}
 
 		return $config;
+	}
+
+	/**
+	 * Whether a downloadable title is a study-schedule / roadmap pacing file.
+	 *
+	 * Bare week numbers (e.g. "10") must never match — that incorrectly binds
+	 * Workbook 10 into the Study Schedules box on Course Home.
+	 *
+	 * @param string $title Resource title.
+	 * @return bool
+	 */
+	public static function is_study_schedule_resource_title( $title ) {
+		$title = strtolower( trim( (string) $title ) );
+		if ( '' === $title ) {
+			return false;
+		}
+
+		// Workbooks (and workbook practice banks) are never schedule resources.
+		if ( preg_match( '/\bworkbook\s*\d+/', $title ) ) {
+			return false;
+		}
+
+		$needles = array(
+			'study schedule',
+			'study schedules',
+			'student roadmap',
+			'learner roadmap',
+			'start-here roadmap',
+			'start here roadmap',
+			'roadmap and',
+			'roadmap, schedules',
+			'roadmap, schedule',
+			'10-week',
+			'14-week',
+			'18-week',
+			'10-, 14-',
+			'10-,14-',
+			'week study schedule',
+			'pacing plan',
+			'pacing options',
+			'schedules, and progress',
+		);
+
+		return self::title_matches_any( $title, $needles );
+	}
+
+	/**
+	 * Whether a downloadable title is a readiness / progress-tracker tool.
+	 *
+	 * @param string $title Resource title.
+	 * @return bool
+	 */
+	public static function is_readiness_resource_title( $title ) {
+		$title = strtolower( trim( (string) $title ) );
+		if ( '' === $title ) {
+			return false;
+		}
+
+		if ( preg_match( '/\bworkbook\s*\d+/', $title ) ) {
+			return false;
+		}
+
+		return self::title_matches_any(
+			$title,
+			array(
+				'readiness',
+				'progress tracker',
+			)
+		);
 	}
 
 	/**
