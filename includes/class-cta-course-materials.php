@@ -1042,6 +1042,9 @@ class CTA_Course_Materials {
 			'00_admin/',
 			'/admin-only/',
 			'admin-only/',
+			'/quiz-seeds/admin-only/',
+			'quiz-seeds/admin-only/',
+			'suicide-risk-final-exam-answer-key.php',
 			'/chapter-tests-admin/',
 			'chapter-tests-admin/',
 			'lms_admin_only',
@@ -1164,6 +1167,17 @@ class CTA_Course_Materials {
 				),
 				'title'               => 'CTA Telehealth Clinical Resource Toolkit (v2.0)',
 				'resource_key'        => 'telehealth_clinical_resource_toolkit_v2',
+			),
+			array(
+				'course_match_titles' => array(
+					'Advanced Suicide Risk Assessment: Evidence-Based Intervention and Ethical Documentation',
+					'Advanced Suicide Risk Assessment',
+				),
+				'course_code'         => 'CTA-CE-003',
+				'source_file'         => 'assets/course-materials/suicide-risk-ce/CTA_Suicide_Risk_Learner_Resource_Toolkit_v1_1.html',
+				'title'               => 'Learner Resource Toolkit — Clinician-Facing Resource Toolkit',
+				'resource_key'        => 'suicide_risk_learner_resource_toolkit_v1_1',
+				'module_id'           => 0,
 			),
 		);
 	}

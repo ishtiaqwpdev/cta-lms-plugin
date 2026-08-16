@@ -2953,6 +2953,7 @@
     var passingScore = parseInt(app.getAttribute("data-passing-score"), 10) || 70;
     var questionCount = parseInt(app.getAttribute("data-question-count"), 10) || 0;
     var isExamPrep = app.getAttribute("data-exam-prep") === "1";
+    var ceTeachingPoints = app.getAttribute("data-ce-teaching-points") === "1";
     var dashboardUrl = app.getAttribute("data-dashboard-url") || "";
     var timerEl = document.getElementById("cta-quiz-timer");
     var timerInterval = null;
@@ -3167,7 +3168,9 @@
           if (item.explanation) {
             var expEl = feedback.querySelector(".cta-quiz-feedback__explanation");
             if (expEl) {
-              expEl.textContent = String(item.explanation);
+              expEl.textContent = ceTeachingPoints
+                ? "Teaching point: " + String(item.explanation)
+                : String(item.explanation);
             }
           }
         }

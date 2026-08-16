@@ -417,6 +417,113 @@ class CTA_Certificates {
 	}
 
 	/**
+	 * Decode syllabus_meta JSON from a course row.
+	 *
+	 * @param object|null $course Course row.
+	 * @return array<string,mixed>
+	 */
+	public static function decode_course_syllabus_meta( $course ) {
+		if ( ! $course || empty( $course->syllabus_meta ) ) {
+			return array();
+		}
+
+		$decoded = json_decode( (string) $course->syllabus_meta, true );
+		return is_array( $decoded ) ? $decoded : array();
+	}
+
+	/**
+	 * Resolve learner license type from evaluation responses or user meta.
+	 *
+	 * @param int         $user_id    User ID.
+	 * @param object|null $evaluation Evaluation row.
+	 * @return string
+	 */
+	public static function resolve_license_type( $user_id, $evaluation = null ) {
+		$user_id = absint( $user_id );
+		$keys    = array( 'participant_license_type', 'camft_participant_license_type' );
+
+		if ( $evaluation && ! empty( $evaluation->responses ) ) {
+			$responses = json_decode( (string) $evaluation->responses, true );
+			if ( is_array( $responses ) ) {
+				foreach ( $keys as $key ) {
+					if ( ! empty( $responses[ $key ] ) && is_string( $responses[ $key ] ) ) {
+						return sanitize_text_field( $responses[ $key ] );
+					}
+				}
+			}
+		}
+
+		if ( $user_id ) {
+			$stored = (string) get_user_meta( $user_id, 'cta_license_type', true );
+			if ( '' !== trim( $stored ) ) {
+				return sanitize_text_field( $stored );
+			}
+		}
+
+		return '';
+	}
+
+	/**
+	 * Build certificate display fields from course metadata and evaluation data.
+	 *
+	 * @param object      $course     Course row.
+	 * @param int         $user_id    User ID.
+	 * @param object|null $evaluation Evaluation row.
+	 * @return array<string,string|bool>
+	 */
+	public static function get_certificate_display_fields( $course, $user_id, $evaluation = null ) {
+		$meta = self::decode_course_syllabus_meta( $course );
+
+		$course_title = (string) ( $course->title ?? '' );
+		$cert_title   = trim( (string) ( $meta['certificate_title'] ?? '' ) );
+		if ( '' === $cert_title ) {
+			$cert_title = $course_title;
+		}
+
+		$course_code = trim( (string) ( $meta['course_code'] ?? '' ) );
+		$code_status = trim( (string) ( $meta['course_code_status'] ?? '' ) );
+		$provisional = '' !== $code_status && false === stripos( $code_status, 'approved' );
+
+		$license_type   = self::resolve_license_type( $user_id, $evaluation );
+		$license_number = cta_lms_get_user_license_number( $user_id );
+		if ( $evaluation && ! empty( $evaluation->responses ) ) {
+			$responses = json_decode( (string) $evaluation->responses, true );
+			if ( is_array( $responses ) ) {
+				foreach ( array( 'participant_license_number', 'camft_participant_license_number' ) as $key ) {
+					if ( ! empty( $responses[ $key ] ) && is_string( $responses[ $key ] ) ) {
+						$license_number = sanitize_text_field( $responses[ $key ] );
+						break;
+					}
+				}
+			}
+		}
+
+		$license_display = '';
+		if ( '' !== $license_type && '' !== $license_number ) {
+			$license_display = $license_type . ' — ' . $license_number;
+		} elseif ( '' !== $license_type ) {
+			$license_display = $license_type;
+		} elseif ( '' !== $license_number ) {
+			$license_display = $license_number;
+		}
+
+		return array(
+			'course_title'          => $course_title,
+			'certificate_title'     => $cert_title,
+			'course_code'           => $course_code,
+			'course_code_provisional' => $provisional,
+			'course_code_status'    => $code_status,
+			'instructional_method'  => trim( (string) ( $meta['instructional_method'] ?? '' ) ),
+			'presenter'               => trim( (string) ( $meta['presenter'] ?? '' ) ),
+			'provider'                => trim( (string) ( $meta['provider'] ?? '' ) ),
+			'completion_statement'    => trim( (string) ( $meta['certificate_completion_statement'] ?? '' ) ),
+			'license_type'          => $license_type,
+			'license_number'        => $license_number,
+			'license_display'       => $license_display,
+		);
+	}
+
+	/**
 	 * Build certificate HTML from the template with live user/course data.
 	 *
 	 * @param int         $user_id             User ID.
@@ -436,7 +543,8 @@ class CTA_Certificates {
 
 		// Always print the real certificate issue instant from storage.
 		$completion_date = self::format_issue_date( $issued_at, $evaluation );
-		$course_title    = (string) $course->title;
+		$display         = self::get_certificate_display_fields( $course, $user_id, $evaluation );
+		$course_title    = (string) ( $display['certificate_title'] ?? $course->title );
 		$ce_hours        = rtrim( rtrim( number_format( (float) $course->ce_hours, 1, '.', '' ), '0' ), '.' );
 		if ( '' === $ce_hours ) {
 			$ce_hours = '0';
@@ -445,11 +553,23 @@ class CTA_Certificates {
 		$student_name = function_exists( 'cta_lms_get_user_legal_name' )
 			? cta_lms_get_user_legal_name( $user_id )
 			: ( $user ? $user->display_name : '' );
+		if ( '' === $student_name && $evaluation && ! empty( $evaluation->student_name ) ) {
+			$student_name = (string) $evaluation->student_name;
+		}
 		if ( '' === $student_name ) {
 			$student_name = __( 'Student', 'cta-lms' );
 		}
 
-		$license_number  = cta_lms_get_user_license_number( $user_id );
+		$license_number  = ! empty( $display['license_number'] )
+			? (string) $display['license_number']
+			: cta_lms_get_user_license_number( $user_id );
+		$course_code             = (string) ( $display['course_code'] ?? '' );
+		$course_code_provisional = ! empty( $display['course_code_provisional'] );
+		$course_code_status      = (string) ( $display['course_code_status'] ?? '' );
+		$instructional_method    = (string) ( $display['instructional_method'] ?? '' );
+		$presenter               = (string) ( $display['presenter'] ?? '' );
+		$completion_statement    = (string) ( $display['completion_statement'] ?? '' );
+		$license_type            = (string) ( $display['license_type'] ?? '' );
 		$provider_name    = self::get_provider_name();
 		$provider_number  = self::get_provider_number();
 		$provider_line    = self::get_provider_line();

@@ -13,6 +13,12 @@
  * @var string $ce_hours
  * @var string $completion_date
  * @var string $license_number
+ * @var string $license_type
+ * @var string $course_code
+ * @var bool   $course_code_provisional
+ * @var string $instructional_method
+ * @var string $presenter
+ * @var string $completion_statement
  * @var string $provider_name
  * @var string $provider_number
  * @var string $provider_line
@@ -34,6 +40,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $license_display     = $license_number ? esc_html( $license_number ) : esc_html__( 'N/A', 'cta-lms' );
+$license_type        = isset( $license_type ) ? (string) $license_type : '';
+$course_code         = isset( $course_code ) ? (string) $course_code : '';
+$course_code_provisional = ! empty( $course_code_provisional );
+$instructional_method = isset( $instructional_method ) ? (string) $instructional_method : '';
+$presenter           = isset( $presenter ) ? (string) $presenter : '';
+$completion_statement = isset( $completion_statement ) ? (string) $completion_statement : '';
 $header_text         = ! empty( $header_text ) ? $header_text : __( 'Certificate of Completion', 'cta-lms' );
 $footer_text         = ! empty( $footer_text ) ? $footer_text : 'clinicaltrainingacademy.com';
 $signature_name      = ! empty( $signature_name ) ? $signature_name : __( 'Program Administrator', 'cta-lms' );
@@ -146,6 +158,13 @@ $signature_url = ! empty( $signature_url ) ? $signature_url : '';
 			color: #122B51;
 		}
 		.meta p { margin: 1px 0; }
+		.completion-statement {
+			font-size: 12px;
+			line-height: 1.5;
+			margin: 0 auto 10px;
+			max-width: 760px;
+			color: #475467;
+		}
 		.divider {
 			width: 160px;
 			height: 1px;
@@ -283,9 +302,31 @@ $signature_url = ! empty( $signature_url ) ? $signature_url : '';
 			<p class="ce-hours"><?php echo esc_html( $ce_hours ); ?> <?php esc_html_e( 'CE Hours', 'cta-lms' ); ?></p>
 
 			<div class="meta">
+				<?php if ( '' !== $course_code ) : ?>
+					<p>
+						<?php esc_html_e( 'Course Code:', 'cta-lms' ); ?>
+						<?php echo esc_html( $course_code ); ?>
+						<?php if ( ! empty( $course_code_provisional ) ) : ?>
+							<?php esc_html_e( '(Provisional — pending final approval)', 'cta-lms' ); ?>
+						<?php endif; ?>
+					</p>
+				<?php endif; ?>
+				<?php if ( '' !== $instructional_method ) : ?>
+					<p><?php esc_html_e( 'Instructional Method:', 'cta-lms' ); ?> <?php echo esc_html( $instructional_method ); ?></p>
+				<?php endif; ?>
+				<?php if ( '' !== $presenter ) : ?>
+					<p><?php esc_html_e( 'Presenter/Author:', 'cta-lms' ); ?> <?php echo esc_html( $presenter ); ?></p>
+				<?php endif; ?>
 				<p><?php esc_html_e( 'Issued:', 'cta-lms' ); ?> <?php echo esc_html( $completion_date ); ?></p>
+				<?php if ( '' !== $license_type ) : ?>
+					<p><?php esc_html_e( 'License/Registration Type:', 'cta-lms' ); ?> <?php echo esc_html( $license_type ); ?></p>
+				<?php endif; ?>
 				<p><?php esc_html_e( 'License/Registration Number:', 'cta-lms' ); ?> <?php echo $license_display; ?></p>
 			</div>
+
+			<?php if ( '' !== $completion_statement ) : ?>
+				<p class="completion-statement"><?php echo esc_html( $completion_statement ); ?></p>
+			<?php endif; ?>
 
 			<div class="divider">&nbsp;</div>
 

@@ -103,6 +103,15 @@ class CTA_Course_Attestation {
 			}
 		}
 
+		// CTA-CE-003 uses the approved evaluation Section 9 statement (exact).
+		if ( class_exists( 'CTA_Suicide_Risk_Evaluation_Sync' ) && '' !== $course_title ) {
+			foreach ( CTA_Suicide_Risk_Evaluation_Sync::match_titles() as $title ) {
+				if ( 0 === strcasecmp( $course_title, $title ) ) {
+					return CTA_Suicide_Risk_Evaluation_Sync::attestation_statement();
+				}
+			}
+		}
+
 		if ( '' === $course_title ) {
 			$course_title = 'Clinical and Ethical Excellence in Telehealth: The Essential California Framework';
 		}

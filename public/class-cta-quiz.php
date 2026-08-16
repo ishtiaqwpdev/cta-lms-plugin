@@ -201,8 +201,8 @@ class CTA_Quiz {
 			$certificate = CTA_Certificates::generate( $user_id, $course_id, $evaluation );
 		}
 
-		$inline_attestation = class_exists( 'CTA_Law_Ethics_Evaluation_Sync' )
-			&& CTA_Law_Ethics_Evaluation_Sync::evaluation_includes_attestation( $course_id );
+		$inline_attestation = class_exists( 'CTA_CE_Completion' )
+			&& CTA_CE_Completion::evaluation_includes_inline_attestation( $course_id );
 
 		// Exam Prep practice banks stay retakeable — do not lock the start panel after a pass.
 		if ( ! $is_exam_prep && $certificate && $evaluation && $attestation && $passed_attempt ) {
@@ -229,6 +229,12 @@ class CTA_Quiz {
 		// Quizzes are untimed by policy; ignore any legacy time_limit_mins values.
 		$time_limit_label = __( 'No limit', 'cta-lms' );
 		$attempts_label   = __( 'Unlimited', 'cta-lms' );
+		$exam_instructions = class_exists( 'CTA_Suicide_Risk_Exam_Sync' )
+			? CTA_Suicide_Risk_Exam_Sync::get_exam_instructions_for_course( $course )
+			: '';
+		$ce_teaching_points = class_exists( 'CTA_Suicide_Risk_Exam_Sync' )
+			? CTA_Suicide_Risk_Exam_Sync::course_should_reveal_teaching_points( $course, $quiz )
+			: false;
 
 		ob_start();
 		include CTA_PLUGIN_DIR . 'templates/quiz.php';
@@ -594,30 +600,36 @@ class CTA_Quiz {
 
 		$responses_map = isset( $parsed['responses'] ) && is_array( $parsed['responses'] ) ? $parsed['responses'] : array();
 
-		// CTA-CE-001: validate Section 9 attestation before persisting the evaluation.
-		$inline_attestation = class_exists( 'CTA_Law_Ethics_Evaluation_Sync' )
-			&& CTA_Law_Ethics_Evaluation_Sync::evaluation_includes_attestation( $course_id );
-		$inline_signature_name = '';
-		$inline_signature_date = '';
-		if ( $inline_attestation ) {
+		// Course-specific evaluation forms with inline Section 9 attestation.
+		$inline_attestation_config = class_exists( 'CTA_CE_Completion' )
+			? CTA_CE_Completion::inline_attestation_config( $course_id )
+			: null;
+		$inline_attestation        = ! empty( $inline_attestation_config );
+		$inline_signature_name     = '';
+		$inline_signature_date     = '';
+		if ( $inline_attestation && is_array( $inline_attestation_config ) ) {
 			$agree_raw = self::evaluation_response_value(
 				$responses_map,
-				array( 'completion_attestation_agree' )
+				(array) ( $inline_attestation_config['agree_keys'] ?? array() )
 			);
 			$agree_ok  = false;
-			if ( is_array( $responses_map['completion_attestation_agree'] ?? null ) ) {
-				$agree_ok = ! empty( $responses_map['completion_attestation_agree'] );
-			} elseif ( '' !== $agree_raw && '0' !== $agree_raw ) {
+			foreach ( (array) ( $inline_attestation_config['agree_keys'] ?? array() ) as $agree_key ) {
+				if ( is_array( $responses_map[ $agree_key ] ?? null ) && ! empty( $responses_map[ $agree_key ] ) ) {
+					$agree_ok = true;
+					break;
+				}
+			}
+			if ( ! $agree_ok && '' !== $agree_raw && '0' !== $agree_raw ) {
 				$agree_ok = true;
 			}
 
 			$inline_signature_name = self::evaluation_response_value(
 				$responses_map,
-				array( 'completion_attestation_signature', 'participant_cert_name' )
+				(array) ( $inline_attestation_config['signature_keys'] ?? array() )
 			);
 			$inline_signature_date = self::evaluation_response_value(
 				$responses_map,
-				array( 'completion_attestation_date', 'participant_completion_date' )
+				(array) ( $inline_attestation_config['date_keys'] ?? array() )
 			);
 
 			if ( ! $agree_ok ) {
@@ -733,11 +745,20 @@ class CTA_Quiz {
 		$has_attestation = class_exists( 'CTA_Course_Attestation' )
 			&& CTA_Course_Attestation::has( $user_id, $course_id );
 
-		// CTA-CE-001: Section 9 attestation lives in the same evaluation form (validated above).
+		// Inline Section 9 attestation lives in the same evaluation form (validated above).
 		if ( ! $has_attestation
 			&& $inline_attestation
 			&& class_exists( 'CTA_Course_Attestation' ) ) {
-			$attestation_text = CTA_Law_Ethics_Evaluation_Sync::attestation_statement();
+			$attestation_text = '';
+			if ( class_exists( 'CTA_CE_Completion' ) ) {
+				$config = CTA_CE_Completion::inline_attestation_config( $course_id );
+				if ( is_array( $config ) && ! empty( $config['statement'] ) ) {
+					$attestation_text = (string) $config['statement'];
+				}
+			}
+			if ( '' === $attestation_text && class_exists( 'CTA_Law_Ethics_Evaluation_Sync' ) ) {
+				$attestation_text = CTA_Law_Ethics_Evaluation_Sync::attestation_statement();
+			}
 			$result           = CTA_Course_Attestation::submit(
 				$user_id,
 				$course_id,

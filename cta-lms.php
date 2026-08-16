@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.208' );
+	define( 'CTA_VERSION', '1.0.215' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -108,6 +108,11 @@ $cta_required_files = array(
 	'includes/class-cta-law-ethics-module-sync.php',
 	'includes/class-cta-law-ethics-evaluation-sync.php',
 	'includes/class-cta-law-ethics-exam-sync.php',
+	'includes/class-cta-suicide-risk-module-sync.php',
+	'includes/class-cta-suicide-risk-toolkit-sync.php',
+	'includes/class-cta-suicide-risk-exam-sync.php',
+	'includes/class-cta-suicide-risk-evaluation-sync.php',
+	'includes/class-cta-suicide-risk-certificate-sync.php',
 	'includes/class-cta-database.php',
 	'includes/class-cta-syllabus-sync.php',
 	'includes/class-cta-course-catalog.php',
@@ -178,6 +183,21 @@ if ( ! function_exists( 'cta_lms_init' ) ) {
 			if ( class_exists( 'CTA_Pages' ) ) {
 				CTA_Pages::init();
 			}
+
+			add_filter(
+				'cta_lms_reveal_quiz_explanations',
+				static function ( $reveal, $quiz, $course ) {
+					if ( $reveal || ! $quiz || ! $course ) {
+						return $reveal;
+					}
+					if ( class_exists( 'CTA_Suicide_Risk_Exam_Sync' ) ) {
+						return CTA_Suicide_Risk_Exam_Sync::course_should_reveal_teaching_points( $course, $quiz );
+					}
+					return $reveal;
+				},
+				10,
+				3
+			);
 
 			new CTA_Shortcodes();
 			new CTA_Auth();
@@ -1068,6 +1088,44 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				if ( class_exists( 'CTA_Certificates' ) && method_exists( 'CTA_Certificates', 'refresh_all_certificates' ) ) {
 					CTA_Certificates::refresh_all_certificates();
 				}
+			}
+
+			// Advanced Suicide Risk Assessment (CTA-CE-003): syllabus/catalog metadata refresh.
+			if ( version_compare( $installed, '1.0.209', '<' ) && class_exists( 'CTA_Syllabus_Sync' ) ) {
+				CTA_Syllabus_Sync::sync_all( true );
+				if ( class_exists( 'CTA_Course_Catalog' ) ) {
+					CTA_Course_Catalog::unpublish_all_ce_courses_pending_cepa();
+				}
+			}
+
+			// CTA-CE-003: six instructional Vimeo modules (sequential unlock).
+			if ( version_compare( $installed, '1.0.210', '<' ) && class_exists( 'CTA_Suicide_Risk_Module_Sync' ) ) {
+				CTA_Suicide_Risk_Module_Sync::sync_modules( true );
+			}
+
+			// CTA-CE-003: enrollment-gated learner resource toolkit (HTML).
+			if ( version_compare( $installed, '1.0.211', '<' ) && class_exists( 'CTA_Suicide_Risk_Toolkit_Sync' ) ) {
+				CTA_Suicide_Risk_Toolkit_Sync::sync( true );
+			}
+
+			// CTA-CE-003: learner final exam (25 questions, no answer keys until Chunk 5).
+			if ( version_compare( $installed, '1.0.212', '<' ) && class_exists( 'CTA_Suicide_Risk_Exam_Sync' ) ) {
+				CTA_Suicide_Risk_Exam_Sync::sync( true );
+			}
+
+			// CTA-CE-003: secured final exam answer keys + teaching points (DB merge only).
+			if ( version_compare( $installed, '1.0.213', '<' ) && class_exists( 'CTA_Suicide_Risk_Exam_Sync' ) ) {
+				CTA_Suicide_Risk_Exam_Sync::sync_answer_keys( true );
+			}
+
+			// CTA-CE-003: approved course evaluation + inline completion attestation.
+			if ( version_compare( $installed, '1.0.214', '<' ) && class_exists( 'CTA_Suicide_Risk_Evaluation_Sync' ) ) {
+				CTA_Suicide_Risk_Evaluation_Sync::sync( true );
+			}
+
+			// CTA-CE-003: certificate metadata, completion statement, admin placeholder thumbnail.
+			if ( version_compare( $installed, '1.0.215', '<' ) && class_exists( 'CTA_Suicide_Risk_Certificate_Sync' ) ) {
+				CTA_Suicide_Risk_Certificate_Sync::sync( true );
 			}
 
 			// Decouple supervision application pending from general account / CE access.

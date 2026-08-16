@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Learner Resource Toolkit — Clinician-Facing Resource Toolkit</title>
+	<style>
+		:root { --navy: #122B51; --teal: #1a6b7a; --muted: #5a6578; --line: #c5d0de; }
+		* { box-sizing: border-box; }
+		body { margin: 0; font-family: Georgia, "Times New Roman", serif; color: var(--navy); background: #f4f7fb; line-height: 1.5; }
+		.wrap { max-width: 920px; margin: 0 auto; padding: 24px 20px 48px; }
+		.doc { background: #fff; border: 1px solid var(--line); padding: 32px 36px; }
+		h1 { font-size: 1.55rem; margin: 0 0 8px; line-height: 1.25; }
+		h2 { font-size: 1.2rem; margin: 28px 0 10px; border-bottom: 2px solid var(--teal); padding-bottom: 4px; }
+		h3 { font-size: 1.05rem; margin: 18px 0 8px; color: var(--teal); }
+		h4 { font-size: 0.98rem; margin: 14px 0 6px; }
+		p, li { font-size: 0.95rem; }
+		.notice { font-size: 0.88rem; color: var(--muted); border-left: 4px solid var(--teal); padding: 10px 14px; background: #f7fafc; margin: 16px 0; }
+		.toc { background: #f7fafc; border: 1px solid var(--line); padding: 16px 20px; margin: 20px 0; }
+		.toc ul { margin: 8px 0 0; padding-left: 20px; }
+		.toc a { color: var(--teal); }
+		label.field-label { display: block; font-weight: bold; margin: 12px 0 4px; font-size: 0.9rem; }
+		input[type="text"], textarea { width: 100%; border: 1px solid var(--line); padding: 8px 10px; font: inherit; border-radius: 4px; }
+		textarea { min-height: 72px; resize: vertical; }
+		textarea.tall { min-height: 120px; }
+		ul.checklist { list-style: none; padding: 0; margin: 8px 0; }
+		ul.checklist li { margin: 6px 0; padding-left: 1.6em; position: relative; }
+		ul.checklist li::before { content: "☐"; position: absolute; left: 0; }
+		ul.prompts { margin: 6px 0 10px; padding-left: 20px; }
+		ul.prompts li { margin: 4px 0; color: var(--muted); font-size: 0.9rem; }
+		.example-box { border: 1px dashed var(--line); padding: 14px 16px; background: #fafcfe; margin: 12px 0; }
+		.resource-block { page-break-inside: avoid; margin-bottom: 24px; }
+		a.ext { word-break: break-word; }
+		@media print {
+			body { background: #fff; }
+			.wrap { padding: 0; max-width: none; }
+			.doc { border: none; padding: 0; }
+			.toc { page-break-after: always; }
+			h2 { page-break-before: always; }
+			h2:first-of-type { page-break-before: avoid; }
+		}
+	</style>
+</head>
+<body>
+<div class="wrap">
+<div class="doc">
+	<h1>Learner Resource Toolkit — Clinician-Facing Resource Toolkit</h1>
+	<p class="notice"><strong>Copyright © 2026 Clinical Training and Supervision Academy.</strong> CTA-created worksheets may be used by enrolled learners for personal professional practice. External instruments remain the property of their original owners.</p>
+
+	<nav class="toc" aria-label="Table of contents">
+		<strong>Contents</strong>
+		<ul>
+			<li><a href="#resource-1">Resource 1 — Person-Specific Suicide-Risk Formulation Worksheet</a></li>
+			<li><a href="#resource-2">Resource 2 — Collaborative Safety-Planning Implementation Guide</a></li>
+			<li><a href="#resource-3">Resource 3 — Level-of-Care and Emergency-Escalation Decision Support</a></li>
+			<li><a href="#resource-4">Resource 4 — Suicide-Risk Documentation Template and Worked Example</a></li>
+			<li><a href="#resource-5">Resource 5 — Postvention and Clinician-Support Protocol Checklist</a></li>
+			<li><a href="#appendix-a">Appendix A — Crisis and Professional Resource Directory</a></li>
+			<li><a href="#appendix-b">Appendix B — Source and Permissions Notes</a></li>
+		</ul>
+	</nav>
+
+	<section id="resource-1" class="resource-block">
+		<h2>Resource 1 — Person-Specific Suicide-Risk Formulation Worksheet</h2>
+		<label class="field-label" for="r1-client">Client/case identifier</label>
+		<input type="text" id="r1-client" name="r1-client">
+		<label class="field-label" for="r1-datetime">Date/time/setting</label>
+		<input type="text" id="r1-datetime" name="r1-datetime">
+		<label class="field-label" for="r1-clinician">Clinician</label>
+		<input type="text" id="r1-clinician" name="r1-clinician">
+		<label class="field-label" for="r1-reason">Reason for assessment</label>
+		<textarea id="r1-reason" name="r1-reason"></textarea>
+		<label class="field-label" for="r1-sources">Sources of information</label>
+		<textarea id="r1-sources" name="r1-sources"></textarea>
+
+		<h3>A. Current Suicidal Thoughts and Behavior</h3>
+		<ul class="prompts">
+			<li>Passive or active ideation; frequency, duration, intensity</li>
+			<li>Intent, plan, preparatory behaviors, rehearsal, or recent attempts</li>
+			<li>Access to means; timeline and imminence</li>
+		</ul>
+		<textarea class="tall" name="r1-a" aria-label="Section A response"></textarea>
+
+		<h3>B. Acute and Chronic Drivers</h3>
+		<ul class="prompts">
+			<li>Recent losses, conflicts, legal, financial, or health stressors</li>
+			<li>Psychiatric, substance, trauma, sleep, and pain contributors</li>
+			<li>Historical patterns and prior suicidal behavior</li>
+		</ul>
+		<textarea class="tall" name="r1-b"></textarea>
+
+		<h3>C. Lethal-Means Access and Environmental Factors</h3>
+		<ul class="prompts">
+			<li>Firearms, medications, substances, ligatures, or other means</li>
+			<li>Household, workplace, or community access and storage</li>
+			<li>Environmental isolation, intoxication, or unsafe settings</li>
+		</ul>
+		<textarea class="tall" name="r1-c"></textarea>
+
+		<h3>D. Warning Signs and Change From Baseline</h3>
+		<ul class="prompts">
+			<li>Observable changes in mood, behavior, sleep, or functioning</li>
+			<li>Statements, preparations, or giving away possessions</li>
+			<li>Deviation from the client’s typical presentation</li>
+		</ul>
+		<textarea class="tall" name="r1-d"></textarea>
+
+		<h3>E. Protective Factors, Supports, and Engagement</h3>
+		<ul class="prompts">
+			<li>Reasons for living, values, cultural or spiritual resources</li>
+			<li>Supports, treatment engagement, and help-seeking capacity</li>
+			<li>Collaboration with safety planning and follow-through</li>
+		</ul>
+		<textarea class="tall" name="r1-e"></textarea>
+
+		<h3>F. Uncertainty and Limitations</h3>
+		<ul class="prompts">
+			<li>Missing, conflicting, or unreliable information</li>
+			<li>Limits of structured tools or collateral data</li>
+			<li>What would change the formulation if new data emerged</li>
+		</ul>
+		<textarea class="tall" name="r1-f"></textarea>
+
+		<h3>G. Person-Specific Formulation Narrative</h3>
+		<p>Synthesize A–F into a concise, person-specific statement of current risk and context.</p>
+		<textarea class="tall" name="r1-g"></textarea>
+
+		<h3>H. Action and Reassessment Plan</h3>
+		<ul class="prompts">
+			<li>Immediate safety steps, level of care, and consultation</li>
+			<li>Means safety, safety-plan elements, and follow-up timing</li>
+			<li>Triggers for immediate reassessment</li>
+		</ul>
+		<textarea class="tall" name="r1-h"></textarea>
+	</section>
+
+	<section id="resource-2" class="resource-block">
+		<h2>Resource 2 — Collaborative Safety-Planning Implementation Guide</h2>
+		<h3>Implementation Principles</h3>
+		<ul>
+			<li>Collaborative, transparent, and culturally responsive</li>
+			<li>Written in the client’s own words when possible</li>
+			<li>Feasible, rehearsed, and linked to real supports and resources</li>
+			<li>Includes lethal-means safety as a distinct step</li>
+			<li>Revisited when risk, context, or engagement changes</li>
+		</ul>
+
+		<h3>Step 1 — Personal warning signs</h3>
+		<textarea name="r2-step1"></textarea>
+		<h3>Step 2 — Internal coping strategies</h3>
+		<textarea name="r2-step2"></textarea>
+		<h3>Step 3 — People and social settings for distraction</h3>
+		<textarea name="r2-step3"></textarea>
+		<h3>Step 4 — People who can provide help</h3>
+		<textarea name="r2-step4"></textarea>
+		<h3>Step 5 — Professionals and crisis resources</h3>
+		<textarea name="r2-step5"></textarea>
+		<h3>Step 6 — Lethal-means safety</h3>
+		<textarea name="r2-step6"></textarea>
+
+		<h3>Feasibility, Rehearsal, and Follow-Up Checklist</h3>
+		<ul class="checklist">
+			<li>Client understands each step in their own words</li>
+			<li>Steps are realistic given current functioning and environment</li>
+			<li>Contact information verified and accessible to the client</li>
+			<li>Barriers identified (transportation, language, privacy, disability, cost)</li>
+			<li>Backup options documented if the first step fails</li>
+			<li>Lethal-means plan specifies method, responsible person, timing, and verification</li>
+			<li>Plan rehearsed or walked through in session</li>
+			<li>Supports informed only with appropriate consent</li>
+			<li>Follow-up date and reassessment trigger documented</li>
+			<li>Plan updated in the clinical record and shared per policy</li>
+		</ul>
+	</section>
+
+	<section id="resource-3" class="resource-block">
+		<h2>Resource 3 — Level-of-Care and Emergency-Escalation Decision Support</h2>
+		<h3>Local Pathway Worksheet</h3>
+		<label class="field-label">County/jurisdiction</label><input type="text" name="r3-county">
+		<label class="field-label">Authorized role (5150/WIC 5585.50/other per local policy)</label><input type="text" name="r3-role">
+		<label class="field-label">Mobile crisis contact</label><textarea name="r3-mobile"></textarea>
+		<label class="field-label">Designated evaluation facility</label><textarea name="r3-facility"></textarea>
+		<label class="field-label">Emergency transport procedure</label><textarea name="r3-transport"></textarea>
+		<label class="field-label">After-hours consultation</label><textarea name="r3-afterhours"></textarea>
+		<label class="field-label">Telehealth emergency-location procedure</label><textarea name="r3-telehealth"></textarea>
+		<label class="field-label">Parent/guardian notification for minors</label><textarea name="r3-minor"></textarea>
+		<label class="field-label">Documentation/handoff requirements</label><textarea name="r3-handoff"></textarea>
+
+		<h3>Escalation Triggers Requiring Immediate Reassessment</h3>
+		<ol>
+			<li>New or escalating suicidal intent, plan, preparatory behavior, or attempt</li>
+			<li>Inability to maintain safety or engage a feasible safety plan</li>
+			<li>Access to lethal means combined with current ideation or intent</li>
+			<li>Severe agitation, psychosis, intoxication, or medical instability affecting judgment</li>
+			<li>Loss of protective supports, sudden change, or imminent access to means</li>
+			<li>Clinician judgment that current outpatient care cannot contain foreseeable risk</li>
+		</ol>
+	</section>
+
+	<section id="resource-4" class="resource-block">
+		<h2>Resource 4 — Suicide-Risk Documentation Template and Worked Example</h2>
+		<h3>Documentation Template (use in practice)</h3>
+		<label class="field-label">Presenting concern and setting</label><textarea name="r4-presenting"></textarea>
+		<label class="field-label">Direct suicide inquiry (ideation, intent, plan, means, behavior, history)</label><textarea class="tall" name="r4-inquiry"></textarea>
+		<label class="field-label">Risk and protective factors identified</label><textarea name="r4-factors"></textarea>
+		<label class="field-label">Formulation and level-of-care decision</label><textarea name="r4-formulation"></textarea>
+		<label class="field-label">Interventions, consultation, and follow-up</label><textarea name="r4-interventions"></textarea>
+
+		<h3>Fictional Abbreviated Worked Example</h3>
+		<div class="example-box">
+			<p><strong>Client:</strong> Adult outpatient; telehealth session. Reports increased passive death wishes over two weeks after job loss. Denies current intent or plan but endorses access to medication stockpile. Protective: engaged spouse, prior therapy alliance, reasons for living related to children. Structured inquiry completed; no preparatory behavior reported. Consultation with supervisor; collaborative safety plan initiated including means restriction with spouse, 988 and mobile crisis numbers, and next-day follow-up. Documented rationale for outpatient management with enhanced monitoring; reassessment if intent escalates or plan emerges.</p>
+		</div>
+
+		<h3>Learner Review Questions</h3>
+		<ol>
+			<li>What data in the example supports the person-specific formulation?</li>
+			<li>What remains uncertain and how was that documented?</li>
+			<li>How are tool use, direct interview, and collateral differentiated in the note?</li>
+			<li>What actions and consultations are documented?</li>
+			<li>What findings would require immediate reassessment or escalation?</li>
+		</ol>
+		<label class="field-label">Your responses</label><textarea class="tall" name="r4-review"></textarea>
+	</section>
+
+	<section id="resource-5" class="resource-block">
+		<h2>Resource 5 — Postvention and Clinician-Support Protocol Checklist</h2>
+		<h3>A. Immediate Facts and Safety</h3>
+		<ul class="checklist"><li>Confirm known facts; avoid speculation</li><li>Assess ongoing safety for other clients/staff if applicable</li><li>Secure immediate environmental needs</li></ul>
+		<h3>B. Required Notifications and Consultation</h3>
+		<ul class="checklist"><li>Notify supervisor/program leadership per policy</li><li>Legal/risk consultation as indicated</li><li>Coordinate required notifications without violating confidentiality</li></ul>
+		<h3>C. Documentation and Record Integrity</h3>
+		<ul class="checklist"><li>Preserve records relevant to care provided</li><li>Document timeline, contacts, and decisions</li><li>Avoid altering records inappropriately</li></ul>
+		<h3>D. Continuity of Care and Communication</h3>
+		<ul class="checklist"><li>Identify affected clients/families per policy</li><li>Plan trauma-informed communication</li><li>Coordinate community/postvention resources</li></ul>
+		<h3>E. Clinician Support</h3>
+		<ul class="checklist"><li>Access peer consultation and supervision</li><li>Monitor personal reactions and countertransference</li><li>Use EAP or professional support when indicated</li></ul>
+		<h3>F. Operational and Clinical Review</h3>
+		<ul class="checklist"><li>Participate in agency review as required</li><li>Identify systems learning without premature blame</li><li>Update policies/training needs if assigned</li></ul>
+		<h3>G. Follow-Up and Professional Recovery</h3>
+		<ul class="checklist"><li>Schedule follow-up support check-ins</li><li>Monitor secondary traumatic stress and burnout</li><li>Resume caseload adjustments as clinically appropriate</li></ul>
+
+		<h3>Protocol Ownership and Local Contacts</h3>
+		<label class="field-label">Program/agency owner</label><input type="text" name="r5-owner">
+		<label class="field-label">Supervisor/on-call</label><input type="text" name="r5-supervisor">
+		<label class="field-label">Legal/risk contact</label><input type="text" name="r5-legal">
+		<label class="field-label">EAP/professional support</label><input type="text" name="r5-eap">
+		<label class="field-label">Community postvention resources</label><textarea name="r5-community"></textarea>
+	</section>
+
+	<section id="appendix-a" class="resource-block">
+		<h2>Appendix A — Crisis and Professional Resource Directory</h2>
+		<p>Official external resources (link only — do not reproduce proprietary content):</p>
+		<ul>
+			<li><a class="ext" href="https://www.bbs.ca.gov/licensees/cont_ed.html" target="_blank" rel="noopener noreferrer">BBS Continuing Education</a></li>
+			<li><a class="ext" href="https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&amp;sectionNum=5008" target="_blank" rel="noopener noreferrer">California WIC 5008</a></li>
+			<li><a class="ext" href="https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&amp;sectionNum=5150" target="_blank" rel="noopener noreferrer">California WIC 5150</a></li>
+			<li><a class="ext" href="https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&amp;sectionNum=5150.05" target="_blank" rel="noopener noreferrer">California WIC 5150.05</a></li>
+			<li><a class="ext" href="https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&amp;sectionNum=5328" target="_blank" rel="noopener noreferrer">California WIC 5328</a></li>
+			<li><a class="ext" href="https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&amp;sectionNum=5585.50" target="_blank" rel="noopener noreferrer">California WIC 5585.50</a></li>
+			<li><a class="ext" href="https://988lifeline.org/" target="_blank" rel="noopener noreferrer">988 Suicide &amp; Crisis Lifeline</a></li>
+			<li><a class="ext" href="https://library.samhsa.gov/product/safe-t-suicide-assessment-five-step-evaluation-and-triage/pep24-01-036" target="_blank" rel="noopener noreferrer">SAMHSA SAFE-T</a></li>
+			<li><a class="ext" href="https://cssrs.columbia.edu/" target="_blank" rel="noopener noreferrer">Columbia Lighthouse Project C-SSRS</a></li>
+			<li><a class="ext" href="https://suicidesafetyplan.com/" target="_blank" rel="noopener noreferrer">Stanley-Brown Safety Planning Intervention</a></li>
+			<li><a class="ext" href="https://suicidesafetyplan.com/forms/" target="_blank" rel="noopener noreferrer">Stanley-Brown Official Forms</a></li>
+			<li><a class="ext" href="https://www.healthquality.va.gov/guidelines/MH/srb/" target="_blank" rel="noopener noreferrer">VA/DoD Suicide Risk CPG</a></li>
+			<li><a class="ext" href="https://www.nimh.nih.gov/health/publications/warning-signs-of-suicide" target="_blank" rel="noopener noreferrer">NIMH Warning Signs</a></li>
+			<li><a class="ext" href="https://sprc.org/resources/the-coalition-of-clinician-survivors-ccs/" target="_blank" rel="noopener noreferrer">SPRC Clinician-Survivor Resources</a></li>
+			<li><a class="ext" href="https://sprc.org/wp-content/uploads/2022/12/RespondingAfterSuicideNationalGuidelines.pdf" target="_blank" rel="noopener noreferrer">SPRC Postvention National Guidelines (PDF)</a></li>
+		</ul>
+	</section>
+
+	<section id="appendix-b" class="resource-block">
+		<h2>Appendix B — Source and Permissions Notes</h2>
+		<p>CTA-created worksheets are original educational aids and are not validated prediction instruments. The C-SSRS is an external instrument. Use official current versions and follow administration and training guidance. CTA does not reproduce the scale in this toolkit. SAFE-T is an external SAMHSA clinical framework. This toolkit references its structure but does not replace the official publication. The Stanley-Brown Safety Plan is copyrighted. This toolkit does not reproduce or modify the form. The official site permits individual use and requires written permission for changes or electronic medical record use. California statutes and local implementation procedures may change. Recheck current law, designated pathways, and local policy before use. 988 service details and accessibility options may change; verify the official site during future course updates.</p>
+	</section>
+</div>
+</div>
+</body>
+</html>

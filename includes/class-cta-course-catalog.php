@@ -161,6 +161,7 @@ class CTA_Course_Catalog {
 					'Advanced Suicide Risk Assessment',
 				),
 				'title'        => 'Advanced Suicide Risk Assessment: Evidence-Based Intervention and Ethical Documentation',
+				'slug'         => 'advanced-suicide-risk-assessment',
 				'ce_hours'     => 6.0,
 				'price'        => 79.00,
 				'category'     => 'Clinical Skills',

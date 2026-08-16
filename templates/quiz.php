@@ -36,6 +36,7 @@ if ( empty( $evaluation_questions ) || ! is_array( $evaluation_questions ) ) {
 	data-question-count="<?php echo esc_attr( $question_count ); ?>"
 	data-view-state="<?php echo esc_attr( $view_state ); ?>"
 	data-exam-prep="<?php echo ! empty( $is_exam_prep ) ? '1' : '0'; ?>"
+	data-ce-teaching-points="<?php echo ! empty( $ce_teaching_points ) ? '1' : '0'; ?>"
 	<?php if ( ! empty( $dashboard_url ) ) : ?>
 		data-dashboard-url="<?php echo esc_url( $dashboard_url ); ?>"
 	<?php endif; ?>
@@ -53,6 +54,19 @@ if ( empty( $evaluation_questions ) || ! is_array( $evaluation_questions ) ) {
 	<div class="cta-quiz-panel <?php echo 'start' === $view_state ? 'cta-quiz-panel--active' : ''; ?>" data-quiz-panel="start" <?php echo 'start' !== $view_state ? 'hidden' : ''; ?>>
 		<div class="card cta-quiz-start-card">
 			<h2><?php echo esc_html( $quiz->title ); ?></h2>
+			<?php if ( ! empty( $exam_instructions ) ) : ?>
+				<div class="cta-quiz-exam-instructions" role="note">
+					<?php foreach ( preg_split( "/\r\n|\r|\n/", (string) $exam_instructions ) as $exam_instruction_paragraph ) : ?>
+						<?php
+						$exam_instruction_paragraph = trim( (string) $exam_instruction_paragraph );
+						if ( '' === $exam_instruction_paragraph ) {
+							continue;
+						}
+						?>
+						<p><?php echo esc_html( $exam_instruction_paragraph ); ?></p>
+					<?php endforeach; ?>
+				</div>
+			<?php endif; ?>
 			<div class="cta-quiz-info-grid">
 				<div><strong><?php echo esc_html__( 'Questions', 'cta-lms' ); ?></strong><span><?php echo esc_html( (string) $question_count ); ?></span></div>
 				<div><strong><?php echo esc_html__( 'Passing Score', 'cta-lms' ); ?></strong><span><?php echo esc_html( (int) $quiz->passing_score ?: 70 ); ?>%</span></div>
@@ -125,9 +139,9 @@ if ( empty( $evaluation_questions ) || ! is_array( $evaluation_questions ) ) {
 		<div class="card cta-quiz-evaluation">
 			<h2><?php echo esc_html__( 'Course Evaluation', 'cta-lms' ); ?></h2>
 			<?php
-			$cta_inline_attest = class_exists( 'CTA_Law_Ethics_Evaluation_Sync' )
+			$cta_inline_attest = class_exists( 'CTA_CE_Completion' )
 				&& ! empty( $course->id )
-				&& CTA_Law_Ethics_Evaluation_Sync::evaluation_includes_attestation( (int) $course->id );
+				&& CTA_CE_Completion::evaluation_includes_inline_attestation( (int) $course->id );
 			?>
 			<p>
 				<?php
@@ -154,6 +168,11 @@ if ( empty( $evaluation_questions ) || ! is_array( $evaluation_questions ) ) {
 						? (string) cta_lms_get_user_legal_name( $cta_eval_user_id )
 						: ( $cta_eval_user ? (string) $cta_eval_user->display_name : '' ),
 					'completion_attestation_date'       => current_time( 'Y-m-d' ),
+					'sra_attest_signature'              => function_exists( 'cta_lms_get_user_legal_name' )
+						? (string) cta_lms_get_user_legal_name( $cta_eval_user_id )
+						: ( $cta_eval_user ? (string) $cta_eval_user->display_name : '' ),
+					'sra_attest_date'                   => current_time( 'Y-m-d' ),
+					'participant_state_jurisdiction'    => (string) get_user_meta( $cta_eval_user_id, 'cta_license_state', true ),
 				);
 				// Prefill also works when course copies use the camft_ prefix.
 				foreach ( array_keys( $cta_eval_prefill ) as $pref_key ) {

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">Admin placeholder  course image not approved</title>
+  <desc id="desc">Placeholder artwork for Advanced Suicide Risk Assessment. Not approved for publication.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#122B51"/>
+      <stop offset="55%" stop-color="#1F4E79"/>
+      <stop offset="100%" stop-color="#2A7A8C"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#bg)"/>
+  <rect x="36" y="36" width="1128" height="603" fill="none" stroke="#C5A572" stroke-width="4" stroke-dasharray="16 10"/>
+  <g fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" text-anchor="middle">
+    <text x="600" y="250" font-size="42" font-weight="700" letter-spacing="4">ADMIN PLACEHOLDER</text>
+    <text x="600" y="310" font-size="28" font-weight="600">NOT APPROVED FOR PUBLICATION</text>
+    <text x="600" y="370" font-size="22">Advanced Suicide Risk Assessment (CTA-CE-003)</text>
+    <text x="600" y="410" font-size="18" fill="#D0D5DD">Replace with client-approved course artwork before go-live</text>
+  </g>
+  <g opacity="0.35" stroke="#FFFFFF" stroke-width="2" fill="none">
+    <circle cx="600" cy="520" r="48"/>
+    <path d="M552 520 L648 520 M600 472 L600 568"/>
+  </g>
+</svg>

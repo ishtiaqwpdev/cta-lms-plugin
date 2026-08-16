@@ -247,6 +247,51 @@ class CTA_CE_Completion {
 
 		return $progress;
 	}
+
+	/**
+	 * Whether the course evaluation embeds Section 9 attestation (single-submit flow).
+	 *
+	 * @param int $course_id Course ID.
+	 * @return bool
+	 */
+	public static function evaluation_includes_inline_attestation( $course_id ) {
+		return null !== self::inline_attestation_config( $course_id );
+	}
+
+	/**
+	 * Inline attestation field keys and statement for course-specific evaluation forms.
+	 *
+	 * @param int $course_id Course ID.
+	 * @return array{agree_keys:string[],signature_keys:string[],date_keys:string[],statement:string}|null
+	 */
+	public static function inline_attestation_config( $course_id ) {
+		$course_id = absint( $course_id );
+		if ( ! $course_id ) {
+			return null;
+		}
+
+		if ( class_exists( 'CTA_Law_Ethics_Evaluation_Sync' )
+			&& CTA_Law_Ethics_Evaluation_Sync::evaluation_includes_attestation( $course_id ) ) {
+			return array(
+				'agree_keys'     => array( 'completion_attestation_agree' ),
+				'signature_keys' => array( 'completion_attestation_signature', 'participant_cert_name' ),
+				'date_keys'      => array( 'completion_attestation_date', 'participant_completion_date' ),
+				'statement'      => CTA_Law_Ethics_Evaluation_Sync::attestation_statement(),
+			);
+		}
+
+		if ( class_exists( 'CTA_Suicide_Risk_Evaluation_Sync' )
+			&& CTA_Suicide_Risk_Evaluation_Sync::evaluation_includes_attestation( $course_id ) ) {
+			return array(
+				'agree_keys'     => array( 'sra_attest_complete' ),
+				'signature_keys' => array( 'sra_attest_signature', 'participant_cert_name' ),
+				'date_keys'      => array( 'sra_attest_date', 'participant_completion_date' ),
+				'statement'      => CTA_Suicide_Risk_Evaluation_Sync::attestation_statement(),
+			);
+		}
+
+		return null;
+	}
 }
 
 }

@@ -5894,6 +5894,31 @@ button.pagination__item:disabled {
   font-size: var(--font-size-3xl);
 }
 
+.cta-plugin-wrapper .cta-course-card__thumb {
+  position: relative;
+}
+
+.cta-plugin-wrapper .cta-course-card__thumb--placeholder {
+  opacity: 0.92;
+}
+
+.cta-plugin-wrapper .cta-course-card__placeholder-badge {
+  position: absolute;
+  left: var(--space-sm);
+  right: var(--space-sm);
+  bottom: var(--space-sm);
+  z-index: 2;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: rgba(18, 43, 81, 0.92);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
 .cta-plugin-wrapper .cta-badge--ce {
   position: absolute;
   top: var(--space-md);
@@ -6373,6 +6398,24 @@ button.pagination__item:disabled {
 .cta-plugin-wrapper .cta-quiz-evaluation,
 .cta-plugin-wrapper .cta-quiz-certificate-ready {
   padding: var(--space-xl);
+}
+
+.cta-plugin-wrapper .cta-quiz-exam-instructions {
+  margin: var(--space-md) 0 var(--space-lg);
+  padding: var(--space-md) var(--space-lg);
+  border-left: 4px solid var(--color-teal, #1a6b7a);
+  background: var(--color-bg-muted);
+  color: var(--color-text-gray);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.cta-plugin-wrapper .cta-quiz-exam-instructions p {
+  margin: 0 0 0.75rem;
+}
+
+.cta-plugin-wrapper .cta-quiz-exam-instructions p:last-child {
+  margin-bottom: 0;
 }
 
 .cta-plugin-wrapper .cta-quiz-info-grid {

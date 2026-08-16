@@ -53,6 +53,8 @@ $commercial_pending = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::comm
 $display_title      = function_exists( 'cta_lms_get_course_display_title' )
 	? cta_lms_get_course_display_title( $course )
 	: (string) $course->title;
+$thumb_is_placeholder = ! empty( $card_meta['thumbnail_is_placeholder'] )
+	|| ( ! empty( $course->thumbnail_url ) && false !== stripos( (string) $course->thumbnail_url, 'ADMIN_PLACEHOLDER' ) );
 ?>
 <article
 	class="cta-course-card card course-card course-card--catalog<?php echo $is_exam_prep ? ' course-card--exam-prep' : ''; ?>"
@@ -66,9 +68,12 @@ $display_title      = function_exists( 'cta_lms_get_course_display_title' )
 			<img
 				src="<?php echo esc_url( $course->thumbnail_url ); ?>"
 				alt="<?php echo esc_attr( $card_alt ); ?>"
-				class="<?php echo $is_exam_prep ? 'cta-exam-prep-artwork' : ''; ?>"
+				class="<?php echo esc_attr( trim( ( $is_exam_prep ? 'cta-exam-prep-artwork' : '' ) . ( $thumb_is_placeholder ? ' cta-course-card__thumb--placeholder' : '' ) ) ); ?>"
 				loading="lazy"
 			>
+			<?php if ( $thumb_is_placeholder ) : ?>
+				<span class="cta-course-card__placeholder-badge"><?php esc_html_e( 'Image placeholder — not approved', 'cta-lms' ); ?></span>
+			<?php endif; ?>
 		<?php else : ?>
 			<div class="cta-course-card__thumb-placeholder course-card__thumb">
 				<span aria-hidden="true">&#128214;</span>

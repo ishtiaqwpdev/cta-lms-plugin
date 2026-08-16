@@ -653,6 +653,13 @@ class CTA_Evaluation_Questions {
 			return count( self::get_questions( 'all', $course_id ) );
 		}
 
+		// CTA-CE-003 uses the approved suicide-risk evaluation + inline attestation.
+		if ( class_exists( 'CTA_Suicide_Risk_Evaluation_Sync' )
+			&& CTA_Suicide_Risk_Evaluation_Sync::is_suicide_risk_course( $course_id ) ) {
+			CTA_Suicide_Risk_Evaluation_Sync::sync( false );
+			return count( self::get_questions( 'all', $course_id ) );
+		}
+
 		self::sync_learning_objective_questions( $course_id );
 		self::copy_camft_templates_to_course( $course_id );
 

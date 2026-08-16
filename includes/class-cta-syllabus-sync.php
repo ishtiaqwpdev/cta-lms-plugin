@@ -438,6 +438,12 @@ class CTA_Syllabus_Sync {
 		$slug_source = ! empty( $syllabus['slug'] ) ? (string) $syllabus['slug'] : $title;
 		$slug  = self::unique_slug( $slug_source );
 		$ce    = isset( $syllabus['ce_hours'] ) ? (float) $syllabus['ce_hours'] : 0.0;
+		$access_period_months = 6;
+		if ( ! empty( $syllabus['access_period_pending'] ) ) {
+			$access_period_months = 0;
+		} elseif ( isset( $syllabus['access_period_months'] ) && is_numeric( $syllabus['access_period_months'] ) ) {
+			$access_period_months = max( 0, absint( $syllabus['access_period_months'] ) );
+		}
 
 		$description = ! empty( $syllabus['description'] )
 			? self::format_course_description_html( $syllabus['description'] )
@@ -459,7 +465,7 @@ class CTA_Syllabus_Sync {
 				'status'               => 'draft',
 				'product_type'         => 'ce',
 				// Default only for brand-new rows; existing courses keep their owner-set access period.
-				'access_period_months' => 6,
+				'access_period_months' => $access_period_months,
 				'awards_ce_hours'      => 1,
 				'has_ce_certificate'   => 1,
 			),
@@ -502,14 +508,28 @@ class CTA_Syllabus_Sync {
 			'target_audience'         => sanitize_text_field( (string) ( $syllabus['target_audience'] ?? '' ) ),
 			'instructional_method'    => sanitize_text_field( (string) ( $syllabus['instructional_method'] ?? '' ) ),
 			'presenter'               => sanitize_text_field( (string) ( $syllabus['presenter'] ?? '' ) ),
+			'provider'                => sanitize_text_field( (string) ( $syllabus['provider'] ?? '' ) ),
 			'course_code'             => sanitize_text_field( (string) ( $syllabus['course_code'] ?? '' ) ),
+			'course_code_status'      => sanitize_text_field( (string) ( $syllabus['course_code_status'] ?? '' ) ),
 			'course_classification'   => sanitize_text_field( (string) ( $syllabus['course_classification'] ?? '' ) ),
 			'short_description'       => sanitize_textarea_field( (string) ( $syllabus['short_description'] ?? '' ) ),
 			'educational_notice'      => sanitize_textarea_field( (string) ( $syllabus['educational_notice'] ?? '' ) ),
 			'seo_title'               => sanitize_text_field( (string) ( $syllabus['seo_title'] ?? '' ) ),
 			'meta_description'        => sanitize_text_field( (string) ( $syllabus['meta_description'] ?? '' ) ),
+			'primary_keyword'         => sanitize_text_field( (string) ( $syllabus['primary_keyword'] ?? '' ) ),
 			'image_alt'               => sanitize_text_field( (string) ( $syllabus['image_alt'] ?? '' ) ),
+			'access_period_status'    => sanitize_text_field( (string) ( $syllabus['access_period_status'] ?? '' ) ),
+			'publication_status'      => sanitize_text_field( (string) ( $syllabus['publication_status'] ?? '' ) ),
+			'active_instructional_minutes_planned' => isset( $syllabus['active_instructional_minutes_planned'] )
+				? absint( $syllabus['active_instructional_minutes_planned'] )
+				: 0,
+			'active_instructional_minutes_note' => sanitize_textarea_field(
+				(string) ( $syllabus['active_instructional_minutes_note'] ?? '' )
+			),
 			'educational_goals'       => self::sanitize_string_list( $syllabus['educational_goals'] ?? array() ),
+			'who_this_course_is_for'  => self::sanitize_string_list( $syllabus['who_this_course_is_for'] ?? array() ),
+			'included_materials'      => self::sanitize_string_list( $syllabus['included_materials'] ?? array() ),
+			'secondary_keywords'      => self::sanitize_string_list( $syllabus['secondary_keywords'] ?? array() ),
 			'key_topics'              => self::sanitize_string_list( $syllabus['key_topics'] ?? array() ),
 			'completion_requirements' => self::sanitize_string_list( $syllabus['completion_requirements'] ?? array() ),
 			'references'              => self::sanitize_string_list( $syllabus['references'] ?? array() ),
@@ -517,6 +537,20 @@ class CTA_Syllabus_Sync {
 			'development_draft'       => ! empty( $syllabus['development_draft'] ),
 			'syllabus_synced_at'      => gmdate( 'c' ),
 		);
+
+		if ( ! empty( $syllabus['certificate_title'] ) ) {
+			$meta['certificate_title'] = sanitize_text_field( (string) $syllabus['certificate_title'] );
+		}
+
+		if ( ! empty( $syllabus['certificate_completion_statement'] ) ) {
+			$meta['certificate_completion_statement'] = sanitize_textarea_field(
+				(string) $syllabus['certificate_completion_statement']
+			);
+		}
+
+		if ( array_key_exists( 'thumbnail_is_placeholder', $syllabus ) ) {
+			$meta['thumbnail_is_placeholder'] = ! empty( $syllabus['thumbnail_is_placeholder'] );
+		}
 
 		if ( ! empty( $syllabus['mid_course_knowledge_check_note'] ) ) {
 			$meta['mid_course_knowledge_check_note'] = sanitize_text_field(
@@ -565,10 +599,18 @@ class CTA_Syllabus_Sync {
 			}
 		}
 
+		if ( ! empty( $syllabus['access_period_pending'] ) ) {
+			$data['access_period_months'] = 0;
+		} elseif ( isset( $syllabus['access_period_months'] ) && is_numeric( $syllabus['access_period_months'] ) ) {
+			$data['access_period_months'] = max( 0, absint( $syllabus['access_period_months'] ) );
+		}
+
 		$formats = array();
 		foreach ( array_keys( $data ) as $key ) {
 			if ( 'ce_hours' === $key || 'price' === $key ) {
 				$formats[] = '%f';
+			} elseif ( 'access_period_months' === $key ) {
+				$formats[] = '%d';
 			} else {
 				$formats[] = '%s';
 			}
