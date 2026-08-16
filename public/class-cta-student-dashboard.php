@@ -413,6 +413,21 @@ class CTA_Student_Dashboard {
 			}
 		}
 
+		// Self-heal CTA-CE-003 final exam when deploy missed the 1.0.212/1.0.213 seeds.
+		if ( class_exists( 'CTA_Suicide_Risk_Exam_Sync' ) ) {
+			$sr_course = CTA_Suicide_Risk_Exam_Sync::find_course();
+			if ( $sr_course && (int) $sr_course->id === (int) $course_id ) {
+				try {
+					CTA_Suicide_Risk_Exam_Sync::ensure();
+				} catch ( Throwable $e ) {
+					if ( defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ) {
+						// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+						error_log( 'CTA Suicide Risk exam ensure failed: ' . $e->getMessage() );
+					}
+				}
+			}
+		}
+
 		// Exam Prep can have multiple assessments; CE still uses the primary quiz.
 		$course_quizzes = CTA_Database::get_quizzes_by_course( $course_id, true );
 		$quiz_cards     = array();

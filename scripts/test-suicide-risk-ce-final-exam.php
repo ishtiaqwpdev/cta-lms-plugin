@@ -48,11 +48,12 @@ assert_true( false !== strpos( $sync_src, 'passing_score' ) && false !== strpos(
 assert_true( false !== strpos( $sync_src, 'time_limit_mins' ) && false !== strpos( $sync_src, '0' ), 'No time limit' );
 assert_true( false !== strpos( $sync_src, 'max_attempts' ) && false !== strpos( $sync_src, '0' ), 'Unlimited attempts (max_attempts=0)' );
 assert_true( false !== strpos( $sync_src, 'PENDING_CORRECT_OPTION' ), 'Answer keys deferred to Chunk 5 placeholder' );
+assert_true( method_exists( 'CTA_Suicide_Risk_Exam_Sync', 'ensure' ), 'Exam sync exposes ensure() self-heal' );
 assert_true( false === strpos( $sync_src, 'unpublish_all_ce_courses_pending_cepa' ), 'Content sync must not mass-unpublish CE courses' );
 
 $lms = file_get_contents( $root . '/cta-lms.php' );
 assert_true( false !== strpos( $lms, 'CTA_Suicide_Risk_Exam_Sync' ), 'Exam sync registered in cta-lms.php' );
-assert_true( false !== strpos( $lms, '1.0.212' ), 'Version bump 1.0.212' );
+assert_true( false !== strpos( $lms, 'CTA_Suicide_Risk_Exam_Sync::ensure' ), 'Exam ensure wired in upgrade/player heal' );
 
 $quiz_tpl = file_get_contents( $root . '/templates/quiz.php' );
 assert_true( false !== strpos( $quiz_tpl, 'exam_instructions' ), 'Quiz template renders exam instructions' );

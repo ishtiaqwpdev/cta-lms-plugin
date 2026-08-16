@@ -179,6 +179,74 @@ class CTA_Suicide_Risk_Exam_Sync {
 	}
 
 	/**
+	 * Ensure the final exam exists with 25 learner questions (+ answer keys when missing).
+	 *
+	 * @return array{ok:bool,course_id:int,quiz_id:int,questions:int,message:string}
+	 */
+	public static function ensure() {
+		$course = self::find_course();
+		if ( ! $course || ! class_exists( 'CTA_Database' ) ) {
+			return array(
+				'ok'        => false,
+				'course_id' => 0,
+				'quiz_id'   => 0,
+				'questions' => 0,
+				'message'   => 'suicide_risk_course_not_found',
+			);
+		}
+
+		$course_id = (int) $course->id;
+		$quizzes   = CTA_Database::get_quizzes_by_course( $course_id, true );
+		$quiz_id   = 0;
+		$count     = 0;
+
+		foreach ( (array) $quizzes as $qrow ) {
+			$type = isset( $qrow->quiz_type ) ? (string) $qrow->quiz_type : 'final';
+			if ( 'final' !== $type && '' !== $type ) {
+				continue;
+			}
+
+			$questions = CTA_Database::get_quiz_questions( (int) $qrow->id );
+			if ( count( $questions ) >= 25 ) {
+				$quiz_id = (int) $qrow->id;
+				$count   = count( $questions );
+				break;
+			}
+		}
+
+		if ( $quiz_id && $count >= 25 ) {
+			$needs_keys = false;
+			$questions  = CTA_Database::get_quiz_questions( $quiz_id );
+			foreach ( (array) $questions as $question ) {
+				$correct = strtolower( (string) ( $question->correct_option ?? '' ) );
+				if ( ! in_array( $correct, array( 'a', 'b', 'c', 'd' ), true ) ) {
+					$needs_keys = true;
+					break;
+				}
+			}
+
+			if ( $needs_keys ) {
+				self::sync_answer_keys( true );
+			}
+
+			return array(
+				'ok'        => true,
+				'course_id' => $course_id,
+				'quiz_id'   => $quiz_id,
+				'questions' => $count,
+				'message'   => 'already_present',
+			);
+		}
+
+		$result = self::sync( true );
+		if ( ! empty( $result['ok'] ) ) {
+			self::sync_answer_keys( true );
+		}
+
+		return $result;
+	}
+
+	/**
 	 * Seed/replace the learner final exam (questions + choices only).
 	 *
 	 * @param bool $force Re-run even if already seeded at this version.

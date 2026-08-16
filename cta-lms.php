@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.217' );
+	define( 'CTA_VERSION', '1.0.218' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -1162,6 +1162,11 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 			// CTA-CE-003: repair missing module rows / Vimeo URLs after partial sync.
 			if ( version_compare( $installed, '1.0.217', '<' ) && class_exists( 'CTA_Suicide_Risk_Module_Sync' ) ) {
 				CTA_Suicide_Risk_Module_Sync::ensure();
+			}
+
+			// CTA-CE-003: repair missing final exam + answer keys after partial deploy.
+			if ( version_compare( $installed, '1.0.218', '<' ) && class_exists( 'CTA_Suicide_Risk_Exam_Sync' ) ) {
+				CTA_Suicide_Risk_Exam_Sync::ensure();
 			}
 
 			// Decouple supervision application pending from general account / CE access.
