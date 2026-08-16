@@ -364,7 +364,11 @@ class CTA_Course_Materials {
 			return new WP_Error( 'invalid', __( 'Invalid request.', 'cta-lms' ) );
 		}
 
-		if ( ! self::course_has_form_a_remediation( $course_id ) ) {
+		$course = class_exists( 'CTA_Database' ) ? CTA_Database::get_course( $course_id ) : null;
+		$lmft_clinical = class_exists( 'CTA_Lmft_Clinical_Form_Gates' )
+			&& CTA_Lmft_Clinical_Form_Gates::applies_to_course( $course );
+
+		if ( ! self::course_has_form_a_remediation( $course_id ) && ! $lmft_clinical ) {
 			return new WP_Error( 'no_remediation', __( 'This program does not include a Form A Remediation Workbook.', 'cta-lms' ) );
 		}
 
@@ -376,7 +380,7 @@ class CTA_Course_Materials {
 		if ( ! $has_form_a ) {
 			return new WP_Error(
 				'form_a_required',
-				__( 'Submit Comprehensive Simulation Form A (or record your preserved Form A attempt) before completing the Form A Remediation Workbook.', 'cta-lms' )
+				__( 'Submit Comprehensive Simulation Form A (or record your preserved Form A attempt) before completing Form A remediation.', 'cta-lms' )
 			);
 		}
 
@@ -672,15 +676,31 @@ class CTA_Course_Materials {
 	/**
 	 * Form B access check for Exam Prep programs.
 	 *
-	 * Form B is open independently of Form A (and of Form A Remediation). Enrollment /
-	 * timed access are enforced by callers; this helper no longer applies a Form A sequence.
+	 * LMFT California Clinical: Form B requires Form A submission + remediation stage.
+	 * Other Exam Prep programs: Form B remains independent of Form A.
 	 *
 	 * @param int $user_id   User ID.
 	 * @param int $course_id Course ID.
 	 * @return true|WP_Error
 	 */
 	public static function assert_form_b_accessible( $user_id, $course_id ) {
-		unset( $user_id, $course_id );
+		$user_id   = absint( $user_id );
+		$course_id = absint( $course_id );
+
+		$course = ( $course_id && class_exists( 'CTA_Database' ) )
+			? CTA_Database::get_course( $course_id )
+			: null;
+
+		if ( class_exists( 'CTA_Lmft_Clinical_Form_Gates' )
+			&& CTA_Lmft_Clinical_Form_Gates::applies_to_course( $course ) ) {
+			$quiz = (object) array(
+				'quiz_type' => 'form_b',
+				'title'     => 'Comprehensive Simulation - Form B',
+				'status'    => 'active',
+			);
+			return CTA_Lmft_Clinical_Form_Gates::assert_quiz_accessible( $quiz, $course, $user_id );
+		}
+
 		return true;
 	}
 

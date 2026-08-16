@@ -137,6 +137,36 @@ $assessment_howto = ! empty( $quiz_syllabus_meta['assessment_instructions'] ) &&
 					?>
 				</p>
 			<?php endif; ?>
+			<?php
+			$show_form_a_remediation = false;
+			if (
+				! empty( $is_exam_prep )
+				&& ! empty( $course )
+				&& ! empty( $quiz )
+				&& class_exists( 'CTA_Lmft_Clinical_Form_Gates' )
+				&& CTA_Lmft_Clinical_Form_Gates::applies_to_course( $course )
+				&& CTA_Lmft_Clinical_Form_Gates::is_active_form_quiz( $quiz )
+				&& 'form_a' === sanitize_key( (string) ( $quiz->quiz_type ?? '' ) )
+				&& CTA_Lmft_Clinical_Form_Gates::form_a_submitted( get_current_user_id(), (int) $course->id )
+				&& ! CTA_Lmft_Clinical_Form_Gates::form_a_remediation_complete( get_current_user_id(), (int) $course->id )
+			) {
+				$show_form_a_remediation = true;
+			}
+			?>
+			<?php if ( $show_form_a_remediation ) : ?>
+				<div class="cta-quiz-remediation-gate" data-cta-form-a-remediation>
+					<p><?php esc_html_e( 'After reviewing your Form A answers and rationales, mark remediation complete to unlock Form B.', 'cta-lms' ); ?></p>
+					<button
+						type="button"
+						class="btn btn-outline cta-mark-form-a-remediation"
+						id="cta-mark-form-a-remediation"
+						data-course-id="<?php echo esc_attr( (string) (int) $course->id ); ?>"
+					>
+						<?php esc_html_e( 'Mark Form A Remediation Complete', 'cta-lms' ); ?>
+					</button>
+					<p class="cta-quiz-remediation-status" data-cta-form-a-remediation-status hidden></p>
+				</div>
+			<?php endif; ?>
 			<form method="post" id="cta-start-quiz-form" class="cta-start-quiz-form" action="">
 				<?php wp_nonce_field( 'cta_start_quiz_' . (int) $course->id . '_' . (int) $quiz->id ); ?>
 				<input type="hidden" name="cta_start_quiz" value="1" />

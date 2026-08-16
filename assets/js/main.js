@@ -2823,7 +2823,12 @@
     var playerRoot = document.querySelector(".cta-course-player");
     var markBtn = document.getElementById("cta-mark-complete");
 
+    // Bind Form A remediation on course player AND quiz page (Form B unlock gate).
     document.querySelectorAll(".cta-mark-form-a-remediation").forEach(function (btn) {
+      if (btn.getAttribute("data-cta-bound") === "1") {
+        return;
+      }
+      btn.setAttribute("data-cta-bound", "1");
       btn.addEventListener("click", function () {
         var courseId = btn.getAttribute("data-course-id");
         var originalText = btn.textContent;
@@ -2855,6 +2860,10 @@
           });
       });
     });
+
+    if (!playerRoot && !markBtn) {
+      return;
+    }
 
     document.querySelectorAll(".cta-mark-preserved-attempt").forEach(function (btn) {
       btn.addEventListener("click", function () {
@@ -5299,7 +5308,8 @@
         }
 
         syncFiltersFromPanel(panel);
-        rebuildOrder();
+        // Keep state.order intact here. Rebuilding from filteredIndices on every
+        // render undoes Shuffle; filters/start handlers rebuild order explicitly.
 
         var flipBtn = panel.querySelector("[data-cta-fsc-flip]");
         var frontEl = panel.querySelector("[data-cta-fsc-front]");
@@ -5542,6 +5552,7 @@
         });
         state.index = 0;
         state.flipped = false;
+        rebuildOrder();
         if (state.panel === "study") {
           renderStudy();
         } else if (state.panel === "browse") {
@@ -5566,6 +5577,7 @@
           });
           state.index = 0;
           state.flipped = false;
+          rebuildOrder();
           if (state.panel === "study") {
             renderStudy();
           } else if (state.panel === "browse") {
@@ -5602,6 +5614,9 @@
         }
 
         if (target.matches("[data-cta-fsc-shuffle]")) {
+          // Shuffle only the current filtered subset, then keep that order
+          // across subsequent Next/Prev renders (study render must not rebuild).
+          state.order = filteredIndices();
           for (var i = state.order.length - 1; i > 0; i--) {
             var j = Math.floor(Math.random() * (i + 1));
             var tmp = state.order[i];

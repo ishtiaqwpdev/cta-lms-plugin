@@ -153,9 +153,28 @@ class CTA_Quiz {
 
 		$is_exam_prep = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course );
 
-		// Prerequisites belong at entry, before a new attempt can be created.
-		// Existing attempts are resumable so prior learner work is never stranded.
-		if ( ! $modules_done && ! $active_attempt ) {
+		// LMFT Clinical Form A/B: sequential gates (workbooks → Form A → remediation → Form B).
+		// Existing in-progress attempts remain resumable.
+		if ( ! $active_attempt
+			&& class_exists( 'CTA_Lmft_Clinical_Form_Gates' )
+			&& CTA_Lmft_Clinical_Form_Gates::applies_to_course( $course )
+			&& CTA_Lmft_Clinical_Form_Gates::is_active_form_quiz( $quiz ) ) {
+			$gate = CTA_Lmft_Clinical_Form_Gates::assert_quiz_accessible( $quiz, $course, $user_id, $enrollment );
+			if ( is_wp_error( $gate ) ) {
+				$type = sanitize_key( (string) ( $quiz->quiz_type ?? '' ) );
+				$title = ( 'form_b' === $type )
+					? __( 'Form B Locked', 'cta-lms' )
+					: __( 'Form A Locked', 'cta-lms' );
+				return $this->render_message_state(
+					$title,
+					$gate->get_error_message(),
+					$this->get_player_url( $course_id ),
+					__( 'Back to Course', 'cta-lms' )
+				);
+			}
+		} elseif ( ! $modules_done && ! $active_attempt ) {
+			// Prerequisites belong at entry, before a new attempt can be created.
+			// Existing attempts are resumable so prior learner work is never stranded.
 			return $this->render_message_state(
 				$is_exam_prep
 					? __( 'Complete All Workbooks First', 'cta-lms' )
@@ -1314,6 +1333,16 @@ class CTA_Quiz {
 
 		if ( ! $quiz ) {
 			return new WP_Error( 'no_quiz', __( 'Quiz not available.', 'cta-lms' ) );
+		}
+
+		// LMFT Clinical Form A/B sequential gates (also blocks direct URL starts).
+		if ( class_exists( 'CTA_Lmft_Clinical_Form_Gates' )
+			&& CTA_Lmft_Clinical_Form_Gates::applies_to_course( $course )
+			&& CTA_Lmft_Clinical_Form_Gates::is_active_form_quiz( $quiz ) ) {
+			$gate = CTA_Lmft_Clinical_Form_Gates::assert_quiz_accessible( $quiz, $course, $user_id, $enrollment );
+			if ( is_wp_error( $gate ) ) {
+				return $gate;
+			}
 		}
 
 		return array(

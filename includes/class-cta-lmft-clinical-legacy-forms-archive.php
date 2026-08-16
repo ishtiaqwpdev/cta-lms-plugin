@@ -19,13 +19,29 @@ if ( ! class_exists( 'CTA_Lmft_Clinical_Legacy_Forms_Archive' ) ) {
 
 class CTA_Lmft_Clinical_Legacy_Forms_Archive {
 
-	const ARCHIVE_OPTION         = 'cta_lmft_clinical_legacy_forms_archived_1_0_220';
+	const ARCHIVE_OPTION         = 'cta_lmft_clinical_legacy_forms_archived_1_0_256';
+	const FINAL_ENSURE_OPTION    = 'cta_lmft_clinical_final_forms_ensured_1_0_256';
 	const TARGET_COURSE_ID       = 10;
 	const ARCHIVED_STATUS        = 'archived';
 	const ARCHIVED_TITLE_PREFIX  = '[Archived] ';
 	const ARCHIVED_SORT_FORM_A   = 920;
 	const ARCHIVED_SORT_FORM_B   = 930;
 	const ARCHIVED_RESOURCE_SORT = 900;
+
+	/**
+	 * Final August 14 Form A Q1 fingerprint (must remain learner-facing).
+	 */
+	const FINAL_FORM_A_Q1_NEEDLE = 'A transgender man reports for ten months a marked incongruence';
+
+	/**
+	 * Final August 14 Form B Q1 fingerprint (must remain learner-facing).
+	 */
+	const FINAL_FORM_B_Q1_NEEDLE = 'A service wants an ongoing therapy and psychoeducation group for adults recently diagnosed';
+
+	/**
+	 * July 2026 legacy Form A Q1 fingerprint (must never remain learner-accessible).
+	 */
+	const LEGACY_JULY_FORM_A_Q1_NEEDLE = 'escalating partner violence';
 
 	/**
 	 * Quiz types covered by this archive pass.
@@ -59,6 +75,10 @@ class CTA_Lmft_Clinical_Legacy_Forms_Archive {
 			'simulations/cta_lmft_comprehensive_simulation_form_b_150_question_exam_v1.0.docx',
 			'simulations/cta_lmft_comprehensive_simulation_form_a_answer_key_and_detailed_rationales_v1.0.docx',
 			'simulations/cta_lmft_comprehensive_simulation_form_b_answer_key_and_detailed_rationales_v1.0.docx',
+			'simulations/_archived/cta_lmft_comprehensive_simulation_form_a_150_question_exam_v1.0.docx',
+			'simulations/_archived/cta_lmft_comprehensive_simulation_form_b_150_question_exam_v1.0.docx',
+			'simulations/_archived/cta_lmft_comprehensive_simulation_form_a_answer_key_and_detailed_rationales_v1.0.docx',
+			'simulations/_archived/cta_lmft_comprehensive_simulation_form_b_answer_key_and_detailed_rationales_v1.0.docx',
 		);
 	}
 
@@ -180,6 +200,161 @@ class CTA_Lmft_Clinical_Legacy_Forms_Archive {
 				'title'     => '',
 			)
 		);
+	}
+
+	/**
+	 * Archive any active Form A/B quiz whose Q1 is not the August 14 Final fingerprint.
+	 *
+	 * This catches July partner-violence Form A (and any other non-final bank) still
+	 * sitting in the live form_a / form_b slots so Final sync can recreate them.
+	 *
+	 * @param int  $course_id Optional course ID.
+	 * @param bool $force     Re-run even if ensure option is set.
+	 * @return array{ok:bool,course_id:int,archived:int,message:string}
+	 */
+	public static function archive_non_final_active_forms( $course_id = 0, $force = false ) {
+		$course_id = self::resolve_course_id( $course_id );
+
+		if ( ! $course_id ) {
+			return array(
+				'ok'        => false,
+				'course_id' => 0,
+				'archived'  => 0,
+				'message'   => 'course_not_found',
+			);
+		}
+
+		if ( ! $force && get_option( self::FINAL_ENSURE_OPTION ) ) {
+			$stored = get_option( self::FINAL_ENSURE_OPTION, array() );
+			return array(
+				'ok'        => true,
+				'course_id' => $course_id,
+				'archived'  => (int) ( $stored['archived'] ?? 0 ),
+				'message'   => 'already_ensured',
+			);
+		}
+
+		if ( class_exists( 'CTA_Database' ) ) {
+			CTA_Database::ensure_tables();
+		}
+
+		global $wpdb;
+		$table    = $wpdb->prefix . 'cta_quizzes';
+		$archived = 0;
+		$type_map = self::legacy_quiz_type_map();
+		$sorts    = array(
+			'legacy_form_a' => self::ARCHIVED_SORT_FORM_A,
+			'legacy_form_b' => self::ARCHIVED_SORT_FORM_B,
+		);
+
+		foreach ( (array) CTA_Database::get_quizzes_by_course( $course_id, false ) as $row ) {
+			$type = sanitize_key( (string) ( $row->quiz_type ?? '' ) );
+			if ( ! in_array( $type, array( 'form_a', 'form_b' ), true ) ) {
+				continue;
+			}
+			if ( self::is_archived_quiz( $row ) ) {
+				continue;
+			}
+
+			$q1 = self::get_quiz_question_one_text( (int) $row->id );
+			if ( self::quiz_matches_final_form( $type, $q1 ) ) {
+				continue;
+			}
+
+			$legacy_type = $type_map[ $type ] ?? ( 'form_a' === $type ? 'legacy_form_a' : 'legacy_form_b' );
+			$title       = self::prefix_archived_title( (string) ( $row->title ?? '' ) );
+
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$wpdb->update(
+				$table,
+				array(
+					'title'      => $title,
+					'quiz_type'  => $legacy_type,
+					'status'     => self::ARCHIVED_STATUS,
+					'sort_order' => (int) ( $sorts[ $legacy_type ] ?? self::ARCHIVED_SORT_FORM_A ),
+				),
+				array( 'id' => (int) $row->id ),
+				array( '%s', '%s', '%s', '%d' ),
+				array( '%d' )
+			);
+			++$archived;
+		}
+
+		// Always re-archive July printable resources if still present under learner titles.
+		$res = self::archive_legacy_resources( $course_id );
+
+		update_option(
+			self::FINAL_ENSURE_OPTION,
+			array(
+				'at'           => current_time( 'mysql' ),
+				'course_id'    => $course_id,
+				'archived'     => $archived,
+				'resource_ids' => $res['resource_ids'] ?? array(),
+			),
+			false
+		);
+
+		// Mark legacy printable archive complete so materials sync never re-publishes July files.
+		update_option(
+			self::ARCHIVE_OPTION,
+			array(
+				'archived'       => true,
+				'at'             => current_time( 'mysql' ),
+				'course_id'      => $course_id,
+				'form_a_quiz_id' => 0,
+				'form_b_quiz_id' => 0,
+				'resource_ids'   => $res['resource_ids'] ?? array(),
+				'source'         => 'final_aug14_ensure',
+			),
+			false
+		);
+
+		return array(
+			'ok'        => true,
+			'course_id' => $course_id,
+			'archived'  => $archived,
+			'message'   => 'ensured',
+		);
+	}
+
+	/**
+	 * @param string $quiz_type form_a|form_b.
+	 * @param string $q1        Question 1 text.
+	 * @return bool
+	 */
+	public static function quiz_matches_final_form( $quiz_type, $q1 ) {
+		$q1 = (string) $q1;
+		if ( 'form_a' === $quiz_type ) {
+			return false !== stripos( $q1, self::FINAL_FORM_A_Q1_NEEDLE );
+		}
+		if ( 'form_b' === $quiz_type ) {
+			return false !== stripos( $q1, self::FINAL_FORM_B_Q1_NEEDLE );
+		}
+		return false;
+	}
+
+	/**
+	 * @param int $quiz_id Quiz ID.
+	 * @return string
+	 */
+	public static function get_quiz_question_one_text( $quiz_id ) {
+		global $wpdb;
+
+		$quiz_id = absint( $quiz_id );
+		if ( ! $quiz_id ) {
+			return '';
+		}
+
+		$table = $wpdb->prefix . 'cta_quiz_questions';
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$text = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT question_text FROM {$table} WHERE quiz_id = %d ORDER BY order_index ASC, id ASC LIMIT 1",
+				$quiz_id
+			)
+		);
+
+		return is_string( $text ) ? $text : '';
 	}
 
 	/**

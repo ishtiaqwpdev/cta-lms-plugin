@@ -46,13 +46,37 @@ class CTA_Exam_Prep_Exam_Center {
 		$modules_complete = class_exists( 'CTA_CE_Completion' )
 			? CTA_CE_Completion::modules_complete( $user_id, $course_id, $enrollment )
 			: ( $enrollment && (int) $enrollment->progress >= 100 );
+		$uses_lmft_form_gates = class_exists( 'CTA_Lmft_Clinical_Form_Gates' )
+			&& CTA_Lmft_Clinical_Form_Gates::applies_to_course( $course );
 
 		foreach ( $all_cards as &$card ) {
-			$has_active_attempt  = ! empty( $card['has_active_attempt'] );
-			$card['entry_locked'] = ! $modules_complete && ! $has_active_attempt;
-			$card['lock_message'] = $card['entry_locked']
-				? __( 'Complete all program workbooks before starting this assessment.', 'cta-lms' )
-				: '';
+			$has_active_attempt = ! empty( $card['has_active_attempt'] );
+			$quiz_row           = isset( $card['quiz'] ) ? $card['quiz'] : null;
+			$quiz_type          = sanitize_key( (string) ( $card['quiz_type'] ?? ( $quiz_row->quiz_type ?? '' ) ) );
+
+			if ( $uses_lmft_form_gates && in_array( $quiz_type, array( 'form_a', 'form_b' ), true ) ) {
+				if ( ! $quiz_row && ! empty( $card['quiz_id'] ) && class_exists( 'CTA_Database' ) ) {
+					$quiz_row = CTA_Database::get_quiz( (int) $card['quiz_id'] );
+				}
+				$lock = CTA_Lmft_Clinical_Form_Gates::get_card_lock_state(
+					$quiz_row,
+					$course,
+					$user_id,
+					$enrollment,
+					$has_active_attempt
+				);
+				$card['entry_locked']      = ! empty( $lock['entry_locked'] );
+				$card['lock_message']      = (string) ( $lock['lock_message'] ?? '' );
+				$card['lock_button_label'] = (string) ( $lock['lock_button_label'] ?? '' );
+			} else {
+				$card['entry_locked']      = ! $modules_complete && ! $has_active_attempt;
+				$card['lock_message']      = $card['entry_locked']
+					? __( 'Complete all program workbooks before starting this assessment.', 'cta-lms' )
+					: '';
+				$card['lock_button_label'] = $card['entry_locked']
+					? __( 'Complete Workbooks to Unlock', 'cta-lms' )
+					: '';
+			}
 		}
 		unset( $card );
 

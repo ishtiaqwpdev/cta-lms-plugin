@@ -34,13 +34,13 @@ assert_true(
 );
 
 assert_true(
-	array( 'form_a', 'form_b' ) === CTA_Lmft_Clinical_Legacy_Forms_Archive::legacy_quiz_types(),
-	'Legacy quiz types are form_a and form_b'
+	array( 'form_a', 'form_b', 'legacy_form_a', 'legacy_form_b' ) === CTA_Lmft_Clinical_Legacy_Forms_Archive::legacy_quiz_types(),
+	'Legacy quiz types include form_a/form_b and remapped legacy_* types'
 );
 
 assert_true(
-	4 === count( CTA_Lmft_Clinical_Legacy_Forms_Archive::legacy_resource_path_markers() ),
-	'Four legacy simulation resources defined (Form A/B exams + rationales)'
+	count( CTA_Lmft_Clinical_Legacy_Forms_Archive::legacy_resource_path_markers() ) >= 4,
+	'Legacy simulation resource markers include July Form A/B exams + rationales'
 );
 
 assert_true(

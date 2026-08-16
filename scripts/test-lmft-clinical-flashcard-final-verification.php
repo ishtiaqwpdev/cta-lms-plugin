@@ -391,6 +391,36 @@ assert_true(
 	'JS does not mutate card content during shuffle/navigation'
 );
 
+// Regression: renderStudy must not call rebuildOrder (that undid Fisher-Yates every click).
+$study_fn_pos = strpos( $js, 'function renderStudy(' );
+$browse_fn_pos = strpos( $js, 'function renderBrowse(' );
+assert_true( false !== $study_fn_pos && false !== $browse_fn_pos && $browse_fn_pos > $study_fn_pos, 'renderStudy/renderBrowse functions located' );
+if ( false !== $study_fn_pos && false !== $browse_fn_pos && $browse_fn_pos > $study_fn_pos ) {
+	$render_study_body = substr( $js, $study_fn_pos, $browse_fn_pos - $study_fn_pos );
+	assert_true(
+		false === strpos( $render_study_body, 'rebuildOrder(' ),
+		'renderStudy does not call rebuildOrder (preserves shuffled order)'
+	);
+}
+assert_true(
+	false !== strpos( $js, 'state.order = filteredIndices()' ),
+	'Shuffle refreshes order from current filtered subset before randomizing'
+);
+
+// Simulate Fisher-Yates on indices 0..179: Card 1 after shuffle should vary.
+$first_ids = array();
+for ( $trial = 0; $trial < 12; $trial++ ) {
+	$order = range( 0, 179 );
+	for ( $i = 179; $i > 0; $i-- ) {
+		$j              = random_int( 0, $i );
+		$tmp            = $order[ $i ];
+		$order[ $i ]    = $order[ $j ];
+		$order[ $j ]    = $tmp;
+	}
+	$first_ids[] = (string) ( $cards[ $order[0] ]['id'] ?? '' );
+}
+assert_true( count( array_unique( $first_ids ) ) > 1, 'Simulated shuffle yields varying Card-1 IDs across trials' );
+
 echo "\n--- 9) No placeholder or test rows ---\n";
 $placeholder_hits = array();
 $patterns = array(

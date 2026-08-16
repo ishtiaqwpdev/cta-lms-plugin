@@ -827,23 +827,17 @@ class CTA_Lmft_Clinical_Sync {
 		}
 
 		$items[] = array(
-			'file'                   => 'simulations/CTA_LMFT_Comprehensive_Simulation_Form_A_150_Question_Exam_v1.0.docx',
-			'title'                  => 'Form A — 150-Question Comprehensive Simulation',
-			'is_practice_test'       => 1,
+			'file'             => 'simulations/CTA_LMFT_CA_Clinical_Exam_Prep_Final_Form_A_v1.0.docx',
+			'title'            => 'Form A — 150-Question Comprehensive Simulation',
+			'is_practice_test' => 1,
 		);
 		$items[] = array(
-			'file'                   => 'simulations/CTA_LMFT_Comprehensive_Simulation_Form_B_150_Question_Exam_v1.0.docx',
-			'title'                  => 'Form B — 150-Question Comprehensive Simulation',
-			'is_practice_test'       => 1,
+			'file'             => 'simulations/CTA_LMFT_CA_Clinical_Exam_Prep_Final_Form_B_v1.0.docx',
+			'title'            => 'Form B — 150-Question Comprehensive Simulation',
+			'is_practice_test' => 1,
 		);
-		$items[] = array(
-			'file'                   => 'simulations/CTA_LMFT_Comprehensive_Simulation_Form_A_Answer_Key_and_Detailed_Rationales_v1.0.docx',
-			'title'                  => 'Form A — Answer Key and Detailed Rationales',
-		);
-		$items[] = array(
-			'file'                   => 'simulations/CTA_LMFT_Comprehensive_Simulation_Form_B_Answer_Key_and_Detailed_Rationales_v1.0.docx',
-			'title'                  => 'Form B — Answer Key and Detailed Rationales',
-		);
+		// July answer-key DOCX printables are archived; post-submit rationales come from
+		// secured admin-only PHP seeds (Final Admin Key), not learner downloads.
 		$items[] = array(
 			'file'  => 'study-tools/CTA_LMFT_Clinical_Exam_Preparation_Flashcard_Collection_v1.0.docx',
 			'title' => 'Clinical Exam Preparation Flashcard Collection',

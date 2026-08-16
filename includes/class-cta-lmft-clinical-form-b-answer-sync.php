@@ -20,7 +20,7 @@ if ( ! class_exists( 'CTA_Lmft_Clinical_Form_B_Answer_Sync' ) ) {
 
 class CTA_Lmft_Clinical_Form_B_Answer_Sync {
 
-	const ANSWER_SEED_OPTION    = 'cta_lmft_clinical_form_b_answers_1_0_244';
+	const ANSWER_SEED_OPTION    = 'cta_lmft_clinical_form_b_answers_final_aug14_1_0_256';
 	const ADMIN_KEY_FILE        = 'includes/quiz-seeds/admin-only/lmft-clinical-form-b-answer-key.php';
 	const QUIZ_TYPE             = 'form_b';
 	const FORM_TITLE            = 'Comprehensive Simulation - Form B';

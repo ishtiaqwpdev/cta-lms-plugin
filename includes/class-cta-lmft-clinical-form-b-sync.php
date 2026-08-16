@@ -19,7 +19,7 @@ if ( ! class_exists( 'CTA_Lmft_Clinical_Form_B_Sync' ) ) {
 
 class CTA_Lmft_Clinical_Form_B_Sync {
 
-	const SEED_OPTION            = 'cta_lmft_clinical_form_b_build_1_0_232';
+	const SEED_OPTION            = 'cta_lmft_clinical_form_b_final_aug14_1_0_256';
 	const TARGET_COURSE_ID       = 10;
 	const QUIZ_TYPE                = 'form_b';
 	const FORM_TITLE               = 'Comprehensive Simulation - Form B';

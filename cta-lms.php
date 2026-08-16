@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.254' );
+	define( 'CTA_VERSION', '1.0.257' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -102,6 +102,7 @@ $cta_required_files = array(
 	'includes/class-cta-lmft-clinical-sync.php',
 	'includes/class-cta-lmft-clinical-legacy-forms-archive.php',
 	'includes/class-cta-lmft-clinical-legacy-flashcard-archive.php',
+	'includes/class-cta-lmft-clinical-form-gates.php',
 	'includes/class-cta-lmft-clinical-form-a-sync.php',
 	'includes/class-cta-lmft-clinical-comprehensive-scoring.php',
 	'includes/class-cta-lmft-clinical-comprehensive-review.php',
@@ -1402,6 +1403,36 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				}
 				CTA_Lmft_Law_Ethics_Sync::sync_materials( true );
 				CTA_Lmft_Law_Ethics_Sync::sync_toolkits( true );
+			}
+
+			// LMFT California Clinical: REPLACE July/legacy Form A/B with August 14 Final forms.
+			if ( version_compare( $installed, '1.0.256', '<' ) ) {
+				if ( class_exists( 'CTA_Lmft_Clinical_Legacy_Forms_Archive' ) ) {
+					// Archive only quizzes whose Q1 is not the Final fingerprint (e.g. July partner-violence),
+					// plus July printable resources. Do not wipe an already-correct Final bank.
+					CTA_Lmft_Clinical_Legacy_Forms_Archive::archive_non_final_active_forms(
+						CTA_Lmft_Clinical_Legacy_Forms_Archive::TARGET_COURSE_ID,
+						true
+					);
+				}
+				if ( class_exists( 'CTA_Lmft_Clinical_Form_A_Sync' ) ) {
+					CTA_Lmft_Clinical_Form_A_Sync::sync( true );
+				}
+				if ( class_exists( 'CTA_Lmft_Clinical_Form_B_Sync' ) ) {
+					CTA_Lmft_Clinical_Form_B_Sync::sync( true );
+				}
+				if ( class_exists( 'CTA_Lmft_Clinical_Form_A_Answer_Sync' ) ) {
+					CTA_Lmft_Clinical_Form_A_Answer_Sync::sync_answer_keys( true );
+				}
+				if ( class_exists( 'CTA_Lmft_Clinical_Form_B_Answer_Sync' ) ) {
+					CTA_Lmft_Clinical_Form_B_Answer_Sync::sync_answer_keys( true );
+				}
+				if ( class_exists( 'CTA_Lmft_Clinical_Sync' ) ) {
+					$lmft = CTA_Lmft_Clinical_Sync::find_course();
+					if ( $lmft && ! empty( $lmft->id ) ) {
+						CTA_Lmft_Clinical_Sync::sync_materials( (int) $lmft->id );
+					}
+				}
 			}
 
 			// Decouple supervision application pending from general account / CE access.

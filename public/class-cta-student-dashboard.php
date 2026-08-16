@@ -636,7 +636,7 @@ class CTA_Student_Dashboard {
 	}
 
 	/**
-	 * AJAX: mark Form A Remediation Workbook complete (progress tracking; does not gate Form B).
+	 * AJAX: mark Form A remediation complete (unlocks Form B on LMFT Clinical).
 	 */
 	public function ajax_mark_form_a_remediation_complete() {
 		check_ajax_referer( 'cta_nonce', 'nonce' );
@@ -671,10 +671,16 @@ class CTA_Student_Dashboard {
 			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
 		}
 
+		$form_b_unlocked = true;
+		if ( class_exists( 'CTA_Lmft_Clinical_Form_Gates' )
+			&& CTA_Lmft_Clinical_Form_Gates::applies_to_course( $course ) ) {
+			$form_b_unlocked = CTA_Lmft_Clinical_Form_Gates::can_access_form_b( $user_id, $course_id );
+		}
+
 		wp_send_json_success(
 			array(
 				'message'         => __( 'Form A Remediation marked complete.', 'cta-lms' ),
-				'form_b_unlocked' => true,
+				'form_b_unlocked' => $form_b_unlocked,
 			)
 		);
 	}
