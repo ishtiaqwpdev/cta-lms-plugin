@@ -370,12 +370,14 @@ class CTA_Exam_Access {
 			array(
 				'title'                  => 'CTA LMFT California Law & Ethics Exam Preparation Program',
 				'slug'                   => 'california-law-ethics-exam-preparation',
-				'description'            => '<p>Comprehensive preparation for the California LMFT Law &amp; Ethics exam. Includes online instructional content, printable workbooks, practice tests, and mock examinations with answer rationales. Access is valid for 6 months from purchase. This program does not award CE hours or a CE certificate.</p>',
+				'description'            => '<p>Prepare for the California LMFT Law and Ethics Examination with a self-paced, six-month program designed for AMFTs and other eligible LMFT applicants. The program combines nine California law and ethics workbooks, a required LMFT Practice Act and professional-identity module, original assessments, detailed post-attempt rationales, cumulative practice examinations, flashcards, and targeted remediation tools.</p>',
 				'price'                  => 199.00,
 				'category'               => 'Exam Preparation',
 				'status'                 => 'draft',
 				'launch_pending_testing' => true,
 				'public_title'           => 'LMFT California Law & Ethics Exam Preparation',
+				'course_classification'  => 'Exam Preparation Only — No CE Credit',
+				'target_audience'        => 'AMFTs and other eligible California LMFT Law and Ethics Examination candidates',
 				'match_titles'           => array(
 					'CTA LMFT California Law & Ethics Exam Preparation Program',
 					'LMFT California Law & Ethics Exam Preparation',

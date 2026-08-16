@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.250' );
+	define( 'CTA_VERSION', '1.0.252' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -112,6 +112,7 @@ $cta_required_files = array(
 	'includes/class-cta-lpcc-ncmhce-sync.php',
 	'includes/class-cta-lpcc-law-ethics-sync.php',
 	'includes/class-cta-lcsw-law-ethics-sync.php',
+	'includes/class-cta-lmft-law-ethics-copy.php',
 	'includes/class-cta-lmft-law-ethics-sync.php',
 	'includes/class-cta-law-ethics-module-sync.php',
 	'includes/class-cta-law-ethics-evaluation-sync.php',
@@ -1381,6 +1382,16 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 			// LMFT California Law & Ethics: standalone license module + 25-question assessment.
 			if ( version_compare( $installed, '1.0.250', '<' ) && class_exists( 'CTA_Lmft_Law_Ethics_Sync' ) ) {
 				CTA_Lmft_Law_Ethics_Sync::sync( true );
+			}
+
+			// LMFT California Law & Ethics: six Study Center toolkits (CTA-EP-001).
+			if ( version_compare( $installed, '1.0.251', '<' ) && class_exists( 'CTA_Lmft_Law_Ethics_Sync' ) ) {
+				CTA_Lmft_Law_Ethics_Sync::sync_toolkits( true );
+			}
+
+			// LMFT California Law & Ethics: Point 6 Website/LMS Copy Package v1.1 (staging only; not public release).
+			if ( version_compare( $installed, '1.0.252', '<' ) && class_exists( 'CTA_Lmft_Law_Ethics_Sync' ) ) {
+				CTA_Lmft_Law_Ethics_Sync::apply_website_lms_copy( true );
 			}
 
 			// Decouple supervision application pending from general account / CE access.

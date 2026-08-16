@@ -2306,6 +2306,81 @@
       });
     }
 
+    function showCheckoutAcknowledgmentsModal(acks, description, onConfirm) {
+      $("#cta-checkout-ack-modal").remove();
+
+      var items = Array.isArray(acks) ? acks : [];
+      if (!items.length) {
+        if (typeof onConfirm === "function") {
+          onConfirm();
+        }
+        return;
+      }
+
+      var listHtml = items
+        .map(function (text, idx) {
+          var id = "cta-checkout-ack-" + idx;
+          return (
+            '<label for="' +
+            id +
+            '" style="display:flex;gap:10px;align-items:flex-start;margin:0 0 12px;font-size:13px;line-height:1.45;color:#374151;cursor:pointer;">' +
+            '<input id="' +
+            id +
+            '" type="checkbox" class="cta-checkout-ack-box" style="margin-top:3px;flex-shrink:0;">' +
+            "<span>" +
+            $("<div>").text(String(text || "")).html() +
+            "</span></label>"
+          );
+        })
+        .join("");
+
+      var descHtml = description
+        ? '<p style="margin:0 0 16px;color:#4B5563;font-size:14px;line-height:1.5;">' +
+          $("<div>").text(String(description)).html() +
+          "</p>"
+        : "";
+
+      var modalHtml =
+        '<div id="cta-checkout-ack-modal" style="position:fixed;inset:0;background:rgba(18,43,81,0.55);z-index:100000;display:flex;align-items:center;justify-content:center;padding:20px;">' +
+        '<div style="background:#fff;max-width:560px;width:100%;max-height:90vh;overflow:auto;border-radius:12px;padding:28px 24px;box-shadow:0 20px 50px rgba(0,0,0,0.2);font-family:\'Montserrat\',sans-serif;position:relative;">' +
+        '<button type="button" id="cta-checkout-ack-close" aria-label="Close" style="position:absolute;top:12px;right:14px;border:none;background:transparent;font-size:22px;line-height:1;cursor:pointer;color:#6B7280;">&times;</button>' +
+        '<h3 style="margin:0 0 8px;color:#122B51;font-size:20px;">Before you continue</h3>' +
+        descHtml +
+        '<p style="margin:0 0 12px;color:#374151;font-size:13px;font-weight:600;">Please acknowledge all of the following:</p>' +
+        '<div style="margin-bottom:14px;">' +
+        listHtml +
+        "</div>" +
+        '<p id="cta-checkout-ack-error" style="display:none;color:#B91C1C;font-size:13px;margin:0 0 12px;">All acknowledgments are required before purchase.</p>' +
+        '<button type="button" id="cta-checkout-ack-continue" class="btn btn-primary" style="width:100%;padding:12px 16px;border:none;border-radius:8px;background:#122B51;color:#fff;font-weight:600;cursor:pointer;">Continue to checkout</button>' +
+        "</div></div>";
+
+      $("body").append(modalHtml);
+
+      function closeModal() {
+        $("#cta-checkout-ack-modal").remove();
+      }
+
+      $("#cta-checkout-ack-close").on("click", closeModal);
+      $("#cta-checkout-ack-modal").on("click", function (e) {
+        if ($(e.target).is("#cta-checkout-ack-modal")) {
+          closeModal();
+        }
+      });
+      $("#cta-checkout-ack-continue").on("click", function () {
+        var unchecked = $(".cta-checkout-ack-box").filter(function () {
+          return !$(this).is(":checked");
+        }).length;
+        if (unchecked > 0) {
+          $("#cta-checkout-ack-error").show();
+          return;
+        }
+        closeModal();
+        if (typeof onConfirm === "function") {
+          onConfirm();
+        }
+      });
+    }
+
     function handlePaymentClick(e) {
       e.preventDefault();
 
@@ -2424,18 +2499,40 @@
         });
       }
 
-      if (paymentNeedsAgencyInfo(action, btn)) {
-        showSupervisionAgencyModal(function (agencyData) {
-          paymentData = $.extend(paymentData, agencyData);
-          if (ctaAjax) {
-            ctaAjax.hasAgencyInfo = "yes";
-          }
-          submitPaymentRequest();
-        });
+      function beginCheckoutFlow() {
+        if (paymentNeedsAgencyInfo(action, btn)) {
+          showSupervisionAgencyModal(function (agencyData) {
+            paymentData = $.extend(paymentData, agencyData);
+            if (ctaAjax) {
+              ctaAjax.hasAgencyInfo = "yes";
+            }
+            submitPaymentRequest();
+          });
+          return;
+        }
+
+        submitPaymentRequest();
+      }
+
+      var rawAcks = btn.attr("data-checkout-acknowledgments") || btn.data("checkoutAcknowledgments") || "";
+      var ackList = [];
+      if (typeof rawAcks === "string" && rawAcks) {
+        try {
+          ackList = JSON.parse(rawAcks);
+        } catch (err) {
+          ackList = [];
+        }
+      } else if (Array.isArray(rawAcks)) {
+        ackList = rawAcks;
+      }
+
+      if (action === "cta_create_checkout" && ackList.length) {
+        var checkoutDesc = btn.attr("data-checkout-description") || btn.data("checkoutDescription") || "";
+        showCheckoutAcknowledgmentsModal(ackList, checkoutDesc, beginCheckoutFlow);
         return;
       }
 
-      submitPaymentRequest();
+      beginCheckoutFlow();
     }
 
     $(document).on(

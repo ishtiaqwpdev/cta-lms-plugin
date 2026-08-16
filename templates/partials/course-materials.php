@@ -21,6 +21,14 @@ $heading       = isset( $heading ) ? $heading : __( 'Course Materials', 'cta-lms
 $is_enrolled   = ! empty( $is_enrolled );
 $show_locked   = ! empty( $show_locked );
 $has_resources = ! empty( $resources );
+$materials_meta = isset( $syllabus_meta ) && is_array( $syllabus_meta ) ? $syllabus_meta : array();
+if ( empty( $materials_meta ) && ! empty( $course->syllabus_meta ) ) {
+	$decoded_materials_meta = json_decode( (string) $course->syllabus_meta, true );
+	$materials_meta         = is_array( $decoded_materials_meta ) ? $decoded_materials_meta : array();
+}
+$materials_triggers = ! empty( $materials_meta['lms_trigger_messages'] ) && is_array( $materials_meta['lms_trigger_messages'] )
+	? $materials_meta['lms_trigger_messages']
+	: array();
 
 if ( ! $has_resources && ! $show_locked ) {
 	return;
@@ -123,9 +131,21 @@ $cta_render_material_item = static function ( $resource ) use ( $is_enrolled, $c
 				<?php if ( $lock_msg ) : ?>
 					<p class="course-module-list__desc"><?php echo esc_html( $lock_msg ); ?></p>
 				<?php elseif ( $show_preserve ) : ?>
-					<p class="course-module-list__desc"><?php echo esc_html__( 'Complete this assessment, then record your attempt to unlock the matching answer key and rationales.', 'cta-lms' ); ?></p>
+					<p class="course-module-list__desc"><?php
+						echo esc_html(
+							! empty( $materials_triggers['before_assessment'] )
+								? (string) $materials_triggers['before_assessment']
+								: __( 'Complete this assessment, then record your attempt to unlock the matching answer key and rationales.', 'cta-lms' )
+						);
+					?></p>
 				<?php elseif ( '' !== $preserved_type && $preserved_done ) : ?>
-					<p class="course-module-list__desc"><?php echo esc_html__( 'Attempt recorded — matching rationales are unlocked.', 'cta-lms' ); ?></p>
+					<p class="course-module-list__desc"><?php
+						echo esc_html(
+							! empty( $materials_triggers['controlled_file_title'] )
+								? (string) $materials_triggers['controlled_file_title']
+								: __( 'Attempt recorded — matching rationales are unlocked.', 'cta-lms' )
+						);
+					?></p>
 				<?php elseif ( $is_remediation && ! $remediation_done ) : ?>
 					<p class="course-module-list__desc"><?php echo esc_html__( 'Recommended after Form A and before Form B (optional). Download, complete, then mark complete for your own tracking.', 'cta-lms' ); ?></p>
 				<?php elseif ( $is_remediation && $remediation_done ) : ?>

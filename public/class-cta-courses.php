@@ -458,6 +458,9 @@ class CTA_Courses {
 		}
 
 		echo '<meta name="description" content="' . esc_attr( (string) $meta['meta_description'] ) . '" />' . "\n";
+		if ( isset( $meta['publicly_indexed'] ) && empty( $meta['publicly_indexed'] ) ) {
+			echo '<meta name="robots" content="noindex,nofollow" />' . "\n";
+		}
 	}
 
 	/**

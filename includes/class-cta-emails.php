@@ -347,6 +347,36 @@ class CTA_Emails {
 			return false;
 		}
 
+		$enrolled_date   = cta_lms_format_local_date( null, 'F j, Y' );
+		$expiration_date = '';
+		$enrollment_msg  = '';
+		$months          = isset( $course->access_period_months ) ? absint( $course->access_period_months ) : 6;
+		if ( $months > 0 ) {
+			$expiration_date = cta_lms_format_local_date(
+				gmdate( 'Y-m-d H:i:s', strtotime( '+' . $months . ' months' ) ),
+				'F j, Y'
+			);
+		}
+
+		$meta = array();
+		if ( ! empty( $course->syllabus_meta ) ) {
+			$decoded = json_decode( (string) $course->syllabus_meta, true );
+			$meta    = is_array( $decoded ) ? $decoded : array();
+		}
+		if ( ! empty( $meta['enrollment_confirmation'] ) ) {
+			$enrollment_msg = class_exists( 'CTA_Lmft_Law_Ethics_Copy' )
+				? CTA_Lmft_Law_Ethics_Copy::fill_placeholders(
+					(string) $meta['enrollment_confirmation'],
+					$enrolled_date,
+					$expiration_date
+				)
+				: str_replace(
+					array( '[ENROLLMENT DATE]', '[EXPIRATION DATE]' ),
+					array( $enrolled_date, $expiration_date ),
+					(string) $meta['enrollment_confirmation']
+				);
+		}
+
 		$subject = sprintf(
 			/* translators: %s: course title */
 			__( 'You\'re Enrolled — %s', 'cta-lms' ),
@@ -360,12 +390,14 @@ class CTA_Emails {
 			$subject,
 			'enrollment-confirmation',
 			array(
-				'course'            => $course,
-				'payment_id'        => sanitize_text_field( $data['payment_id'] ?? '' ),
-				'payment_reference' => self::format_payment_reference( $data['payment_id'] ?? '' ),
-				'ce_hours'          => self::format_ce_hours( $course ),
-				'enrolled_date'     => cta_lms_format_local_date( null, 'F j, Y' ),
-				'player_url'        => self::get_course_player_url( $course_id ),
+				'course'               => $course,
+				'payment_id'           => sanitize_text_field( $data['payment_id'] ?? '' ),
+				'payment_reference'    => self::format_payment_reference( $data['payment_id'] ?? '' ),
+				'ce_hours'             => self::format_ce_hours( $course ),
+				'enrolled_date'        => $enrolled_date,
+				'expiration_date'      => $expiration_date,
+				'enrollment_message'   => $enrollment_msg,
+				'player_url'           => self::get_course_player_url( $course_id ),
 			)
 		);
 	}

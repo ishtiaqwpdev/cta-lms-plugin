@@ -68,6 +68,11 @@ function apply_filters( $hook, $value ) {
 	return $value;
 }
 
+function wp_kses_post( $html ) {
+	return $html;
+}
+
+require_once CTA_PLUGIN_DIR . 'includes/class-cta-lmft-law-ethics-copy.php';
 require_once CTA_PLUGIN_DIR . 'includes/class-cta-lmft-law-ethics-sync.php';
 
 $passed = 0;
@@ -87,17 +92,24 @@ function assert_test( $condition, $label ) {
 $defs = new ReflectionMethod( 'CTA_Lmft_Law_Ethics_Sync', 'get_module_definitions' );
 $defs->setAccessible( true );
 $modules = $defs->invoke( null );
-assert_test( 11 === count( $modules ), 'Eleven modules defined (Start Here + license module + 9 workbooks)' );
+assert_test( 16 === count( $modules ), 'Sixteen modules defined (Start Here + Practice Act + 9 workbooks + Practice A/B + Final + Study Center + Program Close)' );
 assert_test( false !== stripos( $modules[1]['title'], 'Practice Act' ), 'License module title is set' );
 assert_test( false !== stripos( $modules[2]['title'], 'Workbook 1' ), 'Workbook 1 follows license module' );
+assert_test( 'practice_a' === ( $modules[11]['kind'] ?? '' ), 'Practice Examination A is unit 11' );
+assert_test( 'close' === ( $modules[15]['kind'] ?? '' ), 'Program Close is unit 15' );
 
 $assets = CTA_Lmft_Law_Ethics_Sync::ensure_placeholder_assets();
-assert_test( is_readable( CTA_PLUGIN_DIR . 'assets/course-materials/lmft-law-ethics/lessons/start-here.html' ), 'Start Here placeholder lesson written' );
+assert_test( is_readable( CTA_PLUGIN_DIR . 'assets/course-materials/lmft-law-ethics/lessons/start-here.html' ), 'Start Here lesson written' );
+assert_test( is_readable( CTA_PLUGIN_DIR . 'assets/course-materials/lmft-law-ethics/lessons/program-close.html' ), 'Program Close lesson written' );
 assert_test( is_readable( CTA_PLUGIN_DIR . 'assets/course-materials/lmft-law-ethics/lessons/wb01.html' ), 'Workbook 1 placeholder lesson written' );
 assert_test( is_readable( CTA_PLUGIN_DIR . 'assets/course-materials/lmft-law-ethics/study-tools/flashcard-study-center.json' ), 'Empty flashcard study center JSON exists' );
 
+$start = file_get_contents( CTA_PLUGIN_DIR . 'assets/course-materials/lmft-law-ethics/lessons/start-here.html' );
+assert_test( false === stripos( $start, 'PLACEHOLDER' ), 'Start Here is no longer a placeholder shell' );
+assert_test( false !== stripos( $start, 'Recommended Learning Sequence' ), 'Start Here includes learning sequence' );
+
 $wb1 = file_get_contents( CTA_PLUGIN_DIR . 'assets/course-materials/lmft-law-ethics/lessons/wb01.html' );
-assert_test( false !== stripos( $wb1, 'PLACEHOLDER' ) && false !== stripos( $wb1, 'Key Concepts' ), 'Workbook lesson includes tab-friendly headings without fake exam content' );
+assert_test( false !== stripos( $wb1, 'Key Concepts' ), 'Workbook lesson includes tab-friendly headings' );
 
 require_once CTA_PLUGIN_DIR . 'includes/class-cta-exam-prep-lessons.php';
 $map = CTA_Exam_Prep_Lessons::get_program_map();
@@ -112,6 +124,13 @@ class CTA_Exam_Access {
 }
 $deck_map = CTA_Exam_Prep_Flashcard_Center::get_deck_path_map();
 assert_test( isset( $deck_map['california-law-ethics-exam-preparation'] ), 'Flashcard Study Center path mapped for LMFT Law & Ethics' );
+
+$toolkits = CTA_Lmft_Law_Ethics_Sync::get_toolkit_material_definitions();
+assert_test( 6 === count( $toolkits ), 'Six Study Center toolkit definitions registered' );
+assert_test(
+	false === stripos( (string) $toolkits[0]['title'], '_Corrected' ),
+	'Toolkit display titles omit upload-copy suffixes'
+);
 
 echo "\n{$passed} passed, {$failed} failed\n";
 exit( $failed ? 1 : 0 );

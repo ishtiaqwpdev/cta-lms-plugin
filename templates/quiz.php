@@ -23,6 +23,18 @@ $display_title     = ( ! empty( $course ) && function_exists( 'cta_lms_get_cours
 if ( empty( $evaluation_questions ) || ! is_array( $evaluation_questions ) ) {
 	$evaluation_questions = CTA_Quiz::get_evaluation_questions();
 }
+
+$quiz_syllabus_meta = array();
+if ( ! empty( $course->syllabus_meta ) ) {
+	$decoded_quiz_meta = json_decode( (string) $course->syllabus_meta, true );
+	$quiz_syllabus_meta = is_array( $decoded_quiz_meta ) ? $decoded_quiz_meta : array();
+}
+$lms_triggers = ! empty( $quiz_syllabus_meta['lms_trigger_messages'] ) && is_array( $quiz_syllabus_meta['lms_trigger_messages'] )
+	? $quiz_syllabus_meta['lms_trigger_messages']
+	: array();
+$assessment_howto = ! empty( $quiz_syllabus_meta['assessment_instructions'] ) && is_array( $quiz_syllabus_meta['assessment_instructions'] )
+	? $quiz_syllabus_meta['assessment_instructions']
+	: array();
 ?>
 <div class="cta-plugin-wrapper">
 <div
@@ -57,6 +69,19 @@ if ( empty( $evaluation_questions ) || ! is_array( $evaluation_questions ) ) {
 	<div class="cta-quiz-panel <?php echo 'start' === $view_state ? 'cta-quiz-panel--active' : ''; ?>" data-quiz-panel="start" <?php echo 'start' !== $view_state ? 'hidden' : ''; ?>>
 		<div class="card cta-quiz-start-card">
 			<h2><?php echo esc_html( $quiz->title ); ?></h2>
+			<?php if ( ! empty( $lms_triggers['before_assessment'] ) ) : ?>
+				<p class="cta-quiz-before-notice" role="note"><?php echo esc_html( (string) $lms_triggers['before_assessment'] ); ?></p>
+			<?php endif; ?>
+			<?php if ( ! empty( $assessment_howto ) && ! empty( $is_exam_prep ) ) : ?>
+				<div class="cta-quiz-exam-instructions" role="note">
+					<p><strong><?php esc_html_e( 'How to Use Each Assessment', 'cta-lms' ); ?></strong></p>
+					<ol>
+						<?php foreach ( $assessment_howto as $step ) : ?>
+							<li><?php echo esc_html( (string) $step ); ?></li>
+						<?php endforeach; ?>
+					</ol>
+				</div>
+			<?php endif; ?>
 			<?php if ( ! empty( $exam_instructions ) ) : ?>
 				<div class="cta-quiz-exam-instructions" role="note">
 					<?php foreach ( preg_split( "/\r\n|\r|\n/", (string) $exam_instructions ) as $exam_instruction_paragraph ) : ?>
@@ -72,7 +97,17 @@ if ( empty( $evaluation_questions ) || ! is_array( $evaluation_questions ) ) {
 			<?php endif; ?>
 			<div class="cta-quiz-info-grid">
 				<div><strong><?php echo esc_html__( 'Questions', 'cta-lms' ); ?></strong><span><?php echo esc_html( (string) $question_count ); ?></span></div>
-				<div><strong><?php echo esc_html__( 'Passing Score', 'cta-lms' ); ?></strong><span><?php echo esc_html( (int) $quiz->passing_score ?: 70 ); ?>%</span></div>
+				<div><strong><?php echo esc_html__( 'Passing Score', 'cta-lms' ); ?></strong><span><?php
+				if ( ! empty( $is_exam_prep ) && ! empty( $quiz_syllabus_meta['readiness_benchmark'] ) && empty( $quiz_syllabus_meta['readiness_benchmark_gate'] ) ) {
+					printf(
+						/* translators: %d: readiness benchmark percent */
+						esc_html__( '%d%% recommended readiness (not a completion gate)', 'cta-lms' ),
+						(int) $quiz_syllabus_meta['readiness_benchmark']
+					);
+				} else {
+					echo esc_html( ( (int) $quiz->passing_score ?: 70 ) . '%' );
+				}
+			?></span></div>
 				<div><strong><?php echo esc_html__( 'Time Limit', 'cta-lms' ); ?></strong><span><?php echo esc_html( $time_limit_label ); ?></span></div>
 				<div><strong><?php echo esc_html__( 'Attempts', 'cta-lms' ); ?></strong><span><?php echo esc_html( $attempts_label ); ?></span></div>
 			</div>
@@ -572,9 +607,21 @@ if ( empty( $evaluation_questions ) || ! is_array( $evaluation_questions ) ) {
 		<div class="cta-quiz-certificate-ready card">
 			<div class="cta-quiz-certificate-ready__icon" aria-hidden="true">✓</div>
 			<h2><?php echo esc_html__( 'Assessment complete!', 'cta-lms' ); ?></h2>
-			<p><?php echo esc_html__( 'Great work — you completed this Exam Preparation assessment. Answer rationales are shown after each attempt.', 'cta-lms' ); ?></p>
+			<p><?php
+				echo esc_html(
+					! empty( $lms_triggers['submission_confirmation'] )
+						? (string) $lms_triggers['submission_confirmation']
+						: __( 'Great work — you completed this Exam Preparation assessment. Answer rationales are shown after each attempt.', 'cta-lms' )
+				);
+			?></p>
+			<?php if ( ! empty( $lms_triggers['no_certificate'] ) && ! empty( $is_exam_prep ) ) : ?>
+				<p><?php echo esc_html( (string) $lms_triggers['no_certificate'] ); ?></p>
+			<?php endif; ?>
 			<?php if ( $last_attempt && (int) $last_attempt->passed ) : ?>
 				<p><?php echo esc_html__( 'Your score:', 'cta-lms' ); ?> <strong><?php echo esc_html( (string) (int) $last_attempt->score ); ?>%</strong></p>
+			<?php endif; ?>
+			<?php if ( ! empty( $lms_triggers['retake_reminder'] ) ) : ?>
+				<p><?php echo esc_html( (string) $lms_triggers['retake_reminder'] ); ?></p>
 			<?php endif; ?>
 			<button type="button" class="btn btn-primary" id="cta-retake-exam-quiz"><?php echo esc_html__( 'Retake This Assessment', 'cta-lms' ); ?></button>
 			<?php if ( $player_url ) : ?>

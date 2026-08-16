@@ -300,25 +300,58 @@ class CTA_Exam_Prep_Getting_Started {
 			),
 			'lmft-law-ethics' => array(
 				'orientation' => array(
-					'intro' => __( 'This dashboard uses clearly labeled placeholder workbook shells so you can test the full Exam Prep navigation. Final LMFT California Law & Ethics workbooks, chapter tests, flashcards, practice exams, and downloadable materials will replace these placeholders when client content is delivered.', 'cta-lms' ),
+					'intro' => __( 'Welcome to the CTA LMFT California Law & Ethics Exam Preparation Program. This program is designed to help you identify the controlling legal or ethical issue, apply LMFT- and AMFT-specific rules, choose the best professional action, and use detailed feedback to repair weak areas. Start with the required LMFT Practice Act module before Workbook 1.', 'cta-lms' ),
 				),
 				'roadmap_steps' => self::law_ethics_roadmap_steps(),
-				'study_sequence' => self::law_ethics_study_sequence( 'LMFT' ),
+				'study_sequence' => array(
+					array(
+						'title'       => __( 'Start Here', 'cta-lms' ),
+						'description' => __( 'Read orientation, notices, access rules, and support boundaries.', 'cta-lms' ),
+					),
+					array(
+						'title'       => __( 'LMFT Practice Act Module', 'cta-lms' ),
+						'description' => __( 'Complete the module and submit the 25-question assessment.', 'cta-lms' ),
+					),
+					array(
+						'title'       => __( 'Workbooks 1–9', 'cta-lms' ),
+						'description' => __( 'Read each workbook, complete its candidate assessment, then analyze gated rationales and remediation.', 'cta-lms' ),
+					),
+					array(
+						'title'       => __( 'Practice Examination A', 'cta-lms' ),
+						'description' => __( 'Complete the 50-question form and performance worksheet.', 'cta-lms' ),
+					),
+					array(
+						'title'       => __( 'Practice Examination B', 'cta-lms' ),
+						'description' => __( 'Complete the second 50-question form and compare error patterns.', 'cta-lms' ),
+					),
+					array(
+						'title'       => __( 'Comprehensive Final Examination', 'cta-lms' ),
+						'description' => __( 'Complete the 100-question form and build a targeted final study plan.', 'cta-lms' ),
+					),
+					array(
+						'title'       => __( 'Study Center and Toolkits', 'cta-lms' ),
+						'description' => __( 'Use the 807-card study center and six toolkits throughout the program.', 'cta-lms' ),
+					),
+					array(
+						'title'       => __( 'Program Close', 'cta-lms' ),
+						'description' => __( 'Review strengths, open gaps, next-study actions, and test-day preparation.', 'cta-lms' ),
+					),
+				),
 				'exam_overview'  => array(
-					'exam_name' => __( 'California LMFT Law & Ethics Examination', 'cta-lms' ),
-					'format'    => __( '75-question exam covering BBS statutes, regulations, CAMFT ethics, and California MFT scope of practice.', 'cta-lms' ),
+					'exam_name' => __( 'California LMFT Law and Ethics Examination', 'cta-lms' ),
+					'format'    => __( 'Self-paced, asynchronous online exam-preparation program with six months of access. Exam preparation only — no CE credit or certificate.', 'cta-lms' ),
 					'domains'   => array(
-						__( 'Confidentiality and privilege', 'cta-lms' ),
-						__( 'Scope of practice and scope violations', 'cta-lms' ),
-						__( 'Supervision, advertising, and business practices', 'cta-lms' ),
-						__( 'Child abuse, elder abuse, and mandated reporting', 'cta-lms' ),
+						__( 'LMFT Practice Act and AMFT professional identity', 'cta-lms' ),
+						__( 'Consent, telehealth, competence, and impairment', 'cta-lms' ),
+						__( 'Client protection, boundaries, and cultural humility', 'cta-lms' ),
+						__( 'Confidentiality and documentation', 'cta-lms' ),
 					),
 				),
 				'study_schedules' => array(
 					'intro' => __( 'Study schedule and error-log tools are included in your downloadable program toolkit (when available for this release).', 'cta-lms' ),
 				),
 				'readiness' => array(
-					'summary' => __( 'You are ready when chapter tests, Form A/B practice exams, and the comprehensive final are consistently passed and your error log shows closed gaps.', 'cta-lms' ),
+					'summary' => __( 'An 80% score may be used as a CTA study benchmark. It is not a completion gate and does not guarantee examination passage. Use your performance worksheets and Final Study Check before scheduling with BBS.', 'cta-lms' ),
 				),
 			),
 			'lcsw-law-ethics' => array(

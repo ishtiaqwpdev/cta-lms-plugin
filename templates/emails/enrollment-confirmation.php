@@ -8,17 +8,25 @@
  * @var string  $ce_hours
  * @var string  $enrolled_date
  * @var string  $player_url
+ * @var string  $expiration_date
+ * @var string  $enrollment_message
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$is_exam_prep = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course );
+$is_exam_prep        = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course );
+$expiration_date     = isset( $expiration_date ) ? (string) $expiration_date : '';
+$enrollment_message  = isset( $enrollment_message ) ? (string) $enrollment_message : '';
 ?>
 <p><?php printf( esc_html__( 'Hi %s,', 'cta-lms' ), esc_html( $user->display_name ) ); ?></p>
 
-<h2><?php esc_html_e( 'You\'re enrolled!', 'cta-lms' ); ?> 🎓</h2>
+<h2><?php esc_html_e( 'You\'re enrolled!', 'cta-lms' ); ?></h2>
+
+<?php if ( '' !== $enrollment_message ) : ?>
+	<p><?php echo esc_html( $enrollment_message ); ?></p>
+<?php endif; ?>
 
 <div class="highlight-box">
 	<?php if ( $is_exam_prep ) : ?>
@@ -30,21 +38,26 @@ $is_exam_prep = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_pr
 	<?php endif; ?>
 	<p><strong><?php esc_html_e( 'Payment:', 'cta-lms' ); ?></strong> <?php echo esc_html( $payment_reference ); ?></p>
 	<p><strong><?php esc_html_e( 'Enrolled:', 'cta-lms' ); ?></strong> <?php echo esc_html( $enrolled_date ); ?></p>
+	<?php if ( '' !== $expiration_date ) : ?>
+		<p><strong><?php esc_html_e( 'Access ends:', 'cta-lms' ); ?></strong> <?php echo esc_html( $expiration_date ); ?></p>
+	<?php endif; ?>
 </div>
 
-<p><strong><?php esc_html_e( 'What\'s next:', 'cta-lms' ); ?></strong></p>
-<ol>
-	<li><?php esc_html_e( 'Log in to your dashboard', 'cta-lms' ); ?></li>
-	<li><?php esc_html_e( 'Start with Module 1', 'cta-lms' ); ?></li>
-	<li><?php esc_html_e( 'Complete all modules at your own pace', 'cta-lms' ); ?></li>
-	<?php if ( $is_exam_prep ) : ?>
-		<li><?php esc_html_e( 'Begin the program assessments when modules are complete', 'cta-lms' ); ?></li>
-	<?php else : ?>
-		<li><?php esc_html_e( 'Pass the final quiz (70% required)', 'cta-lms' ); ?></li>
-		<li><?php esc_html_e( 'Submit course evaluation', 'cta-lms' ); ?></li>
-		<li><?php esc_html_e( 'Download your CE certificate', 'cta-lms' ); ?></li>
-	<?php endif; ?>
-</ol>
+<?php if ( '' === $enrollment_message ) : ?>
+	<p><strong><?php esc_html_e( 'What\'s next:', 'cta-lms' ); ?></strong></p>
+	<ol>
+		<li><?php esc_html_e( 'Log in to your dashboard', 'cta-lms' ); ?></li>
+		<li><?php echo $is_exam_prep ? esc_html__( 'Open Start Here before beginning the program', 'cta-lms' ) : esc_html__( 'Start with Module 1', 'cta-lms' ); ?></li>
+		<li><?php esc_html_e( 'Complete all modules at your own pace', 'cta-lms' ); ?></li>
+		<?php if ( $is_exam_prep ) : ?>
+			<li><?php esc_html_e( 'Begin the program assessments when modules are complete', 'cta-lms' ); ?></li>
+		<?php else : ?>
+			<li><?php esc_html_e( 'Pass the final quiz (70% required)', 'cta-lms' ); ?></li>
+			<li><?php esc_html_e( 'Submit course evaluation', 'cta-lms' ); ?></li>
+			<li><?php esc_html_e( 'Download your CE certificate', 'cta-lms' ); ?></li>
+		<?php endif; ?>
+	</ol>
+<?php endif; ?>
 
 <p><a class="btn-email" href="<?php echo esc_url( $player_url ); ?>"><?php echo $is_exam_prep ? esc_html__( 'Start Preparing Now', 'cta-lms' ) : esc_html__( 'Start Learning Now', 'cta-lms' ); ?></a></p>
 

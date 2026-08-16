@@ -111,6 +111,9 @@ class CTA_Exam_Prep_Lessons {
 		if ( preg_match( '/^\s*Start\s+Here\s*:/i', $title ) ) {
 			$path = CTA_PLUGIN_DIR . 'assets/course-materials/' . $program . '/lessons/start-here.html';
 			$num  = 0;
+		} elseif ( preg_match( '/^\s*Program\s+Close\b/i', $title ) ) {
+			$path = CTA_PLUGIN_DIR . 'assets/course-materials/' . $program . '/lessons/program-close.html';
+			$num  = 0;
 		} elseif ( class_exists( 'CTA_Exam_Prep_Workbooks' ) && CTA_Exam_Prep_Workbooks::is_license_module( $module ) ) {
 			$path = CTA_PLUGIN_DIR . 'assets/course-materials/' . $program . '/lessons/license-module.html';
 			$num  = 0;

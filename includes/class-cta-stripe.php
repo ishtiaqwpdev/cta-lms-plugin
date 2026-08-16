@@ -774,6 +774,14 @@ class CTA_Stripe {
 				__( 'Exam Preparation Program — %d months access. No CE credit.', 'cta-lms' ),
 				$access_months
 			);
+			$course_meta = array();
+			if ( ! empty( $course->syllabus_meta ) ) {
+				$decoded_course_meta = json_decode( (string) $course->syllabus_meta, true );
+				$course_meta         = is_array( $decoded_course_meta ) ? $decoded_course_meta : array();
+			}
+			if ( ! empty( $course_meta['checkout_description'] ) ) {
+				$line_description = (string) $course_meta['checkout_description'];
+			}
 		} else {
 			$line_description = sprintf(
 				/* translators: %s: CE hours */

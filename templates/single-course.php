@@ -102,11 +102,22 @@ $audio_combined_runtime = ! empty( $syllabus_meta['audio_combined_runtime'] )
 						<span class="badge badge--primary"><?php echo esc_html( $course->category ); ?></span>
 					<?php endif; ?>
 				</div>
-				<h1 class="course-hero__title" id="course-hero-title"><?php echo esc_html( $display_title ); ?></h1>
-				<?php if ( '' !== $short_description ) : ?>
+				<h1 class="course-hero__title" id="course-hero-title"><?php
+					echo esc_html(
+						! empty( $syllabus_meta['hero_headline'] )
+							? (string) $syllabus_meta['hero_headline']
+							: $display_title
+					);
+				?></h1>
+				<?php if ( ! empty( $syllabus_meta['hero_subheadline'] ) ) : ?>
+					<p class="course-hero__summary"><?php echo esc_html( (string) $syllabus_meta['hero_subheadline'] ); ?></p>
+				<?php elseif ( '' !== $short_description ) : ?>
 					<p class="course-hero__summary"><?php echo esc_html( $short_description ); ?></p>
 				<?php elseif ( ! empty( $course->description ) ) : ?>
 					<p class="course-hero__summary"><?php echo esc_html( wp_trim_words( wp_strip_all_tags( $course->description ), 40 ) ); ?></p>
+				<?php endif; ?>
+				<?php if ( ! empty( $syllabus_meta['hero_support_line'] ) ) : ?>
+					<p class="course-hero__support"><?php echo esc_html( (string) $syllabus_meta['hero_support_line'] ); ?></p>
 				<?php endif; ?>
 				<div class="course-hero__meta">
 					<div class="course-hero__instructor">
@@ -156,7 +167,7 @@ $audio_combined_runtime = ! empty( $syllabus_meta['audio_combined_runtime'] )
 					|| ! empty( $syllabus_meta['target_audience'] )
 					|| ! empty( $syllabus_meta['instructional_method'] )
 					|| ! empty( $syllabus_meta['presenter'] )
-					|| ! empty( $syllabus_meta['course_code'] )
+					|| ( ! empty( $syllabus_meta['course_code'] ) && empty( $syllabus_meta['hide_course_code_public'] ) )
 					|| ! empty( $syllabus_meta['course_classification'] )
 					|| $audio_tracks_count > 0
 					|| ( ! $is_exam_prep && (float) $course->ce_hours > 0 );
@@ -177,12 +188,54 @@ $audio_combined_runtime = ! empty( $syllabus_meta['audio_combined_runtime'] )
 					</section>
 				<?php endif; ?>
 
+				<?php
+				$what_included = ! empty( $syllabus_meta['what_is_included'] ) && is_array( $syllabus_meta['what_is_included'] )
+					? $syllabus_meta['what_is_included']
+					: array();
+				$who_for = ! empty( $syllabus_meta['who_this_is_for'] ) && is_array( $syllabus_meta['who_this_is_for'] )
+					? $syllabus_meta['who_this_is_for']
+					: array();
+				?>
+				<?php if ( ! empty( $what_included ) ) : ?>
+					<section class="course-section" id="everything-included" aria-labelledby="course-included-title">
+						<h2 class="course-section__title" id="course-included-title"><?php esc_html_e( 'What Is Included', 'cta-lms' ); ?></h2>
+						<ul class="checklist">
+							<?php foreach ( $what_included as $item ) : ?>
+								<li class="checklist__item">
+									<span class="checklist__icon" aria-hidden="true">✓</span>
+									<?php echo esc_html( (string) $item ); ?>
+								</li>
+							<?php endforeach; ?>
+						</ul>
+					</section>
+				<?php endif; ?>
+
+				<?php if ( ! empty( $who_for ) ) : ?>
+					<section class="course-section" aria-labelledby="course-who-title">
+						<h2 class="course-section__title" id="course-who-title"><?php esc_html_e( 'Who This Program Is For', 'cta-lms' ); ?></h2>
+						<ul class="checklist">
+							<?php foreach ( $who_for as $item ) : ?>
+								<li class="checklist__item">
+									<span class="checklist__icon" aria-hidden="true">✓</span>
+									<?php echo esc_html( (string) $item ); ?>
+								</li>
+							<?php endforeach; ?>
+						</ul>
+						<?php if ( ! empty( $syllabus_meta['pathway_boundary_notice'] ) ) : ?>
+							<p class="course-content-block__text"><em><?php echo esc_html( (string) $syllabus_meta['pathway_boundary_notice'] ); ?></em></p>
+						<?php endif; ?>
+					</section>
+				<?php endif; ?>
+
 				<?php if ( $has_course_info ) : ?>
 					<section class="course-section" aria-labelledby="course-info-title">
 						<h2 class="course-section__title" id="course-info-title"><?php echo $is_exam_prep ? esc_html__( 'Program Information', 'cta-lms' ) : esc_html__( 'Course Information', 'cta-lms' ); ?></h2>
 						<ul class="course-info-list">
-							<?php if ( ! empty( $syllabus_meta['course_code'] ) ) : ?>
+							<?php if ( ! empty( $syllabus_meta['course_code'] ) && empty( $syllabus_meta['hide_course_code_public'] ) ) : ?>
 								<li><strong><?php esc_html_e( 'Course Code:', 'cta-lms' ); ?></strong> <?php echo esc_html( $syllabus_meta['course_code'] ); ?></li>
+							<?php endif; ?>
+							<?php if ( ! empty( $syllabus_meta['catalog_status'] ) && ! empty( $syllabus_meta['launch_pending_testing'] ) ) : ?>
+								<li><strong><?php esc_html_e( 'Status:', 'cta-lms' ); ?></strong> <?php echo esc_html( (string) $syllabus_meta['catalog_status'] ); ?></li>
 							<?php endif; ?>
 							<?php if ( ! empty( $syllabus_meta['course_classification'] ) ) : ?>
 								<li><strong><?php esc_html_e( 'Course Classification:', 'cta-lms' ); ?></strong> <?php echo esc_html( $syllabus_meta['course_classification'] ); ?></li>
@@ -502,6 +555,18 @@ $audio_combined_runtime = ! empty( $syllabus_meta['audio_combined_runtime'] )
 					</section>
 				<?php endif; ?>
 
+				<?php
+				$faqs = ! empty( $syllabus_meta['faqs'] ) && is_array( $syllabus_meta['faqs'] )
+					? $syllabus_meta['faqs']
+					: array();
+				include CTA_PLUGIN_DIR . 'templates/partials/product-faqs.php';
+
+				$disclaimers = ! empty( $syllabus_meta['disclaimers'] ) && is_array( $syllabus_meta['disclaimers'] )
+					? $syllabus_meta['disclaimers']
+					: array();
+				include CTA_PLUGIN_DIR . 'templates/partials/product-disclaimers.php';
+				?>
+
 				<?php if ( ! empty( $syllabus_references ) ) : ?>
 					<section class="course-section" aria-labelledby="course-references-title">
 						<h2 class="course-section__title" id="course-references-title"><?php esc_html_e( 'References', 'cta-lms' ); ?></h2>
@@ -548,15 +613,25 @@ $audio_combined_runtime = ! empty( $syllabus_meta['audio_combined_runtime'] )
 						<?php endif; ?>
 					</p>
 					<ul class="course-sidebar__meta">
+						<?php
+						$purchase_panel = ! empty( $syllabus_meta['purchase_panel'] ) && is_array( $syllabus_meta['purchase_panel'] )
+							? $syllabus_meta['purchase_panel']
+							: array();
+						?>
+						<?php if ( ! empty( $purchase_panel['price'] ) && $is_exam_prep && empty( $commercial_pending ) ) : ?>
+							<li class="course-sidebar__meta-item"><span><strong><?php esc_html_e( 'Price:', 'cta-lms' ); ?></strong> <?php echo esc_html( (string) $purchase_panel['price'] ); ?></span></li>
+						<?php endif; ?>
 						<li class="course-sidebar__meta-item">
 							<span>
 								<strong><?php esc_html_e( 'Format:', 'cta-lms' ); ?></strong>
 								<?php
-								$format_label = ! empty( $syllabus_meta['instructional_method'] )
-									? (string) $syllabus_meta['instructional_method']
-									: ( $is_exam_prep
-										? __( 'Self-paced asynchronous', 'cta-lms' )
-										: __( 'Self-paced, online', 'cta-lms' ) );
+								$format_label = ! empty( $purchase_panel['format'] )
+									? (string) $purchase_panel['format']
+									: ( ! empty( $syllabus_meta['instructional_method'] )
+										? (string) $syllabus_meta['instructional_method']
+										: ( $is_exam_prep
+											? __( 'Self-paced asynchronous', 'cta-lms' )
+											: __( 'Self-paced, online', 'cta-lms' ) ) );
 								echo esc_html( $format_label );
 								?>
 							</span>
@@ -570,12 +645,24 @@ $audio_combined_runtime = ! empty( $syllabus_meta['audio_combined_runtime'] )
 								<li class="course-sidebar__meta-item"><span><strong><?php esc_html_e( 'Access:', 'cta-lms' ); ?></strong> <?php esc_html_e( 'Pending client confirmation', 'cta-lms' ); ?></span></li>
 								<li class="course-sidebar__meta-item"><span><strong><?php esc_html_e( 'Classification:', 'cta-lms' ); ?></strong> <?php esc_html_e( 'Exam Preparation Only — No CE Credit (pending confirmation)', 'cta-lms' ); ?></span></li>
 							<?php else : ?>
-								<li class="course-sidebar__meta-item"><span><strong><?php esc_html_e( 'Access Period:', 'cta-lms' ); ?></strong> <?php echo esc_html( (string) $access_months ); ?> <?php esc_html_e( 'months from enrollment', 'cta-lms' ); ?></span></li>
-								<li class="course-sidebar__meta-item"><span><strong><?php esc_html_e( 'Classification:', 'cta-lms' ); ?></strong> <?php
+								<li class="course-sidebar__meta-item"><span><strong><?php esc_html_e( 'Access:', 'cta-lms' ); ?></strong> <?php
 									echo esc_html(
-										! empty( $syllabus_meta['course_classification'] )
-											? (string) $syllabus_meta['course_classification']
-											: __( 'Exam Preparation Program | No CE Credit', 'cta-lms' )
+										! empty( $purchase_panel['access'] )
+											? (string) $purchase_panel['access']
+											: sprintf(
+												/* translators: %d: months */
+												__( '%d months from enrollment', 'cta-lms' ),
+												$access_months
+											)
+									);
+								?></span></li>
+								<li class="course-sidebar__meta-item"><span><strong><?php esc_html_e( 'Credit:', 'cta-lms' ); ?></strong> <?php
+									echo esc_html(
+										! empty( $purchase_panel['credit'] )
+											? (string) $purchase_panel['credit']
+											: ( ! empty( $syllabus_meta['course_classification'] )
+												? (string) $syllabus_meta['course_classification']
+												: __( 'Exam Preparation Program | No CE Credit', 'cta-lms' ) )
 									);
 								?></span></li>
 								<?php if ( $audio_tracks_count > 0 && '' !== $audio_combined_runtime ) : ?>
@@ -609,22 +696,50 @@ $audio_combined_runtime = ! empty( $syllabus_meta['audio_combined_runtime'] )
 					<?php endif; ?>
 
 					<?php if ( $is_enrolled && $player_url ) : ?>
-						<a href="<?php echo esc_url( $player_url ); ?>" class="btn btn-primary btn--lg course-sidebar__enroll"><?php esc_html_e( 'Continue Learning', 'cta-lms' ); ?></a>
+						<a href="<?php echo esc_url( $player_url ); ?>" class="btn btn-primary btn--lg course-sidebar__enroll"><?php
+							echo esc_html(
+								! empty( $syllabus_meta['dashboard_card']['button'] )
+									? (string) $syllabus_meta['dashboard_card']['button']
+									: __( 'Continue Studying', 'cta-lms' )
+							);
+						?></a>
 					<?php elseif ( $is_enrolled ) : ?>
 						<p class="course-sidebar__notice"><?php esc_html_e( 'You are enrolled. Configure the Course Player page in CTA LMS Settings to start learning.', 'cta-lms' ); ?></p>
 					<?php elseif ( ! empty( $commercial_pending ) ) : ?>
 						<p class="course-sidebar__notice"><?php esc_html_e( 'Enrollment opens after the client confirms price, access period, and classification for this program.', 'cta-lms' ); ?></p>
 					<?php elseif ( ! empty( $launch_pending ) ) : ?>
-						<p class="course-sidebar__notice"><?php esc_html_e( 'Public checkout and enrollment are on hold until learner-view testing is complete and CTA provides final written release approval.', 'cta-lms' ); ?></p>
+						<p class="course-sidebar__notice"><?php
+							echo esc_html(
+								! empty( $purchase_panel['availability'] )
+									? (string) $purchase_panel['availability']
+									: __( 'Public checkout and enrollment are on hold until learner-view testing is complete and CTA provides final written release approval.', 'cta-lms' )
+							);
+						?></p>
+						<?php if ( ! empty( $purchase_panel['secondary_button'] ) ) : ?>
+							<a href="#everything-included" class="btn btn-secondary btn--lg course-sidebar__enroll"><?php echo esc_html( (string) $purchase_panel['secondary_button'] ); ?></a>
+						<?php endif; ?>
 					<?php elseif ( ! is_user_logged_in() && $login_url ) : ?>
 						<a href="<?php echo esc_url( $login_url ); ?>" class="btn btn-primary btn--lg course-sidebar__enroll">
 							<?php esc_html_e( 'Login to Enroll', 'cta-lms' ); ?>
 						</a>
 					<?php else : ?>
-						<button type="button" id="enroll-btn" class="btn btn-primary btn--lg course-sidebar__enroll" data-cta-course-checkout data-course-id="<?php echo esc_attr( $course->id ); ?>" data-course-title="<?php echo esc_attr( $display_title ); ?>" data-price="<?php echo esc_attr( $is_free_course ? __( 'Free', 'cta-lms' ) : ( function_exists( 'cta_lms_format_money' ) ? cta_lms_format_money( (float) $course->price ) : ( '$' . number_format( (float) $course->price, 2 ) ) ) ); ?>">
+						<?php
+						$checkout_acks = ! empty( $syllabus_meta['checkout_acknowledgments'] ) && is_array( $syllabus_meta['checkout_acknowledgments'] )
+							? $syllabus_meta['checkout_acknowledgments']
+							: array();
+						$checkout_desc = ! empty( $syllabus_meta['checkout_description'] )
+							? (string) $syllabus_meta['checkout_description']
+							: '';
+						$primary_cta = ! empty( $syllabus_meta['primary_cta'] )
+							? (string) $syllabus_meta['primary_cta']
+							: '';
+						?>
+						<button type="button" id="enroll-btn" class="btn btn-primary btn--lg course-sidebar__enroll" data-cta-course-checkout data-course-id="<?php echo esc_attr( $course->id ); ?>" data-course-title="<?php echo esc_attr( $display_title ); ?>" data-price="<?php echo esc_attr( $is_free_course ? __( 'Free', 'cta-lms' ) : ( function_exists( 'cta_lms_format_money' ) ? cta_lms_format_money( (float) $course->price ) : ( '$' . number_format( (float) $course->price, 2 ) ) ) ); ?>" data-checkout-description="<?php echo esc_attr( $checkout_desc ); ?>" data-checkout-acknowledgments="<?php echo esc_attr( wp_json_encode( $checkout_acks ) ); ?>">
 							<?php
 							if ( $is_free_course ) {
 								esc_html_e( 'Enroll Free', 'cta-lms' );
+							} elseif ( '' !== $primary_cta ) {
+								echo esc_html( $primary_cta );
 							} elseif ( $is_exam_prep ) {
 								esc_html_e( 'Begin Your Clinical Exam Preparation', 'cta-lms' );
 							} else {
@@ -632,6 +747,9 @@ $audio_combined_runtime = ! empty( $syllabus_meta['audio_combined_runtime'] )
 							}
 							?>
 						</button>
+						<?php if ( ! empty( $purchase_panel['secondary_button'] ) ) : ?>
+							<a href="#everything-included" class="btn btn-secondary btn--lg course-sidebar__enroll"><?php echo esc_html( (string) $purchase_panel['secondary_button'] ); ?></a>
+						<?php endif; ?>
 					<?php endif; ?>
 				</div>
 			</aside>

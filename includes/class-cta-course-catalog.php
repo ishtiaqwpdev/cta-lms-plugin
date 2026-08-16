@@ -232,6 +232,8 @@ class CTA_Course_Catalog {
 				'access_period_months' => 6,
 				'category'             => 'Exam Preparation',
 				'public_title'         => 'LMFT California Law & Ethics Exam Preparation',
+				'catalog_status'       => 'Under Review',
+				'catalog_description'  => 'A coordinated LMFT-focused California law and ethics study system with a required Practice Act module, nine workbooks, answer-hidden assessments, gated detailed rationales, cumulative examinations, 807 flashcards, six toolkits, and targeted remediation.',
 				'match_titles'         => array(
 					'CTA LMFT California Law & Ethics Exam Preparation Program',
 					'LMFT California Law & Ethics Exam Preparation',
