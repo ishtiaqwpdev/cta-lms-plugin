@@ -1463,6 +1463,8 @@
   aspect-ratio: 370 / 250;
   margin-bottom: var(--space-lg);
   overflow: visible;
+  /* Reserve space for the price chip so it sits below the image (exam-prep style). */
+  padding-bottom: calc(56px + var(--space-sm));
 }
 
 .cta-plugin-wrapper .course-card--catalog .course-card__badge {
@@ -1496,7 +1498,8 @@
   border: 3px solid var(--color-white);
   border-radius: var(--radius-full);
   box-shadow: var(--shadow-medium);
-  transform: translateY(50%);
+  /* Do not translate into the image — keep chip in reserved media padding. */
+  transform: none;
 }
 
 .cta-plugin-wrapper .course-card--catalog .card__body {
@@ -5902,23 +5905,6 @@ button.pagination__item:disabled {
 
 .cta-plugin-wrapper .cta-course-card__thumb--placeholder {
   opacity: 0.92;
-}
-
-.cta-plugin-wrapper .cta-course-card__placeholder-badge {
-  position: absolute;
-  left: var(--space-sm);
-  right: var(--space-sm);
-  bottom: var(--space-sm);
-  z-index: 2;
-  padding: 4px 8px;
-  border-radius: 4px;
-  background: rgba(18, 43, 81, 0.92);
-  color: #fff;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  text-align: center;
 }
 
 .cta-plugin-wrapper .cta-badge--ce {

@@ -733,6 +733,8 @@ body.elementor-kit-15 .cta-plugin-wrapper a.cta-pill .cta-pill__label,
   overflow: visible;
   margin-bottom: var(--space-lg);
   aspect-ratio: 370 / 250;
+  /* Match exam-prep: keep price chip below the image, not overlapping it. */
+  padding-bottom: calc(56px + var(--space-sm)) !important;
 }
 
 .cta-lms.cta-exam-prep-catalog .course-card--exam-prep .course-card__media,
@@ -767,7 +769,7 @@ body.elementor-kit-15 .cta-plugin-wrapper a.cta-pill .cta-pill__label,
   position: absolute !important;
   right: var(--space-md) !important;
   bottom: 0 !important;
-  transform: translateY(50%) !important;
+  transform: none !important;
   min-width: 56px !important;
   height: 56px !important;
   padding: 0 8px !important;
@@ -775,6 +777,7 @@ body.elementor-kit-15 .cta-plugin-wrapper a.cta-pill .cta-pill__label,
   background-color: var(--color-primary) !important;
   color: var(--color-white) !important;
   box-shadow: var(--shadow-medium) !important;
+  z-index: 4 !important;
 }
 
 .cta-lms.cta-exam-prep-catalog .course-card--exam-prep .course-card__price,

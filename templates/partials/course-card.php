@@ -71,9 +71,6 @@ $thumb_is_placeholder = ! empty( $card_meta['thumbnail_is_placeholder'] )
 				class="<?php echo esc_attr( trim( ( $is_exam_prep ? 'cta-exam-prep-artwork' : '' ) . ( $thumb_is_placeholder ? ' cta-course-card__thumb--placeholder' : '' ) ) ); ?>"
 				loading="lazy"
 			>
-			<?php if ( $thumb_is_placeholder ) : ?>
-				<span class="cta-course-card__placeholder-badge"><?php esc_html_e( 'Image placeholder — not approved', 'cta-lms' ); ?></span>
-			<?php endif; ?>
 		<?php else : ?>
 			<div class="cta-course-card__thumb-placeholder course-card__thumb">
 				<span aria-hidden="true">&#128214;</span>
