@@ -289,11 +289,10 @@ checklist( 'S10-13', $clean, 'No obvious placeholder/test/dev copy in key learne
 // 14 Draft / unpublished status
 checklist(
 	'S10-14',
-	false !== strpos( $lms, 'unpublish_all_ce_courses_pending_cepa' )
-	&& false !== strpos( file_get_contents( $root . '/includes/class-cta-suicide-risk-certificate-sync.php' ), 'unpublish_all_ce_courses_pending_cepa' )
+	false === strpos( file_get_contents( $root . '/includes/class-cta-suicide-risk-certificate-sync.php' ), 'unpublish_all_ce_courses_pending_cepa' )
 	&& 'under_review_not_approved_for_publication' === (string) ( $sra['publication_status'] ?? '' )
 	&& ! empty( $sra['development_draft'] ),
-	'Course forced draft/unpublished via CEPA hold + syllabus publication_status flags'
+	'New course defaults draft via syllabus flags; content sync does not mass-unpublish other CE courses'
 );
 
 // 15 Placeholder image asset

@@ -71,6 +71,8 @@ if ( $course ) {
 		<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Saved successfully.', 'cta-lms' ); ?></p></div>
 	<?php elseif ( 'course_save_failed' === $notice ) : ?>
 		<div class="notice notice-error is-dismissible"><p><?php esc_html_e( 'Could not be saved. Check that only one CTA LMS plugin is installed, then deactivate and reactivate the plugin.', 'cta-lms' ); ?></p></div>
+	<?php elseif ( 'ce_publish_confirm_required' === $notice ) : ?>
+		<div class="notice notice-warning is-dismissible"><p><?php esc_html_e( 'Saved as Draft. To publish a CE course you must confirm the CAMFT CEPA warning when saving (or use the Publish button on the course list).', 'cta-lms' ); ?></p></div>
 	<?php elseif ( 'resource_saved' === $notice || 'resource_deleted' === $notice ) : ?>
 		<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Downloadable resource updated.', 'cta-lms' ); ?></p></div>
 	<?php elseif ( 'resource_invalid_type' === $notice ) : ?>

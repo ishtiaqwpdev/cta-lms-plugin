@@ -154,7 +154,7 @@ assert_true( ! $is_module_accessible( $modules, array( 1001, 1002 ), 1004 ), 'Mo
 
 $sync_src = file_get_contents( $root . '/includes/class-cta-suicide-risk-module-sync.php' );
 assert_true( false !== strpos( $sync_src, "'is_locked'     => 1" ), 'Modules stored with is_locked=1 (sequential CE pattern)' );
-assert_true( false !== strpos( $sync_src, 'unpublish_all_ce_courses_pending_cepa' ), 'Sync does not publish CE course' );
+assert_true( false === strpos( $sync_src, 'unpublish_all_ce_courses_pending_cepa' ), 'Content sync must not mass-unpublish CE courses' );
 
 echo "\nKnowledge checks: formative checks embedded in Vimeo content — no separate LMS certificate gates in this build.\n";
 echo "Playback note: live Vimeo playback requires deploy + enrolled learner session (not testable offline).\n";

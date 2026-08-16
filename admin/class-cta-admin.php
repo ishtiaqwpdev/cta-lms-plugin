@@ -1308,13 +1308,15 @@ class CTA_Admin {
 		}
 		$status     = sanitize_text_field( wp_unslash( $_POST['status'] ?? 'draft' ) );
 		$status     = in_array( $status, array( 'published', 'draft' ), true ) ? $status : 'draft';
+		$publish_blocked = false;
 
 		// Exam Prep: admin controls publish/draft directly (no release-gate confirm).
 		// CE publish requires explicit confirm checkbox/field (CAMFT CEPA compliance).
 		if ( 'published' === $status && 'ce' === $product_type ) {
 			$confirmed = ! empty( $_POST['cta_confirm_ce_publish'] );
 			if ( ! $confirmed ) {
-				$status = 'draft';
+				$status          = 'draft';
+				$publish_blocked = true;
 			}
 		}
 
@@ -1399,6 +1401,13 @@ class CTA_Admin {
 			if ( class_exists( 'CTA_Course_Catalog' ) ) {
 				$syllabus_meta = CTA_Course_Catalog::apply_exam_prep_launch_meta( $syllabus_meta );
 			}
+		}
+
+		if ( 'ce' === $product_type && class_exists( 'CTA_Course_Catalog' ) ) {
+			$syllabus_meta = CTA_Course_Catalog::apply_admin_ce_publish_meta(
+				$syllabus_meta,
+				'published' === $status
+			);
 		}
 
 		if ( '' === $title ) {
@@ -1490,7 +1499,7 @@ class CTA_Admin {
 				array(
 					'page'       => 'cta-lms-course-edit',
 					'course_id'  => $course_id,
-					'cta_notice' => 'course_saved',
+					'cta_notice' => $publish_blocked ? 'ce_publish_confirm_required' : 'course_saved',
 				),
 				admin_url( 'admin.php' )
 			)
@@ -1816,19 +1825,23 @@ class CTA_Admin {
 		// Exam Prep: admin controls publish/draft directly.
 		$update  = array( 'status' => $new_status );
 		$formats = array( '%s' );
+		$meta    = array();
+		if ( ! empty( $course->syllabus_meta ) ) {
+			$decoded = json_decode( (string) $course->syllabus_meta, true );
+			$meta    = is_array( $decoded ) ? $decoded : array();
+		}
 
 		if ( 'published' === $new_status && $is_exam ) {
-			$meta = array();
-			if ( ! empty( $course->syllabus_meta ) ) {
-				$decoded = json_decode( (string) $course->syllabus_meta, true );
-				$meta    = is_array( $decoded ) ? $decoded : array();
-			}
 			unset( $meta['launch_pending_testing'], $meta['development_draft'], $meta['launch_status'], $meta['commercial_pending'], $meta['pricing_status'] );
 			if ( class_exists( 'CTA_Course_Catalog' ) ) {
 				$meta = CTA_Course_Catalog::apply_exam_prep_launch_meta( $meta );
 			}
 			$update['syllabus_meta'] = wp_json_encode( $meta );
-			$formats[]              = '%s';
+			$formats[]               = '%s';
+		} elseif ( ! $is_exam && class_exists( 'CTA_Course_Catalog' ) ) {
+			$meta                      = CTA_Course_Catalog::apply_admin_ce_publish_meta( $meta, 'published' === $new_status );
+			$update['syllabus_meta']   = wp_json_encode( $meta );
+			$formats[]                 = '%s';
 		}
 
 		$wpdb->update(

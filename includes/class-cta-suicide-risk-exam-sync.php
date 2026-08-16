@@ -231,10 +231,6 @@ class CTA_Suicide_Risk_Exam_Sync {
 			);
 		}
 
-		if ( class_exists( 'CTA_Course_Catalog' ) ) {
-			CTA_Course_Catalog::unpublish_all_ce_courses_pending_cepa();
-		}
-
 		update_option(
 			self::SEED_OPTION,
 			array(
@@ -558,10 +554,6 @@ class CTA_Suicide_Risk_Exam_Sync {
 				'updated'   => $updated,
 				'message'   => 'partial_answer_apply',
 			);
-		}
-
-		if ( class_exists( 'CTA_Course_Catalog' ) ) {
-			CTA_Course_Catalog::unpublish_all_ce_courses_pending_cepa();
 		}
 
 		update_option(

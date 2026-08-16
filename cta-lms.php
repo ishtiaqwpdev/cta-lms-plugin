@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.215' );
+	define( 'CTA_VERSION', '1.0.216' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -1126,6 +1126,37 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 			// CTA-CE-003: certificate metadata, completion statement, admin placeholder thumbnail.
 			if ( version_compare( $installed, '1.0.215', '<' ) && class_exists( 'CTA_Suicide_Risk_Certificate_Sync' ) ) {
 				CTA_Suicide_Risk_Certificate_Sync::sync( true );
+			}
+
+			// CE publish control: content sync must not mass-unpublish; heal admin-published rows.
+			if ( version_compare( $installed, '1.0.216', '<' ) && class_exists( 'CTA_Course_Catalog' ) ) {
+				global $wpdb;
+				$ce_table = $wpdb->prefix . 'cta_courses';
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$published_ce = $wpdb->get_results(
+					"SELECT id, syllabus_meta FROM {$ce_table}
+					WHERE status = 'published'
+					AND (product_type = 'ce' OR product_type = '' OR product_type IS NULL)"
+				);
+				foreach ( (array) $published_ce as $row ) {
+					if ( CTA_Course_Catalog::is_admin_ce_publish_confirmed( $row ) ) {
+						continue;
+					}
+					$meta = array();
+					if ( ! empty( $row->syllabus_meta ) ) {
+						$decoded = json_decode( (string) $row->syllabus_meta, true );
+						$meta    = is_array( $decoded ) ? $decoded : array();
+					}
+					$meta = CTA_Course_Catalog::apply_admin_ce_publish_meta( $meta, true );
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+					$wpdb->update(
+						$ce_table,
+						array( 'syllabus_meta' => wp_json_encode( $meta ) ),
+						array( 'id' => (int) $row->id ),
+						array( '%s' ),
+						array( '%d' )
+					);
+				}
 			}
 
 			// Decouple supervision application pending from general account / CE access.

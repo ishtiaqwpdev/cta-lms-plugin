@@ -48,7 +48,7 @@ assert_true( false !== strpos( $sync_src, 'passing_score' ) && false !== strpos(
 assert_true( false !== strpos( $sync_src, 'time_limit_mins' ) && false !== strpos( $sync_src, '0' ), 'No time limit' );
 assert_true( false !== strpos( $sync_src, 'max_attempts' ) && false !== strpos( $sync_src, '0' ), 'Unlimited attempts (max_attempts=0)' );
 assert_true( false !== strpos( $sync_src, 'PENDING_CORRECT_OPTION' ), 'Answer keys deferred to Chunk 5 placeholder' );
-assert_true( false !== strpos( $sync_src, 'unpublish_all_ce_courses_pending_cepa' ), 'Sync keeps CE draft hold' );
+assert_true( false === strpos( $sync_src, 'unpublish_all_ce_courses_pending_cepa' ), 'Content sync must not mass-unpublish CE courses' );
 
 $lms = file_get_contents( $root . '/cta-lms.php' );
 assert_true( false !== strpos( $lms, 'CTA_Suicide_Risk_Exam_Sync' ), 'Exam sync registered in cta-lms.php' );

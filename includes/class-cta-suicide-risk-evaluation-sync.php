@@ -247,10 +247,6 @@ class CTA_Suicide_Risk_Evaluation_Sync {
 			);
 		}
 
-		if ( class_exists( 'CTA_Course_Catalog' ) ) {
-			CTA_Course_Catalog::unpublish_all_ce_courses_pending_cepa();
-		}
-
 		update_option( self::SEED_OPTION, 1, false );
 
 		return array(

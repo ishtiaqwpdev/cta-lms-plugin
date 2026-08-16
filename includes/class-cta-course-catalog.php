@@ -947,24 +947,69 @@ class CTA_Course_Catalog {
 	}
 
 	/**
+	 * Whether an admin explicitly confirmed CE publication (survives content sync upgrades).
+	 *
+	 * @param object|array|null $course Course row or meta-bearing array.
+	 * @return bool
+	 */
+	public static function is_admin_ce_publish_confirmed( $course ) {
+		$meta = array();
+
+		if ( is_array( $course ) ) {
+			$meta = $course;
+		} elseif ( is_object( $course ) ) {
+			if ( class_exists( 'CTA_Syllabus_Sync' ) ) {
+				$meta = CTA_Syllabus_Sync::get_meta( $course );
+			} elseif ( ! empty( $course->syllabus_meta ) ) {
+				$decoded = json_decode( (string) $course->syllabus_meta, true );
+				$meta    = is_array( $decoded ) ? $decoded : array();
+			}
+		}
+
+		return ! empty( $meta['admin_ce_publish_confirmed'] );
+	}
+
+	/**
+	 * Stamp or clear admin CE publish confirmation in syllabus meta.
+	 *
+	 * @param array $meta           Existing syllabus meta.
+	 * @param bool  $is_published   True when admin confirmed publish.
+	 * @return array
+	 */
+	public static function apply_admin_ce_publish_meta( array $meta, $is_published ) {
+		if ( $is_published ) {
+			$meta['admin_ce_publish_confirmed']    = true;
+			$meta['admin_ce_publish_confirmed_at'] = function_exists( 'current_time' )
+				? current_time( 'mysql' )
+				: gmdate( 'Y-m-d H:i:s' );
+		} else {
+			unset( $meta['admin_ce_publish_confirmed'], $meta['admin_ce_publish_confirmed_at'] );
+		}
+
+		return $meta;
+	}
+
+	/**
 	 * Force every CE course to draft pending CAMFT CEPA provider approval.
 	 *
-	 * Does not touch Exam Preparation programs. Idempotent.
+	 * Skips CE rows the admin already confirmed for publication. Does not touch
+	 * Exam Preparation programs. Idempotent.
 	 *
-	 * @return array{updated:array<int,array{id:int,title:string,previous:string}>,already_draft:array<int,array{id:int,title:string}>,exam_prep_untouched:int}
+	 * @return array{updated:array<int,array{id:int,title:string,previous:string}>,already_draft:array<int,array{id:int,title:string}>,admin_published_kept:array<int,array{id:int,title:string}>,exam_prep_untouched:int}
 	 */
 	public static function unpublish_all_ce_courses_pending_cepa() {
 		global $wpdb;
 
 		$table  = $wpdb->prefix . 'cta_courses';
 		$report = array(
-			'updated'             => array(),
-			'already_draft'       => array(),
-			'exam_prep_untouched' => 0,
+			'updated'               => array(),
+			'already_draft'         => array(),
+			'admin_published_kept'    => array(),
+			'exam_prep_untouched'   => 0,
 		);
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-		$rows = $wpdb->get_results( "SELECT id, title, status, product_type FROM {$table} ORDER BY id ASC" );
+		$rows = $wpdb->get_results( "SELECT id, title, status, product_type, syllabus_meta FROM {$table} ORDER BY id ASC" );
 
 		foreach ( (array) $rows as $row ) {
 			$is_exam = class_exists( 'CTA_Exam_Access' )
@@ -979,6 +1024,14 @@ class CTA_Course_Catalog {
 			// Treat blank/legacy product_type as CE.
 			$title = (string) $row->title;
 			$status = (string) $row->status;
+
+			if ( self::is_admin_ce_publish_confirmed( $row ) ) {
+				$report['admin_published_kept'][] = array(
+					'id'    => (int) $row->id,
+					'title' => $title,
+				);
+				continue;
+			}
 
 			if ( 'draft' === $status ) {
 				$report['already_draft'][] = array(

@@ -63,7 +63,7 @@ assert_true( false !== strpos( $materials_src, 'You must be enrolled in this cou
 
 $sync_src = file_get_contents( $root . '/includes/class-cta-suicide-risk-toolkit-sync.php' );
 assert_true( false !== strpos( $sync_src, 'CTA-CE-003' ), 'Toolkit sync scoped to CTA-CE-003' );
-assert_true( false !== strpos( $sync_src, 'unpublish_all_ce_courses_pending_cepa' ), 'Toolkit sync keeps CE draft hold' );
+assert_true( false === strpos( $sync_src, 'unpublish_all_ce_courses_pending_cepa' ), 'Content sync must not mass-unpublish CE courses' );
 
 echo "\nEnrollment gating: toolkit served only via CTA_Course_Materials::serve (cta-protected storage + user_can_access enrollment check).\n";
 echo "Public plugin URL: assets/course-materials/ is NOT exposed as a direct public download path.\n";
