@@ -19,10 +19,11 @@ if ( ! class_exists( 'CTA_Lmft_Law_Ethics_Sync' ) ) {
 
 class CTA_Lmft_Law_Ethics_Sync {
 
-	const SEED_OPTION         = 'cta_lmft_law_ethics_seeded_1_0_250';
-	const TOOLKIT_SEED_OPTION = 'cta_lmft_law_ethics_toolkits_seeded_1_0_251';
-	const COPY_SEED_OPTION    = 'cta_lmft_law_ethics_copy_seeded_point6_v1_1';
-	const PACKAGE_TOOLKIT_DIR = '_packages/CTA_LMFT_Law_and_Ethics_EP_Complete_David_Handoff_Package_v1.0/05_Study_Center_and_Toolkits/';
+	const SEED_OPTION           = 'cta_lmft_law_ethics_seeded_1_0_250';
+	const TOOLKIT_SEED_OPTION   = 'cta_lmft_law_ethics_toolkits_seeded_1_0_251';
+	const COPY_SEED_OPTION      = 'cta_lmft_law_ethics_copy_seeded_point6_v1_1';
+	const MATERIALS_SEED_OPTION = 'cta_lmft_law_ethics_materials_seeded_1_0_253';
+	const PACKAGE_TOOLKIT_DIR   = '_packages/CTA_LMFT_Law_and_Ethics_EP_Complete_David_Handoff_Package_v1.0/05_Study_Center_and_Toolkits/';
 	const SLUG          = 'california-law-ethics-exam-preparation';
 	const TITLE         = 'CTA LMFT California Law & Ethics Exam Preparation Program';
 	const PUBLIC_TITLE  = 'LMFT California Law & Ethics Exam Preparation';
@@ -331,12 +332,26 @@ class CTA_Lmft_Law_Ethics_Sync {
 			),
 		);
 
+		$wb_counts = array(
+			1 => 119,
+			2 => 102,
+			3 => 102,
+			4 => 85,
+			5 => 85,
+			6 => 85,
+			7 => 51,
+			8 => 68,
+			9 => 68,
+		);
 		for ( $wb = 1; $wb <= 9; ++$wb ) {
+			$count  = isset( $wb_counts[ $wb ] ) ? (int) $wb_counts[ $wb ] : 0;
 			$defs[] = array(
 				'quiz_type' => 'wb' . $wb . '_bank',
-				'title'     => sprintf( 'Workbook %d — Workbook Assessment [Placeholder]', $wb ),
+				'title'     => sprintf( 'Workbook %d — %d-Question Assessment', $wb, $count ),
 				'sort'      => 10 + ( $wb * 10 ),
 				'time'      => 0,
+				// Printable Candidate Forms + Controlled Answer Keys are the primary delivery
+				// (synced as downloads). Online LMS banks stay empty until PHP quiz-seeds ship.
 				'questions' => array(),
 				'key'       => 'wb' . $wb . '_bank',
 			);
@@ -915,6 +930,12 @@ class CTA_Lmft_Law_Ethics_Sync {
 		}
 
 		$q_table = $wpdb->prefix . 'cta_quiz_questions';
+
+		// Empty question payload = title/meta refresh only. Never wipe an existing bank.
+		if ( empty( $questions ) ) {
+			return $quiz_id;
+		}
+
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$wpdb->delete( $q_table, array( 'quiz_id' => $quiz_id ), array( '%d' ) );
 
@@ -1176,6 +1197,353 @@ class CTA_Lmft_Law_Ethics_Sync {
 			'message'   => $ok ? 'synced' : ( 6 === $present ? 'resource_sync_incomplete' : 'toolkit_files_missing' ),
 			'counts'    => $counts,
 		);
+	}
+
+	/**
+	 * Attach learner-facing printable materials (workbooks, assessments, rationales, practice exams).
+	 *
+	 * @param bool $force Re-run even if already seeded.
+	 * @return array{ok:bool,course_id:int,message:string,attached:int,updated:int,skipped:int,missing:array}
+	 */
+	public static function sync_materials( $force = false ) {
+		if ( ! $force && get_option( self::MATERIALS_SEED_OPTION ) ) {
+			return array(
+				'ok'        => true,
+				'course_id' => 0,
+				'message'   => 'already_seeded',
+				'attached'  => 0,
+				'updated'   => 0,
+				'skipped'   => 0,
+				'missing'   => array(),
+			);
+		}
+
+		$course_id = self::ensure_program();
+		if ( ! $course_id ) {
+			return array(
+				'ok'        => false,
+				'course_id' => 0,
+				'message'   => 'ensure_program_failed',
+				'attached'  => 0,
+				'updated'   => 0,
+				'skipped'   => 0,
+				'missing'   => array(),
+			);
+		}
+
+		$result              = self::attach_material_map( $course_id );
+		$result['ok']        = empty( $result['missing'] ) || ( (int) $result['attached'] + (int) $result['updated'] ) > 0;
+		$result['course_id'] = $course_id;
+		$result['message']   = $result['ok'] ? 'synced' : 'materials_incomplete';
+
+		if ( $result['ok'] ) {
+			update_option(
+				self::MATERIALS_SEED_OPTION,
+				array(
+					'at'        => current_time( 'mysql' ),
+					'course_id' => $course_id,
+					'counts'    => $result,
+				),
+				false
+			);
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Idempotent attach of the approved material map.
+	 *
+	 * @param int $course_id Course ID.
+	 * @return array{attached:int,updated:int,skipped:int,missing:array}
+	 */
+	private static function attach_material_map( $course_id ) {
+		global $wpdb;
+
+		$course_id = absint( $course_id );
+		$attached  = 0;
+		$updated   = 0;
+		$skipped   = 0;
+		$missing   = array();
+
+		if ( ! $course_id ) {
+			return compact( 'attached', 'updated', 'skipped', 'missing' );
+		}
+
+		self::ensure_resource_unlock_column();
+
+		if ( ! class_exists( 'CTA_Course_Materials' ) ) {
+			return array(
+				'attached' => 0,
+				'updated'  => 0,
+				'skipped'  => 0,
+				'missing'  => array( 'CTA_Course_Materials missing' ),
+			);
+		}
+
+		$modules           = class_exists( 'CTA_Database' )
+			? CTA_Database::get_course_modules( $course_id )
+			: array();
+		$module_by_n       = array();
+		$module_start_here = 0;
+		foreach ( (array) $modules as $mod ) {
+			$title = (string) $mod->title;
+			if ( ! $module_start_here && preg_match( '/^Start\s+Here\s*:/i', $title ) ) {
+				$module_start_here = (int) $mod->id;
+			}
+			if ( preg_match( '/^Workbook\s+(\d+)\s*:/i', $title, $m ) ) {
+				$module_by_n[ (int) $m[1] ] = (int) $mod->id;
+			}
+		}
+
+		$order_index = 100;
+		foreach ( self::get_material_map() as $item ) {
+			$title       = sanitize_text_field( (string) $item['title'] );
+			$rel         = ltrim( str_replace( '\\', '/', (string) $item['file'] ), '/' );
+			$source      = CTA_PLUGIN_DIR . self::MATERIALS_REL . $rel;
+			$module_id   = 0;
+			$is_practice = ! empty( $item['is_practice_test'] ) ? 1 : 0;
+			$unlock      = CTA_Course_Materials::infer_protected_rationale_unlock_type(
+				(object) array(
+					'title'     => $title,
+					'file_path' => $rel,
+					'file_url'  => '',
+				)
+			);
+
+			if ( ! empty( $item['start_here'] ) || ( isset( $item['workbook_num'] ) && 0 === (int) $item['workbook_num'] ) ) {
+				$module_id = $module_start_here;
+			} elseif ( ! empty( $item['workbook_num'] ) ) {
+				$wn        = (int) $item['workbook_num'];
+				$module_id = isset( $module_by_n[ $wn ] ) ? (int) $module_by_n[ $wn ] : 0;
+			}
+
+			if ( ! is_readable( $source ) ) {
+				$missing[] = $rel;
+				++$skipped;
+				++$order_index;
+				continue;
+			}
+
+			$existing_id = self::find_resource_id( $course_id, $title, $rel );
+			if ( $existing_id ) {
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$wpdb->update(
+					$wpdb->prefix . 'cta_downloadable_resources',
+					array(
+						'title'                  => $title,
+						'module_id'              => $module_id,
+						'order_index'            => $order_index,
+						'is_practice_test'       => $is_practice,
+						'unlock_after_quiz_type' => $unlock,
+					),
+					array( 'id' => $existing_id ),
+					array( '%s', '%d', '%d', '%d', '%s' ),
+					array( '%d' )
+				);
+				++$updated;
+				++$order_index;
+				continue;
+			}
+
+			$imported = CTA_Course_Materials::import_local_file_to_protected( $source, $course_id );
+			if ( is_wp_error( $imported ) ) {
+				$missing[] = $rel . ' (' . $imported->get_error_message() . ')';
+				++$skipped;
+				++$order_index;
+				continue;
+			}
+
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+			$ok = $wpdb->insert(
+				$wpdb->prefix . 'cta_downloadable_resources',
+				array(
+					'course_id'              => $course_id,
+					'module_id'              => $module_id,
+					'attachment_id'          => 0,
+					'title'                  => $title,
+					'file_url'               => $imported['file_url'],
+					'file_path'              => $imported['relative_path'],
+					'file_type'              => $imported['file_type'],
+					'order_index'            => $order_index,
+					'is_practice_test'       => $is_practice,
+					'unlock_after_quiz_type' => $unlock,
+				),
+				array( '%d', '%d', '%d', '%s', '%s', '%s', '%s', '%d', '%d', '%s' )
+			);
+
+			if ( $ok ) {
+				++$attached;
+			} else {
+				++$skipped;
+				$missing[] = $rel . ' (insert failed)';
+			}
+			++$order_index;
+		}
+
+		return compact( 'attached', 'updated', 'skipped', 'missing' );
+	}
+
+	/**
+	 * Approved printable materials for LMFT Law & Ethics (Candidate Editions + assessments + keys).
+	 *
+	 * @return array<int,array<string,mixed>>
+	 */
+	public static function get_material_map() {
+		$items = array(
+			array(
+				'file'       => 'start-here/CTA_LMFT_Law_and_Ethics_EP_Practice_Act_AMFT_Professional_Identity_and_California_Examination_Distinctions_Module_v1.1.docx',
+				'title'      => 'LMFT Practice Act Module — Candidate Edition',
+				'start_here' => 1,
+			),
+			array(
+				'file'             => 'start-here/CTA_LMFT_Law_and_Ethics_EP_Practice_Act_Module_25_Question_Assessment_Candidate_Form_v1.1.docx',
+				'title'            => 'LMFT Practice Act Module — 25-Question Candidate Assessment',
+				'start_here'       => 1,
+				'is_practice_test' => 1,
+			),
+			array(
+				'file'       => 'start-here/CTA_LMFT_Law_and_Ethics_EP_Practice_Act_Module_25_Question_Assessment_Controlled_Answer_Key_and_Detailed_Rationales_v1.1.docx',
+				'title'      => 'LMFT Practice Act Module — Controlled Answer Key and Detailed Rationales',
+				'start_here' => 1,
+			),
+		);
+
+		$workbooks = array(
+			1 => array(
+				'wb'   => 'workbooks/CTA_LMFT_Law_and_Ethics_EP_WB1_Informed_Consent_Minors_and_Family_Involvement_Candidate_Edition_v1.0.docx',
+				'wb_t' => 'Workbook 1 — Informed Consent, Minors, and Family Involvement (Candidate Edition)',
+				'as'   => 'assessments/CTA_LMFT_Law_and_Ethics_EP_WB1_119_Question_Assessment_Candidate_Form_v1.0.docx',
+				'as_t' => 'Workbook 1 — 119-Question Assessment (Candidate Form)',
+				'ra'   => 'rationales/CTA_LMFT_Law_and_Ethics_EP_WB1_119_Question_Assessment_Controlled_Answer_Key_and_Detailed_Rationales_v1.0.docx',
+				'ra_t' => 'Workbook 1 — 119-Question Assessment Controlled Answer Key and Detailed Rationales',
+			),
+			2 => array(
+				'wb'   => 'workbooks/CTA_LMFT_Law_and_Ethics_EP_WB2_Telehealth_Law_and_Ethics_Candidate_Edition_v1.0.docx',
+				'wb_t' => 'Workbook 2 — Telehealth Law and Ethics (Candidate Edition)',
+				'as'   => 'assessments/CTA_LMFT_Law_and_Ethics_EP_WB2_102_Question_Assessment_Candidate_Form_v1.0.docx',
+				'as_t' => 'Workbook 2 — 102-Question Assessment (Candidate Form)',
+				'ra'   => 'rationales/CTA_LMFT_Law_and_Ethics_EP_WB2_102_Question_Assessment_Controlled_Answer_Key_and_Detailed_Rationales_v1.0.docx',
+				'ra_t' => 'Workbook 2 — 102-Question Assessment Controlled Answer Key and Detailed Rationales',
+			),
+			3 => array(
+				'wb'   => 'workbooks/CTA_LMFT_Law_and_Ethics_EP_WB3_Professional_Competence_Candidate_Edition_v1.0.docx',
+				'wb_t' => 'Workbook 3 — Professional Competence (Candidate Edition)',
+				'as'   => 'assessments/CTA_LMFT_Law_and_Ethics_EP_WB3_102_Question_Assessment_Candidate_Form_v1.0.docx',
+				'as_t' => 'Workbook 3 — 102-Question Assessment (Candidate Form)',
+				'ra'   => 'rationales/CTA_LMFT_Law_and_Ethics_EP_WB3_102_Question_Assessment_Controlled_Answer_Key_and_Detailed_Rationales_v1.0.docx',
+				'ra_t' => 'Workbook 3 — 102-Question Assessment Controlled Answer Key and Detailed Rationales',
+			),
+			4 => array(
+				'wb'   => 'workbooks/CTA_LMFT_Law_and_Ethics_EP_WB4_Professional_Impairment_Candidate_Edition_v1.0.docx',
+				'wb_t' => 'Workbook 4 — Professional Impairment (Candidate Edition)',
+				'as'   => 'assessments/CTA_LMFT_Law_and_Ethics_EP_WB4_85_Question_Assessment_Candidate_Form_v1.0.docx',
+				'as_t' => 'Workbook 4 — 85-Question Assessment (Candidate Form)',
+				'ra'   => 'rationales/CTA_LMFT_Law_and_Ethics_EP_WB4_85_Question_Assessment_Controlled_Answer_Key_and_Detailed_Rationales_v1.0.docx',
+				'ra_t' => 'Workbook 4 — 85-Question Assessment Controlled Answer Key and Detailed Rationales',
+			),
+			5 => array(
+				'wb'   => 'workbooks/CTA_LMFT_Law_and_Ethics_EP_WB5_Preventing_Harm_Candidate_Edition_v1.0.docx',
+				'wb_t' => 'Workbook 5 — Preventing Harm (Candidate Edition)',
+				'as'   => 'assessments/CTA_LMFT_Law_and_Ethics_EP_WB5_85_Question_Assessment_Candidate_Form_v1.0.docx',
+				'as_t' => 'Workbook 5 — 85-Question Assessment (Candidate Form)',
+				'ra'   => 'rationales/CTA_LMFT_Law_and_Ethics_EP_WB5_85_Question_Assessment_Controlled_Answer_Key_and_Detailed_Rationales_v1.0.docx',
+				'ra_t' => 'Workbook 5 — 85-Question Assessment Controlled Answer Key and Detailed Rationales',
+			),
+			6 => array(
+				'wb'   => 'workbooks/CTA_LMFT_Law_and_Ethics_EP_WB6_Professional_Boundaries_Candidate_Edition_v1.0.docx',
+				'wb_t' => 'Workbook 6 — Professional Boundaries (Candidate Edition)',
+				'as'   => 'assessments/CTA_LMFT_Law_and_Ethics_EP_WB6_85_Question_Assessment_Candidate_Form_v1.0.docx',
+				'as_t' => 'Workbook 6 — 85-Question Assessment (Candidate Form)',
+				'ra'   => 'rationales/CTA_LMFT_Law_and_Ethics_EP_WB6_85_Question_Assessment_Controlled_Answer_Key_and_Detailed_Rationales_v1.0.docx',
+				'ra_t' => 'Workbook 6 — 85-Question Assessment Controlled Answer Key and Detailed Rationales',
+			),
+			7 => array(
+				'wb'   => 'workbooks/CTA_LMFT_Law_and_Ethics_EP_WB7_Cultural_Humility_Candidate_Edition_v1.0.docx',
+				'wb_t' => 'Workbook 7 — Cultural Humility (Candidate Edition)',
+				'as'   => 'assessments/CTA_LMFT_Law_and_Ethics_EP_WB7_51_Question_Assessment_Candidate_Form_v1.0.docx',
+				'as_t' => 'Workbook 7 — 51-Question Assessment (Candidate Form)',
+				'ra'   => 'rationales/CTA_LMFT_Law_and_Ethics_EP_WB7_51_Question_Assessment_Controlled_Answer_Key_and_Detailed_Rationales_v1.0.docx',
+				'ra_t' => 'Workbook 7 — 51-Question Assessment Controlled Answer Key and Detailed Rationales',
+			),
+			8 => array(
+				'wb'   => 'workbooks/CTA_LMFT_Law_and_Ethics_EP_WB8_Confidentiality_Privacy_and_Information_Sharing_Candidate_Edition_v1.0.docx',
+				'wb_t' => 'Workbook 8 — Confidentiality, Privacy, and Information Sharing (Candidate Edition)',
+				'as'   => 'assessments/CTA_LMFT_Law_and_Ethics_EP_WB8_68_Question_Assessment_Candidate_Form_v1.0.docx',
+				'as_t' => 'Workbook 8 — 68-Question Assessment (Candidate Form)',
+				'ra'   => 'rationales/CTA_LMFT_Law_and_Ethics_EP_WB8_68_Question_Assessment_Controlled_Answer_Key_and_Detailed_Rationales_v1.0.docx',
+				'ra_t' => 'Workbook 8 — 68-Question Assessment Controlled Answer Key and Detailed Rationales',
+			),
+			9 => array(
+				'wb'   => 'workbooks/CTA_LMFT_Law_and_Ethics_EP_WB9_Clinical_Documentation_Record_Management_Candidate_Edition_v1.0.docx',
+				'wb_t' => 'Workbook 9 — Clinical Documentation & Record Management (Candidate Edition)',
+				'as'   => 'assessments/CTA_LMFT_Law_and_Ethics_EP_WB9_68_Question_Assessment_Candidate_Form_v1.0.docx',
+				'as_t' => 'Workbook 9 — 68-Question Assessment (Candidate Form)',
+				'ra'   => 'rationales/CTA_LMFT_Law_and_Ethics_EP_WB9_68_Question_Assessment_Controlled_Answer_Key_and_Detailed_Rationales_v1.0.docx',
+				'ra_t' => 'Workbook 9 — 68-Question Assessment Controlled Answer Key and Detailed Rationales',
+			),
+		);
+
+		foreach ( $workbooks as $n => $wb ) {
+			$items[] = array(
+				'file'         => $wb['wb'],
+				'title'        => $wb['wb_t'],
+				'workbook_num' => $n,
+			);
+			$items[] = array(
+				'file'             => $wb['as'],
+				'title'            => $wb['as_t'],
+				'workbook_num'     => $n,
+				'is_practice_test' => 1,
+			);
+			$items[] = array(
+				'file'         => $wb['ra'],
+				'title'        => $wb['ra_t'],
+				'workbook_num' => $n,
+			);
+		}
+
+		$items[] = array(
+			'file'             => 'practice-a/CTA_LMFT_Law_and_Ethics_EP_Practice_Examination_A_Learner_Booklet_v1.0.docx',
+			'title'            => 'Practice Examination A — Learner Booklet',
+			'is_practice_test' => 1,
+		);
+		$items[] = array(
+			'file'  => 'practice-a/CTA_LMFT_Law_and_Ethics_EP_Practice_Examination_A_Controlled_Answer_Key_and_Detailed_Rationales_v1.0.docx',
+			'title' => 'Practice Examination A — Controlled Answer Key and Detailed Rationales',
+		);
+		$items[] = array(
+			'file'  => 'practice-a/CTA_LMFT_Law_and_Ethics_EP_Practice_Examination_A_Performance_Analysis_and_Targeted_Study_Worksheet_v1.0.docx',
+			'title' => 'Practice Examination A — Performance Analysis and Targeted Study Worksheet',
+		);
+		$items[] = array(
+			'file'             => 'practice-b/CTA_LMFT_Law_and_Ethics_EP_Practice_Examination_B_Learner_Booklet_v1.0.docx',
+			'title'            => 'Practice Examination B — Learner Booklet',
+			'is_practice_test' => 1,
+		);
+		$items[] = array(
+			'file'  => 'practice-b/CTA_LMFT_Law_and_Ethics_EP_Practice_Examination_B_Controlled_Answer_Key_and_Detailed_Rationales_v1.0.docx',
+			'title' => 'Practice Examination B — Controlled Answer Key and Detailed Rationales',
+		);
+		$items[] = array(
+			'file'  => 'practice-b/CTA_LMFT_Law_and_Ethics_EP_Practice_Examination_B_Performance_Analysis_and_Targeted_Study_Worksheet_v1.0.docx',
+			'title' => 'Practice Examination B — Performance Analysis and Targeted Study Worksheet',
+		);
+		$items[] = array(
+			'file'             => 'comprehensive-final/CTA_LMFT_Law_and_Ethics_EP_Comprehensive_Final_Examination_Learner_Booklet_v1.0.docx',
+			'title'            => 'Comprehensive Final Examination — Learner Booklet',
+			'is_practice_test' => 1,
+		);
+		$items[] = array(
+			'file'  => 'comprehensive-final/CTA_LMFT_Law_and_Ethics_EP_Comprehensive_Final_Examination_Controlled_Answer_Key_and_Detailed_Rationales_v1.0.docx',
+			'title' => 'Comprehensive Final Examination — Controlled Answer Key and Detailed Rationales',
+		);
+		$items[] = array(
+			'file'  => 'comprehensive-final/CTA_LMFT_Law_and_Ethics_EP_Comprehensive_Final_Examination_Performance_Analysis_and_Targeted_Study_Worksheet_v1.0.docx',
+			'title' => 'Comprehensive Final Examination — Performance Analysis and Targeted Study Worksheet',
+		);
+
+		return $items;
 	}
 
 	/**

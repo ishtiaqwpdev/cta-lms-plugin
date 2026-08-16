@@ -186,7 +186,7 @@ class CTA_Exam_Prep_Downloads {
 			$items[] = array(
 				'resource_id'  => $resource_id,
 				'title'        => (string) ( $resource->title ?? $filename ),
-				'filename'     => sanitize_file_name( $filename ),
+				'filename'     => 'toolkits' === $category ? '' : sanitize_file_name( $filename ),
 				'extension'    => '' !== $extension ? strtoupper( $extension ) : __( 'FILE', 'cta-lms' ),
 				'size_bytes'   => $file_size,
 				'size_label'   => $file_size > 0 ? size_format( $file_size, 1 ) : '',

@@ -735,6 +735,7 @@ body.elementor-kit-15 .cta-plugin-wrapper a.cta-pill .cta-pill__label,
   aspect-ratio: 370 / 250;
   /* Match exam-prep: keep price chip below the image, not overlapping it. */
   padding-bottom: calc(56px + var(--space-sm)) !important;
+  background-color: #fff !important;
 }
 
 .cta-lms.cta-exam-prep-catalog .course-card--exam-prep .course-card__media,

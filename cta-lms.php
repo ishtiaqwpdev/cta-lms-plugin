@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.252' );
+	define( 'CTA_VERSION', '1.0.253' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -1392,6 +1392,16 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 			// LMFT California Law & Ethics: Point 6 Website/LMS Copy Package v1.1 (staging only; not public release).
 			if ( version_compare( $installed, '1.0.252', '<' ) && class_exists( 'CTA_Lmft_Law_Ethics_Sync' ) ) {
 				CTA_Lmft_Law_Ethics_Sync::apply_website_lms_copy( true );
+			}
+
+			// LMFT California Law & Ethics: real workbook HTML + printable assessments/rationales (handoff package).
+			if ( version_compare( $installed, '1.0.253', '<' ) && class_exists( 'CTA_Lmft_Law_Ethics_Sync' ) ) {
+				$lmft_le = CTA_Lmft_Law_Ethics_Sync::find_course();
+				if ( $lmft_le && ! empty( $lmft_le->id ) ) {
+					CTA_Lmft_Law_Ethics_Sync::sync_assessments( (int) $lmft_le->id );
+				}
+				CTA_Lmft_Law_Ethics_Sync::sync_materials( true );
+				CTA_Lmft_Law_Ethics_Sync::sync_toolkits( true );
 			}
 
 			// Decouple supervision application pending from general account / CE access.

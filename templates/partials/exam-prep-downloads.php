@@ -76,7 +76,9 @@ $has_downloads  = ! empty( $center['has_downloads'] ) && ! empty( $categories );
 							</div>
 							<div class="cta-dl__file-copy">
 								<h4><?php echo esc_html( (string) ( $item['title'] ?? '' ) ); ?></h4>
-								<p class="cta-dl__filename"><?php echo esc_html( (string) ( $item['filename'] ?? '' ) ); ?></p>
+								<?php if ( ! empty( $item['filename'] ) ) : ?>
+									<p class="cta-dl__filename"><?php echo esc_html( (string) $item['filename'] ); ?></p>
+								<?php endif; ?>
 								<?php if ( ! empty( $item['locked'] ) && ! empty( $item['lock_message'] ) ) : ?>
 									<p class="cta-dl__lock-message"><?php echo esc_html( (string) $item['lock_message'] ); ?></p>
 								<?php endif; ?>

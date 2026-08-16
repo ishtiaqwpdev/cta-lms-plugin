@@ -22,7 +22,18 @@ $programs = array(
 	'lmft-amftrb'     => $root . '/assets/course-materials/lmft-amftrb/workbooks',
 	'lpcc-law-ethics' => $root . '/assets/course-materials/lpcc-law-ethics/workbooks',
 	'lcsw-law-ethics' => $root . '/assets/course-materials/lcsw-law-ethics/workbooks',
+	'lmft-law-ethics' => $root . '/assets/course-materials/lmft-law-ethics/workbooks',
 );
+
+// Optional: php scripts/convert-workbook-docx-to-html.php lmft-law-ethics
+if ( isset( $argv[1] ) && '' !== trim( (string) $argv[1] ) ) {
+	$only = trim( (string) $argv[1] );
+	if ( ! isset( $programs[ $only ] ) ) {
+		fwrite( STDERR, "Unknown program: {$only}\n" );
+		exit( 1 );
+	}
+	$programs = array( $only => $programs[ $only ] );
+}
 
 /**
  * Convert one DOCX to sanitized HTML fragment.

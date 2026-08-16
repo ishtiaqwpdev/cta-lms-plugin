@@ -1465,6 +1465,8 @@
   overflow: visible;
   /* Reserve space for the price chip so it sits below the image (exam-prep style). */
   padding-bottom: calc(56px + var(--space-sm));
+  /* Match exam-prep: white band under artwork — not muted blue. */
+  background-color: var(--color-white);
 }
 
 .cta-plugin-wrapper .course-card--catalog .course-card__badge {

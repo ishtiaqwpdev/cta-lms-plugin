@@ -101,15 +101,22 @@ assert_test( 'close' === ( $modules[15]['kind'] ?? '' ), 'Program Close is unit 
 $assets = CTA_Lmft_Law_Ethics_Sync::ensure_placeholder_assets();
 assert_test( is_readable( CTA_PLUGIN_DIR . 'assets/course-materials/lmft-law-ethics/lessons/start-here.html' ), 'Start Here lesson written' );
 assert_test( is_readable( CTA_PLUGIN_DIR . 'assets/course-materials/lmft-law-ethics/lessons/program-close.html' ), 'Program Close lesson written' );
-assert_test( is_readable( CTA_PLUGIN_DIR . 'assets/course-materials/lmft-law-ethics/lessons/wb01.html' ), 'Workbook 1 placeholder lesson written' );
-assert_test( is_readable( CTA_PLUGIN_DIR . 'assets/course-materials/lmft-law-ethics/study-tools/flashcard-study-center.json' ), 'Empty flashcard study center JSON exists' );
+assert_test( is_readable( CTA_PLUGIN_DIR . 'assets/course-materials/lmft-law-ethics/lessons/wb01.html' ), 'Workbook 1 lesson written' );
+assert_test( is_readable( CTA_PLUGIN_DIR . 'assets/course-materials/lmft-law-ethics/study-tools/flashcard-study-center.json' ), 'Flashcard study center JSON exists' );
 
 $start = file_get_contents( CTA_PLUGIN_DIR . 'assets/course-materials/lmft-law-ethics/lessons/start-here.html' );
 assert_test( false === stripos( $start, 'PLACEHOLDER' ), 'Start Here is no longer a placeholder shell' );
 assert_test( false !== stripos( $start, 'Recommended Learning Sequence' ), 'Start Here includes learning sequence' );
 
 $wb1 = file_get_contents( CTA_PLUGIN_DIR . 'assets/course-materials/lmft-law-ethics/lessons/wb01.html' );
-assert_test( false !== stripos( $wb1, 'Key Concepts' ), 'Workbook lesson includes tab-friendly headings' );
+assert_test( false === stripos( $wb1, 'PLACEHOLDER — CONTENT PENDING' ), 'Workbook 1 is not a placeholder shell' );
+assert_test( false === stripos( $wb1, 'data-placeholder="1"' ), 'Workbook 1 has no placeholder marker' );
+assert_test( strlen( $wb1 ) > 20000, 'Workbook 1 lesson body is full content size' );
+assert_test( false !== stripos( $wb1, 'Informed Consent' ) || false !== stripos( $wb1, 'Workbook 1' ), 'Workbook 1 includes real topic content' );
+
+$map_count = count( CTA_Lmft_Law_Ethics_Sync::get_material_map() );
+assert_test( $map_count >= 30, 'Printable material map includes workbooks, assessments, and exams' );
+assert_test( is_readable( CTA_PLUGIN_DIR . 'assets/course-materials/lmft-law-ethics/workbooks/CTA_LMFT_Law_and_Ethics_EP_WB1_Informed_Consent_Minors_and_Family_Involvement_Candidate_Edition_v1.0.docx' ), 'Workbook 1 Candidate Edition DOCX present' );
 
 require_once CTA_PLUGIN_DIR . 'includes/class-cta-exam-prep-lessons.php';
 $map = CTA_Exam_Prep_Lessons::get_program_map();
