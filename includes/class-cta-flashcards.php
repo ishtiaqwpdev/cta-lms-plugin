@@ -32,7 +32,7 @@ class CTA_Flashcards {
 			'lcsw-california-law-ethics-exam-preparation'    => 'assets/course-materials/lcsw-law-ethics/study-tools/flashcards.json',
 			'lcsw-aswb-clinical-exam-preparation'            => 'assets/course-materials/lcsw-aswb/study-tools/flashcards.json',
 			'lcsw-california-clinical-exam-preparation'      => 'assets/course-materials/lcsw-aswb/study-tools/flashcards.json',
-			'lmft-california-clinical-exam-preparation'      => 'assets/course-materials/lmft-clinical/study-tools/flashcards.json',
+			// LMFT California Clinical legacy flashcards.json archived — use Flashcard Study Center only.
 			'lmft-amftrb-national-exam-preparation'          => 'assets/course-materials/lmft-amftrb/study-tools/flashcards.json',
 		);
 	}
@@ -49,6 +49,11 @@ class CTA_Flashcards {
 		}
 
 		if ( class_exists( 'CTA_Exam_Access' ) && ! CTA_Exam_Access::is_exam_prep( $course ) ) {
+			return null;
+		}
+
+		if ( class_exists( 'CTA_Lmft_Clinical_Legacy_Flashcard_Archive' )
+			&& CTA_Lmft_Clinical_Legacy_Flashcard_Archive::blocks_learner_legacy_deck( $course ) ) {
 			return null;
 		}
 

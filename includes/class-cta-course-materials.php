@@ -1053,6 +1053,10 @@ class CTA_Course_Materials {
 			'lmft-clinical-form-a-answer-key-',
 			'lmft-clinical-form-b-answer-key.php',
 			'lmft-clinical-form-b-answer-key-',
+			'/study-tools/_archived/',
+			'study-tools/_archived/',
+			'lmft-clinical-legacy-flashcards-v1.0-132.json',
+			'lmft-clinical/study-tools/flashcards.json',
 			'/chapter-tests-admin/',
 			'chapter-tests-admin/',
 			'lms_admin_only',
@@ -1725,6 +1729,11 @@ class CTA_Course_Materials {
 
 		if ( class_exists( 'CTA_Lmft_Clinical_Legacy_Forms_Archive' )
 			&& CTA_Lmft_Clinical_Legacy_Forms_Archive::is_archived_resource( $resource ) ) {
+			return true;
+		}
+
+		if ( class_exists( 'CTA_Lmft_Clinical_Legacy_Flashcard_Archive' )
+			&& CTA_Lmft_Clinical_Legacy_Flashcard_Archive::is_archived_resource( $resource ) ) {
 			return true;
 		}
 

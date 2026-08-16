@@ -263,10 +263,10 @@ class CTA_Exam_Prep_Getting_Started {
 					'exam_name' => __( 'ASWB Clinical Exam', 'cta-lms' ),
 					'format'    => __( '170-question computer-based exam (program uses 122-question Form A/B practice simulations); scenario-based clinical social work items.', 'cta-lms' ),
 					'domains'   => array(
-						__( 'Human development, diversity, and behavior', 'cta-lms' ),
-						__( 'Assessment, diagnosis, and treatment planning', 'cta-lms' ),
-						__( 'Psychotherapy, clinical interventions, and case management', 'cta-lms' ),
-						__( 'Professional ethics and values', 'cta-lms' ),
+						__( 'Values & Ethics', 'cta-lms' ),
+						__( 'Assessment & Planning', 'cta-lms' ),
+						__( 'Intervention & Practice', 'cta-lms' ),
+						__( 'Practice Simulations', 'cta-lms' ),
 					),
 				),
 				'study_schedules' => array(

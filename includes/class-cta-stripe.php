@@ -741,7 +741,9 @@ class CTA_Stripe {
 			return;
 		}
 
-		$course_page = $this->get_page_url( 'cta_single_course_page_id' );
+		$course_page = function_exists( 'cta_lms_get_single_course_url' )
+			? cta_lms_get_single_course_url( $course_id )
+			: $this->get_page_url( 'cta_single_course_page_id' );
 		if ( ! $course_page ) {
 			$course_page = home_url( '/' );
 		}
@@ -758,7 +760,9 @@ class CTA_Stripe {
 			)
 		);
 
-		$cancel_url = add_query_arg( 'course_id', $course_id, $course_page );
+		$cancel_url = ( class_exists( 'CTA_Course_Routes' ) && CTA_Course_Routes::get_canonical_url( $course_id ) )
+			? $course_page
+			: add_query_arg( 'course_id', $course_id, $course_page );
 
 		$is_exam_prep = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course );
 		$ce_hours     = rtrim( rtrim( number_format( (float) $course->ce_hours, 1, '.', '' ), '0' ), '.' );

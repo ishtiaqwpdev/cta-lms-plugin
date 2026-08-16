@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.247' );
+	define( 'CTA_VERSION', '1.0.249' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -101,6 +101,7 @@ $cta_required_files = array(
 	'includes/class-cta-lcsw-aswb-sync.php',
 	'includes/class-cta-lmft-clinical-sync.php',
 	'includes/class-cta-lmft-clinical-legacy-forms-archive.php',
+	'includes/class-cta-lmft-clinical-legacy-flashcard-archive.php',
 	'includes/class-cta-lmft-clinical-form-a-sync.php',
 	'includes/class-cta-lmft-clinical-comprehensive-scoring.php',
 	'includes/class-cta-lmft-clinical-comprehensive-review.php',
@@ -127,6 +128,7 @@ $cta_required_files = array(
 	'includes/class-cta-supervision-plans.php',
 	'includes/class-cta-emails.php',
 	'includes/class-cta-pages.php',
+	'includes/class-cta-course-routes.php',
 	'includes/class-cta-loader.php',
 	'includes/class-cta-stripe.php',
 	'public/class-cta-shortcodes.php',
@@ -189,6 +191,10 @@ if ( ! function_exists( 'cta_lms_init' ) ) {
 
 			if ( class_exists( 'CTA_Pages' ) ) {
 				CTA_Pages::init();
+			}
+
+			if ( class_exists( 'CTA_Course_Routes' ) ) {
+				CTA_Course_Routes::init();
 			}
 
 			add_filter(
@@ -1354,6 +1360,24 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				CTA_Lmft_Clinical_Sync::sync_comprehensive_simulation_time_limits();
 			}
 
+			// LMFT California Clinical: archive legacy 132-card flashcards.json deck (PROMPT 00).
+			if ( version_compare( $installed, '1.0.248', '<' ) && class_exists( 'CTA_Lmft_Clinical_Legacy_Flashcard_Archive' ) ) {
+				CTA_Lmft_Clinical_Legacy_Flashcard_Archive::archive_legacy_flashcards(
+					CTA_Lmft_Clinical_Legacy_Flashcard_Archive::TARGET_COURSE_ID,
+					true
+				);
+			}
+
+			// LCSW ASWB Clinical: slug landing page + legacy URL redirects.
+			if ( version_compare( $installed, '1.0.249', '<' ) ) {
+				if ( class_exists( 'CTA_Lcsw_Aswb_Sync' ) ) {
+					CTA_Lcsw_Aswb_Sync::heal_product_identity( true );
+				}
+				if ( class_exists( 'CTA_Course_Routes' ) ) {
+					CTA_Course_Routes::sync_landing_pages( true );
+				}
+			}
+
 			// Decouple supervision application pending from general account / CE access.
 			if ( version_compare( $installed, '1.0.90', '<' ) && class_exists( 'CTA_Associate_Access' ) ) {
 				$query = new WP_User_Query(
@@ -2279,6 +2303,13 @@ if ( ! function_exists( 'cta_lms_get_single_course_url' ) ) {
 
 		if ( ! $course_id ) {
 			return '';
+		}
+
+		if ( class_exists( 'CTA_Course_Routes' ) ) {
+			$canonical = CTA_Course_Routes::get_canonical_url( $course_id );
+			if ( $canonical ) {
+				return $canonical;
+			}
 		}
 
 		$page_id = absint( get_option( 'cta_single_course_page_id', 0 ) );

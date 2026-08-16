@@ -272,7 +272,18 @@ class CTA_Courses {
 	 * @return string
 	 */
 	public function render_single_course( $atts ) {
-		$course_id = absint( wp_unslash( $_GET['course_id'] ?? 0 ) );
+		$atts = shortcode_atts(
+			array(
+				'course_id' => 0,
+			),
+			$atts,
+			'cta_single_course'
+		);
+
+		$course_id = absint( $atts['course_id'] );
+		if ( ! $course_id ) {
+			$course_id = absint( wp_unslash( $_GET['course_id'] ?? 0 ) );
+		}
 		$payment_success = isset( $_GET['payment'] ) && 'success' === sanitize_text_field( wp_unslash( $_GET['payment'] ) );
 
 		if ( ! $course_id ) {
@@ -366,7 +377,10 @@ class CTA_Courses {
 	public function add_body_class( $classes ) {
 		global $post;
 
-		if ( $post instanceof WP_Post && has_shortcode( $post->post_content, 'cta_single_course' ) ) {
+		if ( $post instanceof WP_Post && (
+			has_shortcode( $post->post_content, 'cta_single_course' )
+			|| ( class_exists( 'CTA_Course_Routes' ) && CTA_Course_Routes::get_course_id_for_landing_page( (int) $post->ID ) )
+		) ) {
 			$classes[] = 'single-course-page';
 		}
 
@@ -381,12 +395,32 @@ class CTA_Courses {
 	private function get_current_single_course() {
 		global $post;
 
-		if ( ! $post instanceof WP_Post || ! has_shortcode( $post->post_content, 'cta_single_course' ) ) {
+		if ( ! $post instanceof WP_Post ) {
 			return null;
 		}
 
-		$course_id = absint( $_GET['course_id'] ?? 0 ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		return $course_id ? CTA_Database::get_course( $course_id ) : null;
+		$course_id = 0;
+
+		if ( class_exists( 'CTA_Course_Routes' ) ) {
+			$course_id = CTA_Course_Routes::get_course_id_for_landing_page( (int) $post->ID );
+			if ( ! $course_id ) {
+				$course_id = CTA_Course_Routes::parse_shortcode_course_id( (string) $post->post_content );
+			}
+		}
+
+		if ( ! $course_id ) {
+			$course_id = absint( $_GET['course_id'] ?? 0 ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		}
+
+		if ( ! $course_id && has_shortcode( $post->post_content, 'cta_single_course' ) ) {
+			return null;
+		}
+
+		if ( ! $course_id ) {
+			return null;
+		}
+
+		return CTA_Database::get_course( $course_id );
 	}
 
 	/**

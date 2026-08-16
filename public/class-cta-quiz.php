@@ -1628,6 +1628,13 @@ class CTA_Quiz {
 	 * @return string
 	 */
 	private function get_course_page_url( $course_id ) {
+		if ( function_exists( 'cta_lms_get_single_course_url' ) ) {
+			$url = cta_lms_get_single_course_url( $course_id );
+			if ( $url ) {
+				return $url;
+			}
+		}
+
 		$page_id = absint( get_option( 'cta_single_course_page_id', 0 ) );
 
 		if ( ! $page_id ) {

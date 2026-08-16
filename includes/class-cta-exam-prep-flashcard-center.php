@@ -279,14 +279,35 @@ class CTA_Exam_Prep_Flashcard_Center {
 				? self::sanitize_card_text( (string) $card['memory_cue'] )
 				: ( isset( $card['memoryCue'] ) ? self::sanitize_card_text( (string) $card['memoryCue'] ) : '' );
 
-			$normalized[] = array(
+			$row = array(
 				'id'         => isset( $card['id'] ) ? sanitize_text_field( (string) $card['id'] ) : (string) ( count( $normalized ) + 1 ),
 				'domain'     => $domain_key,
 				'front'      => $front,
 				'back'       => $back,
 				'memory_cue' => $memory_cue,
 			);
+
+			if ( isset( $card['sort_order'] ) ) {
+				$row['sort_order'] = (int) $card['sort_order'];
+			}
+
+			if ( ! empty( $card['meta'] ) && is_array( $card['meta'] ) ) {
+				$row['meta'] = $card['meta'];
+			}
+
+			$normalized[] = $row;
 		}
+
+		usort(
+			$normalized,
+			static function ( $a, $b ) {
+				$order = (int) ( $a['sort_order'] ?? 0 ) <=> (int) ( $b['sort_order'] ?? 0 );
+				if ( 0 !== $order ) {
+					return $order;
+				}
+				return strcmp( (string) ( $a['id'] ?? '' ), (string) ( $b['id'] ?? '' ) );
+			}
+		);
 
 		return $normalized;
 	}

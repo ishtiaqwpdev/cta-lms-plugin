@@ -291,6 +291,13 @@ class CTA_Lmft_Clinical_Sync {
 				continue;
 			}
 
+			if ( class_exists( 'CTA_Lmft_Clinical_Legacy_Flashcard_Archive' )
+				&& CTA_Lmft_Clinical_Legacy_Flashcard_Archive::is_legacy_flashcards_archived( $course_id )
+				&& CTA_Lmft_Clinical_Legacy_Flashcard_Archive::resource_path_is_legacy_flashcard( $rel . ' ' . $title ) ) {
+				++$order_index;
+				continue;
+			}
+
 			$source      = CTA_PLUGIN_DIR . self::MATERIALS_REL . $rel;
 			$module_id   = 0;
 			$is_practice = ! empty( $item['is_practice_test'] ) ? 1 : 0;
