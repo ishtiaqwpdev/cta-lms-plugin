@@ -141,6 +141,91 @@ class CTA_Suicide_Risk_Module_Sync {
 	}
 
 	/**
+	 * Canonical Vimeo URL for a module title (runtime fallback when DB row is stale).
+	 *
+	 * @param string $title Module title.
+	 * @return string
+	 */
+	public static function get_video_url_for_title( $title ) {
+		$title_l = strtolower( trim( (string) $title ) );
+		$title_l = preg_replace( '/^\[archived\]\s*/', '', $title_l );
+
+		foreach ( self::get_module_definitions() as $def ) {
+			if ( $title_l === strtolower( (string) ( $def['title'] ?? '' ) ) ) {
+				return esc_url_raw( (string) ( $def['video_url'] ?? '' ) );
+			}
+		}
+
+		return '';
+	}
+
+	/**
+	 * Whether CTA-CE-003 modules need a repair sync (missing rows or Vimeo URLs).
+	 *
+	 * @param int $course_id Course ID.
+	 * @return bool
+	 */
+	public static function needs_repair( $course_id ) {
+		$course_id = absint( $course_id );
+		if ( ! $course_id || ! class_exists( 'CTA_Database' ) ) {
+			return false;
+		}
+
+		$expected = self::get_expected_vimeo_ids();
+		$modules  = CTA_Database::get_course_modules( $course_id );
+		$by_order = array();
+
+		foreach ( $modules as $module ) {
+			$by_order[ (int) ( $module->order_index ?? 0 ) ] = $module;
+		}
+
+		foreach ( $expected as $order => $vimeo_id ) {
+			if ( ! isset( $by_order[ $order ] ) ) {
+				return true;
+			}
+
+			$url = trim( (string) ( $by_order[ $order ]->video_url ?? '' ) );
+			if ( '' === $url || false === strpos( $url, (string) $vimeo_id ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Self-heal module rows + Vimeo URLs for CTA-CE-003 (idempotent).
+	 *
+	 * @return array{ok:bool,course_id:int,updated:int,created:int,message:string,modules:array}
+	 */
+	public static function ensure() {
+		$course = self::find_course();
+		if ( ! $course ) {
+			return array(
+				'ok'        => false,
+				'course_id' => 0,
+				'updated'   => 0,
+				'created'   => 0,
+				'message'   => 'suicide_risk_course_not_found',
+				'modules'   => array(),
+			);
+		}
+
+		if ( ! self::needs_repair( (int) $course->id ) ) {
+			return array(
+				'ok'        => true,
+				'course_id' => (int) $course->id,
+				'updated'   => 0,
+				'created'   => 0,
+				'message'   => 'ok',
+				'modules'   => array(),
+			);
+		}
+
+		return self::sync_modules( true );
+	}
+
+	/**
 	 * Sync module titles, order, durations, and Vimeo URLs for CTA-CE-003.
 	 *
 	 * @param bool $force Re-run even if already applied at this seed key.

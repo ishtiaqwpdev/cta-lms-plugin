@@ -4441,8 +4441,10 @@ button.pagination__item:disabled {
 }
 
 .cta-plugin-wrapper .course-player__module-list {
-  max-height: 480px;
+  max-height: min(70vh, 720px);
   overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 .cta-plugin-wrapper .course-player__module-list .accordion {
@@ -6256,11 +6258,17 @@ button.pagination__item:disabled {
 
 .cta-plugin-wrapper .cta-module-list__link {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: var(--space-sm);
   padding: var(--space-md);
   color: inherit;
   text-decoration: none;
+}
+
+.cta-plugin-wrapper .cta-module-list__title {
+  display: block;
+  line-height: 1.45;
+  word-break: break-word;
 }
 
 .cta-plugin-wrapper .cta-module-list__item--current .cta-module-list__link {

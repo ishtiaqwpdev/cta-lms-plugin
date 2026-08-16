@@ -314,6 +314,13 @@ class CTA_Student_Dashboard {
 		}
 
 		$modules       = CTA_Database::get_course_modules( $course_id );
+		if ( class_exists( 'CTA_Suicide_Risk_Module_Sync' ) ) {
+			$sr_course = CTA_Suicide_Risk_Module_Sync::find_course();
+			if ( $sr_course && (int) $sr_course->id === $course_id ) {
+				CTA_Suicide_Risk_Module_Sync::ensure();
+				$modules = CTA_Database::get_course_modules( $course_id );
+			}
+		}
 		$completed_ids = $this->parse_completed_modules( $enrollment->modules_completed );
 
 		if ( empty( $modules ) ) {
@@ -1528,6 +1535,13 @@ class CTA_Student_Dashboard {
 
 		if ( empty( $video_url ) && ! empty( $course->vimeo_id ) ) {
 			$video_url = 'https://vimeo.com/' . preg_replace( '/\D/', '', (string) $course->vimeo_id );
+		}
+
+		if ( empty( $video_url ) && ! empty( $course ) && class_exists( 'CTA_Suicide_Risk_Module_Sync' ) ) {
+			$sr_course = CTA_Suicide_Risk_Module_Sync::find_course();
+			if ( $sr_course && (int) $sr_course->id === (int) $course->id ) {
+				$video_url = CTA_Suicide_Risk_Module_Sync::get_video_url_for_title( (string) $module->title );
+			}
 		}
 
 		if ( empty( $video_url ) ) {

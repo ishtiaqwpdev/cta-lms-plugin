@@ -80,9 +80,9 @@ $expected_ids = array(
 
 $defs = CTA_Suicide_Risk_Module_Sync::get_module_definitions();
 assert_true( 6 === count( $defs ), 'Exactly six module definitions' );
+assert_true( method_exists( 'CTA_Suicide_Risk_Module_Sync', 'ensure' ), 'Module sync exposes ensure() self-heal' );
+assert_true( method_exists( 'CTA_Suicide_Risk_Module_Sync', 'get_video_url_for_title' ), 'Runtime Vimeo fallback by title' );
 assert_true( CTA_Suicide_Risk_Module_Sync::COURSE_CODE === 'CTA-CE-003', 'Sync scoped to CTA-CE-003' );
-
-$dashboard = null;
 
 echo "\nPer-module validation:\n";
 
@@ -94,6 +94,10 @@ foreach ( $expected_titles as $order => $title ) {
 	$vimeo_id = $expected_ids[ $order ];
 	$url      = (string) ( $def['video_url'] ?? '' );
 	assert_true( false !== strpos( $url, $vimeo_id ), "M0{$order} Vimeo URL contains {$vimeo_id}" );
+	assert_true(
+		CTA_Suicide_Risk_Module_Sync::get_video_url_for_title( $title ) === $url,
+		"M0{$order} get_video_url_for_title matches canonical URL"
+	);
 
 	$module = (object) array(
 		'id'        => 1000 + $order,
