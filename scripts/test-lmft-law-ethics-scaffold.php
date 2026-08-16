@@ -87,8 +87,9 @@ function assert_test( $condition, $label ) {
 $defs = new ReflectionMethod( 'CTA_Lmft_Law_Ethics_Sync', 'get_module_definitions' );
 $defs->setAccessible( true );
 $modules = $defs->invoke( null );
-assert_test( 10 === count( $modules ), 'Ten modules defined (Start Here + 9 workbooks)' );
-assert_test( false !== stripos( $modules[1]['title'], 'Placeholder' ), 'Workbook titles are clearly marked placeholder' );
+assert_test( 11 === count( $modules ), 'Eleven modules defined (Start Here + license module + 9 workbooks)' );
+assert_test( false !== stripos( $modules[1]['title'], 'Practice Act' ), 'License module title is set' );
+assert_test( false !== stripos( $modules[2]['title'], 'Workbook 1' ), 'Workbook 1 follows license module' );
 
 $assets = CTA_Lmft_Law_Ethics_Sync::ensure_placeholder_assets();
 assert_test( is_readable( CTA_PLUGIN_DIR . 'assets/course-materials/lmft-law-ethics/lessons/start-here.html' ), 'Start Here placeholder lesson written' );

@@ -107,9 +107,12 @@ class CTA_Exam_Prep_Lessons {
 		$num   = self::workbook_number_from_module( $module );
 		$path  = '';
 
-		// Start Here / license-specific orientation lesson (non-workbook module).
+		// Start Here orientation lesson (non-workbook module).
 		if ( preg_match( '/^\s*Start\s+Here\s*:/i', $title ) ) {
 			$path = CTA_PLUGIN_DIR . 'assets/course-materials/' . $program . '/lessons/start-here.html';
+			$num  = 0;
+		} elseif ( class_exists( 'CTA_Exam_Prep_Workbooks' ) && CTA_Exam_Prep_Workbooks::is_license_module( $module ) ) {
+			$path = CTA_PLUGIN_DIR . 'assets/course-materials/' . $program . '/lessons/license-module.html';
 			$num  = 0;
 		} else {
 			$path = self::lesson_path( $program, $num );

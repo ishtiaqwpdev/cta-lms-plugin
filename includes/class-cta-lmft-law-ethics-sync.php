@@ -20,7 +20,7 @@ if ( ! class_exists( 'CTA_Lmft_Law_Ethics_Sync' ) ) {
 
 class CTA_Lmft_Law_Ethics_Sync {
 
-	const SEED_OPTION   = 'cta_lmft_law_ethics_scaffold_seeded_1_0_205';
+	const SEED_OPTION   = 'cta_lmft_law_ethics_seeded_1_0_250';
 	const SLUG          = 'california-law-ethics-exam-preparation';
 	const TITLE         = 'CTA LMFT California Law & Ethics Exam Preparation Program';
 	const PUBLIC_TITLE  = 'LMFT California Law & Ethics Exam Preparation';
@@ -166,11 +166,16 @@ class CTA_Lmft_Law_Ethics_Sync {
 			: array();
 
 		$start_here_row = null;
+		$license_row    = null;
 		$by_prefix      = array();
 		foreach ( (array) $existing as $row ) {
 			$title = (string) ( $row->title ?? '' );
 			if ( null === $start_here_row && preg_match( '/^Start\s+Here\s*:/i', $title ) ) {
 				$start_here_row = $row;
+				continue;
+			}
+			if ( null === $license_row && preg_match( '/Practice\s+Act|License[-\s]Specific\s+Module|AMFT\s+Professional\s+Identity/i', $title ) ) {
+				$license_row = $row;
 				continue;
 			}
 			if ( preg_match( '/^Workbook\s+(\d+)\s*:/i', $title, $m ) ) {
@@ -185,12 +190,25 @@ class CTA_Lmft_Law_Ethics_Sync {
 			$title     = sanitize_text_field( (string) $def['title'] );
 			$order     = (int) $index;
 			$module_id = 0;
-			$is_start  = ( 0 === $index );
-			$desc      = $is_start
-				? '[Placeholder] Program orientation and license-specific module shell. Final content pending client delivery.'
-				: '[Placeholder] Workbook shell for structural testing. Final workbook content pending client delivery.';
+			$kind      = sanitize_key( (string) ( $def['kind'] ?? 'workbook' ) );
+			$wb_num    = isset( $def['workbook_num'] ) ? absint( $def['workbook_num'] ) : 0;
 
-			$match = $is_start ? $start_here_row : ( $by_prefix[ $index ] ?? null );
+			if ( 'start' === $kind ) {
+				$desc = 'Program orientation and recommended study path. Open before the license-specific module and Workbook 1.';
+			} elseif ( 'license' === $kind ) {
+				$desc = 'Required LMFT/AMFT license-specific module. The separate 25-question assessment follows this module.';
+			} else {
+				$desc = '[Placeholder] Workbook shell for structural testing. Final workbook content pending client delivery.';
+			}
+
+			$match = null;
+			if ( 'start' === $kind ) {
+				$match = $start_here_row;
+			} elseif ( 'license' === $kind ) {
+				$match = $license_row;
+			} elseif ( $wb_num >= 1 && $wb_num <= 9 ) {
+				$match = $by_prefix[ $wb_num ] ?? null;
+			}
 
 			if ( $match ) {
 				$module_id = (int) $match->id;
@@ -254,7 +272,7 @@ class CTA_Lmft_Law_Ethics_Sync {
 	}
 
 	/**
-	 * Create placeholder assessment quiz shells (zero questions until content arrives).
+	 * Create/update assessment quizzes. License module loads 25 secured questions; workbook shells stay empty until client content arrives.
 	 *
 	 * @param int $course_id Course ID.
 	 * @return array<string,mixed>
@@ -262,21 +280,34 @@ class CTA_Lmft_Law_Ethics_Sync {
 	public static function sync_assessments( $course_id ) {
 		$course_id = absint( $course_id );
 		$result    = array(
-			'ok'      => false,
-			'message' => 'invalid_course',
-			'quizzes' => 0,
+			'ok'                   => false,
+			'message'              => 'invalid_course',
+			'license_25'           => 0,
+			'questions_license_25' => 0,
+			'quizzes'              => 0,
 		);
 
 		if ( ! $course_id ) {
 			return $result;
 		}
 
+		$license_questions = self::load_seed_questions( 'lmft-law-ethics-license-25.php' );
+		$license_count     = count( $license_questions );
+		$result['questions_license_25'] = $license_count;
+
+		if ( 25 !== $license_count ) {
+			$result['message'] = sprintf( 'invalid_question_bank_count:license_25 expected 25 got %d', $license_count );
+			return $result;
+		}
+
 		$defs = array(
 			array(
 				'quiz_type' => 'license_25',
-				'title'     => 'License-Specific Module — 25-Question Assessment [Placeholder]',
+				'title'     => 'LMFT Practice Act Module — 25-Question Assessment',
 				'sort'      => 1,
 				'time'      => 40,
+				'questions' => $license_questions,
+				'key'       => 'license_25',
 			),
 		);
 
@@ -286,6 +317,8 @@ class CTA_Lmft_Law_Ethics_Sync {
 				'title'     => sprintf( 'Workbook %d — Workbook Assessment [Placeholder]', $wb ),
 				'sort'      => 10 + ( $wb * 10 ),
 				'time'      => 0,
+				'questions' => array(),
+				'key'       => 'wb' . $wb . '_bank',
 			);
 		}
 
@@ -294,18 +327,24 @@ class CTA_Lmft_Law_Ethics_Sync {
 			'title'     => 'Practice Examination A — 50-Question Assessment [Placeholder]',
 			'sort'      => 200,
 			'time'      => 60,
+			'questions' => array(),
+			'key'       => 'practice_a',
 		);
 		$defs[] = array(
 			'quiz_type' => 'practice_b',
 			'title'     => 'Practice Examination B — 50-Question Assessment [Placeholder]',
 			'sort'      => 210,
 			'time'      => 60,
+			'questions' => array(),
+			'key'       => 'practice_b',
 		);
 		$defs[] = array(
 			'quiz_type' => 'comprehensive_final',
 			'title'     => 'Comprehensive Final — 100-Question Examination [Placeholder]',
 			'sort'      => 220,
 			'time'      => 120,
+			'questions' => array(),
+			'key'       => 'comprehensive_final',
 		);
 
 		$written = 0;
@@ -315,17 +354,20 @@ class CTA_Lmft_Law_Ethics_Sync {
 				(string) $def['quiz_type'],
 				(string) $def['title'],
 				(int) $def['sort'],
-				array(),
+				(array) $def['questions'],
 				(int) $def['time']
 			);
 			if ( $quiz_id ) {
 				++$written;
+				if ( ! empty( $def['key'] ) ) {
+					$result[ (string) $def['key'] ] = $quiz_id;
+				}
 			}
 		}
 
-		$result['ok']      = $written > 0;
 		$result['quizzes'] = $written;
-		$result['message'] = $result['ok'] ? 'placeholder_shells_synced' : 'quiz_write_failed';
+		$result['ok']      = $written > 0 && ! empty( $result['license_25'] );
+		$result['message'] = $result['ok'] ? 'synced' : 'quiz_write_failed';
 
 		return $result;
 	}
@@ -378,7 +420,7 @@ class CTA_Lmft_Law_Ethics_Sync {
 	}
 
 	/**
-	 * Full scaffold sync.
+	 * Full scaffold sync (Start Here + license module + workbook placeholders + assessments).
 	 *
 	 * @param bool $force Re-run even if seeded.
 	 * @return array{ok:bool,course_id:int,message:string,counts:array}
@@ -412,27 +454,37 @@ class CTA_Lmft_Law_Ethics_Sync {
 		$assessments = self::sync_assessments( $course_id );
 
 		$counts = array(
-			'modules_created' => (int) ( $modules['created'] ?? 0 ),
-			'modules_updated' => (int) ( $modules['updated'] ?? 0 ),
-			'module_total'    => count( $modules['modules'] ?? array() ),
-			'quiz_shells'     => (int) ( $assessments['quizzes'] ?? 0 ),
-			'lessons_written' => (int) ( $assets['lessons'] ?? 0 ),
+			'modules_created'      => (int) ( $modules['created'] ?? 0 ),
+			'modules_updated'      => (int) ( $modules['updated'] ?? 0 ),
+			'module_total'         => count( $modules['modules'] ?? array() ),
+			'quiz_shells'          => (int) ( $assessments['quizzes'] ?? 0 ),
+			'lessons_written'      => (int) ( $assets['lessons'] ?? 0 ),
+			'license_module_html'  => is_readable( CTA_PLUGIN_DIR . self::MATERIALS_REL . 'lessons/license-module.html' ) ? 1 : 0,
+			'license_25_quiz_id'   => (int) ( $assessments['license_25'] ?? 0 ),
+			'questions_license_25' => (int) ( $assessments['questions_license_25'] ?? 0 ),
 		);
 
-		update_option(
-			self::SEED_OPTION,
-			array(
-				'at'        => current_time( 'mysql' ),
-				'course_id' => $course_id,
-				'counts'    => $counts,
-			),
-			false
-		);
+		$ok = ! empty( $assessments['ok'] )
+			&& $counts['module_total'] >= 11
+			&& 1 === $counts['license_module_html']
+			&& 25 === $counts['questions_license_25'];
+
+		if ( $ok ) {
+			update_option(
+				self::SEED_OPTION,
+				array(
+					'at'        => current_time( 'mysql' ),
+					'course_id' => $course_id,
+					'counts'    => $counts,
+				),
+				false
+			);
+		}
 
 		return array(
-			'ok'        => ! empty( $assessments['ok'] ) && $counts['module_total'] >= 10,
+			'ok'        => $ok,
 			'course_id' => $course_id,
-			'message'   => (string) ( $assessments['message'] ?? 'synced' ),
+			'message'   => $ok ? 'synced' : (string) ( $assessments['message'] ?? 'sync_failed' ),
 			'counts'    => $counts,
 		);
 	}
@@ -448,7 +500,9 @@ class CTA_Lmft_Law_Ethics_Sync {
 		}
 
 		$seed = get_option( self::SEED_OPTION );
-		if ( is_array( $seed ) && ! empty( $seed['course_id'] ) && (int) ( $seed['counts']['module_total'] ?? 0 ) >= 10 ) {
+		if ( is_array( $seed ) && ! empty( $seed['course_id'] )
+			&& (int) ( $seed['counts']['module_total'] ?? 0 ) >= 11
+			&& (int) ( $seed['counts']['questions_license_25'] ?? 0 ) >= 25 ) {
 			return;
 		}
 
@@ -458,7 +512,7 @@ class CTA_Lmft_Law_Ethics_Sync {
 		}
 
 		$modules_count = isset( $course->modules_count ) ? (int) $course->modules_count : 0;
-		if ( $modules_count >= 10 ) {
+		if ( $modules_count >= 11 && is_readable( CTA_PLUGIN_DIR . self::MATERIALS_REL . 'lessons/license-module.html' ) ) {
 			return;
 		}
 
@@ -494,18 +548,27 @@ class CTA_Lmft_Law_Ethics_Sync {
 	}
 
 	/**
-	 * Start Here + nine placeholder workbook module titles.
+	 * Start Here + license module + nine placeholder workbook module titles.
 	 *
-	 * @return array<int,array{title:string}>
+	 * @return array<int,array{title:string,kind:string,workbook_num?:int}>
 	 */
 	private static function get_module_definitions() {
 		$defs = array(
-			array( 'title' => 'Start Here: Program Orientation [Placeholder — Content Pending]' ),
+			array(
+				'title' => 'Start Here: Program Orientation',
+				'kind'  => 'start',
+			),
+			array(
+				'title' => 'LMFT Practice Act, AMFT Professional Identity & California Examination Distinctions',
+				'kind'  => 'license',
+			),
 		);
 
 		for ( $wb = 1; $wb <= 9; ++$wb ) {
 			$defs[] = array(
-				'title' => sprintf( 'Workbook %d: [Placeholder Title — Content Pending]', $wb ),
+				'title'        => sprintf( 'Workbook %d: [Placeholder Title — Content Pending]', $wb ),
+				'kind'         => 'workbook',
+				'workbook_num' => $wb,
 			);
 		}
 
@@ -680,6 +743,24 @@ HTML;
 		}
 
 		return $quiz_id;
+	}
+
+	/**
+	 * Load secured quiz seed questions.
+	 *
+	 * @param string $file Basename under includes/quiz-seeds/.
+	 * @return array<int,array<string,string>>
+	 */
+	private static function load_seed_questions( $file ) {
+		$file = basename( (string) $file );
+		$path = CTA_PLUGIN_DIR . 'includes/quiz-seeds/' . $file;
+
+		if ( ! is_readable( $path ) ) {
+			return array();
+		}
+
+		$questions = include $path;
+		return is_array( $questions ) ? $questions : array();
 	}
 }
 

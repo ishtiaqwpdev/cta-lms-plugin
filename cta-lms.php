@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.249' );
+	define( 'CTA_VERSION', '1.0.250' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -1376,6 +1376,11 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				if ( class_exists( 'CTA_Course_Routes' ) ) {
 					CTA_Course_Routes::sync_landing_pages( true );
 				}
+			}
+
+			// LMFT California Law & Ethics: standalone license module + 25-question assessment.
+			if ( version_compare( $installed, '1.0.250', '<' ) && class_exists( 'CTA_Lmft_Law_Ethics_Sync' ) ) {
+				CTA_Lmft_Law_Ethics_Sync::sync( true );
 			}
 
 			// Decouple supervision application pending from general account / CE access.

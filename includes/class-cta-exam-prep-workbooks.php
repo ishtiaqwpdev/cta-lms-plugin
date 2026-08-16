@@ -256,6 +256,28 @@ class CTA_Exam_Prep_Workbooks {
 	}
 
 	/**
+	 * Whether module is the standalone license-specific instructional module.
+	 *
+	 * @param object $module Module row.
+	 * @return bool
+	 */
+	public static function is_license_module( $module ) {
+		$title = is_object( $module ) ? (string) ( $module->title ?? '' ) : '';
+		if ( '' === trim( $title ) ) {
+			return false;
+		}
+
+		if ( preg_match( '/^\s*Start\s+Here\s*:/i', $title ) ) {
+			return false;
+		}
+
+		return (bool) preg_match(
+			'/Practice\s+Act|License[-\s]Specific\s+Module|AMFT\s+Professional\s+Identity|Professional\s+Identity\s*&\s*California\s+Examination\s+Distinctions/i',
+			$title
+		);
+	}
+
+	/**
 	 * Build workbook list rows for overview grid.
 	 *
 	 * @param object $course        Course row.
@@ -278,15 +300,19 @@ class CTA_Exam_Prep_Workbooks {
 				$player_base
 			);
 
-			$label = self::is_start_here_module( $module )
-				? __( 'Start Here', 'cta-lms' )
-				: sprintf(
+			if ( self::is_start_here_module( $module ) ) {
+				$label = __( 'Start Here', 'cta-lms' );
+			} elseif ( self::is_license_module( $module ) ) {
+				$label = __( 'License Module', 'cta-lms' );
+			} else {
+				$label = sprintf(
 					/* translators: %d: workbook number */
 					__( 'Workbook %d', 'cta-lms' ),
 					class_exists( 'CTA_Exam_Prep_Lessons' )
 						? CTA_Exam_Prep_Lessons::workbook_number_from_module( $module )
-						: ( (int) $index + 1 )
+						: max( 1, (int) $index - 1 )
 				);
+			}
 
 			$items[] = array(
 				'module'       => $module,
@@ -298,6 +324,7 @@ class CTA_Exam_Prep_Workbooks {
 				'is_complete'  => $is_complete,
 				'url'          => $url,
 				'is_start_here'=> self::is_start_here_module( $module ),
+				'is_license'   => self::is_license_module( $module ),
 				'workbook_num' => class_exists( 'CTA_Exam_Prep_Lessons' )
 					? CTA_Exam_Prep_Lessons::workbook_number_from_module( $module )
 					: 0,
@@ -319,7 +346,11 @@ class CTA_Exam_Prep_Workbooks {
 		}
 
 		if ( self::is_start_here_module( $module ) ) {
-			return __( 'Program orientation and license-specific guidance before Workbook 1.', 'cta-lms' );
+			return __( 'Program orientation and study-path guidance before the license-specific module.', 'cta-lms' );
+		}
+
+		if ( self::is_license_module( $module ) ) {
+			return __( 'LMFT/AMFT license-specific foundations and the separate 25-question assessment.', 'cta-lms' );
 		}
 
 		return __( 'Read online, download the printable workbook, and complete the paired practice bank.', 'cta-lms' );
@@ -340,6 +371,7 @@ class CTA_Exam_Prep_Workbooks {
 			? CTA_Exam_Prep_Lessons::workbook_number_from_module( $module )
 			: 0;
 		$is_start  = self::is_start_here_module( $module );
+		$is_license = self::is_license_module( $module );
 		$module_id = (int) $module->id;
 
 		foreach ( (array) $quiz_cards as $card ) {
@@ -351,10 +383,19 @@ class CTA_Exam_Prep_Workbooks {
 			$quiz_wb = self::workbook_number_from_quiz( $quiz );
 			$type    = sanitize_key( (string) ( $quiz->quiz_type ?? '' ) );
 
+			if ( $is_license ) {
+				if ( 'license_25' === $type
+					|| false !== stripos( (string) $quiz->title, 'Practice Act Module' )
+					|| false !== stripos( (string) $quiz->title, 'License-Specific Module' ) ) {
+					$matched[] = $card;
+				}
+				continue;
+			}
+
 			if ( $is_start ) {
-				if ( in_array( $type, array( 'license', 'start_here', 'orientation' ), true )
-					|| false !== stripos( (string) $quiz->title, 'license' )
-					|| false !== stripos( (string) $quiz->title, 'start here' ) ) {
+				if ( in_array( $type, array( 'start_here', 'orientation' ), true )
+					|| ( false !== stripos( (string) $quiz->title, 'start here' )
+						&& false === stripos( (string) $quiz->title, 'license' ) ) ) {
 					$matched[] = $card;
 				}
 				continue;
