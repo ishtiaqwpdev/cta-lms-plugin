@@ -563,12 +563,15 @@ class CTA_Certificates {
 		$license_number  = ! empty( $display['license_number'] )
 			? (string) $display['license_number']
 			: cta_lms_get_user_license_number( $user_id );
-		$course_code             = (string) ( $display['course_code'] ?? '' );
-		$course_code_provisional = ! empty( $display['course_code_provisional'] );
-		$course_code_status      = (string) ( $display['course_code_status'] ?? '' );
-		$instructional_method    = (string) ( $display['instructional_method'] ?? '' );
-		$presenter               = (string) ( $display['presenter'] ?? '' );
-		$completion_statement    = (string) ( $display['completion_statement'] ?? '' );
+		// Single-page CE certificate: do not surface course code, provisional language,
+		// expanded instructional-method copy, presenter, or completion-statement paragraph.
+		$course_code             = '';
+		$course_code_provisional = false;
+		$course_code_status      = '';
+		$instructional_method    = '';
+		$presenter               = '';
+		$completion_statement    = '';
+		$delivery_format         = __( 'Asynchronous Distance Learning', 'cta-lms' );
 		$license_type            = (string) ( $display['license_type'] ?? '' );
 		$provider_name    = self::get_provider_name();
 		$provider_number  = self::get_provider_number();
@@ -644,7 +647,7 @@ class CTA_Certificates {
 	 * @return string
 	 */
 	public static function get_provider_name() {
-		return 'Clinical Training & Supervision Academy';
+		return 'Clinical Training and Supervision Academy';
 	}
 
 	/**

@@ -2,6 +2,8 @@
 /**
  * Offline smoke test: render a sample certificate PDF via Dompdf.
  *
+ * Uses a long participant name and long course title to verify single-page fit.
+ *
  * Usage: php scripts/test-certificate-pdf.php
  */
 
@@ -46,15 +48,17 @@ if ( ! function_exists( 'esc_html_e' ) ) {
 	}
 }
 
-$certificate_number  = 'CTA-2026-151748';
-$student_name        = 'Test Learner';
-$course_title        = 'California Law & Ethics for Mental Health Professionals';
-$ce_hours            = '6';
-$completion_date     = 'July 30, 2026 at 9:00 AM PDT';
-$license_number      = 'LMFT123456';
-$provider_name       = 'Clinical Training & Supervision Academy';
-$provider_number     = '#122418';
-$provider_line       = 'CAMFT-Approved Continuing Education Provider #122418';
+$certificate_number = 'CTA-2026-151748';
+$student_name       = 'Alexandra Montgomery-Whitfield, PhD, LMFT';
+$course_title       = 'Advanced Suicide Risk Assessment and Clinical Decision-Making for Mental Health Professionals: Biological, Psychological, and Cultural Perspectives';
+$ce_hours           = '6';
+$completion_date    = 'August 16, 2026';
+$license_number     = 'LMFT123456';
+$license_type       = 'Licensed Marriage and Family Therapist';
+$delivery_format    = 'Asynchronous Distance Learning';
+$provider_name      = 'Clinical Training and Supervision Academy';
+$provider_number    = '#122418';
+$provider_line      = 'CAMFT-Approved Continuing Education Provider #122418';
 $provider_address       = "6296 Magnolia Ave #1077\nRiverside, CA 92506";
 $provider_address_lines = array(
 	'6296 Magnolia Ave #1077',
@@ -68,6 +72,13 @@ $administrator_title = 'Program Administrator';
 $logo_url            = '';
 $signature_url       = '';
 $cepa_stamp_url      = '';
+
+// Excluded fields must remain empty / unused by the template.
+$course_code             = 'CTA-CE-003';
+$course_code_provisional = true;
+$instructional_method    = 'Asynchronous Distance Learning (online text, instructional video modules, downloadable handouts)';
+$presenter               = 'Candice Fuimaono, MS, LMFT';
+$completion_statement    = 'The participant completed all required instructional modules, passed the final examination with a score of at least 70%, submitted the course-specific evaluation, and completed the required attestation.';
 
 $logo_candidates = array(
 	$root . '/assets/img/logo.svg',
@@ -123,7 +134,7 @@ if ( ! is_dir( $out_dir ) ) {
 	mkdir( $out_dir, 0777, true );
 }
 
-$out_file = $out_dir . '/' . $certificate_number . '.pdf';
+$out_file = $out_dir . '/CE-Certificate-Single-Page-Preview.pdf';
 file_put_contents( $out_file, $pdf );
 
 $expected_stamp_hash = '44e552f1418cd49a4f343ab65c85e826f29d0eec397119619988ff1cd2378a80';
@@ -134,14 +145,17 @@ $required_values     = array(
 	$ce_hours . ' CE Hours',
 	$completion_date,
 	$license_number,
+	$license_type,
+	$delivery_format,
 	$provider_name,
 	$provider_line,
-	'6296 Magnolia Ave #1077',
-	'Riverside, CA 92506',
+	'6296 Magnolia Ave #1077, Riverside, CA 92506',
 	$signature_name,
+	$administrator_title,
 	$certificate_number,
+	$footer_text,
 );
-$missing_values      = array();
+$missing_values = array();
 foreach ( $required_values as $required_value ) {
 	$required_html_value = esc_html( $required_value );
 	if ( false === strpos( $html, $required_html_value ) ) {
@@ -149,10 +163,29 @@ foreach ( $required_values as $required_value ) {
 	}
 }
 
-$ok_magic  = 0 === strpos( $pdf, '%PDF' );
+$forbidden_snippets = array(
+	'CTA-CE-003',
+	'Course Code:',
+	'Provisional',
+	'pending final approval',
+	'online text, instructional video modules',
+	'passed the final examination with a score of at least 70%',
+	'course-specific evaluation',
+	'Presenter/Author:',
+	'Instructional Method:',
+);
+$leaked = array();
+foreach ( $forbidden_snippets as $snippet ) {
+	if ( false !== strpos( $html, $snippet ) ) {
+		$leaked[] = $snippet;
+	}
+}
+
+$ok_magic   = 0 === strpos( $pdf, '%PDF' );
 $page_count = $dompdf->getCanvas()->get_page_number();
 $all_fields = empty( $missing_values );
 $stamp_ok   = $expected_stamp_hash === $actual_stamp_hash;
+$clean      = empty( $leaked );
 
 echo "Wrote: {$out_file}\n";
 echo 'Bytes: ' . strlen( $pdf ) . "\n";
@@ -162,9 +195,13 @@ echo 'Filename: ' . basename( $out_file ) . "\n";
 echo 'CEPA stamp embedded: ' . ( $cepa_stamp_url ? 'yes' : 'no' ) . "\n";
 echo 'CE provider line present: ' . ( false !== strpos( $html, $provider_line ) ? 'yes' : 'no' ) . "\n";
 echo 'All required fields present: ' . ( $all_fields ? 'yes' : 'no' ) . "\n";
+echo 'Excluded content absent: ' . ( $clean ? 'yes' : 'no' ) . "\n";
 echo 'Official stamp hash exact: ' . ( $stamp_ok ? 'yes' : 'no' ) . "\n";
 if ( ! $all_fields ) {
 	echo 'Missing fields: ' . implode( ' | ', $missing_values ) . "\n";
 }
+if ( ! $clean ) {
+	echo 'Leaked excluded content: ' . implode( ' | ', $leaked ) . "\n";
+}
 
-exit( $ok_magic && 1 === $page_count && $all_fields && $stamp_ok && $cepa_stamp_url ? 0 : 1 );
+exit( $ok_magic && 1 === $page_count && $all_fields && $clean && $stamp_ok && $cepa_stamp_url ? 0 : 1 );
