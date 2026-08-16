@@ -136,6 +136,83 @@ class CTA_Suicide_Risk_Evaluation_Sync {
 	}
 
 	/**
+	 * @param int $course_id Course ID.
+	 * @return bool
+	 */
+	public static function needs_repair( $course_id ) {
+		$course_id = absint( $course_id );
+		if ( ! $course_id || ! class_exists( 'CTA_Evaluation_Questions' ) ) {
+			return true;
+		}
+
+		CTA_Evaluation_Questions::install();
+
+		if ( ! self::evaluation_includes_attestation( $course_id ) ) {
+			return true;
+		}
+
+		$seed_count = 0;
+		foreach ( self::get_questions() as $tpl ) {
+			if ( ! empty( $tpl['id'] ) ) {
+				++$seed_count;
+			}
+		}
+		if ( $seed_count < 1 ) {
+			return true;
+		}
+
+		$active_count = count( CTA_Evaluation_Questions::get_questions( 'active', $course_id ) );
+		if ( $active_count < $seed_count ) {
+			return true;
+		}
+
+		if ( ! class_exists( 'CTA_Database' ) ) {
+			return false;
+		}
+
+		$row = CTA_Database::get_course( $course_id );
+		if ( ! $row || empty( $row->learning_objectives ) ) {
+			return true;
+		}
+
+		$decoded = json_decode( (string) $row->learning_objectives, true );
+		return ! is_array( $decoded ) || self::evaluation_learning_objectives() !== $decoded;
+	}
+
+	/**
+	 * Self-heal course evaluation + inline attestation for CTA-CE-003 (idempotent).
+	 *
+	 * @return array{ok:bool,course_id:int,questions:int,message:string}
+	 */
+	public static function ensure() {
+		$course = self::find_course();
+		if ( ! $course ) {
+			return array(
+				'ok'        => false,
+				'course_id' => 0,
+				'questions' => 0,
+				'message'   => 'suicide_risk_course_not_found',
+			);
+		}
+
+		$course_id = (int) $course->id;
+		if ( ! self::needs_repair( $course_id ) ) {
+			$questions = 0;
+			if ( class_exists( 'CTA_Evaluation_Questions' ) ) {
+				$questions = count( CTA_Evaluation_Questions::get_questions( 'active', $course_id ) );
+			}
+			return array(
+				'ok'        => true,
+				'course_id' => $course_id,
+				'questions' => $questions,
+				'message'   => 'ok',
+			);
+		}
+
+		return self::sync( true );
+	}
+
+	/**
 	 * @param bool $force Re-run even if already seeded.
 	 * @return array{ok:bool,course_id:int,questions:int,message:string}
 	 */

@@ -55,6 +55,48 @@ class CTA_Suicide_Risk_Toolkit_Sync {
 	}
 
 	/**
+	 * @param int $course_id Course ID.
+	 * @return bool
+	 */
+	public static function needs_repair( $course_id ) {
+		$course_id = absint( $course_id );
+		if ( ! $course_id ) {
+			return true;
+		}
+
+		return ! self::find_toolkit_resource_id( $course_id );
+	}
+
+	/**
+	 * Self-heal enrollment-gated toolkit row for CTA-CE-003 (idempotent).
+	 *
+	 * @return array{ok:bool,course_id:int,resource_id:int,message:string}
+	 */
+	public static function ensure() {
+		$course = self::find_course();
+		if ( ! $course ) {
+			return array(
+				'ok'          => false,
+				'course_id'   => 0,
+				'resource_id' => 0,
+				'message'     => 'suicide_risk_course_not_found',
+			);
+		}
+
+		$course_id = (int) $course->id;
+		if ( ! self::needs_repair( $course_id ) ) {
+			return array(
+				'ok'          => true,
+				'course_id'   => $course_id,
+				'resource_id' => self::find_toolkit_resource_id( $course_id ),
+				'message'     => 'ok',
+			);
+		}
+
+		return self::sync( true );
+	}
+
+	/**
 	 * Attach or refresh the protected learner toolkit download.
 	 *
 	 * @param bool $force Re-run even if seeded.

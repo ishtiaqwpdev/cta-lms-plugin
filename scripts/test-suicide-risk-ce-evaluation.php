@@ -163,12 +163,16 @@ $lms          = file_get_contents( $root . '/cta-lms.php' );
 $ce           = file_get_contents( $root . '/includes/class-cta-ce-completion.php' );
 $eval_q       = file_get_contents( $root . '/includes/class-cta-evaluation-questions.php' );
 $quiz_tpl     = file_get_contents( $root . '/templates/quiz.php' );
+$quiz_class   = file_get_contents( $root . '/public/class-cta-quiz.php' );
 
-assert_true( false !== strpos( $lms, '1.0.214' ), 'Version bump 1.0.214' );
+assert_true( false !== strpos( $lms, '1.0.219' ), 'Version bump 1.0.219' );
+assert_true( method_exists( 'CTA_Suicide_Risk_Evaluation_Sync', 'ensure' ), 'Evaluation sync exposes ensure() self-heal' );
+assert_true( false !== strpos( $lms, 'CTA_Suicide_Risk_Evaluation_Sync::ensure' ), 'Upgrade hook heals evaluation' );
 assert_true( false !== strpos( $lms, 'CTA_Suicide_Risk_Evaluation_Sync::sync' ), 'Upgrade hook seeds evaluation' );
+assert_true( false !== strpos( $eval_q, 'CTA_Suicide_Risk_Evaluation_Sync::ensure' ), 'Evaluation ensure routes CTA-CE-003 to dedicated sync' );
+assert_true( false !== strpos( $quiz_class, 'CTA_Suicide_Risk_Evaluation_Sync::ensure' ), 'Quiz page self-heals evaluation after exam pass' );
 assert_true( false !== strpos( $ce, 'inline_attestation_config' ), 'CE completion exposes inline attestation config' );
 assert_true( false !== strpos( $ce, 'sra_attest_complete' ), 'SRA attestation keys registered in completion helper' );
-assert_true( false !== strpos( $eval_q, 'CTA_Suicide_Risk_Evaluation_Sync' ), 'Evaluation ensure routes CTA-CE-003 to dedicated sync' );
 assert_true( false !== strpos( $quiz_tpl, 'CTA_CE_Completion::evaluation_includes_inline_attestation' ), 'Quiz template uses inline attestation helper' );
 
 echo "\n{$pass} passed, {$fail} failed\n";

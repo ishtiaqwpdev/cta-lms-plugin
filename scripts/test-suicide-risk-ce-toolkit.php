@@ -61,9 +61,14 @@ assert_true( false !== strpos( $materials_src, 'CTA-CE-003' ), 'Bundled material
 assert_true( false !== strpos( $materials_src, 'cta-protected://' ), 'Protected storage URL scheme used' );
 assert_true( false !== strpos( $materials_src, 'You must be enrolled in this course to download materials' ), 'Serve endpoint blocks non-enrolled users' );
 
+require_once $root . '/includes/class-cta-suicide-risk-toolkit-sync.php';
 $sync_src = file_get_contents( $root . '/includes/class-cta-suicide-risk-toolkit-sync.php' );
 assert_true( false !== strpos( $sync_src, 'CTA-CE-003' ), 'Toolkit sync scoped to CTA-CE-003' );
+assert_true( method_exists( 'CTA_Suicide_Risk_Toolkit_Sync', 'ensure' ), 'Toolkit sync exposes ensure() self-heal' );
 assert_true( false === strpos( $sync_src, 'unpublish_all_ce_courses_pending_cepa' ), 'Content sync must not mass-unpublish CE courses' );
+
+$lms = file_get_contents( $root . '/cta-lms.php' );
+assert_true( false !== strpos( $lms, 'CTA_Suicide_Risk_Toolkit_Sync::ensure' ), 'Toolkit ensure wired in upgrade/player heal' );
 
 echo "\nEnrollment gating: toolkit served only via CTA_Course_Materials::serve (cta-protected storage + user_can_access enrollment check).\n";
 echo "Public plugin URL: assets/course-materials/ is NOT exposed as a direct public download path.\n";

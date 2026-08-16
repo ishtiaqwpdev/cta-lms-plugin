@@ -318,6 +318,12 @@ class CTA_Student_Dashboard {
 			$sr_course = CTA_Suicide_Risk_Module_Sync::find_course();
 			if ( $sr_course && (int) $sr_course->id === $course_id ) {
 				CTA_Suicide_Risk_Module_Sync::ensure();
+				if ( class_exists( 'CTA_Suicide_Risk_Toolkit_Sync' ) ) {
+					CTA_Suicide_Risk_Toolkit_Sync::ensure();
+				}
+				if ( class_exists( 'CTA_Suicide_Risk_Certificate_Sync' ) ) {
+					CTA_Suicide_Risk_Certificate_Sync::ensure();
+				}
 				$modules = CTA_Database::get_course_modules( $course_id );
 			}
 		}

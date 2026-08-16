@@ -656,7 +656,7 @@ class CTA_Evaluation_Questions {
 		// CTA-CE-003 uses the approved suicide-risk evaluation + inline attestation.
 		if ( class_exists( 'CTA_Suicide_Risk_Evaluation_Sync' )
 			&& CTA_Suicide_Risk_Evaluation_Sync::is_suicide_risk_course( $course_id ) ) {
-			CTA_Suicide_Risk_Evaluation_Sync::sync( false );
+			CTA_Suicide_Risk_Evaluation_Sync::ensure();
 			return count( self::get_questions( 'all', $course_id ) );
 		}
 

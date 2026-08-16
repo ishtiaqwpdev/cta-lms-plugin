@@ -128,8 +128,8 @@ checklist(
 checklist(
 	'S10-03',
 	6 === count( CTA_Suicide_Risk_Module_Sync::get_module_definitions() )
-	&& false !== strpos( $lms, 'CTA_Suicide_Risk_Module_Sync::sync_modules' ),
-	'All 6 modules seeded with Vimeo URLs (desktop/tablet/mobile playback: MANUAL after deploy)',
+	&& false !== strpos( $lms, 'CTA_Suicide_Risk_Module_Sync::ensure' ),
+	'All 6 modules seeded with Vimeo URLs + self-heal on player load (desktop/tablet/mobile playback: MANUAL after deploy)',
 	'manual'
 );
 
@@ -176,8 +176,8 @@ checklist(
 	'S10-08',
 	is_array( $sra )
 	&& $sra['learning_objectives'] === $eval_los
-	&& false !== strpos( $lms, 'CTA_Suicide_Risk_Evaluation_Sync::sync' ),
-	'Evaluation is course-specific and lists all 6 objectives exactly (matches Chunk 1 syllabus)'
+	&& false !== strpos( $lms, 'CTA_Suicide_Risk_Evaluation_Sync::ensure' ),
+	'Evaluation is course-specific, self-heals on quiz load, lists all 6 objectives exactly (matches Chunk 1 syllabus)'
 );
 
 // 9 Attestation mandatory
@@ -300,8 +300,8 @@ checklist(
 	'S10-15',
 	is_readable( $root . '/assets/course-images/CTA_Suicide_Risk_Course_Image_ADMIN_PLACEHOLDER.svg' )
 	&& false !== stripos( file_get_contents( $root . '/assets/course-images/CTA_Suicide_Risk_Course_Image_ADMIN_PLACEHOLDER.svg' ), 'ADMIN PLACEHOLDER' )
-	&& false !== strpos( $lms, 'CTA_Suicide_Risk_Certificate_Sync::sync' ),
-	'Admin-only labeled course image placeholder wired (not client-approved artwork)'
+	&& false !== strpos( $lms, 'CTA_Suicide_Risk_Certificate_Sync::ensure' ),
+	'Admin-only labeled course image placeholder wired with certificate self-heal (not client-approved artwork)'
 );
 
 echo str_repeat( '-', 72 ) . "\n";

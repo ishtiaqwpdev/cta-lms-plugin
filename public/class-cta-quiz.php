@@ -123,6 +123,24 @@ class CTA_Quiz {
 			$enrollment = CTA_Database::get_user_enrollment( $user_id, $course_id );
 		}
 
+		// Self-heal CTA-CE-003 final exam when deploy missed the 1.0.212/1.0.213 seeds.
+		if ( class_exists( 'CTA_Suicide_Risk_Exam_Sync' ) ) {
+			$sr_course = CTA_Suicide_Risk_Exam_Sync::find_course();
+			if ( $sr_course && (int) $sr_course->id === (int) $course_id ) {
+				try {
+					CTA_Suicide_Risk_Exam_Sync::ensure();
+					if ( class_exists( 'CTA_Suicide_Risk_Evaluation_Sync' ) ) {
+						CTA_Suicide_Risk_Evaluation_Sync::ensure();
+					}
+				} catch ( Throwable $e ) {
+					if ( defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ) {
+						// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+						error_log( 'CTA Suicide Risk quiz ensure failed: ' . $e->getMessage() );
+					}
+				}
+			}
+		}
+
 		// A previously created attempt is an authorization snapshot: always let
 		// the learner resume and submit it, even if course progress changes later.
 		$active_attempt = $quiz

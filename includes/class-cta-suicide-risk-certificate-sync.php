@@ -47,6 +47,76 @@ class CTA_Suicide_Risk_Certificate_Sync {
 	}
 
 	/**
+	 * @param int $course_id Course ID.
+	 * @return bool
+	 */
+	public static function needs_repair( $course_id ) {
+		$course_id = absint( $course_id );
+		if ( ! $course_id || ! class_exists( 'CTA_Database' ) ) {
+			return true;
+		}
+
+		$row = CTA_Database::get_course( $course_id );
+		if ( ! $row ) {
+			return true;
+		}
+
+		if ( empty( $row->has_ce_certificate ) ) {
+			return true;
+		}
+
+		$meta = array();
+		if ( ! empty( $row->syllabus_meta ) ) {
+			$decoded = json_decode( (string) $row->syllabus_meta, true );
+			if ( is_array( $decoded ) ) {
+				$meta = $decoded;
+			}
+		}
+
+		if ( self::COMPLETION_STATEMENT !== (string) ( $meta['certificate_completion_statement'] ?? '' ) ) {
+			return true;
+		}
+
+		if ( '' === trim( (string) ( $row->thumbnail_url ?? '' ) ) ) {
+			return true;
+		}
+
+		$placeholder = self::resolve_placeholder_thumbnail_url();
+		if ( '' !== $placeholder && $placeholder !== (string) $row->thumbnail_url ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Self-heal certificate metadata + placeholder thumbnail for CTA-CE-003 (idempotent).
+	 *
+	 * @return array{ok:bool,course_id:int,message:string}
+	 */
+	public static function ensure() {
+		$course = self::find_course();
+		if ( ! $course ) {
+			return array(
+				'ok'        => false,
+				'course_id' => 0,
+				'message'   => 'suicide_risk_course_not_found',
+			);
+		}
+
+		$course_id = (int) $course->id;
+		if ( ! self::needs_repair( $course_id ) ) {
+			return array(
+				'ok'        => true,
+				'course_id' => $course_id,
+				'message'   => 'ok',
+			);
+		}
+
+		return self::sync( true );
+	}
+
+	/**
 	 * Ensure syllabus_meta certificate fields + placeholder thumbnail are present.
 	 *
 	 * @param bool $force Re-run even if already seeded.

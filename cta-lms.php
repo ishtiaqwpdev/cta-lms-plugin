@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.218' );
+	define( 'CTA_VERSION', '1.0.219' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -1167,6 +1167,19 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 			// CTA-CE-003: repair missing final exam + answer keys after partial deploy.
 			if ( version_compare( $installed, '1.0.218', '<' ) && class_exists( 'CTA_Suicide_Risk_Exam_Sync' ) ) {
 				CTA_Suicide_Risk_Exam_Sync::ensure();
+			}
+
+			// CTA-CE-003: repair toolkit, evaluation, and certificate metadata after partial deploy.
+			if ( version_compare( $installed, '1.0.219', '<' ) ) {
+				if ( class_exists( 'CTA_Suicide_Risk_Toolkit_Sync' ) ) {
+					CTA_Suicide_Risk_Toolkit_Sync::ensure();
+				}
+				if ( class_exists( 'CTA_Suicide_Risk_Evaluation_Sync' ) ) {
+					CTA_Suicide_Risk_Evaluation_Sync::ensure();
+				}
+				if ( class_exists( 'CTA_Suicide_Risk_Certificate_Sync' ) ) {
+					CTA_Suicide_Risk_Certificate_Sync::ensure();
+				}
 			}
 
 			// Decouple supervision application pending from general account / CE access.
