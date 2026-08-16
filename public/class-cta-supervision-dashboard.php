@@ -237,7 +237,7 @@ class CTA_Supervision_Dashboard {
 		}
 
 		$monthly_price       = CTA_Supervision_Plans::get_price( $supervision_plan );
-		$individual_price    = (float) get_option( 'cta_individual_session_price', 120.0 );
+		$individual_price    = CTA_Supervision_Plans::get_individual_session_price();
 		$next_billing_date   = $this->get_subscription_billing_label( $user_id );
 		$next_session_label  = $this->get_next_session_label( $upcoming_sessions );
 		$plan_label          = $this->get_plan_label( $supervision_plan );

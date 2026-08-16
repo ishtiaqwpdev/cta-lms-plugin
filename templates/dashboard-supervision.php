@@ -57,7 +57,7 @@ $document_count     = count( $documents );
 			<?php endif; ?>
 			<div class="cta-empty-state cta-supervision-no-plan">
 				<h1><?php echo esc_html__( 'No active plan', 'cta-lms' ); ?></h1>
-				<p><?php echo esc_html__( 'Subscribe to group supervision to access your associate dashboard, book sessions, and upload BBS documents.', 'cta-lms' ); ?></p>
+				<p><?php echo esc_html__( 'Subscribe to Group Supervision or purchase an Individual 1-on-1 session to access your associate dashboard and book sessions.', 'cta-lms' ); ?></p>
 
 				<div class="grid-2 grid-2--gap-lg supervision-services__grid cta-supervision-plan-grid">
 					<article class="card service-card">
@@ -79,11 +79,9 @@ $document_count     = count( $documents );
 						<h3 class="service-card__title"><?php echo esc_html__( 'Individual 1-on-1', 'cta-lms' ); ?></h3>
 						<p class="service-card__price"><?php echo esc_html( $individual_display ); ?></p>
 						<p class="service-card__price-unit"><?php echo esc_html__( '/ session', 'cta-lms' ); ?></p>
-						<?php if ( $supervision_url && ! empty( $can_access_booking ) ) : ?>
-							<a href="<?php echo esc_url( $supervision_url . '#booking' ); ?>" class="btn btn-primary btn--lg service-card__cta">
-								<?php echo esc_html__( 'View Sessions', 'cta-lms' ); ?>
-							</a>
-						<?php endif; ?>
+						<button type="button" class="btn btn-primary btn--lg service-card__cta cta-individual-session-btn" data-cta-individual-session-purchase data-course-title="<?php echo esc_attr( CTA_Supervision_Plans::get_individual_session_name() ); ?>" data-price="<?php echo esc_attr( CTA_Supervision_Plans::get_individual_session_price_label() ); ?>">
+							<?php echo esc_html__( 'Purchase Session', 'cta-lms' ); ?>
+						</button>
 					</article>
 				</div>
 			</div>
@@ -143,6 +141,17 @@ $document_count     = count( $documents );
 								<?php echo esc_html__( 'Subscribe Now', 'cta-lms' ); ?>
 							</button>
 						<?php endif; ?>
+					</article>
+					<article class="card service-card service-card--featured">
+						<div class="service-card__badge-row">
+							<span class="badge badge--outline"><?php echo esc_html__( 'One-time', 'cta-lms' ); ?></span>
+						</div>
+						<h3 class="service-card__title"><?php echo esc_html__( 'Individual 1-on-1', 'cta-lms' ); ?></h3>
+						<p class="service-card__price"><?php echo esc_html( '$' . number_format( CTA_Supervision_Plans::get_individual_session_price(), 0 ) ); ?></p>
+						<p class="service-card__price-unit"><?php echo esc_html__( '/ session', 'cta-lms' ); ?></p>
+						<button type="button" class="btn btn-primary btn--lg service-card__cta cta-individual-session-btn" data-cta-individual-session-purchase data-course-title="<?php echo esc_attr( CTA_Supervision_Plans::get_individual_session_name() ); ?>" data-price="<?php echo esc_attr( CTA_Supervision_Plans::get_individual_session_price_label() ); ?>">
+							<?php echo esc_html__( 'Purchase Session', 'cta-lms' ); ?>
+						</button>
 					</article>
 				</div>
 			</div>

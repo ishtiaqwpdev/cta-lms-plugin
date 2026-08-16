@@ -2034,7 +2034,8 @@
             setTimeout(function () {
               var redirectUrl =
                 (response.data && response.data.redirect_url) ||
-                (paymentAction === "cta_create_subscription"
+                (paymentAction === "cta_create_subscription" ||
+                paymentAction === "cta_create_individual_session_checkout"
                   ? ctaAjax.supervisionDashboardUrl
                   : "") ||
                 (paymentAction === "cta_create_checkout"
@@ -2044,13 +2045,15 @@
                 window.location.href;
 
               if (
-                paymentAction === "cta_create_subscription" &&
+                (paymentAction === "cta_create_subscription" ||
+                  paymentAction === "cta_create_individual_session_checkout") &&
                 response.data &&
                 response.data.redirect_url
               ) {
                 redirectUrl = response.data.redirect_url;
               } else if (
-                paymentAction === "cta_create_subscription" &&
+                (paymentAction === "cta_create_subscription" ||
+                  paymentAction === "cta_create_individual_session_checkout") &&
                 ctaAjax.supervisionDashboardUrl
               ) {
                 redirectUrl = ctaAjax.supervisionDashboardUrl;
@@ -2072,7 +2075,9 @@
                   (redirectUrl.indexOf("?") === -1 ? "?" : "&") +
                   (paymentAction === "cta_create_subscription"
                     ? "subscription=success&cta_paid=1&_cta="
-                    : "cta_enrolled=1&cta_paid=1&_cta=") +
+                    : paymentAction === "cta_create_individual_session_checkout"
+                      ? "individual_session=success&cta_paid=1&_cta="
+                      : "cta_enrolled=1&cta_paid=1&_cta=") +
                   Date.now();
               }
 
@@ -2205,6 +2210,10 @@
         return "cta_create_checkout";
       }
 
+      if (btn.hasClass("cta-individual-session-btn") || btn.is("[data-cta-individual-session-purchase]")) {
+        return "cta_create_individual_session_checkout";
+      }
+
       if (btn.hasClass("cta-subscribe-btn") || btn.is("[data-cta-supervision-subscribe]")) {
         return "cta_create_subscription";
       }
@@ -2217,7 +2226,7 @@
         return false;
       }
 
-      if (action === "cta_create_subscription") {
+      if (action === "cta_create_subscription" || action === "cta_create_individual_session_checkout") {
         return true;
       }
 
@@ -2452,7 +2461,11 @@
               return;
             }
 
-            if (response.success && action === "cta_create_subscription") {
+            if (
+              response.success &&
+              (action === "cta_create_subscription" ||
+                action === "cta_create_individual_session_checkout")
+            ) {
               var dashUrl =
                 (response.data && response.data.redirect_url) ||
                 ctaAjax.supervisionDashboardUrl ||
@@ -2461,7 +2474,9 @@
               if (dashUrl.indexOf("cta_paid=") === -1) {
                 dashUrl +=
                   (dashUrl.indexOf("?") === -1 ? "?" : "&") +
-                  "subscription=success&cta_paid=1&_cta=" +
+                  (action === "cta_create_individual_session_checkout"
+                    ? "individual_session=success&cta_paid=1&_cta="
+                    : "subscription=success&cta_paid=1&_cta=") +
                   Date.now();
               }
               window.location.href = dashUrl;
@@ -2537,7 +2552,7 @@
 
     $(document).on(
       "click",
-      "#enroll-btn, [data-cta-course-checkout], .cta-bundle-btn, .cta-subscribe-btn, [data-cta-supervision-subscribe]",
+      "#enroll-btn, [data-cta-course-checkout], .cta-bundle-btn, .cta-subscribe-btn, [data-cta-supervision-subscribe], .cta-individual-session-btn, [data-cta-individual-session-purchase]",
       handlePaymentClick
     );
   }

@@ -22,12 +22,25 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $monthly_display    = '$' . number_format( $monthly_price, 0 );
 $individual_display = '$' . number_format( $individual_price, 0 );
-// Calendar / Book buttons only when fully unlocked (approved + plan + active).
-$can_book_sessions  = $is_logged_in && class_exists( 'CTA_Associate_Access' )
-	? CTA_Associate_Access::can_access_supervision_features( get_current_user_id() )
+$current_user_id    = $is_logged_in ? get_current_user_id() : 0;
+$can_book_group     = $is_logged_in && class_exists( 'CTA_Supervision' )
+	? CTA_Supervision::can_book_group_sessions( $current_user_id )
 	: false;
-$has_subscription   = $can_book_sessions && ( 'active' === $user_status );
+$can_book_individual = $is_logged_in && class_exists( 'CTA_Supervision' )
+	? CTA_Supervision::can_book_individual_sessions( $current_user_id )
+	: false;
+$can_book_sessions  = $can_book_group || $can_book_individual;
+$has_subscription   = $can_book_group && ( 'active' === $user_status );
+$individual_credits = ( $is_logged_in && class_exists( 'CTA_Supervision' ) )
+	? CTA_Supervision::get_individual_session_credits( $current_user_id )
+	: 0;
 $can_purchase_supervision = isset( $can_purchase_supervision ) ? (bool) $can_purchase_supervision : true;
+$individual_price_label = class_exists( 'CTA_Supervision_Plans' )
+	? CTA_Supervision_Plans::get_individual_session_price_label()
+	: ( $individual_display . '/session' );
+$individual_session_name = class_exists( 'CTA_Supervision_Plans' )
+	? CTA_Supervision_Plans::get_individual_session_name()
+	: __( 'Individual 1-on-1 Supervision', 'cta-lms' );
 $register_url       = isset( $register_url ) ? $register_url : CTA_Associate_Access::get_associate_registration_url();
 $associate_required_message = CTA_Associate_Access::get_associate_required_message();
 $pending_message    = class_exists( 'CTA_Associate_Access' ) ? CTA_Associate_Access::get_pending_message() : '';
@@ -174,19 +187,41 @@ $selected_date = ! empty( $session_dates ) ? min( $session_dates ) : $today;
 						<a href="<?php echo esc_url( $login_url ); ?>" class="btn btn-primary btn--lg service-card__cta">
 							<?php echo esc_html__( 'Login to Book', 'cta-lms' ); ?>
 						</a>
-					<?php elseif ( $has_subscription ) : ?>
+					<?php elseif ( $can_book_individual ) : ?>
 						<a href="#booking" class="btn btn-primary btn--lg service-card__cta">
 							<?php echo esc_html__( 'Book Individual Session', 'cta-lms' ); ?>
 						</a>
+						<?php if ( $can_purchase_supervision ) : ?>
+							<button type="button" class="btn btn-outline btn--lg service-card__cta cta-individual-session-btn" data-cta-individual-session-purchase data-course-title="<?php echo esc_attr( $individual_session_name ); ?>" data-price="<?php echo esc_attr( $individual_price_label ); ?>" style="margin-top:0.75rem;">
+								<?php
+								echo esc_html(
+									$individual_credits > 0
+										? __( 'Buy Another Session', 'cta-lms' )
+										: __( 'Purchase Session', 'cta-lms' )
+								);
+								?>
+							</button>
+						<?php endif; ?>
 					<?php elseif ( ! $can_purchase_supervision ) : ?>
 						<p class="service-card__note"><?php echo esc_html( $associate_required_message ); ?></p>
 						<a href="<?php echo esc_url( $register_url ); ?>" class="btn btn-primary btn--lg service-card__cta">
 							<?php echo esc_html__( 'Register as Associate', 'cta-lms' ); ?>
 						</a>
 					<?php else : ?>
-						<button type="button" class="btn btn-primary btn--lg service-card__cta cta-subscribe-btn" data-cta-supervision-subscribe data-course-title="<?php echo esc_attr( CTA_Supervision_Plans::get_name( CTA_Supervision_Plans::GROUP_SLUG ) ); ?>" data-price="<?php echo esc_attr( CTA_Supervision_Plans::get_price_label( CTA_Supervision_Plans::GROUP_SLUG ) ); ?>">
-							<?php echo esc_html__( 'Subscribe to Book', 'cta-lms' ); ?>
+						<button type="button" class="btn btn-primary btn--lg service-card__cta cta-individual-session-btn" data-cta-individual-session-purchase data-course-title="<?php echo esc_attr( $individual_session_name ); ?>" data-price="<?php echo esc_attr( $individual_price_label ); ?>">
+							<?php echo esc_html__( 'Purchase Session', 'cta-lms' ); ?>
 						</button>
+					<?php endif; ?>
+					<?php if ( $is_logged_in && $individual_credits > 0 ) : ?>
+						<p class="service-card__note" style="margin-top:0.75rem;">
+							<?php
+							printf(
+								/* translators: %d: prepaid session credit count */
+								esc_html( _n( '%d session credit available', '%d session credits available', $individual_credits, 'cta-lms' ) ),
+								(int) $individual_credits
+							);
+							?>
+						</p>
 					<?php endif; ?>
 				</article>
 
@@ -257,11 +292,11 @@ $selected_date = ! empty( $session_dates ) ? min( $session_dates ) : $today;
 				<h2 class="text-h2" id="booking-title"><?php echo esc_html__( 'Book Your Session', 'cta-lms' ); ?></h2>
 			</header>
 
-			<?php if ( ! $has_subscription ) : ?>
+			<?php if ( ! $can_book_sessions ) : ?>
 				<div class="cta-empty-state">
 					<?php if ( ! $is_logged_in ) : ?>
 						<h3><?php echo esc_html__( 'Log in to view available sessions', 'cta-lms' ); ?></h3>
-						<p><?php echo esc_html__( 'Subscribe to group supervision to access the booking calendar.', 'cta-lms' ); ?></p>
+						<p><?php echo esc_html__( 'Subscribe to Group Supervision or purchase an Individual 1-on-1 session to access the booking calendar.', 'cta-lms' ); ?></p>
 						<a href="<?php echo esc_url( $login_url ); ?>" class="btn btn-primary"><?php echo esc_html__( 'Login to Book', 'cta-lms' ); ?></a>
 					<?php elseif ( 'pending_approval' === $user_status ) : ?>
 						<h3><?php echo esc_html__( 'Supervision Application Pending', 'cta-lms' ); ?></h3>
@@ -272,9 +307,13 @@ $selected_date = ! empty( $session_dates ) ? min( $session_dates ) : $today;
 								<a href="<?php echo esc_url( $ce_dashboard_url ); ?>" class="btn btn-primary"><?php echo esc_html__( 'Go to My Courses', 'cta-lms' ); ?></a>
 							</p>
 						<?php endif; ?>
-					<?php elseif ( 'awaiting_plan' === $user_status ) : ?>
+					<?php elseif ( 'awaiting_plan' === $user_status || ( $is_logged_in && class_exists( 'CTA_Associate_Access' ) && CTA_Associate_Access::is_approved_awaiting_plan( get_current_user_id() ) ) ) : ?>
 						<h3><?php echo esc_html__( 'Application Approved', 'cta-lms' ); ?></h3>
 						<p><?php echo esc_html( CTA_Associate_Access::get_approved_awaiting_plan_message() ); ?></p>
+						<p><?php echo esc_html__( 'Choose Group Supervision (monthly) or purchase an Individual 1-on-1 session ($120/session) above.', 'cta-lms' ); ?></p>
+						<button type="button" class="btn btn-primary cta-individual-session-btn" data-cta-individual-session-purchase data-course-title="<?php echo esc_attr( $individual_session_name ); ?>" data-price="<?php echo esc_attr( $individual_price_label ); ?>">
+							<?php echo esc_html__( 'Purchase Individual Session', 'cta-lms' ); ?>
+						</button>
 					<?php elseif ( 'rejected' === $user_status ) : ?>
 						<h3><?php echo esc_html__( 'Supervision access unavailable', 'cta-lms' ); ?></h3>
 						<p><?php echo esc_html__( 'Your supervision application was not approved. Please contact support if you believe this is an error.', 'cta-lms' ); ?></p>
@@ -288,10 +327,13 @@ $selected_date = ! empty( $session_dates ) ? min( $session_dates ) : $today;
 							<?php echo esc_html__( 'Register as Associate', 'cta-lms' ); ?>
 						</a>
 					<?php else : ?>
-						<h3><?php echo esc_html__( 'Subscribe to book sessions', 'cta-lms' ); ?></h3>
-						<p><?php echo esc_html__( 'An active group supervision subscription is required to access the booking calendar.', 'cta-lms' ); ?></p>
+						<h3><?php echo esc_html__( 'Choose a supervision option to book', 'cta-lms' ); ?></h3>
+						<p><?php echo esc_html__( 'Subscribe to Group Supervision for monthly sessions, or purchase an Individual 1-on-1 session credit ($120/session).', 'cta-lms' ); ?></p>
 						<button type="button" class="btn btn-primary cta-subscribe-btn" data-cta-supervision-subscribe data-course-title="<?php echo esc_attr( CTA_Supervision_Plans::get_name( CTA_Supervision_Plans::GROUP_SLUG ) ); ?>" data-price="<?php echo esc_attr( CTA_Supervision_Plans::get_price_label( CTA_Supervision_Plans::GROUP_SLUG ) ); ?>">
-							<?php echo esc_html__( 'Subscribe Now', 'cta-lms' ); ?>
+							<?php echo esc_html__( 'Subscribe to Group', 'cta-lms' ); ?>
+						</button>
+						<button type="button" class="btn btn-outline cta-individual-session-btn" data-cta-individual-session-purchase data-course-title="<?php echo esc_attr( $individual_session_name ); ?>" data-price="<?php echo esc_attr( $individual_price_label ); ?>" style="margin-left:0.5rem;">
+							<?php echo esc_html__( 'Purchase Individual Session', 'cta-lms' ); ?>
 						</button>
 					<?php endif; ?>
 				</div>

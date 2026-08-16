@@ -1016,7 +1016,25 @@ class CTA_Associate_Access {
 	 * @return bool
 	 */
 	public static function can_access_booking( $user_id = 0 ) {
-		return self::can_access_supervision_features( $user_id );
+		$user_id = $user_id ? absint( $user_id ) : get_current_user_id();
+
+		if ( self::can_access_supervision_features( $user_id ) ) {
+			return true;
+		}
+
+		// Approved associates may book Individual 1-on-1 slots with prepaid session credits
+		// without a Group Supervision subscription.
+		if (
+			$user_id
+			&& self::is_associate( $user_id )
+			&& self::is_approved( $user_id )
+			&& class_exists( 'CTA_Supervision' )
+			&& CTA_Supervision::get_individual_session_credits( $user_id ) > 0
+		) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**

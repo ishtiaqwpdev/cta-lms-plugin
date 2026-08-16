@@ -21,9 +21,11 @@ class CTA_Supervision_Plans {
 
 	const GROUP_PRICE  = 260.0;
 	const HYBRID_PRICE = 350.0;
+	const INDIVIDUAL_SESSION_PRICE = 120.0;
 
 	const ALL_ACCESS_BUNDLE_SLUG = 'supervision-ce-all-access';
 	const LEGACY_HYBRID_BUNDLE_SLUG = 'supervision-ce-hybrid';
+	const INDIVIDUAL_SESSION_PRODUCT = 'supervision_session';
 
 	/**
 	 * Plan catalog keyed by internal slug.
@@ -115,6 +117,36 @@ class CTA_Supervision_Plans {
 		$price = self::get_price( $plan );
 
 		return '$' . number_format( $price, 0 ) . __( '/month', 'cta-lms' );
+	}
+
+	/**
+	 * Individual 1-on-1 session price (one-time, option-overridable).
+	 *
+	 * @return float
+	 */
+	public static function get_individual_session_price() {
+		$price = (float) get_option( 'cta_individual_session_price', self::INDIVIDUAL_SESSION_PRICE );
+		return $price > 0 ? $price : self::INDIVIDUAL_SESSION_PRICE;
+	}
+
+	/**
+	 * Display name for Individual 1-on-1 sessions.
+	 *
+	 * @return string
+	 */
+	public static function get_individual_session_name() {
+		return __( 'Individual 1-on-1 Supervision', 'cta-lms' );
+	}
+
+	/**
+	 * Price label for a single individual session, e.g. "$120/session".
+	 *
+	 * @return string
+	 */
+	public static function get_individual_session_price_label() {
+		$price = self::get_individual_session_price();
+
+		return '$' . number_format( $price, 0 ) . __( '/session', 'cta-lms' );
 	}
 
 	/**

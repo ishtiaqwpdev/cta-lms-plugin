@@ -25,6 +25,98 @@ class CTA_Supervision {
 	/** @var int Individual session duration in minutes. */
 	const INDIVIDUAL_DURATION_MINS = 60;
 
+	/** User meta: prepaid Individual 1-on-1 session credits (pay-per-session). */
+	const META_INDIVIDUAL_CREDITS = 'cta_individual_session_credits';
+
+	/**
+	 * Prepaid Individual 1-on-1 session credit balance.
+	 *
+	 * @param int $user_id User ID.
+	 * @return int
+	 */
+	public static function get_individual_session_credits( $user_id ) {
+		$user_id = absint( $user_id );
+		if ( ! $user_id ) {
+			return 0;
+		}
+
+		return max( 0, (int) get_user_meta( $user_id, self::META_INDIVIDUAL_CREDITS, true ) );
+	}
+
+	/**
+	 * Add prepaid Individual 1-on-1 session credits after purchase.
+	 *
+	 * @param int $user_id User ID.
+	 * @param int $count   Credits to add (default 1).
+	 * @return int New balance.
+	 */
+	public static function add_individual_session_credits( $user_id, $count = 1 ) {
+		$user_id = absint( $user_id );
+		$count   = max( 1, (int) $count );
+		if ( ! $user_id ) {
+			return 0;
+		}
+
+		$balance = self::get_individual_session_credits( $user_id ) + $count;
+		update_user_meta( $user_id, self::META_INDIVIDUAL_CREDITS, $balance );
+
+		return $balance;
+	}
+
+	/**
+	 * Consume one Individual 1-on-1 credit. Returns false if none available.
+	 *
+	 * @param int $user_id User ID.
+	 * @return bool
+	 */
+	public static function consume_individual_session_credit( $user_id ) {
+		$user_id = absint( $user_id );
+		if ( ! $user_id ) {
+			return false;
+		}
+
+		$balance = self::get_individual_session_credits( $user_id );
+		if ( $balance < 1 ) {
+			return false;
+		}
+
+		update_user_meta( $user_id, self::META_INDIVIDUAL_CREDITS, $balance - 1 );
+
+		return true;
+	}
+
+	/**
+	 * Whether the user may book Group Supervision slots (subscription / agency plan).
+	 *
+	 * @param int $user_id User ID.
+	 * @return bool
+	 */
+	public static function can_book_group_sessions( $user_id ) {
+		return class_exists( 'CTA_Associate_Access' )
+			&& CTA_Associate_Access::can_access_supervision_features( $user_id );
+	}
+
+	/**
+	 * Whether the user may book Individual 1-on-1 slots (group plan OR prepaid credits).
+	 *
+	 * @param int $user_id User ID.
+	 * @return bool
+	 */
+	public static function can_book_individual_sessions( $user_id ) {
+		$user_id = absint( $user_id );
+		if ( ! $user_id || ! class_exists( 'CTA_Associate_Access' ) ) {
+			return false;
+		}
+
+		if ( self::can_book_group_sessions( $user_id ) ) {
+			return true;
+		}
+
+		return CTA_Associate_Access::is_associate( $user_id )
+			&& CTA_Associate_Access::is_approved( $user_id )
+			&& self::get_individual_session_credits( $user_id ) > 0;
+	}
+
 	/**
 	 * Register shortcode and AJAX handlers.
 	 */
@@ -119,7 +211,7 @@ class CTA_Supervision {
 
 		$stripe              = cta_get_stripe();
 		$monthly_price       = CTA_Supervision_Plans::get_group_price();
-		$individual_price    = (float) get_option( 'cta_individual_session_price', 120.0 );
+		$individual_price    = CTA_Supervision_Plans::get_individual_session_price();
 		$login_url           = $this->get_login_url();
 		$register_url        = CTA_Associate_Access::get_associate_registration_url();
 		$can_purchase_supervision = ! $is_logged_in || CTA_Associate_Access::can_purchase_supervision();
@@ -257,20 +349,6 @@ class CTA_Supervision {
 
 		$user_id = get_current_user_id();
 
-		// Backend gate: associate + approved + qualifying plan + active (not UI-only).
-		CTA_Associate_Access::require_supervision_access( $user_id );
-
-		$status = (string) get_user_meta( $user_id, 'cta_supervision_status', true );
-
-		if ( 'active' !== $status ) {
-			wp_send_json_error(
-				array(
-					'message' => CTA_Associate_Access::get_access_denied_message( $user_id ),
-					'code'    => 'supervision_not_active',
-				)
-			);
-		}
-
 		$session_id = absint( wp_unslash( $_POST['session_id'] ?? 0 ) );
 
 		if ( ! $session_id ) {
@@ -285,6 +363,51 @@ class CTA_Supervision {
 
 		$table = $wpdb->prefix . 'cta_bookings';
 		$today = cta_lms_current_date( 'Y-m-d' );
+
+		// Peek session type before locking so access rules can differ by type.
+		$preview = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT session_type FROM {$table}
+				WHERE id = %d AND user_id = 0 AND status = 'open' AND session_date >= %s
+				LIMIT 1",
+				$session_id,
+				$today
+			)
+		);
+
+		if ( ! $preview ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'This session is no longer available.', 'cta-lms' ),
+				)
+			);
+		}
+
+		$session_type_preview = sanitize_text_field( (string) $preview->session_type );
+
+		if ( 'individual' === $session_type_preview ) {
+			if ( ! self::can_book_individual_sessions( $user_id ) ) {
+				wp_send_json_error(
+					array(
+						'message' => CTA_Associate_Access::get_access_denied_message( $user_id ),
+						'code'    => 'individual_session_purchase_required',
+					)
+				);
+			}
+		} else {
+			// Group (and any other) slots require the monthly Group / All-Access plan.
+			CTA_Associate_Access::require_supervision_access( $user_id );
+
+			$status = (string) get_user_meta( $user_id, 'cta_supervision_status', true );
+			if ( 'active' !== $status ) {
+				wp_send_json_error(
+					array(
+						'message' => CTA_Associate_Access::get_access_denied_message( $user_id ),
+						'code'    => 'supervision_not_active',
+					)
+				);
+			}
+		}
 
 		// Serialize seat claims for this slot (race-safe under concurrent bookers).
 		$wpdb->query( 'START TRANSACTION' );
@@ -314,6 +437,18 @@ class CTA_Supervision {
 		$session_type  = sanitize_text_field( $session->session_type );
 		$duration_mins = self::get_duration_for_type( $session_type );
 		$seats_total   = self::get_capacity_for_type( $session_type );
+
+		// Individual pay-per-session: consume a credit unless the user already has Group access.
+		$consume_credit = ( 'individual' === $session_type && ! self::can_book_group_sessions( $user_id ) );
+		if ( $consume_credit && ! self::consume_individual_session_credit( $user_id ) ) {
+			$wpdb->query( 'ROLLBACK' );
+			wp_send_json_error(
+				array(
+					'message' => __( 'Purchase an Individual 1-on-1 session credit before booking.', 'cta-lms' ),
+					'code'    => 'individual_credit_required',
+				)
+			);
+		}
 
 		if ( ! self::evaluate_has_open_seat( (int) $session->seats_booked, $seats_total ) ) {
 			$wpdb->query( 'ROLLBACK' );

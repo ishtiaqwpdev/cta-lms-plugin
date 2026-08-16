@@ -62,6 +62,8 @@ class CTA_Stripe {
 
 		add_action( 'wp_ajax_cta_create_subscription', array( $this, 'create_subscription_session' ) );
 		add_action( 'wp_ajax_nopriv_cta_create_subscription', array( $this, 'create_subscription_session' ) );
+		add_action( 'wp_ajax_cta_create_individual_session_checkout', array( $this, 'create_individual_session_checkout' ) );
+		add_action( 'wp_ajax_nopriv_cta_create_individual_session_checkout', array( $this, 'create_individual_session_checkout' ) );
 
 		add_action( 'rest_api_init', array( $this, 'register_webhook_route' ) );
 	}
@@ -1042,6 +1044,348 @@ class CTA_Stripe {
 	}
 
 	/**
+	 * Create one-time Stripe Checkout for a single Individual 1-on-1 session ($120/session).
+	 *
+	 * Independent from Group Supervision subscription — grants one prepaid booking credit.
+	 */
+	public function create_individual_session_checkout() {
+		check_ajax_referer( 'cta_nonce', 'nonce' );
+
+		if ( ! is_user_logged_in() ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'Please log in to purchase an Individual 1-on-1 session.', 'cta-lms' ),
+				)
+			);
+		}
+
+		$user_id = get_current_user_id();
+		CTA_Associate_Access::require_associate_for_purchase( $user_id );
+		CTA_Associate_Access::require_agency_for_supervision_application( $user_id );
+
+		$price = CTA_Supervision_Plans::get_individual_session_price();
+		$name  = CTA_Supervision_Plans::get_individual_session_name();
+		$desc  = __( 'One 60-minute Individual 1-on-1 supervision session. Pay per session; purchase additional sessions anytime.', 'cta-lms' );
+
+		if ( $price <= 0 ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'Individual session pricing is not configured.', 'cta-lms' ),
+				)
+			);
+		}
+
+		if ( ! $this->is_stripe_configured() ) {
+			if ( ! empty( $_POST['demo_confirm'] ) ) {
+				$this->bypass_individual_session_purchase();
+				return;
+			}
+
+			wp_send_json_success(
+				array(
+					'demo_mode'    => true,
+					'checkout_url' => '',
+				)
+			);
+		}
+
+		if ( self::is_payments_bypass_enabled() ) {
+			$this->bypass_individual_session_purchase();
+			return;
+		}
+
+		if ( ! $this->is_configured() ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'Payments are not configured yet. Please contact support.', 'cta-lms' ),
+				)
+			);
+		}
+
+		$supervision_page = $this->get_page_url( 'cta_supervision_dashboard_page_id' );
+		if ( ! $supervision_page ) {
+			$supervision_page = $this->get_page_url( 'cta_supervision_page_id' );
+		}
+		if ( ! $supervision_page ) {
+			$supervision_page = home_url( '/' );
+		}
+
+		$success_url = $this->build_checkout_success_url(
+			$supervision_page,
+			array(
+				'individual_session' => 'success',
+			)
+		);
+		$cancel_url = add_query_arg( 'individual_session', 'cancelled', $supervision_page );
+
+		try {
+			$session_args = array(
+				'payment_method_types' => array( 'card' ),
+				'mode'                 => 'payment',
+				'line_items'           => array(
+					array(
+						'price_data' => array(
+							'currency'     => 'usd',
+							'unit_amount'  => (int) round( $price * 100 ),
+							'product_data' => array(
+								'name'        => $name,
+								'description' => $desc,
+							),
+						),
+						'quantity'   => 1,
+					),
+				),
+				'success_url'          => $success_url,
+				'cancel_url'           => $cancel_url,
+				'client_reference_id'  => (string) $user_id,
+				'metadata'             => array(
+					'user_id'      => (string) $user_id,
+					'product_type' => CTA_Supervision_Plans::INDIVIDUAL_SESSION_PRODUCT,
+					'plan_slug'    => 'individual',
+					'billing'      => 'one_time',
+					'price'        => (string) $price,
+				),
+			);
+
+			$customer_id = (string) get_user_meta( $user_id, 'cta_stripe_customer_id', true );
+			if ( $customer_id ) {
+				$session_args['customer'] = $customer_id;
+			} else {
+				$user = get_userdata( $user_id );
+				if ( $user && $user->user_email ) {
+					$session_args['customer_email'] = $user->user_email;
+				}
+			}
+
+			$session = \Stripe\Checkout\Session::create( $session_args );
+
+			global $wpdb;
+			$wpdb->insert(
+				$wpdb->prefix . 'cta_payments',
+				array(
+					'user_id'           => $user_id,
+					'stripe_payment_id' => $session->id,
+					'amount'            => $price,
+					'currency'          => 'usd',
+					'payment_type'      => 'one_time',
+					'product_type'      => CTA_Supervision_Plans::INDIVIDUAL_SESSION_PRODUCT,
+					'product_id'        => 0,
+					'plan_name'         => $name,
+					'plan_details'      => wp_json_encode(
+						array(
+							'plan_slug'    => 'individual',
+							'plan_name'    => $name,
+							'billing'      => 'one_time',
+							'price'        => $price,
+							'currency'     => 'usd',
+							'product_type' => CTA_Supervision_Plans::INDIVIDUAL_SESSION_PRODUCT,
+							'credits'      => 1,
+							'description'  => $desc,
+						)
+					),
+					'status'            => 'pending',
+				),
+				array( '%d', '%s', '%f', '%s', '%s', '%s', '%d', '%s', '%s', '%s' )
+			);
+
+			wp_send_json_success(
+				array(
+					'checkout_url' => $session->url,
+				)
+			);
+		} catch ( \Stripe\Exception\ApiErrorException $e ) {
+			wp_send_json_error(
+				array(
+					'message' => sprintf(
+						/* translators: %s: Stripe error message */
+						__( 'Payment error: %s', 'cta-lms' ),
+						$e->getMessage()
+					),
+				)
+			);
+		}
+	}
+
+	/**
+	 * Bypass Stripe and grant one Individual 1-on-1 session credit (test mode).
+	 */
+	private function bypass_individual_session_purchase() {
+		$user_id = get_current_user_id();
+		CTA_Associate_Access::require_associate_for_purchase( $user_id );
+		CTA_Associate_Access::require_agency_for_supervision_application( $user_id );
+
+		$payment_id = 'bypass-indiv-' . time();
+		$this->activate_individual_session_purchase(
+			$user_id,
+			array(
+				'checkout_session_id' => $payment_id,
+				'amount'              => 0,
+				'send_receipt'        => false,
+			)
+		);
+
+		$redirect = $this->get_page_url( 'cta_supervision_dashboard_page_id' );
+		if ( ! $redirect ) {
+			$redirect = $this->get_page_url( 'cta_supervision_page_id' );
+		}
+		if ( ! $redirect ) {
+			$redirect = home_url( '/' );
+		}
+
+		$redirect = add_query_arg(
+			array(
+				'individual_session' => 'success',
+				'cta_paid'           => '1',
+				'_cta'               => (string) time(),
+			),
+			$redirect
+		);
+
+		clean_user_cache( $user_id );
+
+		wp_send_json_success(
+			array(
+				'enrolled'     => true,
+				'redirect_url' => $redirect,
+				'message'      => __( 'Individual session credit added (payment bypass mode).', 'cta-lms' ),
+			)
+		);
+	}
+
+	/**
+	 * Record Individual 1-on-1 payment and add one prepaid booking credit.
+	 *
+	 * Does not activate Group Supervision subscription access.
+	 *
+	 * @param int   $user_id User ID.
+	 * @param array $args    Optional args.
+	 * @return int Payment row ID.
+	 */
+	public function activate_individual_session_purchase( $user_id, $args = array() ) {
+		global $wpdb;
+
+		$user_id = absint( $user_id );
+		if ( ! $user_id ) {
+			return 0;
+		}
+
+		$args = wp_parse_args(
+			$args,
+			array(
+				'checkout_session_id' => '',
+				'customer_id'         => '',
+				'amount'              => CTA_Supervision_Plans::get_individual_session_price(),
+				'send_receipt'        => false,
+				'receipt_payment_id'  => '',
+				'credits'             => 1,
+			)
+		);
+
+		$name    = CTA_Supervision_Plans::get_individual_session_name();
+		$amount  = (float) $args['amount'];
+		$credits = max( 1, (int) $args['credits'] );
+		$session_id = sanitize_text_field( $args['checkout_session_id'] );
+		$customer_id = sanitize_text_field( $args['customer_id'] );
+		$table   = $wpdb->prefix . 'cta_payments';
+		$payment_id = 0;
+
+		$details = wp_json_encode(
+			array(
+				'plan_slug'    => 'individual',
+				'plan_name'    => $name,
+				'billing'      => 'one_time',
+				'price'        => $amount,
+				'currency'     => 'usd',
+				'product_type' => CTA_Supervision_Plans::INDIVIDUAL_SESSION_PRODUCT,
+				'credits'      => $credits,
+			)
+		);
+
+		if ( $session_id ) {
+			$existing = $wpdb->get_row(
+				$wpdb->prepare(
+					"SELECT id FROM {$table} WHERE stripe_payment_id = %s LIMIT 1",
+					$session_id
+				)
+			);
+
+			if ( $existing ) {
+				$wpdb->update(
+					$table,
+					array(
+						'user_id'            => $user_id,
+						'stripe_customer_id' => $customer_id ? $customer_id : null,
+						'amount'             => $amount,
+						'currency'           => 'usd',
+						'payment_type'       => 'one_time',
+						'product_type'       => CTA_Supervision_Plans::INDIVIDUAL_SESSION_PRODUCT,
+						'plan_name'          => $name,
+						'plan_details'       => $details,
+						'status'             => 'completed',
+					),
+					array( 'id' => (int) $existing->id ),
+					array( '%d', '%s', '%f', '%s', '%s', '%s', '%s', '%s', '%s' ),
+					array( '%d' )
+				);
+				$payment_id = (int) $existing->id;
+			}
+		}
+
+		if ( ! $payment_id ) {
+			$wpdb->insert(
+				$table,
+				array(
+					'user_id'            => $user_id,
+					'stripe_payment_id'  => $session_id ? $session_id : ( 'indiv-' . time() ),
+					'stripe_customer_id' => $customer_id ? $customer_id : null,
+					'amount'             => $amount,
+					'currency'           => 'usd',
+					'payment_type'       => 'one_time',
+					'product_type'       => CTA_Supervision_Plans::INDIVIDUAL_SESSION_PRODUCT,
+					'product_id'         => 0,
+					'plan_name'          => $name,
+					'plan_details'       => $details,
+					'status'             => 'completed',
+				),
+				array( '%d', '%s', '%s', '%f', '%s', '%s', '%s', '%d', '%s', '%s', '%s' )
+			);
+			$payment_id = (int) $wpdb->insert_id;
+		}
+
+		// Idempotent: webhook + success redirect must not double-grant credits.
+		$credit_guard     = $session_id ? ( 'cta_indiv_credit_' . md5( $session_id ) ) : '';
+		$already_credited = (bool) ( $credit_guard && get_user_meta( $user_id, $credit_guard, true ) );
+
+		if ( ! $already_credited && class_exists( 'CTA_Supervision' ) ) {
+			CTA_Supervision::add_individual_session_credits( $user_id, $credits );
+			if ( $credit_guard ) {
+				update_user_meta( $user_id, $credit_guard, 1 );
+			}
+		}
+
+		if ( $customer_id ) {
+			update_user_meta( $user_id, 'cta_stripe_customer_id', $customer_id );
+		}
+
+		if ( class_exists( 'CTA_Associate_Access' ) ) {
+			CTA_Associate_Access::ensure_account_active( $user_id );
+		}
+
+		if ( ! empty( $args['send_receipt'] ) && ! $already_credited ) {
+			CTA_Emails::send(
+				'payment_receipt',
+				$user_id,
+				array(
+					'payment_id'   => sanitize_text_field( $args['receipt_payment_id'] ? $args['receipt_payment_id'] : $session_id ),
+					'product_name' => $name . ' (' . CTA_Supervision_Plans::get_individual_session_price_label() . ')',
+				)
+			);
+		}
+
+		return $payment_id;
+	}
+
+	/**
 	 * Register Stripe webhook REST route.
 	 */
 	public function register_webhook_route() {
@@ -1188,6 +1532,23 @@ class CTA_Stripe {
 					'subscription_id'     => $subscription_id,
 					'customer_id'         => $customer_id,
 					'amount'              => $this->get_supervision_monthly_price(),
+					'send_receipt'        => true,
+					'receipt_payment_id'  => $session_id,
+				)
+			);
+		}
+
+		if ( CTA_Supervision_Plans::INDIVIDUAL_SESSION_PRODUCT === $type && $user_id ) {
+			$session_id  = sanitize_text_field( $session->id ?? '' );
+			$customer_id = sanitize_text_field( $session->customer ?? '' );
+			$amount      = isset( $session->amount_total ) ? ( (float) $session->amount_total / 100 ) : CTA_Supervision_Plans::get_individual_session_price();
+
+			$this->activate_individual_session_purchase(
+				$user_id,
+				array(
+					'checkout_session_id' => $session_id,
+					'customer_id'         => $customer_id,
+					'amount'              => $amount,
 					'send_receipt'        => true,
 					'receipt_payment_id'  => $session_id,
 				)
@@ -2410,12 +2771,13 @@ class CTA_Stripe {
 				"SELECT stripe_payment_id
 				FROM {$wpdb->prefix}cta_payments
 				WHERE user_id = %d
-				AND product_type = 'supervision'
+				AND product_type IN ('supervision', %s)
 				AND status = 'pending'
 				AND stripe_payment_id LIKE 'cs_%%'
 				ORDER BY id DESC
 				LIMIT 5",
-				$user_id
+				$user_id,
+				CTA_Supervision_Plans::INDIVIDUAL_SESSION_PRODUCT
 			)
 		);
 
