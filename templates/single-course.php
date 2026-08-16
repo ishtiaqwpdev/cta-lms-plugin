@@ -115,7 +115,13 @@ $audio_combined_runtime = ! empty( $syllabus_meta['audio_combined_runtime'] )
 					</div>
 				</div>
 			</div>
-			<div class="course-hero__media<?php echo $is_exam_prep ? ' course-hero__media--exam-prep' : ''; ?>">
+			<?php
+			$hero_media_modifiers = array();
+			if ( $is_exam_prep || ! empty( $course->thumbnail_url ) ) {
+				$hero_media_modifiers[] = 'course-hero__media--exam-prep';
+			}
+			?>
+			<div class="course-hero__media<?php echo $hero_media_modifiers ? ' ' . esc_attr( implode( ' ', $hero_media_modifiers ) ) : ''; ?>">
 				<?php if ( ! empty( $course->thumbnail_url ) ) : ?>
 					<img src="<?php echo esc_url( $course->thumbnail_url ); ?>" alt="<?php echo esc_attr( $image_alt ); ?>" class="course-hero__video-thumb cta-exam-prep-artwork">
 				<?php elseif ( ! empty( $preview_video ) ) : ?>
