@@ -1,0 +1,303 @@
+LPCC NCMHCE EXAM PREPARATION PROGRAM
+LMS Implementation and Release-Control Guide
+Internal Administrative Resource
+Version 1.0 | July 2026 | Controlled Internal Document | No CE Credit
+PROGRAM IDENTITY
+Self-paced licensure examination preparation for the National Clinical Mental Health Counseling Examination. This is an independent educational review program and provides no continuing-education credit.
+Package status: RECONCILED - APPROVED FOR LMS BUILD AND TESTING
+Teaching Clinicians How to Think.
+1. Controlling Program Identity
+Field
+Controlling Entry
+Program name
+CTA LPCC NCMHCE Exam Preparation Program
+Program classification
+Self-paced licensure examination preparation
+Primary examination
+National Clinical Mental Health Counseling Examination (NCMHCE)
+Learner population
+California LPCC/APCC candidates and other eligible candidates using the NCMHCE for licensure
+Credit status
+No continuing-education credit
+Certificate status
+No CE certificate; any non-CE completion badge or record requires separate approval
+Current-edition control
+Current-format edition; formal review required before use for examinations administered on or after July 1, 2027
+Publication status
+Approved for LMS build and testing; public launch pending implementation verification
+NON-CE CONTROL
+Do not add CE hours, a CE evaluation, a CE completion attestation, CE provider claims, or a CE certificate workflow. This is an exam-preparation product.
+2. Roles and Control Boundaries
+Role
+Required Responsibility
+Program owner
+Approves program identity, pricing, access period, support terms, publication status, and final release.
+Content administrator
+Uploads only approved files; maintains sequence, version control, locks, and archive records.
+Technical administrator
+Builds and tests lessons, gates, downloads, progress tracking, responsive views, and learner access.
+Learner support
+Resolves access and technical issues without interpreting official eligibility or guaranteeing results.
+Quality reviewer
+Verifies candidate/rationale synchronization, visual QA, links, download integrity, and release behavior.
+3. Required LMS Course Architecture
+STRUCTURE RULE
+Use a single visible learner path. Keep controlled answers and administrative files separate from candidate materials. Do not upload duplicate visible filenames or multiple uncontrolled versions.
+Order
+Course Area
+Required Content
+00
+Start Here
+Welcome; program boundaries; roadmap; readiness tracker; how to use resources; technical support.
+01-04
+WB1-WB4
+Each workbook cycle; Checkpoint 1 follows WB4.
+05-08
+WB5-WB8
+Each workbook cycle; Checkpoint 2 follows WB8.
+09-12
+WB9-WB12
+Each workbook cycle; Checkpoint 3 follows WB12.
+13
+Form A Readiness Gate
+Curriculum and checkpoint completion review; Form A administration instructions.
+14
+Form A
+Candidate simulation; controlled answer-and-rationales release after submission.
+15
+Form A Remediation
+Required written remediation and readiness gate.
+16
+Form B
+Final candidate simulation; controlled rationales release after submission.
+17
+Final Readiness
+Targeted final review, pacing, logistics, and current official-source reminders.
+R
+Resource Library
+Quick references, flashcards, accessibility files, approved downloads, and future media only when recordings exist and are approved.
+4. Standard Workbook Lesson Template
+Step
+Lesson
+Implementation Requirement
+1
+Workbook Overview
+Title, purpose, learning priorities, position in program, and completion requirements.
+2
+Optional Future Media
+Not included at launch. Add only after recorded files are produced, captioned or transcribed, reviewed, and tested.
+3
+Student Workbook
+Approved editable/downloadable learner file or accessible online reading.
+4
+Completion Prompt
+Brief applied reflection or knowledge confirmation before assessment.
+5
+17-Question Candidate Bank
+Submit all items before controlled feedback appears.
+6
+Answer and Rationale Review
+Correct answer, complete distractor rationales, CTA Exam Strategy, and error code after submission.
+7
+Remediation Check
+Record score, confidence, errors, corrected rule, source revisit, and next action.
+5. Release and Gating Matrix
+Resource
+Unlock Requirement
+Control Rule
+Workbook learning content
+Open when learner reaches course area
+May be revisited after release
+Workbook candidate bank
+After required workbook lesson and completion prompt
+Answers hidden until full submission
+Workbook rationales
+After candidate-bank submission
+Do not expose through file names, page previews, links, or search
+Checkpoint 1
+After WB4 cycle is complete
+Rationales after checkpoint submission
+Checkpoint 2
+After WB8 and CP1 requirements are complete
+Rationales after checkpoint submission
+Checkpoint 3
+After WB12 and CP2 requirements are complete
+Rationales after checkpoint submission
+Form A
+After all workbook cycles and CP3 are complete
+One primary timed attempt; rationales only after full submission
+Form A Remediation
+After Form A and controlled rationales
+Required before Form B unlocks
+Form B
+After Form A remediation gate is satisfied
+Final readiness form; no casual automatic reset
+Form B Rationales
+After complete Form B submission
+Controlled scoring information remains learner-specific
+6. Simulation Administration Controls
+Display administration instructions before the learner begins.
+Use the approved suggested examination period and break instructions for the current-format form.
+Present the case in three sections and prevent return to a prior section after submission when the LMS supports section locking.
+Require one answer for every item and preserve confidence ratings when implemented.
+Do not expose answer keys, blueprint roles, scored-style labels, or field-test-style labels in the candidate interface.
+Preserve the original attempt record, start/end time, unanswered items, and completion status.
+Do not describe a CTA practice result as an official passing score or NBCC scaled score.
+FORM B CONTROL
+Form B contains 11 three-part cases and 143 questions in the current-format edition. The controlled scoring resource reports a full practice score and a current-blueprint practice score. Both remain educational practice measures.
+7. Accessibility and Download Standards
+Area
+Minimum Standard
+Documents
+Editable Word learner files where approved; readable headings, stable tables, and print-optimized layout.
+Images
+Meaningful alt text; decorative images marked appropriately; no essential instruction contained only in an image.
+Color
+Do not rely on color alone to communicate status, correctness, or sequence.
+Navigation
+Consistent lesson naming, visible progress, keyboard access, and descriptive link text.
+Downloads
+Test on desktop and mobile; verify the approved filename, file type, version, and complete content.
+8. Learner Support Boundaries
+Provide help with access, download, navigation, playback, captions, account issues, and locating the correct resource.
+Do not request or accept confidential client information, protected health information, passwords, or full payment-card data in routine support.
+Do not determine licensing eligibility, interpret an official accommodation decision, schedule the examination, or guarantee passage.
+Refer learners to current official sources for eligibility, fees, testing policies, identification, accommodations, and rescheduling.
+Document recurring technical or content issues for quality review and version updates.
+9. Controlled File Naming and Version Management
+ONE CONTROLLING COPYFor every learner, controlled-answer, administrative, and archive asset, retain one approved filename, version, location, and status. Future media assets must remain outside learner view until recorded and approved.
+Asset Type
+Filename Pattern
+Learner workbook
+CTA_LPCC_WB##_Short_Title_Student_Workbook_v#.0.docx
+Candidate bank
+CTA_LPCC_WB##_17_Question_Practice_Bank_Candidate_Form_v#.0.docx
+Controlled rationales
+CTA_LPCC_WB##_17_Question_Practice_Bank_Answer_Rationales_v#.0.docx
+Checkpoint candidate
+CTA_LPCC_Checkpoint_#_Coverage_Question_Count_Candidate_Form_v#.0.docx
+Checkpoint rationales
+CTA_LPCC_Checkpoint_#_Coverage_Question_Count_Answer_Rationales_v#.0.docx
+Simulation candidate
+CTA_LPCC_Comprehensive_Simulation_Form_X_143_Question_Candidate_Exam_v#.0.docx
+Simulation rationales
+CTA_LPCC_Comprehensive_Simulation_Form_X_143_Question_Answer_Rationales_v#.0.docx
+Administration
+CTA_LPCC_[Document_Name]_v#.0.docx
+10. Required File-Control Register
+Register Field
+Entry
+Approved filename
+Version
+File status
+Draft / Under Review / Approved / Superseded / Archived
+Learner-facing?
+Yes / No
+Controlled answer material?
+Yes / No
+LMS location
+Source folder
+Approved date
+Approved by
+Replacement / archive action
+11. Prepublication LMS Quality-Assurance Checklist
+Identity and sequence
+[ ] Program title, no-CE status, audience, current-edition notice, and disclaimers match controlling records.
+[ ] WB1-WB12, CP1-CP3, Form A, remediation, Form B, and Final Readiness appear in the approved order.
+[ ] No outdated or duplicate learner-visible files remain.
+Assessment controls
+[ ] Each candidate bank submits before its rationale lesson opens.
+[ ] Checkpoint gates work at WB4, WB8, and WB12.
+[ ] Form A remains locked until curriculum and CP3 completion.
+[ ] Form B remains locked until Form A and remediation completion.
+[ ] Prior case-section locking works for simulations when implemented.
+[ ] Answer keys and administrative labels are not visible in candidate previews, URLs, file names, or search results.
+Technical and accessibility
+[ ] All links, downloads, page navigation, and learner-visible files work from a learner account.
+[ ] Desktop, tablet, and mobile views have been tested.
+[ ] Keyboard navigation, alt text, captions, contrast, and descriptive link text have been reviewed.
+[ ] No placeholder copy, test users, internal notes, or test answer files remain.
+Data and support
+[ ] Attempt records, completion data, and learner support routes function as approved.
+[ ] Privacy, terms, refund, accessibility, and support links are present where required by the business system.
+[ ] Access period and post-purchase support terms are approved and displayed consistently.
+12. Public-System and Commercial Synchronization
+System
+Synchronization Requirement
+Status
+Master Course Catalog
+Change In Development only after final approval and release testing.
+Ready for David implementation; final live-system verification pending
+Pricing Catalog
+Activate only after launch price, access period, and offer terms are approved.
+Ready for David implementation; final live-system verification pending
+Website / Sales Page
+Match exact product title, no-CE statement, audience, inclusions, disclaimer, and current-edition notice.
+Ready for David implementation; final live-system verification pending
+LMS Product
+Match title, image, access, support, and approved curriculum sequence.
+Ready for David implementation; final live-system verification pending
+Checkout / Receipt
+Use approved product name and terms; do not imply CE credit or exam affiliation.
+Ready for David implementation; final live-system verification pending
+Customer Support
+Use the approved FAQ, support boundaries, and escalation process.
+Ready for David implementation; final live-system verification pending
+13. Remaining Implementation Checks Before Public Launch
+[ ] Final learner access period: 6 months from enrollment.
+[ ] Launch price: $249. Keep outside CE-only memberships unless an approved bundle states otherwise.
+[ ] Add the approved CTA product image and descriptive alt text in the live website/LMS.
+[ ] Confirm the live website support channel and response expectations during David's implementation test.
+[ ] Verify refund, privacy, accessibility, and terms links in the live sales/LMS environment.
+[x] Workbook 12 corrected running header and full rerender: COMPLETED.
+[x] Complete file-by-file inventory and duplicate archive action: COMPLETED.
+[x] Assessment synchronization record for all workbook banks, checkpoints, Form A, and Form B: COMPLETED.
+[x] July 2027 update register and replacement plan: COMPLETED and included in the restricted program-control folder.
+14. July 2027 Edition-Transition Register
+Asset Group
+Required Transition Review
+Official specifications and candidate instructions
+Confirm controlling effective date, format, domains, timing, and administration rules.
+WB1-WB12
+Review domain labels, exam-navigation language, examples, bridges, and dated claims.
+Twelve bank pairs
+Review item distribution, case structure, labels, instructions, and rationales.
+CP1-CP3
+Review cumulative blueprint coverage and administration instructions.
+Form A and Form B
+Rebuild or revise case count, domains, item allocation, scoring-control maps, timing, and section rules as required.
+Readiness tracker and roadmap
+Update schedules, milestones, scoring language, and transition notices.
+Quick references, flashcards, tracker, FAQ, and website copy
+Update format facts, domain language, pacing, scoring, and dated guidance.
+LMS and website
+Replace files, lessons, public claims, FAQs, images, and learner notices.
+Archive
+Freeze and label the current-format edition with the dates for which it was designed.
+15. Final Release and Approval Record
+Approval Field
+Entry
+Critical Workbook 12 correction resolved
+[ ] Yes   [ ] No
+Complete file inventory reconciled
+[ ] Yes   [ ] No
+Candidate/rationale synchronization completed
+[ ] Yes   [ ] No
+LMS gates and downloads tested
+[ ] Yes   [ ] No
+Accessibility review completed
+[ ] Yes   [ ] No
+Catalog, pricing, website, and LMS synchronized
+[ ] Yes   [ ] No
+July 2027 update register established
+[ ] Yes   [ ] No
+Publication status
+[ ] Draft   [ ] Under Review   [X] Approved for LMS Build   [ ] Approved for Publication   [ ] Archived
+Released version
+Approval date
+Approved by
+Comments
+RELEASE STANDARD
+Publication approval is permitted only after all critical corrections, file controls, synchronization checks, LMS behavior tests, and public-system updates are complete and documented. Freeze the released package as Version 1.0 and archive all superseded copies.
+LAUNCH MEDIA CONTROL
+No recorded audio or video files are included in the initial release. The recording-ready audio script is stored in an internal DO NOT PUBLISH folder for future production.

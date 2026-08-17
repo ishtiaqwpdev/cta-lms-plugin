@@ -1,0 +1,20 @@
+CORE CONTENT
+- 12 student workbooks
+- 12 candidate banks and 12 controlled rationale forms
+- 3 cumulative checkpoint pairs
+- Form A candidate exam and controlled rationales
+- Required Form A Remediation Workbook
+- Form B candidate exam and controlled rationales
+- 132-card flashcard collection
+- Quick-reference library, tracker, roadmap, FAQ, and study schedules
+
+RELEASE GATES
+- Candidate bank rationales open only after submission.
+- Checkpoint rationales open only after submission.
+- Form A opens after WB1-WB12 and Checkpoint 3.
+- Form A rationales open after submission.
+- Form B opens only after Form A remediation.
+- Form B rationales open after complete submission.
+
+RESTRICTED
+- Official-source files, crosswalks, audits, and unrecorded production assets are not student-visible.

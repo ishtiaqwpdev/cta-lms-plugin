@@ -1,0 +1,557 @@
+{
+  "form": "B",
+  "type": "ADMIN_ONLY_answer_key_and_rationales",
+  "question_range": "76-100",
+  "records": [
+    {
+      "form": "B",
+      "q_num": 76,
+      "item_id": "B-CP-002",
+      "area": "Area 4: Case Conceptualization and Planning",
+      "core_calibration_status": "Core",
+      "correct_answer": "C",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A child\u2019s anxiety appears differently at home and school and includes school refusal, somatic complaints, caregiver accommodation, and reduced classroom participation. Which outcome-measurement plan is BEST?",
+      "choices": {
+        "A": "Combine child/caregiver symptom ratings; record sleep plus session behavior; review therapist observations across treatment.",
+        "B": "Combine attendance plus nurse-visit data; record assignment completion plus classroom behavior; review detailed teacher reports across treatment.",
+        "C": "Combine child/caregiver/teacher symptom reports; record attendance plus classroom participation; review caregiver accommodation over time.",
+        "D": "Combine caregiver accommodation plus parent distress; record morning departures plus refusal episodes; review therapist-rated confidence consistently over time."
+      },
+      "rationales": {
+        "A": "Child and caregiver symptoms are measured, but the school setting is represented mainly through therapist observation rather than direct teacher or classroom-functioning information.",
+        "B": "Attendance, nurse visits, assignments, classroom behavior, and teacher reports provide strong school data but underrepresent home symptoms and caregiver accommodation.",
+        "C": "The anxiety presents differently across home and school and involves symptoms, attendance, classroom functioning, and caregiver accommodation. C integrates direct reports from the child, caregiver, and teacher with observable indicators from both settings.",
+        "D": "Family accommodation, parent distress, and school-refusal behavior are relevant, but the plan omits direct child and teacher symptom reports and relies partly on a therapist confidence rating."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 77,
+      "item_id": "B-LE6-011",
+      "area": "Area 6: Managing Legal and Ethical Obligations",
+      "core_calibration_status": "Core",
+      "correct_answer": "D",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "During a scheduled telehealth session, an adult client joins from a shared workplace break room. Coworkers are walking through the room and can hear portions of the conversation. The client says, \"It's fine, I don't care if they hear,\" and wants to begin discussing a highly sensitive family issue. What should the therapist do?",
+      "choices": {
+        "A": "Continue the session because the client knowingly accepts the privacy risk, avoid names and identifying details, use headphones, lower the therapist's voice, and document the client's preference to proceed in the shared space.",
+        "B": "Shift to nonsensitive content, document the privacy and confidentiality concern, and make a plan for a more private telehealth setting next time.",
+        "C": "With headphones in place and more distance from coworkers, continue the discussion and document the client's choice to proceed despite the privacy risk.",
+        "D": "Address the privacy problem before substantive discussion, help the client move to a private setting or reschedule if needed, and document the telehealth decision."
+      },
+      "rationales": {
+        "A": "Client willingness to accept privacy risk does not eliminate the therapist's professional responsibility to manage confidentiality and appropriateness in telehealth. Avoiding names does not make an audible sensitive discussion adequately private.",
+        "B": "Shifting to less sensitive material may reduce immediate exposure, but the client is still in an environment where therapy can be overheard. The therapist should first address whether the setting is appropriate for substantive treatment.",
+        "C": "Headphones and additional distance may reduce exposure, but they do not establish adequate privacy for a highly sensitive discussion. Documenting the client's choice also does not remove the therapist's professional responsibility to address the setting.",
+        "D": "Best answer. Telehealth does not eliminate confidentiality and professional-practice responsibilities. The therapist should address the privacy problem before substantive discussion and either improve the setting or reschedule as clinically appropriate."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 78,
+      "item_id": "B-TX5A-002-R1",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Calibration",
+      "correct_answer": "B",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "Parents from different cultural backgrounds are co-parenting a 14-year-old. One parent views increasing independence as a sign of maturity and respect; the other expects important decisions to remain family-based. Neither approach is unsafe, but the parents debate these expectations in front of the adolescent, who now seeks permission from whichever parent is more likely to agree. Which intervention should the therapist use?",
+      "choices": {
+        "A": "Define separate decision areas in which each parent\u2019s cultural expectations guide the adolescent, coordinating when domains overlap.",
+        "B": "Identify the priorities behind each approach and build a coordinated response that preserves meaningful parts of both traditions during recurring family decisions.",
+        "C": "Use a family-values exercise to select one guiding principle for independence and apply it consistently across major decisions.",
+        "D": "Coach the parents to present a united response to the adolescent while privately maintaining their different cultural expectations."
+      },
+      "rationales": {
+        "A": "Separating decision domains respects both traditions but institutionalizes different expectations instead of helping the parents co-parent consistently.",
+        "B": "Correct. The task is to integrate culturally grounded parenting values into a coordinated response rather than privileging one cultural model or ignoring the differences.",
+        "C": "Choosing one guiding principle creates consistency but can flatten meaningful differences and prematurely privilege one framework.",
+        "D": "A united presentation may reduce overt conflict in front of the adolescent, but it does not resolve the incompatible expectations driving the pattern."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 79,
+      "item_id": "B-TX5D-003",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Core",
+      "correct_answer": "B",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "An 8-year-old frequently yells and hits a younger sibling when a preferred game ends. The caregiver responds with lengthy lectures, then usually allows the child to choose another preferred activity to settle down. The child can use a brief \u201cone more minute\u201d request when prompted before becoming upset. Which intervention should the therapist use?",
+      "choices": {
+        "A": "Use a behavior chart for calm sibling play, give a reward at the end of the day, and discuss aggressive episodes during the evening routine.",
+        "B": "Prompt the replacement request before transitions, reinforce using it, and follow aggression with one brief, predictable loss of the current privilege.",
+        "C": "Teach a calming routine after aggression, validate frustration, and restart the activity once the child settles enough to talk.",
+        "D": "Ignore verbal protests, separate the siblings briefly after aggression, and coach a repair once both children are calm."
+      },
+      "rationales": {
+        "A": "Reinforcing calm behavior is useful, but a delayed end-of-day plan does not directly change the immediate sequence in which aggression is followed by extensive attention and access to another preferred activity.",
+        "B": "Best answer. The intervention uses an available developmentally appropriate replacement behavior and changes the caregiver contingency that currently follows aggression, while preserving clear caregiver structure and support.",
+        "C": "Calming and validation may reduce arousal, but restarting a preferred activity after aggression risks maintaining the behavior by allowing aggression to continue producing access to something desirable.",
+        "D": "Brief separation and repair address the aftermath of aggression, but this does not teach the available replacement request or change the consequence pattern that currently follows aggression."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 80,
+      "item_id": "B-DI-013-R1",
+      "area": "Area 2: Developing a Diagnostic Impression",
+      "core_calibration_status": "Calibration",
+      "correct_answer": "A",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "For four months, a client has experienced binge-eating episodes at least weekly. During episodes, the client consumes unusually large amounts rapidly, feels unable to stop, often eats when not physically hungry, eats alone because of embarrassment, and afterward feels disgusted and very guilty. The episodes cause marked distress. The client does not regularly vomit, fast, misuse medication, or exercise to compensate. Which diagnosis is MOST supported?",
+      "choices": {
+        "A": "Binge-eating disorder",
+        "B": "Bulimia nervosa",
+        "C": "Anorexia nervosa, binge-eating/purging type",
+        "D": "Other specified feeding or eating disorder"
+      },
+      "rationales": {
+        "A": "The client has recurrent weekly binges for longer than three months, loss of control, marked distress, multiple associated features, and no regular compensatory behavior. APA distinguishes binge-eating disorder from bulimia specifically by the absence of regular vomiting, fasting, excessive exercise, or similar compensation.",
+        "B": "Bulimia requires recurrent compensatory behavior following binges.",
+        "C": "The stem does not establish the low-weight restrictive syndrome required for anorexia nervosa.",
+        "D": "The full binge-eating disorder pattern is established, so an other-specified category is unnecessary."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 81,
+      "item_id": "B-DI-006-R2",
+      "area": "Area 2: Developing a Diagnostic Impression",
+      "core_calibration_status": "Core",
+      "correct_answer": "B",
+      "source_status": "CONTROLLED SUCCESSOR",
+      "stem": "Three months after surviving a home invasion, a client has abrupt episodes of racing heart and shortness of breath when hearing footsteps outside at night. The client also experiences intrusive memories, avoids being home alone after dark, believes the home is persistently unsafe, feels emotionally detached from others, remains hypervigilant, and has significant sleep disturbance. The symptoms interfere with daily functioning, and similar attacks do not occur unexpectedly in unrelated situations. Which diagnosis is MOST supported?",
+      "choices": {
+        "A": "Panic disorder",
+        "B": "Posttraumatic stress disorder",
+        "C": "Generalized anxiety disorder",
+        "D": "Specific phobia, situational type"
+      },
+      "rationales": {
+        "A": "The panic-like episodes occur in response to trauma reminders rather than unexpectedly, and they occur within a broader trauma-related syndrome.",
+        "B": "The home invasion is followed by intrusion, trauma-linked avoidance, persistent negative safety beliefs, detachment, hypervigilance, sleep disturbance, and impairment for three months, supporting posttraumatic stress disorder.",
+        "C": "The anxiety is organized around a discrete traumatic exposure rather than broad excessive worry across multiple domains.",
+        "D": "A situational phobia would not account for the intrusive memories, negative trauma-related beliefs, emotional detachment, and hyperarousal."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 82,
+      "item_id": "B-CP-016",
+      "area": "Area 4: Case Conceptualization and Planning",
+      "core_calibration_status": "Core",
+      "correct_answer": "B",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "An adolescent with a history of repeated placement disruptions responds to planned termination with anger, missed sessions, and repeated testing of whether the therapist will remain available. A supportive caregiver participates in treatment. What should the therapist do NEXT?",
+      "choices": {
+        "A": "Address the ending directly; discuss anger plus missed sessions; keep the original timeline with caregiver support.",
+        "B": "Address the ending clearly; link reactions to past disruptions; keep a predictable timeline with caregiver support.",
+        "C": "Address the ending developmentally; process reactions to prior disruptions; extend the timeline until the adolescent accepts termination with caregiver support.",
+        "D": "Address the ending developmentally; review disengagement reactions plus attendance; arrange transfer with caregiver support if absences continue."
+      },
+      "rationales": {
+        "A": "Discussing anger and missed sessions while maintaining the timeline is reasonable, but the plan does not sufficiently connect the behavior to the adolescent\u2019s history of disrupted relationships.",
+        "B": "The adolescent\u2019s anger, missed sessions, and testing of the therapist\u2019s availability occur in the context of repeated placement disruptions. The response should connect the current reaction to that developmental history, maintain a predictable ending, and appropriately involve the supportive caregiver.",
+        "C": "A time-limited extension might sometimes support developmentally appropriate termination work, but this option makes ending dependent on the adolescent accepting termination. That can create an uncertain or indefinite endpoint.",
+        "D": "Continued absences require attention, but arranging transfer treats the behavior primarily as disengagement or noncompliance. The therapist should first understand it as a possible response to another anticipated relational disruption."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 83,
+      "item_id": "B-CE-021-R1",
+      "area": "Area 1: Clinical Evaluation",
+      "core_calibration_status": "Core",
+      "correct_answer": "A",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client recently relocated for a new job. The client's adolescent started at a new school, while the spouse remains in the former city during the workweek until a transfer becomes available. The client reports poor sleep, irritability, disrupted routines, and increasing family tension. Which assessment is BEST?",
+      "choices": {
+        "A": "Map the timing and combined effects of relocation, new employment, school transition, and weekday separation on routines, support, symptoms, and family functioning.",
+        "B": "Assess the client's new job demands, sleep, and individual coping before examining how the family's relocation and separation schedule are affecting the household.",
+        "C": "Explore the adolescent's school adjustment, the spouse's weekday absence, and family communication to determine which change is producing the greatest strain.",
+        "D": "Review the family's prior adjustment to major transitions, current conflict patterns, and available supports before deciding whether the present changes are clinically significant."
+      },
+      "rationales": {
+        "A": "The family is simultaneously managing relocation, a new job, school transition, and weekday separation. Mapping how those stressors interact with routines, support, symptoms, and family functioning directly evaluates the cumulative psychosocial burden.",
+        "B": "Job demands and individual coping are relevant but privilege the client's occupational adjustment over the wider family transition.",
+        "C": "School adjustment and spousal separation are important, but attempting to identify which change produces the greatest strain unnecessarily reduces an interacting set of stressors to one primary cause.",
+        "D": "Prior transition history and supports can contextualize the presentation, but the immediate assessment needs to characterize the current cluster of stressors and their effects."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 84,
+      "item_id": "B-CE-022",
+      "area": "Area 1: Clinical Evaluation",
+      "core_calibration_status": "Core",
+      "correct_answer": "B",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client is considering a major life decision. The client's religious community provides substantial social support but also teaches beliefs that contribute to the client's conflict about the decision. What should the therapist assess NEXT?",
+      "choices": {
+        "A": "Assess personal beliefs, values, decision-making principles, and whether the client\u2019s own spiritual views differ from the community\u2019s expectations.",
+        "B": "Explore beliefs, practices, community relationships, sources of support, areas of conflict, and their meaning for the client\u2019s current decision.",
+        "C": "Assess family and community pressure, feared consequences, social support, and whether disagreement with religious guidance is impairing current functioning.",
+        "D": "Explore alternative communities, secular supports, prior faith transitions, family reactions, social consequences, practical constraints, and how earlier value conflicts were handled."
+      },
+      "rationales": {
+        "A": "Personal beliefs are important but cannot be meaningfully separated from community relationships when the community itself is central to the current conflict.",
+        "B": "The client's religious community is simultaneously a source of support and conflict. Exploring beliefs, practices, community relationships, support, areas of tension, and their meaning for the client's decision captures both functions without presuming that religion is either beneficial or harmful.",
+        "C": "Family and community pressure and functional effects deserve assessment, but this option emphasizes the conflict side more than the supportive role described.",
+        "D": "Previous faith transitions and alternative communities may eventually provide useful context, but this response broadens beyond the immediate religious/spiritual factors influencing the current decision."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 85,
+      "item_id": "B-CP-004-R2",
+      "area": "Area 4: Case Conceptualization and Planning",
+      "core_calibration_status": "Calibration",
+      "correct_answer": "B",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client says the therapist\u2019s emphasis on individual independence disregards important family and cultural obligations. The client has become less open and has begun missing sessions. What should the therapist do NEXT?",
+      "choices": {
+        "A": "Acknowledge the concern; adapt how independence is discussed; retain independence as the primary goal while monitoring openness and attendance.",
+        "B": "Acknowledge possible mismatch; explore the client\u2019s meaning and family roles; revise goals and methods within the relevant cultural context.",
+        "C": "Acknowledge the concern; explore transfer choices and therapeutic fit; offer brief bridge sessions if the client requests another therapist.",
+        "D": "Acknowledge the concern; invite family participation if desired; retain the current goals while monitoring attendance and depth of disclosure."
+      },
+      "rationales": {
+        "A": "The concern is acknowledged and the presentation of the goal is modified, but independence remains the controlling therapeutic aim. That does not fully examine whether the original goal reflects the client\u2019s values or context.",
+        "B": "The client identifies a specific cultural and relational mismatch in the treatment goal, followed by reduced openness and missed sessions. Repair requires the therapist to consider that the goal itself\u2014not merely its wording\u2014may be misattuned, understand the client\u2019s meaning and family obligations, and revise goals and methods accordingly.",
+        "C": "Transfer may become appropriate when repair is unsuccessful or the client prefers it, but moving there immediately bypasses an opportunity to address the therapist\u2019s contribution and repair the alliance.",
+        "D": "Family participation could be useful if the client desires it, but the current goals remain unchanged. Adding relatives does not by itself correct the identified cultural misattunement."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 86,
+      "item_id": "B-CR-007",
+      "area": "Area 3: Managing Crisis Situations",
+      "core_calibration_status": "Core",
+      "correct_answer": "D",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A therapist learns that two young children have repeatedly been left alone overnight while their primary caregiver was intoxicated. A sober relative currently has the children and they are physically safe. The caregiver tells the therapist the arrangement \u201cwon't happen again\u201d and asks for an opportunity to address the substance problem privately. What should the therapist do NEXT?",
+      "choices": {
+        "A": "Keep the children with the sober relative, arrange immediate substance-use treatment for the caregiver, and monitor whether supervision improves before reporting.",
+        "B": "Clarify how frequently the children were left alone, whether injury occurred, and whether the caregiver appreciated the risk before deciding whether a report is warranted.",
+        "C": "Develop a formal family safety plan with the sober relative and make a child-protection report only if the intoxicated caregiver violates that agreement.",
+        "D": "Ensure the children remain safely supervised and make the required child-protection report based on reasonable suspicion without waiting for injury or definitive proof."
+      },
+      "rationales": {
+        "A": "Substance-use treatment for the caregiver may be necessary, but it does not replace the mandated child-protection response triggered by the repeated overnight neglect.",
+        "B": "Gathering additional facts before deciding whether to report imposes a higher evidentiary threshold than reasonable suspicion and delays the required protective response.",
+        "C": "A family safety agreement may support immediate supervision, but it cannot substitute for the required child-protection report.",
+        "D": "The children should remain safely supervised, and the repeated overnight neglect should be reported based on reasonable suspicion without waiting for injury or definitive proof."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 87,
+      "item_id": "B-TX5E-001",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Core",
+      "correct_answer": "B",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "Parents of a 7-year-old report that bedtime has become a two-hour struggle. The child protests, one parent threatens consequences, the other parent rescues the child and stays in the bedroom, and the child escalates until the parents disagree with each other. The pattern repeats nightly. The therapist is using a strategic family therapy approach. Which intervention should the therapist use?",
+      "choices": {
+        "A": "Assign the parents to record the bedtime sequence, including what each adult does immediately before the child\u2019s protest intensifies.",
+        "B": "Give both parents a single bedtime directive in which neither adult changes the limit or stays in the room to rescue the child when protest escalates throughout the bedtime routine.",
+        "C": "Prescribe a brief scheduled protest period before the normal bedtime routine and instruct the parents to end the period at the agreed time.",
+        "D": "Reframe the protest as a way of organizing parental involvement and have the parents observe when their disagreement strengthens the bedtime struggle."
+      },
+      "rationales": {
+        "A": "Recording the sequence can clarify the maintaining pattern, but the pattern is already evident and the next strategic step should change it rather than continue observing it.",
+        "B": "Best answer. A strategic directive that keeps both parents from changing the limit or rescuing the child directly interrupts the rescue-escalation-parental-disagreement sequence maintaining the bedtime problem.",
+        "C": "A prescribed protest period is a legitimate strategic technique, but it does not directly target the parental rescue and disagreement that are reinforcing the current sequence.",
+        "D": "Reframing may shift how the parents understand the protest, but observation alone does not alter the interaction that repeatedly sustains the symptom."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 88,
+      "item_id": "B-TX5F-001-R3",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Core",
+      "correct_answer": "B",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A 28-year-old client in individual therapy has improved substantially in managing social anxiety symptoms but continues to withdraw during conversations, overexplain when uncertain, and interpret neutral feedback as rejection. The client wants live practice with peers, can tolerate direct feedback, and has no acute instability. The therapist is considering a group referral. Which group is the best fit for this treatment need?",
+      "choices": {
+        "A": "An open drop-in support group for adults with life stressors that emphasizes mutual encouragement and flexible attendance.",
+        "B": "A closed interpersonal-process group for adults with similar relationship difficulties that uses direct here-and-now feedback and stable membership.",
+        "C": "A large psychoeducation group for anxiety that teaches coping concepts through lectures, structured worksheets, and limited interaction among members.",
+        "D": "A short-term skills group for social confidence that practices scripted conversations in rotating pairs with minimal process discussion."
+      },
+      "rationales": {
+        "A": "An open support group can reduce isolation, but broad membership and flexible attendance provide less continuity for repeated interpersonal feedback and cohesion around the client\u2019s treatment need.",
+        "B": "Best answer. The client is ready to benefit from group referral, and stable membership plus here-and-now interpersonal feedback directly matches the need to practice and revise recurring relationship responses.",
+        "C": "Psychoeducation may reinforce coping knowledge, but the client has already improved symptom management and now needs sustained interpersonal interaction rather than primarily didactic content.",
+        "D": "A skills group offers useful practice, but scripted exchanges with little process discussion are less suited to examining misread feedback and the client\u2019s recurring reactions in relationships."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 89,
+      "item_id": "B-CP-015",
+      "area": "Area 4: Case Conceptualization and Planning",
+      "core_calibration_status": "Core",
+      "correct_answer": "C",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A twelve-session agency program will end as scheduled. The client has made meaningful progress but continues to have treatment needs that cannot be completed within the remaining sessions. Which plan is BEST?",
+      "choices": {
+        "A": "Use remaining sessions to process the ending; review gains plus treatment reactions; provide referrals plus reentry information at the final appointment.",
+        "B": "Continue current goals through session twelve; summarize progress plus unfinished needs; initiate transfer after the program ends.",
+        "C": "Plan remaining sessions for closure; identify unfinished needs plus priorities; arrange continuity before the final visit now.",
+        "D": "Introduce achievable long-term goals; use progress data to prioritize them; seek continuation only if goals remain unfinished."
+      },
+      "rationales": {
+        "A": "Processing the ending is appropriate, but waiting until the final appointment to provide referrals leaves too little time to address access barriers or create an effective transition.",
+        "B": "Continuing current goals through session twelve may provide useful treatment, but initiating transfer only after the program has ended creates an avoidable interruption in care.",
+        "C": "The agency ending is known in advance, and the client has both meaningful gains and unresolved needs. The remaining sessions should therefore be used to consolidate progress, identify what remains unfinished, and establish continuity before the final visit.",
+        "D": "Beginning longer-term goals that cannot be completed within the remaining sessions does not fit the known service limit. Continuity planning should begin because the needs are already known, not only if additional goals later remain unfinished."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 90,
+      "item_id": "B-CE-024-R1",
+      "area": "Area 1: Clinical Evaluation",
+      "core_calibration_status": "Core",
+      "correct_answer": "A",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A bisexual client is open with supportive friends but conceals sexual orientation from family members because the client expects rejection and currently depends on the family for housing. The client reports mixed relief and distress about selective disclosure. What should the therapist assess NEXT?",
+      "choices": {
+        "A": "Explore disclosure goals, family dependence, housing safety, peer support, minority stress, and the effects of selective disclosure on the client's current functioning.",
+        "B": "Explore internalized stigma, anxiety about rejection, family attitudes, prior disclosure experiences, and whether concealment itself is increasing the client's distress.",
+        "C": "Explore peer support, identity affirmation, community belonging, coping resources, and whether those supports reduce the impact of family nonacceptance.",
+        "D": "Explore alternative housing, financial independence, family conflict history, practical consequences of disclosure, and the client's readiness to change the current arrangement."
+      },
+      "rationales": {
+        "A": "Selective disclosure occurs within a context of family dependence, anticipated rejection, supportive peers, minority stress, and practical safety considerations. Evaluating those factors together avoids treating concealment itself as inherently pathological.",
+        "B": "Internalized stigma is one possible contributor, but this option risks interpreting concealment primarily as an intrapsychic problem before accounting for realistic consequences of disclosure.",
+        "C": "Affirming peer support is protective but does not erase family dependence or the potential costs of disclosure.",
+        "D": "Housing and financial independence may be relevant practical concerns, but this option begins moving toward changing the current arrangement rather than first evaluating the meaning and effects of selective disclosure."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 91,
+      "item_id": "B-CE-015-R2",
+      "area": "Area 1: Clinical Evaluation",
+      "core_calibration_status": "Core",
+      "correct_answer": "C",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client reports periods of stimulant use that overlap with episodes of irritability, increased energy, and reduced sleep. The client also remembers having some mood symptoms during periods of nonuse. What should the therapist do NEXT during the clinical evaluation?",
+      "choices": {
+        "A": "Map mood symptoms to psychosocial stressors, sleep changes, relationship conflict, prior treatment periods, and whether similar episodes occurred before stimulant use began.",
+        "B": "Map stimulant dose and frequency, intoxication and withdrawal periods, sleep disruption, work impairment, and behavioral changes associated with heavier use.",
+        "C": "Map mood symptoms across stimulant use, withdrawal, and nonuse, noting whether episodes persist independently of stimulant exposure.",
+        "D": "Map prior mood episodes, family psychiatric history, medication exposure, longer abstinent periods, and evidence of mood changes occurring independently of stimulant use."
+      },
+      "rationales": {
+        "A": "Psychosocial stress, sleep, and earlier mood history are important but do not most directly clarify the association between stimulant exposure and the current episodic symptoms.",
+        "B": "This option characterizes stimulant use well but gives less attention to whether the mood phenomena occur outside substance exposure.",
+        "C": "The key unresolved issue is whether mood symptoms track stimulant exposure or also persist independently. Mapping symptoms across use, withdrawal, and nonuse directly addresses that temporal relationship.",
+        "D": "Independent mood episodes and family history are relevant differential information, but this option relies heavily on historical factors instead of first establishing the present use/nonuse chronology."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 92,
+      "item_id": "B-LE6-012-R1",
+      "area": "Area 6: Managing Legal and Ethical Obligations",
+      "core_calibration_status": "Calibration",
+      "correct_answer": "C",
+      "source_status": "CONTROLLED SUCCESSOR",
+      "stem": "A client asks the therapist to use social-media direct messages for routine therapy communication because the client finds the platform easier than the practice's usual communication channels. The client understands that the platform is not controlled by the therapist. What is the therapist's BEST response?",
+      "choices": {
+        "A": "Use direct messages for scheduling, brief clinical questions, and urgent-routing instructions; document the client\u2019s preference, privacy limits, and restrictions on highly sensitive content.",
+        "B": "Use direct messages only when initiated by the client, keep responses brief, document clinically relevant exchanges in the record, and review response-time expectations and privacy limits.",
+        "C": "Review the platform's privacy and security limits together with response expectations, boundary risks, and record obligations; then establish the appropriate clinical channel and define whether social-media messaging will be used.",
+        "D": "Disable direct messaging for clients, document the practice's communication policy, require the designated secure channel for clinical contact, and explain how urgent and routine messages should be handled through the clinically appropriate practice channel."
+      },
+      "rationales": {
+        "A": "Client preference, privacy limits, and urgent-routing instructions are relevant, but this pathway still permits clinical questions through social-media direct messaging before the therapist has adequately determined whether that platform is appropriate for clinical communication.",
+        "B": "Client initiation does not eliminate the therapist's responsibility for the communication channel, and documenting exchanges does not by itself make the platform appropriate.",
+        "C": "Best answer. The therapist should evaluate privacy, security, response expectations, boundaries, and record implications and then define which channel is appropriate for clinical communication and what role social-media messaging will have.",
+        "D": "A practice can decide not to use social-media messaging, but an automatic ban is not the only defensible response. The controlling task is responsible management of the communication method."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 93,
+      "item_id": "B-LE6-010-R1",
+      "area": "Area 6: Managing Legal and Ethical Obligations",
+      "core_calibration_status": "Core",
+      "correct_answer": "A",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A group practice website advertises an LMFT as a \"certified trauma specialist\" even though the therapist has completed several trauma workshops but has never earned the certification named on the website. The therapist discovers the description after a new client says that credential was the reason for choosing the therapist. What should the therapist do?",
+      "choices": {
+        "A": "Correct the inaccurate credential representation promptly, clarify the therapist's actual qualifications and training with the client, including the scope of completed trauma workshops, address the client's reliance on the claim, and determine whether the client still wants to continue treatment based on accurate information.",
+        "B": "Keep the description temporarily while the therapist applies for the certification, tell the client that the therapist has substantial trauma training, document that clarification, and remove the claim if certification is not obtained.",
+        "C": "Ask the practice to replace \"certified\" with \"trauma-focused,\" explain the therapist's workshop training and current competence to the client, document the discussion, and continue treatment if the client chooses to remain.",
+        "D": "Remove the specialty description from current and future professional advertising materials, notify the practice manager of the error, review every public listing for the same claim, correct any repeated credential language, verify the corrections, document the advertising remediation before the next session, and schedule a broader practice review of credential language across all clinician profiles."
+      },
+      "rationales": {
+        "A": "Best answer. Representing a certification that the therapist does not hold is a qualification misrepresentation. The therapist should correct the public representation and ensure the client is making treatment decisions based on accurate qualifications.",
+        "B": "Applying for the credential later does not make the current representation accurate. The misrepresentation should not remain public while the therapist seeks the qualification.",
+        "C": "Changing the language prospectively is necessary, but the client specifically relied on the false credential. The therapist should directly correct that misunderstanding rather than only describing workshop experience.",
+        "D": "This thoroughly corrects the public advertising problem, but it does not directly correct the known new client's understanding of the therapist's actual qualifications after the client expressly relied on the false credential."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 94,
+      "item_id": "B-CP-018-R4",
+      "area": "Area 4: Case Conceptualization and Planning",
+      "core_calibration_status": "Core",
+      "correct_answer": "B",
+      "source_status": "CONTROLLED SUCCESSOR",
+      "stem": "Insurance coverage ends unexpectedly. The client\u2019s recent depressive crisis has stabilized, and no acute danger is present, but relapse vulnerability and ongoing treatment needs remain. Which plan is MOST appropriate?",
+      "choices": {
+        "A": "Review relapse warning signs, crisis contacts, and referrals before coverage ends, then ask the client to arrange follow-up independently and document the referral information provided.",
+        "B": "Create a brief bridge plan, review relapse and safety needs, and coordinate transfer before the coverage period ends.",
+        "C": "Seek temporary authorization to continue treatment and postpone transfer planning until the payer decides whether additional visits are approved.",
+        "D": "Arrange higher-level psychiatric reassessment and continue treatment until relapse risk has fully resolved before ending care."
+      },
+      "rationales": {
+        "A": "Warning signs, crisis contacts, referrals, and documentation are useful, but this pathway leaves the client principally responsible for securing continuing care despite known vulnerability and an externally imposed ending.",
+        "B": "The recent crisis has stabilized, so emergency disposition is not indicated. However, ongoing treatment needs and relapse vulnerability make a purely administrative ending insufficient. A time-limited bridge, relapse and safety review, and active transfer coordination provide an appropriate transition before coverage ends.",
+        "C": "Seeking authorization may be appropriate, but waiting for the payer\u2019s decision before beginning transfer planning risks a gap if authorization is denied or delayed. Both processes can proceed concurrently.",
+        "D": "Urgent psychiatric reassessment is not supported when the crisis is stable and no acute danger exists. Requiring relapse risk to resolve fully before termination is also unrealistic and may produce indefinite care."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 95,
+      "item_id": "B-TX5E-010-R1",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Core",
+      "correct_answer": "C",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "During a session, a client begins to cry while describing loneliness and immediately says, \u201cThis is ridiculous. I hate that I\u2019m being so weak in front of you.\u201d The client looks away and tries to stop the tears. The therapist is using a client-centered approach. Which response should the therapist make?",
+      "choices": {
+        "A": "Reflect the client\u2019s judgment of the tears and invite attention to how loneliness, shame, and self-criticism are experienced in the moment.",
+        "B": "Offer empathic reassurance about the tears and ask what makes emotional expression feel unacceptable within the therapy relationship.",
+        "C": "Stay genuinely present with the loneliness and shame, reflect the client\u2019s experience, and allow the tears to unfold without directing change.",
+        "D": "Ask what kind of therapist response would feel most helpful and follow the client\u2019s preference for silence, reflection, or continued exploration."
+      },
+      "rationales": {
+        "A": "Moment-to-moment reflection is compatible with a client-centered stance, but directing attention toward several named internal processes adds more therapist structure than is necessary here.",
+        "B": "Empathic reassurance may be caring, but telling the client how to understand the tears risks replacing the client\u2019s own experience with the therapist\u2019s evaluation.",
+        "C": "Best answer. Genuine presence, accurate reflection, and allowing the emotion to unfold without pressure are most consistent with a client-centered response to shame and loneliness.",
+        "D": "Following the client\u2019s preference supports autonomy, but moving quickly into selecting a therapist response can shift attention away from the client\u2019s immediate emotional experience."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 96,
+      "item_id": "B-CR-008",
+      "area": "Area 3: Managing Crisis Situations",
+      "core_calibration_status": "Core",
+      "correct_answer": "C",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client trying to end a relationship discovers that the partner secretly installed location-tracking software, accesses private online accounts, threatens to distribute intimate photographs, and repeatedly appears at locations the client has not disclosed. What should the therapist do NEXT?",
+      "choices": {
+        "A": "Assess current safety privately, review technology risks, and support a direct boundary-setting conversation with a trusted person nearby.",
+        "B": "Assess current safety privately, review technology risks, and strengthen account security with victim-support follow-up.",
+        "C": "Assess current safety privately, review technology risks, and develop a technology-aware safety plan with specialized abuse services.",
+        "D": "Assess current safety privately, review technology risks, and explore mediated communication with trusted support if the client prefers contact."
+      },
+      "rationales": {
+        "A": "A direct boundary-setting conversation may increase exposure or retaliation when technology is already being used to monitor and control the client.",
+        "B": "Account security is useful, but password changes and follow-up alone do not address hidden tracking, physical location exposure, retaliation risk, or the broader coercive pattern.",
+        "C": "Private safety assessment, technology-aware planning, and specialized abuse resources directly address both digital and physical dimensions of the coercive control.",
+        "D": "Mediated communication is not an appropriate default when technology is being used to monitor, locate, threaten, and control the client."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 97,
+      "item_id": "B-CE-001",
+      "area": "Area 1: Clinical Evaluation",
+      "core_calibration_status": "Core",
+      "correct_answer": "B",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "Parents bring their 10-year-old to therapy because of escalating behavior problems. During the intake, the parents disagree sharply about discipline, frequently interrupt one another, and describe the child's behavior differently. The child's behavior also changes noticeably while the parents argue. What should the therapist do FIRST when determining the treatment unit?",
+      "choices": {
+        "A": "Begin with individual child assessment, adding caregiver sessions if symptoms appear linked to parenting or family conflict.",
+        "B": "Begin with joint child-caregiver assessment of symptoms and interaction, then select the treatment unit from those findings.",
+        "C": "Begin with caregiver sessions to assess discipline differences and conflict, then decide whether direct child participation is needed.",
+        "D": "Begin with separate child and caregiver interviews to clarify perspectives, then choose individual, parent-focused, or family treatment."
+      },
+      "rationales": {
+        "A": "Beginning with the child is plausible because the referral concerns the child's behavior, but it presumes that the identified symptom-holder should be the initial unit.",
+        "B": "The child's symptoms occur within visibly significant caregiver interaction. Joint initial assessment provides information about both the child's presentation and the relational system before the therapist commits to an individual, parent-focused, or family treatment unit.",
+        "C": "Caregiver conflict may be important, but beginning with parents alone makes the opposite premature assumption\u2014that parenting dynamics are the principal treatment target.",
+        "D": "Separate interviews can produce useful perspectives, but the vignette specifically provides meaningful live interactional data that would be lost if joint assessment were deferred."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 98,
+      "item_id": "B-CE-028",
+      "area": "Area 1: Clinical Evaluation",
+      "core_calibration_status": "Calibration",
+      "correct_answer": "A",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client reports that several romantic partners have complained that the client becomes distant whenever they request greater emotional closeness. The client says, \u201cI just need space when people start expecting too much.\u201d What should the therapist assess NEXT?",
+      "choices": {
+        "A": "Compare several close relationships for what precedes withdrawal, how requests for closeness are interpreted, and what typically follows the distancing across relationships.",
+        "B": "Assess the current partner\u2019s requests, conflict style, expectations for intimacy, and whether the client\u2019s withdrawal is proportionate to relationship pressure.",
+        "C": "Review childhood caregiver relationships, prior losses, attachment experiences, and whether distancing from closeness appears connected with earlier relational patterns.",
+        "D": "Assess social anxiety, avoidant traits, emotion regulation, and fear of dependence to determine whether a stable individual pattern explains the behavior."
+      },
+      "rationales": {
+        "A": "The client reports the same withdrawal response across several close relationships. Comparing what precedes withdrawal, how closeness is interpreted, and what follows the distancing directly evaluates whether a recurring interpersonal pattern exists.",
+        "B": "gives the current partner\u2019s behavior disproportionate explanatory weight.",
+        "C": "may eventually illuminate formative influences but assumes earlier relationships are the primary explanation before the present pattern is clarified.",
+        "D": "prematurely reframes the repeated behavior as evidence of an individual symptom or trait pattern."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 99,
+      "item_id": "B-DI-016-R1",
+      "area": "Area 2: Developing a Diagnostic Impression",
+      "core_calibration_status": "Core",
+      "correct_answer": "B",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A 23-year-old has, since early childhood, had difficulty with reciprocal conversation, integrating eye contact and gestures with speech, and adjusting behavior to develop and maintain age-appropriate relationships. Caregiver history also describes highly restricted interests, rigid routines, and marked distress when routines changed. These patterns have occurred across settings. Fear of negative evaluation emerged only during adolescence after repeated peer rejection. Which diagnosis is MOST supported?",
+      "choices": {
+        "A": "Social anxiety disorder",
+        "B": "Autism spectrum disorder",
+        "C": "Attention-deficit/hyperactivity disorder",
+        "D": "Schizoid personality disorder"
+      },
+      "rationales": {
+        "A": "Social anxiety emerged later after peer rejection and cannot explain the early-development social-communication and restricted/repetitive pattern.",
+        "B": "The repaired stem establishes all three social-communication areas\u2014reciprocity, nonverbal communication, and relationship development\u2014plus restricted interests and rigid routines, with onset in early childhood and occurrence across settings. CDC's DSM-based criteria require deficits in all three social-communication domains plus at least two restricted/repetitive behavior categories, developmental onset, and clinically significant impairment.",
+        "C": "ADHD does not account for the complete developmental social-communication pattern and restricted interests/routines.",
+        "D": "A personality-disorder formulation does not adequately explain symptoms clearly present from early childhood and meeting the neurodevelopmental pattern."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 100,
+      "item_id": "B-DI-015",
+      "area": "Area 2: Developing a Diagnostic Impression",
+      "core_calibration_status": "Core",
+      "correct_answer": "D",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client has repeated periods of depressed mood, anhedonia, fatigue, and sleep disturbance during episodes of heavy alcohol use and withdrawal. The depressive syndrome resolves during sustained periods without alcohol exposure. There is no history of an independent depressive episode before the alcohol pattern or during extended abstinence. Which diagnosis is MOST supported?",
+      "choices": {
+        "A": "Major depressive disorder",
+        "B": "Persistent depressive disorder",
+        "C": "Adjustment disorder with depressed mood",
+        "D": "Substance/medication-induced depressive disorder"
+      },
+      "rationales": {
+        "A": "Major depressive disorder would be more strongly supported by a syndrome occurring independently of the alcohol exposure.",
+        "B": "Persistent depressive disorder requires a chronic depressive course rather than repeated substance-linked episodes.",
+        "C": "Adjustment disorder does not explain the recurring intoxication/withdrawal-linked symptom pattern.",
+        "D": "The depressive syndrome reliably appears during heavy alcohol use or withdrawal and resolves during sustained abstinence, with no independent depressive episode before the substance pattern or during prolonged nonuse. That chronology makes a substance-induced depressive formulation the best fit rather than an independent depressive disorder. DSM-5-TR remains the current diagnostic standard and includes substance/medication-induced diagnostic categories."
+      }
+    }
+  ]
+}

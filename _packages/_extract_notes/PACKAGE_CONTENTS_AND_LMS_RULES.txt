@@ -1,0 +1,21 @@
+PACKAGE CONTENTS
+- 12 LCSW student workbooks
+- 12 paired 17-question banks
+- Workbook 12 integrated 25-question mini-mock
+- Comprehensive Simulation Forms A and B, 122 questions each
+- Controlled detailed rationales for Forms A and B
+- 132-card LCSW flashcard collection
+- Quick-reference sheet collection
+- Student roadmap with 10-, 14-, and 18-week schedules
+- Readiness self-assessment and progress tracker
+- Student FAQ and self-service guide
+- August 2026 ASWB exam-day and simulation guide
+- Website/LMS implementation copy and CTA brand assets
+- Restricted administrative item banks, inventories, blueprints, QC reports, standards, crosswalks, and source controls
+
+LMS RULES
+1. Do not publish anything in 90_Admin_Restricted or 99_Archive_Superseded_Do_Not_Publish.
+2. Do not publish folder 06 at initial launch. No recordings exist.
+3. Keep simulation answer keys and rationales hidden until the associated form is submitted.
+4. Treat Forms A and B as two 61-question sections with two hours per section and an optional scheduled break of up to 10 minutes after Section 1.
+5. Use the exact public product title and no-CE classification in the website/LMS handoff document.

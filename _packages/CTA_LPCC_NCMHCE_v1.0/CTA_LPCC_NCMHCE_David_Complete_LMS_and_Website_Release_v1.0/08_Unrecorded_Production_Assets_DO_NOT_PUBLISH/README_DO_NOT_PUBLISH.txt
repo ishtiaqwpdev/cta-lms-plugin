@@ -1,0 +1,1 @@
+No playable audio or video exists at launch. This Word document is a recording-ready script for future production only. Do not place it in learner view or advertise recorded media until files are produced, reviewed, transcribed/captioned as applicable, and tested.

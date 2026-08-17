@@ -1,0 +1,1073 @@
+﻿
+
+CALIFORNIA LMFT CLINICAL EXAMINATION PREP
+Full Simulation â€” Form A
+150 Questions
+Teaching Clinicians How to Think.
+Version 1.0 | August 14, 2026
+â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+Instructions
+This CTA practice simulation contains 150 multiple-choice questions. Select the single BEST answer for each question.
+Answer every question. The form includes unidentified calibration-style items as part of the controlled simulation architecture.
+Read the entire vignette and all four options before selecting an answer. Many distractors are clinically plausible but differ in priority, timing, scope, diagnosis, intervention level, or legal/ethical fit.
+Choose one response for each item. If two options appear reasonable, select the one that most directly answers the question being asked.
+Internal item IDs, blueprint metadata, answer keys, and rationales are intentionally omitted from this learner booklet.
+This is an independently developed CTA exam-preparation simulation. It is not an official examination of the California Board of Behavioral Sciences or Pearson VUE.
+FORM A â€” BEGIN
+
+1. A transgender man reports for ten months a marked incongruence between his experienced gender and sex characteristics, intense distress about his chest and menstrual characteristics, and a persistent desire to be rid of those characteristics. The distress remains significant in affirming environments and interferes with work and social functioning. Which diagnosis is MOST supported?
+A. Gender dysphoria
+B. Adjustment disorder
+C. Major depressive disorder
+D. Body dysmorphic disorder
+
+2. A client lost a job two months ago and reports understandable distress about finances. The client has maintained a daily routine, continues exercising, remains connected with friends and family, and has begun exploring new employment options. Which assessment would be MOST useful?
+A. Assess current distress, sleep, concentration, financial worry, and whether symptoms are beginning to impair work-seeking or self-care.
+B. Assess social support, frequency of contact, practical assistance, and whether relationships remain available when the client needs help.
+C. Assess coping behaviors, job-search activity, exercise, daily structure, and whether routines are sustaining or depleting the clientâ€™s functioning.
+D. Assess how routines, support, problem-solving, and personal strengths are helping maintain functioning while identifying areas that remain vulnerable over time.
+
+3. A couple requests therapy for â€œcommunication problems.â€ One partner describes repeated arguments about spending, while the other says the more important problem is feeling emotionally disconnected even when the couple is not arguing. What should the therapist do NEXT?
+A. Ask each partner for a recent interaction, what it meant, and what change would make therapy useful.
+B. Ask each partner about conflict frequency, escalation patterns, and which disagreements feel most damaging to the relationship.
+C. Ask each partner about family-of-origin communication, learned conflict roles, and similarities between past and current interactions.
+D. Ask each partner about current stress, mood, and coping to determine how individual factors affect communication.
+
+4. An 8-year-old witnessed serious violence at school two weeks ago. Since then, the child has nightmares, asks repeatedly whether school is safe, becomes distressed when separated from a caregiver, and has difficulty returning to normal bedtime and school routines. The caregiver is calm and supportive. Which response is BEST?
+A. Use age-appropriate coping support, involve the caregiver in planning, and coordinate gradual school reentry while monitoring symptoms.
+B. Use age-appropriate reassurance and coping, involve the caregiver in support, and restore predictable routines while monitoring symptoms closely.
+C. Use structured therapeutic play and coping, involve the caregiver in support, and coordinate school planning around trauma reminders during recovery.
+D. Use clear behavioral expectations and coping, involve the caregiver in support, and restore school routines while monitoring regression.
+
+5. A 32-year-old client has had almost no direct contact with the father for three years after repeated family conflict. The client still receives frequent updates through a sibling, asks the sibling to pass messages back to the father, and becomes highly anxious whenever direct contact is considered. The therapist is using a multigenerational family systems approach. Which intervention should the therapist use?
+A. Map recurring cutoff and triangulation patterns, identify when anxiety pulls the sibling into communication, and coach the client to observe that process.
+B. Coach the client to rehearse an I-position in session, practice regulating anxiety, and prepare for direct contact with the father.
+C. Map the sibling-mediated communication pattern, coach observation of family-system reactions, clarify how cutoff is maintained across relationships, and compare what changes when messages no longer pass through the sibling.
+D. Coach the client to state an I-position directly to the father, maintain self-definition during the exchange, and end the siblingâ€™s intermediary role in their relationship.
+
+6. A client with chronic pain is receiving psychotherapy from the LMFT while also seeing a psychiatrist and a pain specialist. Current releases permit care coordination. The psychiatrist has encouraged greater behavioral activation, while the pain specialist recently advised reducing activity during a flare. The client is confused by the apparently conflicting recommendations and has stopped following either plan. Which coordination step should the therapist take?
+A. Coordinate with the psychiatrist and pain specialist separately, compare their explanations, review how each applies to the current flare, and plan an activity approach for the client from both recommendations.
+B. Coordinate with the psychiatrist and pain specialist by obtaining written activity parameters, then select the recommendation that best fits the clientâ€™s current flare.
+C. Send both providers a shared case summary and integrate their separate written recommendations into psychotherapy.
+D. Convene both providers for a joint reconciliation of the activity recommendations and a shared set of treatment parameters.
+
+7. An older adult reports gradually worsening difficulty managing finances and keeping track of complex appointments. Family members describe a similar decline, while a recent general medical evaluation did not identify an acute explanation. Which referral is MOST appropriate?
+A. Refer for psychiatric evaluation to determine whether an emerging mood or psychotic disorder is contributing to the cognitive complaints.
+B. Refer for specialized psychological or neurocognitive testing to clarify the pattern, severity, and functional significance of the clientâ€™s cognitive difficulties.
+C. Repeat brief cognitive screening over several sessions and refer only if the scores show continued decline across time.
+D. Refer back to primary care for another general medical evaluation before considering specialized cognitive or psychological testing.
+
+8. A clinic is designing a ten-week closed psychotherapy group for current caregivers of relatives with moderate-to-advanced dementia. Participants must be stable enough for outpatient group treatment; acute grief or crisis needs are handled separately. The goals are to reduce isolation, strengthen coping, practice communication and boundary strategies, and build practical caregiving skills. Which group framework is MOST appropriate?
+A. Use an open monthly support group for varied progressive-illness caregivers; offer rotating topics and peer discussion; repeat orientation for new members.
+B. Use a closed ten-week dementia-caregiver education group; provide fixed lessons and home practice; screen for caregiving status and overall clinical readiness.
+C. Use a closed ten-week grief group for current and bereaved caregivers; provide emotional processing and peer support; screen for general stability.
+D. Use a closed ten-week therapy group; combine peer support with practical skills; screen current dementia caregivers for clinical fit and stability.
+
+9. During couples therapy, one partner repeatedly presses for immediate discussion whenever conflict occurs. The other becomes quieter, gives shorter responses, and eventually leaves the room. The first partner then follows and increases efforts to obtain a response. What should the therapist assess NEXT?
+A. Determine which partner usually initiates conflict, what topics trigger arguments, and whether one personâ€™s behavior reliably predicts escalation.
+B. Explore childhood relationship models, attachment expectations, prior partners, conflict responses, repair patterns, and whether similar dynamics appeared in earlier relationships.
+C. Assess each partnerâ€™s emotion regulation, conflict tolerance, communication skills, and whether individual vulnerabilities contribute to the recurring relationship pattern over time.
+D. Track a recent disagreement step by step, including each partnerâ€™s response, interpretation, escalation, and effect on the other partner.
+
+10. An 11-year-old with ADHD is medically stable and receives medication management from a pediatrician. Homework often turns into a 90-minute conflict: the parent gives repeated verbal reminders, the child becomes frustrated and leaves the table, and both end the evening angry. Which intervention should the therapist use?
+A. Divide assignments into child-chosen order, use a timer for sustained work, and provide one parent prompt when attention drifts.
+B. Move homework to a low-distraction space, set one work interval, and have the parent give feedback at the end of the interval.
+C. Break homework into short work intervals with a visible sequence, and have the parent use one neutral cue instead of repeated reminders.
+D. Use a point system for completed assignments, let the child record each finished task, and provide reinforcement after the homework period.
+
+11. Acute danger has been stabilized, but a client continues to experience recurrent self-injury urges, rapid emotional escalation, impulsive behavior, and treatment-interfering absences. Which treatment plan is MOST consistent with dialectical behavior therapy?
+A. Sequence trauma memories during exposure, teach grounding strategies, and track symptoms to regulate processing intensity.
+B. Rank priority behaviors, analyze chains leading to self-injury/absence, and teach regulation plus crisis-survival skills.
+C. Identify rigid demands/global self-ratings, dispute them directly, and rehearse flexible beliefs during emotional activation.
+D. Explore relational expectations/unconscious conflict, examine the therapy relationship, and interpret the function of self-injury.
+
+12. A client has a history of psychiatric hospitalization, several medication changes, and multiple periods of outpatient therapy. The client now reports symptoms similar to those experienced several years ago. Which information would be MOST useful for understanding the mental-health history?
+A. Organize prior diagnoses, hospital admissions, treating clinicians, medications, and levels of care to compare earlier treatment periods.
+B. Reconstruct symptom onset, severity, treatment changes, response, remission or relapse, and functional change across the prior episodes.
+C. Review hospitalization triggers, discharge plans, post-discharge adherence, support availability, and whether baseline functioning returned afterward.
+D. Review medication trials, side effects, adherence, reasons for stopping, and which symptoms improved or persisted during each treatment period.
+
+13. A 79-year-old client who depends on an adult caregiver arrives with untreated medical needs and reports frequently going without food and prescribed medication. The client also states that the caregiver has been withdrawing money from the client's account for personal purchases. The client says, â€œPlease don't tell anyone until I can prove exactly what happened.â€ What should the therapist do FIRST?
+A. Address immediate safety and health needs, obtain corroborating financial and medical records, and report if additional evidence supports abuse or neglect.
+B. Address immediate safety and health needs, clarify the concerns directly with the caregiver, and report if the explanation does not resolve the suspicion.
+C. Address immediate safety and health needs, make the required protective report promptly based on reasonable suspicion, and coordinate appropriate client support.
+D. Address immediate safety and health needs, arrange alternative care and practical resources, and allow the client to decide whether authorities are contacted.
+
+14. A client states an intention to die tonight, describes a specific suicide plan, has immediate access to the intended means, has already made preparations, and says, â€œI don't think I can stop myself once I leave here.â€ What should the therapist do FIRST?
+A. Maintain direct observation, initiate secure psychiatric transfer, and hand off the current suicide-risk findings directly to receiving staff.
+B. Maintain direct observation, have a support person remove the identified means, and transport the client to same-day psychiatric urgent care.
+C. Maintain direct observation, obtain emergency psychiatric consultation, and decide disposition after a fuller suicide-risk assessment.
+D. Maintain direct observation, complete crisis safety planning, and discharge with continuous support to next-day psychiatric care.
+
+15. A therapist has been providing conjoint therapy to a married couple whose stated treatment purpose is reconciliation. One partner privately asks the therapist to stop couple sessions and continue seeing only that partner for individual therapy. The therapist has not yet discussed this proposed change with the other partner. What should the therapist do FIRST?
+A. In a meeting with the requesting partner, explore treatment goals, client-role concerns, and privacy issues before discussing any treatment change with both partners.
+B. Pause conjoint treatment and meet separately with both partners to review client roles, informed consent, confidentiality expectations, records concerns, and whether either treatment structure remains clinically workable.
+C. With both partners, review treatment purpose, client roles, privacy expectations, records implications, future communication expectations, and the informed agreement governing the proposed treatment structure.
+D. Close conjoint treatment, review client-role and privacy implications with both partners, and consider later individual treatment only after a planned transition.
+
+16. A client communicates online with dozens of people each week but reports, â€œWhen something actually goes wrong, I donâ€™t know who I could call.â€ The client denies feeling socially isolated because â€œI talk to people constantly.â€ Which assessment is MOST appropriate?
+A. Count regular online and in-person contacts, frequency of interaction, network size, and whether the client has enough social opportunities each week.
+B. Assess which relationships provide emotional support, practical help, reciprocity, dependable contact, and connection when the client experiences stress.
+C. Assess loneliness, social anxiety, avoidance, comfort with in-person contact, and whether online interaction substitutes for relationships the client actually wants.
+D. Identify the clientâ€™s closest relationships, perceived intimacy, shared history, and whether those connections remain available when practical or emotional help is needed.
+
+17. In the fourth session of an interpersonal therapy group, two members disagree about one member repeatedly interrupting the other. Their voices rise slightly, but neither becomes threatening, and the group remains physically and emotionally safe. Several other members become quiet and look away. Which intervention should the group therapist use next?
+A. Invite the group to restate the disagreement as specific requests, use the exchange to identify what helps participation remain workable, and observe membersâ€™ responses.
+B. Invite the group to examine the conflict as it unfolds, process its effect on participation, and connect the current interaction to the groupâ€™s relational work.
+C. Invite the two members to connect their reactions to prior interpersonal patterns and ask the group what similar patterns they recognize.
+D. Invite the group to repair the current tension, practice one shared strategy for disagreement, and generate additional responses for future sessions.
+
+18. A client spends hours reviewing routine work before sending it to colleagues. The client predicts, â€œIf I do not check everything several times, I will miss something obvious and everyone will think I am incompetent.â€ Repeated checking reduces anxiety briefly but is causing missed deadlines. The therapist is using CBT. Which intervention most directly tests the maintaining belief and behavior?
+A. Test the feared mistake prediction while eliminating repeated checking during one planned work task.
+B. Record automatic thoughts before work tasks and generate balanced alternatives after each episode of repeated checking.
+C. Create a graded hierarchy of increasingly difficult work tasks and practice each level while keeping checking available initially.
+D. Review evidence for and against being incompetent and use coping statements whenever uncertainty triggers the urge to check.
+
+19. Six weeks after giving birth, a client reports that for the past four weeks she has experienced depressed mood nearly every day, marked loss of interest, feelings of worthlessness, impaired concentration, psychomotor slowing, decreased appetite, and insomnia even when the infant is asleep. The symptoms substantially interfere with functioning. There is no history of mania or hypomania. Which diagnosis is MOST supported?
+A. Adjustment disorder with depressed mood
+B. Major depressive disorder
+C. Persistent depressive disorder
+D. Bipolar II disorder
+
+20. A therapist strongly believes an adult client should leave a long-term relationship after repeated infidelity. The client has clearly stated that the current treatment goal is to decide what kind of relationship the client wants, not to be persuaded toward separation. The therapist notices becoming increasingly directive about ending the relationship. What should the therapist do?
+A. Use a neutral decisional-balance exercise, document the client's clinical treatment goals, compare staying and leaving, and keep recommendations limited to concerns the client identifies as relevant.
+B. Discuss the value conflict openly, document the client's clinical treatment goals, and offer referral while continuing care long enough to assess whether the therapist can remain neutral.
+C. Identify the therapist's value interference and return treatment to the client's stated goals, using consultation as needed for clinically neutral recommendations, document the treatment direction, and monitor whether later guidance remains aligned with the client's values.
+D. Explore safety, trust, and relationship consequences under the client's clinical treatment goals, document the preferred direction, and avoid recommending either staying or leaving unless new concerns arise.
+
+21. For eight months, a 24-year-old has shown progressive social withdrawal, loss of motivation, and substantial decline in work functioning. During the most recent two months, the client has also experienced voices commenting on behavior, fixed persecutory beliefs, and disorganized speech. There have been no sustained major mood episodes, and substance and medical evaluation do not explain the disturbance. Which diagnosis is MOST supported?
+A. Schizoaffective disorder, depressive type
+B. Major depressive disorder with psychotic features
+C. Schizophrenia
+D. Schizophreniform disorder
+
+22. A graduate student seeks therapy for chronic procrastination. Most weeks, assignments are delayed until the deadline. The client reports one recent week when all work was completed early after studying at the library with a friend and dividing tasks into short blocks. The client says, â€œI donâ€™t know why that week was different.â€ The therapist is using a solution-oriented approach. Which intervention should the therapist use next?
+A. Examine the successful week in detail, identify what the client did differently, and choose one element to repeat before the next session.
+B. Use the miracle question to describe a day with manageable procrastination, then identify one observable sign that the preferred future has begun.
+C. Use coping questions to identify what has kept deadlines from being missed entirely, then build on one existing strength during the next assignment.
+D. Offer a compliment for the early completion and use a scaling question to identify the next realistic increase in follow-through.
+
+23. A client attends therapy after an employer suggested using the company's employee-assistance program. During the first meeting, the client gives brief answers and says, â€œHR thinks I have an anger problem. I don't know why I'm here.â€ Which response would BEST support initial therapeutic engagement?
+A. Review the EAP purpose, confidentiality limits, and reporting expectations, then ask how the client understands the employerâ€™s concern.
+B. Acknowledge the clientâ€™s reluctance, ask what feels inaccurate about the referral, and clarify what the client does not want from therapy.
+C. Acknowledge the referral and skepticism, invite the clientâ€™s view of the concern, and identify any personally useful outcome from meeting.
+D. Clarify that participation can be explored without accepting the employerâ€™s view, then ask whether the client prefers discussing the incident or current stress first.
+
+24. A client with chronic anxiety repeatedly texts a partner for reassurance whenever the partner is away. The client feels brief relief after each response, but the partner has become increasingly irritated and says the constant checking is straining the relationship. The client wants to change the pattern. Which intervention should the therapist use?
+A. Set one daily check-in and have the partner limit reassurance to that agreed time.
+B. Explore separation fears and have the partner validate distress without repeatedly confirming that everything is okay.
+C. Practice tolerating uncertainty by briefly delaying reassurance-seeking during separations while the partner responds consistently without repeated confirmation.
+D. Track anxious predictions and partner responses for one week to identify the situations that most strongly trigger checking.
+
+25. A 16-year-old's close friend died suddenly. The adolescent reports guilt about not answering the friend's final text message, poor sleep, difficulty attending school, and feeling â€œnumb.â€ The adolescent denies current suicidal intent or plan. A supportive caregiver is available. What should the therapist prioritize?
+A. Assess grief plus suicide risk, involve the caregiver in support, and establish a structured school-attendance plan.
+B. Assess grief plus suicide risk, involve the caregiver in support, and arrange an urgent crisis evaluation because of guilt.
+C. Assess grief plus suicide risk, involve the caregiver in support, and use structured retelling to address guilt.
+D. Assess grief plus suicide risk, involve caregiver support, and provide age-appropriate grief care with functional restoration.
+
+26. A client repeatedly states, â€œIâ€™m fine and not particularly upset,â€ while speaking quietly, appearing tearful, and showing a constricted range of affect. What should the therapist do NEXT?
+A. Assess depressive symptoms, functioning, recent change, and whether the presentation resembles past mood episodes.
+B. Clarify the clientâ€™s reported mood, observed affect, reactivity, and whether the discrepancy changes across topics.
+C. Explore recent losses, conflict, stressors, and emotional contexts associated with the clientâ€™s visible tearfulness.
+D. Assess suicidal thoughts, hopelessness, impulsivity, available supports, and whether risk indicators exceed the clientâ€™s report.
+
+27. An adult client discloses a sexual assault that occurred two days ago. The client is medically stable during the session, feels overwhelmed, and says, â€œI don't know if I want an exam or to report it. I just want to understand my options.â€ What should the therapist do NEXT?
+A. Assess immediate safety and medical needs, explain care and advocacy options, and recommend prompt forensic examination while making clear that it remains optional.
+B. Assess immediate safety and medical needs, explain reporting and advocacy options, and recommend police contact while making clear the client may decline.
+C. Assess immediate safety and medical needs, explain available care and advocacy options, and preserve informed client choice about next steps without directing the decision.
+D. Assess immediate safety and medical needs, provide stabilization and support, and invite the client to defer medical-forensic choices until the next appointment.
+
+28. An older couple reports that sexual intimacy has changed substantially during the past year. Both partners have experienced health changes, and they disagree about what sexual closeness â€œshould look like at our age.â€ Which assessment is BEST?
+A. Assess health changes, medications, pain, energy, sleep, and whether physical limitations have altered sexual activity or comfort.
+B. Assess relationship satisfaction, initiation patterns, closeness, conflict, and whether intimacy concerns occur during relational tension.
+C. Review lifespan sexual history, prior changes with aging, cultural expectations, and how each partnerâ€™s beliefs about sexuality influence current distress.
+D. Explore health, medications, expectations, sexual functioning across the lifespan, relationship dynamics, and the meaning each partner gives the change.
+
+29. A therapist is providing ongoing family therapy to a mother and her two adult children. The family agrees that the mother's adult sister should begin attending regularly because she is directly involved in the conflict being treated. The sister has never participated in therapy. What should the therapist do BEFORE beginning substantive work with her in the sessions?
+A. Before substantive participation, clarify whether the sister is a client or other participant, review the treatment purpose and confidentiality expectations with everyone involved, and obtain informed agreement about her role.
+B. Invite the sister to the next family session, review the existing treatment purpose and confidentiality expectations at the start, and decide afterward whether ongoing participation is appropriate.
+C. Meet with the sister alone before the family session, review the treatment purpose and confidentiality expectations, gather her perspective, and decide what information may later enter family work.
+D. Add the sister as a regular participant, review the family's treatment purpose and confidentiality expectations, document the proposed client role and consent expectations, and revise the agreement after observing sessions.
+
+30. A remarried couple has been living together with the motherâ€™s 13-year-old son for four months. The stepfather is eager to function as a parent and often corrects the adolescentâ€™s behavior. The adolescent responds, â€œYou are not my dad,â€ and later tells the mother that accepting the stepfather feels disloyal to the biological father. Which intervention should the therapist use next?
+A. Clarify household rules with both adults, plan one consistent response to limit challenges, and reinforce the mother and stepfatherâ€™s shared expectations.
+B. Validate loyalty concerns, protect the motherâ€™s primary discipline role, and build the stepfatherâ€™s connection through shared activities and low-conflict contact.
+C. Discuss loyalty concerns with the family, clarify the stepfatherâ€™s current role, and negotiate a specific agreement about household authority.
+D. Normalize loyalty conflicts, protect existing parent-child bonds, and expand the stepfatherâ€™s authority gradually as trust and role clarity develop.
+
+31. A client recently diagnosed with multiple sclerosis has stopped attending a weekly music group because fatigue and visible balance problems feel embarrassing. The client says, â€œI am still me, but I do not know how to be around people when my body is unpredictable.â€ Medical care is established and the client wants psychotherapy to focus on adjustment. Which intervention should the therapist use?
+A. Explore social judgment fears, plan brief returns to the music group, and compare feared reactions with actual responses during those visits.
+B. Explore illness-related grief and practice coping responses for social situations where physical changes feel especially visible.
+C. Explore illness-related identity and valued roles, select needed accommodations, and plan a paced return to the music group with selected accommodations.
+D. Review fatigue and balance patterns, select practical accommodations, and plan attendance during periods when the client has greater physical capacity.
+
+32. A client receiving treatment for panic-related avoidance wants to commute independently and return to full workplace participation. The formulation identifies both panic symptoms and escape from feared transit situations as barriers to those goals. Which outcome-measurement plan BEST matches the treatment goals and formulation?
+A. Track panic intensity and attack frequency; record medication reliance and sleep disruption; review overall distress at scheduled intervals.
+B. Track work attendance and commuting confidence; record coping-skill use and therapist ratings; review distress during attempted travel weekly.
+C. Track full-commute completion and avoided routes; record reassurance requests and work attendance; review completion of planned travel practices.
+D. Track panic symptoms and independent commute completion; record time in feared transit situations; review full-workday attendance each week.
+
+33. A long-term client reacts to a planned ending with grief and repeatedly states that the therapist is â€œabandoningâ€ the client. The client has made meaningful progress, and no new clinical need supports indefinite treatment. What should the therapist do NEXT?
+A. Maintain the agreed termination timeline; validate grief plus ending distress; review support/reentry options during remaining sessions.
+B. Extend treatment temporarily; process abandonment fears plus relational themes; resume termination after distress substantially decreases.
+C. Address the reaction during closure; offer referrals for further relational work; reinforce that continued treatment is not indicated.
+D. Explore the endingâ€™s relational meaning; maintain appropriate boundaries plus goals; alter timing only for a defined clinical purpose.
+
+34. During an intake, a client reports that previous couples therapy ended because the client felt the therapist consistently â€œtook my partner's side.â€ Which response would make the BEST clinical use of this information?
+A. Review examples from prior therapy, what was discussed, and how the client interpreted the therapistâ€™s responses during those sessions.
+B. Review what was helpful before the rupture, unfinished goals, and which prior methods the client would want repeated now.
+C. Explore what felt one-sided and how that experience affected trust and willingness to raise similar concerns now.
+D. Explain how conjoint therapists manage competing perspectives and ask how the client wants future alliance concerns addressed.
+
+35. Two months after an unexpected job demotion, a client reports tearfulness, increased worry about work, difficulty sleeping, and reduced concentration. The symptoms interfere with work and the client's relationship. The client continues to enjoy usual activities, does not report pervasive worthlessness or depressed mood across contexts, and the worry remains centered on the demotion and its consequences. No qualifying traumatic event occurred. Which diagnosis is MOST supported?
+A. Major depressive disorder because the symptoms reflect a pervasive depressive syndrome, broad impairment, and a course independent of the demotion.
+B. Generalized anxiety disorder because the worry extends across multiple domains beyond occupational stress.
+C. Posttraumatic stress disorder because the demotion functions as a qualifying traumatic event.
+D. Adjustment disorder with mixed anxiety and depressed mood because the symptoms remain tied to the demotion.
+
+36. A 14-year-old repeatedly refuses household responsibilities and argues when limits are set. One caregiver usually follows through with an agreed consequence, while another often changes the consequence after a prolonged argument. The adolescent is much more likely to comply when expectations are brief and follow-through is predictable. Which intervention should the therapist use?
+A. Choose two observable target behaviors, set one shared caregiver response for each, and reinforce follow-through consistently across the week.
+B. Use collaborative problem solving after arguments, invite the teen to propose alternatives, and revise expectations when both sides agree.
+C. Teach caregivers emotion coaching during refusals, pause consequences until everyone is calm, and process the conflict later in family sessions.
+D. Increase the teenâ€™s independence by allowing natural consequences for missed responsibilities, while caregivers monitor only behavior that affects safety.
+
+37. A client angrily discusses a former coworker and identifies the person by name. The client says there will be a confrontation within the next day, describes what the client intends to do, has ready access to a weapon, and has recently begun driving past the former coworker's workplace. Which action is MOST appropriate?
+A. Maintain direct observation, arrange emergency psychiatric evaluation, and have a reliable support person secure the weapon.
+B. Maintain direct observation, complete a focused targeted-violence assessment, and decide on external action after clarifying prior violence.
+C. Maintain direct observation, create a strict no-contact plan, and transfer the client to same-day crisis follow-up.
+D. Maintain direct observation, initiate an emergency protective response, and transfer the known risk facts directly to responders.
+
+38. A client reports new problems with sleep, energy, and concentration beginning shortly after a significant physical-health change and a medication adjustment. The client has no previous history of similar symptoms. Which assessment approach is BEST?
+A. Review depressive symptoms, prior mood episodes, family history, impairment, and whether the pattern resembles earlier psychiatric episodes.
+B. Review medication side effects, adherence, prescriber instructions, physical symptoms, and whether changes followed treatment adjustment.
+C. Obtain focused medical information about the health change, current treatment, relevant findings, and provider observations of symptom timing.
+D. Map the timing of medical and medication changes against physical, emotional, and cognitive symptoms and resulting functional effects.
+
+39. A client has had several episodes of paranoia and auditory hallucinations during periods of heavy methamphetamine use. Each episode begins during or soon after heavy use and resolves completely after sustained abstinence. There is no history of psychosis during drug-free periods and no independent manic or major depressive episode associated with the psychosis. Which diagnosis is MOST supported?
+A. Schizophrenia
+B. Brief psychotic disorder
+C. Stimulant-induced psychotic disorder
+D. Bipolar I disorder with psychotic features
+
+40. Infertility-related stress has led a couple to describe themselves as â€œbrokenâ€ and their relationship as a failure, despite evidence of persistence, mutual care, and shared values. Which treatment plan is MOST consistent with narrative therapy?
+A. Revise global failure appraisals, examine contradictory evidence, and test balanced beliefs through shared behavioral activities.
+B. Describe the preferred relationship future, identify exception-based patterns, and construct observable changes from demonstrated strengths.
+C. Externalize the shared problem story, identify unique outcomes, and develop an alternative relationship identity collaboratively.
+D. Clarify couple boundaries, identify stress-based alliances, and change interactions that maintain relational distress within therapy.
+
+41. An adult begins therapy for difficulty maintaining emotional closeness in romantic relationships. During the third session, the client discloses a history of interpersonal trauma and says, â€œIâ€™ve never really thought about whether that has anything to do with my relationships now.â€ What should the therapist do NEXT?
+A. Assess the trauma history, type and duration of exposure, developmental timing, prior disclosure, and whether the client received support after the events.
+B. Assess current trauma-related symptoms, triggers, relationship effects, functioning, and the clientâ€™s preferred pace for discussing the earlier experiences.
+C. Assess current intimacy patterns, expectations, communication, and whether relationship problems occur independently of trauma reminders.
+D. Assess mood, anxiety, dissociation, sleep, substance use, and whether another symptom pattern better accounts for the clientâ€™s current relationship difficulties.
+
+42. A client states an intention to stop treatment because of dissatisfaction with its direction. Important goals remain incomplete, but no acute safety concern is present. What should the therapist do NEXT?
+A. Discuss the clientâ€™s dissatisfaction and unfinished goals, propose a two-session repair trial, and respect the clientâ€™s informed choice to leave if the trial is declined.
+B. Discuss the clientâ€™s dissatisfaction and unfinished goals, review reasonable alternatives and foreseeable effects of ending, and respect the clientâ€™s informed decision to leave.
+C. Discuss dissatisfaction and unfinished goals, coordinate transfer, and respect the clientâ€™s informed choice once transfer begins.
+D. Discuss the clientâ€™s dissatisfaction and unfinished goals, honor the clientâ€™s informed request to end, and provide referrals and reentry information after termination.
+
+43. A family reports intense conflict that several members describe as â€œthe same fight our parents used to have.â€ Different relatives frequently form temporary alliances during disagreements. What should the therapist assess NEXT?
+A. Construct a multigenerational map emphasizing prior conflicts, alliances, cutoffs, losses, and whether similar patterns appeared in earlier generations.
+B. Assess the current conflict sequence, communication style, problem-solving, emotional intensity, and which family members become involved during escalation.
+C. Evaluate significant family relationships, past disruptions, recurring patterns, current alliances, and how those dynamics appear in the present conflict across generations.
+D. Interview family members separately about family history, current concerns, perceived alliances, and areas where their descriptions of recurring patterns differ.
+
+44. A client reports that a former coworker who was terminated after a serious workplace conflict has sent increasingly threatening messages, appeared twice in the employee parking area after being told not to return, and recently sent a photograph of the client's car with a message showing knowledge of the client's work schedule. The client is frightened but has not been physically assaulted. What should the therapist do NEXT?
+A. Assess the threatening contact and workplace impact, strengthen coping during work hours, and review personal safety steps if the contact escalates.
+B. Assess the threatening contact and workplace impact, support a direct written boundary, and document any response with the clientâ€™s supervisor.
+C. Assess the threatening contact and workplace impact, review privacy and technology precautions, and connect the client with general victim-support resources.
+D. Assess the threatening contact and workplace impact, coordinate a workplace safety plan, and connect the client with specialized harassment resources.
+
+45. A client with a history of childhood sexual abuse wants to work on trauma memories. After two sessions of detailed narration, the client reports hours of panic and nightmares afterward and skipped the next appointment because, â€œI knew I would be pushed back into it.â€ The client says, â€œI want to continue, but I need more control over the pace.â€ Which intervention should the therapist use next?
+A. Agree collaboratively on an individualized shorter narration segment, use client-controlled stop signals, practice grounding after each segment, review activation, and maintain detailed memory work as the primary method.
+B. Use several sessions of present-focused regulation and relationship safety, with jointly defined readiness markers for adding trauma-memory work.
+C. Reestablish client-controlled pacing, strengthen stabilization skills, and use small, collaboratively selected trauma-memory doses with explicit review of post-session activation.
+D. Use trauma-focused cognitive work on expectations of being overwhelmed, pair it with client-chosen grounding, and add memory work as confidence increases.
+
+46. A client reports repeated verbal outbursts during arguments with a partner. The client notices a racing heart and clenched fists shortly before yelling, then leaves the room only after the argument has escalated. There has been no physical assault, and the couple has agreed on a safety plan. The client wants to stop the outbursts earlier. Which intervention should the therapist use?
+A. Review the anger sequence, rehearse an assertive request for the recurring disagreement, and establish a cue for the partner to signal rising tension.
+B. Review the anger sequence, identify the earliest body or thought cue, and apply the existing pause-and-return response before the argument escalates further.
+C. Review the anger sequence, practice paced breathing at early arousal, and use the skill during a planned discussion with the partner.
+D. Review the anger sequence, examine interpretations of disrespect, rehearse alternative interpretations using a recent disagreement, and compare which interpretation is associated with less escalation.
+
+47. A therapist and an ongoing client are members of the same small cultural association. They will regularly see one another at community events, and there is no realistic way for either person to avoid the organization. The therapy has been effective and neither person wants to end it. What is the therapist's BEST course of action?
+A. Set a detailed public-contact plan for brief greetings, confidentiality, therapy boundaries, power concerns, and clinical-judgment review after community events.
+B. Ask the client how public contact should be handled, document the preference, review role boundaries, privacy, power concerns, and effects on clinical judgment.
+C. Keep therapy and organizational roles separate, avoid decisions involving the client when possible, document confidentiality, power, boundary, and clinical-judgment concerns, and consider referral if problems develop.
+D. Establish expectations for public acknowledgment, confidentiality, role boundaries, and power concerns, while attending to effects on clinical judgment.
+
+48. For four months, a 29-year-old has averaged two to three aggressive outbursts each week involving shouting, threats, pushing, or striking objects without causing injury or property damage. The reactions are grossly disproportionate to minor provocations, occur impulsively rather than deliberately, and are not used to achieve a practical objective. The pattern has caused significant relationship and work problems. There is no manic episode, substance explanation, or pervasive pattern of violating others' rights. Which diagnosis is MOST supported?
+A. Conduct disorder
+B. Antisocial personality disorder
+C. Bipolar I disorder
+D. Intermittent explosive disorder
+
+49. A clientâ€™s panic is maintained by catastrophic interpretations of bodily sensations, escape from feared settings, repeated reassurance seeking, and avoidance of activities that increase heart rate. Which treatment plan is MOST consistent with cognitive behavioral therapy?
+A. Map the panic-avoidance sequence, evaluate threat beliefs, and use interoceptive plus situational exposure exercises consistently.
+B. Map separation meanings, examine defensive avoidance carefully, and interpret relational expectations within the therapy relationship.
+C. Map family reassurance patterns, change reinforcing responses, and support independent approach behavior across feared situations.
+D. Map lived panic meaning, deepen phenomenological awareness gradually, and support self-directed engagement with feared situations.
+
+50. A client gambles only several times each month but reports strong urges, repeated unsuccessful efforts to stop, hiding losses from a spouse, and growing household debt. Which assessment approach is BEST?
+A. Quantify gambling frequency, amount wagered, losses, debt, borrowing, and access to funds during periods of active gambling.
+B. Assess mood triggers, excitement seeking, escape motives, stress level, and whether substance use commonly occurs around gambling episodes.
+C. Assess urges, unsuccessful efforts to stop, preoccupation, concealment, financial consequences, and relationship effects across the gambling pattern.
+D. Review family history, prior consequences, previous treatment, partner concerns, and the clientâ€™s readiness to change.
+
+51. A 29-year-old client currently reports three weeks of depressed mood, loss of interest, fatigue, impaired concentration, and feelings of worthlessness. Two years ago, the client experienced five days of unusually elevated mood, needed only three hours of sleep without fatigue, became markedly more talkative and productive, and spent impulsively. Friends noticed a clear change from baseline. The episode did not cause marked impairment, hospitalization, or psychosis. There is no history of a manic episode. Which diagnosis is MOST supported?
+A. Bipolar II disorder
+B. Major depressive disorder, recurrent
+C. Attention-deficit/hyperactivity disorder
+D. Cyclothymic disorder
+
+52. A father recently released after three years of incarceration is participating in court-supervised reunification with his 10-year-old daughter. Probation terms, release requirements, and permitted contact have already been clarified with the relevant professionals. During visits, the father presses for immediate closeness and the daughter becomes quiet; afterward he says, â€œIâ€™m her dad; we should be back to normal.â€ Which intervention should the therapist use to support family reintegration?
+A. Use graduated reunification visits that follow the daughterâ€™s approach and withdrawal cues while coaching the father to practice lower-pressure bids for closeness.
+B. Use graduated reunification visits to help the father give an age-appropriate account of incarceration and invite the daughterâ€™s questions.
+C. Use graduated reunification visits to add enjoyable shared activities and increase contact as the daughter shows greater familiarity and comfort.
+D. Use graduated reunification visits while the father processes guilt separately and practices expectations for developmentally appropriate parenting with the therapist.
+
+53. A 27-year-old reports a longstanding pattern of making careless mistakes, difficulty sustaining attention, failing to finish tasks, disorganization, frequently losing necessary items, easy distractibility, and forgetfulness. School records and caregiver history document the same pattern before age 12, and the symptoms occurred at both home and school. They now impair work and home functioning. A traumatic event at age 22 temporarily worsened concentration but occurred long after the attentional pattern began. Which diagnosis is MOST supported?
+A. Posttraumatic stress disorder
+B. Generalized anxiety disorder
+C. Specific learning disorder
+D. Attention-deficit/hyperactivity disorder
+
+54. A couple seeks therapy four months after the birth of their first child. They report increased arguments, reduced intimacy, uncertainty about responsibilities, and very little time together. Neither describes significant relationship problems before becoming parents. What should the therapist assess NEXT?
+A. Assess each partnerâ€™s mood, sleep, stress tolerance, and whether individual symptoms are disrupting adjustment to the new baby.
+B. Assess pre-baby conflict patterns, relationship satisfaction, prior role expectations, and whether longstanding difficulties intensified after childbirth.
+C. Assess infant sleep and feeding demands, outside support, childcare burden, and whether practical strain is driving recent disagreements.
+D. Assess changes in roles, expectations, support, intimacy, and caregiving since the transition to parenthood.
+
+55. During an intake, a clientâ€™s speech is understandable but becomes increasingly difficult to follow because the client abruptly shifts topics and does not consistently return to the original question. The client denies hallucinations. Which assessment would BEST clarify the relevant mental-status finding?
+A. Assess orientation, attention, and recent memory to determine whether cognitive impairment contributes to the interview difficulty.
+B. Assess unusual beliefs, perceptual experiences, and thought content to determine whether psychotic features accompany the presentation.
+C. Assess coherence, associations, and maintenance of goal direction during topic shifts in the interview.
+D. Assess reported mood, affective range, and emotional reactivity to determine whether affective disturbance explains the communication pattern.
+
+56. A private-practice LMFT is moving from one electronic record system to another. The old vendor will deactivate the account in 30 days. The therapist has exported most records but has not verified that all required records, access controls, and electronic change history were preserved in the new system. What should the therapist do BEFORE the old system is deactivated?
+A. Export the remaining records, store them securely under the new system's access controls, document the migration, and verify missing information before the old account closes.
+B. Retain an encrypted archive with the old vendor, document vendor access and retention terms, migrate active records to the new system, and periodically verify that archived information remains retrievable and confidential.
+C. Create a complete read-only export, document record counts and retention dates, preserve the export securely, and use the new system prospectively while keeping the archived records available for required access.
+D. Complete the migration, document transfer and retention details, preserve required record integrity and confidentiality safeguards, and close the old account after verifying the new system.
+
+57. A couple is caught in a pursueâ€“withdraw cycle in which criticism and defensiveness conceal fear of rejection and fear of failure. Which treatment plan is MOST consistent with emotionally focused couple therapy?
+A. Clarify couple boundaries, support subsystem leadership, and change alliances maintaining the pursue-withdraw pattern across sessions.
+B. Examine negative interactional cycles, access underlying fears and concerns, and shape emotionally responsive bonding exchanges.
+C. Identify conflict appraisals, test rejection and failure predictions, and regularly practice balanced communication during disagreements.
+D. Separate partners from the interactional cycle, identify reduced-influence moments, and build an alternative relationship story.
+
+58. A client reports that an intimate partner controls access to money, regularly checks the client's phone, discourages contact with friends, threatens to take the children if the client leaves, and has recently begun blocking doorways during arguments. The client is alone in the therapist's office and says, â€œI don't know whether this counts as abuse, but I'm getting scared.â€ What should the therapist do NEXT?
+A. Assess current danger privately, recommend temporary separation, and connect the client with safety resources plus trusted supports.
+B. Assess current danger privately, map coercive-control escalation, and develop practical safety options that fit the clientâ€™s priorities.
+C. Assess current danger privately, define criteria for possible conjoint work, and review emergency supports if controlling behavior escalates.
+D. Assess current danger privately, strengthen trusted supports, and arrange close safety-focused follow-up while the client considers relationship options.
+
+59. Following a divorce, two children now move between households, grandparents have assumed more caregiving responsibility, and several extended-family relationships have changed. One parent says, â€œThe whole family seems reorganized.â€ What should the therapist assess NEXT?
+A. Assess coparenting agreements, parental conflict, each child's reactions, school functioning, and how the custody schedule affects the children across households.
+B. Assess each child's adjustment, loyalty concerns, relationship with each parent, behavioral changes, and differences in functioning across the two households.
+C. Assess the grandparents' caregiving role, boundary concerns, parental authority, communication with both households, and whether extended-family involvement is intensifying current family conflict.
+D. Assess caregiving roles, household membership, extended-family involvement, alliances, decision-making, and available support since the divorce reorganized the family's daily structure.
+
+60. At the start of conjoint couple therapy, both partners agreed that the therapist would not promise to keep material relationship information secret and would work with a disclosing partner toward bringing such information into conjoint treatment or reconsidering whether conjoint work could continue. The agreement did not authorize the therapist to reveal one partner's private information without other legal authority. One partner now privately reports a major financial action that directly affects the couple's treatment goals and demands permanent secrecy. What should the therapist do?
+A. Review the agreement with the disclosing partner, continue conjoint treatment while holding the information private, and avoid using the financial issue unless the partner later chooses disclosure.
+B. Review the agreement, state that secrecy conflicts with conjoint work, and disclose the financial action if the partner refuses transparency.
+C. Review the agreement with the disclosing partner, pause conjoint treatment while secrecy remains, document the conflict, and terminate the couple work if authorization for disclosure is not provided.
+D. Review the agreement and safety concerns, help the disclosing partner plan their own disclosure, and reassess whether conjoint treatment can continue if the partner refuses.
+
+61. A client witnessed a coworker being killed during workplace violence four days ago. The client is physically safe but reports poor sleep, difficulty concentrating, feeling â€œon edge,â€ and uncertainty about returning to work. The client denies suicidal thoughts and is able to care for basic needs. What should the therapist prioritize?
+A. Assess immediate functioning and distress, provide stabilization and practical coping support, and plan gradual return to manageable daily activities.
+B. Assess acute trauma reactions and functioning, provide grounding and coping support, and schedule prompt close follow-up before deciding about work return.
+C. Assess event-discussion readiness and functioning, provide brief narrative support, and involve trusted supports during work reentry.
+D. Assess psychiatric stability and functioning, provide coping support, and arrange same-day crisis consultation before making work-return decisions.
+
+62. A 34-year-old client is referred by a physician because of recurrent panic attacks. The client's partner attends the intake at the client's request. The client wants help reducing the panic attacks, while the partner reports that the episodes have changed the couple's routines and increased reassurance-seeking and conflict. Which action should the therapist take FIRST to determine the appropriate unit of treatment?
+A. Clarify panic severity, avoidance, medical or substance factors, functional impairment, and the clientâ€™s goals before deciding whether partner involvement should continue.
+B. Clarify client and partner views of the panic, relationship effects, and goals before choosing the initial treatment unit.
+C. Clarify reassurance-seeking, conflict cycles, partner burden, communication patterns, and symptom effects before deciding whether conjoint assessment should take priority.
+D. Clarify confidentiality expectations, prior treatment, each personâ€™s concerns, and whether separate interviews are needed before selecting individual or conjoint work.
+
+63. A licensed marriage and family therapist has general experience treating anxiety but has never been trained to provide a specialized exposure protocol requested by a client. The protocol is within the legal scope of marriage and family therapy, but the client cannot find another provider nearby. What is the therapist's BEST response?
+A. Explain limited experience, begin the specialized protocol with trained-clinician supervision, and monitor early response during the first sessions.
+B. Explain the competence limitation, complete training or consultation that establishes competence, review readiness to use the protocol, and maintain appropriate interim care.
+C. Explain the competence limitation, obtain informed consent about the therapist's training gap, and provide the protocol with specialist consultation and structured outcome monitoring.
+D. Explain the competence limitation, continue familiar anxiety treatment, document why the specialized protocol is not being used, review the client's response, and reconsider training or referral if progress remains inadequate.
+
+64. A client describes spending hours trying to make every decision perfectly. While saying, â€œI have to get it right,â€ the clientâ€™s jaw tightens, shoulders lift, and breathing becomes shallow. The client says, â€œI didnâ€™t realize I was doing that.â€ The therapist is using a Gestalt approach. Which intervention should the therapist use next?
+A. Ask the client to remain with the jaw tension and describe the sensations, emotions, and impulses that become noticeable in the moment.
+B. Invite a two-chair dialogue between the demanding perfectionistic voice and the part of the client that wants more flexibility and rest.
+C. Ask the client to complete the sentence â€œIf I get it wrong...â€ several times while noticing what thoughts, feelings, and images emerge.
+D. Invite the client to exaggerate the clenched jaw and raised shoulders while repeating the perfectionistic statement, then notice what changes.
+
+65. A client reports occasionally thinking, â€œIt would be easier not to wake up.â€ The client denies suicidal intent, a suicide plan, preparatory behavior, and access to lethal means. The client remains engaged in treatment, identifies strong reasons for living, has dependable supports, and can maintain personal safety. Which intervention is BEST?
+A. Reassess acute risk, arrange same-day psychiatric evaluation, continue supervision until disposition is completed, and update available supports for the transition.
+B. Reassess acute risk, revise the outpatient safety and means-access plan, and increase near-term follow-up during the current risk period.
+C. Reassess acute risk, continue the usual treatment schedule with existing supports, and add no structured safety changes unless risk increases.
+D. Reassess acute risk, arrange continuous monitoring by a trusted support person, and defer independent safety planning until passive death wishes fully resolve.
+
+66. A clientâ€™s depressive symptoms have remained remitted for several months. The client has resumed work and relationships, uses treatment skills independently, and has not identified additional therapeutic goals. The client nevertheless requests indefinite weekly therapy because the sessions feel reassuring. Which plan is MOST appropriate?
+A. Continue weekly for three additional months; establish preventive wellness goals plus relapse indicators; reassess therapeutic benefit at a scheduled review.
+B. Shift to monthly maintenance sessions; monitor relapse signs plus independent coping; leave termination open until the client requests ending.
+C. Begin a planned step-down toward termination; explore reliance on weekly reassurance; verify independent use of gains between progressive follow-up sessions.
+D. Continue twice monthly for six months; add maintenance goals plus relapse planning; revisit termination after ending-related distress decreases.
+
+67. An employee-assistance program authorizes six sessions for a client with longstanding work stress and relationship difficulties that are unlikely to resolve fully within the authorization period. Which treatment plan is MOST appropriate?
+A. Agree on broad work and relationship goals; use all six available visits for active treatment; evaluate continuing-care needs during the final appointment.
+B. Agree on focused client goals; explain the six-session limit at intake; begin continuity planning by mid-course when longer care appears indicated.
+C. Use the employerâ€™s concerns as primary goals; track workplace outcomes through six visits; reserve all transition planning for the final appointment.
+D. Provide stabilization during the six visits; arrange outside referral at intake; limit active treatment to support while transfer is being pursued.
+
+68. A client who has consumed large amounts of alcohol daily for several years abruptly stopped drinking about 24 hours ago. During the session, the client has severe tremor, heavy sweating, a rapid pulse, increasing disorientation, and reports seeing insects moving across the wall. What should the therapist do FIRST?
+A. Keep the client supervised, activate emergency medical transport, and report suspected complicated withdrawal to receiving staff.
+B. Keep the client supervised, arrange urgent specialty withdrawal admission, and transfer after the receiving clinician accepts the client.
+C. Keep the client supervised, arrange urgent psychiatric evaluation, and request immediate medical screening on arrival.
+D. Keep the client supervised, obtain urgent medical consultation, and follow the resulting disposition plan while monitoring deterioration.
+
+69. Since late adolescence, a client has shown a persistent pattern across friendships, romantic relationships, school, and work of unstable intense relationships, rapidly shifting views of others, an unstable sense of identity, chronic emptiness, impulsive behavior, and intense fear of abandonment. Mood shifts usually follow interpersonal events and last hours rather than occurring as distinct multiday periods of elevated mood and reduced need for sleep. Which diagnosis is MOST supported?
+A. Bipolar II disorder
+B. Borderline personality disorder
+C. Posttraumatic stress disorder
+D. Dependent personality disorder
+
+70. A 16-year-old wants closer friendships but has begun avoiding lunch, school activities, and invitations after classmates mocked the client in a group chat. The client spends evenings checking classmatesâ€™ posts, compares social lives, and says, â€œIf I go, they will notice how awkward I am.â€ Which intervention should the therapist use next?
+A. Teach assertive responses to online harassment and plan when to block or report peers while monitoring whether anxiety changes.
+B. Schedule a temporary reduction in social-media checking and replace scrolling periods with structured offline activities that lower daily comparison.
+C. Build graded in-person social exposures while challenging feared judgment and the social-media comparison patterns that maintain avoidance.
+D. Process rejection experiences and build self-compassion before gradually increasing contact with peers the client already views as relatively safe.
+
+71. A client reports ending previous psychotherapy because aspects of treatment conflicted with important family and cultural beliefs. The client is hesitant about beginning therapy again. What should the therapist do NEXT?
+A. Explore which prior treatment elements conflicted with family or cultural beliefs and how that experience shapes current expectations now.
+B. Clarify current family and cultural values, preferred adaptations, and treatment practices the client expects to avoid or modify.
+C. Review prior therapy goals, interventions, helpful elements, difficult elements, and reasons the client ultimately ended treatment.
+D. Explore family attitudes toward therapy, what the client disclosed, available support, and effects on prior attendance and continuation.
+
+72. Within three months, a client becomes the primary caregiver for an ill parent, relocates to a new city, and experiences the end of a long-term relationship. The client reports headaches, irritability, poor sleep, and reduced contact with friends. What should the therapist do NEXT?
+A. Assess caregiving burden, parent-child history, available respite, medical demands, and how the caregiving role is affecting the clientâ€™s daily functioning.
+B. Assess grief and attachment reactions to the relationship ending, current support, loneliness, and whether breakup-related distress explains the recent symptoms.
+C. Assess relocation stress, community connection, occupational adjustment, disrupted routines, and whether the new environment has reduced the clientâ€™s available support.
+D. Map how caregiving, relocation, and relationship loss coincide with symptom, support, and functioning changes.
+
+73. A client is the primary caregiver for a father with a progressive neurological illness. The client says, â€œIf I rest, Iâ€™m failing him,â€ refuses help from siblings, has begun canceling personal medical appointments, and sleeps four to five hours most nights. The fatherâ€™s care needs are stable and there is no immediate medical emergency. Which intervention should the therapist use?
+A. Reframe self-blame and plan respite or sibling help for the periods of highest caregiving demand each week.
+B. Develop a detailed caregiving schedule with sibling assignments and monitor whether the client completes the planned care tasks.
+C. Use grief-focused work to process anticipatory loss and identify how sadness influences the clientâ€™s willingness to accept family help.
+D. Prioritize the clientâ€™s medical appointments and sleep routine while maintaining primary responsibility for the fatherâ€™s daily care.
+
+74. An adult client requests a copy of the client's psychotherapy record. The therapist believes several accurate notes could be emotionally difficult for the client to read, but the therapist does not identify a substantial risk of significant adverse or detrimental consequences from access. What should the therapist do?
+A. Offer to review the record with the client, explain the therapist's concern about upsetting material, and provide the copy after that review occurs.
+B. Prepare a treatment summary first, explain why it may be more useful clinically, and provide the underlying record if the client still requests it.
+C. Process the requested copy under the applicable access rules and timelines, do not condition access on therapeutic review because the notes may be upsetting, and offer discussion if desired.
+D. Delay direct access while another licensed clinician reviews the notes for treatment-disruption risk, document that assessment, discuss the findings, and provide the record only if the reviewer finds no significant concern.
+
+75. A client who had a stroke six months ago follows couple-session discussions but has persistent word-finding difficulty and slow verbal expression. When trying to describe feelings, the client often gives up and the partner begins answering instead. Both want the client to participate more fully in treatment. Which adjunct referral would best support this goal?
+A. Refer to neuropsychology for assessment of attention, memory, and executive demands that may complicate participation in difficult couple conversations.
+B. Refer to occupational therapy for adaptive routines and practical communication supports that improve participation in shared home and relationship activities.
+C. Refer to speech-language pathology for aphasia-specific rehabilitation and partner-supported conversational communication strategies for emotionally complex relationship discussions.
+D. Refer to rehabilitation psychology for adjustment work addressing frustration, disability identity, coping, and emotional reactions that arise during communication with the partner.
+
+76. A 4-year-old who speaks one language primarily at home and English at preschool is referred because teachers report limited peer interaction and difficulty following classroom directions. The parents report age-appropriate conversation and play with relatives at home. What should the therapist do NEXT?
+A. Compare receptive and expressive language, peer interaction, classroom directions, and differences between home and preschool performance.
+B. Review developmental history across communication, social, motor, and adaptive domains while comparing both language contexts and settings for this child.
+C. Review preschool peer behavior, classroom demands, teacher supports, and whether difficulties change during familiar versus unfamiliar activities.
+D. Review early milestones, hearing history, bilingual exposure, family developmental history, and changes in communication across the past year.
+
+77. A client has experienced chronic abdominal pain for more than a year. Medical evaluation has identified a gastrointestinal condition that can account for some of the pain. For at least eight months, the client has spent several hours each day checking symptoms, repeatedly seeking additional medical opinions, and worrying that minor changes signal serious deterioration. The preoccupation has substantially disrupted work and relationships. Which diagnosis is MOST supported?
+A. Somatic symptom disorder
+B. Illness anxiety disorder
+C. Generalized anxiety disorder
+D. Factitious disorder
+
+78. A current client posts a public comment on the therapist's professional social-media page saying, "You have helped me more than any therapist ever has." The comment could reveal the client's treatment relationship to people who know the client. What is the therapist's BEST response?
+A. Do not reply publicly; hide the comment if possible, document the privacy concern, and review social-media boundaries with the client privately.
+B. Hide the public comment, message the client about the confidentiality and boundary concern, document the interaction, review whether removal reduces exposure, explain the public-contact risk, and ask that future posts avoid identifying the therapy relationship.
+C. Leave the comment unanswered, document the confidentiality and privacy concern, and review with the client whether public identification fits the client's understanding of online treatment boundaries.
+D. Post a neutral response that avoids confirming treatment, document the confidentiality issue, and review with the client how public comments can affect privacy and future therapy boundaries.
+
+79. A client discussing alcohol use says, â€œI hate being tired and missing things after I drink, but it is how I relax with my friends. I know there are costs, and I am still not sure I want to change.â€ The therapist is using motivational interviewing and has not asked the client to commit to a change plan. Which response should the therapist use next?
+A. Ask permission to share personalized feedback about the drinking pattern, then invite the client to describe what feels relevant.
+B. Use importance and confidence rulers, then ask why the ratings are not lower so the client articulates personally meaningful reasons favoring change.
+C. Reflect both sides of the ambivalence and ask what concerns the client most about continuing versus changing so personal motivations emerge.
+D. Summarize the clientâ€™s change language, ask which goal feels acceptable now, and support an individually selected, immediately achievable next step.
+
+80. A client wants closer friendships but repeatedly pulls away when others become emotionally available. After a close friend recently invited the client to share more openly, the client ignored messages for several days and later said, â€œIf I let people matter, they can disappoint me.â€ The therapist is using an attachment-informed approach. Which intervention should the therapist use?
+A. Explore early caregiving expectations and use a current friendship example to identify when bids for closeness trigger withdrawal.
+B. Help the client describe the fear of disappointment to the friend and practice a brief request for reassurance after an emotionally important exchange.
+C. Identify withdrawal as a protective attachment strategy, explore how it functions during bids for closeness, and practice a tolerable reciprocal response when the friend reaches out.
+D. Notice physiological activation during relational bids and practice grounding while the client chooses how much emotional contact to sustain.
+
+81. A client has attended consistently, completed CBT practices as assigned, and demonstrated understanding of the treatment model. After an adequate trial, worry, avoidance, and occupational impairment remain essentially unchanged. What should the therapist do NEXT?
+A. Review formulation plus longitudinal progress data; compare interventions with the maintenance cycle; revise the therapeutic target when indicated.
+B. Review assignment quality plus exposure dose; compare practice with the plan; intensify the intervention for another trial.
+C. Review diagnostic plus medication factors; compare symptoms around consultation; maintain the current psychotherapy target meanwhile.
+D. Review alliance quality plus treatment preferences; compare engagement across recent sessions; shift carefully toward supportive therapy before revisiting the formulation.
+
+82. A couple seeks therapy primarily because disclosure of an affair has produced severe mistrust, repeated arguments, and uncertainty about whether the relationship can continue. One partner recently changed jobs and the household is also under some financial strain, but both identify the relationship rupture as the reason for treatment. Neither partner meets criteria for an individual mental disorder. Which condition is MOST appropriate as the primary focus of clinical attention?
+A. Occupational problem related to work-role stress and job changes.
+B. Relationship distress with spouse or intimate partner following affair disclosure.
+C. Parent-child relational problem involving family conflict and caregiving strain.
+D. Housing or economic problem involving financial strain, housing instability, and resource limitations.
+
+83. A family reports frequent chaotic mornings but can identify several recent days when routines worked, conflict remained low, and everyone left on time. Which treatment plan is MOST consistent with a solution-oriented approach?
+A. Externalize morning chaos, map its effects on family identity, and re-author cooperation through unique successful outcomes.
+B. Analyze triggers before late departures, set behavioral contingencies, and track daily morning-task success across one week.
+C. Prescribe a planned sequence change, observe the family response, and revise the directive according to demonstrated effects.
+D. Outline the preferred morning, examine exceptions through scaling, and build a single repeatable strategy from prior success.
+
+84. During the past two months, a client has experienced six abrupt episodes of intense fear with palpitations, trembling, shortness of breath, and fear of losing control. Several attacks occurred when the client was relaxed and no specific trigger was present. The client now worries persistently about another attack and avoids exercise because increased heart rate feels frightening. Which diagnosis is MOST supported?
+A. Generalized anxiety disorder
+B. Social anxiety disorder
+C. Agoraphobia
+D. Panic disorder
+
+85. A 15-year-old has stopped attending school regularly. The parents describe the adolescent as â€œdefiant and lazy,â€ while the adolescent reports becoming intensely uncomfortable around classmates and says the parents â€œdon't understand what happens at school.â€ What should the therapist do NEXT?
+A. Explore school triggers, internal reactions, avoidance, and peer experiences primarily from the adolescentâ€™s perspective before comparing family reports.
+B. Compare concrete examples, timing, setting, and consequences reported by the adolescent, parents, and school before selecting among competing explanations.
+C. Review parent responses, family conflict, attendance consequences, and home routines to determine whether family interactions are maintaining the refusal.
+D. Obtain attendance records, teacher observations, academic changes, and peer information before deciding how much weight to give the familyâ€™s differing accounts.
+
+86. A 38-year-old client reports that â€œeverything is basically fine,â€ but arrives in noticeably soiled clothing and moves much more slowly than during an intake completed six months earlier. The clientâ€™s spouse has recently expressed concern about declining self-care. Which information should the therapist clarify NEXT as part of the mental-status evaluation?
+A. Assess depressive symptoms, vegetative changes, prior mood episodes, current impairment, and whether the presentation resembles earlier periods of depression.
+B. Assess recent medication or substance changes, medical symptoms, fatigue, sleep disruption, and whether physical factors could account for the observed slowing.
+C. Obtain focused collateral information about self-care, activity level, daily routines, occupational functioning, and how recently the change became noticeable.
+D. Directly assess appearance, psychomotor activity, speech, attention, and change from baseline before interpreting the mental-status findings.
+
+87. Four months after the birth of their first child, one partner reports fatigue, body changes, and little interest in sex. The other partner has heard friends and social-media posts say that couples should have â€œreturned to normalâ€ by now, interprets decreased initiation as rejection, and presses for more sexual contact. The first partner withdraws, and both report feeling less emotionally close. Which intervention should the therapist use?
+A. Clarify each partnerâ€™s preferred frequency and build a mutually agreed intimacy plan that includes clear signals for initiation, decline, and requests for nonsexual closeness.
+B. Explore postpartum body-image and fatigue with the lower-desire partner, then identify conditions that make sexual contact feel more possible.
+C. Map the pressure-withdraw cycle, challenge outside â€œnormalâ€ timelines, and negotiate several forms of closeness that either partner can initiate without obligation.
+D. Use sensate-attention exercises that remove intercourse as the goal and help the couple identify types of contact that feel connecting now.
+
+88. A 15-year-old in therapy has been described at school for years as â€œthe troublemaker.â€ In session, the adolescent mentions that last week two peers were arguing, and the client helped one calm down and return to class. A teacher later said, â€œYou showed real leadership today.â€ The client shrugs and calls it a fluke. The therapist is using narrative therapy. Which intervention should the therapist use next?
+A. Externalize the â€œtroublemakerâ€ story, map its effects, and identify when the adolescent has resisted it and how it shapes school relationships.
+B. Use the leadership event to construct a richer preferred-identity narrative by tracing the adolescentâ€™s choices, intentions, and personal qualities that made the event possible.
+C. Deconstruct the school labels, compare who reinforces them and whose interests they serve, and identify descriptions that fit the adolescentâ€™s preferred identity.
+D. Develop a therapeutic letter that contrasts the â€œtroublemakerâ€ story with the leadership event and identifies language for the adolescentâ€™s preferred identity.
+
+89. A family was displaced by a wildfire one week ago. Everyone is physically safe and staying temporarily with relatives, but the children are out of school, routines are disrupted, the parents are irritable and exhausted, and family members repeatedly check emergency alerts despite the immediate danger having passed. Which intervention is BEST?
+A. Normalize common early reactions and coping needs, strengthen natural supports, and monitor family routines as immediate danger recedes.
+B. Assess trauma symptoms and coping needs, coordinate school support, and monitor family routines before deciding on further treatment.
+C. Address immediate resource and coping needs, restore predictable family routines, and strengthen natural supports while monitoring early recovery.
+D. Coordinate housing resources and coping support, restore family routines, and introduce structured trauma work after immediate logistics stabilize.
+
+90. A client has met the agreed treatment goals, maintained the gains outside therapy, and agrees that treatment should end. Which termination plan is BEST?
+A. Set a shared ending timeline; review gains plus warning signs; document maintenance plus reentry options.
+B. Use two final sessions for summary; review coping resources plus warning signs; invite return if symptoms recur.
+C. Begin an open-ended taper; review stability at wider intervals; end when recurrence risk becomes minimal.
+D. Add a brief growth phase; set new goals plus progress measures; reconsider termination after another treatment cycle.
+
+91. A client describes distinct periods of markedly increased activity, very little need for sleep, unusual confidence, and impulsive spending alternating with periods of significant depression. The client is not currently in acute danger. Which additional evaluation is MOST appropriate?
+A. Refer for a medical evaluation to determine whether a physical condition could account for the episodic changes in mood and activity.
+B. Refer for psychological testing to clarify personality structure and determine whether the impulsive behavior reflects a stable pattern.
+C. Continue outpatient assessment until the therapist can determine whether the symptoms meet criteria for a specific mood disorder.
+D. Refer for psychiatric evaluation because the episodic mood, sleep, and behavioral changes warrant specialized psychiatric assessment.
+
+92. For six months, a client has recurrent episodes during severe stress in which the client feels detached from the body and describes the environment as â€œdreamlike and unreal.â€ During the episodes, the client states, â€œI know the world hasn't actually changedâ€”it just feels unreal.â€ Medical and substance evaluations have not identified another explanation, and the episodes cause significant distress. Which diagnosis is MOST supported?
+A. Panic disorder
+B. Depersonalization/derealization disorder
+C. Schizophrenia spectrum disorder
+D. Dissociative identity disorder
+
+93. A couple has identified a recurring pursueâ€“withdraw cycle. Both partners want fewer escalated arguments; one also wants more emotional closeness, while the other wants respectful space during conflict. Which goal structure is MOST appropriate for the current stage of treatment?
+A. Set a pause goal for four of five conflicts; schedule two weekly connection activities; track argument frequency and repair quality.
+B. Set a pause-and-return goal for four of five conflicts; schedule connection and space routines; track successful repair and responsiveness together.
+C. Set a trigger-awareness goal for four of five conflicts; schedule two weekly vulnerability talks; track insight and emotional disclosure regularly.
+D. Set a needs-sharing goal for four of five conflicts; schedule brief engagement periods; track pursuit and withdrawal during disagreements carefully.
+
+94. A client reports anxiety that varies considerably from week to week and has difficulty describing whether overall symptoms are improving. The therapist wants additional information that can be compared over time. Which approach is MOST appropriate?
+A. Use a broad personality inventory to determine whether anxiety reflects a stable trait pattern rather than a recent change.
+B. Repeat the clinical interview at several visits and defer standardized measurement until the symptom pattern becomes more consistent across time.
+C. Administer a brief validated anxiety measure to establish a baseline and interpret the score alongside clinical interview and functioning data.
+D. Administer several symptom measures at the same visit and use agreement across scores to estimate the clientâ€™s current anxiety severity.
+
+95. A client reports that a reduction in work hours has made it difficult to cover basic expenses. The client has food for the next several days through a neighborhood pantry, but shows the therapist a utility shutoff notice scheduled for tomorrow and says the loss of electricity would make it difficult to remain in the apartment. Which referral should the therapist prioritize?
+A. Refer the client to a food-assistance agency that can address recurring grocery needs while the reduction in work hours continues.
+B. Refer the client to an employment-services agency that can address income recovery through job-search, rÃ©sumÃ©, and placement assistance.
+C. Refer the client to a housing-stability agency that can address budgeting and longer-term risks to maintaining the apartment.
+D. Refer the client to an emergency energy-assistance agency that can prevent tomorrowâ€™s shutoff and provide continued utility assistance if eligible.
+
+96. A client moved to a new city six months ago and now spends most evenings alone. Before relocating, the client had several close friendships and participated regularly in community activities. The client says, â€œMaybe Iâ€™m just becoming someone who prefers being alone.â€ What should the therapist assess NEXT?
+A. Assess mood, motivation, pleasure, sleep, and whether reduced participation reflects depression.
+B. Review the clientâ€™s closest current relationships, frequency of contact, reciprocity, and whether at least one dependable person remains available during stress.
+C. Compare pre-relocation and current social functioning, desired connection, support access, and barriers to participation.
+D. Assess opportunities for community involvement, work relationships, neighborhood familiarity, and whether limited access rather than preference is restricting social contact.
+
+97. A transgender adult wants to maintain a relationship with the parents but leaves family visits exhausted. The parents sometimes use the clientâ€™s correct name yet continue asking invasive questions and invite a relative who makes demeaning comments. The client says, â€œI do not want to cut them off. I want a relationship if I can protect myself.â€ Which intervention best fits the clientâ€™s stated goal?
+A. Collaboratively identify relatives who consistently affirm the client, compare the emotional cost of different family contacts, and design a contact pattern that increases time with safer relationships.
+B. Define visit-specific boundaries, practice concise responses to invasive or demeaning comments, and decide in advance how the client will limit contact if those boundaries are crossed.
+C. Collaboratively process grief and ambivalence about parental acceptance while clarifying what degree of closeness remains consistent with the clientâ€™s wellbeing.
+D. Collaboratively map affirming and harmful interactions across family members and decide which relationships to deepen, limit, or approach under conditions the client chooses.
+
+98. A therapist whose parent died recently is treating a client with a similar loss. The therapist notices unusually strong identification with the client, repeatedly extends sessions, and feels an urge to steer the client toward the therapist's own preferred way of grieving. What should the therapist do NEXT?
+A. Use consultation to select a structured clinical grief protocol, reinforce treatment boundaries, monitor whether the therapist can follow the plan without extending sessions or directing the client's grieving, and document the consultation conclusions.
+B. Use consultation focused on the overidentification, consistent clinical boundaries, and continued observation of whether personal grief is shaping treatment decisions.
+C. Use consultation to assess whether limited self-disclosure could benefit treatment, disclosing only with a clear clinical purpose.
+D. Use consultation to assess whether reduced session frequency, stricter treatment structure, or referral is needed if the therapist's reactions persist despite clearer boundaries.
+
+99. In conjoint treatment, one partner has become increasingly quiet and has begun missing sessions after perceiving that the therapist repeatedly accepts the other partnerâ€™s explanation of the problem. What should the therapist do NEXT?
+A. Name the concern plus current formulation; invite both partnersâ€™ reactions openly; continue the existing process for three additional sessions.
+B. Meet with the quieter partner; invite feedback about perceived imbalance; resume conjoint work using the existing process.
+C. Name the possible rupture with both partners; examine the therapistâ€™s contribution; revise the conjoint process using their feedback.
+D. Structure equal speaking time for both partners; gather feedback after each session; revise the process only if attendance remains inconsistent.
+
+100. A grandmother lives with her adult daughter, son-in-law, and 14-year-old grandchild. During family sessions, the parents try to set a limit on late-night gaming, but the grandmother immediately tells the adolescent that the rule is too strict. The mother then looks to the grandmother for approval, the father becomes quiet, and the adolescent appeals directly to the grandmother. The therapist is using structural family therapy. Which intervention should the therapist use next?
+A. Use a live enactment of the disagreement and coach the parents to state the limit together while the grandmother observes the new hierarchy.
+B. Use hierarchy mapping to coach the adolescent to bring limit questions to the parents, strengthen their shared response, and position the grandmother in a supporting role.
+C. Join the grandmotherâ€™s concern, coach the parents to negotiate the gaming limit, strengthen the parental subsystem, and clarify how the grandmother can support the decision.
+D. Use structured turn-taking to direct the adults to present the parental decision and coach the grandmother to respond after that decision is clear.
+
+101. A client's alcohol use has increased over the past year. The client has missed work, argues more frequently with a partner after drinking, and has unsuccessfully attempted to reduce use. Which assessment is MOST appropriate?
+A. Map changes in alcohol use, impaired control, attempts to cut down, and work and relationship consequences over the past year.
+B. Assess quantity, frequency, tolerance, withdrawal, morning use, and whether increasing amounts are needed for the same effect.
+C. Explore mood triggers, recent stressors, coping motives, relationship conflict, and whether use increases during emotional distress.
+D. Review partner concerns, workplace consequences, family history, prior treatment, and the clientâ€™s previous attempts to change drinking.
+
+102. A client whose parent recently died reports participating in mourning practices that several relatives criticize as â€œdwelling on the loss.â€ The client continues working but has withdrawn from some social activities and feels increasingly misunderstood by family members. What should the therapist assess NEXT?
+A. Compare grief intensity, duration, sleep, appetite, and functioning with common bereavement patterns to identify whether the response is unusually severe.
+B. Assess family criticism, conflict, available support, cultural expectations, and whether relativesâ€™ reactions are worsening the clientâ€™s social withdrawal.
+C. Explore the meaning of the loss, cultural grieving practices, support, functional changes, and areas of conflict with family expectations.
+D. Review prior losses, coping responses, spiritual beliefs, rituals, and whether the current grief resembles or differs from earlier bereavement experiences.
+
+103. A 41-year-old client presents with depression. After a recent antidepressant dose increase, the client became unusually energetic and slept less for several days. Further history reveals that four years earlierâ€”before taking psychiatric medicationâ€”the client had an eight-day period of expansive mood, markedly reduced need for sleep, grandiosity, pressured speech, and impulsive business decisions that caused serious occupational impairment. Which diagnosis is MOST supported by the longitudinal history?
+A. Substance/medication-induced bipolar and related disorder
+B. Major depressive disorder with mixed features
+C. Bipolar I disorder
+D. Cyclothymic disorder
+
+104. Three months after one partner disclosed an emotional affair, the couple wants to repair the relationship. The injured partner repeatedly asks for details and checks the other partnerâ€™s phone. The other partner becomes defensive and shuts down, which increases suspicion and leads to more questioning. Which intervention should the therapist use next?
+A. Set temporary transparency agreements and review whether predictable access to information reduces suspicion and repeated reassurance seeking.
+B. Explore dissatisfaction that preceded the affair and delay focused trust conversations until both partners understand the contributing relationship factors.
+C. Limit repeated discussion of the affair and emphasize current positive interactions so the couple can reduce conflict and rebuild connection.
+D. Structure focused repair conversations that address unanswered trust concerns while interrupting the accusation-withdrawal pattern that keeps the injury active.
+
+105. A 16-year-old client with improving anxiety says a parent still checks every assignment, contacts teachers before the teen can do so, and answers questions for the teen during appointments. The teen wants more independence but worries about making mistakes. There is no current safety concern. Which intervention should the therapist use?
+A. Have the teen take over school communication immediately and ask the parent to stop monitoring assignments unless the teen requests help.
+B. Keep the current level of parent involvement while the teen practices anxiety-management skills, then reduce support after confidence improves.
+C. Explore the parentâ€™s fears about the teen becoming independent and postpone behavioral changes until both understand the source of the overinvolvement.
+D. Create graded independence tasks, define when the parent will step back, and review mistakes as practice rather than reasons to resume control over time.
+
+106. An established client begins sending lengthy descriptions of trauma memories and relationship conflicts to the therapist's personal mobile number between sessions. The therapist previously used that number only for scheduling and has not established expectations for clinical messaging. What should the therapist do FIRST?
+A. Address the communication pattern, move clinical exchanges to an appropriate treatment channel, and establish clear response expectations after checking any immediate needs in the messages.
+B. Move the messages into the clinical record, continue responding briefly from the same number, and tell the client that detailed clinical work should occur during scheduled sessions.
+C. Ask the client to stop sending clinical material to the personal number, provide a secure messaging option, and explain that the therapist will read future messages only during business hours.
+D. Block clinical messages on the personal number, direct the client to use the emergency resources listed in the treatment agreement, and revisit between-session communication at the next appointment.
+
+107. A client attends through an employee-assistance referral and states, â€œI don't think I need therapy. I just need proof that I showed up.â€ The client denies having any personal treatment goals. Which action should the therapist take FIRST?
+A. Clarify the employerâ€™s concerns, the clientâ€™s agreement or disagreement, and whether work functioning is a meaningful therapy focus.
+B. Clarify documentation requirements, confidentiality limits, the clientâ€™s expectations, and whether sessions should focus mainly on referral concerns.
+C. Clarify participation consequences, the clientâ€™s reservations, practical concerns, and whether a short-term goal feels worth addressing now.
+D. Clarify referral requirements, the clientâ€™s perspective, and whether a personally meaningful goal can coexist with mandated attendance.
+
+108. A client reports a substantial decrease in sexual desire during the past four months. During the same period, the client started a new medication and the couple began having more frequent relationship conflict. Which assessment should the therapist conduct NEXT?
+A. Clarify the timing of desire changes relative to medication, health, relationship tension, sexual experiences, and the clientâ€™s level of distress over time.
+B. Assess medication effects, other physical symptoms, sleep, energy, and whether desire changed before or after the recent treatment adjustment.
+C. Assess relationship satisfaction, conflict frequency, emotional closeness, sexual communication, and whether desire changes track periods of greater couple tension.
+D. Review prior sexual functioning, expectations about desire, cultural or relational meaning, and whether similar changes have occurred during earlier stressful periods.
+
+109. A client had to leave an apartment unexpectedly after a major plumbing failure made it temporarily uninhabitable. During the past two weeks, the client has been staying with friends while searching for housing and reports muscle tension, irritability, difficulty sleeping, and trouble concentrating. There is no injury, trauma reexperiencing, or acute safety concern. Which intervention should the therapist use?
+A. Use stress-management treatment to restore sleep and activity routines and practice brief relaxation during predictable periods of displacement stress.
+B. Use acceptance-based treatment to reduce reactivity to housing uncertainty, plan regular social contact, and maintain flexible routines during displacement stress.
+C. Use problem-solving treatment to plan housing tasks, schedule administrative breaks, and organize daily search demands during displacement stress.
+D. Use behavioral activation to increase social support and restorative activities and review which routines improve functioning during displacement stress.
+
+110. An adult daughter repeatedly mediates conflict between her parents and then becomes similarly overinvolved in disagreements within her own partnership. The pattern has persisted across generations and intensifies when family anxiety rises. Which treatment plan is MOST consistent with multigenerational family-systems theory?
+A. Map generational boundaries, strengthen parental leadership, and reduce interactions placing the daughter between familial subsystems.
+B. Identify the mediating sequence, prescribe tasks that interrupt it, and track whether conflict decreases consistently.
+C. Access attachment fears, shape responsive partner interactions, and reduce recurring withdrawal within the daughterâ€™s partnership.
+D. Map interlocking triangles, increase differentiation amidst family stress, and reduce reactive overfunctioning through direct contact.
+
+111. A 17-year-old client is in therapy for longstanding body dissatisfaction. Over the past month, the client has begun skipping lunch several days a week, weighing themself repeatedly, and spending hours viewing fitness-content accounts. A recent medical visit found no acute instability, and a specialized eating-disorder consultation is already scheduled. Which intervention should the therapist use now to address the clientâ€™s body-image treatment goal?
+A. Identify body features the client values and replace harsh appearance statements with balanced descriptions during daily self-observation.
+B. Map how appearance-focused media feeds restriction and build routines that broaden self-worth beyond body size and appearance comparisons.
+C. Set regular eating goals with the client and use weekly weight changes to evaluate body-image treatment progress.
+D. Explore family messages about appearance and delay behavior change until the client identifies the origin of body concerns.
+
+112. A client with a chronic medical condition reports inconsistent adherence to treatment. Physical symptoms have worsened, family members have taken on additional caregiving responsibilities, and conflict has increased. What should the therapist clarify FIRST?
+A. Clarify the current medical regimen, adherence pattern, symptom change, daily functioning, and caregiving burden before interpreting family conflict.
+B. Clarify couple conflict, division of caregiving, illness beliefs, communication patterns, and whether relationship stress affects adherence.
+C. Clarify prior relationship functioning, caregiver stress, family roles, available support, and how conflict changed as symptoms worsened.
+D. Clarify medical history, treatment response, health literacy, access barriers, and beliefs about care before evaluating family effects.
+
+113. A client has substantially restricted food intake for eight months and is now at significantly low body weight. The client has an intense fear of gaining weight, repeatedly checks body size, and continues restricting despite recommendations for weight restoration. Despite the low weight, the client describes the abdomen and thighs as â€œstill too largeâ€ and reports that self-worth depends heavily on maintaining strict control over weight and shape. There are no recurrent binge or purging episodes. Which diagnosis is MOST supported?
+A. Avoidant/restrictive food intake disorder
+B. Bulimia nervosa
+C. Anorexia nervosa
+D. Body dysmorphic disorder
+
+114. An engaged couple plans to marry next year. They repeatedly argue about how much money should remain separate, how often extended family should be involved in decisions, and what each expects marriage to change. Both remain committed to the relationship but say these conversations quickly become unproductive. Which premarital intervention should the therapist use?
+A. Clarify expectations about money, family involvement, and decision-making, then rehearse a structured negotiation process for recurring differences.
+B. Explore family-of-origin beliefs about marriage and identify how inherited expectations shape each partnerâ€™s reactions during disagreements.
+C. Create a detailed household and financial plan first, then reassess commitment expectations after the couple has reduced practical uncertainty.
+D. Teach validation and reflective listening during conflict, then postpone major decisions until both partners can discuss differences with less escalation.
+
+115. A therapist learns that an ongoing client has joined the same volunteer disaster-response committee on which the therapist coordinates team assignments. The client cannot reasonably switch committees, and the therapist will occasionally assign volunteers to tasks. Therapy has been effective. What is the therapist's BEST response?
+A. Keep both roles, arrange another coordinator for the client's assignments, document the client-role, privacy, confidentiality and power plan, and review treatment boundaries and clinical judgment if committee contact affects therapy.
+B. Discuss the overlapping roles, power and confidentiality risks, limit the therapist's committee authority over the client when feasible, set boundaries, and monitor clinical judgment.
+C. Review the dual-role, client-boundary, confidentiality, privacy and power concerns, document the client's preference about therapy, and use that preference when deciding whether the therapist keeps the coordinator role.
+D. Continue both roles, document the client-boundary, confidentiality, privacy and power plan, establish committee-only communication, and consider referral if clinical judgment concerns emerge.
+
+116. A recently immigrated family faces possible forced separation. Family members have also experienced repeated discrimination, the parents are afraid to approach unfamiliar institutions, routines have deteriorated, and the children are becoming increasingly anxious. The family's preferred language is not English. Which intervention is MOST appropriate?
+A. Assess anxiety and family functioning, provide culturally responsive language-accessible support, and connect members with general mental-health resources.
+B. Assess practical needs and family functioning, provide culturally responsive language-accessible support, and clarify referral options without making legal predictions.
+C. Assess migration-separation history and family functioning, provide culturally responsive language-accessible support, and determine whether trauma-focused treatment is needed first.
+D. Assess discrimination and institutional mistrust, provide culturally responsive language-accessible support, and encourage use of trusted community services.
+
+117. A client reports that friendships and romantic relationships frequently end after similar periods of escalating misunderstanding. The client says, â€œEventually people always decide Iâ€™m too much.â€ Which assessment would BEST clarify the interpersonal pattern?
+A. Compare the most recent rupture with one earlier relationship, identifying similarities, differences, and whether the newest conflict is unusually severe.
+B. Assess personality features, emotion regulation, rejection sensitivity, interpersonal expectations, and whether stable traits may contribute to repeated relationship endings.
+C. Explore recurring sequences, expectations, communication patterns, repair attempts, and outcomes across several important friendships and romantic relationships.
+D. Review the clientâ€™s longest-lasting relationships, protective behaviors, successful repairs, and conditions under which closeness has been maintained over time.
+
+118. A client who immigrated several years ago reports discriminatory comments at work and increasing conflict with relatives whose expectations differ from the client's evolving cultural values. Which assessment approach is BEST?
+A. Explore migration history, cultural identities, workplace discrimination, family expectations, acculturation experiences, available supports, and how these factors affect current functioning.
+B. Explore workplace power dynamics, coping responses, employment alternatives, social support at work, and whether distress changes outside the occupational setting.
+C. Explore family values, intergenerational expectations, acculturation differences, relationship history, and whether family conflict was present before the current workplace problems.
+D. Explore mood and anxiety symptoms, immigration stress, available supports, and whether family or workplace difficulties are producing greater functional impairment.
+
+119. Seven weeks after surviving a violent assault, a client reports recurrent involuntary memories and nightmares, avoids the location and conversations about the assault, and says that nowhere is safe. The client has become detached from family, has lost interest in previously valued activities, remains hypervigilant, and has persistent sleep disturbance. The symptoms substantially interfere with work and relationships. Which diagnosis is MOST supported?
+A. Posttraumatic stress disorder
+B. Acute stress disorder
+C. Panic disorder
+D. Adjustment disorder with anxiety
+
+120. A client in DBT describes an episode in which a delayed reply from the partner led to thoughts of abandonment, mounting anger, repeated texting, and then blocking the partner. The next day, the client regretted the exchange. There is no current safety concern. Which intervention should the therapist use next?
+A. Review the diary card, rank repeated texting as the current target, and set a measurable reduction goal for the coming week.
+B. Practice paced breathing and wise-mind attention, then plan to use those skills whenever rejection thoughts begin during future conflicts.
+C. Validate the clientâ€™s sensitivity to rejection, complete a pros-and-cons exercise, and strengthen commitment to changing impulsive communication.
+D. Analyze the episode from prompting event through each link, then rehearse skills at points where the sequence could be interrupted.
+
+121. An adult client is receiving individual psychotherapy. The client's mother pays the therapist directly for each session but is not a client and has no authorization to receive treatment information. The mother calls and asks whether therapy is helping and what the therapist thinks the client should do next. What is the therapist's BEST response?
+A. Explain that fee payment does not authorize disclosure of the client's treatment information, discuss what limited communication the client wants authorized, and document the client's decision.
+B. Tell the mother that attendance may be confirmed but confidential treatment content may not, then ask the client whether broader communication should be authorized.
+C. Give a general progress update that omits confidential session details and diagnosis, because the mother is paying for treatment.
+D. Tell the mother that no treatment information can be shared without client authorization and route future treatment questions through the client.
+
+122. A therapist has been sleeping poorly for several weeks while caring for an ill family member. The therapist notices increasing difficulty concentrating in sessions, has forgotten two promised follow-up calls, and recently missed an important detail in a client's treatment history. What should the therapist do NEXT?
+A. Reduce high-complexity appointments, use written session checklists, and arrange administrative backup while keeping the overall clinical caseload unchanged and reviewing concentration each week.
+B. Shorten selected sessions, notify affected clients about reduced availability, and arrange follow-up coverage while monitoring concentration and missed tasks during the next several weeks.
+C. Move complex cases to earlier hours, delegate administrative work, and reduce same-day scheduling while monitoring whether the therapist can safely maintain the existing caseload.
+D. Reduce the workload to current safe capacity, arrange continuity for affected clients, and address the impairment before returning to the prior workload.
+
+123. A client repeatedly tests partnersâ€™ commitment, expects abandonment, and interprets ordinary separations as evidence that close others will disappear. These patterns are linked to inconsistent early caregiving. Which treatment plan is MOST consistent with an attachment-informed psychodynamic approach?
+A. Explore recurring fears of loss, use consistent therapeutic contact, and build reflective capacity during separations.
+B. Identify feared outcomes, test them through planned separations, and gradually reduce reassurance using behavioral experiments.
+C. Rank self-harm and relationship-testing targets, analyze behavior chains, and consistently teach distress-tolerance plus interpersonal skills.
+D. Identify exceptions to loss concerns, assess confidence in closeness, and develop strategies from helpful separations.
+
+124. In couples therapy after one partner lost a job, that partner has become quiet and avoids discussing finances. The other partner responds with criticism: â€œYou donâ€™t even seem to care what happens to us.â€ As the therapist slows the exchange, the critical partner identifies fear about losing the home, while the withdrawn partner describes shame about feeling like a failure. The therapist is using emotionally focused therapy. Which intervention should the therapist use next?
+A. Map the criticism-withdrawal cycle and reframe the recurring interaction as their shared attachment problem rather than either partnerâ€™s personal defect.
+B. Deepen each partnerâ€™s fear and shame, then facilitate direct expressions of those vulnerable emotions and attachment needs to the other partner.
+C. Heighten the critical partnerâ€™s anger and the withdrawn partnerâ€™s need for distance so both can express the positions that organize the recurring cycle.
+D. Validate both partnersâ€™ distress and ask each to identify one supportive response they can practice together when financial conversations become emotionally difficult.
+
+125. A high-school student with a history of strong grades has experienced a substantial academic decline during the semester following a family relocation. The student says, â€œI just can't get myself organized here.â€ What should the therapist evaluate FIRST?
+A. Compare current and prior academic functioning, timing of the decline, school-transition demands, peer context, and organizational difficulties.
+B. Assess attention and executive history, earlier school performance, task completion, distractibility, and whether similar problems predated relocation.
+C. Assess mood, anxiety, sleep, social adjustment, family stress, and whether emotional changes began around the academic decline.
+D. Compare teacher reports, course demands, attendance, assignment completion, and performance across subjects since the student entered the new school.
+
+126. A client who previously maintained stable employment begins missing work and having repeated disagreements with coworkers after the employer reorganizes the department and substantially changes the client's responsibilities. Which assessment would be MOST useful?
+A. Assess mood, sleep, anxiety, concentration, and whether symptoms changed around the workplace reorganization.
+B. Review supervisor conflict, coworker interactions, communication problems, and whether interpersonal difficulties occur in other employment or relationship settings.
+C. Compare prior work functioning with changes in duties, expectations, attendance, performance, and stress since the department reorganized.
+D. Review career satisfaction, financial pressures, alternative employment options, and whether remaining in the current position is worsening overall functioning.
+
+127. An adult client entered psychotherapy through an employee assistance program. The client's written authorization allows the therapist to tell the EAP only whether the client attended the authorized sessions and completed the referral. An employer representative contacts the therapist through the EAP and asks whether the client is emotionally ready to return to a high-pressure assignment. What is the therapist's BEST response?
+A. Provide the authorized attendance information plus a limited work-readiness opinion based on observed functioning, review the observed work factors, omit diagnosis and session details, explain the narrower purpose of the opinion, and document the rationale and disclosure to the EAP.
+B. Provide only the attendance and completion information already authorized by the client, explain that any work-readiness opinion requires separate authority, and document the exact disclosure scope to the EAP.
+C. Withhold all EAP information until the client decides whether to expand the authorization, explain the employer's request, review the client's decision before responding, and document the pending decision.
+D. Ask the client whether to authorize a work-readiness opinion, review the implications of taking that evaluative role, and respond after the client decides.
+
+128. A 16-year-old has begun missing school after recurring morning stomachaches. One parent quickly allows the adolescent to stay home, while the other criticizes both of them for â€œgiving in.â€ The parents then argue, the adolescent withdraws, and the next morning the same sequence repeats. The therapist is using a general systems approach. Which intervention should the therapist use?
+A. Map how each family member responds to school refusal and ask them to observe the sequence before changing it.
+B. Shift parental attention away from the adolescent and strengthen the couple relationship during discussions about school attendance.
+C. Interrupt the reciprocal school-refusal cycle by changing how parents respond when the adolescent begins avoiding school.
+D. Reframe the adolescentâ€™s refusal as serving a family-stabilizing function and explore when that function becomes less necessary.
+
+129. A client in treatment for panic symptoms agreed to complete brief interoceptive practice between sessions but tried it only once. The client says the exercise felt frightening, is unsure why it is necessary, and still wants therapy to help reduce panic. Which intervention should the therapist use next?
+A. Complete the interoceptive exercise in session, identify what made it frightening, and assign the same version with a coping plan.
+B. Review the clientâ€™s concerns and treatment rationale, then agree on a smaller interoceptive step the client is willing to repeat.
+C. Use a week of symptom monitoring to identify panic triggers, then choose an exposure target from the pattern.
+D. Provide additional education about the panic cycle, demonstrate the exercise again, and assign the original practice with written instructions.
+
+130. An adolescentâ€™s symptoms intensify when the adolescent is recruited into a cross-generational coalition during parental conflict. The parents have difficulty functioning as a coordinated leadership team, and boundaries between the parental and child subsystems are diffuse. Which treatment plan is MOST consistent with structural family therapy?
+A. Map family triangles, support differentiation under stress, and reduce reactive involvement across relationships over time.
+B. Map maintaining sequences, assign strategic directives, and revise interactional tasks according to observed family responses.
+C. Map current family role patterns, reinforce parental leadership, and delineate boundaries around the cross-generational alliance.
+D. Map emotional avoidance, deepen congruent expression through enactments, and increase interpersonal contact among family members.
+
+131. A client experiences recurrent intrusive thoughts that household surfaces are contaminated. The thoughts are unwanted and distressing. The client washes repeatedly and spends approximately two hours each day cleaning to reduce anxiety, while recognizing that the feared contamination may be exaggerated. Which diagnosis is MOST supported?
+A. Generalized anxiety disorder
+B. Obsessive-compulsive personality disorder
+C. Obsessive-compulsive disorder
+D. Delusional disorder
+
+132. A parent has just received a serious medical diagnosis. Within two weeks, the family has lost its usual childcare arrangement, meals and school routines are inconsistent, both adults are sleeping poorly, and disagreements about responsibilities have increased. No family member is imminently unsafe. What should the therapist emphasize FIRST?
+A. Assess immediate family functioning and urgent routine disruptions, stabilize temporary roles, and mobilize practical supports for the near term.
+B. Assess family distress and communication, mobilize practical supports, and defer major role changes until emotional intensity decreases.
+C. Assess prior coping and family-role patterns, mobilize practical supports, and use historical strengths to guide current adaptation.
+D. Assess individual symptoms and coping, mobilize family supports, and coordinate psychiatric consultation for members with significant impairment.
+
+133. A client with panic symptoms has begun leaving grocery stores as soon as dizziness or chest tightness appears and often calls a spouse from the parking lot for reassurance. Medical causes have been evaluated, and the client wants to remain in stores without relying on escape. Which intervention should the therapist use?
+A. Use graded store exposure with paced breathing and have the client remain through a planned interval while observing whether arousal settles over repeated visits.
+B. Use graded store exposure with cognitive reappraisal of dizziness and chest tightness while the client remains in the feared setting.
+C. Use graded store exposure during less crowded periods and extend visit duration as the client gains confidence across repetitions.
+D. Use graded store exposure through rising fear while reducing early exits and reassurance calls to the spouse.
+
+134. A clientâ€™s spouse died unexpectedly three months ago. The client remains able to work and care for the children but becomes tearful during evening prayers and says relatives are urging the client to â€œmove on.â€ In the clientâ€™s faith community, remembrance rituals and ongoing bonds with the deceased are considered important parts of mourning. Which intervention should the therapist use?
+A. Explore grief through the clientâ€™s faith tradition, support remembrance rituals, and help the client carry grief alongside daily responsibilities.
+B. Use grief-focused narrative reconstruction to revisit the death and identify emotionally unfinished material the client has not yet fully expressed.
+C. Help the client reorganize family responsibilities after the loss and use therapy mainly to support practical adaptation while spiritual remembrance rituals continue.
+D. Develop an individualized continuing-bond ritual with the children and establish responses to relatives who pressure premature emotional resolution.
+
+135. A client with rapidly worsening psychiatric symptoms has eaten very little for several days, has stopped bathing, has been unable to obtain food independently, and cannot describe how basic needs will be met after leaving the office. The client denies current suicidal or homicidal intent. What is the BEST next action?
+A. Maintain observation, arrange same-day intensive outpatient stabilization, and add case-management and basic-needs support.
+B. Maintain observation, arrange same-day psychiatric medication evaluation, and provide supervised community support while stabilization begins.
+C. Maintain observation, arrange same-day supervised respite or housing, and provide daily crisis outreach with basic-needs assistance.
+D. Maintain observation, transfer to a staffed crisis setting, and obtain psychiatric assessment with basic-self-care stabilization.
+
+136. A client reports several episodes of yelling and damaging household objects during arguments over the past year. The client denies threatening or physically assaulting anyone and denies any current intent to harm another person. What should the therapist do NEXT?
+A. Clarify the frequency, triggers, escalation, consequences, relationship effects, and whether current intent or access indicates any change in danger at present.
+B. Assess impulsivity, anger tolerance, emotion regulation, remorse, and whether property destruction occurs in contexts other than interpersonal arguments.
+C. Assess substance use, sleep, mood changes, stress, and whether the outbursts reliably occur during intoxication or periods of psychological deterioration.
+D. Review legal history, family responses, prior aggression, treatment history, and whether consequences have altered the clientâ€™s behavior over time.
+
+137. A veteran seeks couples therapy for emotional distance and frequent conflict after returning from a lengthy deployment. The veteran says military service â€œhas nothing to do with thisâ€ and prefers to focus only on the partner's complaints. What should the therapist do NEXT?
+A. Assess trauma symptoms, sleep, avoidance, and whether deployment experiences contribute to current relationship difficulties.
+B. Explore military service, deployment experiences, reintegration, military culture, and changes in family and relationship functioning after return.
+C. Assess current couple conflict, emotional distance, communication patterns, intimacy, support, and whether similar difficulties existed before deployment.
+D. Obtain the partnerâ€™s observations of post-deployment changes, family-role shifts, conflict patterns, and situations that seem to increase disconnection.
+
+138. A couple with a 4-month-old first child reports escalating arguments about chores, nighttime care, and lack of couple time. Before the baby they divided responsibilities evenly, but both say the old â€œ50/50â€ rule no longer fits their schedules or energy. Neither reports a longstanding relationship problem. Which intervention should the therapist use?
+A. Use a weekly planning meeting to restore the prior 50/50 division of infant care and household tasks and review whether both partners can sustain that arrangement.
+B. Use a weekly meeting to plan responsibilities by current capacity and protect recurring time for couple connection.
+C. Use a weekly planning meeting to clarify shared parenting values and create a new agreement for nighttime care, chores, and couple time.
+D. Use a weekly planning meeting to plan alternating recovery periods, recruit outside help for high-burden tasks, and review whether fatigue-related conflict changes.
+
+139. A client reports superficial cutting several times during the past month after intense interpersonal conflict. The client consistently denies wanting to die, denies a suicide plan or preparatory behavior, has no medically serious injury, identifies the situations that trigger cutting, and can use supportive contacts when urges increase. Which intervention is MOST appropriate now?
+A. Reassess suicide risk directly, arrange a same-day crisis evaluation, and involve a support person in transfer.
+B. Reassess suicide risk directly, keep the routine outpatient frequency, and use identified supports if urges intensify.
+C. Reassess suicide risk directly, revise the self-harm safety plan, and increase near-term outpatient follow-up for now.
+D. Reassess suicide risk directly, restrict access to self-harm tools, and postpone coping work until urges decrease.
+
+140. A 15-year-old adopted at age 8 after several caregiver changes is in therapy with the adoptive mother. When the mother sets a limit, the adolescent says, â€œYouâ€™ll get tired of me too,â€ pulls away, and then repeatedly messages friends for reassurance. The mother responds by avoiding the conflict for the rest of the day. Which intervention should the therapist use to improve attachment stability and relational functioning?
+A. Use attachment-focused family work to strengthen supportive peer contact after conflict and return the adolescent to the family discussion with a clear plan.
+B. Use attachment-focused family work to pair limits with reassurance, reduce the motherâ€™s disengagement, and review what happens when rejection fears appear.
+C. Use attachment-focused individual work to process caregiver losses and identify how rejection expectations shape the adolescentâ€™s current reactions.
+D. Use attachment-focused conjoint work to set predictable limits and establish a reliable reconnection process after conflict between mother and adolescent.
+
+141. A service member returned from a nine-month deployment two months ago. The couple expected reunion to feel easy, but they now argue about parenting routines, household decisions, and how much time the service member spends alone. Both say they want to reconnect and neither reports current violence or acute danger. Which intervention should the therapist use?
+A. Use reintegration work to explore deployment-related emotional distance, identify reactions that interfere with family contact, and compare how those reactions appear at home.
+B. Use reintegration work to plan current parenting and household roles and protect routines for alone time and couple reconnection.
+C. Use reintegration work to practice communication around one recurring disagreement and establish a shared method for household decisions.
+D. Use reintegration work to compare predeployment and current roles, clarify family values, and translate those values into household priorities.
+
+142. A family seeking therapy has received an eviction notice after a major reduction in household income. Family members report increased arguments, disrupted sleep, and difficulty concentrating at work and school. Which assessment approach is BEST?
+A. Assess anxiety, depressive symptoms, sleep, school or work impairment, and how each family member is responding emotionally to possible eviction.
+B. Assess family conflict, division of responsibilities, financial decision-making, communication, and whether relational strain is interfering with practical problem-solving.
+C. Assess housing stability, income loss, access to necessities, available supports, and effects of these stressors on individual and family functioning over time.
+D. Assess immediate resource needs, housing options, financial assistance, transportation, and whether practical barriers are limiting the familyâ€™s available choices.
+
+143. A family includes two parents, a 15-year-old, and the maternal grandparents, who recently moved into the home. The grandparents frequently reverse the parentsâ€™ limits, the parents argue with the grandparents about discipline, and the adolescent has begun seeking whichever adult is most likely to say yes. Which intervention should the therapist use?
+A. Define separate decision domains for parents and grandparents and practice how the adults will handle discipline, routines, and privileges within those domains.
+B. Restore parental leadership through private adult resolution of rule disagreements before consistent limits are presented to the adolescent.
+C. Create household rules and consequences for all adults to apply when the adolescent violates a limit.
+D. Create a four-adult consultation process for discipline decisions and practice reaching consensus before any limit is presented to the adolescent.
+
+144. A transgender young adult reports strong acceptance from friends and coworkers but ongoing rejection from several relatives. The client says functioning varies considerably depending on which social environment the client is in. What should the therapist assess NEXT?
+A. Assess identity development, acceptance and rejection across settings, available supports, minority stress, and corresponding changes in functioning.
+B. Assess family rejection, dependence on relatives, housing stability, conflict patterns, safety concerns, and whether family interactions account for most current distress.
+C. Assess social or medical transition experiences, body-related concerns, healthcare support, and whether transition-related changes correspond with current functioning.
+D. Assess peer and workplace affirmation, community connection, coping resources, and whether supportive environments sufficiently buffer stress occurring within the family.
+
+145. A client under prolonged stress frequently seeks support from trusted friends but also spends entire weekends avoiding responsibilities by sleeping and watching television. The client says both strategies â€œhelp me get through it.â€ What should the therapist assess NEXT?
+A. Classify each coping response by whether it is approach-based or avoidance-based, then compare how often each strategy is used during stress.
+B. Evaluate what each coping strategy accomplishes, its short- and longer-term effects, and whether it supports functioning or extends avoidance.
+C. Assess immediate relief, emotional intensity before and after coping, perceived control, and whether the client experiences each strategy as helpful.
+D. Review support quality, weekend routines, unfinished responsibilities, sleep, and whether demands influence coping choices.
+
+146. A 42-year-old manager begins short-term therapy through an employee assistance program after a promotion. The EAP authorization and limits of information sharing are already documented. The client reports avoiding difficult conversations, doing subordinatesâ€™ tasks rather than delegating, working late, then becoming resentful and less productive. Which intervention should the therapist use to improve workplace functioning?
+A. Use stress-inoculation and boundary-setting to reduce late work and prepare for difficult meetings with subordinates.
+B. Challenge beliefs that competent managers should complete tasks themselves and test those beliefs with one planned delegation.
+C. Rehearse assertive delegation in role-play and prepare coping responses for the stress that follows difficult workplace conversations.
+D. Create a workload-prioritization plan with EAP resources and set limits on after-hours work while keeping the current communication approach.
+
+147. A 20-year-old college student immigrated with the parents at age 10. The student reports repeated microaggressions at school and says the parents expect problems to be handled privately because â€œfamily matters stay in the family.â€ The student values family loyalty but also wants more independence and feels â€œtoo American at home and too foreign at school.â€ The parents agree to family sessions. Which intervention should the therapist use?
+A. Integrate discrimination and acculturation differences into family work while negotiating independence and family-loyalty expectations around shared priorities.
+B. Use the familyâ€™s migration story to identify traditions that support the student, then build coping plans for school microaggressions around those strengths.
+C. Validate bicultural strain and practice responses to microaggressions while helping the student define how much independence is desired in specific situations.
+D. Facilitate a family discussion of cultural priorities and create respectful rules for handling disagreements about privacy, school stress, and independence.
+
+148. A client describes functioning well during a previous period of treatment, but a prior treatment summary indicates substantial impairment during the same period. The discrepancy affects the therapistâ€™s understanding of the current presentation. What should the therapist do NEXT?
+A. With the clientâ€™s authorization, review the prior record or consult the former provider about the specific discrepancy in functioning.
+B. Treat the prior record as the more reliable source because it documents functioning closer to the period being evaluated than the clientâ€™s current recollection.
+C. Rely on the clientâ€™s current account unless the discrepancy changes the diagnosis or creates an immediate safety concern.
+D. Seek a family memberâ€™s account of the earlier period before contacting the former provider or reviewing treatment records.
+
+149. A client with schizophrenia remains engaged in outpatient psychiatric care and reports occasional noncommand voices at night. Family members become alarmed and repeatedly ask whether the voices are getting worse; the client then retreats to a bedroom and stops interacting. There is no current safety concern. Which intervention should the therapist use?
+A. Teach grounding for voices, ask what helps, and have family members stop repeated questions when the client is stable and safe.
+B. Develop a coping plan for residual voices and coach family members to respond calmly without repeated checking that increases withdrawal.
+C. Focus family sessions on communication skills and leave management of psychotic symptoms entirely to the psychiatric provider.
+D. Help the client challenge the voice content and ask family members to provide reality-based reassurance whenever symptoms increase.
+
+150. Parents of a 9-year-old with sensory and transition difficulties disagree sharply about discipline. One parent relies on highly structured routines; the other often changes expectations to prevent meltdowns. Both parents are exhausted, argue about each otherâ€™s approach, and the child increasingly seeks a different answer from each parent. Which intervention should the therapist use to improve the parenting relationship?
+A. Map recurring parenting conflicts and have each parent practice consistent responses within separate household domains.
+B. Identify stress-driven differences and establish shared responses for recurring parenting challenges that predictably trigger conflict.
+C. Develop a joint behavior plan around the childâ€™s sensory triggers and use the same consequence sequence across both parents.
+D. Practice conflict-management skills between the parents while allowing each parent to keep an individualized discipline approach.
+
+
+Answer Sheet
+Form A â€” mark one answer (A, B, C, or D) for each item.
+  1.   A   B   C   D
+ 16.   A   B   C   D
+ 31.   A   B   C   D
+ 46.   A   B   C   D
+ 61.   A   B   C   D
+  2.   A   B   C   D
+ 17.   A   B   C   D
+ 32.   A   B   C   D
+ 47.   A   B   C   D
+ 62.   A   B   C   D
+  3.   A   B   C   D
+ 18.   A   B   C   D
+ 33.   A   B   C   D
+ 48.   A   B   C   D
+ 63.   A   B   C   D
+  4.   A   B   C   D
+ 19.   A   B   C   D
+ 34.   A   B   C   D
+ 49.   A   B   C   D
+ 64.   A   B   C   D
+  5.   A   B   C   D
+ 20.   A   B   C   D
+ 35.   A   B   C   D
+ 50.   A   B   C   D
+ 65.   A   B   C   D
+  6.   A   B   C   D
+ 21.   A   B   C   D
+ 36.   A   B   C   D
+ 51.   A   B   C   D
+ 66.   A   B   C   D
+  7.   A   B   C   D
+ 22.   A   B   C   D
+ 37.   A   B   C   D
+ 52.   A   B   C   D
+ 67.   A   B   C   D
+  8.   A   B   C   D
+ 23.   A   B   C   D
+ 38.   A   B   C   D
+ 53.   A   B   C   D
+ 68.   A   B   C   D
+  9.   A   B   C   D
+ 24.   A   B   C   D
+ 39.   A   B   C   D
+ 54.   A   B   C   D
+ 69.   A   B   C   D
+ 10.   A   B   C   D
+ 25.   A   B   C   D
+ 40.   A   B   C   D
+ 55.   A   B   C   D
+ 70.   A   B   C   D
+ 11.   A   B   C   D
+ 26.   A   B   C   D
+ 41.   A   B   C   D
+ 56.   A   B   C   D
+ 71.   A   B   C   D
+ 12.   A   B   C   D
+ 27.   A   B   C   D
+ 42.   A   B   C   D
+ 57.   A   B   C   D
+ 72.   A   B   C   D
+ 13.   A   B   C   D
+ 28.   A   B   C   D
+ 43.   A   B   C   D
+ 58.   A   B   C   D
+ 73.   A   B   C   D
+ 14.   A   B   C   D
+ 29.   A   B   C   D
+ 44.   A   B   C   D
+ 59.   A   B   C   D
+ 74.   A   B   C   D
+ 15.   A   B   C   D
+ 30.   A   B   C   D
+ 45.   A   B   C   D
+ 60.   A   B   C   D
+ 75.   A   B   C   D
+
+ 76.   A   B   C   D
+ 91.   A   B   C   D
+106.   A   B   C   D
+121.   A   B   C   D
+136.   A   B   C   D
+ 77.   A   B   C   D
+ 92.   A   B   C   D
+107.   A   B   C   D
+122.   A   B   C   D
+137.   A   B   C   D
+ 78.   A   B   C   D
+ 93.   A   B   C   D
+108.   A   B   C   D
+123.   A   B   C   D
+138.   A   B   C   D
+ 79.   A   B   C   D
+ 94.   A   B   C   D
+109.   A   B   C   D
+124.   A   B   C   D
+139.   A   B   C   D
+ 80.   A   B   C   D
+ 95.   A   B   C   D
+110.   A   B   C   D
+125.   A   B   C   D
+140.   A   B   C   D
+ 81.   A   B   C   D
+ 96.   A   B   C   D
+111.   A   B   C   D
+126.   A   B   C   D
+141.   A   B   C   D
+ 82.   A   B   C   D
+ 97.   A   B   C   D
+112.   A   B   C   D
+127.   A   B   C   D
+142.   A   B   C   D
+ 83.   A   B   C   D
+ 98.   A   B   C   D
+113.   A   B   C   D
+128.   A   B   C   D
+143.   A   B   C   D
+ 84.   A   B   C   D
+ 99.   A   B   C   D
+114.   A   B   C   D
+129.   A   B   C   D
+144.   A   B   C   D
+ 85.   A   B   C   D
+100.   A   B   C   D
+115.   A   B   C   D
+130.   A   B   C   D
+145.   A   B   C   D
+ 86.   A   B   C   D
+101.   A   B   C   D
+116.   A   B   C   D
+131.   A   B   C   D
+146.   A   B   C   D
+ 87.   A   B   C   D
+102.   A   B   C   D
+117.   A   B   C   D
+132.   A   B   C   D
+147.   A   B   C   D
+ 88.   A   B   C   D
+103.   A   B   C   D
+118.   A   B   C   D
+133.   A   B   C   D
+148.   A   B   C   D
+ 89.   A   B   C   D
+104.   A   B   C   D
+119.   A   B   C   D
+134.   A   B   C   D
+149.   A   B   C   D
+ 90.   A   B   C   D
+105.   A   B   C   D
+120.   A   B   C   D
+135.   A   B   C   D
+150.   A   B   C   D
+END OF FORM A
+

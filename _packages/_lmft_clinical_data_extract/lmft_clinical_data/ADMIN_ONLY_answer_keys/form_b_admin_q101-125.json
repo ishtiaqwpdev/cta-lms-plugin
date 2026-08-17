@@ -1,0 +1,557 @@
+{
+  "form": "B",
+  "type": "ADMIN_ONLY_answer_key_and_rationales",
+  "question_range": "101-125",
+  "records": [
+    {
+      "form": "B",
+      "q_num": 101,
+      "item_id": "B-TX5B-004",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Core",
+      "correct_answer": "A",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A recently returned service member in couples therapy is quiet during conflict and says, \u201cOn deployment, staying contained and handling the task mattered. At home my partner thinks I do not care.\u201d The partner says the silence feels rejecting. Both want to communicate better without treating the service member\u2019s military experience as a defect. Which intervention should the therapist use?",
+      "choices": {
+        "A": "Validate how emotional containment served the deployment context, then build more flexible signals for engagement and reassurance at home.",
+        "B": "Teach direct emotion-labeling skills and ask the partner to reinforce each attempt at verbal disclosure during disagreements and repair conversations.",
+        "C": "Help the partner reduce demands for immediate discussion and give the service member more decompression time before returning to difficult conversations.",
+        "D": "Screen for trauma symptoms and shift to individual trauma treatment only if those symptoms become the main barrier."
+      },
+      "rationales": {
+        "A": "Best answer. The intervention respects the military context in which emotional containment may have been adaptive while helping the couple develop a more flexible home-based relational response.",
+        "B": "Emotion-labeling may be useful, but framing the problem primarily as a skill deficit risks ignoring the military context and the adaptive function the behavior previously served.",
+        "C": "Additional space may reduce escalation, but it does not create a new communication pattern or help the couple translate deployment-based coping into a different relational environment.",
+        "D": "Trauma assessment may be warranted if symptoms suggest it, but the stem does not establish trauma as the controlling problem and specifically presents a reintegration communication issue."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 102,
+      "item_id": "B-CE-023",
+      "area": "Area 1: Clinical Evaluation",
+      "core_calibration_status": "Core",
+      "correct_answer": "A",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client describes recurring racial microaggressions at work and reports becoming increasingly vigilant after a recent highly publicized sociopolitical event. The client says, \u201cMaybe I'm just overreacting.\u201d What should the therapist do NEXT?",
+      "choices": {
+        "A": "Explore discrimination, racial identity, sociopolitical context, coping, supports, and current functioning.",
+        "B": "Assess anxiety, vigilance, sleep, concentration, somatic arousal, and whether symptoms occur across settings without discrimination-related triggers.",
+        "C": "Review workplace incidents, organizational responses, power dynamics, support from colleagues, and whether occupational functioning has changed over time.",
+        "D": "Explore the recent public event, media exposure, prior experiences of discrimination, community reactions, and whether distress increased specifically after that event."
+      },
+      "rationales": {
+        "A": "The client's vigilance occurs in the context of repeated racial microaggressions and a salient sociopolitical event. Exploring discrimination, racial identity, sociopolitical context, coping, support, and current functioning evaluates the experience without prematurely pathologizing it.",
+        "B": "Anxiety symptoms may warrant assessment, but requiring symptoms to occur independently of discrimination-related triggers subtly shifts toward proving an internal disorder.",
+        "C": "Workplace information is clinically useful but focuses too narrowly on the occupational setting.",
+        "D": "The recent public event may have intensified distress, but emphasizing it risks minimizing the cumulative effect of repeated discrimination."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 103,
+      "item_id": "B-CR-003-R2",
+      "area": "Area 3: Managing Crisis Situations",
+      "core_calibration_status": "Calibration",
+      "correct_answer": "B",
+      "source_status": "CONTROLLED SUCCESSOR",
+      "stem": "A client with a suicide attempt five years ago reports several recent episodes of superficial self-injury during periods of dissociation after interpersonal conflict. The client says the current behavior is intended to interrupt numbness, denies current suicidal intent, plan, or preparation, has no medically serious injury, and can identify supports and follow a safety plan. What should the therapist do NEXT?",
+      "choices": {
+        "A": "Reassess current suicide risk, arrange a same-day crisis evaluation, and involve the partner in transfer because of the documented remote attempt.",
+        "B": "Reassess current suicide risk, address the dissociation-linked self-injury pattern, and increase near-term outpatient follow-up this week.",
+        "C": "Reassess current suicide risk, begin trauma-focused stabilization, keep the usual session frequency while monitoring injuries, and review dissociation triggers during follow-up.",
+        "D": "Reassess current suicide risk, involve the partner in continuous monitoring, and postpone independent coping until the urges resolve."
+      },
+      "rationales": {
+        "A": "The remote suicide attempt is important historical risk information, but it does not by itself determine today's disposition when current intent, plan, preparation, and inability to maintain safety are absent.",
+        "B": "The current presentation is dissociation-linked nonsuicidal self-injury with retained safety capacity. Direct suicide reassessment plus intensified outpatient work on the self-injury pattern appropriately responds to the present acute-risk state while incorporating the historical attempt.",
+        "C": "Trauma-focused stabilization and attention to dissociation may be relevant, but keeping the usual session frequency underresponds to the current increase in self-injury; the remote attempt does not by itself require emergency transfer, but the present period warrants intensified outpatient follow-up.",
+        "D": "Continuous partner monitoring improperly substitutes external surveillance for the client's own safety-management capacity and delays development of independent coping."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 104,
+      "item_id": "B-TX5C-007-R1",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Core",
+      "correct_answer": "B",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "An adult client reports episodes of binge eating several evenings each week after trying to eat as little as possible during the day. Afterward the client feels ashamed and responds by imposing even stricter food rules the next morning. Medical monitoring is established and there is no current instability. Which intervention should the therapist use?",
+      "choices": {
+        "A": "Use body-neutrality exercises, reduce appearance checking, and establish regular self-care routines unrelated to food while reviewing how body dissatisfaction changes across the week.",
+        "B": "Map rigid daytime restriction to evening binges and replace restrictive food rules with a more consistent eating pattern that interrupts the cycle.",
+        "C": "Use urge-surfing during binge impulses and have the client notice changes in urge intensity before making an eating decision.",
+        "D": "Explore family and cultural messages about food and weight, then use self-compassion after episodes to reduce shame."
+      },
+      "rationales": {
+        "A": "Body-neutrality work and self-care may support treatment, but they do not directly target the restriction-binge sequence that the stem identifies as the repeating behavioral mechanism.",
+        "B": "Best answer. The client\u2019s rigid restriction is immediately followed by binge episodes and renewed restriction. Directly changing the restrictive rules and eating pattern targets the mechanism maintaining the cycle.",
+        "C": "Urge-surfing can help with binge impulses, but focusing only on the evening urge leaves the daytime restriction that repeatedly sets up the binge pattern.",
+        "D": "Cultural meaning and self-compassion may reduce shame, but they do not directly interrupt the restrictive eating pattern that precedes the binges."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 105,
+      "item_id": "B-LE6-014-R1",
+      "area": "Area 6: Managing Legal and Ethical Obligations",
+      "core_calibration_status": "Core",
+      "correct_answer": "A",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client's attorney, who is not providing health care to the client, requests a copy of the client's psychotherapy records. The attorney sends a signed and dated release that names the therapist and attorney and describes the records to be released, but the release contains no expiration date or expiration event. There is no subpoena, court order, or other legal basis for disclosure. What should the therapist do?",
+      "choices": {
+        "A": "Do not disclose under the defective authorization; document the deficiency, request a corrected authorization with the required expiration element, and release the client records only after valid authority is established.",
+        "B": "Honor the signed authorization, document the client-record request and named recipient, and disclose the specified records because the release clearly identifies the therapist, attorney, and information involved.",
+        "C": "Contact the client for verbal confirmation, document the written authorization, client confidentiality, record scope and current intent, and disclose the specified records because the release otherwise identifies the recipient and requested information.",
+        "D": "Provide a limited record summary, document the authorization and narrower disclosure, and treat the client's signed release as sufficient because fewer client records are being released than requested."
+      },
+      "rationales": {
+        "A": "Best answer. When disclosure depends on an authorization under California's Confidentiality of Medical Information Act, Civil Code section 56.11 requires specified elements, including an expiration date or event. The stem expressly removes other disclosure authority.",
+        "B": "The client's signature and identification of the parties are necessary but not sufficient when a required authorization element is missing.",
+        "C": "Verbal confirmation does not cure the defective written authorization when the disclosure is being made pursuant to the authorization requirements in section 56.11.",
+        "D": "Reducing the amount disclosed does not make an otherwise defective authorization valid."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 106,
+      "item_id": "B-TX5B-002-R1",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Core",
+      "correct_answer": "D",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "An adult client is receiving trauma-focused therapy after a serious motor-vehicle collision. While recounting part of the crash, the client becomes numb, says the room seems unreal, reports tingling in both hands, and loses track of what the therapist is saying. The client is not in immediate danger. Which intervention should the therapist use next?",
+      "choices": {
+        "A": "Label the numbness and tingling as trauma responses, use paced breathing, and structure the narrative into shorter segments while continuing.",
+        "B": "Reframe the physical sensations as conditioned fear, test catastrophic interpretations, and practice coping responses during the session.",
+        "C": "Shift to interoceptive exercises, coach regulation, and process the physical sensations as exposure targets.",
+        "D": "Orient the client to the present with grounding, then continue trauma work in smaller, tolerable segments."
+      },
+      "rationales": {
+        "A": "Paced breathing and shorter segments can help arousal, but continuing before re-establishing present orientation does not adequately address dissociative disengagement.",
+        "B": "Cognitive reappraisal is useful for fear-based misinterpretation, but the immediate problem is loss of present orientation and tracking during trauma processing.",
+        "C": "Interoceptive exposure may be appropriate for panic-related fear of sensations, but deliberately evoking sensations is poorly matched to active dissociation in this moment.",
+        "D": "Correct. Grounding first restores present orientation; trauma work can then continue in smaller segments that remain within the client\u2019s tolerable range."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 107,
+      "item_id": "B-DI-014-R4",
+      "area": "Area 2: Developing a Diagnostic Impression",
+      "core_calibration_status": "Core",
+      "correct_answer": "C",
+      "source_status": "CONTROLLED SUCCESSOR",
+      "stem": "A 15-year-old who identifies as nonbinary reports feeling comfortable with identity and body in an affirming school setting and denies distress about sex characteristics or a desire to change them. Two months ago, family members began openly rejecting the adolescent's identity. Since then, the adolescent has developed marked anxiety, sleep disturbance, difficulty concentrating, and significant impairment in functioning at home. The symptoms remain centered on the family rejection. Which diagnosis is MOST supported?",
+      "choices": {
+        "A": "Gender dysphoria involving persistent incongruence-related distress across supportive and rejecting settings.",
+        "B": "Generalized anxiety disorder involving broad worry across multiple unrelated life domains.",
+        "C": "Adjustment disorder with anxiety following the identifiable family-rejection stressor at home.",
+        "D": "Social anxiety disorder centered on scrutiny, embarrassment, and negative evaluation."
+      },
+      "rationales": {
+        "A": "Gender dysphoria is not established merely by a nonbinary identity. The stem specifically states comfort with identity and body in an affirming setting and no distress about sex characteristics.",
+        "B": "The anxiety remains temporally and contextually tied to family rejection rather than extending broadly across multiple unrelated life domains.",
+        "C": "The anxiety began after an identifiable psychosocial stressor, causes significant impairment, and remains organized around that family-rejection stressor, supporting adjustment disorder with anxiety.",
+        "D": "The symptoms are not organized primarily around fear of social scrutiny, embarrassment, or performance-based negative evaluation."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 108,
+      "item_id": "B-CR-005-R2",
+      "area": "Area 3: Managing Crisis Situations",
+      "core_calibration_status": "Core",
+      "correct_answer": "A",
+      "source_status": "CONTROLLED SUCCESSOR",
+      "stem": "A roommate interrupted a suicide attempt earlier the same day. The original means is no longer available, but the client states that the intention to die remains and that another method will be found if the client leaves unsupervised. What should the therapist do FIRST?",
+      "choices": {
+        "A": "Maintain observation, arrange emergency psychiatric evaluation, and report the interrupted attempt with continuing intent.",
+        "B": "Maintain direct observation, remove remaining lethal means with the roommate, arrange same-day urgent psychiatric follow-up, and confirm a receiving appointment before transfer.",
+        "C": "Maintain direct observation, complete emergency suicide-risk consultation, and decide disposition after the client\u2019s acute distress has meaningfully decreased.",
+        "D": "Maintain direct observation, arrange continuous roommate supervision, and schedule same-day psychiatric care with frequent check-ins."
+      },
+      "rationales": {
+        "A": "The interrupted attempt and continuing suicidal intent establish a high-acute-risk state that requires emergency psychiatric evaluation with direct observation rather than a pathway dependent on informal supervision or delayed disposition.",
+        "B": "Means restriction and same-day psychiatric follow-up are important, and confirming a receiving appointment strengthens the plan, but continuing suicidal intent after an interrupted attempt requires emergency-level containment rather than a pathway that still depends on informal transport and outpatient transfer.",
+        "C": "Additional consultation should not delay disposition when the interrupted attempt and continuing intent already establish a high-acute-risk state.",
+        "D": "Roommate supervision places responsibility on informal support despite the client's stated intention to find another method and does not provide secure clinical containment."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 109,
+      "item_id": "B-CR-001-R3",
+      "area": "Area 3: Managing Crisis Situations",
+      "core_calibration_status": "Core",
+      "correct_answer": "A",
+      "source_status": "CONTROLLED SUCCESSOR",
+      "stem": "A client arrives markedly sedated after taking a prescribed benzodiazepine together with an opioid pain medication and alcohol. The client repeatedly falls asleep while speaking, is difficult to awaken, and breathing appears slower than normal. What should the therapist do FIRST?",
+      "choices": {
+        "A": "Keep direct observation, activate EMS for immediate hospital transport, and monitor respiratory status until transfer occurs.",
+        "B": "Keep direct observation, contact the prescribing clinician for urgent guidance, arrange emergency-department transport with a responsible adult, and notify receiving staff of the combined depressant exposure.",
+        "C": "Keep direct observation, obtain poison-control or medical disposition guidance, and follow the recommended urgent transfer while monitoring alertness.",
+        "D": "Keep direct observation, arrange urgent same-day medical evaluation, and escalate transfer if alertness or breathing fails to improve."
+      },
+      "rationales": {
+        "A": "Reduced responsiveness and slowed breathing after combined opioid, benzodiazepine, and alcohol exposure indicate potentially life-threatening CNS and respiratory depression. EMS transport and continued observation are the most direct response.",
+        "B": "Prescriber contact and emergency-department transport are active responses, and a receiving handoff is useful, but relying on transport by a responsible adult is less appropriate than activating EMS when the client is already difficult to arouse and breathing is slowed.",
+        "C": "Poison-control or medical guidance is reasonable in less unstable exposures, but consultation should not delay emergency transport once respiratory compromise is evident.",
+        "D": "An urgent clinic-level evaluation is too slow and contingent on improvement despite current signs of possible overdose or severe toxicity."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 110,
+      "item_id": "B-TX5C-004",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Core",
+      "correct_answer": "C",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "An adult client with schizoaffective disorder is psychiatrically stable but continues to show blunted affect and slowed responses. A parent interprets this as \u201cnot trying,\u201d and arguments about chores have increased. The client says, \u201cI want my family to understand this is not laziness.\u201d Which intervention should the therapist use?",
+      "choices": {
+        "A": "Help the client explain current needs and ask the parent to use less criticism on low-energy days.",
+        "B": "Ask the parent to notice times when the client joins in more and reinforce those efforts at home.",
+        "C": "Provide psychoeducation about persistent symptoms and set concrete household expectations consistent with current functioning.",
+        "D": "Use collaborative chore problem-solving without emphasizing symptoms so the family does not interpret every difficulty through the disorder."
+      },
+      "rationales": {
+        "A": "Assertive communication and reduced criticism may help, but the family\u2019s central misunderstanding about persistent symptoms remains unaddressed.",
+        "B": "Reinforcement can support participation, but without symptom education it may continue to frame limited engagement mainly as a motivation or effort problem.",
+        "C": "Best answer. Psychoeducation corrects the family\u2019s inaccurate interpretation of symptom-related behavior, and concrete expectations translate that understanding into realistic household functioning.",
+        "D": "Problem-solving is useful, but deliberately avoiding symptom discussion misses the client\u2019s stated goal and leaves the family\u2019s misattribution of behavior intact."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 111,
+      "item_id": "B-CE-019",
+      "area": "Area 1: Clinical Evaluation",
+      "core_calibration_status": "Core",
+      "correct_answer": "C",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A parent involved in a prolonged family-court matter reports increased anxiety, disrupted parenting routines, and growing distrust of professionals. The client repeatedly asks the therapist whether the court has treated the client fairly. What should the therapist do NEXT?",
+      "choices": {
+        "A": "Clarify the court timeline, disputed issues, attorney involvement, and whether the client\u2019s account of unfair treatment matches available legal information.",
+        "B": "Assess anxiety severity, sleep, concentration, avoidance, and whether symptoms persist independently of court-related events or professional contacts.",
+        "C": "Assess how court involvement, parenting disruption, and perceived scrutiny affect current functioning and relationships.",
+        "D": "Review legal-resource needs, advocacy options, documentation concerns, and whether obtaining additional legal guidance would reduce the client\u2019s current uncertainty."
+      },
+      "rationales": {
+        "A": "Legal facts may matter to the client's situation, but determining objective fairness would move the therapist outside the primary clinical assessment role.",
+        "B": "Anxiety symptoms deserve evaluation, but separating them from the legal-system context would omit a major psychosocial factor.",
+        "C": "The task is to evaluate how family-court involvement, parenting disruption, and perceived professional scrutiny are affecting the client's current functioning and relationships\u2014not to determine whether the legal system acted fairly.",
+        "D": "Legal resources may eventually be appropriate, but this option moves toward intervention before the clinical impact of legal-system involvement is sufficiently understood."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 112,
+      "item_id": "B-TX5A-004-R1",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Core",
+      "correct_answer": "D",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A couple in a consensually nonmonogamous relationship is considering moving in together. One partner views cohabitation as a practical next step, while the other worries it could create an implicit primary-partner hierarchy and change responsibilities to other partners. Both want their relationship structure respected and want help deciding what living together would mean. Which intervention should the therapist use next?",
+      "choices": {
+        "A": "Explore how attachment histories shape each partner\u2019s expectations for intimacy, independence, and commitment within their consensual nonmonogamous relationship.",
+        "B": "Revise agreements for privacy, scheduling, and reassurance with other partners before determining whether shared housing would support the relationship.",
+        "C": "Clarify each partner\u2019s broader values for autonomy, equity, commitment, and belonging across the relationship network before making a housing decision.",
+        "D": "Help them agree on what living together will mean for rank, time, money, duties, privacy, and ties with other partners."
+      },
+      "rationales": {
+        "A": "Attachment history may illuminate different expectations for closeness and independence, but the couple is asking for help with the immediate relational meaning and structure of cohabitation.",
+        "B": "Existing agreements may eventually need revision, but changing them before the couple determines what cohabitation itself signifies could put implementation ahead of negotiation.",
+        "C": "Values clarification is relevant and affirming, but the partners have already identified the concrete decision requiring attention: how shared housing would affect commitment, equity, and the wider relationship network.",
+        "D": "Best answer. The therapist should facilitate explicit negotiation of the meaning and practical implications of cohabitation rather than assume a conventional hierarchy or treat consensual nonmonogamy as the problem."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 113,
+      "item_id": "B-CE-037-R1",
+      "area": "Area 1: Clinical Evaluation",
+      "core_calibration_status": "Calibration",
+      "correct_answer": "B",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client reports periods of low mood that fluctuate enough that neither the client nor therapist can tell whether overall symptoms are improving. The therapist wants a structured way to supplement the ongoing clinical evaluation. Which approach is BEST?",
+      "choices": {
+        "A": "Use a broad personality inventory now and again near discharge to determine whether stable traits account for changes in the client's mood.",
+        "B": "Use a validated depression measure at baseline and follow-up, interpreting score changes with interview findings, functioning, and the client's reported symptom course.",
+        "C": "Create a daily symptom checklist tailored to the client's concerns and use average weekly ratings as the primary indicator of improvement.",
+        "D": "Use a standardized functioning measure alone and infer improvement in mood from changes in work, social, and self-care performance."
+      },
+      "rationales": {
+        "A": "A broad personality inventory addresses relatively stable traits and is poorly matched to tracking change in current depressive symptoms.",
+        "B": "The therapist wants structured longitudinal information about fluctuating low mood. A validated depression measure used at planned intervals directly measures the target symptom domain and remains appropriately integrated with interview and functioning data.",
+        "C": "A tailored daily checklist can generate useful self-monitoring data, but using its weekly average as the primary indicator of improvement gives a nonstandardized tool too much evaluative authority.",
+        "D": "Functioning is an important outcome, but changes in functioning cannot be assumed to represent equivalent changes in depressive symptoms."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 114,
+      "item_id": "B-CP-003-R2",
+      "area": "Area 4: Case Conceptualization and Planning",
+      "core_calibration_status": "Core",
+      "correct_answer": "D",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client\u2019s mood scores have improved, but the client has not resumed work or valued activities, remains dependent on family reassurance, and rarely uses skills without prompting. What should the therapist do NEXT?",
+      "choices": {
+        "A": "Begin step-down after mood improvement; monitor work and activity recovery; restore weekly care if symptoms or impairment return.",
+        "B": "Continue treatment for four weeks; address practical barriers; monitor work, valued activity, reassurance use, and independent skill practice.",
+        "C": "Add another symptom-focused intervention; retain current functional goals; reassess work and activity after completing the next treatment trial.",
+        "D": "Revise goals toward independent activity and skill use; reduce family reassurance; evaluate functional progress before initiating any step-down."
+      },
+      "rationales": {
+        "A": "Beginning step-down because the mood score improved gives symptom reduction excessive weight and risks ending before functional recovery has generalized.",
+        "B": "Practical barriers deserve consideration, but continuing essentially the same plan for another four weeks delays modification despite clear evidence of a symptom\u2013function discrepancy.",
+        "C": "Adding another symptom-focused intervention does not fit the current evidence. Symptoms have improved; the unresolved problem is functional dependence rather than insufficient symptom reduction.",
+        "D": "The symptom scores have improved, but work, valued activity, independent skill use, and reduced reassurance dependence have not. D modifies treatment around the remaining functional and maintaining processes and postpones step-down until those gains can be evaluated."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 115,
+      "item_id": "B-TX5E-003",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Core",
+      "correct_answer": "B",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client with social anxiety mentally rehearses nearly every sentence before speaking to coworkers. The client believes, \u201cIf I do not script what I am going to say, I will sound foolish and they will pull away.\u201d The rehearsal reduces uncertainty briefly but makes conversations stiff and self-focused. The therapist is using CBT. Which intervention most directly addresses the maintaining process?",
+      "choices": {
+        "A": "Before a coworker interaction, record the feared prediction, generate several alternative explanations, and compare each explanation with what actually happens during and after the conversation.",
+        "B": "Enter a brief conversation without scripting sentences, record the predicted rejection beforehand, and compare it with the coworker\u2019s actual response.",
+        "C": "Complete a graded series of workplace conversations while gradually reducing preparation time, rating anxiety and self-focus before and after each interaction, and noting changes across trials.",
+        "D": "Shift attention to the coworker\u2019s words and nonverbal cues during conversations, then record whether reduced self-monitoring changes the interaction."
+      },
+      "rationales": {
+        "A": "Testing alternative interpretations is a reasonable CBT strategy, but it does not directly test the safety behavior identified in the stem: mentally scripting sentences before speaking.",
+        "B": "Best answer. The experiment deliberately removes internal rehearsal and compares the feared prediction with the coworker\u2019s actual response, directly testing whether the safety behavior is necessary.",
+        "C": "Graded exposure is appropriate for social anxiety, but the central maintaining process here is covert rehearsal; a broader hierarchy does not isolate that mechanism as cleanly.",
+        "D": "Reducing self-focused attention may help, but it does not directly test the client\u2019s belief that conversation will fail if internal rehearsal is not used."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 116,
+      "item_id": "B-DI-010",
+      "area": "Area 2: Developing a Diagnostic Impression",
+      "core_calibration_status": "Core",
+      "correct_answer": "C",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "For ten months, a client has been preoccupied with having a serious neurological disease. The client experiences only occasional mild headaches, but repeatedly checks coordination, searches symptoms online, requests reassurance, and remains highly anxious despite appropriate medical evaluations that have not identified serious disease. Which diagnosis is MOST supported?",
+      "choices": {
+        "A": "Somatic symptom disorder",
+        "B": "Generalized anxiety disorder",
+        "C": "Illness anxiety disorder",
+        "D": "Obsessive-compulsive disorder"
+      },
+      "rationales": {
+        "A": "Somatic symptom disorder is centered on one or more significant distressing physical symptoms plus excessive related thoughts or behavior; that is not the pattern here.",
+        "B": "The anxiety is narrowly organized around acquiring or having serious disease rather than multiple life domains.",
+        "C": "The client has minimal physical symptoms but persistent fear of serious illness, repeated body checking and reassurance seeking, and substantial health anxiety despite appropriate evaluations. APA differentiates illness anxiety disorder from somatic symptom disorder specifically by the absence or relative minimality of physical symptoms.",
+        "D": "Repetitive checking can occur in OCD, but here it is part of a specific illness-preoccupation syndrome rather than a broader obsession-compulsion presentation."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 117,
+      "item_id": "B-CR-014-R3",
+      "area": "Area 3: Managing Crisis Situations",
+      "core_calibration_status": "Core",
+      "correct_answer": "D",
+      "source_status": "CONTROLLED SUCCESSOR",
+      "stem": "An adult client sustained a disabling spinal injury three weeks ago. The client is medically stable and beginning rehabilitation but now needs assistance with mobility, transportation, household tasks, and return-to-work planning. The client is frustrated by lost independence but denies suicidal intent and can participate in decisions. What should the therapist prioritize?",
+      "choices": {
+        "A": "Assess functional losses and emotional response, provide grief-focused support, identify practical assistance options, and add those resources after distress decreases.",
+        "B": "Assess functional barriers and mood symptoms, coordinate psychiatric support, and defer transportation or work adaptation until symptoms clinically stabilize.",
+        "C": "Assess functional barriers and family roles, coordinate household support, and use prior role patterns to guide current adaptation.",
+        "D": "Assess functional barriers and client priorities, coordinate rehabilitation-accessibility resources, and implement temporary adaptations in daily roles."
+      },
+      "rationales": {
+        "A": "Grief support and identifying practical options may be useful, but delaying implementation of needed accessibility and functional supports until distress decreases does not match the immediate adaptation demands created by the disabling injury.",
+        "B": "Mood assessment may be relevant, but the stem does not establish a psychiatric disorder that should delay accessibility or functional adaptation.",
+        "C": "Family-role history can inform adjustment, but the immediate crisis is the client's new disability-related functioning and access needs rather than longstanding family patterns.",
+        "D": "The disabling injury has created immediate mobility, transportation, household, and work barriers. A client-centered plan that coordinates rehabilitation and accessibility resources while adapting daily roles directly addresses the current functional crisis."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 118,
+      "item_id": "B-DI-007",
+      "area": "Area 2: Developing a Diagnostic Impression",
+      "core_calibration_status": "Core",
+      "correct_answer": "D",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "Following a violent assault, a client is unable to remember several important autobiographical details from the period surrounding the event, including how the client escaped and reached a friend's home. Witnesses confirm the client was awake and responsive during that time. There was no head injury, substance use, or neurological condition that explains the memory loss. Which diagnosis is MOST supported?",
+      "choices": {
+        "A": "Posttraumatic stress disorder",
+        "B": "Depersonalization/derealization disorder",
+        "C": "Mild neurocognitive disorder",
+        "D": "Dissociative amnesia"
+      },
+      "rationales": {
+        "A": "PTSD can include dissociative and memory symptoms, but the stem does not establish the broader PTSD syndrome required to make PTSD the better diagnosis.",
+        "B": "Depersonalization/derealization centers on detachment from self or surroundings, not autobiographical memory loss.",
+        "C": "The abrupt trauma-linked autobiographical gap and absence of neurological findings do not support an acquired neurocognitive disorder.",
+        "D": "The client cannot recall important autobiographical information associated with the traumatic period, the memory loss exceeds ordinary forgetting, and head injury, substance use, and neurological causes are not supported. APA identifies amnesia/loss of memory as a core dissociative phenomenon and lists dissociative amnesia as a distinct dissociative disorder."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 119,
+      "item_id": "B-TX5F-004-R1",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Calibration",
+      "correct_answer": "A",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client with chronic musculoskeletal pain has been medically cleared for gradual activity but has become markedly deconditioned after months of avoiding movement. The client wants to resume routine walking and household tasks but becomes fatigued quickly and is unsure how to increase activity without overdoing it. Which adjunct referral best matches the current treatment need?",
+      "choices": {
+        "A": "Refer to physical therapy for progressive conditioning and restoration of functional movement.",
+        "B": "Refer to occupational therapy for pacing and routines supporting function across home, self-care, and work tasks.",
+        "C": "Refer to pain psychology for focused work on catastrophizing, movement fear, coping skills, and behavioral responses to persistent symptoms.",
+        "D": "Refer to a rehabilitation physician for medical reassessment of pain contributors, activity restrictions, medication options, and other physical treatment needs."
+      },
+      "rationales": {
+        "A": "Best answer. The client is medically cleared but markedly deconditioned and wants to rebuild walking and household function. Physical therapy directly addresses progressive conditioning and restoration of functional movement.",
+        "B": "Occupational therapy can support pacing and daily routines, but the primary treatment need described is physical deconditioning and graded restoration of movement capacity.",
+        "C": "Pain psychology may be useful when catastrophizing or movement fear is the central barrier, but the stem emphasizes deconditioning after prolonged avoidance rather than a psychological obstacle requiring a separate pain-psychology referral.",
+        "D": "A rehabilitation physician could reassess medical contributors or restrictions, but the client has already been medically cleared for gradual activity and the current need is functional reconditioning."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 120,
+      "item_id": "B-CE-011-R1",
+      "area": "Area 1: Clinical Evaluation",
+      "core_calibration_status": "Core",
+      "correct_answer": "C",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A client has received treatment for anxiety during several periods over the past decade. The client now presents with anxiety again but cannot remember whether earlier episodes began under similar circumstances. Which information should the therapist prioritize?",
+      "choices": {
+        "A": "Compare prior diagnoses, medication regimens, clinician impressions, treatment settings, and discharge summaries to identify the best historical formulation.",
+        "B": "Characterize current anxiety, then review only previous symptoms closely matching the present pattern to determine whether this is recurrence.",
+        "C": "Reconstruct each prior episode\u2019s onset, context, symptom pattern, duration, treatment response, and functional impact before comparing it with current anxiety.",
+        "D": "Obtain records or collateral information from the most severe previous episode and use that period as the reference for current symptoms."
+      },
+      "rationales": {
+        "A": "Previous diagnoses and clinician formulations may provide background but can reproduce earlier labels rather than clarify the actual clinical course.",
+        "B": "Comparing only prior symptoms closely matching the current presentation risks excluding clinically meaningful differences among episodes.",
+        "C": "The client's uncertainty about whether earlier anxiety episodes occurred under similar circumstances requires a longitudinal reconstruction of onset, context, symptom pattern, duration, treatment response, and functioning.",
+        "D": "Using the most severe episode as the reference point gives one period disproportionate weight and may distort comparison with the current presentation."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 121,
+      "item_id": "B-CE-003",
+      "area": "Area 1: Clinical Evaluation",
+      "core_calibration_status": "Core",
+      "correct_answer": "C",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A school reports that an 8-year-old frequently leaves the seat, interrupts classmates, and fails to complete work. The caregiver reports that the child can spend long periods completing tasks at home and rarely appears restless. Which action should the therapist take NEXT?",
+      "choices": {
+        "A": "Compare teacher observations, task demands, classroom supports, and behavior during structured and unstructured school periods.",
+        "B": "Compare home routines, expectations, task completion, and behavior during activities that require sustained attention.",
+        "C": "Compare specific behaviors, task demands, supports, and consequences across settings before interpreting the home-school discrepancy.",
+        "D": "Compare sleep, stress, family routines, and academic workload with the timing of the school concerns."
+      },
+      "rationales": {
+        "A": "School observations are important, but this option remains within one environment and therefore cannot adequately explain the home-school difference.",
+        "B": "Home task behavior provides useful comparison data, but it similarly emphasizes only one side of the discrepancy.",
+        "C": "The central finding is that the child's behavior varies substantially by setting. Comparing behaviors, task demands, supports, and consequences across settings allows the therapist to evaluate the discrepancy rather than decide prematurely which source is more accurate.",
+        "D": "Sleep, stress, and routines could affect functioning, but this option selects contextual explanations before the actual differences in task demands and supports across settings are characterized."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 122,
+      "item_id": "B-TX5A-005",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Core",
+      "correct_answer": "D",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A couple repeatedly argues about household responsibilities. One partner begins with criticism about chores, the other becomes defensive and lists everything already completed, and the first partner responds by escalating the criticism. Both agree the pattern is exhausting and want a better way to resolve the recurring disagreement. Which intervention should the therapist use?",
+      "choices": {
+        "A": "Create a shared task plan, define each partner\u2019s responsibilities, and use weekly check-ins to identify where expectations, follow-through, and perceived fairness diverge.",
+        "B": "Explore family-of-origin meanings of fairness and use those differences to renegotiate how each partner defines an acceptable contribution.",
+        "C": "Practice de-escalation and time-out skills, then resume the same disagreement using agreed rules for turn-taking, requests, and responses when defensiveness returns.",
+        "D": "Identify the criticism-defensiveness escalation sequence and coach the couple through one current chore disagreement using a structured problem-solving exchange."
+      },
+      "rationales": {
+        "A": "Clarifying tasks may reduce ambiguity, but a written division of labor does not directly alter the criticism-defensiveness escalation that is maintaining the recurring conflict.",
+        "B": "Family-of-origin meanings may deepen understanding, but the couple is asking for a better way to handle a current repetitive interaction rather than primarily exploring the origins of fairness beliefs.",
+        "C": "De-escalation and time-out skills can reduce intensity, but they do not directly replace the criticism-defensiveness sequence with a collaborative problem-solving process.",
+        "D": "Best answer. The therapist identifies the maintaining interaction pattern and coaches the couple through a new structured exchange using the exact type of disagreement that repeatedly triggers the cycle."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 123,
+      "item_id": "B-CP-005-R2",
+      "area": "Area 4: Case Conceptualization and Planning",
+      "core_calibration_status": "Core",
+      "correct_answer": "C",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A family needs bilingual conjoint treatment for escalating parent\u2013adolescent conflict. During assessment, a trial interpreter-assisted family session prevented direct interaction and caused clinically important relational meaning to be lost. The therapist is not sufficiently proficient in the family\u2019s preferred language to provide the indicated treatment independently. The health plan has no in-network bilingual family therapist within a reasonable distance, but it accepts requests for network-gap exceptions. The family cannot pay privately. Which treatment plan is MOST appropriate?",
+      "choices": {
+        "A": "Continue brief interpreter-assisted family bridge sessions; consult about adapting the approach; reassess clinical fit while the family remains on in-network waitlists.",
+        "B": "Shift to individual treatment for the adolescent; address family effects through caregiver consultation; revisit bilingual family referral if symptoms persist later.",
+        "C": "Provide a time-limited stabilization bridge within competence; request a network-gap exception; coordinate suitable bilingual options and review access with the family.",
+        "D": "Give the family plan and community referrals; offer one transition session; close when the bridge period ends regardless of placement."
+      },
+      "rationales": {
+        "A": "Consultation and adaptation are responsible steps, but interpreter-assisted family treatment has already proved clinically insufficient in this case. Continuing that modality while waiting does not adequately address the indicated treatment need.",
+        "B": "Individual treatment for the adolescent changes the unit and purpose of care. It substitutes an available service for the bilingual conjoint treatment supported by the assessment.",
+        "C": "The indicated treatment is bilingual conjoint family care. A trial has already demonstrated that interpreter-mediated treatment loses clinically important relational meaning, and the therapist cannot independently provide the needed language-concordant service. C offers a limited stabilization bridge within competence, actively uses the payer\u2019s network-gap process, coordinates suitable options, and keeps the family involved in access decisions.",
+        "D": "Referrals and a transition session are insufficient when the family has already encountered a significant access barrier. Ending automatically when a bridge period expires prioritizes an administrative endpoint over the family\u2019s clinical and continuity circumstances."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 124,
+      "item_id": "B-TX5D-004",
+      "area": "Area 5: Treatment",
+      "core_calibration_status": "Calibration",
+      "correct_answer": "B",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "For six months, a client\u2019s household has been under significant financial strain after the family income decreased. Basic needs are currently being met, but the client reports constant mental rehearsal of expenses, jaw tension, headaches, irritability, and staying awake late to recheck the budget. Medical causes for the headaches have been ruled out. Which intervention should the therapist use?",
+      "choices": {
+        "A": "Explore the meaning the client attaches to financial security, connect the current worry to earlier experiences of scarcity, and delay behavioral changes until those themes are clearer.",
+        "B": "Schedule a limited daily problem-solving period for finances, add a brief relaxation practice afterward, and reestablish a consistent bedtime routine.",
+        "C": "Encourage the client to reduce all discretionary activities, review the budget whenever worry rises, and use distraction only after the numbers have been checked.",
+        "D": "Focus on challenging catastrophic predictions about money, postpone practical budgeting discussions in therapy, and increase cognitive restructuring when physical tension appears."
+      },
+      "rationales": {
+        "A": "Historical meaning may be clinically relevant, but the immediate treatment target is a chronic stress cycle involving repetitive problem solving, physiologic tension, and disrupted sleep.",
+        "B": "Best answer. Time-limited problem solving contains the practical stressor, relaxation addresses physiologic arousal, and bedtime structure reduces a behavioral pattern that is prolonging the chronic stress response.",
+        "C": "Reducing discretionary activity may be financially practical, but repeatedly reviewing the budget whenever worry rises is likely to reinforce rumination rather than regulate the stress response.",
+        "D": "Cognitive restructuring can be useful, but excluding practical problem solving and using it only when physical symptoms emerge is less comprehensive for a stressor that has both external and physiologic components."
+      }
+    },
+    {
+      "form": "B",
+      "q_num": 125,
+      "item_id": "B-LE6-001-R1",
+      "area": "Area 6: Managing Legal and Ethical Obligations",
+      "core_calibration_status": "Core",
+      "correct_answer": "B",
+      "source_status": "EXACT/FROZEN SOURCE",
+      "stem": "A separated couple has been attending conjoint therapy with the stated purpose of deciding whether to reconcile. Both now agree that reconciliation is no longer the goal and want to continue with the same therapist solely to improve co-parenting. What should the therapist do BEFORE continuing under the new purpose?",
+      "choices": {
+        "A": "Keep the current informed-consent agreement, document the co-parenting treatment purpose, and review privacy expectations with both partners before continuing conjoint work.",
+        "B": "Review the new treatment purpose, client roles, confidentiality expectations, and limits with both partners, and document their updated informed-consent understanding before continuing.",
+        "C": "Close the reconciliation treatment, complete a new informed-consent process, open a new co-parenting treatment episode, and document new client roles before any further conjoint session.",
+        "D": "Meet individually with each partner to review goals, privacy expectations, and client roles before deciding whether conjoint co-parenting treatment should continue."
+      },
+      "rationales": {
+        "A": "Documenting the new purpose and reviewing privacy are useful, but simply retaining the prior agreement leaves the changed client-role and treatment-limit expectations insufficiently clarified.",
+        "B": "Best answer. A substantial change in the purpose of conjoint treatment calls for explicit review of the new purpose, roles, confidentiality expectations, and limits. The therapist should document the updated informed-consent understanding without inventing a universal rule that a new signed form is always required.",
+        "C": "A fully new episode and formal new consent process may be administratively possible, but it is not inherently required merely because the therapeutic purpose changes.",
+        "D": "Separate meetings may sometimes be useful, but they can create additional privacy expectations and are not necessary before the couple jointly clarifies the changed purpose and roles."
+      }
+    }
+  ]
+}

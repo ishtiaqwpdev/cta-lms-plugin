@@ -1,0 +1,5 @@
+FORM_A=143
+FORM_B=143
+CK1: OK questions=39 failures=0
+CK2: SKIPPED questions=52 failures=52
+CK3: SKIPPED questions=65 failures=65

@@ -1,0 +1,160 @@
+2026-08-04T13:02:09.3717020+05:00 === START ===
+2026-08-04T13:02:10.6965749+05:00 pkgParent exists: True
+2026-08-04T13:02:11.2722002+05:00 PKG: CTA_LPCC_NCMHCE_David_Complete_LMS_and_Website_Release_v1.0
+2026-08-04T13:02:12.2974130+05:00 PACKAGE: C:\Users\premier computer\Desktop\New folder\cta-academy-lms\_packages\CTA_LPCC_NCMHCE_v1.0\CTA_LPCC_NCMHCE_David_Complete_LMS_and_Website_Release_v1.0
+2026-08-04T13:02:17.9724631+05:00 SUBST Z: -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\_packages\CTA_LPCC_NCMHCE_v1.0\CTA_LPCC_NCMHCE_David_Complete_LMS_and_Website_Release_v1.0 ; exists: True
+2026-08-04T13:02:18.2736067+05:00 ROOT: 00_Start_Here
+2026-08-04T13:02:18.5136594+05:00 ROOT: 01_Student_Workbooks
+2026-08-04T13:02:18.9277361+05:00 ROOT: 02_Workbook_Practice_Banks
+2026-08-04T13:02:19.4625137+05:00 ROOT: 03_Cumulative_Checkpoints
+2026-08-04T13:02:19.9527819+05:00 ROOT: 04_Comprehensive_Simulations
+2026-08-04T13:02:20.1638678+05:00 ROOT: 05_Flashcards_and_Study_Tools
+2026-08-04T13:02:20.5755590+05:00 ROOT: 06_Quick_References_and_Downloadables
+2026-08-04T13:02:20.9016118+05:00 ROOT: 07_Student_Support_and_Study_Schedules
+2026-08-04T13:02:21.7133947+05:00 ROOT: 08_Unrecorded_Production_Assets_DO_NOT_PUBLISH
+2026-08-04T13:02:22.1695633+05:00 ROOT: 09_Website_and_LMS_Implementation
+2026-08-04T13:02:22.5414829+05:00 ROOT: 90_Admin_Restricted
+2026-08-04T13:02:23.4920887+05:00 ROOT: 99_Archive_Superseded_Do_Not_Publish
+2026-08-04T13:02:25.0035699+05:00 --- workbooks ---
+2026-08-04T13:02:25.7627419+05:00 COPIED: CTA_LPCC_WB10_Multicultural_Developmental_Career_Spiritual_Disability_and_Context_Responsive_Counseling_Student_Workbook_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\workbooks
+2026-08-04T13:02:38.6824534+05:00 COPIED: CTA_LPCC_WB12_California_Legal_Ethical_Documentation_Technology_and_Professional_Practice_Student_Workbook_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\workbooks
+2026-08-04T13:02:38.7030596+05:00 COPIED: CTA_LPCC_WB1_NCMHCE_Case_Study_Strategy_and_Applied_Clinical_Counselor_Reasoning_Student_Workbook_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\workbooks
+2026-08-04T13:02:39.0194966+05:00 COPIED: CTA_LPCC_WB2_Professional_Identity_California_Scope_Competence_and_Counselor_Self_Awareness_Student_Workbook_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\workbooks
+2026-08-04T13:02:39.2891986+05:00 COPIED: CTA_LPCC_WB3_Intake_Informed_Consent_Clinical_Interviewing_MSE_and_Biopsychosocial_Cultural_Assessment_Student_Workbook_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\workbooks
+2026-08-04T13:02:39.5707350+05:00 COPIED: CTA_LPCC_WB4_Crisis_Trauma_Abuse_Violence_and_Level_of_Care_Decisions_Student_Workbook_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\workbooks
+2026-08-04T13:02:39.9872437+05:00 COPIED: CTA_LPCC_WB5_Diagnosis_and_Differential_Diagnosis_I_Mood_Anxiety_Trauma_OCD_and_Psychotic_Disorders_Student_Workbook_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\workbooks
+2026-08-04T13:03:25.9421146+05:00 COPIED: CTA_LPCC_WB6_Diagnosis_and_Differential_Diagnosis_II_Substance_Use_Personality_Neurodevelopmental_Eating_Sleep_Somatic_Medical_and_Co-Occurring_Conditions_Student_Workbook_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\workbooks
+2026-08-04T13:03:25.9704693+05:00 COPIED: CTA_LPCC_WB7_Case_Conceptualization_Treatment_Planning_Measurement_Progress_and_Termination_Student_Workbook_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\workbooks
+2026-08-04T13:03:26.1005427+05:00 COPIED: CTA_LPCC_WB8_Counseling_Theories_Therapeutic_Alliance_and_Core_Counseling_Skills_Student_Workbook_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\workbooks
+2026-08-04T13:03:26.2312397+05:00 COPIED: CTA_LPCC_WB9_Evidence_Based_and_Evidence_Informed_Interventions_Across_Common_Presenting_Concerns_Student_Workbook_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\workbooks
+2026-08-04T13:03:26.3733150+05:00 --- practice-banks ---
+2026-08-04T13:03:26.8615670+05:00 PB_SUB: WB01
+2026-08-04T13:03:28.1245135+05:00 PB_SUB: WB02
+2026-08-04T13:03:28.4275905+05:00 PB_SUB: WB03
+2026-08-04T13:03:29.5142383+05:00 PB_SUB: WB04
+2026-08-04T13:03:29.7329666+05:00 PB_SUB: WB05
+2026-08-04T13:03:31.3456438+05:00 PB_SUB: WB06
+2026-08-04T13:03:31.9378476+05:00 PB_SUB: WB07
+2026-08-04T13:03:32.7976101+05:00 PB_SUB: WB08
+2026-08-04T13:03:33.5352931+05:00 PB_SUB: WB09
+2026-08-04T13:03:33.8033018+05:00 PB_SUB: WB10
+2026-08-04T13:03:34.3768883+05:00 PB_SUB: WB11
+2026-08-04T13:03:34.7885524+05:00 PB_SUB: WB12
+2026-08-04T13:03:35.6796912+05:00 COPIED: CTA_LPCC_WB1_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\practice-banks
+2026-08-04T13:03:35.9105980+05:00 COPIED: CTA_LPCC_WB1_17_Question_Practice_Bank_Candidate_Form_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\practice-banks
+2026-08-04T13:03:36.8244592+05:00 COPIED: CTA_LPCC_WB2_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\practice-banks
+2026-08-04T13:03:37.7355924+05:00 COPIED: CTA_LPCC_WB2_17_Question_Practice_Bank_Candidate_Form_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\practice-banks
+2026-08-04T13:03:38.2688974+05:00 COPIED: CTA_LPCC_WB3_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\practice-banks
+2026-08-04T13:03:39.3986387+05:00 COPIED: CTA_LPCC_WB3_17_Question_Practice_Bank_Candidate_Form_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\practice-banks
+2026-08-04T13:03:40.1784518+05:00 COPIED: CTA_LPCC_WB4_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\practice-banks
+2026-08-04T13:03:40.4807211+05:00 COPIED: CTA_LPCC_WB4_17_Question_Practice_Bank_Candidate_Form_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\practice-banks
+2026-08-04T13:03:41.4126595+05:00 COPIED: CTA_LPCC_WB5_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\practice-banks
+2026-08-04T13:03:59.8682333+05:00 COPIED: CTA_LPCC_WB6_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\practice-banks
+2026-08-04T13:03:59.8881252+05:00 COPIED: CTA_LPCC_WB6_17_Question_Practice_Bank_Candidate_Form_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\practice-banks
+2026-08-04T13:04:00.2579021+05:00 COPIED: CTA_LPCC_WB7_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\practice-banks
+2026-08-04T13:04:00.7423717+05:00 COPIED: CTA_LPCC_WB7_17_Question_Practice_Bank_Candidate_Form_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\practice-banks
+2026-08-04T13:04:01.2876611+05:00 COPIED: CTA_LPCC_WB8_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\practice-banks
+2026-08-04T13:04:01.6134231+05:00 COPIED: CTA_LPCC_WB8_17_Question_Practice_Bank_Candidate_Form_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\practice-banks
+2026-08-04T13:04:02.4271372+05:00 COPIED: CTA_LPCC_WB9_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\practice-banks
+2026-08-04T13:04:03.3577744+05:00 COPIED: CTA_LPCC_WB9_17_Question_Practice_Bank_Candidate_Form_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\practice-banks
+2026-08-04T13:04:04.1236929+05:00 COPIED: CTA_LPCC_WB10_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\practice-banks
+2026-08-04T13:04:04.4165957+05:00 COPIED: CTA_LPCC_WB10_17_Question_Practice_Bank_Candidate_Form_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\practice-banks
+2026-08-04T13:04:04.8834511+05:00 COPIED: CTA_LPCC_WB11_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\practice-banks
+2026-08-04T13:04:05.4068654+05:00 COPIED: CTA_LPCC_WB11_17_Question_Practice_Bank_Candidate_Form_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\practice-banks
+2026-08-04T13:04:06.0524053+05:00 COPIED: CTA_LPCC_WB12_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\practice-banks
+2026-08-04T13:04:06.3084917+05:00 COPIED: CTA_LPCC_WB12_17_Question_Practice_Bank_Candidate_Form_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\practice-banks
+2026-08-04T13:04:06.5809661+05:00 --- checkpoints ---
+2026-08-04T13:04:08.3699477+05:00 CK_FOUND: Z:\03_Cumulative_Checkpoints
+2026-08-04T13:04:09.9391074+05:00 COPIED: CTA_LPCC_Checkpoint_1_WB1-4_39-Question_Cumulative_Assessment_Answer_Rationales_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\checkpoints
+2026-08-04T13:04:09.9766328+05:00 COPIED: CTA_LPCC_Checkpoint_1_WB1-4_39-Question_Cumulative_Assessment_Candidate_Form_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\checkpoints
+2026-08-04T13:04:11.3172505+05:00 COPIED: CTA_LPCC_Checkpoint_2_WB1-8_52-Question_Cumulative_Assessment_Answer_Rationales_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\checkpoints
+2026-08-04T13:04:12.9356272+05:00 COPIED: CTA_LPCC_Checkpoint_2_WB1-8_52-Question_Cumulative_Assessment_Candidate_Form_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\checkpoints
+2026-08-04T13:04:13.0906779+05:00 COPIED: CTA_LPCC_Checkpoint_3_WB1-12_65-Question_Cumulative_Assessment_Answer_Rationales_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\checkpoints
+2026-08-04T13:04:13.9392872+05:00 COPIED: CTA_LPCC_Checkpoint_3_WB1-12_65-Question_Cumulative_Assessment_Candidate_Form_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\checkpoints
+2026-08-04T13:04:14.8250990+05:00 CK_FOUND: Z:\03_Cumulative_Checkpoints\Checkpoint_1
+2026-08-04T13:04:16.0881030+05:00 COPIED: CTA_LPCC_Checkpoint_1_WB1-4_39-Question_Cumulative_Assessment_Answer_Rationales_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\checkpoints
+2026-08-04T13:04:16.5508287+05:00 COPIED: CTA_LPCC_Checkpoint_1_WB1-4_39-Question_Cumulative_Assessment_Candidate_Form_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\checkpoints
+2026-08-04T13:04:16.7675941+05:00 CK_FOUND: Z:\03_Cumulative_Checkpoints\Checkpoint_2
+2026-08-04T13:04:17.3675444+05:00 COPIED: CTA_LPCC_Checkpoint_2_WB1-8_52-Question_Cumulative_Assessment_Answer_Rationales_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\checkpoints
+2026-08-04T13:04:17.6992505+05:00 COPIED: CTA_LPCC_Checkpoint_2_WB1-8_52-Question_Cumulative_Assessment_Candidate_Form_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\checkpoints
+2026-08-04T13:04:18.1387400+05:00 CK_FOUND: Z:\03_Cumulative_Checkpoints\Checkpoint_3
+2026-08-04T13:04:21.9890435+05:00 COPIED: CTA_LPCC_Checkpoint_3_WB1-12_65-Question_Cumulative_Assessment_Answer_Rationales_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\checkpoints
+2026-08-04T13:04:22.0035374+05:00 COPIED: CTA_LPCC_Checkpoint_3_WB1-12_65-Question_Cumulative_Assessment_Candidate_Form_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\checkpoints
+2026-08-04T13:04:22.9349199+05:00 --- simulations ---
+2026-08-04T13:04:23.9051994+05:00 SIM_ROOT: Z:\04_Comprehensive_Simulations
+2026-08-04T13:04:25.7974264+05:00 SIM_FILE: \Form_A\CTA_LPCC_Comprehensive_Simulation_Form_A_143_Question_Answer_Rationales_v1.0.docx
+2026-08-04T13:04:26.3200079+05:00 SIM_FILE: \Form_A\CTA_LPCC_Comprehensive_Simulation_Form_A_143_Question_Candidate_Exam_v1.0.docx
+2026-08-04T13:04:27.0408663+05:00 SIM_FILE: \Form_A_Remediation\CTA_LPCC_Form_A_Remediation_Workbook_v1.0.docx
+2026-08-04T13:04:28.2185505+05:00 SIM_FILE: \Form_B\CTA_LPCC_Comprehensive_Simulation_Form_B_143_Question_Answer_Rationales_v1.0.docx
+2026-08-04T13:04:29.6342618+05:00 SIM_FILE: \Form_B\CTA_LPCC_Comprehensive_Simulation_Form_B_143_Question_Candidate_Exam_v1.0.docx
+2026-08-04T13:04:32.1390533+05:00 FORM_DIR: Z:\04_Comprehensive_Simulations\Form_A
+2026-08-04T13:05:07.1405311+05:00 FORM_DIR: Z:\04_Comprehensive_Simulations\Form_B
+2026-08-04T13:05:07.4725984+05:00 SIM_COPIED: CTA_LPCC_Comprehensive_Simulation_Form_B_143_Question_Answer_Rationales_v1.0.docx
+2026-08-04T13:05:08.2799343+05:00 SIM_COPIED: CTA_LPCC_Comprehensive_Simulation_Form_B_143_Question_Candidate_Exam_v1.0.docx
+2026-08-04T13:05:08.7731830+05:00 FORM_DIR: Z:\04_Comprehensive_Simulations\Form_A_Remediation
+2026-08-04T13:05:09.5648307+05:00 SIM_COPIED: CTA_LPCC_Form_A_Remediation_Workbook_v1.0.docx
+2026-08-04T13:05:10.3835211+05:00 --- study-tools (05) ---
+2026-08-04T13:05:11.6537682+05:00 COPIED: CTA_LPCC_Clinical_Exam_Preparation_Flashcard_Collection_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\study-tools
+2026-08-04T13:05:22.4677777+05:00 --- quick-references (06) ---
+2026-08-04T13:05:23.4033126+05:00 COPIED: CTA_LPCC_Quick_Reference_and_Rapid_Review_Library_v1.0.docx -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\quick-references
+2026-08-04T13:05:23.6373979+05:00 --- student-support (07) ---
+2026-08-04T13:05:23.9289507+05:00 MISSING: Z:\07_Student_Support_and_Orientation
+2026-08-04T13:05:24.1760231+05:00 --- branding from 09 if easy ---
+2026-08-04T13:05:24.6610575+05:00 09: 09_Website_and_LMS_Implementation
+2026-08-04T13:05:25.5424449+05:00 BRAND: CTA_Stacked_Logo.png
+2026-08-04T13:05:26.0438509+05:00 BRAND: Primary Logo (Final).jpg
+2026-08-04T13:05:26.9903989+05:00 09_DOC: CTA_LPCC_LMS_Implementation_and_Release_Control_Guide_v1.0.docx
+2026-08-04T13:05:27.1260142+05:00 09_DOC: CTA_LPCC_NCMHCE_David_Complete_LMS_and_Website_Release_Package_v1.0.docx
+2026-08-04T13:05:27.2299307+05:00 === FILE TREE DEST ===
+2026-08-04T13:05:27.6158525+05:00 ASSET: branding\CTA_Stacked_Logo.png
+2026-08-04T13:05:27.8818832+05:00 ASSET: branding\Primary Logo (Final).jpg
+2026-08-04T13:05:28.0924441+05:00 ASSET: checkpoints\CTA_LPCC_Checkpoint_1_WB1-4_39-Question_Cumulative_Assessment_Answer_Rationales_v1.0.docx
+2026-08-04T13:05:28.4737939+05:00 ASSET: checkpoints\CTA_LPCC_Checkpoint_1_WB1-4_39-Question_Cumulative_Assessment_Candidate_Form_v1.0.docx
+2026-08-04T13:05:28.5198880+05:00 ASSET: checkpoints\CTA_LPCC_Checkpoint_2_WB1-8_52-Question_Cumulative_Assessment_Answer_Rationales_v1.0.docx
+2026-08-04T13:05:28.7361274+05:00 ASSET: checkpoints\CTA_LPCC_Checkpoint_2_WB1-8_52-Question_Cumulative_Assessment_Candidate_Form_v1.0.docx
+2026-08-04T13:05:28.9546592+05:00 ASSET: checkpoints\CTA_LPCC_Checkpoint_3_WB1-12_65-Question_Cumulative_Assessment_Answer_Rationales_v1.0.docx
+2026-08-04T13:05:29.0536088+05:00 ASSET: checkpoints\CTA_LPCC_Checkpoint_3_WB1-12_65-Question_Cumulative_Assessment_Candidate_Form_v1.0.docx
+2026-08-04T13:05:29.1949194+05:00 ASSET: practice-banks\CTA_LPCC_WB10_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx
+2026-08-04T13:05:29.4073787+05:00 ASSET: practice-banks\CTA_LPCC_WB10_17_Question_Practice_Bank_Candidate_Form_v1.0.docx
+2026-08-04T13:05:29.5203007+05:00 ASSET: practice-banks\CTA_LPCC_WB11_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx
+2026-08-04T13:05:29.6696756+05:00 ASSET: practice-banks\CTA_LPCC_WB11_17_Question_Practice_Bank_Candidate_Form_v1.0.docx
+2026-08-04T13:05:29.8436665+05:00 ASSET: practice-banks\CTA_LPCC_WB12_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx
+2026-08-04T13:05:30.2264918+05:00 ASSET: practice-banks\CTA_LPCC_WB12_17_Question_Practice_Bank_Candidate_Form_v1.0.docx
+2026-08-04T13:05:30.6249969+05:00 ASSET: practice-banks\CTA_LPCC_WB1_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx
+2026-08-04T13:05:30.9760777+05:00 ASSET: practice-banks\CTA_LPCC_WB1_17_Question_Practice_Bank_Candidate_Form_v1.0.docx
+2026-08-04T13:05:31.0228242+05:00 ASSET: practice-banks\CTA_LPCC_WB2_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx
+2026-08-04T13:05:31.1767251+05:00 ASSET: practice-banks\CTA_LPCC_WB2_17_Question_Practice_Bank_Candidate_Form_v1.0.docx
+2026-08-04T13:05:31.4058248+05:00 ASSET: practice-banks\CTA_LPCC_WB3_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx
+2026-08-04T13:05:31.5045967+05:00 ASSET: practice-banks\CTA_LPCC_WB3_17_Question_Practice_Bank_Candidate_Form_v1.0.docx
+2026-08-04T13:05:31.6237833+05:00 ASSET: practice-banks\CTA_LPCC_WB4_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx
+2026-08-04T13:05:31.8158075+05:00 ASSET: practice-banks\CTA_LPCC_WB4_17_Question_Practice_Bank_Candidate_Form_v1.0.docx
+2026-08-04T13:05:31.9782614+05:00 ASSET: practice-banks\CTA_LPCC_WB5_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx
+2026-08-04T13:05:32.0978256+05:00 ASSET: practice-banks\CTA_LPCC_WB5_17_Question_Practice_Bank_Candidate_Form_v1.0.docx
+2026-08-04T13:05:32.1903144+05:00 ASSET: practice-banks\CTA_LPCC_WB6_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx
+2026-08-04T13:05:32.6924559+05:00 ASSET: practice-banks\CTA_LPCC_WB6_17_Question_Practice_Bank_Candidate_Form_v1.0.docx
+2026-08-04T13:05:33.1855866+05:00 ASSET: practice-banks\CTA_LPCC_WB7_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx
+2026-08-04T13:05:33.4026093+05:00 ASSET: practice-banks\CTA_LPCC_WB7_17_Question_Practice_Bank_Candidate_Form_v1.0.docx
+2026-08-04T13:05:33.6415687+05:00 ASSET: practice-banks\CTA_LPCC_WB8_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx
+2026-08-04T13:05:33.9300242+05:00 ASSET: practice-banks\CTA_LPCC_WB8_17_Question_Practice_Bank_Candidate_Form_v1.0.docx
+2026-08-04T13:05:34.1497801+05:00 ASSET: practice-banks\CTA_LPCC_WB9_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx
+2026-08-04T13:05:34.2728803+05:00 ASSET: practice-banks\CTA_LPCC_WB9_17_Question_Practice_Bank_Candidate_Form_v1.0.docx
+2026-08-04T13:05:34.4146636+05:00 ASSET: quick-references\CTA_LPCC_Quick_Reference_and_Rapid_Review_Library_v1.0.docx
+2026-08-04T13:05:34.5302962+05:00 ASSET: simulations\CTA_LPCC_Comprehensive_Simulation_Form_A_143_Question_Answer_Rationales_v1.0.docx
+2026-08-04T13:05:34.6481791+05:00 ASSET: simulations\CTA_LPCC_Comprehensive_Simulation_Form_A_143_Question_Candidate_Exam_v1.0.docx
+2026-08-04T13:05:54.9675982+05:00 ASSET: simulations\CTA_LPCC_Comprehensive_Simulation_Form_B_143_Question_Answer_Rationales_v1.0.docx
+2026-08-04T13:05:55.4896632+05:00 ASSET: simulations\CTA_LPCC_Comprehensive_Simulation_Form_B_143_Question_Candidate_Exam_v1.0.docx
+2026-08-04T13:05:56.3790036+05:00 ASSET: simulations\CTA_LPCC_Form_A_Remediation_Workbook_v1.0.docx
+2026-08-04T13:05:58.0723838+05:00 ASSET: study-tools\CTA_LPCC_Clinical_Exam_Preparation_Flashcard_Collection_v1.0.docx
+2026-08-04T13:05:59.6050612+05:00 ASSET: study-tools\CTA_LPCC_Readiness_Self_Assessment_and_Progress_Tracker_v1.0.docx
+2026-08-04T13:06:01.7698545+05:00 ASSET: workbooks\CTA_LPCC_WB10_Multicultural_Developmental_Career_Spiritual_Disability_and_Context_Responsive_Counseling_Student_Workbook_v1.0.docx
+2026-08-04T13:06:03.1212271+05:00 ASSET: workbooks\CTA_LPCC_WB11_Individual_Group_Couple_Family_Referral_Continuity_and_Interdisciplinary_Collaboration_Student_Workbook_v1.0.docx
+2026-08-04T13:06:04.1880246+05:00 ASSET: workbooks\CTA_LPCC_WB12_California_Legal_Ethical_Documentation_Technology_and_Professional_Practice_Student_Workbook_v1.0.docx
+2026-08-04T13:06:04.5565878+05:00 ASSET: workbooks\CTA_LPCC_WB1_NCMHCE_Case_Study_Strategy_and_Applied_Clinical_Counselor_Reasoning_Student_Workbook_v1.0.docx
+2026-08-04T13:06:05.2527048+05:00 ASSET: workbooks\CTA_LPCC_WB2_Professional_Identity_California_Scope_Competence_and_Counselor_Self_Awareness_Student_Workbook_v1.0.docx
+2026-08-04T13:06:05.6833277+05:00 ASSET: workbooks\CTA_LPCC_WB3_Intake_Informed_Consent_Clinical_Interviewing_MSE_and_Biopsychosocial_Cultural_Assessment_Student_Workbook_v1.0.docx
+2026-08-04T13:06:06.0693415+05:00 ASSET: workbooks\CTA_LPCC_WB4_Crisis_Trauma_Abuse_Violence_and_Level_of_Care_Decisions_Student_Workbook_v1.0.docx
+2026-08-04T13:06:06.6315013+05:00 ASSET: workbooks\CTA_LPCC_WB5_Diagnosis_and_Differential_Diagnosis_I_Mood_Anxiety_Trauma_OCD_and_Psychotic_Disorders_Student_Workbook_v1.0.docx
+2026-08-04T13:06:06.9276906+05:00 ASSET: workbooks\CTA_LPCC_WB7_Case_Conceptualization_Treatment_Planning_Measurement_Progress_and_Termination_Student_Workbook_v1.0.docx
+2026-08-04T13:06:07.4429562+05:00 ASSET: workbooks\CTA_LPCC_WB8_Counseling_Theories_Therapeutic_Alliance_and_Core_Counseling_Skills_Student_Workbook_v1.0.docx
+2026-08-04T13:06:08.7771928+05:00 ASSET: workbooks\CTA_LPCC_WB9_Evidence_Based_and_Evidence_Informed_Interventions_Across_Common_Presenting_Concerns_Student_Workbook_v1.0.docx
+2026-08-04T13:06:10.6415697+05:00 Manifest written: C:\Users\premier computer\Desktop\New folder\cta-academy-lms\_lpcc_asset_manifest.txt

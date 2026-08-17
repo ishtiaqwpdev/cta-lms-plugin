@@ -1,0 +1,1 @@
+Release the candidate form after the matching workbook. Keep the answer-and-rationales file hidden until the candidate form is fully submitted.

@@ -1,0 +1,10 @@
+Package: CTA_LPCC_NCMHCE_David_Complete_LMS_and_Website_Release_v1.0
+Date: August 3, 2026
+Files: 94
+Office packages validated: 62
+Office package failures: 0
+Assessment synchronization: 12 workbook pairs, 3 checkpoint pairs, Form A, and Form B passed.
+Accessibility: 8 edited or newly created release-control DOCX files passed with zero high-, medium-, or low-level findings. High-severity logo alt-text findings were also corrected in both comprehensive candidate forms and both controlled rationale forms.
+Visual QA: all edited/new release-control documents and both 36-page comprehensive candidate forms were rendered and inspected; no clipping, overlap, missing content, or broken tables were found.
+Recorded audio/video files: 0
+Public launch: pending live LMS/website testing and final owner approval.

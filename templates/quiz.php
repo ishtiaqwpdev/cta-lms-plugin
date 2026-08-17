@@ -47,7 +47,11 @@ $assessment_howto = ! empty( $quiz_syllabus_meta['assessment_instructions'] ) &&
 	<?php if ( ! empty( $attempt_started_at ) ) : ?>
 	data-attempt-started-at="<?php echo esc_attr( $attempt_started_at ); ?>"
 	<?php endif; ?>
-	data-passing-score="<?php echo esc_attr( (int) $quiz->passing_score ?: 70 ); ?>"
+	<?php if ( ! empty( $active_attempt ) && (int) ( $time_limit_mins ?? 0 ) > 0 ) : ?>
+	data-seconds-remaining="<?php echo esc_attr( (string) max( 0, (int) ( $seconds_remaining ?? 0 ) ) ); ?>"
+	<?php endif; ?>
+	data-passing-score="<?php echo ! empty( $omit_pass_fail ) ? '0' : esc_attr( (int) $quiz->passing_score ?: 70 ); ?>"
+	data-formative-bank="<?php echo ! empty( $is_formative_bank ) ? '1' : '0'; ?>"
 	data-question-count="<?php echo esc_attr( $question_count ); ?>"
 	data-view-state="<?php echo esc_attr( $view_state ); ?>"
 	data-exam-prep="<?php echo ! empty( $is_exam_prep ) ? '1' : '0'; ?>"
@@ -97,6 +101,11 @@ $assessment_howto = ! empty( $quiz_syllabus_meta['assessment_instructions'] ) &&
 			<?php endif; ?>
 			<div class="cta-quiz-info-grid">
 				<div><strong><?php echo esc_html__( 'Questions', 'cta-lms' ); ?></strong><span><?php echo esc_html( (string) $question_count ); ?></span></div>
+				<?php if ( ! empty( $is_formative_bank ) ) : ?>
+				<div><strong><?php echo esc_html__( 'Purpose', 'cta-lms' ); ?></strong><span><?php echo esc_html__( 'Learning resource (no pass/fail threshold)', 'cta-lms' ); ?></span></div>
+				<?php elseif ( ! empty( $is_unspecified_pass ) ) : ?>
+				<div><strong><?php echo esc_html__( 'Scoring', 'cta-lms' ); ?></strong><span><?php echo esc_html__( '100 scored items (43 field-test excluded). Passing cut score not stated in the v2.0 answer key.', 'cta-lms' ); ?></span></div>
+				<?php else : ?>
 				<div><strong><?php echo esc_html__( 'Passing Score', 'cta-lms' ); ?></strong><span><?php
 				if ( ! empty( $is_exam_prep ) && ! empty( $quiz_syllabus_meta['readiness_benchmark'] ) && empty( $quiz_syllabus_meta['readiness_benchmark_gate'] ) ) {
 					printf(
@@ -108,6 +117,7 @@ $assessment_howto = ! empty( $quiz_syllabus_meta['assessment_instructions'] ) &&
 					echo esc_html( ( (int) $quiz->passing_score ?: 70 ) . '%' );
 				}
 			?></span></div>
+				<?php endif; ?>
 				<div><strong><?php echo esc_html__( 'Time Limit', 'cta-lms' ); ?></strong><span><?php echo esc_html( $time_limit_label ); ?></span></div>
 				<div><strong><?php echo esc_html__( 'Attempts', 'cta-lms' ); ?></strong><span><?php echo esc_html( $attempts_label ); ?></span></div>
 			</div>
@@ -125,15 +135,23 @@ $assessment_howto = ! empty( $quiz_syllabus_meta['assessment_instructions'] ) &&
 			<?php if ( $last_attempt ) : ?>
 				<p class="cta-quiz-last-attempt">
 					<?php
-					$result_label = (int) $last_attempt->passed
-						? esc_html__( 'Passed', 'cta-lms' )
-						: esc_html__( 'Failed', 'cta-lms' );
-					printf(
-						/* translators: 1: score, 2: result */
-						esc_html__( 'Last attempt: %1$d%% — %2$s', 'cta-lms' ),
-						(int) $last_attempt->score,
-						$result_label
-					);
+					if ( ! empty( $is_formative_bank ) || ! empty( $is_unspecified_pass ) ) {
+						printf(
+							/* translators: %d: last score percent */
+							esc_html__( 'Last attempt: %d%%', 'cta-lms' ),
+							(int) $last_attempt->score
+						);
+					} else {
+						$result_label = (int) $last_attempt->passed
+							? esc_html__( 'Passed', 'cta-lms' )
+							: esc_html__( 'Failed', 'cta-lms' );
+						printf(
+							/* translators: 1: score, 2: result */
+							esc_html__( 'Last attempt: %1$d%% — %2$s', 'cta-lms' ),
+							(int) $last_attempt->score,
+							$result_label
+						);
+					}
 					?>
 				</p>
 			<?php endif; ?>

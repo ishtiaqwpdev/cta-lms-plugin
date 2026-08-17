@@ -1400,12 +1400,15 @@ class CTA_Database {
 
 		if ( $quiz_id ) {
 			$quiz = self::get_quiz( $quiz_id );
-			if (
-				$quiz
-				&& (int) $quiz->course_id === $course_id
-				&& 'active' === (string) $quiz->status
-			) {
-				return $quiz;
+			if ( $quiz && (int) $quiz->course_id === $course_id ) {
+				if ( 'active' === (string) $quiz->status ) {
+					return $quiz;
+				}
+
+				if ( class_exists( 'CTA_Lpcc_Ncmhce_Form_A_V2_Sync' )
+					&& CTA_Lpcc_Ncmhce_Form_A_V2_Sync::is_staging_quiz( $quiz ) ) {
+					return CTA_Lpcc_Ncmhce_Form_A_V2_Sync::current_user_can_preview() ? $quiz : null;
+				}
 			}
 		}
 

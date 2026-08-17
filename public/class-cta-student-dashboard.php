@@ -439,6 +439,10 @@ class CTA_Student_Dashboard {
 		$quiz_cards     = array();
 		$user_id_player = get_current_user_id();
 		foreach ( $course_quizzes as $qrow ) {
+			if ( class_exists( 'CTA_Lpcc_Ncmhce_Form_A_V2_Sync' )
+				&& CTA_Lpcc_Ncmhce_Form_A_V2_Sync::is_staging_quiz( $qrow ) ) {
+				continue;
+			}
 			$q_questions = CTA_Database::get_quiz_questions( (int) $qrow->id );
 			if ( empty( $q_questions ) ) {
 				continue;
@@ -457,6 +461,21 @@ class CTA_Student_Dashboard {
 					$best = $att;
 				}
 			}
+			$lock_state = class_exists( 'CTA_Exam_Prep_Workbooks' )
+				? CTA_Exam_Prep_Workbooks::get_quiz_card_lock_state(
+					$qrow,
+					$course,
+					$user_id_player,
+					$enrollment,
+					$quiz_unlocked,
+					(bool) $active
+				)
+				: array(
+					'locked'   => ! $quiz_unlocked && ! $active,
+					'lock_msg' => ! $quiz_unlocked && ! $active
+						? __( 'Complete all program workbooks before starting this assessment.', 'cta-lms' )
+						: '',
+				);
 			// Form B is independent of Form A — no sequential Form A → Form B lock.
 			$quiz_cards[] = array(
 				'quiz'     => $qrow,
@@ -465,10 +484,8 @@ class CTA_Student_Dashboard {
 				'active'   => $active,
 				'best'     => $best,
 				'passed'   => $best && (int) $best->passed,
-				'locked'   => ! $quiz_unlocked && ! $active,
-				'lock_msg' => ! $quiz_unlocked && ! $active
-					? __( 'Complete all program workbooks before starting this assessment.', 'cta-lms' )
-					: '',
+				'locked'   => ! empty( $lock_state['locked'] ),
+				'lock_msg' => (string) ( $lock_state['lock_msg'] ?? '' ),
 			);
 		}
 		$quiz_available = ! empty( $quiz_cards );

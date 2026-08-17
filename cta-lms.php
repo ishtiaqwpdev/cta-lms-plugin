@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.259' );
+	define( 'CTA_VERSION', '1.0.263' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -111,6 +111,9 @@ $cta_required_files = array(
 	'includes/class-cta-lmft-clinical-form-b-answer-sync.php',
 	'includes/class-cta-lmft-amftrb-sync.php',
 	'includes/class-cta-lpcc-ncmhce-sync.php',
+	'includes/class-cta-lpcc-ncmhce-form-a-v2-sync.php',
+	'includes/class-cta-lpcc-ncmhce-form-a-v2-scoring.php',
+	'includes/class-cta-lpcc-ncmhce-form-a-v2-answer-sync.php',
 	'includes/class-cta-lpcc-law-ethics-sync.php',
 	'includes/class-cta-lcsw-law-ethics-sync.php',
 	'includes/class-cta-lmft-law-ethics-copy.php',
@@ -1443,6 +1446,19 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 			// Practice Bank status: clear ghost completions; keep workbook module completion intact.
 			if ( version_compare( $installed, '1.0.259', '<' ) && class_exists( 'CTA_Exam_Prep_Workbooks' ) ) {
 				CTA_Exam_Prep_Workbooks::reset_ghost_practice_bank_completions();
+			}
+
+			// Timed quiz attempts: no upgrade data migration — expired open attempts are
+			// finalized on next quiz open / start (shared CTA_Quiz timer fix in 1.0.260).
+
+			// LPCC NCMHCE Form A v2.0 staging load + secured answer merge (does not replace live Form A).
+			if ( version_compare( $installed, '1.0.263', '<' ) ) {
+				if ( class_exists( 'CTA_Lpcc_Ncmhce_Form_A_V2_Sync' ) ) {
+					CTA_Lpcc_Ncmhce_Form_A_V2_Sync::sync( true );
+				}
+				if ( class_exists( 'CTA_Lpcc_Ncmhce_Form_A_V2_Answer_Sync' ) ) {
+					CTA_Lpcc_Ncmhce_Form_A_V2_Answer_Sync::sync_answer_keys( true );
+				}
 			}
 
 			// Decouple supervision application pending from general account / CE access.

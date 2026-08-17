@@ -1,0 +1,1 @@
+Current controlling exam source: ASWB Examination Guidebook, August 2026 edition, applicable to examinations administered beginning August 3, 2026. Link students to the current official source rather than treating this stored copy as permanently current. Recheck before major republication.

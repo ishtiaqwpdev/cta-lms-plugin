@@ -172,6 +172,33 @@ class CTA_Quiz {
 					__( 'Back to Course', 'cta-lms' )
 				);
 			}
+		} elseif ( ! $active_attempt
+			&& $is_exam_prep
+			&& class_exists( 'CTA_Exam_Prep_Workbooks' )
+			&& CTA_Exam_Prep_Workbooks::is_workbook_quiz( $quiz ) ) {
+			// Workbook Practice Banks unlock after THEIR matching workbook only.
+			$wb_gate = CTA_Exam_Prep_Workbooks::assert_can_access_workbook_practice_bank(
+				$user_id,
+				$course,
+				$quiz,
+				$enrollment
+			);
+			if ( is_wp_error( $wb_gate ) ) {
+				$wb_num = CTA_Exam_Prep_Workbooks::workbook_number_from_quiz( $quiz );
+				$title  = $wb_num > 0
+					? sprintf(
+						/* translators: %d: workbook number */
+						__( 'Complete Workbook %d First', 'cta-lms' ),
+						$wb_num
+					)
+					: __( 'Complete This Workbook First', 'cta-lms' );
+				return $this->render_message_state(
+					$title,
+					$wb_gate->get_error_message(),
+					$this->get_player_url( $course_id ),
+					__( 'Back to Course', 'cta-lms' )
+				);
+			}
 		} elseif ( ! $modules_done && ! $active_attempt ) {
 			// Prerequisites belong at entry, before a new attempt can be created.
 			// Existing attempts are resumable so prior learner work is never stranded.
@@ -213,6 +240,16 @@ class CTA_Quiz {
 			? CTA_Course_Attestation::default_attestation_text( $course ? (string) $course->title : '' )
 			: '';
 		// $is_exam_prep already resolved above.
+
+		// Timed-out open attempts must not reopen at 00:00 and auto-submit 0%.
+		if ( $active_attempt && self::is_attempt_time_expired( $quiz, $active_attempt ) ) {
+			$this->finalize_timed_out_attempt( $quiz, $active_attempt );
+			$active_attempt = null;
+			$attempts       = CTA_Database::get_user_quiz_attempts( $user_id, (int) $quiz->id );
+			$passed_attempt = $this->get_passed_attempt( $attempts );
+			$attempt_count  = count( $attempts );
+			$last_attempt   = ! empty( $attempts ) ? $attempts[0] : null;
+		}
 
 		// Non-AJAX Start/Retry: create attempt on POST so Start never depends on admin-ajax alone.
 		if (
@@ -263,11 +300,19 @@ class CTA_Quiz {
 		}
 		$quiz_handler  = $this;
 		$question_count = count( $questions );
+		$is_formative_bank = class_exists( 'CTA_Exam_Prep_Workbooks' )
+			&& CTA_Exam_Prep_Workbooks::is_formative_practice_bank( $quiz );
+		$is_unspecified_pass = class_exists( 'CTA_Lpcc_Ncmhce_Form_A_V2_Scoring' )
+			&& CTA_Lpcc_Ncmhce_Form_A_V2_Scoring::withholds_pass_fail( $quiz );
+		$omit_pass_fail = $is_formative_bank || $is_unspecified_pass;
 		$time_limit_mins = self::get_time_limit_mins( $quiz );
 		$time_limit_label = self::format_time_limit_label( $time_limit_mins );
 		$attempt_started_at = ( $active_attempt && ! empty( $active_attempt->started_at ) )
 			? (string) $active_attempt->started_at
 			: '';
+		$seconds_remaining = ( $active_attempt && $time_limit_mins > 0 )
+			? self::get_attempt_seconds_remaining( $quiz, $active_attempt )
+			: 0;
 		$attempts_label   = __( 'Unlimited', 'cta-lms' );
 		$exam_instructions = class_exists( 'CTA_Suicide_Risk_Exam_Sync' )
 			? CTA_Suicide_Risk_Exam_Sync::get_exam_instructions_for_course( $course )
@@ -281,9 +326,6 @@ class CTA_Quiz {
 		return ob_get_clean();
 	}
 
-	/**
-	 * AJAX: start a new quiz attempt.
-	 */
 	/**
 	 * AJAX: start a new quiz attempt.
 	 */
@@ -319,6 +361,11 @@ class CTA_Quiz {
 			$quiz   = $check['quiz'];
 			$course = isset( $check['course'] ) ? $check['course'] : $course;
 			$active = CTA_Database::get_active_quiz_attempt( $user_id, (int) $quiz->id );
+
+			if ( $active && self::is_attempt_time_expired( $quiz, $active ) ) {
+				$this->finalize_timed_out_attempt( $quiz, $active );
+				$active = null;
+			}
 
 			if ( $active ) {
 				$payload = $this->build_attempt_payload( $quiz, $active );
@@ -493,6 +540,8 @@ class CTA_Quiz {
 		$is_exam_prep      = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course_for_reveal );
 		$uses_core_scoring = class_exists( 'CTA_Lmft_Clinical_Comprehensive_Scoring' )
 			&& CTA_Lmft_Clinical_Comprehensive_Scoring::uses_core_calibration_scoring( $quiz, $course_for_reveal );
+		$uses_lpcc_v2_scoring = class_exists( 'CTA_Lpcc_Ncmhce_Form_A_V2_Scoring' )
+			&& CTA_Lpcc_Ncmhce_Form_A_V2_Scoring::uses_scored_field_test_scoring( $quiz, $course_for_reveal );
 		// CE finals: store rationales for admin QA; do not reveal to learners until owner approves.
 		$reveal_explanations = (bool) apply_filters(
 			'cta_lms_reveal_quiz_explanations',
@@ -543,6 +592,8 @@ class CTA_Quiz {
 
 		$score  = $total > 0 ? (int) round( ( $correct / $total ) * 100 ) : 0;
 		$passed = $score >= (int) $quiz->passing_score ? 1 : 0;
+		$is_formative_bank = class_exists( 'CTA_Exam_Prep_Workbooks' )
+			&& CTA_Exam_Prep_Workbooks::is_formative_practice_bank( $quiz );
 
 		if ( $uses_core_scoring ) {
 			$core_score = CTA_Lmft_Clinical_Comprehensive_Scoring::calculate_display_score(
@@ -553,6 +604,17 @@ class CTA_Quiz {
 			);
 			$score  = (int) $core_score['score'];
 			$passed = ! empty( $core_score['passed'] ) ? 1 : 0;
+		}
+
+		$lpcc_v2_score = null;
+		if ( $uses_lpcc_v2_scoring ) {
+			$lpcc_v2_score = CTA_Lpcc_Ncmhce_Form_A_V2_Scoring::calculate_display_score(
+				$questions,
+				$sanitized,
+				$quiz
+			);
+			$score  = (int) $lpcc_v2_score['score'];
+			$passed = ! empty( $lpcc_v2_score['passed'] ) ? 1 : 0;
 		}
 
 		$completed = $wpdb->query(
@@ -572,6 +634,53 @@ class CTA_Quiz {
 
 		if ( false === $completed || 0 === (int) $completed ) {
 			wp_send_json_error( array( 'message' => __( 'This assessment was already submitted or could not be saved. Please refresh to review your attempt.', 'cta-lms' ) ) );
+		}
+
+		if ( $is_formative_bank ) {
+			wp_send_json_success(
+				array(
+					'passed'         => false,
+					'formative'      => true,
+					'score'          => $score,
+					'correct_count'  => $correct,
+					'question_count' => $total,
+					'can_retry'      => true,
+					'passing_score'  => 0,
+					'guidance'       => CTA_Exam_Prep_Workbooks::formative_practice_bank_guidance(),
+					'message'        => sprintf(
+						/* translators: 1: correct count, 2: total questions, 3: score percent */
+						__( '%1$d of %2$d correct — %3$d%%', 'cta-lms' ),
+						$correct,
+						$total,
+						$score
+					),
+					'results'        => $revealed,
+				)
+			);
+		}
+
+		if ( $uses_lpcc_v2_scoring && is_array( $lpcc_v2_score ) ) {
+			$scored_correct = (int) ( $lpcc_v2_score['scored_correct'] ?? 0 );
+			$scored_total   = (int) ( $lpcc_v2_score['scored_total'] ?? 0 );
+			wp_send_json_success(
+				array(
+					'passed'                      => false,
+					'pass_threshold_unspecified'  => ! empty( $lpcc_v2_score['pass_threshold_unspecified'] ),
+					'score'                       => $score,
+					'correct_count'               => $scored_correct,
+					'question_count'              => $scored_total,
+					'can_retry'                   => true,
+					'passing_score'               => 0,
+					'message'                     => sprintf(
+						/* translators: 1: scored correct, 2: scored total, 3: score percent */
+						__( '%1$d of %2$d scored items correct — %3$d%%. Field-test items are excluded from this percentage.', 'cta-lms' ),
+						$scored_correct,
+						$scored_total,
+						$score
+					),
+					'results'                     => $revealed,
+				)
+			);
 		}
 
 		if ( $passed ) {
@@ -1314,7 +1423,22 @@ class CTA_Quiz {
 		}
 
 		if ( $require_complete ) {
-			if ( class_exists( 'CTA_CE_Completion' ) ) {
+			// Workbook Practice Banks: gate on the matching workbook only (Start and Retry).
+			if ( $quiz
+				&& class_exists( 'CTA_Exam_Access' )
+				&& CTA_Exam_Access::is_exam_prep( $course )
+				&& class_exists( 'CTA_Exam_Prep_Workbooks' )
+				&& CTA_Exam_Prep_Workbooks::is_workbook_quiz( $quiz ) ) {
+				$wb_gate = CTA_Exam_Prep_Workbooks::assert_can_access_workbook_practice_bank(
+					$user_id,
+					$course,
+					$quiz,
+					$enrollment
+				);
+				if ( is_wp_error( $wb_gate ) ) {
+					return $wb_gate;
+				}
+			} elseif ( class_exists( 'CTA_CE_Completion' ) ) {
 				CTA_CE_Completion::sync_progress( $user_id, $course_id, $enrollment );
 				$enrollment = CTA_Database::get_user_enrollment( $user_id, $course_id );
 				$seq        = CTA_CE_Completion::assert_can_access_exam( $user_id, $course_id );
@@ -1375,7 +1499,12 @@ class CTA_Quiz {
 
 		$active = CTA_Database::get_active_quiz_attempt( $user_id, $quiz_id );
 		if ( $active ) {
-			return $active;
+			$quiz_row = CTA_Database::get_quiz( $quiz_id );
+			if ( $quiz_row && self::is_attempt_time_expired( $quiz_row, $active ) ) {
+				$this->finalize_timed_out_attempt( $quiz_row, $active );
+			} else {
+				return $active;
+			}
 		}
 
 		for ( $try = 0; $try < 8; $try++ ) {
@@ -1478,18 +1607,157 @@ class CTA_Quiz {
 		$questions = CTA_Database::get_quiz_questions( (int) $quiz->id );
 
 		$time_limit_mins = self::get_time_limit_mins( $quiz );
+		$seconds_remaining = $time_limit_mins > 0
+			? self::get_attempt_seconds_remaining( $quiz, $attempt )
+			: 0;
+		$is_formative = class_exists( 'CTA_Exam_Prep_Workbooks' )
+			&& CTA_Exam_Prep_Workbooks::is_formative_practice_bank( $quiz );
+		$omit_pass_fail = $is_formative
+			|| ( class_exists( 'CTA_Lpcc_Ncmhce_Form_A_V2_Scoring' )
+				&& CTA_Lpcc_Ncmhce_Form_A_V2_Scoring::withholds_pass_fail( $quiz ) );
 
 		return array(
 			'quiz_id'            => (int) $quiz->id,
 			'attempt_id'         => (int) $attempt->id,
 			'course_id'          => (int) $attempt->course_id,
 			'time_limit_mins'    => $time_limit_mins,
+			'seconds_remaining'  => $seconds_remaining,
 			'attempt_started_at' => ! empty( $attempt->started_at ) ? (string) $attempt->started_at : '',
-			'passing_score'      => (int) $quiz->passing_score ?: 70,
+			'passing_score'      => $omit_pass_fail ? 0 : ( (int) $quiz->passing_score ?: 70 ),
+			'formative'          => $is_formative,
 			'max_attempts'       => 0,
 			'question_count'     => count( $questions ),
 			'html'               => $this->render_quiz_questions( $quiz, $attempt, $questions ),
 		);
+	}
+
+	/**
+	 * Seconds left on a timed attempt (0 when expired / untimed returns 0).
+	 *
+	 * @param object|null $quiz    Quiz row.
+	 * @param object|null $attempt Attempt row.
+	 * @return int
+	 */
+	public static function get_attempt_seconds_remaining( $quiz, $attempt ) {
+		$limit_mins = self::get_time_limit_mins( $quiz );
+		if ( $limit_mins <= 0 || ! $attempt ) {
+			return 0;
+		}
+
+		$started_raw = isset( $attempt->started_at ) ? trim( (string) $attempt->started_at ) : '';
+		if ( '' === $started_raw || '0000-00-00 00:00:00' === $started_raw ) {
+			return $limit_mins * 60;
+		}
+
+		$started = function_exists( 'mysql2date' )
+			? (int) mysql2date( 'U', $started_raw, false )
+			: (int) strtotime( $started_raw );
+		if ( $started <= 0 ) {
+			return $limit_mins * 60;
+		}
+
+		$now     = function_exists( 'current_time' ) ? (int) current_time( 'timestamp' ) : time();
+		$elapsed = max( 0, $now - $started );
+
+		return max( 0, ( $limit_mins * 60 ) - $elapsed );
+	}
+
+	/**
+	 * Whether a timed open attempt has run out of time.
+	 *
+	 * @param object|null $quiz    Quiz row.
+	 * @param object|null $attempt Attempt row.
+	 * @return bool
+	 */
+	public static function is_attempt_time_expired( $quiz, $attempt ) {
+		if ( ! $quiz || ! $attempt ) {
+			return false;
+		}
+		if ( self::get_time_limit_mins( $quiz ) <= 0 ) {
+			return false;
+		}
+		if ( ! empty( $attempt->completed_at )
+			&& '0000-00-00' !== (string) $attempt->completed_at
+			&& '0000-00-00 00:00:00' !== (string) $attempt->completed_at ) {
+			return false;
+		}
+
+		return self::get_attempt_seconds_remaining( $quiz, $attempt ) <= 0;
+	}
+
+	/**
+	 * Close a timed-out in-progress attempt using saved answers (no silent reopen at 00:00).
+	 *
+	 * @param object $quiz    Quiz row.
+	 * @param object $attempt Attempt row.
+	 * @return bool
+	 */
+	private function finalize_timed_out_attempt( $quiz, $attempt ) {
+		global $wpdb;
+
+		if ( ! $quiz || ! $attempt || empty( $attempt->id ) ) {
+			return false;
+		}
+
+		$questions = CTA_Database::get_quiz_questions( (int) $quiz->id );
+		$decoded   = array();
+		if ( ! empty( $attempt->answers ) ) {
+			$maybe = json_decode( (string) $attempt->answers, true );
+			if ( is_array( $maybe ) ) {
+				$decoded = $maybe;
+			}
+		}
+		$sanitized = $this->sanitize_quiz_answers( $decoded, $questions, true );
+
+		$correct = 0;
+		$total   = count( $questions );
+		foreach ( $questions as $question ) {
+			$qid    = (int) $question->id;
+			$answer = isset( $sanitized[ $qid ] ) ? $sanitized[ $qid ] : '';
+			if ( $answer && $answer === $question->correct_option ) {
+				++$correct;
+			}
+		}
+
+		$score  = $total > 0 ? (int) round( ( $correct / $total ) * 100 ) : 0;
+		$passed = $score >= (int) ( $quiz->passing_score ?: 70 ) ? 1 : 0;
+
+		$course_for_score = class_exists( 'CTA_Database' )
+			? CTA_Database::get_course( (int) ( $attempt->course_id ?? 0 ) )
+			: null;
+		if ( class_exists( 'CTA_Lmft_Clinical_Comprehensive_Scoring' )
+			&& CTA_Lmft_Clinical_Comprehensive_Scoring::uses_core_calibration_scoring( $quiz, $course_for_score ) ) {
+			$core_score = CTA_Lmft_Clinical_Comprehensive_Scoring::calculate_display_score(
+				$questions,
+				$sanitized,
+				$quiz,
+				(int) ( $quiz->passing_score ?: 70 )
+			);
+			$score  = (int) $core_score['score'];
+			$passed = ! empty( $core_score['passed'] ) ? 1 : 0;
+		} elseif ( class_exists( 'CTA_Lpcc_Ncmhce_Form_A_V2_Scoring' )
+			&& CTA_Lpcc_Ncmhce_Form_A_V2_Scoring::uses_scored_field_test_scoring( $quiz, $course_for_score ) ) {
+			$v2_score = CTA_Lpcc_Ncmhce_Form_A_V2_Scoring::calculate_display_score( $questions, $sanitized, $quiz );
+			$score    = (int) $v2_score['score'];
+			$passed   = ! empty( $v2_score['passed'] ) ? 1 : 0;
+		}
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$updated = $wpdb->query(
+			$wpdb->prepare(
+				"UPDATE {$wpdb->prefix}cta_quiz_attempts
+				SET answers = %s, score = %d, passed = %d, completed_at = %s
+				WHERE id = %d
+					AND (completed_at IS NULL OR completed_at = '0000-00-00 00:00:00' OR completed_at = '0000-00-00' OR completed_at = '')",
+				wp_json_encode( $sanitized ),
+				$score,
+				$passed,
+				current_time( 'mysql' ),
+				(int) $attempt->id
+			)
+		);
+
+		return false !== $updated && (int) $updated > 0;
 	}
 
 	/**

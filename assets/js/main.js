@@ -3075,28 +3075,59 @@
     var passingScore = parseInt(app.getAttribute("data-passing-score"), 10) || 70;
     var questionCount = parseInt(app.getAttribute("data-question-count"), 10) || 0;
     var isExamPrep = app.getAttribute("data-exam-prep") === "1";
+    var isFormativeBank = app.getAttribute("data-formative-bank") === "1";
     var ceTeachingPoints = app.getAttribute("data-ce-teaching-points") === "1";
     var dashboardUrl = app.getAttribute("data-dashboard-url") || "";
     var timerEl = document.getElementById("cta-quiz-timer");
     var timerInterval = null;
     var secondsRemaining = 0;
+    var serverRemainingAtSync = null;
+    var serverRemainingSyncedAt = 0;
     var autosaveTimer = null;
     var saveInFlight = false;
     var saveQueued = false;
     var submissionInFlight = false;
+
+    (function initServerRemainingFromDom() {
+      var attr = app.getAttribute("data-seconds-remaining");
+      if (attr === null || attr === "") {
+        return;
+      }
+      var parsed = parseInt(attr, 10);
+      if (isNaN(parsed)) {
+        return;
+      }
+      serverRemainingAtSync = Math.max(0, parsed);
+      serverRemainingSyncedAt = Date.now();
+    })();
 
     function syncTimerMetadata(data) {
       if (!data) {
         return;
       }
 
-      if (data.time_limit_mins) {
+      if (typeof data.time_limit_mins !== "undefined") {
         timeLimitMins = parseInt(data.time_limit_mins, 10) || 0;
         app.setAttribute("data-time-limit", String(timeLimitMins));
       }
 
       if (data.attempt_started_at) {
         app.setAttribute("data-attempt-started-at", String(data.attempt_started_at));
+      }
+
+      if (typeof data.seconds_remaining !== "undefined") {
+        var remaining = parseInt(data.seconds_remaining, 10);
+        if (!isNaN(remaining)) {
+          remaining = Math.max(0, remaining);
+          app.setAttribute("data-seconds-remaining", String(remaining));
+          serverRemainingAtSync = remaining;
+          serverRemainingSyncedAt = Date.now();
+        }
+      }
+
+      if (typeof data.formative !== "undefined") {
+        isFormativeBank = !!data.formative;
+        app.setAttribute("data-formative-bank", isFormativeBank ? "1" : "0");
       }
     }
 
@@ -3151,6 +3182,13 @@
         return 0;
       }
 
+      // Prefer server-authoritative remaining (avoids WP timezone vs browser Date.parse skew
+      // and prevents stale started_at from showing 00:00 on open).
+      if (serverRemainingAtSync !== null && serverRemainingSyncedAt > 0) {
+        var sinceSync = Math.floor((Date.now() - serverRemainingSyncedAt) / 1000);
+        return Math.max(0, serverRemainingAtSync - Math.max(0, sinceSync));
+      }
+
       var totalSeconds = timeLimitMins * 60;
       var startedAt = app.getAttribute("data-attempt-started-at");
 
@@ -3172,6 +3210,46 @@
       }
     }
 
+    function handleTimeExpired(options) {
+      options = options || {};
+      stopTimer();
+      if (timerEl) {
+        timerEl.hidden = false;
+        timerEl.setAttribute("aria-hidden", "false");
+        timerEl.textContent = "00:00";
+        timerEl.classList.add("cta-quiz-timer--warning");
+      }
+
+      var counts = countAnswered();
+      var reloadKey = "cta_quiz_timer_expire_reload_" + String(attemptId || 0);
+
+      // Only on open/resume already at 00:00 with no answers: reload so PHP can
+      // finalize the stale session. Do not use this path for a normal mid-attempt expiry.
+      if (options.fromInit && counts.answered === 0 && attemptId) {
+        try {
+          if (window.sessionStorage && !sessionStorage.getItem(reloadKey)) {
+            sessionStorage.setItem(reloadKey, "1");
+            window.location.reload();
+            return;
+          }
+          if (window.sessionStorage) {
+            sessionStorage.removeItem(reloadKey);
+          }
+        } catch (e) {
+          // sessionStorage may be blocked; fall through to explicit submit.
+        }
+      } else if (window.sessionStorage && attemptId) {
+        try {
+          sessionStorage.removeItem(reloadKey);
+        } catch (e2) {
+          // ignore
+        }
+      }
+
+      window.alert("Time is up. Your answers will be submitted now.");
+      submitQuiz(true);
+    }
+
     function startTimer() {
       stopTimer();
 
@@ -3187,20 +3265,13 @@
       secondsRemaining = getSecondsRemaining();
 
       if (secondsRemaining <= 0) {
-        timerEl.hidden = false;
-        timerEl.setAttribute("aria-hidden", "false");
-        timerEl.textContent = "00:00";
-        timerEl.classList.add("cta-quiz-timer--warning");
-        submitQuiz(true);
+        handleTimeExpired({ fromInit: true });
         return;
       }
 
       function tick() {
         if (secondsRemaining <= 0) {
-          stopTimer();
-          timerEl.textContent = "00:00";
-          timerEl.classList.add("cta-quiz-timer--warning");
-          submitQuiz(true);
+          handleTimeExpired({ fromInit: false });
           return;
         }
 
@@ -3381,15 +3452,147 @@
       });
     }
 
-    function renderResult(data) {
+    function renderUnspecifiedThresholdResult(data, options) {
       var resultEl = document.getElementById("cta-quiz-result");
       if (!resultEl) {
+        return;
+      }
+
+      options = options || {};
+      var html = "";
+      var correctCount = parseInt(data.correct_count, 10);
+      var totalCount = parseInt(data.question_count, 10) || 0;
+      var scorePct = parseInt(data.score, 10) || 0;
+
+      if (options.timedOut) {
+        html +=
+          '<p class="cta-quiz-result__timeout" role="status"><strong>Time expired.</strong> Your attempt was submitted with the answers recorded so far.</p>';
+      }
+
+      html += "<h2>Simulation complete</h2>";
+
+      if (!isNaN(correctCount) && totalCount > 0) {
+        html +=
+          "<p><strong>" +
+          String(correctCount) +
+          " of " +
+          String(totalCount) +
+          " scored items correct — " +
+          String(scorePct) +
+          "%</strong></p>";
+      } else {
+        html += "<p><strong>Score: " + String(scorePct) + "%</strong></p>";
+      }
+
+      html +=
+        "<p>Field-test items are excluded from this percentage. A passing cut score is not stated in the Form A v2.0 answer key.</p>";
+      html +=
+        "<p>Answer rationales are shown below after this full submission.</p>";
+      html +=
+        '<button type="button" class="btn btn-primary" id="cta-retry-quiz">Try again</button>';
+
+      resultEl.innerHTML = html;
+      showPanel("result");
+
+      var retryBtn = document.getElementById("cta-retry-quiz");
+      if (retryBtn) {
+        retryBtn.addEventListener("click", function () {
+          startQuizAttempt(retryBtn);
+        });
+      }
+    }
+
+    function renderFormativeBankResult(data, options) {
+      var resultEl = document.getElementById("cta-quiz-result");
+      if (!resultEl) {
+        return;
+      }
+
+      options = options || {};
+      var html = "";
+      var correctCount = parseInt(data.correct_count, 10);
+      var totalCount = parseInt(data.question_count, 10) || questionCount;
+      var scorePct = parseInt(data.score, 10) || 0;
+
+      if (options.timedOut) {
+        html +=
+          '<p class="cta-quiz-result__timeout" role="status"><strong>Time expired.</strong> Your attempt was submitted with the answers recorded so far.</p>';
+      }
+
+      html += "<h2>Practice Bank results</h2>";
+
+      if (!isNaN(correctCount) && totalCount > 0) {
+        html +=
+          "<p><strong>" +
+          String(correctCount) +
+          " of " +
+          String(totalCount) +
+          " correct — " +
+          String(scorePct) +
+          "%</strong></p>";
+      } else {
+        html += "<p><strong>Score: " + String(scorePct) + "%</strong></p>";
+      }
+
+      html +=
+        "<p>" +
+        (data.guidance
+          ? String(data.guidance)
+          : "This Practice Bank is a learning resource, not a pass/fail exam. Review the rationales for missed questions. Use your error pattern to decide whether to remediate this workbook before moving forward.") +
+        "</p>";
+
+      html +=
+        '<button type="button" class="btn btn-primary" id="cta-review-quiz-rationales">Review answers and rationales</button> ';
+      html +=
+        '<button type="button" class="btn btn-outline" id="cta-retry-quiz">Try again</button>';
+
+      resultEl.innerHTML = html;
+      showPanel("result");
+
+      var reviewBtn = document.getElementById("cta-review-quiz-rationales");
+      if (reviewBtn) {
+        reviewBtn.addEventListener("click", function () {
+          var submitSection = app.querySelector(".cta-quiz-submit-section");
+          if (submitSection) {
+            submitSection.hidden = true;
+          }
+          showPanel("questions");
+        });
+      }
+
+      var retryBtn = document.getElementById("cta-retry-quiz");
+      if (retryBtn) {
+        retryBtn.addEventListener("click", function () {
+          startQuizAttempt(retryBtn);
+        });
+      }
+    }
+
+    function renderResult(data, options) {
+      var resultEl = document.getElementById("cta-quiz-result");
+      if (!resultEl) {
+        return;
+      }
+
+      options = options || {};
+      if (isFormativeBank || (data && data.formative)) {
+        renderFormativeBankResult(data, options);
+        return;
+      }
+
+      if (data && data.pass_threshold_unspecified) {
+        renderUnspecifiedThresholdResult(data, options);
         return;
       }
 
       var passed = !!data.passed;
       var nextStep = data.next_step || (isExamPrep ? "complete" : "evaluation");
       var html = "";
+
+      if (options.timedOut) {
+        html +=
+          '<p class="cta-quiz-result__timeout" role="status"><strong>Time expired.</strong> Your attempt was submitted with the answers recorded so far.</p>';
+      }
 
       if (passed) {
         html +=
@@ -3506,7 +3709,8 @@
           action: "cta_submit_quiz",
           nonce: ctaAjax.nonce,
           attempt_id: attemptId,
-          answers: collectAnswers()
+          answers: collectAnswers(),
+          timed_out: autoSubmit ? 1 : 0
         })
           .done(function (response) {
             if (!response.success || !response.data) {
@@ -3525,7 +3729,7 @@
             }
 
             revealResults(response.data.results);
-            renderResult(response.data);
+            renderResult(response.data, { timedOut: !!autoSubmit });
           })
           .fail(function () {
             submissionInFlight = false;
@@ -3628,6 +3832,15 @@
             attemptId = response.data.attempt_id;
             app.setAttribute("data-attempt-id", String(attemptId));
             syncTimerMetadata(response.data);
+            try {
+              if (window.sessionStorage) {
+                sessionStorage.removeItem(
+                  "cta_quiz_timer_expire_reload_" + String(attemptId || 0)
+                );
+              }
+            } catch (storageErr) {
+              // ignore
+            }
 
             if (response.data.question_count) {
               questionCount = parseInt(response.data.question_count, 10) || questionCount;
@@ -3644,6 +3857,15 @@
             questionsEl.innerHTML = response.data.html;
             answeredCount = 0;
             updateAnswerCounter();
+            var submitSection = app.querySelector(".cta-quiz-submit-section");
+            if (submitSection) {
+              submitSection.hidden = false;
+            }
+            var submitBtnReset = document.getElementById("cta-submit-quiz");
+            if (submitBtnReset) {
+              submitBtnReset.disabled = true;
+              submitBtnReset.textContent = "Submit Quiz";
+            }
             showPanel("questions");
             startTimer();
           } catch (err) {

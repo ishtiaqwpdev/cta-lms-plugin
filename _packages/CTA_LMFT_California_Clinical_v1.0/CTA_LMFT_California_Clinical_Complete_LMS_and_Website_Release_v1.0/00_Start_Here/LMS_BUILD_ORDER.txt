@@ -1,0 +1,11 @@
+LMFT LMS BUILD ORDER
+
+1. Build the product page using folder 07.
+2. Create the course shell and Start Here module.
+3. Upload folders 01, 04, and 05.
+4. Create 12 workbook modules. In each module, place the workbook first and the matching question bank after the workbook completion point.
+5. Configure Form A as a timed 150-question simulation. Hide its rationale file until submission.
+6. Add remediation guidance and then configure Form B. Hide its rationale file until submission.
+7. Test downloads, progress tracking, timing, answer review, rationale release, mobile display, and student-role permissions.
+8. Keep folders 06, 90, and 99 outside student access.
+9. Do not market audio or video until actual playable recordings are uploaded and tested.

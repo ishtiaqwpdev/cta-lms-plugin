@@ -1,0 +1,941 @@
+
+LPCC COMPREHENSIVE SIMULATION - FORM B
+143-Question Candidate Examination
+Version 2.0 | August 2026 | Current-Format Edition | Exam Preparation Program | No CE Credit
+CTA-APPROVED PRODUCTION MASTER - EXTERNAL SME/ETHICS RELEASE GATE PENDING
+Form B is a fresh, original CTA simulation designed to approximate the reasoning demands, pacing, and progressive multi-section case format of the current NCMHCE. It is an educational review resource and is not an official NBCC, CCE, Pearson VUE, or California BBS examination.
+CTA internal approval recorded August 15, 2026. External SME/ethics validation remains a separate release gate before learner publication.
+Administration Instructions
+Complete all 11 cases in one sitting when feasible.
+Use 225 minutes for the examination questions, with one 15-minute scheduled break after Case 5.
+Each case is divided into three sections. In simulation mode, review within the current section only. After advancing, do not return to prior sections or completed cases.
+Select one best answer for every question and do not leave items blank.
+Record confidence from 1 (guessing) to 5 (high confidence) for later remediation.
+Do not open the controlled answer-and-rationales form until the examination is complete.
+This is the current-format edition. CTA must review and update the simulation before use with examinations administered under the revised NCMHCE specifications effective July 1, 2027.
+Form B contains 11 three-part cases and 143 questions. The controlled scoring map contains 100 scored-style items distributed to the current NCMHCE domains and 43 field-test-style items. Field-test-style items are not identified in the candidate form; answer every item.
+
+Candidate Answer Sheet
+
+CASE 1: Lena M.
+SECTION 1 - INITIAL PRESENTATION
+1. Which inquiry would most directly determine whether Lena needs immediate protective intervention?
+A. Clarify the images’ frequency, triggers, meaning, and any checking, avoidance, or reassurance that follows.
+B. Review postpartum pain, bleeding, thyroid symptoms, medications, and reasons for the missed medical visit.
+C. Assess suicidal thinking, infant-harm intent, psychotic or manic symptoms, and Lena’s present caregiving capacity.
+D. Map nighttime caregiving, available support, total sleep, and the partner’s observations of daily functioning.
+Answer: ________ Confidence: 1 2 3 4 5
+2. Which provisional formulation is best supported by the information available in this section?
+A. Provisional psychotic disorder, pending observation of whether insight fluctuates and whether unusual beliefs or perceptual disturbances emerge.
+B. Provisional obsessive-compulsive disorder, pending clarification of whether mood and sleep symptoms are secondary to obsessions or reflect a co-occurring depressive episode.
+C. Provisional major depressive disorder with peripartum onset; obsessive-compulsive, bipolar, psychotic, and medical explanations for the presentation remain under assessment.
+D. Provisional adjustment disorder with mixed anxiety and depressed mood, pending clarification of symptom severity, duration, and functional impairment.
+Answer: ________ Confidence: 1 2 3 4 5
+3. While arranging postpartum medical follow-up, which additional psychiatric history would most change both the working diagnosis and the initial treatment pathway?
+A. Prior trauma followed by reexperiencing, hyperarousal, dissociation, or avoidance during pregnancy or childbirth.
+B. Previous elevated or irritable mood, reduced need for sleep, impulsive behavior, or grandiosity.
+C. Previous depressive episodes linked to major losses, role transitions, relationship stress, or seasonal patterns.
+D. Intrusive thoughts before pregnancy that led to checking, mental rituals, avoidance, or repeated reassurance.
+Answer: ________ Confidence: 1 2 3 4 5
+4. Lena says, “What kind of mother thinks something like this?” Which response best combines empathic attunement with continued assessment?
+A. Sleep loss can intensify unwanted thoughts, so let’s stabilize your sleep before examining what the image means.
+B. The image sounds frightening and shame-filled. What happens when it appears, and what do you fear it means?
+C. Your distress suggests the image is not an intention, so we can focus now on the depressive symptoms.
+D. Protecting your baby matters deeply to you. I can explain why unwanted thoughts are common after childbirth.
+Answer: ________ Confidence: 1 2 3 4 5
+SECTION 2 - ADDITIONAL INFORMATION
+5. After immediate safety and medical steps are arranged, which intervention plan best fits the clarified presentation?
+A. Use CBT with graded exposure and response prevention, while treating depression and coordinating perinatal medical care.
+B. Use cognitive restructuring of catastrophic interpretations and ask the partner to provide limited reassurance during early practice.
+C. Use supportive therapy and partner sessions, reserving structured behavioral work for symptoms that persist after stabilization.
+D. Begin behavioral activation and protected-sleep planning, postponing direct work with the intrusive images until mood symptoms remit.
+Answer: ________ Confidence: 1 2 3 4 5
+6. Which safety-plan structure is most proportionate to Lena’s current presentation?
+A. Emphasize partner observation, temporary transfer of infant care, and same-day reassessment whenever any intrusive image becomes more intense.
+B. Prioritize protected sleep, partner support, and increased session frequency, reserving emergency criteria for changes in intent or behavior.
+C. Focus on reasons for living, weekly monitoring, and Lena’s agreement to contact the counselor before taking unsafe action.
+D. Name warning signs, coping steps, supportive contacts, crisis resources, and specific thresholds for urgent evaluation or emergency care.
+Answer: ________ Confidence: 1 2 3 4 5
+7. Lena says her family values private self-reliance in motherhood and places strong meaning on breastfeeding. Which inquiry BEST clarifies how these expectations should influence treatment?
+A. Ask whether Lena wants her partner to explain the family's expectations so the counselor can understand caregiving beliefs before setting goals.
+B. Ask Lena which family, cultural, spiritual, or feeding expectations feel supportive, burdensome, or not personally meaningful and how she wants them addressed.
+C. Explore how postpartum norms in Lena's community may influence shame and help-seeking, then offer possible themes for Lena to endorse or reject.
+D. Focus first on how family expectations affect adherence and functioning, deferring broader identity meanings until Lena's symptoms and sleep are more stable.
+Answer: ________ Confidence: 1 2 3 4 5
+8. Lena wants both her partner and prescriber involved. Which information-sharing plan is most appropriate?
+A. Use one broad authorization so the partner and prescriber receive the same summary and future treatment updates.
+B. Have Lena relay clinical updates herself while the counselor documents recommendations without contacting either party.
+C. Authorize communication with the prescriber and let Lena decide informally what her partner should know between sessions.
+D. Clarify each recipient’s role, obtain purpose-specific authorization, and limit disclosure to information needed for the agreed coordination.
+Answer: ________ Confidence: 1 2 3 4 5
+9. What is the best working hypothesis about repeated reassurance between Lena and her partner?
+A. It briefly reduces distress while reinforcing the idea that certainty is required before Lena can resume infant care.
+B. It provides emotional co-regulation that should continue until Lena completes her first in-vivo exposure successfully.
+C. It is neutral support; avoidance should be targeted before the counselor modifies the partner’s responses.
+D. It can be reduced after mood improves, because changing it now could weaken partner involvement and increase shame.
+Answer: ________ Confidence: 1 2 3 4 5
+SECTION 3 - COURSE OF CARE
+10. Lena and the counselor are establishing the next phase of treatment. Which objective is BEST matched to her current progress and remaining impairment?
+A. Maintain mild depressive symptoms for four weeks and contact the prescriber if mood, sleep, or intrusive-thought distress increases.
+B. Over four weeks, progress through agreed safe infant-care steps near the stairs while reducing reassurance and continuing mood, sleep, and safety monitoring.
+C. Resume full independent stair carrying within two weeks while maintaining the sleep plan and using partner support only when distress becomes severe.
+D. Reduce intrusive-image frequency by seventy-five percent before decreasing partner assistance with infant care or moving toward more difficult behavioral tasks.
+Answer: ________ Confidence: 1 2 3 4 5
+11. Which behavioral strategy is the best next step for the remaining avoidance?
+A. Build a hierarchy of objectively safe infant-care steps, reduce reassurance rituals, and repeat each step for new learning.
+B. Use imaginal rehearsal at first, because in-vivo practice near stairs creates avoidable risk to the infant.
+C. Practice the full staircase task with the partner nearby, using sustained distress reduction as the criterion for success.
+D. Maintain partner-led stair use while strengthening relaxation, then begin exposure after several weeks without intrusive images.
+Answer: ________ Confidence: 1 2 3 4 5
+12. Which data set would provide the strongest evidence that counseling is producing meaningful change?
+A. Repeated depression scores, session attendance, medication follow-through, and Lena’s satisfaction with counseling.
+B. Repeated intrusive-thought ratings, partner observations of stair use, and the counselor’s estimate of Lena’s insight.
+C. Repeated mood and anxiety scores, risk status, sleep, reassurance seeking, and behaviorally defined infant-care functioning.
+D. Repeated sleep and functioning ratings, obstetric follow-up, and whether Lena reports fewer distressing images.
+Answer: ________ Confidence: 1 2 3 4 5
+13. Which termination discussion is MOST appropriate before scheduled counseling ends?
+A. Set a fixed schedule of monthly booster sessions before termination so symptom recurrence can be detected early and managed within the existing relationship.
+B. Ask Lena's partner to assume primary monitoring for recurrence after counseling ends and contact the counselor if Lena's functioning changes.
+C. Keep the case open until Lena decides whether she wants another pregnancy because future perinatal stress could reactivate symptoms.
+D. Review gains, feelings about ending, warning signs, supports, remaining provider follow-up, and how Lena can re-enter care if clinically indicated.
+Answer: ________ Confidence: 1 2 3 4 5
+
+CASE 2: Omar H.
+SECTION 1 - INITIAL PRESENTATION
+14. Which follow-up would most directly clarify the mechanism maintaining Omar’s symptoms?
+A. Review medical conditions, medications, dermatologic history, sleep, appetite, caffeine use, and other physical contributors affecting Omar now.
+B. Trace one episode from trigger through feared consequence, ritual, relief, renewed doubt, time cost, and functional impact.
+C. Explore graduate-school stress, family expectations, academic workload, social withdrawal, and supports available since symptoms began.
+D. Assess depressive symptoms, hopelessness, suicide risk, prior treatment, family psychiatric history, and recent changes in functioning.
+Answer: ________ Confidence: 1 2 3 4 5
+15. Which provisional diagnosis is best supported by the information available in this section?
+A. Generalized anxiety disorder, because illness and moral concerns occur across settings and interfere with school and worship.
+B. Illness anxiety disorder, because contamination fears persist despite Omar recognizing that the objective danger may be limited.
+C. Delusional disorder, because Omar continues to fear illness and moral harm despite feedback that the rituals are excessive.
+D. Obsessive-compulsive disorder, with contamination and moral or religious obsessions followed by washing, prayer, and reassurance compulsions.
+Answer: ________ Confidence: 1 2 3 4 5
+16. Which inquiry would most directly clarify the relationship between Omar’s faith and the current symptoms?
+A. Ask whether Omar wants a faith leader involved and what questions he would want that consultation to address.
+B. Ask which family and community expectations shape Omar’s views of purity, morality, illness, help-seeking, and professional treatment.
+C. Ask how Omar distinguishes chosen faith practices from repetitions driven by fear, doubt, or a need for certainty.
+D. Ask how Omar’s spiritual beliefs have supported coping, identity, belonging, and decision-making during other stressful periods.
+Answer: ________ Confidence: 1 2 3 4 5
+17. Omar asks, “Are you going to tell me my faith is irrational?” Which response BEST demonstrates a nonjudgmental stance?
+A. I will not evaluate your beliefs; we can focus on washing and leave religion outside treatment unless you later ask to discuss it.
+B. I want to understand your beliefs, and we can compare your practices with common teachings in your faith before deciding what is symptom-driven.
+C. I respect your faith. Would it help to involve a faith leader early so we do not misinterpret the religious material in treatment?
+D. I want to understand what your faith means to you and when repetition is driven by fear or certainty, without deciding your beliefs.
+Answer: ________ Confidence: 1 2 3 4 5
+SECTION 2 - ADDITIONAL INFORMATION
+18. Which initial intervention design best fits Omar’s presentation and stated values?
+A. Build a collaborative hierarchy of objectively safe, values-consistent triggers and practice exposure while preventing washing, repeated prayer, and reassurance.
+B. Begin by disputing feared moral consequences, adding exposure after Omar agrees that the feared outcomes are objectively unlikely.
+C. Ask the faith leader to approve each exposure, then practice those tasks while Omar resists washing and repeated prayer.
+D. Begin with Omar’s highest-rated contamination and worship tasks so he learns rapidly that intense distress can be tolerated.
+Answer: ________ Confidence: 1 2 3 4 5
+19. How should the counselor use Omar’s severe symptom-measure result in treatment planning?
+A. Treat the score as confirmation that ERP is required and use it to set a standard weekly exposure dose.
+B. Repeat the measure before discussing treatment because one severe score cannot appropriately inform any initial clinical decision.
+C. Explain that the score reflects current severity, combine it with interview and functioning data, and identify Omar’s priorities.
+D. Use the score primarily to determine whether Omar needs a higher level of care before outpatient treatment begins.
+Answer: ________ Confidence: 1 2 3 4 5
+20. Which faith-leader consultation plan best supports culturally responsive treatment?
+A. With Omar’s consent, clarify which practices are customary or flexible while retaining clinical responsibility and avoiding exposure-by-exposure reassurance.
+B. With Omar’s consent, ask the faith leader to review the hierarchy and approve each step as morally acceptable before practice.
+C. With Omar’s consent, ask the faith leader to address guilt spiritually while limiting ERP to contamination-related washing behaviors.
+D. With Omar’s consent, ask whether the repetitions are customary and use that judgment as the primary diagnostic evidence.
+Answer: ________ Confidence: 1 2 3 4 5
+21. Given the counselor’s current background, which professional response is most appropriate?
+A. Seek qualified ERP supervision, discuss the limitation with Omar, and use co-treatment or referral until competence is established.
+B. Proceed with ERP using the workshop materials, while reviewing outcomes and seeking specialist consultation only if progress stalls.
+C. Provide supportive CBT for now, while Omar independently decides whether to pursue specialty ERP with another provider.
+D. Refer Omar immediately and avoid any treatment role, because introductory training cannot contribute to future specialty competence.
+Answer: ________ Confidence: 1 2 3 4 5
+SECTION 3 - COURSE OF CARE
+22. Omar asks, “Was that exposure morally safe?” Which response best demonstrates empathic attunement without reinforcing reassurance seeking?
+A. Yes, the plan was values-consistent; remind yourself of that conclusion whenever moral doubt returns during practice.
+B. You worked hard and felt frightened. Let’s examine what you learned without making me the source of certainty.
+C. That sounds like the OCD seeking certainty; avoid discussing the moral concern further and return to the hierarchy.
+D. Your anxiety rose sharply, so we should suspend worship exposures until you feel more certain about continuing.
+Answer: ________ Confidence: 1 2 3 4 5
+23. Which data set would provide the strongest evidence of meaningful treatment change?
+A. Repeat the OCD measure and track ritual time, reassurance, avoidance, exposure completion, skin health, and school or worship functioning.
+B. Track peak and ending distress for each exposure, ritual delay, and Omar’s confidence that every task was completed correctly.
+C. Repeat the OCD measure and track ritual time, but omit worship functioning so religious practice is not pathologized.
+D. Track school attendance, skin healing, and treatment satisfaction, using symptom measures only when Omar reports clear worsening.
+Answer: ________ Confidence: 1 2 3 4 5
+24. During a collaborative progress review, which summary BEST reflects Omar's treatment data?
+A. ERP is not working well enough because the spike in anxiety and skipped practice show that the hierarchy has moved beyond Omar's readiness.
+B. The principal goals are nearly met because ritual time and school functioning improved; reassurance can be addressed after the current hierarchy is completed.
+C. There is meaningful progress in ritual time and functioning, while reassurance and inconsistent worship practice remain active barriers to review with Omar.
+D. Outcome cannot be interpreted yet because the full hierarchy has not been completed; continue the current plan before drawing conclusions about progress.
+Answer: ________ Confidence: 1 2 3 4 5
+25. Which response would best facilitate Omar’s motivation to continue change?
+A. Elicit Omar’s reasons for reclaiming worship and school, explore his exposure concerns, and choose one feasible next step.
+B. Review the progress data and explain that stopping now would probably reverse gains and strengthen the obsessive-compulsive cycle.
+C. Emphasize that ERP is first-line treatment and ask Omar to commit to six more sessions before reconsidering the approach.
+D. Offer a temporary reassurance agreement so Omar can complete exposures until confidence and motivation improve.
+Answer: ________ Confidence: 1 2 3 4 5
+26. Which follow-up is MOST clinically useful?
+A. Repeat a full diagnostic intake before discussing functioning so any recurrence can be distinguished from a new anxiety, mood, or spiritual concern.
+B. Review ritual and reassurance drift, school and worship functioning, independent ERP use, current stressors, and whether booster or renewed care is needed.
+C. Determine whether Omar has remained symptom-free since discharge before discussing current stressors, because residual symptoms would indicate incomplete termination.
+D. Obtain collateral reports from family and the faith leader before reviewing Omar's own experience so maintenance can be verified across settings.
+Answer: ________ Confidence: 1 2 3 4 5
+
+CASE 3: Caleb J.
+SECTION 1 - INITIAL PRESENTATION
+27. Which assessment approach would provide the strongest foundation for the initial formulation?
+A. Interview Caleb about nausea and school fears, then use his account as the primary basis for the initial formulation.
+B. Review teacher reports and school records first, then use caregiver interviews mainly to confirm the school-based pattern.
+C. Build a developmental timeline using Caleb, both caregivers, school staff, pediatric records, sleep, symptoms, settings, and functioning.
+D. Administer broad behavior scales to each informant, then focus the clinical interview on whichever domain receives the highest scores.
+Answer: ________ Confidence: 1 2 3 4 5
+28. Which explanation of counseling roles is most appropriate under the facts provided?
+A. Define Caleb and both caregivers as joint clients, making treatment decisions and session information equally accessible to all three.
+B. Define Caleb as the client, seek his assent, clarify caregiver roles and updates, and set boundaries for school communication.
+C. Define the caregivers as collateral supports, sharing goals and progress while reserving all session content for Caleb.
+D. Let the caregivers negotiate information access first, then document their agreement as the confidentiality plan governing treatment.
+Answer: ________ Confidence: 1 2 3 4 5
+29. Which approach BEST supports a culturally responsive understanding of the family's disagreement about Caleb's difficulties?
+A. Explore Caleb's perspective first and ask the caregivers to explain their differences after the initial formulation so early assessment remains less conflictual.
+B. Ask each caregiver how family values, school experiences, discipline, disability, and help-seeking shape their view, then identify shared goals before discussing disagreements.
+C. Invite Caleb and each caregiver to describe how family experience, school expectations, discipline, disability, and help-seeking shape their perspectives without requiring agreement.
+D. Explore structural school factors and prior experiences with institutions before asking about family meanings because systems may be shaping the disagreement most strongly.
+Answer: ________ Confidence: 1 2 3 4 5
+30. Which assessment strategy would best support the differential diagnosis?
+A. Use one broad child-behavior scale with both caregivers, interpreting score differences as evidence about which account is more accurate.
+B. Use child anxiety and somatic scales, allowing Caleb’s report to control the formulation when caregiver accounts remain inconsistent.
+C. Use caregiver and teacher attention scales, treating cross-setting agreement as sufficient evidence that ADHD explains the school problems.
+D. Combine child and caregiver anxiety reports, caregiver and teacher attention ratings, school records, and interviews interpreted with functional data.
+Answer: ________ Confidence: 1 2 3 4 5
+SECTION 2 - ADDITIONAL INFORMATION
+31. Which provisional formulation best accounts for the available evidence?
+A. Specific phobia, other type, focused on vomiting and driving school avoidance, with provisional ADHD requiring continued assessment.
+B. Social anxiety disorder centered on public embarrassment, with a separate attention disorder still requiring longitudinal assessment.
+C. Separation anxiety disorder with school refusal, while inattention is likely amplified by sleep loss and conflict between caregivers.
+D. Somatic symptom disorder centered on nausea, with attention problems likely resulting from repeated symptom monitoring and missed instruction.
+Answer: ________ Confidence: 1 2 3 4 5
+32. Which initial intervention is best aligned with Caleb’s developmental level and current formulation?
+A. Use verbal cognitive restructuring with drawings, asking Caleb to challenge nausea predictions before beginning any school-based practice.
+B. Create a visual fear ladder, rehearse brief coping skills, and coordinate graded attendance with caregivers and school staff.
+C. Stabilize sleep and classroom attention supports first, postponing graded school practice until nausea and anticipatory fear decrease.
+D. Begin full-day attendance with a reward plan, adding coping rehearsal only if distress remains high after several school days.
+Answer: ________ Confidence: 1 2 3 4 5
+33. Caleb points to the volcano in his drawing and says, “This is what happens when everybody starts arguing.” Which response best uses listening and reflection?
+A. Your parents’ disagreement is adding pressure; let’s decide which explanation best matches what happens before school.
+B. The nausea feels real, and you fear classmates’ reactions and your parents’ conflict. Show me where it begins.
+C. The medical visit found no illness, so let’s use your drawing to identify evidence that school is safe.
+D. You want help with the nausea, but nurse visits may keep the fear going. Let’s plan a different response.
+Answer: ________ Confidence: 1 2 3 4 5
+34. Which explanation best describes the current family-school interactional pattern?
+A. Nurse visits provide graded contact with school, so they should remain freely available while Caleb’s attendance improves.
+B. Caregiver conflict heightens Caleb’s distress, so improving coparenting should precede direct work with school avoidance and nausea.
+C. Nausea prompts checking, reassurance, nurse visits, or pickup; immediate relief may strengthen future escape while the symptoms remain genuine.
+D. Morning reassurance lowers arousal, so caregivers should continue it consistently until Caleb can use coping skills independently at school.
+Answer: ________ Confidence: 1 2 3 4 5
+SECTION 3 - COURSE OF CARE
+35. Which factor currently presents the clearest barrier to Caleb’s attendance goal?
+A. Inconsistent caregiver responses, because absences cluster on mornings when reassurance ends with permission to remain home.
+B. Academic backlog, because unfinished assignments make remaining at school more difficult than completing work at home.
+C. Residual sleep inconsistency, because his weekend bedtime remains later than the routine used on school nights.
+D. Residual fear of vomiting, because Caleb still reports nausea on most mornings despite lower anxiety scores.
+Answer: ________ Confidence: 1 2 3 4 5
+36. Which conclusion BEST describes Caleb's current level of mental health functioning?
+A. Caleb's functioning is now broadly age-appropriate because attendance and sleep improved; remaining academic problems are most likely consequences of missed instruction.
+B. Anxiety remains the primary functional impairment because Caleb still reports nausea and occasionally remains home despite improved attendance and nurse use.
+C. Anxiety-related school functioning has improved substantially, while cross-setting attention, organization, and academic impairment remain clinically significant and require further assessment.
+D. Current functioning cannot be interpreted reliably until the ADHD and learning evaluations are completed because anxiety and academic problems still overlap.
+Answer: ________ Confidence: 1 2 3 4 5
+37. How should the counselor respond to the school’s request for Caleb’s full counseling record?
+A. Provide diagnosis, scores, and progress notes, but withhold Caleb’s drawings and statements about caregiver conflict.
+B. Release the full record under the signed authorization, allowing school staff to determine which clinical details affect accommodations.
+C. Decline direct communication to protect Caleb’s privacy, while asking the caregivers to convey the treatment recommendations.
+D. Review the school’s purpose and authorization, involve Caleb, then send a focused summary of functioning and needed supports.
+Answer: ________ Confidence: 1 2 3 4 5
+38. Which conflict-resolution plan best supports consistent implementation across households?
+A. Set a shared attendance goal, agree on one nausea response and medical thresholds, and use an adult-only communication plan.
+B. Ask each caregiver to defend the preferred explanation, then negotiate a shared account before revising the agreed morning plan.
+C. Assign one caregiver medical decisions and the other attendance decisions, with Caleb carrying updates between households.
+D. Develop separate morning plans for each household, then compare which approach produces better attendance over two weeks.
+Answer: ________ Confidence: 1 2 3 4 5
+39. How should the counselor interpret Caleb’s persistent attention and academic difficulties?
+A. ADHD is confirmed because attention ratings remain elevated after anxiety, sleep, and attendance have improved.
+B. Further ADHD and learning assessment is warranted because cross-setting impairment predates anxiety and persists after initial improvement.
+C. Attention symptoms were secondary to anxiety because Caleb’s school attendance improved once graded practice began.
+D. A learning disorder is primary because incomplete work remains even after school avoidance and nurse use decrease.
+Answer: ________ Confidence: 1 2 3 4 5
+
+CASE 4: Renee V.
+SECTION 1 - INITIAL PRESENTATION
+40. Which inquiry would most directly clarify Renee’s current risk of suicide or violence?
+A. Clarify the recent head impact, headache progression, disorientation episodes, sleep, medication use, changes from Renee’s usual baseline, and functioning.
+B. Assess cannabis amount, potency, timing, tolerance, withdrawal, perceived sleep benefit, cognitive effects, driving, and interest in changing use.
+C. Explore trauma reminders, nightmares, avoidance, guilt, military experiences, family strain, and what Renee believes the symptoms mean.
+D. Assess current suicidal and violent thoughts, intent, plans, preparation, firearm access, past behavior, protective factors, and ability to collaborate.
+Answer: ________ Confidence: 1 2 3 4 5
+41. Which approach best represents an appropriate mental status examination at this point?
+A. Observe for intoxication and postpone the remainder of the mental status examination until Renee has abstained from cannabis.
+B. Administer a brief cognitive screen and treat an impaired score as evidence that the episodes are primarily neurological.
+C. Reconstruct one zoning-out episode and classify it as dissociation when Renee identifies a trauma-related trigger before the event.
+D. Assess appearance, behavior, orientation, attention, memory, speech, thought process, perception, insight, judgment, and change from Renee’s usual functioning.
+Answer: ________ Confidence: 1 2 3 4 5
+42. Which chronology would best help distinguish the leading explanations for Renee’s cognitive change?
+A. Compare trauma reminders, physiological arousal, altered awareness, memory during each episode, recovery pattern, and avoidance across different settings afterward.
+B. Build an integrated timeline of postdeployment baseline, recent head impact, symptom worsening, trauma cues, cannabis, sleep, driving events, and recovery.
+C. Compare cannabis product, potency, timing, sleep, medications, episode onset, next-day functioning, and periods when Renee does not use.
+D. Compare blast history, initial recovery, longstanding headaches, prior cognitive baseline, neurological follow-up, and functional changes consistently across settings over time.
+Answer: ________ Confidence: 1 2 3 4 5
+43. Which inquiry would provide the most clinically useful assessment of Renee’s cannabis use?
+A. Clarify the benefits Renee attributes to cannabis, her treatment priorities, alternatives tried for sleep, and concerns about reducing use.
+B. Compare symptoms on use and nonuse nights, then infer whether cannabis is therapeutic, harmful, or unrelated to the current presentation.
+C. Assess product, potency, amount, timing, tolerance, withdrawal, unsuccessful cutbacks, impairment, driving effects, treatment goals, and readiness to change.
+D. Review diagnostic criteria for cannabis use disorder, leaving cognition and driving questions for the medical and neurological evaluations.
+Answer: ________ Confidence: 1 2 3 4 5
+SECTION 2 - ADDITIONAL INFORMATION
+44. Which disposition is most proportionate to the information now available?
+A. Continue outpatient counseling with daily contact, secure the firearm at home, suspend driving, and obtain medical evaluation within forty-eight hours.
+B. Arrange voluntary psychiatric admission first, with neurological assessment occurring after the suicide and aggression risks have been stabilized.
+C. Initiate involuntary psychiatric hospitalization because the prior attempt, loaded firearm, passive death wishes, and wall punching establish imminent danger.
+D. Arrange same-day emergency medical evaluation, safe transportation, no driving, collaborative firearm restriction, and psychiatric risk reassessment during the handoff.
+Answer: ________ Confidence: 1 2 3 4 5
+45. Which concurrent-referral plan best supports coordinated care?
+A. Define each referral question, obtain purpose-specific releases, arrange warm handoffs, clarify provider roles, and track whether recommended care occurs.
+B. Refer to psychiatry as the central provider and ask that clinician to coordinate neurological, substance-related, sleep, and trauma concerns.
+C. Provide separate referral options for each concern and ask Renee to update the counselor after she schedules the appointments.
+D. Refer to neurology first and pause counseling until a medical provider determines whether trauma, cannabis, or sleep contributes to symptoms.
+Answer: ________ Confidence: 1 2 3 4 5
+46. Renee says, “Cannabis is the only reason I sleep. Every provider acts like it is the whole problem.” Which response best demonstrates empathic attunement?
+A. Because sleep matters so much, we should avoid changing cannabis use until another intervention consistently produces the same benefit for you over time.
+B. Cannabis has been one of the few ways you can get sleep. Could we examine what it helps and what it may complicate?
+C. The medical team can determine whether cannabis affects cognition; our sessions can focus on trauma and the conflict with your son.
+D. You have made your position clear, so I will not raise cannabis again unless you decide that it is a problem.
+Answer: ________ Confidence: 1 2 3 4 5
+47. Before choosing veteran-specific resources or adapting treatment, which approach BEST aligns care with Renee's population context?
+A. Present VA, Vet Center, and community treatment options, then ask which setting best fits Renee's access, privacy, and trust preferences.
+B. Explore how military service and prior care affect help-seeking, then ask whether veteran-specific treatment or community care feels more relevant to Renee.
+C. Ask how service, deployment, gender, family role, trust, and prior care shape Renee's preferences, then adapt treatment to the elements she identifies.
+D. Ask whether military culture contributes to reluctance about vulnerability and, if Renee agrees, incorporate psychoeducation about common veteran help-seeking barriers.
+Answer: ________ Confidence: 1 2 3 4 5
+SECTION 3 - COURSE OF CARE
+48. Which information-sharing plan best matches the authorizations and recipient roles?
+A. Ask Renee to communicate clinical details herself, while the counselor shares only appointment dates and attendance with every outside party.
+B. Use separate authorizations: share safety-role information with the friend and purpose-relevant clinical information with each treating professional for coordination.
+C. Use one authorization and provide the trusted friend and all treating professionals with the same summary and continuing clinical updates.
+D. Release the complete counseling record to professional providers and give the friend verbal instructions for transportation and firearm storage.
+Answer: ________ Confidence: 1 2 3 4 5
+49. Which treatment-plan revision best addresses Renee’s request to begin trauma-focused work?
+A. Begin a full trauma-focused protocol now because co-occurring cannabis use, sleep disturbance, and postconcussive symptoms do not necessarily contraindicate PTSD treatment.
+B. Delay all trauma-focused treatment until Renee is symptom-free, abstinent from cannabis, medically discharged, and sleeping normally for several months.
+C. Continue present-focused stabilization indefinitely because persistent disorientation and a history of blast exposure make trauma processing predictably unsafe.
+D. Reassess medical change, orientation, participation capacity, risk, informed preference, and supports; then begin or adapt trauma-focused treatment when current safety permits.
+Answer: ________ Confidence: 1 2 3 4 5
+50. During a later session, Renee suddenly develops slurred speech, cannot identify where she is, and reports a sharply worsening headache. Which response is most appropriate?
+A. Contact the trusted friend to monitor Renee overnight and arrange neurological follow-up the next morning if the symptoms continue.
+B. Use grounding until Renee is oriented, end the trauma discussion, and arrange routine medical follow-up within the next twenty-four hours.
+C. Explore the preceding trauma cue to determine whether dissociation explains the symptoms before deciding whether medical evaluation is necessary.
+D. Pause treatment, reduce stimulation, assess immediate safety, activate emergency medical evaluation and safe transport, and confirm the handoff.
+Answer: ________ Confidence: 1 2 3 4 5
+51. After Renee develops the acute neurological change described in the case, which documentation BEST supports clinical continuity and later review?
+A. Record onset and observed neurologic changes, MSE and risk findings, baseline comparison, emergency disposition, contacts and authority, handoff confirmation, unresolved questions, and follow-up.
+B. Record current neurologic observations, client statements, emergency disposition and handoff, and reference the earlier risk and firearm note rather than reassessing current status.
+C. Record observations, risk findings, emergency action, support contact, handoff, and follow-up while documenting a working impression of dissociation versus neurologic injury.
+D. Record current observations, risk status, contacts, emergency disposition, handoff, and follow-up while omitting the disclosure authority because emergency care was clinically necessary.
+Answer: ________ Confidence: 1 2 3 4 5
+52. After Renee completes emergency evaluation and returns to coordinated outpatient care, which interpretation best reflects the treatment data to date?
+A. The plan is producing broad improvement, so persistent cognitive episodes can be monitored without changing provider roles or treatment targets.
+B. Safety, sleep, and family functioning are improving; persistent cognitive and PTSD symptoms require continued coordination and plan revision.
+C. Cannabis reduction may be driving the gains, so hold trauma intervention until a longer abstinence trial clarifies symptom causality.
+D. Safety has improved enough to close suicide monitoring, while trauma, sleep, cannabis, and cognitive care continue through separate providers.
+Answer: ________ Confidence: 1 2 3 4 5
+
+CASE 5: Keisha A.
+SECTION 1 - INITIAL PRESENTATION
+53. Which assessment approach would provide the strongest foundation for the initial formulation?
+A. Focus first on food intake, exercise, and weight history, adding psychiatric and social assessment after the eating pattern is clarified.
+B. Map eating and weight changes, exercise, medical symptoms, mood and risk, substances, functioning, supports, and athletic pressures across time.
+C. Begin with scholarship and team pressures, then assess eating behaviors only after Keisha explains how athletics affects her current distress.
+D. Administer eating-disorder, anxiety, and depression measures first, then use the highest score to organize the remaining diagnostic interview.
+Answer: ________ Confidence: 1 2 3 4 5
+54. Keisha says, “If my coach thinks I am weak, I could lose everything. Running is the only thing I am really good at.” Which response best demonstrates empathic responding?
+A. You are afraid that getting help could threaten the scholarship and the identity you have built around running. Tell me more.
+B. I hear how important running is, and I can assure you that your coach will not learn anything unless you choose.
+C. Your scholarship matters, but these physical symptoms mean health has to come before athletics even if that affects your season.
+D. It sounds as though perfectionism is making running feel like your only strength. We should work on broadening your identity.
+Answer: ________ Confidence: 1 2 3 4 5
+55. Which inquiry BEST integrates cultural and contextual factors into Keisha's treatment?
+A. Explore how sport culture and scholarship pressure shape restriction, then ask how family, cultural, and body-image experiences may add to or buffer those pressures.
+B. Ask how sport norms, body ideals, scholarship pressure, family or cultural experience, and prior health care matter to Keisha without assuming which explains symptoms.
+C. Ask which identity feels most threatened by treatment—athlete, student, or family or community member—and use that priority to guide early alliance work.
+D. Explore structural pressures in collegiate athletics and how Keisha has navigated them before focusing on her personal beliefs about weight, rest, and performance.
+Answer: ________ Confidence: 1 2 3 4 5
+SECTION 2 - ADDITIONAL INFORMATION
+56. Which provisional diagnosis is best supported by the information now available?
+A. Avoidant/restrictive food intake disorder, because Keisha restricts substantially and has developed significant medical and nutritional consequences.
+B. Atypical anorexia nervosa, because the amount of weight loss and medical compromise are more important than her current body weight.
+C. Anorexia nervosa, restricting type, because low weight, restriction, fear of weight gain, and weight-related overvaluation are all present.
+D. Other specified feeding or eating disorder, because athletic training makes it difficult to determine whether low weight is clinically significant.
+Answer: ________ Confidence: 1 2 3 4 5
+57. Which level-of-care response is most appropriate at this point?
+A. Continue outpatient counseling with daily check-ins while arranging sports-medicine and dietitian appointments within the next several days.
+B. Refer directly to a residential eating-disorder program because her low weight and exercise behavior establish the need for twenty-four-hour behavioral containment.
+C. Arrange psychiatric hospitalization because severe restriction, compulsive exercise, and scholarship fears indicate that Keisha cannot safely manage outpatient treatment.
+D. Arrange immediate medical evaluation in a setting able to assess and stabilize eating-disorder-related physiological compromise before outpatient planning continues.
+Answer: ________ Confidence: 1 2 3 4 5
+58. What should the counselor do in response to Keisha’s acute dizziness and near-collapse?
+A. Keep Keisha seated, offer fluids and a snack if she agrees, and reassess symptoms before deciding whether medical transport is necessary.
+B. Stop routine counseling, protect Keisha from falling, activate emergency medical response and safe transport, and remain involved until the handoff occurs.
+C. Ask Keisha to contact a trusted person for transportation, provided she feels steadier after resting and agrees not to drive herself.
+D. Call the eating-disorder program for admission guidance while monitoring Keisha in the office and delaying transport until placement is confirmed.
+Answer: ________ Confidence: 1 2 3 4 5
+59. After immediate medical needs are addressed, which concurrent-care plan is most appropriate?
+A. Refer to an eating-disorder therapist and dietitian, then suspend counseling until those specialists determine which psychological issues remain appropriate for CTA counseling.
+B. Ask the medical physician to direct the entire treatment plan so nutrition, exercise, psychotherapy, and return-to-sport decisions remain clinically consistent.
+C. Coordinate medical, nutritional, psychiatric, and counseling care with defined questions, releases, provider roles, and follow-up responsibilities for each discipline.
+D. Give Keisha several specialty referrals and let her decide which providers communicate, because too much coordination may reduce her autonomy.
+Answer: ________ Confidence: 1 2 3 4 5
+60. The counselor has experience treating anxiety and perfectionism but no supervised specialty experience treating eating disorders in athletes. Which response is most appropriate?
+A. Continue treating anxiety and perfectionism independently, while specialists manage eating behaviors and medical issues outside the counselor’s treatment plan.
+B. Disclose the competence limits, obtain consultation or supervision, and continue only clearly appropriate counseling functions within a coordinated plan.
+C. Transfer all counseling to an eating-disorder specialist, because limited specialty experience prevents the counselor from retaining any therapeutic role.
+D. Use established eating-disorder treatment manuals with close outcome monitoring, seeking consultation only if Keisha fails to improve as expected.
+Answer: ________ Confidence: 1 2 3 4 5
+SECTION 3 - COURSE OF CARE
+61. Which next-phase counseling goal should Keisha and the counselor MOST appropriately establish together while medical and return-to-sport decisions remain with the multidisciplinary team?
+A. Within four weeks, Keisha will obtain medical clearance to resume running and begin a graded return-to-sport plan with the counselor.
+B. Within four weeks, Keisha will complete every nutrition and activity recommendation without deviation and report increased confidence in recovery.
+C. Within four weeks, Keisha will lower weight-gain fear before beginning identity work, using weekly anxiety ratings to determine readiness for that next phase.
+D. Within four weeks, Keisha will practice three coping responses for body or rest distress and identify two nonperformance sources of identity or support.
+Answer: ________ Confidence: 1 2 3 4 5
+62. Which response would best facilitate Keisha’s motivation to continue recovery?
+A. Review the medical risks of premature return to sport and ask Keisha to commit to the treatment plan until the team clears competition.
+B. Ask Keisha to list the costs of restriction until she recognizes that continued eating-disorder behavior conflicts with her scholarship goals.
+C. Reassure Keisha that recovery will probably improve her future performance so the temporary exercise restrictions feel more worthwhile and manageable.
+D. Explore what running, health, school, and long-term athletic goals mean to Keisha, then connect one chosen recovery step to those values.
+Answer: ________ Confidence: 1 2 3 4 5
+63. How should the counselor respond to the coach’s request?
+A. Decline all communication with athletics so Keisha’s confidentiality remains protected, while allowing her to relay any recommendations she chooses.
+B. Send the coach a brief summary of diagnosis, treatment attendance, current weight trend, and expected return date because scholarship decisions affect care.
+C. Clarify Keisha’s authorization and the coach’s purpose, then share only agreed functional information while directing medical clearance questions to qualified providers.
+D. Provide the coach the counselor’s psychological readiness opinion, while withholding weight, diagnosis, and treatment details unless Keisha authorizes them separately.
+Answer: ________ Confidence: 1 2 3 4 5
+64. Which counseling strategy best stays within the counselor’s role while addressing Keisha’s remaining difficulties?
+A. Develop an eating and training schedule with Keisha so she can practice flexibility without relying on the treatment team’s prescriptions.
+B. Use counseling to challenge weight beliefs until Keisha accepts the team’s target weight, then begin work on perfectionism and identity flexibility.
+C. Practice coping with body-image distress, perfectionistic thoughts, rest-related guilt, identity shifts, and support-seeking while keeping prescriptions within team roles.
+D. Focus on nonathletic hobbies and relationships until running no longer defines Keisha’s self-worth, then revisit sport-related coping and performance concerns.
+Answer: ________ Confidence: 1 2 3 4 5
+65. Which pre/post measurement plan BEST evaluates change in the counseling targets while medical outcomes continue to be monitored by Keisha's treatment team?
+A. Repeat the same eating-disorder and anxiety measures at planned intervals and compare them with baseline restriction, exercise urges, body distress, mood, functioning, and unsafe behavior.
+B. Repeat the same symptom measure and use weight, vital signs, and medical clearance as the primary benchmark for judging whether counseling has produced meaningful change.
+C. Select the most relevant symptom measure each week and compare current scores with clinical impressions so measurement can follow whichever problem is most active.
+D. Repeat general anxiety and depression measures and use medical-team reports for eating-disorder-specific outcomes so the counselor does not duplicate specialty assessment.
+Answer: ________ Confidence: 1 2 3 4 5
+
+CASE 6: Mateo C.
+SECTION 1 - INITIAL PRESENTATION
+66. Which assessment would most directly clarify the clinical significance of Mateo's recent cutting?
+A. Review wound care, substance use, sleep, recent stress, access to the cutting method, and who was present afterward.
+B. Clarify relationship triggers, abandonment fears, urgent-message patterns, provider interactions, and what usually happens after Mateo receives rapid reassurance.
+C. Assess cutting intent, expected outcome, medical severity, suicidal thoughts or plans, means, history, intoxication, and protective factors.
+D. Complete mood, trauma, bipolar, substance, identity, and personality-pattern history before deciding whether the current episode represents acute risk.
+Answer: ________ Confidence: 1 2 3 4 5
+67. Mateo says, “Cutting is what keeps me from doing something worse.” Which response best demonstrates empathic responding while preserving safety assessment?
+A. It sounds like cutting gives temporary relief when the pressure spikes. I want to understand that relief and what ‘something worse’ means.
+B. If cutting prevents a suicide attempt, we can treat it as a temporary coping strategy while we build safer alternatives together.
+C. You are telling me the urge becomes intense quickly. Let's identify a distress-tolerance skill you can use instead next time.
+D. The fact that cutting reduces pressure does not make it safe. We need to focus first on stopping the behavior and risk.
+Answer: ________ Confidence: 1 2 3 4 5
+68. Which working hypothesis would be most useful for understanding Mateo's urgent-message pattern at this stage?
+A. The messaging primarily reflects poor respect for boundaries, so firmer consequences will likely reduce the behavior without further relational analysis.
+B. The messaging is best understood as evidence of a personality disorder because it escalates whenever the counselor is not immediately available.
+C. The messaging mainly signals inadequate coping skills, so skills training should begin before exploring how counselor responses affect the pattern.
+D. Urgent contact may briefly regulate abandonment fear and shape a repeating counselor-client cycle; examine triggers, responses, relief, and later consequences.
+Answer: ________ Confidence: 1 2 3 4 5
+SECTION 2 - ADDITIONAL INFORMATION
+69. Which provisional diagnosis is best supported by the longitudinal evidence?
+A. Bipolar II disorder, because Mateo has intense mood shifts, impulsive behavior, irritability, changing self-image, and rapidly changing judgments of close relationships.
+B. Posttraumatic stress disorder, because abandonment sensitivity, anger, self-injury, and relationship instability can develop after adverse interpersonal experiences across many settings.
+C. Alcohol-induced mood disorder, because binge drinking occurs during some crises and may intensify impulsivity, anger, and self-harm urges.
+D. Borderline personality disorder, provisional, because pervasive abandonment sensitivity, unstable relationships and identity, affective reactivity, emptiness, anger, and self-harm are present.
+Answer: ________ Confidence: 1 2 3 4 5
+70. Which treatment-planning approach best organizes Mateo's current priorities?
+A. Prioritize suicidal and self-injurious behavior, then therapy-interfering patterns, while also addressing alcohol and broader quality-of-life problems within the structured plan.
+B. Prioritize alcohol reduction first because intoxication increases risk, then address self-harm and relationship problems after several weeks of reduced use.
+C. Prioritize relationship stability and abandonment fears first because these triggers drive the other symptoms and will reduce risk indirectly.
+D. Begin skills training across emotion regulation, interpersonal effectiveness, and distress tolerance simultaneously, allowing Mateo to choose which target matters most each week.
+Answer: ________ Confidence: 1 2 3 4 5
+71. Following a cutting episode, which intervention would provide the most useful DBT-informed behavioral analysis?
+A. Reconstruct the prompting event, vulnerabilities, thoughts, emotions, actions, consequences, and points where alternative skills could interrupt the sequence.
+B. Teach a distress-tolerance strategy and ask Mateo to practice it daily before examining the details of the most recent episode.
+C. Review the safety plan and rehearse crisis contacts so Mateo has a clearer response if the urge to cut returns.
+D. Examine the belief that delayed replies mean abandonment and use cognitive restructuring to generate more balanced interpretations for future conflicts.
+Answer: ________ Confidence: 1 2 3 4 5
+72. Mateo says angrily, “Your communication policy proves that you will abandon me too.” Which response best demonstrates conflict tolerance and resolution?
+A. Explain that the policy applies to every client, reassure Mateo that the counselor still cares, and redirect the conversation toward treatment goals.
+B. Temporarily allow additional after-hours replies while trust develops, then return to the original communication policy once Mateo feels more secure.
+C. Acknowledge that the limit felt like abandonment, invite Mateo's anger into the discussion, maintain the boundary, and examine what happened between them.
+D. Postpone discussion of the policy until Mateo is less angry, using the current session to practice emotion-regulation skills instead.
+Answer: ________ Confidence: 1 2 3 4 5
+73. The counselor notices feeling pulled between answering Mateo immediately at all hours and avoiding his messages altogether. What is the best response to this reaction?
+A. Transfer Mateo to another clinician because strong counselor reactions indicate that objectivity and therapeutic usefulness have already been compromised.
+B. Tell Mateo that the volume of messages is exhausting so he can understand the effect his behavior has on the counselor.
+C. Notice the pull toward overavailability or withdrawal, seek supervision or consultation, and use that awareness to maintain a consistent treatment frame.
+D. Increase responsiveness temporarily to reduce the counselor's anxiety about risk, then tighten the boundary after Mateo becomes more stable.
+Answer: ________ Confidence: 1 2 3 4 5
+SECTION 3 - COURSE OF CARE
+74. What is the most appropriate professional response to Mateo's public social-media post?
+A. Ignore the post entirely because responding clinically to public online content would violate Mateo's privacy, blur treatment boundaries, and reinforce online contact.
+B. Avoid publicly confirming or disputing the counseling relationship, assess safety privately, document the clinical significance, and address the rupture through established channels.
+C. Post a general statement that the practice cannot discuss current or former clients, without naming Mateo or addressing his specific complaint.
+D. Send Mateo a private message through the platform asking him to remove the post, then discuss the conflict and safety at the next appointment.
+Answer: ________ Confidence: 1 2 3 4 5
+75. Which treatment-plan revision best addresses the pattern revealed by the counselor's vacation?
+A. Prepare explicitly for future absences by identifying likely triggers, alternative supports, message expectations, crisis routes, skills, and a post-return session plan.
+B. Increase counselor availability around future absences so Mateo experiences continuity, then gradually reduce extra contact after the relationship feels more secure.
+C. Keep the current plan unchanged because modifying boundaries after a rupture may reinforce escalation and teach Mateo that crises alter treatment structure.
+D. Pause absence-related work until Mateo has several weeks without self-harm urges, then revisit how planned separations affect the therapeutic relationship.
+Answer: ________ Confidence: 1 2 3 4 5
+76. Which response best facilitates awareness of the here-and-now therapeutic interaction?
+A. I gave you advance notice and coverage information, so I want us to focus on how your interpretation of the vacation escalated the conflict.
+B. I am sorry the vacation hurt you. I should have been more available, and I will try not to take extended time away again.
+C. When I was unavailable, it felt like proof that I would leave. Can we look at what you expected, felt, and did between us?
+D. The public post crossed an important boundary. Before discussing the vacation, we need to decide how you will repair the harm to the practice.
+Answer: ________ Confidence: 1 2 3 4 5
+77. Which interpretation best reflects Mateo's treatment progress to date?
+A. Self-injury and skill use are improving, but rupture-linked urges, alcohol episodes, attendance problems, and suicide risk still require active monitoring.
+B. Treatment is broadly successful because cutting has decreased substantially, so the remaining interpersonal and alcohol concerns can be handled during maintenance.
+C. Treatment is ineffective because the vacation triggered renewed self-harm urges, missed sessions, and public criticism despite several weeks of earlier progress.
+D. The reduction in cutting indicates lower suicide risk, so future monitoring can focus primarily on relationship functioning and treatment attendance.
+Answer: ________ Confidence: 1 2 3 4 5
+78. Which revision would produce the strongest ongoing safety plan?
+A. List NSSI warning signs, distress-tolerance skills, supportive contacts, and office hours, while instructing Mateo to use emergency services for any suicidal thought.
+B. Link warning signs, NSSI urges, shifts toward suicidal intent or planning, internal coping, supports, crisis routes, means safety, and clear escalation thresholds.
+C. Focus the plan on suicidal intent, means restriction, and emergency services, while treating NSSI urges as a psychotherapy target rather than a safety-plan concern.
+D. Use one after-hours clinician contact pathway for NSSI and suicidal crises so Mateo does not have to decide which level of risk is occurring.
+Answer: ________ Confidence: 1 2 3 4 5
+
+CASE 7: Mei L.
+SECTION 1 - INITIAL PRESENTATION
+79. Which assessment approach would provide the STRONGEST foundation for the counselor’s initial formulation?
+A. Center the interview on grief intensity, loss chronology, coping, spouse support, and family pressure, adding broader psychiatric assessment as indicated.
+B. Center the interview on reproductive follow-up, sleep, and work functioning, then explore cultural and spiritual meanings after symptom severity is established.
+C. Build a timeline integrating loss and medical course, grief, mood, trauma, safety, sleep, functioning, supports, avoidance, and spiritual or cultural meaning.
+D. Begin with standardized grief, depression, trauma, and functioning measures, then direct the interview toward the domains showing greatest severity.
+Answer: ________ Confidence: 1 2 3 4 5
+80. Which additional pattern would MOST strongly support a co-occurring major depressive episode rather than grief-related distress alone?
+A. Grief comes in waves around reminders, while connection with her spouse and interest in some activities remain available between waves.
+B. Yearning and guilt remain focused on the loss, while functioning improves when Mei feels supported and less pressured by family.
+C. Sleep worsens and social avoidance increases after repeated family questions, with distress easing when those interactions become less intense.
+D. Depressed mood and loss of interest occur most days, generalized worthlessness develops, and impairment extends well beyond loss-related reminders.
+Answer: ________ Confidence: 1 2 3 4 5
+81. Mei asks, “Does karma mean this happened because I failed somehow?” Which counselor response is BEST?
+A. Would you like me to consult a Buddhist teacher before we explore this further so that we do not misinterpret your tradition?
+B. Would it help if we used Buddhist teachings on compassion to replace the punitive interpretation with a more supportive spiritual meaning?
+C. What does karma or moral failure mean to you here, and when does your practice bring compassion versus self-blame?
+D. Guilt is common after loss; let’s examine evidence for and against personal responsibility before deciding whether the belief has spiritual meaning.
+Answer: ________ Confidence: 1 2 3 4 5
+82. Which assessment would BEST determine whether a distinct trauma-related syndrome is also present?
+A. Explore the course of grief waves, loss-focused reminders, avoidance, support, physiological distress, and how quickly symptoms settle after each trigger.
+B. Clarify the medical and loss experience, then assess intrusion, avoidance, negative mood or cognition, arousal, dissociation, duration, and impairment.
+C. Ask whether Mei describes the medical experience as traumatic and whether appointments now produce marked fear, physiological distress, or avoidance.
+D. Use a validated trauma screener and prioritize trauma-focused treatment if the score is elevated while continuing to monitor grief.
+Answer: ________ Confidence: 1 2 3 4 5
+SECTION 2 - ADDITIONAL INFORMATION
+83. Which counseling plan is BEST matched to Mei’s current presentation?
+A. Use grief-informed counseling that combines meaning-making, paced approach to avoided reminders, restoration activities, and spiritual resources chosen by Mei.
+B. Use trauma-focused exposure around medical reminders because avoidance is present, while monitoring grief reactions as a separate treatment target.
+C. Use supportive counseling and an early family session to reduce pressure, adding individual grief work after parent communication becomes more stable.
+D. Emphasize behavioral activation and restoration activities, postponing direct loss-focused work until sleep and daily routines become more consistent.
+Answer: ________ Confidence: 1 2 3 4 5
+84. Before the counselor communicates with Mei’s parents, which step is BEST?
+A. Clarify whether Mei wants rehearsal or direct contact; if contact is chosen, agree on recipients, purpose, specific content, limits, risks, and authorization first.
+B. Send a brief boundary statement now because Mei initially requested help, then document her verbal permission and preferred limits at the next session.
+C. Obtain a broad written release for both parents so the counselor can adjust what is discussed as questions arise during the conversation.
+D. Recommend that Mei speak with her parents herself first, reserving counselor contact for later if family pressure continues despite her efforts.
+Answer: ________ Confidence: 1 2 3 4 5
+85. Mei wants to remain close to her parents while protecting privacy around grief and reproductive decisions. Which counselor response BEST demonstrates respect for diversity?
+A. Explore whether temporary distance from Mei's parents would create needed space while preserving ordinary family contact if that remains important to her.
+B. Ask which parts of family responsibility Mei wants to preserve and which expectations feel burdensome, then consider whether her parents' intentions change the boundary she wants.
+C. Explore whether direct or indirect boundary styles better fit Mei's family and choose the approach most likely to reduce conflict while preserving closeness.
+D. Ask what privacy and family connection each mean to Mei, then help her construct a boundary consistent with both without privileging independence or compliance.
+Answer: ________ Confidence: 1 2 3 4 5
+86. Which intervention BEST incorporates cultural considerations into Mei's family-boundary work?
+A. Use family-of-origin exploration to identify intergenerational loss and communication patterns, then apply whichever themes Mei identifies as relevant to the current family conflict.
+B. Broach bicultural experience and filial expectations, focusing on how they affect communication with Mei's parents about pregnancy loss and future decisions.
+C. Explore whether traditional, contemporary, family-specific, or personal values best describe the tension, then use that language when practicing boundaries with her parents.
+D. Explore how bicultural identity, filial responsibility, privacy, generational roles, and family experience interact for Mei, then adapt communication practice to her preferred balance.
+Answer: ________ Confidence: 1 2 3 4 5
+SECTION 3 - COURSE OF CARE
+87. During a progress review, which summary BEST reflects Mei's treatment trajectory?
+A. The current goals are not being met because the due-date reaction shows Mei is still unable to tolerate major grief reminders without significant symptom recurrence.
+B. Overall goals show progress in sleep, social engagement, boundaries, and functioning; review the due-date flare as meaningful data without treating it automatically as failure.
+C. The goals are essentially complete because Mei maintained work, relationships, and safety while the due-date symptoms began easing without major intervention.
+D. Progress cannot be reviewed accurately until the due-date symptoms fully resolve because temporary grief intensification makes current functioning difficult to interpret.
+Answer: ________ Confidence: 1 2 3 4 5
+88. Which interpretation BEST reflects the available evidence about counseling effectiveness?
+A. Treatment is not working because grief intensity increased despite several months of counseling and renewed social engagement.
+B. Treatment is complete because work, relationships, and social activity improved despite temporary distress around the expected due date.
+C. Overall functioning and coping have improved, while the time-limited trigger-related increase remains meaningful outcome data that requires continued monitoring.
+D. Improvement cannot be attributed to counseling because spouse support and changes in family pressure occurred during the same period.
+Answer: ________ Confidence: 1 2 3 4 5
+89. How should the counselor respond to Mei’s mother’s new questions?
+A. Share only information within the current authorization, decline the new diagnosis, prognosis, and reproductive-readiness questions, and revisit any expanded disclosure with Mei.
+B. Provide general diagnostic and prognosis information because Mei’s mother already knows about the loss and the counselor has limited family authorization.
+C. Decline all further family communication because the mother requested information beyond the current authorization and therefore invalidated the earlier permission.
+D. Answer prognosis questions but not diagnosis or medical details, because general recovery expectations may help the parents reduce pressure without revealing private facts.
+Answer: ________ Confidence: 1 2 3 4 5
+90. Mei now says, “I don’t know whether I want another pregnancy or whether I just feel that I should.” Which strategy would BEST support her decision-making?
+A. Use cognitive restructuring to resolve the belief that the loss was karmic punishment before discussing any future reproductive choice.
+B. Use a decisional balance comparing another pregnancy soon with delaying it, giving greater weight to practical consequences than to grief-related emotions.
+C. Use values clarification to separate Mei’s own hopes about family, spirituality, health, and timing from guilt, perceived duty, and external expectations.
+D. Use a family-of-origin map to identify inherited expectations, then prioritize choices most likely to preserve family harmony while reducing conflict.
+Answer: ________ Confidence: 1 2 3 4 5
+91. Which follow-up action is MOST appropriate?
+A. Reopen weekly counseling prophylactically because recurring grief waves after discharge indicate that the previous gains are not yet durable without professional support.
+B. Confirm that Mei remains free of major impairment and close the case permanently if she continues working and using social supports.
+C. Focus the follow-up on whether Mei has decided about another pregnancy because reproductive planning is the main unresolved issue from the prior treatment.
+D. Review functioning, triggers, coping and support use, any new risk or diagnostic change, and whether booster care or reproductive supports are desired.
+Answer: ________ Confidence: 1 2 3 4 5
+
+CASE 8: Alan’s Therapy Group
+SECTION 1 - INITIAL PRESENTATION
+92. Which orientation framework BEST establishes group privacy and outside-contact expectations before sessions begin?
+A. Explain the counselor's confidentiality duties, require binding member confidentiality pledges, and allow outside contact if members agree not to discuss group material.
+B. Explain that members control their own behavior, let overlapping pairs set private rules, and use the general informed-consent agreement to cover social-media contact.
+C. Review counselor and member confidentiality limits, prohibit members from acknowledging one another publicly, and address unavoidable workplace or neighborhood contact as individual exceptions.
+D. Distinguish counselor confidentiality from member behavior, set shared privacy and outside-contact expectations, address social media explicitly, and explain that secrecy cannot be guaranteed.
+Answer: ________ Confidence: 1 2 3 4 5
+93. Before deciding whether Asha and Ben should participate in the same group, what should Alan do?
+A. Exclude the employee with greater workplace authority so the lower-power employee can participate without concern about job consequences or inhibited disclosure.
+B. Admit both employees after an enhanced confidentiality agreement and monitor whether their workplace relationship begins affecting participation once the group starts.
+C. Assess voluntariness, likely inhibition, workplace power, privacy concerns, treatment goals, and realistic alternatives with each employee before deciding group placement.
+D. Ask the two employees to decide together whether they can participate comfortably, then honor their decision if both understand confidentiality limitations.
+Answer: ________ Confidence: 1 2 3 4 5
+94. Which working hypothesis about Ben’s behavior is MOST appropriate to test?
+A. Ben’s brief responses may reflect broader social anxiety rather than workplace power, so increase direct invitations before reconsidering whether the group is appropriate.
+B. Workplace hierarchy may be suppressing Ben’s disclosure; test that hypothesis through observation and private check-in rather than assuming the meaning of his restraint.
+C. Asha’s greater participation may be creating an airtime imbalance, so equalize speaking opportunities before exploring whether their workplace roles are clinically relevant.
+D. Both employees may be protecting workplace information from the group, so establish a no-workplace-content agreement before interpreting the pattern further.
+Answer: ________ Confidence: 1 2 3 4 5
+95. Which plan BEST addresses members’ potential interactions outside the group?
+A. Ask members never to acknowledge one another outside group, including in unavoidable workplace and neighborhood settings, unless both people explicitly agree first.
+B. Establish shared expectations for accidental encounters, online contact, privacy, and voluntary social contact while acknowledging unavoidable overlaps and revisiting their effects.
+C. Let each overlapping pair establish its own outside-contact rules privately so Alan does not impose one standard on different relationships.
+D. Prohibit social-media connections among members and require disclosure to Alan whenever two members communicate outside group about one another.
+Answer: ________ Confidence: 1 2 3 4 5
+SECTION 2 - ADDITIONAL INFORMATION
+96. Which intervention BEST fits the group’s current developmental needs?
+A. Continue the planned anxiety curriculum while meeting individually with the affected members, then return to the incident only if attendance continues declining further.
+B. Suspend Maya from the next session while trust recovers, then reconsider participation after an individual accountability and readiness meeting.
+C. Ask members to vote on whether Maya should remain, using the decision to restore shared ownership of the group’s safety expectations.
+D. Pause planned content to address the rupture, clarify impact and agreements, assess safety and fit, and help the early group rebuild working norms.
+Answer: ________ Confidence: 1 2 3 4 5
+97. Three members begin attacking Maya while two defend her and quieter members withdraw. Which response BEST uses linking and blocking?
+A. Let the members who feel harmed complete their feedback first, then invite Maya and her supporters to respond after everyone has been heard.
+B. Stop personal attacks, link different reactions to shared concerns about trust and exposure, and invite concise first-person responses from quieter members.
+C. Invite Maya to answer each concern individually while Alan monitors tone and reminds members to keep their comments specific and respectful.
+D. Stop discussion of Maya’s behavior and redirect members to their own feelings about trust so the group does not become punitive.
+Answer: ________ Confidence: 1 2 3 4 5
+98. After Alan interrupts the personal attacks, which intervention BEST fosters therapeutic group factors?
+A. Invite members to describe their own reactions and needs, notice shared vulnerability, support accountability, and identify what would permit continued participation without requiring forgiveness.
+B. Summarize the group’s common rules and ask every member to recommit to them so cohesion can reform around a shared behavioral standard before proceeding.
+C. Ask Maya and Leila to conduct a structured repair dialogue in front of the group so members can learn from direct interpersonal resolution.
+D. Normalize that early groups often encounter conflict and reassure members that working through the rupture can strengthen cohesion over time.
+Answer: ________ Confidence: 1 2 3 4 5
+99. Alan notices a strong urge to remove Maya immediately to protect Leila, followed by irritation when Maya becomes defensive. What should Alan do with this reaction?
+A. Follow the protective impulse by suspending Maya now, then use consultation before deciding whether she can return to the group.
+B. Tell the group that Alan feels protective of Leila and irritated with Maya so members understand why he is slowing the decision.
+C. Counterbalance the protective reaction by giving Maya additional time to explain herself and ensuring her perspective receives equal group attention.
+D. Notice the competing pulls, seek consultation or supervision, examine how they may shape judgment, and return to explicit safety and group-fit criteria.
+Answer: ________ Confidence: 1 2 3 4 5
+SECTION 3 - COURSE OF CARE
+100. Which approach BEST manages Nora's planned departure from the group?
+A. Share Nora's authorized statement at the next session, invite brief reactions, and then redirect to planned content so the departure does not dominate group work.
+B. Offer Nora an optional closing session; if she declines, tell the group she transferred and address logistics without inviting discussion of private reasons.
+C. Invite the group to process its assumptions about the departure before sharing Nora's authorized statement, then correct only information she permitted Alan to clarify.
+D. With Nora's agreement, offer a closing opportunity or authorized statement, clarify transition logistics, and invite members to process the departure without adding private reasons.
+Answer: ________ Confidence: 1 2 3 4 5
+101. Which pre/post approach BEST determines whether the group's repair efforts are improving group functioning?
+A. Compare attendance before and after repair and use individual anxiety-symptom change as the secondary indicator of whether the group has returned to effective functioning.
+B. Repeat the psychological-safety rating after each session and treat return to the preincident mean as the primary evidence that the rupture has resolved.
+C. Repeat the same safety or cohesion measure at planned intervals from the pre-rupture baseline and pair it with participation, attendance, and individual anxiety-function data.
+D. Use open-ended member feedback after repair and compare themes with Alan's pre-rupture process notes so outcome assessment remains individualized rather than score-driven.
+Answer: ________ Confidence: 1 2 3 4 5
+102. How should Alan respond to Asha’s and Ben’s requests for individual therapy?
+A. Accept one employee for individual therapy and refer the other, reducing overlapping roles while preserving access to a clinician already familiar with the group.
+B. Before accepting, assess role-change consequences, workplace power, confidentiality conflicts, group impact, alternatives, and consultation; use separate referrals if conflicts cannot be managed.
+C. Decline both requests because a group counselor should not provide individual therapy to any current group member regardless of circumstances or informed consent.
+D. Accept both requests with separate informed-consent agreements, keeping individual-session information outside group and reviewing role conflicts only if problems later emerge.
+Answer: ________ Confidence: 1 2 3 4 5
+103. A member says, “I still don’t know what is actually safe to say here.” Which response BEST uses the here-and-now group process?
+A. Invite members to notice what is happening now—what they are holding back, what feels risky, and what responses would increase workable trust.
+B. Review the confidentiality agreement and acknowledge that no rule can eliminate all risk, then return to planned anxiety content after answering questions.
+C. Ask members privately after group what feels unsafe, then summarize themes anonymously next session so concerns can be addressed without public pressure.
+D. Ask members to identify specific rule changes that would make disclosure feel safe enough, then resume process work after the new agreement is adopted.
+Answer: ________ Confidence: 1 2 3 4 5
+104. Members ask Alan whether Nora left because of the social-media incident. Which response BEST respects Nora’s authorization?
+A. Tell the group Nora left because privacy concerns remained, without mentioning the neighborhood connection or any other details from her private conversation.
+B. Say Nora requested another treatment format and will continue elsewhere, then decline further questions because the exact reason remains confidential.
+C. Use only Nora’s authorized statement, decline to confirm or deny specific reasons, and invite the group to process reactions to the departure.
+D. Decline to discuss Nora’s departure at all once she leaves, even though she authorized a limited statement about changing treatment.
+Answer: ________ Confidence: 1 2 3 4 5
+
+CASE 9: Harold B.
+SECTION 1 - INITIAL PRESENTATION
+105. Which inquiry would MOST directly clarify the immediate safety concerns in Harold's presentation?
+A. Clarify Harold's depression, anxiety, cognition, sleep, alcohol use, medical conditions, medications, and recent changes in his own daily functioning.
+B. Assess caregiver burden, marital role expectations, family supports, barriers to asking for help, respite access, and the recent increase in anger.
+C. Review the spouse's dementia course, wandering history, medication and bathing needs, home hazards, backup care, and current level of supervision.
+D. Clarify what “never coming back” means, suicidal or violent thoughts, recent caregiving lapses, current supervision, and Harold's ability to maintain safety.
+Answer: ________ Confidence: 1 2 3 4 5
+106. Harold says, “If I ask my kids for help, I've failed my spouse.” Which response BEST demonstrates empathic responding?
+A. You have carried a great deal because caring for your spouse matters to you. Let's identify which tasks your children could take over.
+B. Being a good husband seems deeply important to you, and asking for help feels like failing that commitment. What makes it mean failure?
+C. You sound exhausted, but the current arrangement may be unsafe. We should separate the feeling of failure from the practical care decisions.
+D. Many devoted spouses eventually need help. Accepting support does not mean you have failed, and your children may want to contribute.
+Answer: ________ Confidence: 1 2 3 4 5
+107. Which assessment plan would BEST permit the counselor to formulate both the severity of Harold's alcohol use and its relationship to caregiving safety?
+A. Clarify amount, frequency, sleep-related use, medication interactions, caregiving-time drinking, and whether safety incidents followed alcohol use so immediate risk can be estimated.
+B. Clarify tolerance, withdrawal, craving, unsuccessful cut-downs, consequences, prior alcohol history, and readiness for change so disorder severity can be estimated.
+C. Clarify perceived benefits, concerns, prior change attempts, family feedback, and caregiving functioning on drinking versus nondrinking days so motivation can be explored.
+D. Map amount, frequency, timing, tolerance, withdrawal, cut-down attempts, caregiving-time use, consequences, interactions, and function so both severity and safety can be formulated.
+Answer: ________ Confidence: 1 2 3 4 5
+SECTION 2 - ADDITIONAL INFORMATION
+108. Which response BEST applies the legal rule supplied in the case?
+A. Keep the information confidential if Harold immediately accepts respite and a supervision plan, reserving a report for any subsequent caregiving incident.
+B. Ask the adult children to verify the medication, meal, and wandering events before deciding whether reasonable suspicion exists under the stated rule.
+C. Coordinate dementia and respite services first, because exhaustion rather than malicious intent is driving the caregiving lapses described in the case.
+D. Explain the stated duty, make the required protective report, share information necessary for that purpose, address immediate safety, and continue engaging Harold.
+Answer: ________ Confidence: 1 2 3 4 5
+109. After immediate protective steps are addressed, which concurrent-care plan BEST fits the household's needs?
+A. Coordinate Harold's medical, sleep, and alcohol evaluation with dementia-care, respite, and home-safety services, defining roles, releases, handoffs, and follow-up responsibilities.
+B. Ask the spouse's dementia clinician to coordinate the whole household plan so medication, supervision, Harold's sleep, alcohol, and counseling stay under one lead provider.
+C. Refer Harold for alcohol treatment and the spouse for dementia services, then resume caregiver counseling after both specialty plans have been established.
+D. Give Harold several medical, respite, and aging-service options and let him decide which providers communicate so his autonomy remains central.
+Answer: ________ Confidence: 1 2 3 4 5
+110. Which approach BEST helps Harold develop a sustainable support system?
+A. Ask each adult child to take one fixed caregiving shift weekly, then use community respite only for duties the family cannot cover consistently each month.
+B. Identify willing family, friends, and community resources, clarify each person's actual capacity, and build an agreed backup plan that does not depend on one caregiver.
+C. Use professional respite and adult-day services instead of family help so Harold's children are not pulled into the marital caregiving relationship.
+D. Ask Harold which child is most dependable, then invite that person to coordinate the family schedule and distribute responsibilities to other relatives.
+Answer: ________ Confidence: 1 2 3 4 5
+111. Harold says, “You betrayed me by reporting this.” Which response BEST demonstrates conflict tolerance and resolution?
+A. I hear how angry you are. Before we discuss trust, I want us to review the safety events and why the report was necessary under the stated rule.
+B. I understand this felt like a betrayal. I was required to act under the rule we discussed, and I want to understand what this did to our trust.
+C. I am sorry the report damaged our relationship. Going forward, I will limit outside contact unless there is clear proof that immediate harm is occurring.
+D. Your anger makes sense. If you no longer trust me after the report, we should discuss whether another counselor could work with you more effectively.
+Answer: ________ Confidence: 1 2 3 4 5
+112. Which formulation BEST captures a systemic pattern contributing to Harold's isolation?
+A. Harold's overresponsibility and secrecy reduce opportunities for planned help, so support often appears only during crises and reinforces his sense of failure.
+B. Harold's marital identity makes accepting help difficult, so changing his beliefs about independence should precede attempts to alter the family system.
+C. The spouse's dementia is the central driver of the family pattern, so modifying caregiving demands should resolve most secrecy and relational tension.
+D. The adult children's limited involvement has caused Harold's burnout, so family treatment should focus first on increasing their caregiving responsibility.
+Answer: ________ Confidence: 1 2 3 4 5
+SECTION 3 - COURSE OF CARE
+113. Which treatment-plan revision BEST fits the current course?
+A. Keep the existing plan unchanged until Harold's caregiver burden reaches the mild range, then decide whether additional family or substance-focused work is needed.
+B. Shift primarily to relapse prevention because the report, respite plan, and absence of new neglect events show that the acute treatment targets are resolved.
+C. Consolidate the safer supervision plan while revising targets for Harold's sleep, alcohol use, anger, support use, and changing caregiving demands.
+D. Make family-repair sessions the primary treatment focus because practical supervision is now stable and Harold's remaining distress centers on his children's reactions.
+Answer: ________ Confidence: 1 2 3 4 5
+114. Which family-meeting structure BEST supports conflict resolution?
+A. Ask Harold to explain the incidents and apologize first, then ask the children what caregiving help they are willing to provide after hearing his account.
+B. Ask the children to divide medication, meal, and respite duties based on availability, while Harold retains overnight care and final household decision-making.
+C. Set shared safety and relationship goals, invite each adult to state capacity and limits, negotiate voluntary roles, and create direct communication and backup procedures.
+D. Keep the meeting focused on feelings and relationship repair, postponing practical role decisions until resentment and shame have decreased for everyone.
+Answer: ________ Confidence: 1 2 3 4 5
+115. Which response would BEST facilitate Harold's motivation to continue accepting support?
+A. Review the decrease in safety incidents and explain that respite is working, then ask Harold to commit to keeping the current schedule for another month for now.
+B. Explore the kind of spouse and father Harold wants to be, how the current arrangement fits those values, and which one support step he will choose next.
+C. Ask Harold to list the costs of refusing help and compare them with the benefits of respite until he identifies enough reasons to continue.
+D. Reassure Harold that accepting respite does not represent failure, then help him identify the family member or service he trusts most to take over care.
+Answer: ________ Confidence: 1 2 3 4 5
+116. When the counselor and Harold review treatment progress together, which summary BEST supports the next-phase discussion?
+A. The main safety goals are met because there have been no new neglect events; Harold can step down while sleep and alcohol concerns continue through medical follow-up.
+B. Progress remains insufficient because Harold still needs respite and uses alcohol; maintain the same counseling intensity until both concerns are fully resolved and family strain improves.
+C. Counseling progress cannot be separated from the effects of respite and family support, so postpone judging goals until external services have been stable longer.
+D. Household safety and support have improved, while sleep, alcohol use, help-seeking, and relationship strain remain active; review with Harold which goals feel met and what comes next.
+Answer: ________ Confidence: 1 2 3 4 5
+117. Which maintenance plan BEST prepares Harold for future caregiving changes?
+A. Continue scheduled counseling while Harold remains the primary caregiver, because progressive dementia creates ongoing stress that cannot be managed through maintenance planning alone right now.
+B. Plan around current respite and family arrangements, revising the plan only if the spouse's dementia progresses enough to require a different living setting.
+C. Step down once the household has remained incident-free for several months, asking Harold to return if caregiver burden again reaches a severe level.
+D. Link overload warning signs to backup care, respite, Harold's health and alcohol follow-up, family or community supports, reassessment, and changes in the spouse's care needs.
+Answer: ________ Confidence: 1 2 3 4 5
+
+CASE 10: Fatima R.
+SECTION 1 - INITIAL PRESENTATION
+118. Which assessment approach would provide the STRONGEST foundation for the counselor’s initial formulation?
+A. Focus first on panic phenomenology and medical contributors, then address workplace and career factors after the broader anxiety pattern is clinically clearer.
+B. Build an integrated timeline of panic episodes, triggers, medical and safety factors, workplace events, functioning, supports, constraints, and Fatima’s own cultural meanings.
+C. Focus first on the workplace comments and legal or career goals, then assess panic only if symptoms continue to impair overall functioning.
+D. Administer standardized anxiety and discrimination measures first, then let the highest symptom score determine which areas receive more detailed clinical follow-up.
+Answer: ________ Confidence: 1 2 3 4 5
+119. Fatima says, “Maybe I’m just being too sensitive.” Which counselor response BEST demonstrates empathic responding at this point?
+A. We should separate objective workplace facts from anxiety-driven interpretations before deciding how much the comments are contributing to your distress.
+B. The comments sound discriminatory to me, so I do not want therapy to suggest that your distress is an overreaction.
+C. Your panic is real even if the employees intended no harm. Let’s focus on the parts of the situation you can control clinically.
+D. You’re questioning your own reaction while dealing with comments that have felt threatening and costly. What has this experience been like for you?
+Answer: ________ Confidence: 1 2 3 4 5
+120. Which inquiry BEST supports a cultural formulation of Fatima's workplace distress?
+A. Ask how being targeted for hijab, religion, and accent affects belonging and whether Fatima wants the counselor to broach discrimination explicitly during treatment.
+B. Explore migration, finances, professional identity, and workplace power first, then invite religion and gender if Fatima identifies them as relevant to the current problem.
+C. Ask how hijab, religion, accent, migration, gender, professional identity, workplace power, belonging, and help-seeking intersect for Fatima while she decides which are central.
+D. Explore prior experiences of bias and resilience, then compare them with the current workplace situation to identify culturally meaningful coping and support resources.
+Answer: ________ Confidence: 1 2 3 4 5
+SECTION 2 - ADDITIONAL INFORMATION
+121. Based on all information now available, which diagnosis is BEST supported?
+A. Adjustment disorder with anxiety because symptoms followed ongoing workplace stressors and panic remains situationally cued rather than unexpected.
+B. Panic disorder because recurrent panic, anticipatory worry, and meeting avoidance have persisted for months and now interfere with occupational functioning.
+C. Social anxiety disorder because meetings involve scrutiny, possible negative evaluation, increasing avoidance, and meaningful impairment in her professional role.
+D. Posttraumatic stress disorder because discriminatory comments produced avoidance, physiological arousal, anticipatory fear, and persistent impairment across her occupational functioning.
+Answer: ________ Confidence: 1 2 3 4 5
+122. Which treatment stance BEST integrates the cultural and contextual information in the case?
+A. Integrate discrimination and workplace power into CBT, distinguish realistic threat from panic amplification, and target avoidance without requiring endurance of discriminatory conduct.
+B. Use standard CBT and repeated meeting exposure while avoiding discussion of discrimination during practice so treatment currently remains focused on panic symptoms.
+C. Encourage immediate formal reporting or legal action while symptoms are documented, then reassess whether anxiety persists after the workplace response unfolds.
+D. Validate the discrimination-related stress and prioritize career advocacy, postponing anxiety treatment so realistic workplace threat is not pathologized.
+Answer: ________ Confidence: 1 2 3 4 5
+123. Which barrier should be given the GREATEST weight when the counselor and Fatima review whether she can act on her career goals now?
+A. Lack of confidence is the main barrier because her technical skills and friendships are intact, making self-efficacy the central ongoing treatment target.
+B. Panic symptoms are the main barrier, so career decision work should wait until Fatima can attend meetings without marked anticipatory anxiety.
+C. Immigration and employment uncertainty, limited financial runway, and incomplete information most directly constrain informed career action; anxiety avoidance remains a parallel target.
+D. The employer’s behavior is the main barrier, so treatment cannot progress meaningfully until the workplace comments stop or Fatima changes jobs.
+Answer: ________ Confidence: 1 2 3 4 5
+124. Which response BEST demonstrates respect and acceptance for diversity while preserving client autonomy?
+A. Leaving may best protect your religious identity, while staying may require tolerating treatment that conflicts with your professional and personal values.
+B. You do not need to prove your faith or career here; we can work from the identities, risks, and priorities that matter to you.
+C. Assertiveness may be the key skill here; focusing heavily on religion or immigration during treatment could make the problem feel larger than it is.
+D. Because financial stability is important, we should avoid options that could jeopardize employment until the legal and immigration situation becomes clearer.
+Answer: ________ Confidence: 1 2 3 4 5
+125. Which intervention plan BEST fits the current formulation?
+A. Begin interoceptive exposure and cognitive restructuring now, but postpone workplace practice until the discrimination concern has been resolved through another resource.
+B. Prioritize advocacy and career decision-making first because the anxiety should improve once Fatima has chosen whether to stay, transfer, or leave.
+C. Use CBT for panic and anticipatory anxiety, graded return to selected legitimate work tasks, coping practice, and problem-solving around realistic risks and resources.
+D. Use exposure in meetings where comments may recur, remaining until anxiety declines so Fatima learns that the workplace situation is emotionally tolerable over time.
+Answer: ________ Confidence: 1 2 3 4 5
+SECTION 3 - COURSE OF CARE
+126. Given Fatima’s progress and new information, how should the treatment plan be revised?
+A. Keep the current plan unchanged until Fatima makes a final employment decision, because changing goals now could interfere with the progress already established.
+B. End structured anxiety work because panic has improved enough that the remaining concerns now belong primarily to career counseling.
+C. Revise the plan toward residual anxiety, decision criteria, transfer or job-search actions, support use, continuity needs, and preservation of the gains already made.
+D. Prioritize internal transfer as the next treatment objective because the new legal information and financial constraints make it the least disruptive option.
+Answer: ________ Confidence: 1 2 3 4 5
+127. Which conclusion BEST describes Fatima's current level of mental health functioning?
+A. Fatima shows substantial improvement in anxiety-related work functioning and decision capacity, with residual workplace distress and uncertainty still creating meaningful strain.
+B. Fatima's functioning is intact because she remains employed and is interviewing elsewhere; residual discrimination-related distress does not indicate clinical impairment.
+C. Fatima remains substantially impaired because the employer's behavior is unresolved and her job choice remains uncertain despite reduced panic and avoidance.
+D. Mental health functioning cannot be estimated until Fatima makes an employment decision and the legal or workplace processes have concluded.
+Answer: ________ Confidence: 1 2 3 4 5
+128. What is the counselor’s MOST appropriate response to Fatima’s requested letter?
+A. Write the requested letter using Fatima’s allegations as clearly labeled client report, while stating that the workplace events are clinically consistent with causing her anxiety condition.
+B. Decline any letter because once a workplace dispute involves legal issues, all treatment documentation becomes a forensic evaluation outside the counselor’s therapeutic role.
+C. Provide a complete treatment summary or record release with authorization and allow the employer, attorney, or other recipient to draw any causation or legal conclusions.
+D. Clarify the letter’s purpose and, with authorization, provide treatment, diagnosis, and functional observations; label workplace events as client-reported and decline unsupported causation or legal conclusions.
+Answer: ________ Confidence: 1 2 3 4 5
+129. Which counseling strategy BEST helps Fatima make the employment decision without directing the outcome?
+A. Use a decision matrix for values, finances, qualified legal information, career growth, identity, health, risk, and reversibility; Fatima then chooses the next step.
+B. Rank the available career options by which one is most likely to reduce Fatima’s anxiety symptoms and recommend the highest-scoring choice to her.
+C. Recommend an internal transfer as a compromise because it preserves income while reducing contact with the manager connected to the comments for now.
+D. Delay major career decisions until panic symptoms are in remission so anxiety does not distort Fatima’s judgment about employment options or long-term goals.
+Answer: ________ Confidence: 1 2 3 4 5
+130. Which termination discussion is MOST appropriate?
+A. Continue counseling until Fatima's employment situation is fully settled because ending during an unresolved transition would create unnecessary recurrence risk.
+B. End at the next session if Fatima reports no recent panic attacks, leaving career and legal resources available outside counseling if needed.
+C. Review goals, response, feelings about ending, residual risks, supports, care continuity, and how Fatima can re-enter counseling if needs recur.
+D. Transfer Fatima to a career-focused counselor before ending because an unresolved employment transition makes ordinary termination clinically premature.
+Answer: ________ Confidence: 1 2 3 4 5
+
+CASE 11: Tasha G.
+SECTION 1 - INITIAL PRESENTATION
+131. Which approach BEST represents an appropriate mental status examination?
+A. Assess mood, sleep, speech, spending, and business judgment in detail, then defer orientation and perception because no psychotic symptoms are reported.
+B. Assess appearance, behavior, psychomotor activity, speech, orientation, attention, thought process and content, perception, insight, judgment, and departure from baseline.
+C. Compare Tasha's behavior with partner-reported baseline, emphasizing sleep, activity, and decision-making while leaving formal mental-status findings to the psychiatric evaluator.
+D. Use a brief cognitive screen, observe attention and speech, and treat intact orientation as evidence that current judgment is likely preserved.
+Answer: ________ Confidence: 1 2 3 4 5
+132. Which substance and medication inquiry would provide the MOST useful diagnostic information?
+A. Ask Tasha to stop cannabis for several days and compare symptoms before clarifying stimulant dose because cannabis can affect sleep and cognition.
+B. Focus primarily on stimulant misuse because it is more directly relevant to activation, leaving stable nightly cannabis use for later assessment.
+C. Review pharmacy records and prescriber notes first, then determine whether the stimulant exposure is sufficient to explain Tasha's behavioral change.
+D. Clarify prescribed versus actual stimulant use, dose-change timing, cannabis and other substances, intended effects, consequences, tolerance, and relation to activation.
+Answer: ________ Confidence: 1 2 3 4 5
+133. Which assessment BEST determines whether Tasha's current level of mental health functioning is impaired?
+A. Focus on financial losses and impulsive travel plans, because those consequences provide a more objective functional measure than mood or productivity changes.
+B. Use the number of ventures launched and hours worked as primary indicators, because preserved productivity would argue against substantial functional impairment.
+C. Compare Tasha's self-report with her partner's observations and consider functioning intact when both agree she is completing essential daily responsibilities.
+D. Evaluate spending, contracts, driving, sleep, follow-through, relationships, occupational consequences, and ability to reconsider decisions compared with Tasha's usual functioning.
+Answer: ________ Confidence: 1 2 3 4 5
+134. Which immediate disposition is MOST proportionate to the information currently available?
+A. Arrange same-day psychiatric evaluation with safe transportation, recommend no driving, travel, or major commitments pending assessment, and coordinate with prescriber and support.
+B. Recommend voluntary psychiatric hospitalization now because markedly reduced sleep, overspending, and risky travel show that outpatient treatment cannot safely contain the episode.
+C. Arrange prescriber contact within forty-eight hours, ask Tasha's partner to monitor sleep and spending, and continue frequent outpatient counseling until evaluation.
+D. Initiate involuntary emergency evaluation because impaired judgment, overspending, and planned cross-country travel establish inability to participate safely in voluntary care.
+Answer: ________ Confidence: 1 2 3 4 5
+SECTION 2 - ADDITIONAL INFORMATION
+135. Which provisional formulation is BEST supported by the longitudinal evidence?
+A. Bipolar I disorder, current manic episode, with stimulant misuse as a possible exacerbating factor rather than the sole explanation for the episode.
+B. Substance/medication-induced bipolar and related disorder, because stimulant overuse occurred during the episode and stimulants can produce manic symptoms in susceptible individuals.
+C. Bipolar II disorder, current hypomanic episode, because Tasha remains oriented, has no psychosis, and continues managing basic responsibilities despite substantial activation.
+D. ADHD with stimulant misuse and sleep deprivation, because distractibility, rapid activity, impulsive projects, and reduced sleep can intensify when stimulant dosing increases.
+Answer: ________ Confidence: 1 2 3 4 5
+136. Which collaboration plan is MOST appropriate at this point?
+A. Ask Tasha's partner to contact the prescriber because collateral information is more reliable during mania, while the counselor focuses on maintaining Tasha's alliance.
+B. Tell the prescriber the stimulant likely caused the episode and recommend stopping it immediately, while asking the partner to monitor Tasha until symptoms resolve.
+C. With Tasha's permission, share the symptom timeline, MSE findings, actual stimulant and cannabis use, functional risks, and collateral information with the evaluator and prescriber.
+D. Wait for the psychiatric evaluator to request records before communicating, because proactive coordination could influence the evaluator's independent diagnostic judgment and treatment planning.
+Answer: ________ Confidence: 1 2 3 4 5
+137. Tasha says, “I'm scared everyone will start calling my ambition an illness.” Which response BEST demonstrates empathic attunement?
+A. Your ambition is not the problem. The issue is the manic episode, and we can learn to separate the two once your mood stabilizes.
+B. It sounds frightening that concern about your mood feels like people are dismissing the ambition you value. Can we compare this with your usual drive?
+C. Many entrepreneurs sleep less and take risks when building something new, so we should be careful not to pathologize traits that may help you succeed.
+D. The spending and sleep changes show this is more than ordinary ambition. Understanding that difference will help you protect the business goals that matter.
+Answer: ________ Confidence: 1 2 3 4 5
+138. Which inquiry BEST addresses cultural and contextual considerations in Tasha's presentation?
+A. Explore how gender, entrepreneurship culture, family expectations, stigma, and prior mental-health experiences shape Tasha's understanding of productivity and treatment without assuming causation.
+B. Explore whether gender bias in entrepreneurship explains why others view Tasha as unstable, then use advocacy to prevent confident behavior from being pathologized.
+C. Keep cultural issues separate from diagnosis until the acute episode resolves, because identity-based interpretations could bias assessment of objective manic symptoms.
+D. Ask Tasha's family what level of work intensity and confidence is typical in their culture, then use that information to establish her premorbid baseline.
+Answer: ________ Confidence: 1 2 3 4 5
+139. Which temporary strategy BEST protects Tasha's decision-making while preserving as much autonomy as possible?
+A. Ask Tasha to give her partner temporary control of business accounts, credit cards, travel bookings, and contracts until the psychiatric team determines the episode has resolved.
+B. Have Tasha continue business activity while using a daily mood tracker and postponing major decisions only after nights when she sleeps less than four hours.
+C. Freeze all new ventures and travel until psychiatric clearance, while allowing routine business tasks that do not involve spending, contracts, or public commitments.
+D. Collaboratively choose temporary safeguards such as delaying major commitments, trusted review of high-impact decisions, safer transportation, sleep protection, and clear escalation steps.
+Answer: ________ Confidence: 1 2 3 4 5
+SECTION 3 - COURSE OF CARE
+140. Which pre/post measurement approach would provide the STRONGEST evidence of change after Tasha's acute episode?
+A. Compare medication adherence and sleep with the acute episode baseline, adding broader mood and functioning measures only if either begins to worsen again.
+B. Use partner ratings and financial records before and after stabilization because those provide the most objective evidence of change in judgment and functioning.
+C. Repeat the same mood or activation and functioning measures at planned intervals, comparing with baseline plus sleep, spending, commitments, substance use, depression, and judgment.
+D. Shift to ADHD measures after mood stabilization and use psychiatric progress notes for bipolar outcomes so counseling measurement remains focused on Tasha's ongoing diagnosis.
+Answer: ________ Confidence: 1 2 3 4 5
+141. Which treatment-plan revision BEST fits Tasha's current course?
+A. Revise the plan around recurrence prevention, shame and financial repair, ADHD reassessment with prescribers, and distinguishing healthy ambition from episode-related change.
+B. Return to ADHD-focused counseling because acute mood activation has resolved, while using psychiatric follow-up only if another clear manic episode develops.
+C. Shift counseling toward rebuilding finances and business confidence, leaving bipolar recurrence management and ADHD decisions primarily to the psychiatric treatment team.
+D. Advise Tasha to avoid launching new businesses for six months while she learns which levels of energy and confidence are safe outside acute treatment.
+Answer: ________ Confidence: 1 2 3 4 5
+142. Which documentation BEST supports continuity and review of Tasha's acute episode?
+A. Document reported and observed activation, MSE and risk findings, stimulant use, disposition and handoff, while recording stimulant-induced mania as the likely cause of the episode.
+B. Document reported versus observed data, baseline change, MSE and risk findings, medication or substance chronology, authorization, disposition, handoff, rationale, and follow-up.
+C. Document clinical findings, risk, medication and substance use, disposition, and follow-up, but omit partner collateral because the psychiatric evaluator also received it.
+D. Document the full chronology, MSE, risk, coordination, handoff, and follow-up, but record only the final bipolar diagnosis rather than the initial diagnostic uncertainty.
+Answer: ________ Confidence: 1 2 3 4 5
+143. Which maintenance plan BEST protects Tasha's recovery without defining normal ambition as pathology?
+A. Link Tasha's personal early warning signs to sleep protection, prescriber contact, substance-related steps, chosen supports, decision safeguards, depression monitoring, and urgent reevaluation thresholds.
+B. Focus the maintenance plan on medication adherence and regular sleep because these are the most modifiable predictors of another manic episode.
+C. Ask Tasha to avoid unusually ambitious projects and major investments for the next year so normal business stress does not resemble recurrence.
+D. Have Tasha's partner permanently monitor finances and sleep, with immediate prescriber contact whenever Tasha sleeps less than six hours for two consecutive nights.
+Answer: ________ Confidence: 1 2 3 4 5
+
+Form B Completion Record
+Record the testing conditions and your subjective experience before opening the controlled rationales. This helps distinguish content gaps from pacing, fatigue, confidence, or question-reading errors.
+Date completed: ______________________________________________________________________
+Total testing time: ______________________________________________________________________
+Break duration: ______________________________________________________________________
+Unanswered items: ______________________________________________________________________
+Cases with the lowest confidence: ______________________________________________________________________
+Most common distractor pattern noticed: ______________________________________________________________________
+Candidates remain responsible for reviewing the current NBCC NCMHCE candidate materials and any applicable California BBS LPCC examination requirements before scheduling or testing.

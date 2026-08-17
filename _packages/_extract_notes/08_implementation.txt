@@ -1,0 +1,291 @@
+﻿
+DAVID WEBSITE RELEASE PACKAGE
+CTA LCSW ASWB Clinical Exam Preparation Program
+For ASWs, LCSW candidates, and other eligible ASWB Clinical examinees
+WEBSITE COPY • PRODUCT CONFIGURATION • RELEASE CONTROLS
+Version 1.0 • August 3, 2026
+INTERNAL WEBSITE AND LMS IMPLEMENTATION RESOURCE
+Teaching Clinicians How to Think.
+
+CONTENTS
+1. Release Decision and Program Identity
+2. Current Examination Structure
+3. Program Architecture
+4. Website Sales-Page Copy
+5. How the Program Works
+6. Website Product Configuration
+7. David Implementation Instructions
+8. Release Inventory and File Controls
+9. Same-Day Launch Checklist
+10. Source Basis and Currency Control
+CONTROLLING RELEASE STATUSThe July 25, 2026 Master Program Index and Final Release Audit controls release status. The July 23 master QC report is retained as a historical remediation record and should not be used to place either program back on hold after the later final audit documented zero blocking file-integrity defects.
+
+
+Release Decision and Program Identity
+RELEASE STATUSWEBSITE-READY • CORE CURRICULUM PACKAGE COMPLETE • ZERO BLOCKING FILE-INTEGRITY DEFECTS
+
+Program type
+Exam Preparation ProgramStandalone profession-specific ASWB Clinical examination product.
+
+Examination
+ASWB Clinical Social Work Licensing ExaminationUsed in California and other jurisdictions that accept the ASWB Clinical exam.
+
+Target candidate
+ASWs, LCSW candidates, and other eligible ASWB Clinical examineesEligibility is determined by the applicable licensing board and ASWB, not CTA.
+
+Instructional method
+Self-paced asynchronous online programPrintable and digital study resources.
+
+Core release package
+12 workbooks • 12 paired 17-question banks • 2026 Forms A and BDetailed rationales and controlled answer review.
+
+Launch price
+$249Current CTA launch price.
+
+Access period
+6 months from enrollmentStandard standalone exam-preparation access.
+
+Continuing education
+No CE credit or CE certificateKeep outside CE evaluation and certificate workflows.
+
+Release status
+Website-ready; core curriculum completeFinal program audit reports zero blocking file-integrity defects.
+
+NAMING CONTROLUse “CTA LCSW ASWB Clinical Exam Preparation Program” publicly. This accurately identifies the national ASWB examination while allowing the page subtitle and audience copy to address California ASW/LCSW licensure candidates. Treat older “LCSW California Clinical” labels as internal naming variants.
+
+Current Examination Structure
+Field
+Approved entry
+Effective structure
+For examinations taken on or after August 3, 2026
+Total questions
+122
+Scored questions
+110
+Unscored pretest questions
+12
+Time allotted
+4 hours
+Answer format
+Mixture of three- and four-option multiple-choice questions
+Official content areas
+Values and Ethics 36%; Assessment and Planning 32%; Intervention and Practice 32%
+ACCURACY DATEASWB’s redesigned Clinical examination took effect August 3, 2026. Official ASWB sources confirm 122 total questions, 110 scored, 12 unscored, mixed three- and four-option items, and a four-hour limit.
+
+Program Architecture
+The program uses a shared clinical-reasoning foundation where appropriate, then applies an LCSW-specific values, self-determination, person-in-environment, social justice, assessment, intervention, advocacy, systems, and collaboration lens.
+Shared exam-success instruction is embedded within the LCSW program.
+All 12 LCSW workbooks retain social work–specific objectives, examples, terminology, and applied-knowledge reasoning.
+Each workbook has its own original 17-question bank with complete rationales.
+Workbook 12 includes a separate 25-question integrated mini-mock.
+2026 Forms A and B each contain 122 mixed items without workbook or chapter cues.
+Administrative item banks, use logs, and QC reports remain restricted.
+SHARED-CORE RULEShared content is a development and instructional layer inside both programs. It is not a third public product. LMFT and LCSW examples, legal/ethical framing, question banks, rationales, and comprehensive simulations remain profession-specific.
+
+
+Website Sales-Page Copy
+HERO HEADLINE
+Prepare for the ASWB Clinical Exam with a Person-in-Environment Reasoning System
+
+SUBHEADLINE
+Twelve social work–specific workbooks, focused practice banks, complete rationales, and two 122-question simulations aligned to the 2026 ASWB Clinical examination structure.
+PRIMARY CALL TO ACTION
+Begin Your Clinical Exam Preparation
+Program Description
+The CTA LCSW ASWB Clinical Exam Preparation Program is a complete self-paced system for ASWs, LCSW candidates, and other eligible examinees preparing for the ASWB Clinical Social Work Licensing Examination.
+The program teaches candidates to combine social work values, self-determination, person-in-environment assessment, clinical judgment, service planning, intervention, advocacy, and systems reasoning when several answers appear plausible.
+Content and simulations reflect the redesigned examination structure used for testing on or after August 3, 2026, including three content areas and a mixture of three- and four-option questions.
+What Candidates Will Build
+Identify FIRST, NEXT, BEST, MOST, INITIAL, and PRIMARY action cues.
+Sequence engagement, assessment, planning, intervention, evaluation, referral, and follow-up.
+Apply social work values, self-determination, social justice, and person-in-environment reasoning.
+Distinguish the best response from answers that are plausible but premature, overly restrictive, outside scope, or insufficiently collaborative.
+Use complete rationales and error logs to repair reasoning rather than memorize answer choices.
+Build pacing and stamina under the current 122-question examination structure.
+What Is Included
+12 editable and print-optimized LCSW student workbooks.
+12 paired 17-question workbook banks with 204 total practice placements and complete rationales.
+A 25-question integrated mini-mock within Workbook 12.
+2026 Comprehensive Simulation Form A — 122 questions.
+2026 Comprehensive Simulation Form B — 122 questions.
+Controlled answer keys and detailed rationales for both simulations.
+Mixed three- and four-option question practice.
+A 132-card flashcard collection, quick-reference sheets, readiness tracker, Student FAQ, August 2026 exam-day guide, and 10-, 14-, and 18-week study schedules. Recorded audio and video are not included at launch.
+WRITTEN PROGRAM COMPLETE • RECORDED MEDIA NOT INCLUDEDThe initial release includes the complete written learner system and controlled assessments. No recorded audio or video exists at launch. Unrecorded scripts and slide decks are retained only in the clearly labeled future-production folder and must not be published or advertised as completed media.
+
+How the Program Works
+Complete one LCSW workbook and its applied learning activities.
+Take the matching 17-question bank before reviewing the rationales.
+Analyze every option, record reasoning errors, and revisit weak concepts.
+Continue through all 12 workbooks using the selected study schedule.
+Use the Workbook 12 mini-mock for integrated review.
+Take 2026 Comprehensive Simulation Form A under timed, closed-book conditions.
+Complete targeted remediation using the score profile and rationales.
+Take 2026 Comprehensive Simulation Form B as the final readiness assessment.
+CTA Learning Model
+PREVIEW → LEARN → APPLY → ANALYZE → REPAIR → REVISITCandidates preview the exam task, learn structured content, apply it in original questions, analyze complete rationales, repair reasoning errors, and revisit weak areas before comprehensive simulation.
+
+Who This Program Is For
+ASWs and LCSW candidates preparing for the ASWB Clinical examination.
+Candidates in California and other jurisdictions that use the ASWB Clinical exam.
+Candidates who need person-in-environment and applied social work reasoning rather than isolated recall.
+Working professionals who need a self-paced, printable, asynchronous study system.
+What This Program Is Not
+It is not continuing education and does not provide CE credit or a CE certificate.
+It does not determine examination eligibility, licensure, employment, or certification.
+It does not reproduce live, recalled, copied, or unauthorized licensing-examination questions.
+It does not guarantee passage and is not affiliated with or endorsed by the licensing board or testing organization.
+
+Website Product Configuration
+Field
+Approved entry
+Public product title
+CTA LCSW ASWB Clinical Exam Preparation Program
+Product category
+Exam Preparation > Clinical Examination
+Status
+Available / Launch
+Launch price
+$249
+Access period
+6 months from enrollment
+Instructional method
+Self-paced asynchronous online program with printable resources
+CE classification
+Exam Preparation Only | No CE Credit
+Primary button
+Begin Your Clinical Exam Preparation
+URL slug
+lcsw-aswb-clinical-exam-preparation
+SEO title
+LCSW ASWB Clinical Exam Prep | CTA
+Meta description
+Prepare for the 2026 ASWB Clinical exam with 12 workbooks, 204 focused practice questions, complete rationales, a 25-question mini-mock, and two 122-question simulations.
+Page badge
+Exam Preparation • No CE Credit
+Image alt text
+Clinical Training and Supervision Academy LCSW ASWB Clinical Exam Preparation Program graphic
+Required Notices
+Exam Preparation Only — No CE Credit.
+CTA is an independent educational resource and is not affiliated with or endorsed by ASWB, Pearson VUE, or any state licensing board.
+Participation supports examination readiness but does not guarantee passage or determine eligibility.
+Candidates should follow the blueprint and rules that apply to their actual testing date and jurisdiction.
+Frequently Asked Questions
+Does this program provide continuing education credit?
+No. It is an examination-preparation program and does not provide CE hours or a CE certificate.
+Is this program only for California candidates?
+The program is designed around the national ASWB Clinical exam and is appropriate for eligible candidates in jurisdictions using that examination. California ASW/LCSW candidates are a primary audience.
+Does it reflect the August 2026 ASWB changes?
+Yes. The controlling structure uses 122 total questions, 110 scored, 12 unscored, three content areas, mixed three- and four-option questions, and a four-hour limit.
+How many full simulations are included?
+Two separate 122-question forms are included. Simulation rationales remain controlled until the associated form is submitted.
+Are the materials printable?
+Yes. The program is designed for online study and printable use.
+Does CTA guarantee that I will pass?
+No. CTA supports preparation and professional reasoning but cannot guarantee passage or determine exam eligibility.
+
+David Implementation Instructions
+TWO SEPARATE PRODUCT PAGESCreate one LMFT product page and one LCSW ASWB product page. Do not create or sell a third “shared LMFT/LCSW” program. Shared lessons are an internal production layer and should appear inside each profession-specific program.
+
+Use the exact public title, price, access period, examination name, and no-CE classification shown in this package.
+Keep the programs outside CTA CE-only memberships unless a later approved bundle specifically includes them.
+Use approved CTA branding and preserve the logo’s original proportions and white space.
+Do not place workbooks, question banks, simulation forms, answer keys, administrative item banks, QC reports, or production standards on a public webpage.
+Within the LMS, release each 17-question workbook bank after the matching workbook. The bank contains rationales and is a learning resource, not a closed-book summative exam.
+Keep comprehensive Form A and Form B answer keys and detailed rationales hidden until the associated form is submitted.
+Place administrative item banks, use logs, blueprint/QC reports, and production standards in a restricted administrator folder only.
+Move older 50-question workbook-exam drafts and legacy mock files to a clearly labeled nonpublishing archive.
+Complete a desktop, tablet, mobile, checkout, enrollment, download, score, completion, and student-role preview before making the page publicly available.
+Recommended LMS Folder Structure
+LCSW_ASWB_Clinical_Exam_Preparation/  00_Start_Here/  01_Workbooks/WB01 ... WB12/  02_Workbook_Question_Banks/WB01 ... WB12/  03_Comprehensive_Simulations/Form_A and Form_B/  90_Instructor_Admin_Restricted/  99_Archive_Superseded_Do_Not_Publish/
+
+
+Release Inventory and File Controls
+Field
+Approved entry
+Student workbooks
+12 — Ready
+Paired workbook question banks
+12 — Ready; 17 items each; 204 total placements
+Comprehensive student forms
+2 — Ready
+Comprehensive item placements
+244 — 122 per form
+Answer-key/rationale files
+2 — Controlled student release
+Administrative item banks
+2 — Internal only
+Blueprint/QC reports
+2 — Internal only
+Blocking file-integrity defects
+0 — Pass
+Files Included in This Complete Release Package
+This complete LMS and website release package, the package file manifest, and the SHA-256 verification manifest.
+All current learner-facing workbooks, banks, simulations, flashcards, quick references, schedules, trackers, FAQ, and implementation assets.
+The public program description, price, access period, FAQs, disclaimers, call-to-action text, and current ASWB test-day guidance.
+Controlled simulation rationales and administrative records are included in restricted folders. Unrecorded scripts and decks are included only in a clearly labeled future-production folder and must not be published.
+Files That Must Remain Restricted
+Administrative master item banks and use logs.
+Blueprint and quality-control reports.
+Simulation answer keys before form submission.
+Production standards, internal crosswalks, audit evidence files, and superseded drafts.
+Any file containing development notes, internal source paths, or protected unused items.
+Controlling Release Files
+CTA_LCSW_Master_Program_Index_and_Final_Release_Audit_v1.0.docx
+CTA_LCSW_WB7_17_Question_Bank_v1.0.docx
+CTA_LMFT_LCSW_Question_Bank_and_Comprehensive_Exam_Production_Standard_v1.1.docx
+CTA_LCSW_ASWB_Clinical_David_Complete_Release_File_Manifest_v1.0.csv
+CTA_LMFT_LCSW_Shared_Content_Dual_Development_Crosswalk_v1.3.xlsx
+
+Same-Day Launch Checklist
+Done
+Launch action
+☐
+Create the correct separate product page and use the exact public title.
+☐
+Enter the $249 launch price and six-month access period.
+☐
+Add the Exam Preparation • No CE Credit badge and notices.
+☐
+Load the approved website description, inclusions, FAQs, SEO title, and meta description.
+☐
+Use an approved CTA image and accessible alt text.
+☐
+Configure checkout, enrollment, access expiration, and protected downloads.
+☐
+Upload only current v1.0 files listed in the release manifest.
+☐
+Keep simulation keys and all administrative files restricted.
+☐
+Move superseded and legacy files to the nonpublishing archive.
+☐
+Run a student-role test on desktop and mobile.
+☐
+Confirm the website clearly states that recorded audio and video are not included at launch.
+☐
+Obtain final administrator approval and record the launch date.
+Final Sign-Off
+Field
+Approved entry
+Program administrator
+______________________________
+Approval date
+______________________________
+Website/LMS reviewer
+______________________________
+Launch date
+______________________________
+
+Source Basis and Currency Control
+Official sources rechecked August 3, 2026
+ASWB 2026 Exam ChangesControls the effective date, total item count, unscored count, mixed option format, and time limit.https://www.aswb.org/2026exams/
+ASWB Examination Guidebook — August 2026 edition. Controls the Clinical content outline, question framework, section and break rules, and current test-center procedures for examinations administered beginning August 3, 2026.
+Internal Sources
+CTA LCSW Master Program Index and Final Release Audit v1.0 — July 25, 2026.
+CTA LCSW Workbook 7 17-Question Bank v1.0 — July 2026.
+CTA LMFT/LCSW Question Bank and Comprehensive Exam Production Standard v1.1 — July 25, 2026.
+CTA LMFT/LCSW Shared Content and Dual-Development Crosswalk v1.3 — August 3, 2026.
+CTA Master Pricing, Subscription & Bundle Catalog v3.1 — $249 clinical-program launch price.
+MAINTENANCE TRIGGERRecheck official BBS/Pearson and ASWB candidate information before every major republication, after examination-format changes, and before any claim about question count, timing, scoring, or content weights.
+
+Prepared for same-day website and LMS implementation • August 3, 2026

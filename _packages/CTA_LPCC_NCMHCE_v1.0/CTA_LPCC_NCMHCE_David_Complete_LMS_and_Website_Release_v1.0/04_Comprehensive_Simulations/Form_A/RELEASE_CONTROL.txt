@@ -1,0 +1,1 @@
+Release only after all workbook cycles and Checkpoint 3 are complete. Keep the rationale file hidden until full form submission.

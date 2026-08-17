@@ -1,0 +1,19 @@
+Subject: CTA LCSW ASWB Clinical Exam Preparation — Complete LMS and Website Release Package
+
+Hi David,
+
+Attached is the initial complete LMS and website release package for the CTA LCSW ASWB Clinical Exam Preparation Program.
+
+The package includes all 12 student workbooks, all 12 paired 17-question banks, the Workbook 12 mini-mock, 122-question Comprehensive Simulation Forms A and B, controlled detailed rationales, the 132-card flashcard collection, quick-reference resources, the student roadmap and schedules, readiness tracker, Student FAQ, and the August 2026 ASWB exam-day guide.
+
+Please begin with the 00_Start_Here folder and the website/LMS implementation document in folder 08. Files in 90_Admin_Restricted and 99_Archive_Superseded_Do_Not_Publish must never be student-visible. Keep each simulation rationale file hidden until the corresponding form is submitted.
+
+There are no recorded audio or video files at launch. Folder 06 contains unrecorded scripts and slide decks for future production only and should not be published or advertised.
+
+Public product title: CTA LCSW ASWB Clinical Exam Preparation Program
+Launch price: $249
+Access period: 6 months from enrollment
+Classification: Exam Preparation Only — No CE Credit
+
+Thank you,
+Candice

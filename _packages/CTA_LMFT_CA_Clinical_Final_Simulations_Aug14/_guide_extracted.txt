@@ -1,0 +1,142 @@
+﻿
+DAVID FINAL SIMULATIONIMPLEMENTATION GUIDE
+CTA LMFT California Clinical Exam Preparation Program
+Replacement control for Comprehensive Simulation Form A and Form B
+Version 1.1 | August 14, 2026
+RELEASE STATUS
+APPROVED FOR CTA INTERNAL IMPLEMENTATION AND LEARNER SIMULATION DELIVERY. The final system contains 300 unique learner-facing items: Form A = 150 and Form B = 150. Source recovery is closed.
+
+Field
+Approved implementation
+Implementation scope
+Replace the existing California LMFT Clinical comprehensive Form A and Form B simulations and their answer/rationale mappings only.
+Public product title
+CTA LMFT California Clinical Exam Preparation Program
+Program classification
+Exam Preparation Only | No CE Credit
+Launch price
+$249
+Access period
+6 months from enrollment
+Form architecture
+150 questions per form | 125 scored/core + 25 unidentified calibration-style | four options A-D
+Simulation time
+240 minutes per form
+
+DO NOT REOPEN THE COURSE
+This handoff does not restart the curriculum, source recovery, or item rebuild. Do not substitute older July simulation files, legacy administrative banks, or prior learner-facing forms.
+
+1. Exact Files David Must Implement
+Use the following August 14 final simulation files as the implementation source of truth. Do not rename inside the LMS in a way that makes version control ambiguous, and do not replace their question text with older forms.
+File
+Role
+Release / visibility
+CTA_LMFT_CA_Clinical_Exam_Prep_Final_Form_A_v1.0.docx
+Learner-facing Form A
+Visible as the Form A assessment; questions/options only.
+CTA_LMFT_CA_Clinical_Exam_Prep_Final_Form_B_v1.0.docx
+Learner-facing Form B
+Visible only at the appropriate later program stage; questions/options only.
+CTA_LMFT_CA_Clinical_Exam_Prep_Final_Admin_Key_Rationales_v1.0.docx
+Administrator key + rationales
+Restricted. Use for key mapping, scored/core status, calibration status, and post-submission rationale display.
+
+IMPORTANT V1.1 PROVENANCE CORRECTION
+The administrator key was generated before the final source-control reconciliation and its first-page provenance note still says 261 preserved / 39 successors. The controlling final provenance is 270 preserved / 30 controlled successors. This is an internal provenance correction only: it does not change any learner-facing stem, option, answer key, rationale, sequence, or LMS scoring behavior.
+
+2. What Must Be Replaced
+â€¢  Remove the currently implemented/legacy California LMFT Clinical comprehensive Form A and Form B from learner access.
+â€¢  Archive the old forms and old answer mappings in a restricted nonpublishing archive; do not delete them if CTA needs historical records.
+â€¢  Import the August 14 final Form A and Form B exactly as sequenced.
+â€¢  Rebuild the answer-key mapping from the final administrator key, not from any July 2026 key or earlier administrative item bank.
+â€¢  Keep the existing 12 workbooks and 12 workbook-specific 17-question banks outside this replacement task unless CTA separately supplies corrections.
+â€¢  Do not rewrite, shorten, reorder, or otherwise alter stems or answer choices. Harmless web wrapping is fine; substantive learner-facing changes must return to CTA for item-level QA.
+3. LMS Assessment Configuration
+Field
+Approved implementation
+Assessment titles
+Comprehensive Simulation - Form A | Comprehensive Simulation - Form B
+Question count
+150 on Form A; 150 on Form B.
+Answer format
+Exactly four answer choices, A-D, with one controlled best answer.
+Time limit
+240 minutes per form.
+Question order
+Fixed. Preserve the final sequence; disable question randomization.
+Choice order
+Fixed. Preserve A-D option order; disable answer-choice randomization.
+Calibration visibility
+Never identify the 25 calibration-style items to the learner.
+Pre-submit answers
+Do not reveal correctness, keys, or rationales before final submission.
+Post-submit review
+Release the controlled answer and detailed rationales only after the learner submits that form.
+CE workflow
+None. Do not connect these simulations to CE evaluation, attestation, CE hours, or CE certificate logic.
+
+4. Scoring Configuration
+CTA PRACTICE SCORE
+DISPLAYED CTA SCORE = number correct on the 125 core/scored-style items Ã· 125 Ã— 100. The 25 calibration-style items are completed by the learner but excluded from the CTA scored-style percentage.
+
+â€¢  All 150 questions remain required/answerable for realistic simulation practice.
+â€¢  The learner must not be told which 25 items are calibration-style.
+â€¢  Calibration-style responses may receive instructional feedback after submission, but they must not change the displayed CTA scored-style percentage.
+â€¢  Do not convert the CTA percentage into an â€œofficialâ€ BBS/Pearson score or guarantee of passing.
+â€¢  If the LMS currently calculates all 150 items automatically, configure a custom scored subset or equivalent hidden weighting so only the 125 core items determine the displayed practice percentage.
+5. Form Release Sequence
+1.  Learner completes the core LMFT curriculum and workbook practice sequence.
+2.  Form A becomes available as a timed, closed-book full simulation.
+3.  After Form A submission, the learner may review the controlled key/rationales and complete targeted remediation.
+4.  Form B becomes available after the Form A/remediation stage and serves as the later readiness simulation.
+5.  After Form B submission, the learner may review the controlled key/rationales for Form B.
+6. Learner Visibility and Security Controls
+The learner should see the simulation content and the appropriate post-submission feedback. Internal production metadata must remain restricted.
+Field
+Approved implementation
+Learner may see
+Form title; instructions; 150 stems; A-D choices; timer; navigation; submission confirmation; permitted post-submit answer/rationale review.
+Learner must NOT see
+Internal item IDs; T/K blueprint metadata; â€œcore,â€ â€œscored-style,â€ â€œcalibration,â€ or â€œpretestâ€ labels; source-status/provenance fields; psychometric QA; second-key records; source paths; development notes.
+Restricted admin only
+Final administrator key/rationales; source-control records; reconstruction register; Stage 9B/9C audits; production standards; archived/unused items.
+
+7. Public Page Controls
+PUBLIC CONTROLS UNCHANGED
+Keep the approved public title, $249 launch price, six-month access, Exam Preparation Only / No CE Credit classification, independent-resource disclaimer, and no-guarantee language. Public materials may state that two separate 150-question simulations are included.
+
+8. Mandatory Implementation Acceptance Test
+Do not mark this website item verified merely because the files were uploaded. CTA should verify the learner-facing behavior after David reports implementation complete.
+â˜  Form A displays exactly 150 questions.
+â˜  Form B displays exactly 150 questions.
+â˜  Every question displays exactly four options in the final A-D order.
+â˜  Question sequence matches the final learner source files; question randomization is off.
+â˜  Answer-choice randomization is off.
+â˜  All 300 LMS answer mappings match the final administrator key (150/150 per form).
+â˜  The timer is 240 minutes on each form.
+â˜  The 25 calibration-style items on each form are present but unlabeled.
+â˜  The displayed CTA score uses only the 125 core/scored-style items as the denominator.
+â˜  A controlled test confirms that changing only calibration-style responses does not change the displayed scored-style percentage.
+â˜  No correctness, key, or rationale is visible before final submission.
+â˜  After submission, the correct answer and the corresponding controlled rationales are available only in the intended review state.
+â˜  No internal item IDs, task/knowledge metadata, core/calibration labels, source status, or audit data are learner-visible.
+â˜  The administrator key and internal files cannot be reached through student navigation or an unprotected direct link.
+â˜  Form B remains unavailable until the intended Form A/remediation release point.
+â˜  No CE evaluation, CE hours, CE attestation, or CE certificate is triggered by either simulation.
+â˜  Desktop and mobile views show complete stems/options without clipping, overlap, or unreadable text.
+â˜  Old/legacy Form A and Form B are no longer learner-accessible and are stored only in the nonpublishing archive.
+9. Final Sign-Off
+Control
+Sign-off
+Developer reports implementation complete
+______________________________   Date: __________
+CTA learner-role retest complete
+______________________________   Date: __________
+Form A verified
+â˜ Yes   â˜ No
+Form B verified
+â˜ Yes   â˜ No
+Final website/LMS status
+â˜ VERIFIED CLOSED   â˜ CORRECTIONS REQUIRED
+
+

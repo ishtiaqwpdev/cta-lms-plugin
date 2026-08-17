@@ -1,0 +1,38 @@
+PACKAGE VERIFICATION SUMMARY
+
+Package wrapper version: 1.0 — initial complete delivery
+Total files inside package: 132
+Manifested files with SHA-256 hashes: 131
+
+Current learner-facing core:
+• Student workbooks: 12
+• Workbook question banks: 12
+• Comprehensive student forms: 2
+• Controlled comprehensive rationale files: 2
+• Flashcard collections: 1
+• Quick-reference collections: 1
+• Readiness/progress tools: 1
+• Roadmap/study-schedule resources: 1
+• Student FAQ/support guides: 1
+
+Restricted simulation-control records:
+• Form A Administrative Master Item Bank and Use Log: Included
+• Form B Administrative Master Item Bank and Use Log: Included
+• Form A Blueprint and QC Report: Included
+• Form B Blueprint and QC Report: Included
+• Master Question Bank Inventory: Included
+
+Unrecorded production assets:
+• Shared strategy scripts: 8
+• Shared strategy decks: 8
+• LMFT strategy scripts: 7
+• LMFT strategy decks: 7
+• Workbook companion scripts: 12
+• Workbook companion decks: 12
+• Audio-review recording script collections: 1
+• Actual recorded audio/video files: 0
+
+Office-file package integrity check: PASS
+Expected current workbook/question-bank counts: PASS
+Administrative item-bank completeness: PASS
+Known missing internal-only artifacts: None identified in the indexed Form A/Form B controls

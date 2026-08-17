@@ -1,0 +1,14 @@
+INITIAL RELEASE VERIFICATION SUMMARY
+
+Package: CTA_LCSW_ASWB_Clinical_David_Complete_LMS_and_Website_Release_v1.0
+Total files: 123
+Office files validated: 107
+Student workbooks: 12
+Workbook question banks: 12
+Comprehensive student forms: 2 (122 questions each)
+Controlled comprehensive rationale files: 2
+Administrative item banks: 2
+Flashcards: 132 cards
+Recorded audio/video files: 0
+ASWB source control: August 2026 guidebook, effective August 3, 2026
+Package status: Initial complete LMS and website release; ready for implementation subject to David's student-role LMS preview.

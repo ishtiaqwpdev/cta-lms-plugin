@@ -1,0 +1,14 @@
+Subject: CTA LMFT California Clinical Exam Preparation — Complete LMS and Website Package
+
+Hi David,
+
+Attached is the complete initial LMS and website release package for the CTA LMFT California Clinical Exam Preparation Program.
+
+The package includes all 12 student workbooks, all 12 paired question banks, Comprehensive Simulation Forms A and B, controlled simulation rationales, flashcards, quick-reference materials, study schedules, readiness tools, student support resources, website copy, implementation controls, and the complete restricted Form A and Form B administrative item-bank records.
+
+Important: there are no recorded audio or video files at this time. Please do not advertise multimedia, video lessons, MP3s, or recorded audio review at launch. The scripts and PowerPoint decks in folder 06 are future production assets only and must not be student-visible.
+
+Please begin with 00_Start_Here/README_FIRST.txt. Keep folders 90 and 99 restricted, and keep each simulation rationale file hidden until the associated form is submitted.
+
+Thank you,
+Candice

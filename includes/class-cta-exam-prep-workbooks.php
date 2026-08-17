@@ -102,6 +102,28 @@ class CTA_Exam_Prep_Workbooks {
 	}
 
 	/**
+	 * Workbook Practice Banks are teaching/remediation tools, not pass/fail exams.
+	 *
+	 * Approved LMS rule: the 17-question bank is a learning resource with
+	 * post-submit rationales — not a summative exam with a passing threshold.
+	 *
+	 * @param object|null $quiz Quiz row.
+	 * @return bool
+	 */
+	public static function is_formative_practice_bank( $quiz ) {
+		return self::is_workbook_quiz( $quiz );
+	}
+
+	/**
+	 * Post-submit guidance for a workbook Practice Bank (from approved workbook copy).
+	 *
+	 * @return string
+	 */
+	public static function formative_practice_bank_guidance() {
+		return __( 'This Practice Bank is a learning resource, not a pass/fail exam. Review the rationales for missed questions. Use your error pattern to decide whether to remediate this workbook before moving forward.', 'cta-lms' );
+	}
+
+	/**
 	 * Whether a quiz is a cumulative checkpoint / topic bank.
 	 *
 	 * @param object|null $quiz Quiz row.
@@ -242,6 +264,197 @@ class CTA_Exam_Prep_Workbooks {
 		}
 
 		return 0;
+	}
+
+	/**
+	 * Find the instructional module that matches a workbook Practice Bank.
+	 *
+	 * @param int         $course_id Course ID.
+	 * @param object|null $quiz      Quiz row.
+	 * @return object|null Module row.
+	 */
+	public static function find_matching_workbook_module( $course_id, $quiz ) {
+		$course_id = absint( $course_id );
+		$wb_num    = self::workbook_number_from_quiz( $quiz );
+		if ( ! $course_id || $wb_num < 1 || ! class_exists( 'CTA_Database' ) ) {
+			return null;
+		}
+
+		$modules = CTA_Database::get_course_modules( $course_id );
+		foreach ( (array) $modules as $module ) {
+			$mod_num = class_exists( 'CTA_Exam_Prep_Lessons' )
+				? CTA_Exam_Prep_Lessons::workbook_number_from_module( $module )
+				: 0;
+			if ( $mod_num === $wb_num ) {
+				return $module;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Completed module IDs from an enrollment row.
+	 *
+	 * @param object|null $enrollment Enrollment row.
+	 * @return int[]
+	 */
+	public static function completed_module_ids_from_enrollment( $enrollment ) {
+		if ( ! $enrollment || empty( $enrollment->modules_completed ) ) {
+			return array();
+		}
+
+		$decoded = json_decode( (string) $enrollment->modules_completed, true );
+		if ( ! is_array( $decoded ) ) {
+			return array();
+		}
+
+		return array_values( array_filter( array_map( 'absint', $decoded ) ) );
+	}
+
+	/**
+	 * Whether the learner completed the instructional workbook paired to this Practice Bank.
+	 *
+	 * @param int         $user_id    User ID.
+	 * @param int         $course_id  Course ID.
+	 * @param object|null $quiz       Quiz row.
+	 * @param object|null $enrollment Optional enrollment row.
+	 * @return bool
+	 */
+	public static function user_completed_matching_workbook( $user_id, $course_id, $quiz, $enrollment = null ) {
+		$user_id   = absint( $user_id );
+		$course_id = absint( $course_id );
+		if ( ! $user_id || ! $course_id || ! self::is_workbook_quiz( $quiz ) ) {
+			return false;
+		}
+
+		$module = self::find_matching_workbook_module( $course_id, $quiz );
+		if ( ! $module ) {
+			return false;
+		}
+
+		if ( null === $enrollment && class_exists( 'CTA_Database' ) ) {
+			$enrollment = CTA_Database::get_user_enrollment( $user_id, $course_id );
+		}
+
+		$completed = self::completed_module_ids_from_enrollment( $enrollment );
+
+		return in_array( (int) $module->id, $completed, true );
+	}
+
+	/**
+	 * Lock copy when a workbook Practice Bank waits on its matching workbook.
+	 *
+	 * @param object|null $quiz Quiz row.
+	 * @return string
+	 */
+	public static function workbook_practice_bank_lock_message( $quiz ) {
+		$wb = self::workbook_number_from_quiz( $quiz );
+		if ( $wb > 0 ) {
+			return sprintf(
+				/* translators: %d: workbook number */
+				__( 'Complete Workbook %d before starting this Practice Bank. Your progress is saved, and the Practice Bank will unlock automatically when that workbook is marked complete.', 'cta-lms' ),
+				$wb
+			);
+		}
+
+		return __( 'Complete this workbook before starting its Practice Bank.', 'cta-lms' );
+	}
+
+	/**
+	 * Short locked-button label for a workbook Practice Bank.
+	 *
+	 * @param object|null $quiz Quiz row.
+	 * @return string
+	 */
+	public static function workbook_practice_bank_lock_button_label( $quiz ) {
+		$wb = self::workbook_number_from_quiz( $quiz );
+		if ( $wb > 0 ) {
+			return sprintf(
+				/* translators: %d: workbook number */
+				__( 'Complete Workbook %d to Unlock', 'cta-lms' ),
+				$wb
+			);
+		}
+
+		return __( 'Complete Workbook to Unlock', 'cta-lms' );
+	}
+
+	/**
+	 * Assert Start/Retry access for a workbook-scoped Practice Bank.
+	 *
+	 * Program-level assessments (Form A/B, checkpoints) still use full-curriculum gates elsewhere.
+	 *
+	 * @param int         $user_id    User ID.
+	 * @param object|null $course     Course row.
+	 * @param object|null $quiz       Quiz row.
+	 * @param object|null $enrollment Optional enrollment row.
+	 * @return true|WP_Error
+	 */
+	public static function assert_can_access_workbook_practice_bank( $user_id, $course, $quiz, $enrollment = null ) {
+		if ( ! self::is_workbook_quiz( $quiz ) ) {
+			return true;
+		}
+
+		$course_id = $course && ! empty( $course->id ) ? (int) $course->id : 0;
+		if ( ! $course_id ) {
+			return new WP_Error( 'cta_wb_bank_invalid', __( 'Invalid course access request.', 'cta-lms' ) );
+		}
+
+		if ( self::user_completed_matching_workbook( $user_id, $course_id, $quiz, $enrollment ) ) {
+			return true;
+		}
+
+		return new WP_Error(
+			'cta_wb_bank_locked',
+			self::workbook_practice_bank_lock_message( $quiz )
+		);
+	}
+
+	/**
+	 * Card lock state for a quiz on exam-prep workbook / player UI.
+	 *
+	 * Workbook Practice Banks unlock after their matching workbook only.
+	 * Cumulative / full simulations still require all program workbooks.
+	 *
+	 * @param object|null $quiz               Quiz row.
+	 * @param object|null $course             Course row.
+	 * @param int         $user_id            User ID.
+	 * @param object|null $enrollment         Enrollment row.
+	 * @param bool        $modules_complete   Whether all instructional modules are complete.
+	 * @param bool        $has_active_attempt Whether an in-progress attempt exists.
+	 * @return array{locked:bool,lock_msg:string}
+	 */
+	public static function get_quiz_card_lock_state( $quiz, $course, $user_id, $enrollment, $modules_complete, $has_active_attempt ) {
+		if ( $has_active_attempt ) {
+			return array(
+				'locked'   => false,
+				'lock_msg' => '',
+			);
+		}
+
+		if ( self::is_workbook_quiz( $quiz ) ) {
+			$unlocked = self::user_completed_matching_workbook(
+				$user_id,
+				$course && ! empty( $course->id ) ? (int) $course->id : 0,
+				$quiz,
+				$enrollment
+			);
+
+			return array(
+				'locked'   => ! $unlocked,
+				'lock_msg' => $unlocked ? '' : self::workbook_practice_bank_lock_message( $quiz ),
+			);
+		}
+
+		$unlocked = (bool) $modules_complete;
+
+		return array(
+			'locked'   => ! $unlocked,
+			'lock_msg' => $unlocked
+				? ''
+				: __( 'Complete all program workbooks before starting this assessment.', 'cta-lms' ),
+		);
 	}
 
 	/**
@@ -507,14 +720,15 @@ class CTA_Exam_Prep_Workbooks {
 
 		foreach ( (array) $workbook_quiz_cards as $card ) {
 			if ( ! empty( $card['locked'] ) ) {
+				$quiz = $card['quiz'] ?? null;
 				return array(
 					'mode'            => 'locked',
 					'url'             => '',
-					'label'           => __( 'Complete Workbooks to Unlock', 'cta-lms' ),
+					'label'           => self::workbook_practice_bank_lock_button_label( $quiz ),
 					'category'        => 'workbook_bank',
-					'category_label'  => self::get_assessment_category_label( 'workbook_bank', $card['quiz'] ?? null ),
+					'category_label'  => self::get_assessment_category_label( 'workbook_bank', $quiz ),
 					'docx_url'        => '',
-					'lock_message'    => (string) ( $card['lock_msg'] ?? '' ),
+					'lock_message'    => (string) ( $card['lock_msg'] ?? self::workbook_practice_bank_lock_message( $quiz ) ),
 				);
 			}
 

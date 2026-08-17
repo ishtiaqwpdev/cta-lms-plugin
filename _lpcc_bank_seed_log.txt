@@ -1,0 +1,39 @@
+START
+14:12:35 SUBST Y: -> C:\Users\premier computer\Desktop\New folder\cta-academy-lms\assets\course-materials\lpcc-ncmhce\practice-banks OK
+14:12:35 Parsing WB1 rationales: CTA_LPCC_WB1_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx
+14:12:36 WB1 markers=17 questions=17 failures=0
+14:12:36 Wrote lpcc-ncmhce-wb1-bank.php
+14:12:36 Parsing WB2 rationales: CTA_LPCC_WB2_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx
+14:12:36 WB2 markers=17 questions=17 failures=0
+14:12:36 Wrote lpcc-ncmhce-wb2-bank.php
+14:12:36 Parsing WB3 rationales: CTA_LPCC_WB3_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx
+14:12:37 WB3 markers=17 questions=17 failures=0
+14:12:37 Wrote lpcc-ncmhce-wb3-bank.php
+14:12:37 Parsing WB4 rationales: CTA_LPCC_WB4_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx
+14:12:37 WB4 markers=17 questions=17 failures=0
+14:12:37 Wrote lpcc-ncmhce-wb4-bank.php
+14:12:37 Parsing WB5 rationales: CTA_LPCC_WB5_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx
+14:12:38 WB5 markers=17 questions=17 failures=0
+14:12:38 Wrote lpcc-ncmhce-wb5-bank.php
+14:12:38 Parsing WB6 rationales: CTA_LPCC_WB6_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx
+14:12:38 WB6 markers=17 questions=17 failures=0
+14:12:38 Wrote lpcc-ncmhce-wb6-bank.php
+14:12:38 Parsing WB7 rationales: CTA_LPCC_WB7_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx
+14:12:38 WB7 markers=17 questions=17 failures=0
+14:12:38 Wrote lpcc-ncmhce-wb7-bank.php
+14:12:38 Parsing WB8 rationales: CTA_LPCC_WB8_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx
+14:12:39 WB8 markers=17 questions=17 failures=0
+14:12:39 Wrote lpcc-ncmhce-wb8-bank.php
+14:12:39 Parsing WB9 rationales: CTA_LPCC_WB9_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx
+14:12:39 WB9 markers=17 questions=17 failures=0
+14:12:39 Wrote lpcc-ncmhce-wb9-bank.php
+14:12:39 Parsing WB10 rationales: CTA_LPCC_WB10_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx
+14:12:39 WB10 markers=17 questions=17 failures=0
+14:12:40 Wrote lpcc-ncmhce-wb10-bank.php
+14:12:40 Parsing WB11 rationales: CTA_LPCC_WB11_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx
+14:12:40 WB11 markers=17 questions=17 failures=0
+14:12:40 Wrote lpcc-ncmhce-wb11-bank.php
+14:12:40 Parsing WB12 rationales: CTA_LPCC_WB12_17_Question_Practice_Bank_Answer_Rationales_v1.0.docx
+14:12:41 WB12 markers=17 questions=17 failures=0
+14:12:41 Wrote lpcc-ncmhce-wb12-bank.php
+14:12:41 DONE totalFail=0
