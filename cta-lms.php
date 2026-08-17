@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.257' );
+	define( 'CTA_VERSION', '1.0.259' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -1433,6 +1433,16 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 						CTA_Lmft_Clinical_Sync::sync_materials( (int) $lmft->id );
 					}
 				}
+			}
+
+			// LCSW ASWB Clinical: publish online 17-question Practice Banks for workbooks 1–12.
+			if ( version_compare( $installed, '1.0.258', '<' ) && class_exists( 'CTA_Lcsw_Aswb_Sync' ) ) {
+				CTA_Lcsw_Aswb_Sync::sync( true );
+			}
+
+			// Practice Bank status: clear ghost completions; keep workbook module completion intact.
+			if ( version_compare( $installed, '1.0.259', '<' ) && class_exists( 'CTA_Exam_Prep_Workbooks' ) ) {
+				CTA_Exam_Prep_Workbooks::reset_ghost_practice_bank_completions();
 			}
 
 			// Decouple supervision application pending from general account / CE access.

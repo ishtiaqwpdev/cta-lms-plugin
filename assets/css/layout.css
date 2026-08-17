@@ -9068,6 +9068,47 @@ button.pagination__item:disabled {
   color: var(--color-text-muted, #667085);
 }
 
+.cta-plugin-wrapper .cta-ep-workbook-section__status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  margin: 0 0 0.65rem;
+}
+
+.cta-plugin-wrapper .cta-ep-workbook-section__status-hint {
+  font-size: 0.78rem;
+  color: var(--color-text-muted, #667085);
+}
+
+.cta-plugin-wrapper .cta-ep-status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.cta-plugin-wrapper .cta-ep-status-pill--not_started,
+.cta-plugin-wrapper .cta-ep-status-pill--not_available {
+  color: #344054;
+  background: #f2f4f7;
+}
+
+.cta-plugin-wrapper .cta-ep-status-pill--in_progress {
+  color: #b54708;
+  background: #fffaeb;
+}
+
+.cta-plugin-wrapper .cta-ep-status-pill--completed {
+  color: #067647;
+  background: #ecfdf3;
+}
+
 .cta-plugin-wrapper .cta-ep-workbook-actions--toolbar {
   flex-wrap: wrap;
   align-items: flex-end;

@@ -28,6 +28,9 @@ $options = array(
 	</legend>
 	<div class="cta-quiz-question__options">
 		<?php foreach ( $options as $key => $label ) : ?>
+			<?php if ( '' === trim( (string) $label ) ) : ?>
+				<?php continue; ?>
+			<?php endif; ?>
 			<label class="cta-quiz-option">
 				<input
 					type="radio"

@@ -589,6 +589,288 @@ class CTA_Exam_Prep_Workbooks {
 
 		return null;
 	}
+
+	/**
+	 * Practice Bank attempt status for one workbook quiz card.
+	 *
+	 * Independent of workbook module completion (Mark Workbook Complete).
+	 *
+	 * @param array|null $card Quiz card from dashboard (quiz/attempts/active/best/passed).
+	 * @return string not_available|not_started|in_progress|completed
+	 */
+	public static function get_practice_bank_status( $card ) {
+		if ( empty( $card ) || empty( $card['quiz'] ) ) {
+			return 'not_available';
+		}
+
+		$active = $card['active'] ?? null;
+		if ( $active && self::attempt_is_in_progress( $active ) ) {
+			return 'in_progress';
+		}
+
+		$attempts = isset( $card['attempts'] ) ? (array) $card['attempts'] : array();
+		foreach ( $attempts as $attempt ) {
+			if ( self::attempt_is_submitted( $attempt ) && ! self::attempt_answers_are_empty( $attempt->answers ?? null ) ) {
+				return 'completed';
+			}
+		}
+
+		if ( ! empty( $card['best'] )
+			&& self::attempt_is_submitted( $card['best'] )
+			&& ! self::attempt_answers_are_empty( $card['best']->answers ?? null ) ) {
+			return 'completed';
+		}
+
+		return 'not_started';
+	}
+
+	/**
+	 * Aggregate Practice Bank status from workbook-scoped quiz cards.
+	 *
+	 * @param array $cards Workbook quiz cards.
+	 * @return string not_available|not_started|in_progress|completed
+	 */
+	public static function get_practice_bank_status_from_cards( array $cards ) {
+		if ( empty( $cards ) ) {
+			return 'not_available';
+		}
+
+		$has_in_progress = false;
+		$has_completed   = false;
+		$has_quiz        = false;
+
+		foreach ( $cards as $card ) {
+			$status = self::get_practice_bank_status( $card );
+			if ( 'not_available' === $status ) {
+				continue;
+			}
+			$has_quiz = true;
+			if ( 'completed' === $status ) {
+				$has_completed = true;
+			} elseif ( 'in_progress' === $status ) {
+				$has_in_progress = true;
+			}
+		}
+
+		if ( ! $has_quiz ) {
+			return 'not_available';
+		}
+		if ( $has_completed ) {
+			return 'completed';
+		}
+		if ( $has_in_progress ) {
+			return 'in_progress';
+		}
+
+		return 'not_started';
+	}
+
+	/**
+	 * Learner-facing Practice Bank status label.
+	 *
+	 * @param string $status Status slug.
+	 * @return string
+	 */
+	public static function get_practice_bank_status_label( $status ) {
+		switch ( sanitize_key( (string) $status ) ) {
+			case 'completed':
+				return __( 'Completed', 'cta-lms' );
+			case 'in_progress':
+				return __( 'In Progress', 'cta-lms' );
+			case 'not_available':
+			case 'not_started':
+			default:
+				return __( 'Not Started', 'cta-lms' );
+		}
+	}
+
+	/**
+	 * Whether an attempt row represents a submitted (finished) attempt.
+	 *
+	 * @param object|null $attempt Attempt row.
+	 * @return bool
+	 */
+	public static function attempt_is_submitted( $attempt ) {
+		if ( ! $attempt ) {
+			return false;
+		}
+
+		$completed_at = isset( $attempt->completed_at ) ? trim( (string) $attempt->completed_at ) : '';
+		return '' !== $completed_at
+			&& '0000-00-00' !== $completed_at
+			&& '0000-00-00 00:00:00' !== $completed_at;
+	}
+
+	/**
+	 * Whether an attempt is still open (started, not submitted).
+	 *
+	 * @param object|null $attempt Attempt row.
+	 * @return bool
+	 */
+	public static function attempt_is_in_progress( $attempt ) {
+		return $attempt && ! self::attempt_is_submitted( $attempt );
+	}
+
+	/**
+	 * Remove ghost Practice Bank “completions”: submitted workbook-bank attempts
+	 * with no real answer payload (empty / null / empty JSON object/array).
+	 *
+	 * Does not touch workbook module completion (modules_completed) or Form A/B.
+	 *
+	 * @return array{deleted_attempts:int,cleared_preserved:int}
+	 */
+	public static function reset_ghost_practice_bank_completions() {
+		global $wpdb;
+
+		$deleted  = 0;
+		$cleared  = 0;
+		$attempts = $wpdb->prefix . 'cta_quiz_attempts';
+		$quizzes  = $wpdb->prefix . 'cta_quizzes';
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$rows = $wpdb->get_results(
+			"SELECT a.id, a.user_id, a.course_id, a.quiz_id, a.answers, a.completed_at, q.quiz_type
+			FROM {$attempts} a
+			INNER JOIN {$quizzes} q ON q.id = a.quiz_id
+			WHERE q.quiz_type REGEXP '^wb[0-9]+_bank$'
+			  AND a.completed_at IS NOT NULL
+			  AND a.completed_at NOT IN ('', '0000-00-00', '0000-00-00 00:00:00')"
+		);
+
+		foreach ( (array) $rows as $row ) {
+			if ( ! self::attempt_answers_are_empty( $row->answers ?? null ) ) {
+				continue;
+			}
+
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$ok = $wpdb->delete( $attempts, array( 'id' => (int) $row->id ), array( '%d' ) );
+			if ( $ok ) {
+				++$deleted;
+			}
+		}
+
+		// Clear preserved printable bank flags that have no matching real submitted attempt.
+		if ( class_exists( 'CTA_Course_Materials' ) ) {
+			$meta_key_like = 'cta_exam_preserved_attempts_%';
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$meta_rows = $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT user_id, meta_key, meta_value FROM {$wpdb->usermeta} WHERE meta_key LIKE %s",
+					$meta_key_like
+				)
+			);
+
+			foreach ( (array) $meta_rows as $meta ) {
+				$raw = maybe_unserialize( $meta->meta_value );
+				if ( ! is_array( $raw ) || empty( $raw ) ) {
+					continue;
+				}
+
+				$course_id = 0;
+				if ( preg_match( '/^cta_exam_preserved_attempts_(\d+)$/', (string) $meta->meta_key, $m ) ) {
+					$course_id = (int) $m[1];
+				}
+				if ( ! $course_id ) {
+					continue;
+				}
+
+				$changed = false;
+				foreach ( array_keys( $raw ) as $type ) {
+					$type = sanitize_text_field( (string) $type );
+					if ( ! preg_match( '/^wb\d+_bank$/', $type ) ) {
+						continue;
+					}
+					if ( self::user_has_real_completed_bank_attempt( (int) $meta->user_id, $course_id, $type ) ) {
+						continue;
+					}
+					unset( $raw[ $type ] );
+					$changed = true;
+					++$cleared;
+				}
+
+				if ( $changed ) {
+					if ( empty( $raw ) ) {
+						delete_user_meta( (int) $meta->user_id, (string) $meta->meta_key );
+					} else {
+						update_user_meta( (int) $meta->user_id, (string) $meta->meta_key, $raw );
+					}
+				}
+			}
+		}
+
+		return array(
+			'deleted_attempts'  => $deleted,
+			'cleared_preserved' => $cleared,
+		);
+	}
+
+	/**
+	 * @param mixed $answers Attempt answers column.
+	 * @return bool
+	 */
+	public static function attempt_answers_are_empty( $answers ) {
+		if ( null === $answers || '' === $answers ) {
+			return true;
+		}
+		if ( is_array( $answers ) ) {
+			return empty( $answers );
+		}
+
+		$decoded = json_decode( (string) $answers, true );
+		if ( is_array( $decoded ) ) {
+			foreach ( $decoded as $value ) {
+				if ( '' !== trim( (string) $value ) && null !== $value ) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		return '' === trim( (string) $answers ) || '{}' === trim( (string) $answers ) || '[]' === trim( (string) $answers );
+	}
+
+	/**
+	 * @param int    $user_id   User ID.
+	 * @param int    $course_id Course ID.
+	 * @param string $quiz_type wbN_bank.
+	 * @return bool
+	 */
+	private static function user_has_real_completed_bank_attempt( $user_id, $course_id, $quiz_type ) {
+		global $wpdb;
+
+		$user_id   = absint( $user_id );
+		$course_id = absint( $course_id );
+		$quiz_type = sanitize_text_field( (string) $quiz_type );
+		if ( ! $user_id || ! $course_id || '' === $quiz_type ) {
+			return false;
+		}
+
+		$attempts = $wpdb->prefix . 'cta_quiz_attempts';
+		$quizzes  = $wpdb->prefix . 'cta_quizzes';
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$rows = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT a.answers, a.completed_at
+				FROM {$attempts} a
+				INNER JOIN {$quizzes} q ON q.id = a.quiz_id
+				WHERE a.user_id = %d AND a.course_id = %d AND q.quiz_type = %s
+				  AND a.completed_at IS NOT NULL
+				  AND a.completed_at NOT IN ('', '0000-00-00', '0000-00-00 00:00:00')",
+				$user_id,
+				$course_id,
+				$quiz_type
+			)
+		);
+
+		foreach ( (array) $rows as $row ) {
+			if ( ! self::attempt_answers_are_empty( $row->answers ?? null ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 }
 
 }

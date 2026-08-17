@@ -167,6 +167,22 @@ foreach ( $workbook_tabs as $tab ) {
 							?>
 							<span class="cta-assessment-tag cta-assessment-tag--workbook"><?php echo esc_html( $wb_bank_tag ); ?></span>
 							<h2 class="dashboard-section__title"><?php echo esc_html( $wb_bank_label ); ?></h2>
+							<?php
+							$pb_status = class_exists( 'CTA_Exam_Prep_Workbooks' )
+								? CTA_Exam_Prep_Workbooks::get_practice_bank_status_from_cards( $cards )
+								: 'not_available';
+							$pb_status_label = class_exists( 'CTA_Exam_Prep_Workbooks' )
+								? CTA_Exam_Prep_Workbooks::get_practice_bank_status_label( $pb_status )
+								: __( 'Not Started', 'cta-lms' );
+							?>
+							<p class="cta-ep-workbook-section__status" data-practice-bank-status="<?php echo esc_attr( $pb_status ); ?>">
+								<span class="cta-ep-status-pill cta-ep-status-pill--<?php echo esc_attr( $pb_status ); ?>">
+									<?php echo esc_html( $pb_status_label ); ?>
+								</span>
+								<span class="cta-ep-workbook-section__status-hint">
+									<?php esc_html_e( 'Practice Bank progress (separate from workbook completion)', 'cta-lms' ); ?>
+								</span>
+							</p>
 							<p class="cta-ep-workbook-section__hint">
 								<?php esc_html_e( 'This practice bank covers only this workbook — not the full program exam.', 'cta-lms' ); ?>
 							</p>
@@ -178,16 +194,23 @@ foreach ( $workbook_tabs as $tab ) {
 										$card_label = class_exists( 'CTA_Exam_Prep_Workbooks' )
 											? CTA_Exam_Prep_Workbooks::get_workbook_practice_bank_button_label( $module ?? null, $card_quiz )
 											: ( $card_quiz ? (string) $card_quiz->title : $wb_bank_label );
+										$card_status = class_exists( 'CTA_Exam_Prep_Workbooks' )
+											? CTA_Exam_Prep_Workbooks::get_practice_bank_status( $card )
+											: 'not_started';
+										$card_status_label = class_exists( 'CTA_Exam_Prep_Workbooks' )
+											? CTA_Exam_Prep_Workbooks::get_practice_bank_status_label( $card_status )
+											: __( 'Not Started', 'cta-lms' );
 										?>
 										<li class="cta-exam-assessment-list__item">
 											<div class="cta-exam-assessment-list__meta">
 												<strong><?php echo esc_html( $card_label ); ?></strong>
-												<?php if ( ! empty( $card['passed'] ) ) : ?>
+												<span class="cta-ep-status-pill cta-ep-status-pill--<?php echo esc_attr( $card_status ); ?>">
+													<?php echo esc_html( $card_status_label ); ?>
+												</span>
+												<?php if ( 'completed' === $card_status && ! empty( $card['passed'] ) ) : ?>
 													<span class="badge badge--success"><?php echo esc_html__( 'Passed', 'cta-lms' ); ?> — <?php echo esc_html( (string) (int) $card['best']->score ); ?>%</span>
-												<?php elseif ( ! empty( $card['best'] ) ) : ?>
+												<?php elseif ( 'completed' === $card_status && ! empty( $card['best'] ) ) : ?>
 													<span class="badge"><?php echo esc_html__( 'Best score', 'cta-lms' ); ?>: <?php echo esc_html( (string) (int) $card['best']->score ); ?>%</span>
-												<?php else : ?>
-													<span class="badge"><?php echo esc_html__( 'Not started', 'cta-lms' ); ?></span>
 												<?php endif; ?>
 											</div>
 											<?php if ( ! empty( $card['locked'] ) ) : ?>
@@ -197,9 +220,13 @@ foreach ( $workbook_tabs as $tab ) {
 											<?php elseif ( $qpid && ! empty( $card['url'] ) && '#' !== $card['url'] ) : ?>
 												<a href="<?php echo esc_url( $card['url'] ); ?>" class="btn btn-primary btn--sm cta-quiz-btn">
 													<?php
-													echo ! empty( $card['active'] )
-														? esc_html__( 'Resume Assessment', 'cta-lms' )
-														: ( ! empty( $card['passed'] ) ? esc_html__( 'Retake', 'cta-lms' ) : esc_html__( 'Start Practice Bank', 'cta-lms' ) );
+													if ( 'in_progress' === $card_status ) {
+														esc_html_e( 'Resume Practice Bank', 'cta-lms' );
+													} elseif ( 'completed' === $card_status ) {
+														esc_html_e( 'Retake', 'cta-lms' );
+													} else {
+														esc_html_e( 'Start Practice Bank', 'cta-lms' );
+													}
 													?>
 												</a>
 											<?php endif; ?>
@@ -224,7 +251,7 @@ foreach ( $workbook_tabs as $tab ) {
 	<div class="course-player__lesson-actions cta-ep-workbook-tabbed__actions" data-course-player-actions>
 		<?php if ( $module_complete ) : ?>
 			<button type="button" class="btn btn-primary course-player__action-btn" id="cta-mark-complete" disabled>
-				<?php echo esc_html__( 'Completed', 'cta-lms' ); ?>
+				<?php echo esc_html__( 'Workbook Completed', 'cta-lms' ); ?>
 			</button>
 		<?php else : ?>
 			<button

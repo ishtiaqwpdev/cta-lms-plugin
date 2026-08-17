@@ -2904,7 +2904,9 @@
 
     function handleModuleCompleteSuccess(response, moduleId, markButton) {
       if (markButton) {
-        markButton.innerHTML = CTA_ICON_CHECK_CIRCLE + " Completed";
+        var examPrepRoot = document.querySelector('[data-exam-prep="1"]');
+        var completeLabel = examPrepRoot ? "Workbook Completed" : "Completed";
+        markButton.innerHTML = CTA_ICON_CHECK_CIRCLE + " " + completeLabel;
         if ("disabled" in markButton) {
           markButton.disabled = true;
         }

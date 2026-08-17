@@ -158,9 +158,20 @@ $percent        = max( 0, min( 100, (int) ( $overview['percent'] ?? 0 ) ) );
 						</span>
 						<span class="cta-pr__bank-score <?php echo ! empty( $bank['passed'] ) ? 'is-passed' : ''; ?>">
 							<?php
-							echo null !== ( $bank['best_score'] ?? null )
-								? esc_html( sprintf( __( 'Best %d%%', 'cta-lms' ), (int) $bank['best_score'] ) )
-								: esc_html__( 'Not attempted', 'cta-lms' );
+							$status_label = (string) ( $bank['status_label'] ?? '' );
+							if ( '' === $status_label && class_exists( 'CTA_Exam_Prep_Workbooks' ) ) {
+								$status_label = CTA_Exam_Prep_Workbooks::get_practice_bank_status_label( (string) ( $bank['status'] ?? 'not_started' ) );
+							}
+							if ( '' !== $status_label ) {
+								echo esc_html( $status_label );
+								if ( null !== ( $bank['best_score'] ?? null ) ) {
+									echo ' — ' . esc_html( sprintf( __( 'Best %d%%', 'cta-lms' ), (int) $bank['best_score'] ) );
+								}
+							} else {
+								echo null !== ( $bank['best_score'] ?? null )
+									? esc_html( sprintf( __( 'Best %d%%', 'cta-lms' ), (int) $bank['best_score'] ) )
+									: esc_html__( 'Not Started', 'cta-lms' );
+							}
 							?>
 						</span>
 					</a>

@@ -447,6 +447,12 @@ class CTA_Student_Dashboard {
 			$active   = CTA_Database::get_active_quiz_attempt( $user_id_player, (int) $qrow->id );
 			$best     = null;
 			foreach ( $attempts as $att ) {
+				// Ignore ghost submissions (completed with empty answers) for status/score.
+				if ( class_exists( 'CTA_Exam_Prep_Workbooks' )
+					&& CTA_Exam_Prep_Workbooks::is_workbook_quiz( $qrow )
+					&& CTA_Exam_Prep_Workbooks::attempt_answers_are_empty( $att->answers ?? null ) ) {
+					continue;
+				}
 				if ( null === $best || (int) $att->score > (int) $best->score ) {
 					$best = $att;
 				}

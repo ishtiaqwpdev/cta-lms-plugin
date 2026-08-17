@@ -1,6 +1,7 @@
 <?php
 /**
- * CTA LCSW ASWB Clinical Exam Preparation — program, modules, materials, and Form A/B sync.
+ * CTA LCSW ASWB Clinical Exam Preparation — program, modules, materials,
+ * workbook practice banks, and Form A/B sync.
  *
  * @package CTA_LMS
  */
@@ -16,7 +17,7 @@ if ( ! class_exists( 'CTA_Lcsw_Aswb_Sync' ) ) {
 
 class CTA_Lcsw_Aswb_Sync {
 
-	const SEED_OPTION   = 'cta_lcsw_aswb_clinical_seeded_1_0_154';
+	const SEED_OPTION   = 'cta_lcsw_aswb_clinical_seeded_1_0_258';
 	const SLUG          = 'lcsw-aswb-clinical-exam-preparation';
 	const TITLE         = 'CTA LCSW ASWB Clinical Exam Preparation Program';
 	const PUBLIC_TITLE  = 'LCSW ASWB Clinical Exam Preparation';
@@ -383,73 +384,109 @@ class CTA_Lcsw_Aswb_Sync {
 	}
 
 	/**
-	 * Ensure Form A and Form B quizzes with 122 questions each.
+	 * Ensure 12 workbook practice banks (17q each) plus Form A/B (122q each).
 	 *
 	 * @param int $course_id Course ID.
-	 * @return array{ok:bool,form_a:int,form_b:int,questions_a:int,questions_b:int,message:string}
+	 * @return array
 	 */
 	public static function sync_assessments( $course_id ) {
 		$course_id = absint( $course_id );
 
+		$empty = array(
+			'ok'          => false,
+			'form_a'      => 0,
+			'form_b'      => 0,
+			'questions_a' => 0,
+			'questions_b' => 0,
+			'message'     => 'invalid_course',
+		);
+		for ( $n = 1; $n <= 12; $n++ ) {
+			$empty[ 'wb' . $n . '_bank' ]           = 0;
+			$empty[ 'questions_wb' . $n . '_bank' ] = 0;
+		}
+
 		if ( ! $course_id ) {
-			return array(
-				'ok'          => false,
-				'form_a'      => 0,
-				'form_b'      => 0,
-				'questions_a' => 0,
-				'questions_b' => 0,
-				'message'     => 'invalid_course',
-			);
+			return $empty;
 		}
 
-		$questions_a = self::load_form_questions( 'a' );
-		$questions_b = self::load_form_questions( 'b' );
-
-		if ( 122 !== count( $questions_a ) || 122 !== count( $questions_b ) ) {
-			return array(
-				'ok'          => false,
-				'form_a'      => 0,
-				'form_b'      => 0,
-				'questions_a' => count( $questions_a ),
-				'questions_b' => count( $questions_b ),
-				'message'     => 'invalid_question_bank_count',
+		$defs = array();
+		for ( $n = 1; $n <= 12; $n++ ) {
+			$defs[] = array(
+				'quiz_type' => 'wb' . $n . '_bank',
+				'title'     => sprintf( 'Workbook %d — 17-Question Practice Bank', $n ),
+				'sort'      => $n,
+				'time'      => 40,
+				'file'      => 'lcsw-aswb-wb' . $n . '-bank.php',
+				'expect'    => 17,
+				'key'       => 'wb' . $n . '_bank',
+				'qkey'      => 'questions_wb' . $n . '_bank',
 			);
 		}
-
-		$form_a = self::replace_form_quiz(
-			$course_id,
-			'form_a',
-			'Form A — 122-Question Comprehensive Simulation',
-			20,
-			$questions_a
+		$defs[] = array(
+			'quiz_type' => 'form_a',
+			'title'     => 'Form A — 122-Question Comprehensive Simulation',
+			'sort'      => 20,
+			'time'      => 240,
+			'file'      => 'lcsw-aswb-form-a.php',
+			'expect'    => 122,
+			'key'       => 'form_a',
+			'qkey'      => 'questions_a',
 		);
-		$form_b = self::replace_form_quiz(
-			$course_id,
-			'form_b',
-			'Form B — 122-Question Comprehensive Simulation',
-			30,
-			$questions_b
+		$defs[] = array(
+			'quiz_type' => 'form_b',
+			'title'     => 'Form B — 122-Question Comprehensive Simulation',
+			'sort'      => 30,
+			'time'      => 240,
+			'file'      => 'lcsw-aswb-form-b.php',
+			'expect'    => 122,
+			'key'       => 'form_b',
+			'qkey'      => 'questions_b',
 		);
 
-		if ( ! $form_a || ! $form_b ) {
-			return array(
-				'ok'          => false,
-				'form_a'      => $form_a,
-				'form_b'      => $form_b,
-				'questions_a' => count( $questions_a ),
-				'questions_b' => count( $questions_b ),
-				'message'     => 'quiz_write_failed',
-			);
+		$result            = $empty;
+		$result['message'] = '';
+
+		foreach ( $defs as $def ) {
+			$questions              = self::load_seed_questions( $def['file'] );
+			$count                  = count( $questions );
+			$result[ $def['qkey'] ] = $count;
+
+			if ( (int) $def['expect'] !== $count ) {
+				$result['ok']      = false;
+				$result['message'] = sprintf(
+					'invalid_question_bank_count:%s expected %d got %d',
+					$def['quiz_type'],
+					$def['expect'],
+					$count
+				);
+				return $result;
+			}
 		}
 
-		return array(
-			'ok'          => true,
-			'form_a'      => $form_a,
-			'form_b'      => $form_b,
-			'questions_a' => 122,
-			'questions_b' => 122,
-			'message'     => 'synced',
-		);
+		foreach ( $defs as $def ) {
+			$questions = self::load_seed_questions( $def['file'] );
+			$quiz_id   = self::replace_form_quiz(
+				$course_id,
+				$def['quiz_type'],
+				$def['title'],
+				$def['sort'],
+				$questions,
+				(int) $def['time']
+			);
+			$result[ $def['key'] ]  = $quiz_id;
+			$result[ $def['qkey'] ] = (int) $def['expect'];
+
+			if ( ! $quiz_id ) {
+				$result['ok']      = false;
+				$result['message'] = 'quiz_write_failed:' . $def['quiz_type'];
+				return $result;
+			}
+		}
+
+		$result['ok']      = true;
+		$result['message'] = 'synced';
+
+		return $result;
 	}
 
 	/**
@@ -501,6 +538,10 @@ class CTA_Lcsw_Aswb_Sync {
 			'questions_a'       => (int) ( $assessments['questions_a'] ?? 0 ),
 			'questions_b'       => (int) ( $assessments['questions_b'] ?? 0 ),
 		);
+		for ( $n = 1; $n <= 12; $n++ ) {
+			$counts[ 'wb' . $n . '_bank_quiz_id' ] = (int) ( $assessments[ 'wb' . $n . '_bank' ] ?? 0 );
+			$counts[ 'questions_wb' . $n . '_bank' ] = (int) ( $assessments[ 'questions_wb' . $n . '_bank' ] ?? 0 );
+		}
 
 		if ( $ok ) {
 			update_option(
@@ -834,14 +875,13 @@ class CTA_Lcsw_Aswb_Sync {
 	}
 
 	/**
-	 * Load Form A or Form B question seed array.
+	 * Load quiz seed questions from includes/quiz-seeds/.
 	 *
-	 * @param string $form a|b.
+	 * @param string $file Seed filename.
 	 * @return array[]
 	 */
-	private static function load_form_questions( $form ) {
-		$form = strtolower( (string) $form );
-		$file = ( 'b' === $form ) ? 'lcsw-aswb-form-b.php' : 'lcsw-aswb-form-a.php';
+	private static function load_seed_questions( $file ) {
+		$file = basename( (string) $file );
 		$path = CTA_PLUGIN_DIR . 'includes/quiz-seeds/' . $file;
 
 		if ( ! is_readable( $path ) ) {
@@ -853,22 +893,36 @@ class CTA_Lcsw_Aswb_Sync {
 	}
 
 	/**
-	 * Create/update a form quiz and replace all questions.
+	 * Load Form A or Form B question seed array.
 	 *
-	 * @param int    $course_id Course ID.
-	 * @param string $quiz_type form_a|form_b.
-	 * @param string $title     Quiz title.
-	 * @param int    $sort      Sort order.
-	 * @param array  $questions Question rows.
+	 * @param string $form a|b.
+	 * @return array[]
+	 */
+	private static function load_form_questions( $form ) {
+		$form = strtolower( (string) $form );
+		$file = ( 'b' === $form ) ? 'lcsw-aswb-form-b.php' : 'lcsw-aswb-form-a.php';
+		return self::load_seed_questions( $file );
+	}
+
+	/**
+	 * Create/update a quiz and replace all questions.
+	 *
+	 * @param int    $course_id  Course ID.
+	 * @param string $quiz_type  Quiz type key (wbN_bank|form_a|form_b).
+	 * @param string $title      Quiz title.
+	 * @param int    $sort       Sort order.
+	 * @param array  $questions  Question rows.
+	 * @param int    $time_limit Time limit in minutes.
 	 * @return int Quiz ID or 0.
 	 */
-	private static function replace_form_quiz( $course_id, $quiz_type, $title, $sort, array $questions ) {
+	private static function replace_form_quiz( $course_id, $quiz_type, $title, $sort, array $questions, $time_limit = 240 ) {
 		global $wpdb;
 
-		$course_id = absint( $course_id );
-		$quiz_type = sanitize_text_field( $quiz_type );
-		$title     = sanitize_text_field( $title );
-		$sort      = (int) $sort;
+		$course_id  = absint( $course_id );
+		$quiz_type  = sanitize_text_field( $quiz_type );
+		$title      = sanitize_text_field( $title );
+		$sort       = (int) $sort;
+		$time_limit = (int) $time_limit;
 
 		if ( ! $course_id || '' === $quiz_type ) {
 			return 0;
@@ -897,7 +951,7 @@ class CTA_Lcsw_Aswb_Sync {
 					'title'           => $title,
 					'quiz_type'       => $quiz_type,
 					'passing_score'   => 70,
-					'time_limit_mins' => 240,
+					'time_limit_mins' => $time_limit,
 					'max_attempts'    => 0,
 					'status'          => 'active',
 					'sort_order'      => $sort,
@@ -916,7 +970,7 @@ class CTA_Lcsw_Aswb_Sync {
 					'quiz_type'       => $quiz_type,
 					'sort_order'      => $sort,
 					'passing_score'   => 70,
-					'time_limit_mins' => 240,
+					'time_limit_mins' => $time_limit,
 					'max_attempts'    => 0,
 					'status'          => 'active',
 				),

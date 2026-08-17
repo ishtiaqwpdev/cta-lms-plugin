@@ -142,7 +142,7 @@ if ( $practice_bank_resource && class_exists( 'CTA_Course_Materials' ) ) {
 					<div class="course-player__lesson-actions" data-course-player-actions>
 						<?php if ( $module_complete ) : ?>
 							<button type="button" class="btn btn-primary course-player__action-btn" id="cta-mark-complete" disabled>
-								<?php echo esc_html__( 'Completed', 'cta-lms' ); ?>
+								<?php echo esc_html__( 'Workbook Completed', 'cta-lms' ); ?>
 							</button>
 						<?php else : ?>
 							<button

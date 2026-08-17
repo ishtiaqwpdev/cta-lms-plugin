@@ -124,11 +124,18 @@ class CTA_Exam_Prep_Progress_Readiness {
 				continue;
 			}
 
-			$attempts   = CTA_Database::get_user_quiz_attempts( $user_id, $quiz_id );
+			$attempts = CTA_Database::get_user_quiz_attempts( $user_id, $quiz_id );
+			$active   = CTA_Database::get_active_quiz_attempt( $user_id, $quiz_id );
 			$best_score = null;
 			$passed     = false;
 
 			foreach ( $attempts as $attempt ) {
+				if ( ! CTA_Exam_Prep_Workbooks::attempt_is_submitted( $attempt ) ) {
+					continue;
+				}
+				if ( CTA_Exam_Prep_Workbooks::attempt_answers_are_empty( $attempt->answers ?? null ) ) {
+					continue;
+				}
 				$score = (int) $attempt->score;
 				if ( null === $best_score || $score > $best_score ) {
 					$best_score = $score;
@@ -136,15 +143,42 @@ class CTA_Exam_Prep_Progress_Readiness {
 				$passed = $passed || ! empty( $attempt->passed );
 			}
 
+			$card = array(
+				'quiz'     => $quiz,
+				'attempts' => $attempts,
+				'active'   => $active,
+				'best'     => null,
+				'passed'   => $passed,
+			);
+			foreach ( $attempts as $attempt ) {
+				if ( CTA_Exam_Prep_Workbooks::attempt_is_submitted( $attempt )
+					&& ! CTA_Exam_Prep_Workbooks::attempt_answers_are_empty( $attempt->answers ?? null ) ) {
+					if ( null === $card['best'] || (int) $attempt->score > (int) $card['best']->score ) {
+						$card['best'] = $attempt;
+					}
+				}
+			}
+
+			$status = CTA_Exam_Prep_Workbooks::get_practice_bank_status( $card );
 			$workbook_number = CTA_Exam_Prep_Workbooks::workbook_number_from_quiz( $quiz );
 			$rows[] = array(
 				'quiz_id'         => $quiz_id,
 				'title'           => (string) $quiz->title,
 				'label'           => CTA_Exam_Prep_Workbooks::get_assessment_category_label( 'workbook_bank', $quiz ),
 				'workbook_number' => $workbook_number,
-				'attempt_count'   => count( $attempts ),
+				'attempt_count'   => count(
+					array_filter(
+						$attempts,
+						static function ( $attempt ) {
+							return CTA_Exam_Prep_Workbooks::attempt_is_submitted( $attempt )
+								&& ! CTA_Exam_Prep_Workbooks::attempt_answers_are_empty( $attempt->answers ?? null );
+						}
+					)
+				),
 				'best_score'      => $best_score,
 				'passed'          => $passed,
+				'status'          => $status,
+				'status_label'    => CTA_Exam_Prep_Workbooks::get_practice_bank_status_label( $status ),
 				'url'             => $dashboard->get_quiz_url( $course_id, $quiz_id ),
 			);
 		}
