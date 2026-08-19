@@ -59,6 +59,7 @@ $dry_run = isset( $options['dry-run'] );
 
 $targets = array(
 	'lmft-clinical' => $root . '/assets/course-materials/lmft-clinical/study-tools/flashcard-study-center.json',
+	'lmft-amftrb'   => $root . '/assets/course-materials/lmft-amftrb/study-tools/flashcard-study-center.json',
 	'lpcc-ncmhce'   => $root . '/assets/course-materials/lpcc-ncmhce/study-tools/flashcard-study-center.json',
 	'lcsw-aswb'     => $root . '/assets/course-materials/lcsw-aswb/study-tools/flashcard-study-center.json',
 );
@@ -167,6 +168,10 @@ if ( 'lmft-clinical' === $program && 180 !== count( $cards ) ) {
 
 if ( 'lpcc-ncmhce' === $program && 180 !== count( $cards ) ) {
 	echo 'WARNING: LPCC NCMHCE deck expected 180 cards; source has ' . count( $cards ) . '.' . PHP_EOL;
+}
+
+if ( 'lmft-amftrb' === $program && 180 !== count( $cards ) ) {
+	echo 'WARNING: LMFT AMFTRB deck expected 180 cards; source has ' . count( $cards ) . '.' . PHP_EOL;
 }
 
 if ( $dry_run ) {

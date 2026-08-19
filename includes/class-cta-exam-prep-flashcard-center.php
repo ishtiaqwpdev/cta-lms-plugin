@@ -58,7 +58,6 @@ class CTA_Exam_Prep_Flashcard_Center {
 			'lcsw-california-law-ethics-exam-preparation',
 			'lcsw-aswb-clinical-exam-preparation',
 			'lcsw-california-clinical-exam-preparation',
-			'lmft-amftrb-national-exam-preparation',
 		);
 
 		// When the approved Study Center deck is live, never fall back to legacy JSON.
@@ -81,6 +80,17 @@ class CTA_Exam_Prep_Flashcard_Center {
 					array(
 						'lpcc-ncmhce-exam-preparation',
 						'lpcc-california-clinical-exam-preparation',
+					)
+				)
+			);
+		}
+
+		if ( self::study_center_deck_is_live( 'lmft-amftrb' ) ) {
+			$slugs = array_values(
+				array_diff(
+					$slugs,
+					array(
+						'lmft-amftrb-national-exam-preparation',
 					)
 				)
 			);
@@ -304,10 +314,7 @@ class CTA_Exam_Prep_Flashcard_Center {
 				continue;
 			}
 
-			$domain_key = sanitize_key( (string) ( $card['domain'] ?? $card['category'] ?? '' ) );
-			if ( '' === $domain_key && ! empty( $card['tag'] ) ) {
-				$domain_key = sanitize_key( (string) $card['tag'] );
-			}
+			$domain_key = self::resolve_card_domain_key( $card );
 
 			if ( '' === $domain_key ) {
 				$domain_key = 'general';
@@ -316,7 +323,7 @@ class CTA_Exam_Prep_Flashcard_Center {
 			if ( ! isset( $domain_map[ $domain_key ] ) ) {
 				$label = ! empty( $card['domain_label'] )
 					? sanitize_text_field( (string) $card['domain_label'] )
-					: ucwords( str_replace( array( '-', '_' ), ' ', $domain_key ) );
+					: self::default_domain_label( $domain_key, $card );
 				$domain_map[ $domain_key ] = array(
 					'key'   => $domain_key,
 					'label' => $label,
@@ -413,6 +420,132 @@ class CTA_Exam_Prep_Flashcard_Center {
 		);
 
 		return $domains;
+	}
+
+	/**
+	 * Resolve a normalized domain key for a card row.
+	 *
+	 * @param array<string,mixed> $card Raw card.
+	 * @return string
+	 */
+	private static function resolve_card_domain_key( array $card ) {
+		$domain_key = sanitize_key( (string) ( $card['domain'] ?? $card['category'] ?? '' ) );
+		if ( '' !== $domain_key ) {
+			return $domain_key;
+		}
+
+		$tag = trim( (string) ( $card['tag'] ?? '' ) );
+		if ( '' === $tag ) {
+			return '';
+		}
+
+		if ( preg_match( '/^Workbook\s+(\d{1,2}):\s*/i', $tag, $matches ) ) {
+			$workbook = (int) $matches[1];
+			$mapped   = self::amftrb_workbook_domain_map();
+			if ( isset( $mapped[ $workbook ] ) ) {
+				return (string) $mapped[ $workbook ]['key'];
+			}
+		}
+
+		// Never treat a full legacy import tag string as a unique domain key.
+		return '';
+	}
+
+	/**
+	 * @param string              $domain_key Domain key.
+	 * @param array<string,mixed> $card       Raw card.
+	 * @return string
+	 */
+	private static function default_domain_label( $domain_key, array $card ) {
+		foreach ( self::amftrb_domain_definitions() as $domain ) {
+			if ( $domain_key === $domain['key'] ) {
+				return (string) $domain['label'];
+			}
+		}
+
+		$tag = trim( (string) ( $card['tag'] ?? '' ) );
+		if ( preg_match( '/^Workbook\s+(\d{1,2}):\s*(.+?)\s*\|\s*/i', $tag, $matches ) ) {
+			return 'Workbook ' . (int) $matches[1];
+		}
+
+		return ucwords( str_replace( array( '-', '_' ), ' ', (string) $domain_key ) );
+	}
+
+	/**
+	 * Official AMFTRB six-domain taxonomy (Workbook 1 reference).
+	 *
+	 * @return array<int,array{key:string,label:string,order:int}>
+	 */
+	private static function amftrb_domain_definitions() {
+		return array(
+			array(
+				'key'   => 'practice-of-systemic-therapy',
+				'label' => 'The Practice of Systemic Therapy',
+				'order' => 1,
+			),
+			array(
+				'key'   => 'assessing-hypothesizing-and-diagnosing',
+				'label' => 'Assessing, Hypothesizing, and Diagnosing',
+				'order' => 2,
+			),
+			array(
+				'key'   => 'designing-and-conducting-treatment',
+				'label' => 'Designing and Conducting Treatment',
+				'order' => 3,
+			),
+			array(
+				'key'   => 'evaluating-process-and-terminating-treatment',
+				'label' => 'Evaluating Ongoing Process and Terminating Treatment',
+				'order' => 4,
+			),
+			array(
+				'key'   => 'managing-crisis-situations',
+				'label' => 'Managing Crisis Situations',
+				'order' => 5,
+			),
+			array(
+				'key'   => 'ethical-legal-and-professional-standards',
+				'label' => 'Maintaining Ethical, Legal, and Professional Standards',
+				'order' => 6,
+			),
+		);
+	}
+
+	/**
+	 * Primary AMFTRB exam domain per workbook (program workbook emphasis).
+	 *
+	 * @return array<int,array{key:string,label:string}>
+	 */
+	private static function amftrb_workbook_domain_map() {
+		$defs = self::amftrb_domain_definitions();
+		$by_key = array();
+		foreach ( $defs as $def ) {
+			$by_key[ $def['key'] ] = $def;
+		}
+
+		$keys = array(
+			1  => 'practice-of-systemic-therapy',
+			2  => 'practice-of-systemic-therapy',
+			3  => 'assessing-hypothesizing-and-diagnosing',
+			4  => 'assessing-hypothesizing-and-diagnosing',
+			5  => 'designing-and-conducting-treatment',
+			6  => 'managing-crisis-situations',
+			7  => 'managing-crisis-situations',
+			8  => 'designing-and-conducting-treatment',
+			9  => 'designing-and-conducting-treatment',
+			10 => 'evaluating-process-and-terminating-treatment',
+			11 => 'ethical-legal-and-professional-standards',
+			12 => 'evaluating-process-and-terminating-treatment',
+		);
+
+		$map = array();
+		foreach ( $keys as $workbook => $domain_key ) {
+			if ( isset( $by_key[ $domain_key ] ) ) {
+				$map[ $workbook ] = $by_key[ $domain_key ];
+			}
+		}
+
+		return $map;
 	}
 
 	/**

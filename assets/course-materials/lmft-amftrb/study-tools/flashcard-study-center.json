@@ -2,6 +2,38 @@
   "program": "lmft-amftrb",
   "title": "LMFT AMFTRB National — Flashcard Study Center",
   "version": "1.0",
-  "domains": [],
+  "expected_total": 180,
+  "domains": [
+    {
+      "key": "practice-of-systemic-therapy",
+      "label": "The Practice of Systemic Therapy",
+      "order": 1
+    },
+    {
+      "key": "assessing-hypothesizing-and-diagnosing",
+      "label": "Assessing, Hypothesizing, and Diagnosing",
+      "order": 2
+    },
+    {
+      "key": "designing-and-conducting-treatment",
+      "label": "Designing and Conducting Treatment",
+      "order": 3
+    },
+    {
+      "key": "evaluating-process-and-terminating-treatment",
+      "label": "Evaluating Ongoing Process and Terminating Treatment",
+      "order": 4
+    },
+    {
+      "key": "managing-crisis-situations",
+      "label": "Managing Crisis Situations",
+      "order": 5
+    },
+    {
+      "key": "ethical-legal-and-professional-standards",
+      "label": "Maintaining Ethical, Legal, and Professional Standards",
+      "order": 6
+    }
+  ],
   "cards": []
 }

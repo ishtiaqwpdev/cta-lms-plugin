@@ -32,7 +32,7 @@ class CTA_Flashcards {
 			'lcsw-aswb-clinical-exam-preparation'            => 'assets/course-materials/lcsw-aswb/study-tools/flashcards.json',
 			'lcsw-california-clinical-exam-preparation'      => 'assets/course-materials/lcsw-aswb/study-tools/flashcards.json',
 			// LMFT California Clinical legacy flashcards.json archived — use Flashcard Study Center only.
-			'lmft-amftrb-national-exam-preparation'          => 'assets/course-materials/lmft-amftrb/study-tools/flashcards.json',
+			// LMFT AMFTRB legacy flashcards.json archived — use Flashcard Study Center only.
 		);
 	}
 
@@ -63,6 +63,11 @@ class CTA_Flashcards {
 
 		if ( class_exists( 'CTA_Lcsw_Aswb_Legacy_Flashcard_Archive' )
 			&& CTA_Lcsw_Aswb_Legacy_Flashcard_Archive::blocks_learner_legacy_deck( $course ) ) {
+			return null;
+		}
+
+		if ( class_exists( 'CTA_Lmft_Amftrb_Legacy_Flashcard_Archive' )
+			&& CTA_Lmft_Amftrb_Legacy_Flashcard_Archive::blocks_learner_legacy_deck( $course ) ) {
 			return null;
 		}
 

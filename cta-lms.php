@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.273' );
+	define( 'CTA_VERSION', '1.0.274' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -111,6 +111,7 @@ $cta_required_files = array(
 	'includes/class-cta-lmft-clinical-form-b-sync.php',
 	'includes/class-cta-lmft-clinical-form-b-answer-sync.php',
 	'includes/class-cta-lmft-amftrb-sync.php',
+	'includes/class-cta-lmft-amftrb-legacy-flashcard-archive.php',
 	'includes/class-cta-lpcc-ncmhce-sync.php',
 	'includes/class-cta-lpcc-ncmhce-legacy-forms-archive.php',
 	'includes/class-cta-lpcc-ncmhce-legacy-flashcard-archive.php',
@@ -1548,6 +1549,11 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				&& CTA_Exam_Prep_Flashcard_Center::study_center_deck_is_live( 'lpcc-ncmhce' )
 			) {
 				CTA_Lpcc_Ncmhce_Legacy_Flashcard_Archive::archive_legacy_flashcards( 0, false );
+			}
+
+			// LMFT AMFTRB: archive broken 120-card legacy deck (workbook tags as domains).
+			if ( version_compare( $installed, '1.0.274', '<' ) && class_exists( 'CTA_Lmft_Amftrb_Legacy_Flashcard_Archive' ) ) {
+				CTA_Lmft_Amftrb_Legacy_Flashcard_Archive::archive_legacy_flashcards( 0, false );
 			}
 
 			// Decouple supervision application pending from general account / CE access.
