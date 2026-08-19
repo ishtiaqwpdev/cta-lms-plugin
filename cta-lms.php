@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.272' );
+	define( 'CTA_VERSION', '1.0.273' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -1538,6 +1538,16 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 			// LCSW ASWB Clinical: heal missing/inactive Form A/B DB rows (shell/timer config preserved).
 			if ( version_compare( $installed, '1.0.272', '<' ) && class_exists( 'CTA_Lcsw_Aswb_Sync' ) ) {
 				CTA_Lcsw_Aswb_Sync::ensure_learner_forms( 0, false );
+			}
+
+			// LPCC NCMHCE: re-ensure 180-card Study Center cutover if legacy JSON was redeployed.
+			if (
+				version_compare( $installed, '1.0.273', '<' )
+				&& class_exists( 'CTA_Exam_Prep_Flashcard_Center' )
+				&& class_exists( 'CTA_Lpcc_Ncmhce_Legacy_Flashcard_Archive' )
+				&& CTA_Exam_Prep_Flashcard_Center::study_center_deck_is_live( 'lpcc-ncmhce' )
+			) {
+				CTA_Lpcc_Ncmhce_Legacy_Flashcard_Archive::archive_legacy_flashcards( 0, false );
 			}
 
 			// Decouple supervision application pending from general account / CE access.

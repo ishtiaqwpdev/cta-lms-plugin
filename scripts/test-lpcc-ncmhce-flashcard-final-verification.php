@@ -357,6 +357,28 @@ assert_true(
 	'Legacy flashcards viewer blocks archived LPCC deck'
 );
 
+echo "\n--- 9) Flip reveal (shared v1.0.271 fix) ---\n";
+$template = (string) file_get_contents( $template_path );
+assert_true(
+	false !== strpos( $template, 'data-cta-fsc-answer' ),
+	'Template uses data-cta-fsc-answer for flip reveal text'
+);
+assert_true(
+	false !== strpos( $template, 'data-cta-fsc-nav-back' ),
+	'Template uses data-cta-fsc-nav-back for toolbar (no selector collision)'
+);
+assert_true(
+	false !== strpos( $js, 'flipBtn.querySelector("[data-cta-fsc-answer]")' ),
+	'Study Mode JS scopes answer element inside flip trigger'
+);
+$empty_backs = 0;
+foreach ( $cards as $card ) {
+	if ( '' === trim( (string) ( $card['back'] ?? '' ) ) ) {
+		++$empty_backs;
+	}
+}
+assert_true( 0 === $empty_backs, 'All 180 normalized cards have populated back fields' );
+
 echo "\n=== Summary ===\n";
 echo "PASS: {$pass}\n";
 echo "FAIL: {$fail}\n";
