@@ -1,6 +1,6 @@
 <?php
 /**
- * CTA-CE-003 certificate wiring + admin placeholder thumbnail sync.
+ * CTA-CE-003 certificate wiring + approved course thumbnail sync.
  *
  * @package CTA_LMS
  */
@@ -18,10 +18,13 @@ class CTA_Suicide_Risk_Certificate_Sync {
 
 	const COURSE_CODE = 'CTA-CE-003';
 	const SEED_OPTION = 'cta_suicide_risk_certificate_1_0_215';
+	const THUMBNAIL_SEED_OPTION = 'cta_suicide_risk_thumbnail_1_0_267';
 
 	const COMPLETION_STATEMENT = 'The participant completed all required instructional modules, passed the 25-question final examination with a score of at least 70%, submitted the course-specific evaluation, and completed the required attestation.';
 
-	const PLACEHOLDER_FILENAME = 'CTA_Suicide_Risk_Course_Image_ADMIN_PLACEHOLDER.svg';
+	const BUNDLED_THUMBNAIL_FILENAME = 'CTA_Suicide_Risk_Course_Image.png';
+
+	const APPROVED_IMAGE_ALT = 'Advanced Suicide Risk Assessment course image from Clinical Training and Supervision Academy';
 
 	/**
 	 * @return object|null
@@ -30,20 +33,6 @@ class CTA_Suicide_Risk_Certificate_Sync {
 		return class_exists( 'CTA_Suicide_Risk_Module_Sync' )
 			? CTA_Suicide_Risk_Module_Sync::find_course()
 			: null;
-	}
-
-	/**
-	 * Bundled admin-only placeholder image URL (clearly labeled, not client artwork).
-	 *
-	 * @return string
-	 */
-	public static function resolve_placeholder_thumbnail_url() {
-		$path = CTA_PLUGIN_DIR . 'assets/course-images/' . self::PLACEHOLDER_FILENAME;
-		if ( ! is_readable( $path ) ) {
-			return '';
-		}
-
-		return CTA_PLUGIN_URL . 'assets/course-images/' . self::PLACEHOLDER_FILENAME;
 	}
 
 	/**
@@ -65,24 +54,9 @@ class CTA_Suicide_Risk_Certificate_Sync {
 			return true;
 		}
 
-		$meta = array();
-		if ( ! empty( $row->syllabus_meta ) ) {
-			$decoded = json_decode( (string) $row->syllabus_meta, true );
-			if ( is_array( $decoded ) ) {
-				$meta = $decoded;
-			}
-		}
+		$meta = self::decode_syllabus_meta( $row );
 
 		if ( self::COMPLETION_STATEMENT !== (string) ( $meta['certificate_completion_statement'] ?? '' ) ) {
-			return true;
-		}
-
-		if ( '' === trim( (string) ( $row->thumbnail_url ?? '' ) ) ) {
-			return true;
-		}
-
-		$placeholder = self::resolve_placeholder_thumbnail_url();
-		if ( '' !== $placeholder && $placeholder !== (string) $row->thumbnail_url ) {
 			return true;
 		}
 
@@ -90,7 +64,7 @@ class CTA_Suicide_Risk_Certificate_Sync {
 	}
 
 	/**
-	 * Self-heal certificate metadata + placeholder thumbnail for CTA-CE-003 (idempotent).
+	 * Self-heal certificate metadata for CTA-CE-003 (idempotent).
 	 *
 	 * @return array{ok:bool,course_id:int,message:string}
 	 */
@@ -117,7 +91,7 @@ class CTA_Suicide_Risk_Certificate_Sync {
 	}
 
 	/**
-	 * Ensure syllabus_meta certificate fields + placeholder thumbnail are present.
+	 * Ensure syllabus_meta certificate fields are present.
 	 *
 	 * @param bool $force Re-run even if already seeded.
 	 * @return array{ok:bool,course_id:int,message:string}
@@ -147,21 +121,11 @@ class CTA_Suicide_Risk_Certificate_Sync {
 		$course_id = (int) $course->id;
 		self::ensure_certificate_meta( $course_id );
 
-		$thumb = self::sync_placeholder_thumbnail( $course_id );
-		if ( ! $thumb['ok'] ) {
-			return array(
-				'ok'        => false,
-				'course_id' => $course_id,
-				'message'   => $thumb['message'],
-			);
-		}
-
 		update_option(
 			self::SEED_OPTION,
 			array(
-				'at'            => current_time( 'mysql' ),
-				'course_id'     => $course_id,
-				'thumbnail_url' => $thumb['thumbnail_url'],
+				'at'        => current_time( 'mysql' ),
+				'course_id' => $course_id,
 			),
 			false
 		);
@@ -171,6 +135,143 @@ class CTA_Suicide_Risk_Certificate_Sync {
 			'course_id' => $course_id,
 			'message'   => 'synced',
 		);
+	}
+
+	/**
+	 * Attach the approved Suicide Risk course thumbnail (catalog / detail / dashboard).
+	 *
+	 * @param bool $force Re-run even if already applied at this seed key.
+	 * @return array{ok:bool,course_id:int,thumbnail_url:string,message:string}
+	 */
+	public static function sync_thumbnail( $force = false ) {
+		if ( ! $force && get_option( self::THUMBNAIL_SEED_OPTION ) ) {
+			return array(
+				'ok'            => true,
+				'course_id'     => 0,
+				'thumbnail_url' => '',
+				'message'       => 'already_seeded',
+			);
+		}
+
+		$course = self::find_course();
+		if ( ! $course ) {
+			return array(
+				'ok'            => false,
+				'course_id'     => 0,
+				'thumbnail_url' => '',
+				'message'       => 'suicide_risk_course_not_found',
+			);
+		}
+
+		$course_id     = (int) $course->id;
+		$thumbnail_url = self::resolve_approved_thumbnail_url();
+		if ( '' === $thumbnail_url ) {
+			return array(
+				'ok'            => false,
+				'course_id'     => $course_id,
+				'thumbnail_url' => '',
+				'message'       => 'thumbnail_asset_not_found',
+			);
+		}
+
+		global $wpdb;
+
+		self::ensure_approved_image_meta( $course_id );
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$updated = $wpdb->update(
+			$wpdb->prefix . 'cta_courses',
+			array( 'thumbnail_url' => $thumbnail_url ),
+			array( 'id' => $course_id ),
+			array( '%s' ),
+			array( '%d' )
+		);
+
+		if ( false === $updated ) {
+			return array(
+				'ok'            => false,
+				'course_id'     => $course_id,
+				'thumbnail_url' => $thumbnail_url,
+				'message'       => 'thumbnail_update_failed',
+			);
+		}
+
+		update_option( self::THUMBNAIL_SEED_OPTION, 1, false );
+
+		return array(
+			'ok'            => true,
+			'course_id'     => $course_id,
+			'thumbnail_url' => $thumbnail_url,
+			'message'       => 'synced',
+		);
+	}
+
+	/**
+	 * Resolve approved Suicide Risk artwork (Media Library, bundled PNG, or known uploads path).
+	 *
+	 * @return string
+	 */
+	public static function resolve_approved_thumbnail_url() {
+		$filenames = array(
+			'Suicide.png',
+			self::BUNDLED_THUMBNAIL_FILENAME,
+			'CTA_Suicide_Risk_Course_Image.jpg',
+			'CTA_Suicide_Risk_Course_Image.jpeg',
+		);
+
+		foreach ( $filenames as $filename ) {
+			$query = new WP_Query(
+				array(
+					'post_type'      => 'attachment',
+					'post_status'    => 'inherit',
+					'posts_per_page' => 1,
+					'fields'         => 'ids',
+					'meta_query'     => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+						array(
+							'key'     => '_wp_attached_file',
+							'value'   => $filename,
+							'compare' => 'LIKE',
+						),
+					),
+				)
+			);
+			if ( ! empty( $query->posts[0] ) ) {
+				$url = wp_get_attachment_url( (int) $query->posts[0] );
+				wp_reset_postdata();
+				if ( $url ) {
+					return esc_url_raw( $url );
+				}
+			}
+			wp_reset_postdata();
+		}
+
+		$by_slug = get_page_by_path( 'suicide', OBJECT, 'attachment' );
+		if ( $by_slug && ! empty( $by_slug->ID ) ) {
+			$url = wp_get_attachment_url( (int) $by_slug->ID );
+			if ( $url ) {
+				return esc_url_raw( $url );
+			}
+		}
+
+		$bundled = CTA_PLUGIN_DIR . 'assets/course-images/' . self::BUNDLED_THUMBNAIL_FILENAME;
+		if ( is_readable( $bundled ) ) {
+			return esc_url_raw( CTA_PLUGIN_URL . 'assets/course-images/' . self::BUNDLED_THUMBNAIL_FILENAME );
+		}
+
+		return esc_url_raw( content_url( 'uploads/2026/07/Suicide.png' ) );
+	}
+
+	/**
+	 * @param object|null $row Course row.
+	 * @return array<string,mixed>
+	 */
+	private static function decode_syllabus_meta( $row ) {
+		if ( ! $row || empty( $row->syllabus_meta ) ) {
+			return array();
+		}
+
+		$decoded = json_decode( (string) $row->syllabus_meta, true );
+		return is_array( $decoded ) ? $decoded : array();
 	}
 
 	/**
@@ -191,24 +292,19 @@ class CTA_Suicide_Risk_Certificate_Sync {
 			return;
 		}
 
-		$meta = array();
-		if ( ! empty( $row->syllabus_meta ) ) {
-			$decoded = json_decode( (string) $row->syllabus_meta, true );
-			if ( is_array( $decoded ) ) {
-				$meta = $decoded;
-			}
-		}
+		$meta = self::decode_syllabus_meta( $row );
 
-		$meta['course_code']                        = self::COURSE_CODE;
-		$meta['course_code_status']                 = (string) ( $meta['course_code_status'] ?? 'provisional_pending_final_approval' );
-		$meta['certificate_title']                  = (string) ( $row->title ?? '' );
-		$meta['certificate_completion_statement']   = self::COMPLETION_STATEMENT;
-		$meta['instructional_method']               = (string) ( $meta['instructional_method'] ?? 'Asynchronous Distance Learning' );
-		$meta['presenter']                          = (string) ( $meta['presenter'] ?? 'Candice Fuimaono, MS, LMFT' );
-		$meta['provider']                           = (string) ( $meta['provider'] ?? 'Clinical Training and Supervision Academy' );
-		$meta['thumbnail_is_placeholder']           = true;
-		$meta['publication_status']                 = (string) ( $meta['publication_status'] ?? 'under_review_not_approved_for_publication' );
-		$meta['development_draft']                    = true;
+		$meta['course_code']                      = self::COURSE_CODE;
+		$meta['course_code_status']               = (string) ( $meta['course_code_status'] ?? 'provisional_pending_final_approval' );
+		$meta['certificate_title']                = (string) ( $row->title ?? '' );
+		$meta['certificate_completion_statement'] = self::COMPLETION_STATEMENT;
+		$meta['instructional_method']             = (string) ( $meta['instructional_method'] ?? 'Asynchronous Distance Learning' );
+		$meta['presenter']                        = (string) ( $meta['presenter'] ?? 'Candice Fuimaono, MS, LMFT' );
+		$meta['provider']                         = (string) ( $meta['provider'] ?? 'Clinical Training and Supervision Academy' );
+		$meta['publication_status']               = (string) ( $meta['publication_status'] ?? 'under_review_not_approved_for_publication' );
+		$meta['development_draft']                = true;
+
+		unset( $meta['thumbnail_is_placeholder'] );
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$wpdb->update(
@@ -224,42 +320,34 @@ class CTA_Suicide_Risk_Certificate_Sync {
 	}
 
 	/**
+	 * Clear placeholder flags and set final learner-facing alt text after artwork is applied.
+	 *
 	 * @param int $course_id Course ID.
-	 * @return array{ok:bool,thumbnail_url:string,message:string}
 	 */
-	private static function sync_placeholder_thumbnail( $course_id ) {
+	private static function ensure_approved_image_meta( $course_id ) {
 		global $wpdb;
 
-		$thumbnail_url = self::resolve_placeholder_thumbnail_url();
-		if ( '' === $thumbnail_url ) {
-			return array(
-				'ok'            => false,
-				'thumbnail_url' => '',
-				'message'       => 'placeholder_asset_missing',
-			);
+		$course_id = absint( $course_id );
+		if ( ! $course_id ) {
+			return;
 		}
+
+		$row = class_exists( 'CTA_Database' ) ? CTA_Database::get_course( $course_id ) : null;
+		if ( ! $row ) {
+			return;
+		}
+
+		$meta = self::decode_syllabus_meta( $row );
+		unset( $meta['thumbnail_is_placeholder'] );
+		$meta['image_alt'] = self::APPROVED_IMAGE_ALT;
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-		$updated = $wpdb->update(
+		$wpdb->update(
 			$wpdb->prefix . 'cta_courses',
-			array( 'thumbnail_url' => $thumbnail_url ),
-			array( 'id' => absint( $course_id ) ),
+			array( 'syllabus_meta' => wp_json_encode( $meta ) ),
+			array( 'id' => $course_id ),
 			array( '%s' ),
 			array( '%d' )
-		);
-
-		if ( false === $updated ) {
-			return array(
-				'ok'            => false,
-				'thumbnail_url' => $thumbnail_url,
-				'message'       => 'thumbnail_update_failed',
-			);
-		}
-
-		return array(
-			'ok'            => true,
-			'thumbnail_url' => $thumbnail_url,
-			'message'       => 'synced',
 		);
 	}
 }

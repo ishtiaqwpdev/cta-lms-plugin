@@ -887,7 +887,7 @@ return array(
 			'suicide documentation training',
 			'clinician postvention',
 		),
-		'image_alt'               => 'Advanced Suicide Risk Assessment course image pending client approval — Clinical Training and Supervision Academy',
+		'image_alt'               => 'Advanced Suicide Risk Assessment course image from Clinical Training and Supervision Academy',
 		'educational_notice'      => 'Educational material only. This course does not provide legal advice, determine whether any individual meets emergency-detention criteria, establish a universal standard of care, or replace clinical supervision, consultation, current law, employer policy, emergency services, or case-specific legal counsel.',
 		'who_this_course_is_for'  => array(
 			'Licensed Marriage and Family Therapists',
@@ -914,7 +914,7 @@ return array(
 		),
 		'certificate_title'       => 'Advanced Suicide Risk Assessment: Evidence-Based Intervention and Ethical Documentation',
 		'certificate_completion_statement' => 'The participant completed all required instructional modules, passed the 25-question final examination with a score of at least 70%, submitted the course-specific evaluation, and completed the required attestation.',
-		'thumbnail_is_placeholder' => true,
+		// Thumbnail applied by CTA_Suicide_Risk_Certificate_Sync::sync_thumbnail() (bundled PNG + Media Library Suicide.png).
 		'completion_requirements' => array(
 			'Complete all required instructional modules and embedded learning activities.',
 			'Earn a score of at least 70% on the final examination. Participants may repeat the examination until the passing score is achieved.',

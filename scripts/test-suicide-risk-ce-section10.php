@@ -295,13 +295,13 @@ checklist(
 	'New course defaults draft via syllabus flags; content sync does not mass-unpublish other CE courses'
 );
 
-// 15 Placeholder image asset
+// 15 Approved course image asset
 checklist(
 	'S10-15',
-	is_readable( $root . '/assets/course-images/CTA_Suicide_Risk_Course_Image_ADMIN_PLACEHOLDER.svg' )
-	&& false !== stripos( file_get_contents( $root . '/assets/course-images/CTA_Suicide_Risk_Course_Image_ADMIN_PLACEHOLDER.svg' ), 'ADMIN PLACEHOLDER' )
-	&& false !== strpos( $lms, 'CTA_Suicide_Risk_Certificate_Sync::ensure' ),
-	'Admin-only labeled course image placeholder wired with certificate self-heal (not client-approved artwork)'
+	is_readable( $root . '/assets/course-images/CTA_Suicide_Risk_Course_Image.png' )
+	&& false !== strpos( $lms, 'CTA_Suicide_Risk_Certificate_Sync::sync_thumbnail' )
+	&& false === stripos( file_get_contents( $root . '/includes/syllabus/cta-syllabus-data.php' ), 'pending client approval' ),
+	'Approved Suicide Risk course PNG bundled; upgrade sync replaces admin placeholder artwork'
 );
 
 echo str_repeat( '-', 72 ) . "\n";

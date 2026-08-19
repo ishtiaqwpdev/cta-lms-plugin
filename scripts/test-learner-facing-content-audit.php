@@ -93,10 +93,10 @@ foreach ( $programs as $program ) {
 }
 
 // CE course-image placeholder (learner-visible catalog art).
-$suicide_img = $root . '/assets/course-images/CTA_Suicide_Risk_Course_Image_ADMIN_PLACEHOLDER.svg';
+$suicide_img = $root . '/assets/course-images/CTA_Suicide_Risk_Course_Image.png';
 $ce_note     = '';
-if ( is_readable( $suicide_img ) ) {
-	$ce_note = 'CE WARNING: Advanced Suicide Risk still uses ADMIN PLACEHOLDER course image (catalog/hero).';
+if ( ! is_readable( $suicide_img ) ) {
+	$ce_note = 'CE WARNING: Advanced Suicide Risk approved course image PNG missing from assets/course-images/.';
 }
 
 echo "Learner-facing workbook/lesson audit\n";

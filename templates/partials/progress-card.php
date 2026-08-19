@@ -17,11 +17,15 @@ $progress   = (int) $enrollment->progress;
 $display_title = function_exists( 'cta_lms_get_course_display_title' )
 	? cta_lms_get_course_display_title( $course )
 	: (string) $course->title;
+$card_meta = class_exists( 'CTA_Syllabus_Sync' ) ? CTA_Syllabus_Sync::get_meta( $course ) : array();
+$card_alt  = ! empty( $card_meta['image_alt'] )
+	? (string) $card_meta['image_alt']
+	: (string) $course->title;
 ?>
 <article class="card dashboard-course-card cta-progress-card" data-course-id="<?php echo esc_attr( $course->id ); ?>">
 	<?php if ( ! empty( $course->thumbnail_url ) ) : ?>
 		<div class="dashboard-course-card__thumb">
-			<img src="<?php echo esc_url( $course->thumbnail_url ); ?>" alt="">
+			<img src="<?php echo esc_url( $course->thumbnail_url ); ?>" alt="<?php echo esc_attr( $card_alt ); ?>">
 		</div>
 	<?php else : ?>
 		<div class="dashboard-course-card__thumb dashboard-course-card__thumb--placeholder" aria-hidden="true"></div>

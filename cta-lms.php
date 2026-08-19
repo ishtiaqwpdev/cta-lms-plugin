@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.266' );
+	define( 'CTA_VERSION', '1.0.267' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -1487,6 +1487,17 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 			// LPCC NCMHCE: archive legacy 132-card flashcards.json deck; 180-card Study Center is live.
 			if ( version_compare( $installed, '1.0.266', '<' ) && class_exists( 'CTA_Lpcc_Ncmhce_Legacy_Flashcard_Archive' ) ) {
 				CTA_Lpcc_Ncmhce_Legacy_Flashcard_Archive::archive_legacy_flashcards( 0, true );
+			}
+
+			// CTA-CE-003: approved Suicide Risk course image (replace admin placeholder + stale alt text).
+			if ( version_compare( $installed, '1.0.267', '<' ) ) {
+				if ( class_exists( 'CTA_Syllabus_Sync' ) ) {
+					CTA_Database::maybe_add_syllabus_columns();
+					CTA_Syllabus_Sync::sync_all( true );
+				}
+				if ( class_exists( 'CTA_Suicide_Risk_Certificate_Sync' ) ) {
+					CTA_Suicide_Risk_Certificate_Sync::sync_thumbnail( true );
+				}
 			}
 
 			// Decouple supervision application pending from general account / CE access.
