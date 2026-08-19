@@ -1,0 +1,10 @@
+LPCC NCMHCE Form B v2.0 answer-key match report
+candidate_questions=143
+key_questions=143
+compact_grid=143
+scored=100 field_test=43
+scored_letter_dist={"a":25,"b":25,"c":25,"d":25}
+scored_domain_dist={"IAD":25,"CCA":15,"CSI":30,"PPE":15,"TP":15}
+passing_percentage_in_source=KEYWORD_HIT
+rationale_release_in_key_doc=AFTER_FULL_FORM_COMPLETION_ONLY
+mismatch_count=0

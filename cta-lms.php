@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.263' );
+	define( 'CTA_VERSION', '1.0.265' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -111,9 +111,16 @@ $cta_required_files = array(
 	'includes/class-cta-lmft-clinical-form-b-answer-sync.php',
 	'includes/class-cta-lmft-amftrb-sync.php',
 	'includes/class-cta-lpcc-ncmhce-sync.php',
+	'includes/class-cta-lpcc-ncmhce-legacy-forms-archive.php',
+	'includes/class-cta-lpcc-ncmhce-form-a-sync.php',
+	'includes/class-cta-lpcc-ncmhce-form-b-sync.php',
 	'includes/class-cta-lpcc-ncmhce-form-a-v2-sync.php',
 	'includes/class-cta-lpcc-ncmhce-form-a-v2-scoring.php',
 	'includes/class-cta-lpcc-ncmhce-form-a-v2-answer-sync.php',
+	'includes/class-cta-lpcc-ncmhce-form-b-v2-sync.php',
+	'includes/class-cta-lpcc-ncmhce-form-b-v2-scoring.php',
+	'includes/class-cta-lpcc-ncmhce-form-b-v2-answer-sync.php',
+	'includes/class-cta-lpcc-ncmhce-form-v2-scoring-bridge.php',
 	'includes/class-cta-lpcc-law-ethics-sync.php',
 	'includes/class-cta-lcsw-law-ethics-sync.php',
 	'includes/class-cta-lmft-law-ethics-copy.php',
@@ -1459,6 +1466,21 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				if ( class_exists( 'CTA_Lpcc_Ncmhce_Form_A_V2_Answer_Sync' ) ) {
 					CTA_Lpcc_Ncmhce_Form_A_V2_Answer_Sync::sync_answer_keys( true );
 				}
+			}
+
+			// LPCC NCMHCE Form B v2.0 staging load + secured answer merge (does not replace live Form B).
+			if ( version_compare( $installed, '1.0.264', '<' ) ) {
+				if ( class_exists( 'CTA_Lpcc_Ncmhce_Form_B_V2_Sync' ) ) {
+					CTA_Lpcc_Ncmhce_Form_B_V2_Sync::sync( true );
+				}
+				if ( class_exists( 'CTA_Lpcc_Ncmhce_Form_B_V2_Answer_Sync' ) ) {
+					CTA_Lpcc_Ncmhce_Form_B_V2_Answer_Sync::sync_answer_keys( true );
+				}
+			}
+
+			// LPCC NCMHCE v2.0 cutover: archive legacy Form A/B and publish live v2 forms together.
+			if ( version_compare( $installed, '1.0.265', '<' ) && class_exists( 'CTA_Lpcc_Ncmhce_Legacy_Forms_Archive' ) ) {
+				CTA_Lpcc_Ncmhce_Legacy_Forms_Archive::perform_v2_cutover( 0, true );
 			}
 
 			// Decouple supervision application pending from general account / CE access.

@@ -302,8 +302,8 @@ class CTA_Quiz {
 		$question_count = count( $questions );
 		$is_formative_bank = class_exists( 'CTA_Exam_Prep_Workbooks' )
 			&& CTA_Exam_Prep_Workbooks::is_formative_practice_bank( $quiz );
-		$is_unspecified_pass = class_exists( 'CTA_Lpcc_Ncmhce_Form_A_V2_Scoring' )
-			&& CTA_Lpcc_Ncmhce_Form_A_V2_Scoring::withholds_pass_fail( $quiz );
+		$is_unspecified_pass = class_exists( 'CTA_Lpcc_Ncmhce_Form_V2_Scoring_Bridge' )
+			&& CTA_Lpcc_Ncmhce_Form_V2_Scoring_Bridge::withholds_pass_fail( $quiz );
 		$omit_pass_fail = $is_formative_bank || $is_unspecified_pass;
 		$time_limit_mins = self::get_time_limit_mins( $quiz );
 		$time_limit_label = self::format_time_limit_label( $time_limit_mins );
@@ -540,8 +540,8 @@ class CTA_Quiz {
 		$is_exam_prep      = class_exists( 'CTA_Exam_Access' ) && CTA_Exam_Access::is_exam_prep( $course_for_reveal );
 		$uses_core_scoring = class_exists( 'CTA_Lmft_Clinical_Comprehensive_Scoring' )
 			&& CTA_Lmft_Clinical_Comprehensive_Scoring::uses_core_calibration_scoring( $quiz, $course_for_reveal );
-		$uses_lpcc_v2_scoring = class_exists( 'CTA_Lpcc_Ncmhce_Form_A_V2_Scoring' )
-			&& CTA_Lpcc_Ncmhce_Form_A_V2_Scoring::uses_scored_field_test_scoring( $quiz, $course_for_reveal );
+		$uses_lpcc_v2_scoring = class_exists( 'CTA_Lpcc_Ncmhce_Form_V2_Scoring_Bridge' )
+			&& CTA_Lpcc_Ncmhce_Form_V2_Scoring_Bridge::uses_scored_field_test_scoring( $quiz, $course_for_reveal );
 		// CE finals: store rationales for admin QA; do not reveal to learners until owner approves.
 		$reveal_explanations = (bool) apply_filters(
 			'cta_lms_reveal_quiz_explanations',
@@ -608,7 +608,7 @@ class CTA_Quiz {
 
 		$lpcc_v2_score = null;
 		if ( $uses_lpcc_v2_scoring ) {
-			$lpcc_v2_score = CTA_Lpcc_Ncmhce_Form_A_V2_Scoring::calculate_display_score(
+			$lpcc_v2_score = CTA_Lpcc_Ncmhce_Form_V2_Scoring_Bridge::calculate_display_score(
 				$questions,
 				$sanitized,
 				$quiz
@@ -1613,8 +1613,8 @@ class CTA_Quiz {
 		$is_formative = class_exists( 'CTA_Exam_Prep_Workbooks' )
 			&& CTA_Exam_Prep_Workbooks::is_formative_practice_bank( $quiz );
 		$omit_pass_fail = $is_formative
-			|| ( class_exists( 'CTA_Lpcc_Ncmhce_Form_A_V2_Scoring' )
-				&& CTA_Lpcc_Ncmhce_Form_A_V2_Scoring::withholds_pass_fail( $quiz ) );
+			|| ( class_exists( 'CTA_Lpcc_Ncmhce_Form_V2_Scoring_Bridge' )
+				&& CTA_Lpcc_Ncmhce_Form_V2_Scoring_Bridge::withholds_pass_fail( $quiz ) );
 
 		return array(
 			'quiz_id'            => (int) $quiz->id,
@@ -1735,9 +1735,9 @@ class CTA_Quiz {
 			);
 			$score  = (int) $core_score['score'];
 			$passed = ! empty( $core_score['passed'] ) ? 1 : 0;
-		} elseif ( class_exists( 'CTA_Lpcc_Ncmhce_Form_A_V2_Scoring' )
-			&& CTA_Lpcc_Ncmhce_Form_A_V2_Scoring::uses_scored_field_test_scoring( $quiz, $course_for_score ) ) {
-			$v2_score = CTA_Lpcc_Ncmhce_Form_A_V2_Scoring::calculate_display_score( $questions, $sanitized, $quiz );
+		} elseif ( class_exists( 'CTA_Lpcc_Ncmhce_Form_V2_Scoring_Bridge' )
+			&& CTA_Lpcc_Ncmhce_Form_V2_Scoring_Bridge::uses_scored_field_test_scoring( $quiz, $course_for_score ) ) {
+			$v2_score = CTA_Lpcc_Ncmhce_Form_V2_Scoring_Bridge::calculate_display_score( $questions, $sanitized, $quiz );
 			$score    = (int) $v2_score['score'];
 			$passed   = ! empty( $v2_score['passed'] ) ? 1 : 0;
 		}

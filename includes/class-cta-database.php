@@ -1401,12 +1401,17 @@ class CTA_Database {
 		if ( $quiz_id ) {
 			$quiz = self::get_quiz( $quiz_id );
 			if ( $quiz && (int) $quiz->course_id === $course_id ) {
+				if ( class_exists( 'CTA_Lpcc_Ncmhce_Legacy_Forms_Archive' )
+					&& ! CTA_Lpcc_Ncmhce_Legacy_Forms_Archive::is_learner_accessible_quiz( $quiz ) ) {
+					return null;
+				}
+
 				if ( 'active' === (string) $quiz->status ) {
 					return $quiz;
 				}
 
-				if ( class_exists( 'CTA_Lpcc_Ncmhce_Form_A_V2_Sync' )
-					&& CTA_Lpcc_Ncmhce_Form_A_V2_Sync::is_staging_quiz( $quiz ) ) {
+				if ( class_exists( 'CTA_Lpcc_Ncmhce_Form_V2_Scoring_Bridge' )
+					&& CTA_Lpcc_Ncmhce_Form_V2_Scoring_Bridge::is_staging_quiz( $quiz ) ) {
 					return CTA_Lpcc_Ncmhce_Form_A_V2_Sync::current_user_can_preview() ? $quiz : null;
 				}
 			}

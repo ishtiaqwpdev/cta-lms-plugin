@@ -1074,9 +1074,12 @@ class CTA_Course_Materials {
 			'lmft-clinical-form-b-answer-key.php',
 			'lmft-clinical-form-b-answer-key-',
 			'lpcc-ncmhce-form-a-v2-answer-key.php',
+			'lpcc-ncmhce-form-b-v2-answer-key.php',
 			'controlled_answer_key_rationales',
 			'form_a_v2.0_controlled',
 			'form_a_v2_0_controlled',
+			'form_b_v2.0_controlled',
+			'form_b_v2_0_controlled',
 			'/study-tools/_archived/',
 			'study-tools/_archived/',
 			'lmft-clinical-legacy-flashcards-v1.0-132.json',
@@ -1753,6 +1756,11 @@ class CTA_Course_Materials {
 
 		if ( class_exists( 'CTA_Lmft_Clinical_Legacy_Forms_Archive' )
 			&& CTA_Lmft_Clinical_Legacy_Forms_Archive::is_archived_resource( $resource ) ) {
+			return true;
+		}
+
+		if ( class_exists( 'CTA_Lpcc_Ncmhce_Legacy_Forms_Archive' )
+			&& CTA_Lpcc_Ncmhce_Legacy_Forms_Archive::is_archived_resource( $resource ) ) {
 			return true;
 		}
 

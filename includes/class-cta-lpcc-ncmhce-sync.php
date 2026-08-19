@@ -497,6 +497,18 @@ class CTA_Lpcc_Ncmhce_Sync {
 		$result['message'] = '';
 
 		foreach ( $defs as $def ) {
+			if ( in_array( $def['quiz_type'], array( 'form_a', 'form_b' ), true )
+				&& class_exists( 'CTA_Lpcc_Ncmhce_Legacy_Forms_Archive' )
+				&& CTA_Lpcc_Ncmhce_Legacy_Forms_Archive::is_v2_cutover_complete( $course_id ) ) {
+				$result[ $def['key'] ]  = class_exists( 'CTA_Lpcc_Ncmhce_Form_A_Sync' ) && 'form_a' === $def['quiz_type']
+					? CTA_Lpcc_Ncmhce_Form_A_Sync::find_form_quiz_id( $course_id )
+					: ( class_exists( 'CTA_Lpcc_Ncmhce_Form_B_Sync' ) && 'form_b' === $def['quiz_type']
+						? CTA_Lpcc_Ncmhce_Form_B_Sync::find_form_quiz_id( $course_id )
+						: 0 );
+				$result[ $def['qkey'] ] = $def['expect'];
+				continue;
+			}
+
 			$questions = self::load_seed_questions( $def['file'] );
 			$count     = count( $questions );
 			$result[ $def['qkey'] ] = $count;
@@ -514,6 +526,18 @@ class CTA_Lpcc_Ncmhce_Sync {
 		}
 
 		foreach ( $defs as $def ) {
+			if ( in_array( $def['quiz_type'], array( 'form_a', 'form_b' ), true )
+				&& class_exists( 'CTA_Lpcc_Ncmhce_Legacy_Forms_Archive' )
+				&& CTA_Lpcc_Ncmhce_Legacy_Forms_Archive::is_v2_cutover_complete( $course_id ) ) {
+				$result[ $def['key'] ]  = class_exists( 'CTA_Lpcc_Ncmhce_Form_A_Sync' ) && 'form_a' === $def['quiz_type']
+					? CTA_Lpcc_Ncmhce_Form_A_Sync::find_form_quiz_id( $course_id )
+					: ( class_exists( 'CTA_Lpcc_Ncmhce_Form_B_Sync' ) && 'form_b' === $def['quiz_type']
+						? CTA_Lpcc_Ncmhce_Form_B_Sync::find_form_quiz_id( $course_id )
+						: 0 );
+				$result[ $def['qkey'] ] = $def['expect'];
+				continue;
+			}
+
 			$questions = self::load_seed_questions( $def['file'] );
 			$quiz_id   = self::replace_form_quiz(
 				$course_id,

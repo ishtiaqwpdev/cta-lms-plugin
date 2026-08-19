@@ -439,8 +439,8 @@ class CTA_Student_Dashboard {
 		$quiz_cards     = array();
 		$user_id_player = get_current_user_id();
 		foreach ( $course_quizzes as $qrow ) {
-			if ( class_exists( 'CTA_Lpcc_Ncmhce_Form_A_V2_Sync' )
-				&& CTA_Lpcc_Ncmhce_Form_A_V2_Sync::is_staging_quiz( $qrow ) ) {
+			if ( class_exists( 'CTA_Lpcc_Ncmhce_Form_V2_Scoring_Bridge' )
+				&& CTA_Lpcc_Ncmhce_Form_V2_Scoring_Bridge::is_staging_quiz( $qrow ) ) {
 				continue;
 			}
 			$q_questions = CTA_Database::get_quiz_questions( (int) $qrow->id );

@@ -49,6 +49,11 @@ class CTA_Lpcc_Ncmhce_Form_A_V2_Scoring {
 			return false;
 		}
 
+		if ( class_exists( 'CTA_Lpcc_Ncmhce_Form_A_Sync' )
+			&& CTA_Lpcc_Ncmhce_Form_A_Sync::is_live_v2_quiz( $quiz ) ) {
+			return true;
+		}
+
 		if ( class_exists( 'CTA_Lpcc_Ncmhce_Form_A_V2_Sync' )
 			&& CTA_Lpcc_Ncmhce_Form_A_V2_Sync::is_staging_quiz( $quiz ) ) {
 			return true;
@@ -114,13 +119,18 @@ class CTA_Lpcc_Ncmhce_Form_A_V2_Scoring {
 	 * @return array<int,true>
 	 */
 	public static function get_scored_question_ids( array $questions, $quiz ) {
-		if ( ! class_exists( 'CTA_Lpcc_Ncmhce_Form_A_V2_Answer_Sync' )
-			|| ! class_exists( 'CTA_Lpcc_Ncmhce_Form_A_V2_Sync' ) ) {
+		if ( ! class_exists( 'CTA_Lpcc_Ncmhce_Form_A_V2_Answer_Sync' ) ) {
+			return array();
+		}
+
+		if ( ! class_exists( 'CTA_Lpcc_Ncmhce_Form_A_Sync' ) && ! class_exists( 'CTA_Lpcc_Ncmhce_Form_A_V2_Sync' ) ) {
 			return array();
 		}
 
 		$records    = CTA_Lpcc_Ncmhce_Form_A_V2_Answer_Sync::get_answer_records();
-		$code_order = CTA_Lpcc_Ncmhce_Form_A_V2_Sync::get_question_code_order_map();
+		$code_order = class_exists( 'CTA_Lpcc_Ncmhce_Form_A_Sync' )
+			? CTA_Lpcc_Ncmhce_Form_A_Sync::get_question_code_order_map()
+			: CTA_Lpcc_Ncmhce_Form_A_V2_Sync::get_question_code_order_map();
 		$scored     = array();
 
 		foreach ( $questions as $question ) {

@@ -64,6 +64,9 @@ function assert_not_contains( $haystack, $needle, $msg ) {
 require_once $root . '/includes/class-cta-lpcc-ncmhce-form-a-v2-sync.php';
 require_once $root . '/includes/class-cta-lpcc-ncmhce-form-a-v2-scoring.php';
 require_once $root . '/includes/class-cta-lpcc-ncmhce-form-a-v2-answer-sync.php';
+require_once $root . '/includes/class-cta-lpcc-ncmhce-legacy-forms-archive.php';
+require_once $root . '/includes/class-cta-lpcc-ncmhce-form-a-sync.php';
+require_once $root . '/includes/class-cta-lpcc-ncmhce-form-b-sync.php';
 
 $quiz_php     = file_get_contents( $root . '/public/class-cta-quiz.php' );
 $quiz_partial = file_get_contents( $root . '/templates/partials/quiz-question.php' );
@@ -141,21 +144,30 @@ assert_true(
 	'Form A v2 withholds pass/fail until a source cut score is confirmed'
 );
 
-$legacy_quiz = (object) array( 'quiz_type' => 'form_a' );
+$legacy_quiz = (object) array( 'quiz_type' => 'form_a', 'status' => 'archived' );
 assert_true(
 	! CTA_Lpcc_Ncmhce_Form_A_V2_Scoring::uses_scored_field_test_scoring( $legacy_quiz ),
-	'Live Form A quiz_type is not scored by the v2.0 scorer'
+	'Archived legacy Form A is not scored by the v2.0 scorer'
+);
+
+$live_v2_quiz = (object) array( 'quiz_type' => 'form_a', 'status' => 'active' );
+assert_true(
+	class_exists( 'CTA_Lpcc_Ncmhce_Form_A_Sync' )
+		&& CTA_Lpcc_Ncmhce_Form_A_Sync::is_live_v2_quiz( $live_v2_quiz ),
+	'Active live form_a uses v2.0 scoring after cutover'
 );
 
 assert_true(
-	false !== strpos( $ncmhce_sync, "'quiz_type' => 'form_a'" )
-		&& false !== strpos( $ncmhce_sync, 'lpcc-ncmhce-form-a.php' ),
-	'Program sync still points live Form A at the legacy seed'
+	false !== strpos( $ncmhce_sync, 'is_v2_cutover_complete' ),
+	'Program sync skips legacy re-seed after v2 cutover'
 );
-assert_not_contains( $ncmhce_sync, 'form_a_v2', 'Program sync does not replace live Form A with v2.0' );
+assert_true(
+	false !== strpos( $lms, 'perform_v2_cutover' ),
+	'Atomic v2 cutover runs on plugin upgrade 1.0.265'
+);
 assert_true(
 	false !== strpos( file_get_contents( $root . '/includes/class-cta-lpcc-ncmhce-form-a-v2-sync.php' ), "'status'          => 'draft'" ),
-	'Form A v2.0 quiz is written as draft (non-public)'
+	'Staging form_a_v2 sync remains draft-only (pre-cutover loader)'
 );
 
 assert_not_contains( $quiz_partial, 'correct_option', 'Quiz question partial never references correct_option' );
@@ -200,13 +212,18 @@ if ( is_dir( $materials_dir ) ) {
 assert_true( empty( $docx_hits ), 'Answer-key DOCX is not copied into learner materials' );
 
 assert_true(
-	false !== strpos( $dashboard, 'CTA_Lpcc_Ncmhce_Form_A_V2_Sync::is_staging_quiz' ),
-	'Dashboard skips the staging Form A v2 quiz card'
+	false !== strpos( $dashboard, 'CTA_Lpcc_Ncmhce_Form_V2_Scoring_Bridge::is_staging_quiz' ),
+	'Dashboard skips staging Form A/B v2 quiz cards'
 );
 assert_not_contains(
 	file_get_contents( $root . '/includes/class-cta-exam-prep-workbooks.php' ),
 	'form_a_v2',
 	'Exam Center program-level types do not include form_a_v2'
+);
+assert_not_contains(
+	file_get_contents( $root . '/includes/class-cta-exam-prep-workbooks.php' ),
+	'form_b_v2',
+	'Exam Center program-level types do not include form_b_v2'
 );
 
 assert_true(
@@ -254,6 +271,96 @@ foreach ( $codes as $index => $code ) {
 }
 $zero = CTA_Lpcc_Ncmhce_Form_A_V2_Scoring::calculate_display_score( $perfect_questions, $zero_answers, $fake_quiz );
 assert_true( 0 === (int) $zero['score'] && 0 === (int) $zero['scored_correct'], 'Field-test-only correct answers yield 0% scored' );
+
+echo "\n=== LPCC NCMHCE Form B v2.0 Security Check ===\n\n";
+
+require_once $root . '/includes/class-cta-lpcc-ncmhce-form-b-v2-sync.php';
+require_once $root . '/includes/class-cta-lpcc-ncmhce-form-b-v2-scoring.php';
+require_once $root . '/includes/class-cta-lpcc-ncmhce-form-b-v2-answer-sync.php';
+require_once $root . '/includes/class-cta-lpcc-ncmhce-form-v2-scoring-bridge.php';
+
+$learner_b_src = file_get_contents( $root . '/includes/quiz-seeds/lpcc-ncmhce-form-b-v2-items.php' );
+$admin_b_src   = file_get_contents( $root . '/includes/quiz-seeds/admin-only/lpcc-ncmhce-form-b-v2-answer-key.php' );
+$legacy_b_src  = file_get_contents( $root . '/includes/quiz-seeds/lpcc-ncmhce-form-b.php' );
+$learner_b     = include $root . '/includes/quiz-seeds/lpcc-ncmhce-form-b-v2-items.php';
+$admin_b       = include $root . '/includes/quiz-seeds/admin-only/lpcc-ncmhce-form-b-v2-answer-key.php';
+$legacy_b      = include $root . '/includes/quiz-seeds/lpcc-ncmhce-form-b.php';
+
+assert_true( is_array( $learner_b ) && 143 === count( $learner_b ), 'Form B learner seed has 143 items' );
+assert_true( is_array( $admin_b ) && 143 === count( $admin_b ), 'Form B admin key has 143 items' );
+assert_true( is_array( $legacy_b ) && 143 === count( $legacy_b ), 'Legacy live Form B seed still has 143 items' );
+assert_true(
+	false !== strpos( CTA_Lpcc_Ncmhce_Form_B_V2_Answer_Sync::get_answer_key_path(), 'admin-only' ),
+	'Form B v2 admin key path is under admin-only/'
+);
+assert_true( false !== strpos( $admin_b_src, 'ADMIN ONLY' ), 'Form B admin key file marked ADMIN ONLY' );
+assert_not_contains( $learner_b_src, "'correct_option' => 'a'", 'Form B learner seed has no correct_option a' );
+assert_not_contains( $learner_b_src, 'Why the keyed answer is best', 'Form B learner seed has no rationale bodies' );
+
+$valid_b = CTA_Lpcc_Ncmhce_Form_B_V2_Answer_Sync::validate_answer_key( $admin_b );
+assert_true( true === $valid_b, 'Form B admin answer key validates (143 mapped, 100 scored / 43 field-test)' );
+
+$codes_b = CTA_Lpcc_Ncmhce_Form_B_V2_Sync::get_question_code_order_map();
+assert_true( 143 === count( $codes_b ), 'Form B learner code map has 143 question_codes' );
+$codes_b_match = true;
+foreach ( $codes_b as $code ) {
+	if ( empty( $admin_b[ $code ] ) ) {
+		$codes_b_match = false;
+		break;
+	}
+}
+assert_true( $codes_b_match, 'Every Form B learner question_code has an admin key row' );
+assert_true(
+	null === CTA_Lpcc_Ncmhce_Form_B_V2_Scoring::source_passing_percent(),
+	'Form B passing percent is unspecified in the v2.0 source key (not assumed 70)'
+);
+assert_true(
+	false !== strpos( $materials, 'lpcc-ncmhce-form-b-v2-answer-key.php' ),
+	'Form B v2 answer key filename blocked in is_admin_restricted_source_path'
+);
+assert_true(
+	false !== strpos( $lms, 'CTA_Lpcc_Ncmhce_Form_B_V2_Sync::sync' )
+		&& false !== strpos( $lms, 'CTA_Lpcc_Ncmhce_Form_B_V2_Answer_Sync::sync_answer_keys' ),
+	'Upgrade loads Form B staging items then merges secured answers'
+);
+assert_not_contains( $ncmhce_sync, 'form_b_v2', 'Program sync does not replace live Form B with v2.0' );
+assert_true(
+	false !== strpos( file_get_contents( $root . '/includes/class-cta-lpcc-ncmhce-form-b-v2-sync.php' ), "'status'          => 'draft'" ),
+	'Form B v2.0 quiz is written as draft (non-public)'
+);
+assert_true(
+	false !== strpos( $quiz_php, 'CTA_Lpcc_Ncmhce_Form_V2_Scoring_Bridge' ),
+	'Quiz handler uses shared LPCC v2 scoring bridge'
+);
+
+$fake_quiz_b = (object) array( 'quiz_type' => 'form_b_v2' );
+assert_true(
+	CTA_Lpcc_Ncmhce_Form_V2_Scoring_Bridge::withholds_pass_fail( $fake_quiz_b ),
+	'Form B v2 withholds pass/fail until a source cut score is confirmed'
+);
+assert_true(
+	'c' === strtolower( (string) ( $admin_b['CTA-LPCC-NCMHCE-FB-V2-001']['correct_option'] ?? '' ) ),
+	'Form B Q1 admin key is mapped (letter present and valid)'
+);
+
+$perfect_b_questions = array();
+$perfect_b_answers   = array();
+foreach ( $codes_b as $index => $code ) {
+	$id = $index + 1;
+	$perfect_b_questions[] = (object) array(
+		'id'             => $id,
+		'order_index'    => $index,
+		'correct_option' => $admin_b[ $code ]['correct_option'],
+	);
+	$perfect_b_answers[ $id ] = $admin_b[ $code ]['correct_option'];
+}
+$perfect_b = CTA_Lpcc_Ncmhce_Form_B_V2_Scoring::calculate_display_score(
+	$perfect_b_questions,
+	$perfect_b_answers,
+	$fake_quiz_b
+);
+assert_true( 100 === (int) $perfect_b['score'], 'Form B all-correct fixture scores 100% of scored items' );
+assert_true( empty( $perfect_b['passed'] ), 'Form B all-correct fixture still withholds pass/fail' );
 
 echo "\n{$pass} passed, {$fail} failed\n";
 exit( $fail ? 1 : 0 );
