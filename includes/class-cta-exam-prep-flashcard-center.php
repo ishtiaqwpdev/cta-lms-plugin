@@ -54,8 +54,6 @@ class CTA_Exam_Prep_Flashcard_Center {
 	 */
 	public static function get_legacy_fallback_slugs() {
 		$slugs = array(
-			'lpcc-ncmhce-exam-preparation',
-			'lpcc-california-clinical-exam-preparation',
 			'lpcc-california-law-ethics-exam-preparation',
 			'lcsw-california-law-ethics-exam-preparation',
 			'lcsw-aswb-clinical-exam-preparation',

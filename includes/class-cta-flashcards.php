@@ -26,8 +26,7 @@ class CTA_Flashcards {
 	 */
 	public static function get_deck_map() {
 		return array(
-			'lpcc-ncmhce-exam-preparation'                   => 'assets/course-materials/lpcc-ncmhce/study-tools/flashcards.json',
-			'lpcc-california-clinical-exam-preparation'      => 'assets/course-materials/lpcc-ncmhce/study-tools/flashcards.json',
+			// LPCC NCMHCE legacy flashcards.json archived — use Flashcard Study Center only.
 			'lpcc-california-law-ethics-exam-preparation'    => 'assets/course-materials/lpcc-law-ethics/study-tools/flashcards.json',
 			'lcsw-california-law-ethics-exam-preparation'    => 'assets/course-materials/lcsw-law-ethics/study-tools/flashcards.json',
 			'lcsw-aswb-clinical-exam-preparation'            => 'assets/course-materials/lcsw-aswb/study-tools/flashcards.json',
@@ -54,6 +53,11 @@ class CTA_Flashcards {
 
 		if ( class_exists( 'CTA_Lmft_Clinical_Legacy_Flashcard_Archive' )
 			&& CTA_Lmft_Clinical_Legacy_Flashcard_Archive::blocks_learner_legacy_deck( $course ) ) {
+			return null;
+		}
+
+		if ( class_exists( 'CTA_Lpcc_Ncmhce_Legacy_Flashcard_Archive' )
+			&& CTA_Lpcc_Ncmhce_Legacy_Flashcard_Archive::blocks_learner_legacy_deck( $course ) ) {
 			return null;
 		}
 

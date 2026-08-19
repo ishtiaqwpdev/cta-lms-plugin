@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.265' );
+	define( 'CTA_VERSION', '1.0.266' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -112,6 +112,7 @@ $cta_required_files = array(
 	'includes/class-cta-lmft-amftrb-sync.php',
 	'includes/class-cta-lpcc-ncmhce-sync.php',
 	'includes/class-cta-lpcc-ncmhce-legacy-forms-archive.php',
+	'includes/class-cta-lpcc-ncmhce-legacy-flashcard-archive.php',
 	'includes/class-cta-lpcc-ncmhce-form-a-sync.php',
 	'includes/class-cta-lpcc-ncmhce-form-b-sync.php',
 	'includes/class-cta-lpcc-ncmhce-form-a-v2-sync.php',
@@ -1481,6 +1482,11 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 			// LPCC NCMHCE v2.0 cutover: archive legacy Form A/B and publish live v2 forms together.
 			if ( version_compare( $installed, '1.0.265', '<' ) && class_exists( 'CTA_Lpcc_Ncmhce_Legacy_Forms_Archive' ) ) {
 				CTA_Lpcc_Ncmhce_Legacy_Forms_Archive::perform_v2_cutover( 0, true );
+			}
+
+			// LPCC NCMHCE: archive legacy 132-card flashcards.json deck; 180-card Study Center is live.
+			if ( version_compare( $installed, '1.0.266', '<' ) && class_exists( 'CTA_Lpcc_Ncmhce_Legacy_Flashcard_Archive' ) ) {
+				CTA_Lpcc_Ncmhce_Legacy_Flashcard_Archive::archive_legacy_flashcards( 0, true );
 			}
 
 			// Decouple supervision application pending from general account / CE access.

@@ -59,6 +59,7 @@ $dry_run = isset( $options['dry-run'] );
 
 $targets = array(
 	'lmft-clinical' => $root . '/assets/course-materials/lmft-clinical/study-tools/flashcard-study-center.json',
+	'lpcc-ncmhce'   => $root . '/assets/course-materials/lpcc-ncmhce/study-tools/flashcard-study-center.json',
 );
 
 if ( '' === $program || ! isset( $targets[ $program ] ) ) {
@@ -161,6 +162,10 @@ echo 'Cards missing memory_cue: ' . $missing_cue . PHP_EOL;
 
 if ( 'lmft-clinical' === $program && 180 !== count( $cards ) ) {
 	echo 'WARNING: LMFT California Clinical deck expected 180 cards; source has ' . count( $cards ) . '.' . PHP_EOL;
+}
+
+if ( 'lpcc-ncmhce' === $program && 180 !== count( $cards ) ) {
+	echo 'WARNING: LPCC NCMHCE deck expected 180 cards; source has ' . count( $cards ) . '.' . PHP_EOL;
 }
 
 if ( $dry_run ) {

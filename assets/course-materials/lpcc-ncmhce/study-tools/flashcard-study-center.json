@@ -1,7 +1,2555 @@
 {
-  "program": "lpcc-ncmhce",
-  "title": "LPCC NCMHCE — Flashcard Study Center",
-  "version": "1.0",
-  "domains": [],
-  "cards": []
+    "program": "lpcc-ncmhce",
+    "title": "LPCC NCMHCE — Flashcard Study Center",
+    "version": "1.0",
+    "expected_total": 180,
+    "domains": [
+        {
+            "key": "professional-practice-ethics",
+            "label": "Professional Practice & Ethics",
+            "order": 1
+        },
+        {
+            "key": "intake-assessment-diagnosis",
+            "label": "Intake, Assessment & Diagnosis",
+            "order": 2
+        },
+        {
+            "key": "treatment-planning",
+            "label": "Treatment Planning",
+            "order": 3
+        },
+        {
+            "key": "counseling-skills-interventions",
+            "label": "Counseling Skills & Interventions",
+            "order": 4
+        },
+        {
+            "key": "core-counseling-attributes",
+            "label": "Core Counseling Attributes",
+            "order": 5
+        }
+    ],
+    "cards": [
+        {
+            "id": "D1-001",
+            "sort_order": 1,
+            "domain": "professional-practice-ethics",
+            "domain_label": "Professional Practice & Ethics",
+            "front": "A counselor is asked to treat a client whose primary concern requires specialized cultural and clinical knowledge the counselor has not previously used in practice. What should the counselor determine before accepting the case?",
+            "back": "Whether the counselor has sufficient competence—through education, training, and supervised experience—to provide the service safely and effectively.",
+            "meta": {
+                "domain_code": "D1",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D1-002",
+            "sort_order": 2,
+            "domain": "professional-practice-ethics",
+            "domain_label": "Professional Practice & Ethics",
+            "front": "An outcome measure produces very similar scores when a client's condition has not changed, but there is weak evidence that it measures the construct it claims to measure. Which psychometric distinction matters?",
+            "back": "The measure shows reliability (consistency), but its validity remains questionable.",
+            "meta": {
+                "domain_code": "D1",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D1-003",
+            "sort_order": 3,
+            "domain": "professional-practice-ethics",
+            "domain_label": "Professional Practice & Ethics",
+            "front": "A counselor faces a case in which an agency custom, an ethical concern, and a possible legal duty point in different directions. What should guide the counselor's decision sequence?",
+            "back": "Identify the applicable law and ethical standards, prioritize client welfare and safety, use an ethical decision-making process, obtain qualified consultation when needed, and document the reasoning.",
+            "meta": {
+                "domain_code": "D1",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D1-004",
+            "sort_order": 4,
+            "domain": "professional-practice-ethics",
+            "domain_label": "Professional Practice & Ethics",
+            "front": "A client asks, “Should I leave my partner? Just tell me what you think I should do.” What response best reflects the counselor's role?",
+            "back": "Clarify that the counselor can help the client examine safety, values, options, and consequences, while the client retains responsibility for personal decisions.",
+            "meta": {
+                "domain_code": "D1",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D1-005",
+            "sort_order": 5,
+            "domain": "professional-practice-ethics",
+            "domain_label": "Professional Practice & Ethics",
+            "front": "A client says they do not understand why certain information is being collected and wants to know whether they can ask questions before continuing. Which client right is most relevant?",
+            "back": "The right to receive understandable information about counseling and to participate knowingly in decisions about services.",
+            "meta": {
+                "domain_code": "D1",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D1-006",
+            "sort_order": 6,
+            "domain": "professional-practice-ethics",
+            "domain_label": "Professional Practice & Ethics",
+            "front": "During counseling, a client reveals information suggesting serious and foreseeable harm may occur. How should the counselor think about confidentiality?",
+            "back": "Confidentiality remains the default, but it has limits. The counselor must consider applicable law and ethical exceptions, disclose only what is necessary, and document the decision.",
+            "meta": {
+                "domain_code": "D1",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D1-007",
+            "sort_order": 7,
+            "domain": "professional-practice-ethics",
+            "domain_label": "Professional Practice & Ethics",
+            "front": "An agency policy directs counselors to follow a routine procedure that appears inconsistent with a client's rights and the counselor's ethical obligations. What should the counselor do first?",
+            "back": "Clarify the policy and the controlling ethical/legal requirements, then address the conflict through appropriate supervisory or administrative channels rather than applying the policy automatically.",
+            "meta": {
+                "domain_code": "D1",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D1-008",
+            "sort_order": 8,
+            "domain": "professional-practice-ethics",
+            "domain_label": "Professional Practice & Ethics",
+            "front": "A client is surprised by a collection procedure after missing payment and says it was never explained. What is the better professional practice?",
+            "back": "Review fees, billing arrangements, collection procedures, insurance limitations, and related financial expectations clearly as part of informed consent and whenever material terms change.",
+            "meta": {
+                "domain_code": "D1",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D1-009",
+            "sort_order": 9,
+            "domain": "professional-practice-ethics",
+            "domain_label": "Professional Practice & Ethics",
+            "front": "A counselor recommends a new intervention that may initially increase emotional discomfort. What should be explained before proceeding?",
+            "back": "The intervention's purpose, process, reasonably anticipated risks and benefits, relevant alternatives, and the client's opportunity to ask questions and decide whether to proceed.",
+            "meta": {
+                "domain_code": "D1",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D1-010",
+            "sort_order": 10,
+            "domain": "professional-practice-ethics",
+            "domain_label": "Professional Practice & Ethics",
+            "front": "A current client sends a friend request to the counselor's personal social media account. What is the most appropriate response?",
+            "back": "Maintain the professional/personal boundary, follow the counselor's written social-media policy, and address the request clinically if it is relevant to the counseling relationship.",
+            "meta": {
+                "domain_code": "D1",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D1-011",
+            "sort_order": 11,
+            "domain": "professional-practice-ethics",
+            "domain_label": "Professional Practice & Ethics",
+            "front": "A client is participating in court-involved counseling and assumes that everything said in sessions can never be shared with anyone. What should the counselor do next?",
+            "back": "Clarify the legal context of the services, who may receive information, the limits of confidentiality, and any reporting requirements before allowing the misunderstanding to continue.",
+            "meta": {
+                "domain_code": "D1",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D1-012",
+            "sort_order": 12,
+            "domain": "professional-practice-ethics",
+            "domain_label": "Professional Practice & Ethics",
+            "front": "A client has signed the consent form but cannot explain the basic risks, limits of confidentiality, or nature of the service. Is informed consent adequate?",
+            "back": "No. A signature alone is insufficient; the counselor should clarify the information, check understanding, answer questions, and obtain meaningful informed consent before proceeding.",
+            "meta": {
+                "domain_code": "D1",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D1-013",
+            "sort_order": 13,
+            "domain": "professional-practice-ethics",
+            "domain_label": "Professional Practice & Ethics",
+            "front": "A client wants to discuss sensitive clinical details through an unsecured messaging channel. What should the counselor prioritize?",
+            "back": "Use secure, appropriate communication methods; explain privacy and security risks; establish written communication boundaries; and protect confidential information in electronic exchanges.",
+            "meta": {
+                "domain_code": "D1",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D1-014",
+            "sort_order": 14,
+            "domain": "professional-practice-ethics",
+            "domain_label": "Professional Practice & Ethics",
+            "front": "At the first group session, a member asks, “Can you guarantee that nothing anyone says here will leave this room?” How should the counselor respond?",
+            "back": "Explain the counselor's confidentiality obligations, establish clear group expectations about protecting one another's privacy, and clarify that the counselor cannot guarantee that every group member will maintain confidentiality.",
+            "meta": {
+                "domain_code": "D1",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D1-015",
+            "sort_order": 15,
+            "domain": "professional-practice-ethics",
+            "domain_label": "Professional Practice & Ethics",
+            "front": "A client has cognitive limitations and gives inconsistent answers about what counseling involves. Before relying on the client's consent, what should the counselor assess?",
+            "back": "Whether the client can understand the nature and purpose of services, relevant risks and benefits, alternatives, and the consequences of choices; then determine what legally authorized support or consent process is required while preserving as much client participation as possible.",
+            "meta": {
+                "domain_code": "D1",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D1-016",
+            "sort_order": 16,
+            "domain": "professional-practice-ethics",
+            "domain_label": "Professional Practice & Ethics",
+            "front": "A client says, “After what you said last week, I don't think you understand me, and I'm not sure I trust you.” What should the counselor do next?",
+            "back": "Acknowledge the rupture, invite the client to describe the impact, listen without defensiveness, and work collaboratively to clarify or repair the relationship.",
+            "meta": {
+                "domain_code": "D1",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D1-017",
+            "sort_order": 17,
+            "domain": "professional-practice-ethics",
+            "domain_label": "Professional Practice & Ethics",
+            "front": "Before making a major treatment decision, the counselor notices prior diagnoses, risk notes, and treatment responses in the record that differ from the client's current report. How should the record be used?",
+            "back": "Review the clinically relevant record information as one source of data, then clarify discrepancies with current assessment rather than treating either the record or the client's present report as automatically definitive.",
+            "meta": {
+                "domain_code": "D1",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D1-018",
+            "sort_order": 18,
+            "domain": "professional-practice-ethics",
+            "domain_label": "Professional Practice & Ethics",
+            "front": "A client who is deaf requests a qualified sign-language interpreter for a counseling session involving complex treatment decisions. What principle should guide the response?",
+            "back": "Provide an appropriate aid or service that enables effective communication and meaningful access, working with the client to identify an effective accommodation without changing the essential counseling purpose.",
+            "meta": {
+                "domain_code": "D1",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D1-019",
+            "sort_order": 19,
+            "domain": "professional-practice-ethics",
+            "domain_label": "Professional Practice & Ethics",
+            "front": "An employer calls and asks the counselor to confirm that a client is “stable enough to return to work.” The client has not authorized the disclosure. What is the best response?",
+            "back": "Do not disclose confidential clinical information without a valid authorization or other applicable legal basis. If disclosure later becomes authorized, limit it to information that is relevant and permitted.",
+            "meta": {
+                "domain_code": "D1",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D1-020",
+            "sort_order": 20,
+            "domain": "professional-practice-ethics",
+            "domain_label": "Professional Practice & Ethics",
+            "front": "A counselor recognizes that a client's needs require specialized addiction treatment beyond the counselor's competence and current service setting. What is the better professional action?",
+            "back": "Discuss the limitation with the client, facilitate an appropriate referral or higher/specialized level of care, and support continuity rather than continuing beyond competence or abruptly ending services.",
+            "meta": {
+                "domain_code": "D1",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D1-021",
+            "sort_order": 21,
+            "domain": "professional-practice-ethics",
+            "domain_label": "Professional Practice & Ethics",
+            "front": "A client repeatedly encounters a systemic barrier that prevents access to needed counseling services. The client wants help addressing it. What is an appropriate advocacy response?",
+            "back": "With the client's participation and consent, help identify and address the barrier at the appropriate client, organizational, or systems level while preserving the client's voice and autonomy.",
+            "meta": {
+                "domain_code": "D1",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D1-022",
+            "sort_order": 22,
+            "domain": "professional-practice-ethics",
+            "domain_label": "Professional Practice & Ethics",
+            "front": "A counselor is uncertain how to manage a complex clinical presentation and is considering an intervention outside the counselor's usual experience. What should happen before acting independently?",
+            "back": "Obtain supervision or consultation from a qualified professional, protect client confidentiality in the consultation, and use the guidance to decide whether to proceed, obtain further training, or refer.",
+            "meta": {
+                "domain_code": "D1",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D1-023",
+            "sort_order": 23,
+            "domain": "professional-practice-ethics",
+            "domain_label": "Professional Practice & Ethics",
+            "front": "After a difficult session, what should a high-quality clinical note emphasize?",
+            "back": "Accurate, clinically relevant information: the client's report and presentation, significant observations, interventions provided, response to treatment, pertinent risk findings, clinical decisions, and the plan—written objectively enough to support continuity of care.",
+            "meta": {
+                "domain_code": "D1",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D1-024",
+            "sort_order": 24,
+            "domain": "professional-practice-ethics",
+            "domain_label": "Professional Practice & Ethics",
+            "front": "After months of high-intensity crisis work, a counselor notices persistent exhaustion, irritability, and impaired concentration during sessions. What is the key professional concern?",
+            "back": "The counselor must assess whether personal functioning is beginning to impair competent service and take corrective action such as self-care, consultation, professional assistance, workload adjustment, or temporary withdrawal from duties when needed.",
+            "meta": {
+                "domain_code": "D1",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D1-025",
+            "sort_order": 25,
+            "domain": "professional-practice-ethics",
+            "domain_label": "Professional Practice & Ethics",
+            "front": "A counselor believes a required safety-related action may damage a fragile therapeutic alliance. What should be prioritized?",
+            "back": "Carry out the applicable ethical/legal responsibility while using transparent, respectful communication to preserve as much trust and collaboration as possible.",
+            "meta": {
+                "domain_code": "D1",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D1-026",
+            "sort_order": 26,
+            "domain": "professional-practice-ethics",
+            "domain_label": "Professional Practice & Ethics",
+            "front": "A third party sends a valid authorization requesting records, but the request is broader than the information needed for the stated purpose. How should the counselor proceed?",
+            "back": "Verify the authorization and scope, release only the information that is authorized and clinically relevant to the stated purpose, protect unnecessary confidential material, and document what was released.",
+            "meta": {
+                "domain_code": "D1",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D1-027",
+            "sort_order": 27,
+            "domain": "professional-practice-ethics",
+            "domain_label": "Professional Practice & Ethics",
+            "front": "A counselor is asked to provide treatment for a concern outside the counselor's established competence. The client strongly prefers not to be referred. What sequence best protects the client?",
+            "back": "Assess the competence gap; identify the ethical and legal implications; obtain qualified supervision/consultation and any needed training; then proceed only if safe competence can be established—otherwise facilitate referral or transition and document the decision.",
+            "meta": {
+                "domain_code": "D1",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-001",
+            "sort_order": 28,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "A client presents with fatigue, panic-like episodes, missed work, and relationship stress. Before formulating the case, what areas should a biopsychosocial interview make sure to cover?",
+            "back": "Clarify the symptom course and safety concerns while also assessing medical history and medications, substance use, prior mental health history, trauma, family history, relationships and supports, work/school functioning, culture and spirituality, and relevant strengths.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-002",
+            "sort_order": 29,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "A client reports new agitation, little sleep, racing thoughts, and marked restlessness that began soon after a medication change. What missing biopsychosocial information should be prioritized?",
+            "back": "Clarify the medication and substance timeline and possible medical contributors before assuming the symptoms reflect a primary psychiatric disorder.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-003",
+            "sort_order": 30,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "Which question is more diagnostic than general intake: “What brings you in?” or “Did the reduced need for sleep begin before, during, or after the periods of unusually high energy?”",
+            "back": "The second question. A diagnostic interview tests specific hypotheses by clarifying symptom pattern, timing, duration, impairment, and competing explanations.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-004",
+            "sort_order": 31,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "A client reports sudden episodes of intense fear with palpitations and shortness of breath. What is the most useful next diagnostic question?",
+            "back": "Clarify whether the attacks are unexpected and whether the client has developed persistent worry or avoidance because of additional attacks, while also considering medical or substance-related explanations.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-005",
+            "sort_order": 32,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "A client describes an experience that could be interpreted as a symptom but says it has a specific cultural and spiritual meaning. What should the counselor assess before pathologizing it?",
+            "back": "Explore the client’s own explanation, cultural norms, context, degree of distress or impairment, supports, and help-seeking expectations, then integrate that information into the diagnostic formulation.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-006",
+            "sort_order": 33,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "What distinguishes culturally responsive assessment from stereotyping?",
+            "back": "Culturally responsive assessment asks the individual how identity, community, values, discrimination, language, and explanatory beliefs affect the presentation; stereotyping assumes those meanings based on group membership.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-007",
+            "sort_order": 34,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "During an initial interview, a client begins giving a long developmental history but also hints that “things have gotten dangerous lately.” What should the counselor prioritize?",
+            "back": "Clarify the current presenting problem and immediate safety or stability needs before completing the broader history.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-008",
+            "sort_order": 35,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "A client has a distinct period of markedly elevated energy, very little need for sleep, pressured speech, grandiosity, and risky spending that led to hospitalization. What diagnostic pattern is most strongly suggested?",
+            "back": "A manic episode pattern, which strongly supports a bipolar-spectrum diagnosis after ruling out substance, medication, and medical causes.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-009",
+            "sort_order": 36,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "A client reports nightmares and avoidance after a frightening event. What additional information is needed before confirming a trauma-related diagnosis?",
+            "back": "Clarify the nature of the exposure, the full symptom pattern, duration, functional impact, and whether substances, medical conditions, or another disorder better explain the presentation.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-010",
+            "sort_order": 37,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "A client’s recent divorce worsened mood symptoms, but the client also describes prior full depressive episodes that occurred without major stressors. What differential principle matters most?",
+            "back": "Do not assume a recent stressor automatically makes the problem an adjustment disorder. Choose the diagnosis that best accounts for the full syndrome, course, duration, and impairment.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-011",
+            "sort_order": 38,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "A client develops hallucinations after several days of severe sleep loss and heavy stimulant use. What is the main diagnostic trap?",
+            "back": "Prematurely assigning a primary psychotic disorder before clarifying the substance, sleep, medical, and symptom timeline and reassessing whether psychosis persists outside those conditions.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-012",
+            "sort_order": 39,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "A client with a trauma-related disorder also reports low mood, sleep disruption, guilt, and poor concentration. Before adding a separate depressive diagnosis, what should the counselor determine?",
+            "back": "Determine whether the depressive symptoms form an independent syndrome with their own pattern, duration, and impairment rather than being fully accounted for by the trauma-related condition or another cause.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-013",
+            "sort_order": 40,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "A client says, “I’m fine,” while appearing tearful, slowed, and minimally reactive. How should this Mental Status Exam finding be used?",
+            "back": "Document the discrepancy between reported mood and observed affect/behavior and explore it further. The MSE informs the clinical picture but does not establish a diagnosis by itself.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-014",
+            "sort_order": 41,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "During an MSE, how are mood, affect, thought process, thought content, and perception different?",
+            "back": "Mood is the client’s sustained subjective emotional state; affect is the observed expression; thought process is how ideas are organized; thought content is what the person is thinking about; perception includes experiences such as hallucinations.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-015",
+            "sort_order": 42,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "Which MSE finding is most likely to change an immediate risk or level-of-care decision: mildly constricted affect or command hallucinations directing the client to harm someone with stated intent to comply?",
+            "back": "The command hallucinations with intent. Findings that signal acute danger, severe disorganization, or inability to maintain safety take priority over less urgent descriptive findings.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-016",
+            "sort_order": 43,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "A client has a well-supported obsessive-compulsive syndrome and a separate recurrent depressive syndrome, each causing significant impairment. What should the counselor consider?",
+            "back": "Co-occurring diagnoses may be appropriate when distinct syndromes are independently supported and one does not better explain the other.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-017",
+            "sort_order": 44,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "A client with no prior anxiety history develops tremor, palpitations, weight loss, and severe nervousness over a short period. What assessment step should occur before assuming a primary anxiety disorder?",
+            "back": "Assess possible medical, medication, and substance causes and arrange appropriate medical evaluation when indicated.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-018",
+            "sort_order": 45,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "A client reports passive thoughts of death but denies plan or intent, has no access to lethal means, is engaged in treatment, and can use reliable supports. What level-of-care principle applies?",
+            "back": "Use the least restrictive setting that can safely manage the current risk, with close monitoring and a clear escalation plan. Move to a higher level if safety cannot be maintained.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-019",
+            "sort_order": 46,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "What findings most strongly support escalation to a higher level of care?",
+            "back": "Acute or escalating danger, severe inability to care for basic needs, marked loss of reality testing or behavioral control, medical/withdrawal instability, or inability to maintain safety with available supports.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-020",
+            "sort_order": 47,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "How should a counselor distinguish outpatient, intensive, residential, and inpatient levels of care?",
+            "back": "Base the choice on required treatment intensity, supervision, medical/psychiatric stability, functioning, and safety—not diagnosis alone. Higher levels provide progressively more structure and 24-hour support or hospital care when needed.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-021",
+            "sort_order": 48,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "A family seeks help because escalating parent–teen interaction patterns are maintaining the presenting problem, and all participants can engage safely. Which modality best matches the primary treatment target?",
+            "back": "Family counseling is the best initial match because the key maintaining pattern exists in the family system rather than only within one individual.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-022",
+            "sort_order": 49,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "Individual counseling is helping a client understand social anxiety, but progress is limited because the client avoids all live interpersonal practice. What modality decision may be appropriate?",
+            "back": "Consider an adjunctive modality that safely provides the missing therapeutic experience—such as a structured group—while keeping the treatment goals and client readiness central.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-023",
+            "sort_order": 50,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "Two clients have the same diagnosis, but one is functioning at work and home while the other cannot complete basic daily responsibilities. What must severity assessment include?",
+            "back": "Symptom intensity and frequency, distress, functional impairment, risk, supports, and current ability to meet daily responsibilities—not the diagnosis label alone.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-024",
+            "sort_order": 51,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "When evaluating mental health functioning, which life areas should be reviewed rather than relying only on symptom severity?",
+            "back": "Self-care and daily living, work or school, relationships and social support, parenting or other roles, judgment and decision-making, sleep, and the ability to carry out expected responsibilities.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-025",
+            "sort_order": 52,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "A client requests routine outpatient counseling but arrives with severe withdrawal symptoms and unstable behavior. What should occur before ordinary outpatient treatment begins?",
+            "back": "Screen whether the client’s needs can be managed safely in the setting. If not, facilitate timely referral or transfer to an appropriate level or type of service.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-026",
+            "sort_order": 53,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "What should guide selection of an assessment instrument?",
+            "back": "The referral question and purpose, the client’s age and characteristics, language and cultural fit, evidence for reliability and validity, the setting, and whether the tool is appropriate for screening, diagnosis support, severity, risk, or outcome monitoring.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-027",
+            "sort_order": 54,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "What is the key distinction between a screening tool and a diagnostic assessment?",
+            "back": "A screen identifies who may need further evaluation; it does not by itself establish a diagnosis. Diagnostic assessment integrates clinical interview data, criteria, context, and competing explanations.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-028",
+            "sort_order": 55,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "A symptom scale is very elevated, but the interview, observation, and history do not fit the same conclusion. What is the exam trap?",
+            "back": "Treating the score as a stand-alone clinical verdict. Recheck administration and interpretation, explore discrepancies, and integrate the measure with the rest of the assessment.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-029",
+            "sort_order": 56,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "A counselor has only an English adult screening tool, but the client is a young adolescent who is not fluent in English. What should the counselor do?",
+            "back": "Use an age-, language-, and population-appropriate instrument or another valid assessment approach rather than interpreting an unsupported score as if the tool were suitable.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-030",
+            "sort_order": 57,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "A client avoids eye contact throughout an interview. What is the best way to use that observation?",
+            "back": "Record the behavior objectively and explore its meaning in context. Do not automatically infer deception, resistance, pathology, or a cultural meaning from the observation alone.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-031",
+            "sort_order": 58,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "A client’s self-report, standardized score, observed behavior, and collateral information point in different directions. What should the counselor do?",
+            "back": "Reconcile the discrepancies by checking timing, context, response style, source reliability, and clinical significance; then integrate the converging evidence rather than automatically privileging one source.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-032",
+            "sort_order": 59,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "A client discloses a traumatic experience during intake but becomes visibly overwhelmed when asked for details. What should the trauma assessment prioritize?",
+            "back": "Current safety, stabilization, symptoms, functioning, and enough information to understand the exposure and treatment needs. Do not force a detailed trauma narrative before it is clinically necessary and tolerable.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-033",
+            "sort_order": 60,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "A client has experienced a traumatic event. Does that alone establish PTSD?",
+            "back": "No. Trauma exposure is not the same as a trauma-related diagnosis; the counselor must assess the required symptom pattern, duration, impairment, and alternative explanations.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-034",
+            "sort_order": 61,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "What should a substance-use assessment clarify beyond simply asking whether the client uses alcohol or drugs?",
+            "back": "Substances used, amount and frequency, route and last use, consequences, loss of control, tolerance or withdrawal, risky use, prior treatment, co-occurring symptoms, motivation, and immediate safety or medical concerns.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-035",
+            "sort_order": 62,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "A client’s anxiety appears only during heavy use and withdrawal and resolves with sustained abstinence. What differential question is central?",
+            "back": "Whether the symptoms are substance-induced or represent an independent anxiety condition. The timing of symptoms relative to intoxication, withdrawal, and periods of nonuse is critical.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-036",
+            "sort_order": 63,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "What is the correct way to treat client self-report during assessment?",
+            "back": "Treat it as essential clinical data while recognizing possible limits from memory, insight, shame, fear, misunderstanding, or incentives. Seek additional information when clinically necessary and appropriately authorized.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-037",
+            "sort_order": 64,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "In a couple session, one partner pursues and criticizes while the other withdraws, which then intensifies the pursuit. What assessment lens is most useful?",
+            "back": "Identify the reciprocal interactional cycle and how each response affects the next rather than assigning the entire problem to one person. If coercion or violence appears, shift to safety assessment.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-038",
+            "sort_order": 65,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "A client newly reports suicidal thoughts. What should a focused suicide risk assessment clarify?",
+            "back": "Current thoughts, frequency and recency, plan, intent, access to means, recent or past suicidal behavior, acute risk factors, protective factors, and the client’s current ability to remain safe.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-039",
+            "sort_order": 66,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "A client says, “I might hurt him,” and identifies a specific person. What should the counselor assess next?",
+            "back": "Clarify the target, current intent, plan, access to means, past violence, substance use, agitation, triggers, protective factors, and immediacy so the level of danger and required response can be determined.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-040",
+            "sort_order": 67,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "A client reports escalating partner threats, stalking, recent separation, and the partner’s access to a firearm. What should the counselor prioritize?",
+            "back": "Conduct a private relationship-violence safety assessment and address immediate safety planning and appropriate supports before moving into routine conjoint problem-solving.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-041",
+            "sort_order": 68,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "A client with a history of chronic passive suicidal thoughts now reports current intent and access to a lethal method. How should the change be interpreted?",
+            "back": "As a meaningful escalation requiring immediate reassessment and action. Chronic history does not make new intent or access routine.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-042",
+            "sort_order": 69,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "A suicidal client has strong family support and future goals but also current intent, a specific plan, and access to means. How should protective factors affect the disposition?",
+            "back": "Include them in the overall formulation, but do not let them cancel acute high-risk findings. Disposition should reflect the total risk picture, current functioning, and ability to maintain safety.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-043",
+            "sort_order": 70,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "How should pre-test and post-test measures be used to judge change over time?",
+            "back": "Use the same appropriate measure under reasonably comparable conditions, examine the direction and magnitude of change, and interpret the score together with functioning, goals, and clinical context.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-044",
+            "sort_order": 71,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "A client’s anxiety score improves substantially, but the client still cannot work, avoids essential activities, and has not met treatment goals. What does this show?",
+            "back": "Symptom improvement is not identical to overall counseling effectiveness. Evaluate functioning, goal attainment, risk, quality of life, and the client’s own view of meaningful change.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D2-045",
+            "sort_order": 72,
+            "domain": "intake-assessment-diagnosis",
+            "domain_label": "Intake, Assessment & Diagnosis",
+            "front": "After an adequate period of treatment, a client shows little meaningful improvement despite regular attendance. What should the counselor do next?",
+            "back": "Reassess diagnosis, risk, goals, barriers, treatment adherence, intervention fit, and level of care; then collaboratively decide whether to continue with changes, intensify treatment, obtain consultation, or refer.",
+            "meta": {
+                "domain_code": "D2",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D4-001",
+            "sort_order": 73,
+            "domain": "treatment-planning",
+            "domain_label": "Treatment Planning",
+            "front": "A client says, “I want my life back,” while the assessment shows anxiety, avoidance, and work impairment. What is the best next step in treatment planning?",
+            "back": "Translate the client’s priorities into a jointly agreed, attainable treatment goal, connect it to the clinical needs identified in assessment, and confirm that the wording reflects what matters to the client.",
+            "meta": {
+                "domain_code": "D4",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D4-002",
+            "sort_order": 74,
+            "domain": "treatment-planning",
+            "domain_label": "Treatment Planning",
+            "front": "What distinguishes a broad treatment goal from a measurable short-term objective?",
+            "back": "A broad goal describes the desired direction of change, such as improved functioning or reduced interference from symptoms. A measurable objective identifies a specific, observable step or marker that shows progress toward that goal.",
+            "meta": {
+                "domain_code": "D4",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D4-003",
+            "sort_order": 75,
+            "domain": "treatment-planning",
+            "domain_label": "Treatment Planning",
+            "front": "A client with depression has withdrawn from valued activities and is struggling to complete daily responsibilities. How should short- and long-term goals relate to the diagnosis and impairment?",
+            "back": "Set near-term objectives that address the client’s current functional impairment at a feasible level, while the longer-term goal reflects broader recovery and return to valued functioning.",
+            "meta": {
+                "domain_code": "D4",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D4-004",
+            "sort_order": 76,
+            "domain": "treatment-planning",
+            "domain_label": "Treatment Planning",
+            "front": "A client repeatedly misses an agreed treatment task because rotating work shifts and childcare make the plan difficult to carry out. What should the counselor identify first?",
+            "back": "Identify the concrete barrier that is interfering with goal attainment and address it in the plan before interpreting the missed task as lack of motivation.",
+            "meta": {
+                "domain_code": "D4",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D4-005",
+            "sort_order": 77,
+            "domain": "treatment-planning",
+            "domain_label": "Treatment Planning",
+            "front": "A client describes having maintained steady employment for years, seeking help when overwhelmed, and staying connected with a supportive sibling. How should this information be used in treatment planning?",
+            "back": "Treat these as strengths that can be leveraged in the plan—for example, prior functioning, help-seeking capacity, persistence, and available support.",
+            "meta": {
+                "domain_code": "D4",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D4-006",
+            "sort_order": 78,
+            "domain": "treatment-planning",
+            "domain_label": "Treatment Planning",
+            "front": "A client is highly motivated and has strong family support, but the proposed plan requires transportation the client does not have. What should the counselor do?",
+            "back": "Use the client’s strengths while modifying the plan to address the barrier so the treatment target is both clinically appropriate and realistically achievable.",
+            "meta": {
+                "domain_code": "D4",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D4-007",
+            "sort_order": 79,
+            "domain": "treatment-planning",
+            "domain_label": "Treatment Planning",
+            "front": "A client’s risk and functional deterioration now exceed what can be managed safely in the current outpatient setting. What treatment-planning decision takes priority?",
+            "back": "Arrange evaluation or transition to a more appropriate level of care rather than continuing the same outpatient plan unchanged.",
+            "meta": {
+                "domain_code": "D4",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D4-008",
+            "sort_order": 80,
+            "domain": "treatment-planning",
+            "domain_label": "Treatment Planning",
+            "front": "A client strongly prefers weekly outpatient counseling, but new information indicates substantially greater acute risk than at the last visit. How should the counselor use the client’s preference?",
+            "back": "Acknowledge the preference, explain the clinical concern, and prioritize a level-of-care decision that addresses the new risk while involving the client as much as safely possible.",
+            "meta": {
+                "domain_code": "D4",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D4-009",
+            "sort_order": 81,
+            "domain": "treatment-planning",
+            "domain_label": "Treatment Planning",
+            "front": "A client can continue benefiting from counseling but also needs a service outside the counselor’s role, such as medical evaluation or specialty substance-use treatment. What is the planning implication?",
+            "back": "Refer for concurrent treatment while continuing the counseling services that remain appropriate, and clarify how the added service fits the overall plan.",
+            "meta": {
+                "domain_code": "D4",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D4-010",
+            "sort_order": 82,
+            "domain": "treatment-planning",
+            "domain_label": "Treatment Planning",
+            "front": "A client is seeing a counselor, psychiatrist, and medical provider. What is the counselor’s best next step to reduce fragmented care?",
+            "back": "With appropriate consent, clarify each provider’s role, coordinate clinically relevant information and goals, and document the coordination so responsibilities are not duplicated or missed.",
+            "meta": {
+                "domain_code": "D4",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D4-011",
+            "sort_order": 83,
+            "domain": "treatment-planning",
+            "domain_label": "Treatment Planning",
+            "front": "After assessment, the counselor has diagnostic impressions, risk information, functional data, client priorities, strengths, and barriers. How should these findings guide the initial treatment plan?",
+            "back": "Use them to identify priority problems, collaborative goals and objectives, an appropriate level and modality of care, interventions, and a way to monitor progress.",
+            "meta": {
+                "domain_code": "D4",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D4-012",
+            "sort_order": 84,
+            "domain": "treatment-planning",
+            "domain_label": "Treatment Planning",
+            "front": "A client presents with several important concerns, including relationship conflict, unemployment, insomnia, and a newly identified serious safety concern. Which target should be addressed first in the treatment plan?",
+            "back": "Prioritize the concern with the greatest immediate safety or stabilization implications, then sequence lower-acuity goals after the urgent need is addressed.",
+            "meta": {
+                "domain_code": "D4",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D4-013",
+            "sort_order": 85,
+            "domain": "treatment-planning",
+            "domain_label": "Treatment Planning",
+            "front": "A client is nearing planned termination after substantial progress. What should the counselor address before the final session ends?",
+            "back": "Review progress and remaining needs, discuss the client’s reactions to ending, identify skills and supports that will maintain gains, and clarify resources or follow-up if future needs arise.",
+            "meta": {
+                "domain_code": "D4",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D4-014",
+            "sort_order": 86,
+            "domain": "treatment-planning",
+            "domain_label": "Treatment Planning",
+            "front": "What distinguishes planned termination from premature disengagement?",
+            "back": "Planned termination is a discussed, clinically appropriate ending based on progress, lack of further benefit, transfer, or another justified reason, with continuity needs addressed. Premature disengagement occurs when treatment ends before a planned clinical closure or needed transition is completed.",
+            "meta": {
+                "domain_code": "D4",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D4-015",
+            "sort_order": 87,
+            "domain": "treatment-planning",
+            "domain_label": "Treatment Planning",
+            "front": "A long-term group member is leaving and a new member will join soon. What should the group counselor do with the transition?",
+            "back": "Acknowledge and process members’ reactions, clarify expectations and confidentiality as needed, and help the group integrate the change while preserving safety and cohesion.",
+            "meta": {
+                "domain_code": "D4",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D4-016",
+            "sort_order": 88,
+            "domain": "treatment-planning",
+            "domain_label": "Treatment Planning",
+            "front": "A client has been discharged from a higher level of care. What determines the counselor’s follow-up plan?",
+            "back": "Base follow-up on current risk, continuity needs, the discharge plan, and whether the client has successfully connected with the next services and supports.",
+            "meta": {
+                "domain_code": "D4",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D4-017",
+            "sort_order": 89,
+            "domain": "treatment-planning",
+            "domain_label": "Treatment Planning",
+            "front": "An assessment score suggests elevated symptoms, but the client is unsure what the result means for treatment. How should the counselor use the result?",
+            "back": "Explain the result and its limits in understandable language, integrate it with the interview and other data, invite the client’s perspective, and use the combined information to support collaborative decisions.",
+            "meta": {
+                "domain_code": "D4",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D4-018",
+            "sort_order": 90,
+            "domain": "treatment-planning",
+            "domain_label": "Treatment Planning",
+            "front": "A client who had been improving reports a new major stressor, worsening symptoms, and different treatment priorities. What should happen to the treatment plan?",
+            "back": "Reassess the relevant clinical information, collaboratively revise goals or interventions as needed, reconsider level of care if indicated, and document the changes.",
+            "meta": {
+                "domain_code": "D4",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D4-019",
+            "sort_order": 91,
+            "domain": "treatment-planning",
+            "domain_label": "Treatment Planning",
+            "front": "Repeated progress data show that symptoms and functioning are improving. How should that information affect the plan?",
+            "back": "Use the data with the client to decide whether to maintain the current approach, adjust goals, or consider a gradual reduction in treatment intensity when clinically appropriate. If progress stalls or worsens, reassess the formulation, barriers, intervention, and level of care.",
+            "meta": {
+                "domain_code": "D4",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D4-020",
+            "sort_order": 92,
+            "domain": "treatment-planning",
+            "domain_label": "Treatment Planning",
+            "front": "What is the most useful way to involve a client in reviewing progress toward treatment goals?",
+            "back": "Compare current functioning and agreed progress markers with the starting point, ask the client what feels different or unchanged, identify what is helping or getting in the way, and decide together what the plan should do next.",
+            "meta": {
+                "domain_code": "D4",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D4-021",
+            "sort_order": 93,
+            "domain": "treatment-planning",
+            "domain_label": "Treatment Planning",
+            "front": "A family member and another provider could help support the client’s treatment goals. What should the counselor do before involving them?",
+            "back": "Clarify the client’s wishes and obtain appropriate permission, define each person’s role, share only clinically relevant information, and document the coordination.",
+            "meta": {
+                "domain_code": "D4",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D4-022",
+            "sort_order": 94,
+            "domain": "treatment-planning",
+            "domain_label": "Treatment Planning",
+            "front": "A client has met major treatment goals and is preparing to maintain gains independently. What belongs in the maintenance plan?",
+            "back": "Identify the strategies that have worked, likely triggers or early warning signs, supports and resources, how the client will continue practicing gains, and what steps to take if difficulties return.",
+            "meta": {
+                "domain_code": "D4",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D4-023",
+            "sort_order": 95,
+            "domain": "treatment-planning",
+            "domain_label": "Treatment Planning",
+            "front": "A client is not following part of the treatment plan. What is the best counseling response before labeling the client resistant or noncompliant?",
+            "back": "Explore the client’s understanding, priorities, readiness, beliefs, access barriers, fit of the plan, and any burdens or unintended effects, then revise the plan collaboratively when appropriate.",
+            "meta": {
+                "domain_code": "D4",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D4-024",
+            "sort_order": 96,
+            "domain": "treatment-planning",
+            "domain_label": "Treatment Planning",
+            "front": "Halfway through treatment, a client’s priorities change and the original main goal is no longer the outcome the client most wants. What should the counselor do?",
+            "back": "Explore what changed, reassess clinical implications and safety, and renegotiate the goals and objectives when appropriate rather than insisting on the original plan.",
+            "meta": {
+                "domain_code": "D4",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D4-025",
+            "sort_order": 97,
+            "domain": "treatment-planning",
+            "domain_label": "Treatment Planning",
+            "front": "What is the difference between referral to a different level of care and referral for concurrent specialty treatment?",
+            "back": "A level-of-care referral changes or intensifies the setting because the client’s overall needs exceed the current level. A concurrent referral adds specialized expertise while the current counseling service remains clinically appropriate.",
+            "meta": {
+                "domain_code": "D4",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D4-026",
+            "sort_order": 98,
+            "domain": "treatment-planning",
+            "domain_label": "Treatment Planning",
+            "front": "How should termination, discharge follow-up, and maintenance planning be sequenced near the end of care?",
+            "back": "Prepare for the ending and consolidate progress before discharge, establish the maintenance and continuity plan, then complete follow-up as clinically indicated to confirm the transition and address emerging needs.",
+            "meta": {
+                "domain_code": "D4",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D4-027",
+            "sort_order": 99,
+            "domain": "treatment-planning",
+            "domain_label": "Treatment Planning",
+            "front": "A client returns to outpatient counseling after a psychiatric hospitalization with new risk information, medication changes, and new providers involved. What should the counselor do first with the treatment plan?",
+            "back": "Reassess the client’s current status and risk, integrate the new information into a revised plan and level-of-care decision, then coordinate roles and continuity with the other providers using appropriate consent and documentation.",
+            "meta": {
+                "domain_code": "D4",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-001",
+            "sort_order": 100,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A 9-year-old client understands the treatment goal but becomes lost when the counselor uses abstract cognitive language. How should the intervention be adjusted?",
+            "back": "Keep the same clinical target while making the intervention developmentally accessible—for example, use concrete language, visual or experiential practice, shorter steps, and age-appropriate examples rather than expecting adult-level abstraction.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-002",
+            "sort_order": 101,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A couple seeks help for a recurring conflict cycle that occurs between them. Which intervention choice best fits the counseling modality?",
+            "back": "Use an intervention that works with the interaction between partners—when conjoint work is clinically appropriate and safe—rather than treating the problem only as one partner’s individual deficit.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-003",
+            "sort_order": 102,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A counselor is working with a veteran from a cultural community the counselor knows little about. What is the best way to adapt the intervention?",
+            "back": "Assess the client’s own identities, experiences, values, access needs, and preferences, then adapt the intervention to that information rather than relying on assumptions about the population.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-004",
+            "sort_order": 103,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A client’s active plan targets panic-related avoidance through gradual re-engagement with feared situations. The client spends a session describing a minor workplace disagreement. Which counselor response best maintains treatment focus?",
+            "back": "Address the disagreement as clinically relevant only if it connects to the active formulation or goal; otherwise, return to an intervention that advances the agreed panic-and-avoidance treatment target.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-005",
+            "sort_order": 104,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A client says, “I don’t think you really understand what this has been like for me.” What counselor response best strengthens the therapeutic alliance?",
+            "back": "Acknowledge the possible rupture, invite the client to describe what has felt missed or misunderstood, and respond collaboratively rather than defending the counselor’s intentions.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-006",
+            "sort_order": 105,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A CBT case formulation identifies a client’s prediction, “If I speak up in the meeting, everyone will think I’m incompetent,” as maintaining avoidance. Which intervention best fits the formulation?",
+            "back": "Use a CBT-consistent intervention that examines and tests the prediction, such as identifying the thought, evaluating evidence, and planning a feasible behavioral experiment or graded practice.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-007",
+            "sort_order": 106,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A client reports escalating alcohol use but is ambivalent about changing it. What is the best counseling stance at this point?",
+            "back": "Assess the pattern, consequences, safety, and readiness for change while using a nonjudgmental, autonomy-supportive approach that helps the client examine reasons for and against change.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-008",
+            "sort_order": 107,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A client says an individually focused treatment goal conflicts with obligations to family and community. What should the counselor do?",
+            "back": "Explore what those obligations mean to the client and collaboratively adapt the goal or intervention so it is clinically useful and culturally congruent without assuming what the client should value.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-009",
+            "sort_order": 108,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A client lives in a multigenerational household where a grandparent provides daily caregiving and has substantial influence on family decisions. How should that family composition affect intervention planning?",
+            "back": "Assess the actual caregiving roles, authority, alliances, and cultural meanings in the household and include relevant family relationships in the formulation or intervention when appropriate and consented to.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-010",
+            "sort_order": 109,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "One partner pursues reassurance more intensely when the other withdraws, and the withdrawal increases when the pursuing intensifies. What is the most useful systemic description?",
+            "back": "Describe the reciprocal pursue–withdraw cycle as a pattern that each partner helps maintain, rather than locating the problem entirely inside one person.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-011",
+            "sort_order": 110,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A family reports frequent arguments but disagrees about how they begin. What counselor question is most likely to produce clinically useful interactional information?",
+            "back": "Ask members to describe a recent conflict step by step—who did what first, how each person responded, and what happened next—while observing how members interact in session.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-012",
+            "sort_order": 111,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A client says faith is central to coping with grief but worries the counselor may judge those beliefs. What is the best response?",
+            "back": "Invite the client to explain how spiritual or religious beliefs affect meaning, coping, decisions, and support, and integrate them only in ways the client finds helpful.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-013",
+            "sort_order": 112,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A client understands an anxiety-management strategy in theory but cannot use it during stressful situations. What should the counselor do next?",
+            "back": "Teach the skill in concrete steps, model or rehearse it in session, make the practice feasible for the client’s readiness and context, and review what happened when the client tried it.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-014",
+            "sort_order": 113,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A depressed client has become socially isolated and says, “I don’t want to burden anyone.” How should the counselor address support systems?",
+            "back": "Assess which relationships are safe and potentially helpful, the client’s preferences and barriers to reaching out, and then help strengthen realistic sources of emotional, practical, or community support.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-015",
+            "sort_order": 114,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A client says, “Part of me wants to change, but part of me is not ready.” What response best facilitates motivation?",
+            "back": "Explore the ambivalence, evoke the client’s own reasons and confidence for change, and support autonomy rather than arguing for the counselor’s preferred choice.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-016",
+            "sort_order": 115,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "During couple counseling, criticism is followed by defensiveness, which then escalates into louder criticism. What intervention best targets the interactional pattern?",
+            "back": "Slow the sequence, help each partner identify the cycle, and practice a different way of responding—such as specific requests, listening, or regulated turn-taking—so the reciprocal pattern changes.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-017",
+            "sort_order": 116,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A client arrives acutely overwhelmed after a sudden crisis and is struggling to think clearly. What takes priority in crisis intervention?",
+            "back": "Focus first on immediate safety, stabilization, urgent practical needs, available supports, and the next short-term steps; deeper exploratory work can wait until the client is more stable.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-018",
+            "sort_order": 117,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A client repeatedly assumes the counselor is criticizing them whenever the counselor asks a clarifying question, and the client links this reaction to a highly critical parent. When is transference-focused education most useful?",
+            "back": "When the pattern is sufficiently clear and the client can use the insight, tentatively connect the present reaction to the recurring relational expectation and explore it without insisting that the interpretation is correct.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-019",
+            "sort_order": 118,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A trauma-exposed client is guarded and says, “I’m not sure it is safe to talk about this here.” What counselor response best facilitates trust and safety?",
+            "back": "Acknowledge the concern, clarify choice and pacing, be transparent about boundaries and confidentiality, and ask what would make the session feel safer before pressing for more disclosure.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-020",
+            "sort_order": 119,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A client says, “My partner never listens,” but in role play the client uses broad accusations such as “you always” and “you never.” What is the best communication-skills intervention?",
+            "back": "Teach and rehearse a more specific behavioral message—for example, describing the situation, feeling or impact, and a clear request—and practice listening to the partner’s response.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-021",
+            "sort_order": 120,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "Two family members are locked in a dispute about household responsibilities and each wants the counselor to decide who is right. What should the counselor do?",
+            "back": "Help them define the problem, hear each perspective, identify shared interests or goals, generate options, and negotiate specific next steps rather than acting as the judge.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-022",
+            "sort_order": 121,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A client with identified suicide risk is able to collaborate and does not require immediate emergency intervention. What should a safety plan include?",
+            "back": "Develop a personalized, collaborative plan that addresses warning signs, internal coping strategies, supportive people or places, professional and crisis resources, and steps to reduce access to dangerous means, with clear actions the client can use.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-023",
+            "sort_order": 122,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A parent and adolescent repeatedly escalate: the parent increases monitoring, the adolescent becomes more secretive, and the secrecy leads to even more monitoring. What intervention best facilitates systemic change?",
+            "back": "Target the feedback loop by helping both members alter their part of the sequence—for example, clarifying expectations and autonomy, changing monitoring responses, and creating new interaction rules—rather than trying only to change the adolescent.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-024",
+            "sort_order": 123,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A counselor is providing telehealth when a client’s location changes and new risk information emerges. What should the counselor do?",
+            "back": "Reassess whether distance counseling remains clinically appropriate, confirm the client’s current location and emergency options, protect privacy, and adjust the plan or level of care if the technology or setting cannot safely support the client’s needs.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-025",
+            "sort_order": 124,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A newly diagnosed client feels overwhelmed by information and asks for something to read before the next session. How should the counselor choose an educational resource?",
+            "back": "Select a concise, accurate resource that directly fits the client’s current question, language and literacy needs, cultural context, and ability to use the information, then review or clarify it as needed.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-026",
+            "sort_order": 125,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A client says, “I keep hearing the term panic cycle, but I don’t really understand what it means for me.” How should the counselor provide psychoeducation?",
+            "back": "Explain the concept in plain language using the client’s own experiences as examples, check understanding, invite questions, and connect the information to choices or skills the client can use.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-027",
+            "sort_order": 126,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "Near the end of a session, a client has discussed conflict at work, fear of disappointing others, and a recurring pattern of avoiding difficult conversations. How should the counselor use summarizing?",
+            "back": "Briefly synthesize the central themes and their connection, note any progress or decisions, and confirm the summary with the client before identifying the next step.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-028",
+            "sort_order": 127,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A client says, “Asking my sister for help proves I am weak.” What is a useful reframe?",
+            "back": "Offer a perspective that preserves the client’s experience while opening another meaning—for example, that asking for help may also reflect recognizing limits and taking action to protect what matters.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-029",
+            "sort_order": 128,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A client says, “Everyone comes to me with their problems, but when I need someone, I feel invisible.” Which response is most empathic?",
+            "back": "Reflect the emotional meaning accurately, such as: “You feel overlooked and alone when support seems to go only one way.”",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-030",
+            "sort_order": 129,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A counselor considers sharing a personal story because a client is struggling with a similar issue. What is the primary question before self-disclosing?",
+            "back": "Ask whether a brief, relevant disclosure is likely to serve the client’s therapeutic needs while keeping the focus on the client and preserving appropriate boundaries.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-031",
+            "sort_order": 130,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A client says family connection is the highest priority but repeatedly accepts optional overtime that causes the client to miss planned family activities. How should the counselor use constructive confrontation?",
+            "back": "Gently identify the discrepancy between the stated value and the repeated behavior, describe it without shaming, and invite the client to explore what is happening.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-032",
+            "sort_order": 131,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A client agrees with nearly everything the counselor says but becomes visibly tense whenever the counselor offers a different perspective. What here-and-now intervention is appropriate?",
+            "back": "Tentatively name what is happening in the room—for example, the agreement alongside visible tension—and invite the client to explore what it is like to disagree with the counselor right now.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-033",
+            "sort_order": 132,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A client avoids difficult conversations with a coworker until resentment builds and then erupts. Which intervention best facilitates interpersonal conflict resolution?",
+            "back": "Help the client regulate arousal, clarify the specific issue and desired outcome, consider the other person’s perspective, and rehearse an assertive, problem-solving conversation.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-034",
+            "sort_order": 133,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "In group, one member describes feeling ashamed after a relapse and another quietly says, “That is exactly how I feel.” A third member then begins attacking the first member. What group skills are indicated?",
+            "back": "Link the members who share a common experience to deepen connection, and block the attacking behavior promptly and respectfully to protect safety and the group process.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-035",
+            "sort_order": 134,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A group member looks to the counselor for approval before responding to every other member. How should the counselor manage this leader–member dynamic?",
+            "back": "Acknowledge the pattern when useful and redirect appropriate attention back to members, encouraging the client to respond from their own perspective and engage peers rather than relying on leader approval.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-036",
+            "sort_order": 135,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "What kind of feedback should a counselor model in group?",
+            "back": "Feedback that is specific, respectful, behaviorally anchored, focused on observable impact or here-and-now experience, and open to the recipient’s perspective.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-037",
+            "sort_order": 136,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A couple reports that conflict increases after frequent involvement from extended family members who take sides. How should the counselor address the extended family?",
+            "back": "Assess the roles, alliances, expectations, cultural meanings, and boundary effects of extended-family involvement, then incorporate those influences into the relational formulation and intervention as relevant.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-038",
+            "sort_order": 137,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "During group, a member becomes intensely tearful and several members appear anxious about the emotion. What is the best counselor response?",
+            "back": "Remain regulated, validate and contain the emotion, slow the process, assess safety and capacity, and help the member and group stay present without forcing disclosure or shutting the feeling down.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-039",
+            "sort_order": 138,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A client notices that conflict with a partner often evokes the same fear of rejection experienced in the family of origin. How should the counselor use this information?",
+            "back": "Explore the recurring family-of-origin theme and how it may influence present expectations or responses, while checking the fit with the client’s current experience rather than assuming the past fully explains the present.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-040",
+            "sort_order": 139,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A client says, “I have lots of people around me,” but none knows about the client’s current crisis and several relationships increase stress. What should the counselor assess about the social support network?",
+            "back": "Assess the quality, safety, availability, reciprocity, and actual influence of the network—not just the number of contacts—and identify which supports could realistically help or hinder treatment.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-041",
+            "sort_order": 140,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A counselor has a favorite structured exercise that worked well with previous clients. When should it be used with the current client?",
+            "back": "Use it only if the exercise clearly advances the current treatment goal, fits the client’s developmental level, culture, readiness, and modality, and can be meaningfully processed afterward.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-042",
+            "sort_order": 141,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "In group, members answer the leader’s questions but rarely speak directly to one another. What should the leader do?",
+            "back": "Redirect appropriate comments and questions back to members and invite them to respond to one another so therapeutic work occurs within the group rather than only between each member and the leader.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-043",
+            "sort_order": 142,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A group member becomes frustrated with the leader and says, “You always cut me off.” What response best promotes appropriate interaction with the leader?",
+            "back": "Invite the member to describe the experience directly, listen without immediate defensiveness, clarify what happened, and use the interaction to support respectful here-and-now communication and group learning.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-044",
+            "sort_order": 143,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A group needs information about relapse warning signs, but the session is intended to remain process-oriented. How should psychoeducation be used?",
+            "back": "Provide brief, targeted information, then invite members to connect it to their own experiences, reactions, and plans so the teaching becomes part of the group process rather than a lecture.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-045",
+            "sort_order": 144,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "How do group phases change what the counselor should emphasize?",
+            "back": "Early phases generally require more orientation, structure, and safety; periods of testing or conflict require work with norms and trust; productive working phases allow deeper interpersonal work; ending requires integration, reactions to separation, and closure.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-046",
+            "sort_order": 145,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "Several group members describe feeling excluded in different relationships, though no one has named the common issue. What should the leader do?",
+            "back": "Identify the emerging theme tentatively, link the related experiences, and invite members to explore similarities and differences in how exclusion is affecting them.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-047",
+            "sort_order": 146,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A newly formed group is polite but hesitant and members do not yet know what is expected. What intervention best fits the stage of development?",
+            "back": "Provide enough structure to clarify purpose, norms, confidentiality expectations, participation, and safety while encouraging gradual member interaction; deeper confrontation can come after sufficient cohesion develops.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-048",
+            "sort_order": 147,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "During group, one member mocks another member’s disclosure and the targeted member becomes silent. What should the leader do first?",
+            "back": "Interrupt and limit the harmful behavior, protect the targeted member and group safety, clarify the relevant norm, and then process the impact and underlying interaction when the group is stable enough to do so.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-049",
+            "sort_order": 148,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "Two group members begin meeting socially outside the group and other members report feeling excluded. What should the leader address?",
+            "back": "Bring the issue into the group, review relevant expectations and confidentiality/boundary implications, and explore how the outside relationship is affecting subgrouping, trust, cohesion, and participation.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-050",
+            "sort_order": 149,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A guarded client says, “I want help, but I do not know whether I can trust you yet.” How do alliance-building, trust/safety, and empathic responding differ in this moment?",
+            "back": "Use an empathic response to convey understanding of the client’s caution; use transparency, choice, and predictable boundaries to increase trust and safety; together these support the broader therapeutic alliance and collaboration.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-051",
+            "sort_order": 150,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A client reports escalating suicidal intent and access to a lethal method. What is the correct sequence between crisis intervention and safety planning?",
+            "back": "Address immediate risk first by assessing acuity and taking the level of action needed to protect safety and stabilize the crisis; use a collaborative safety plan as part of ongoing risk management when the client can safely participate, not as a substitute for urgent intervention.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-052",
+            "sort_order": 151,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "A counselor is choosing among several reasonable interventions for a 12-year-old in family counseling whose cultural context strongly shapes the presenting problem. What factors should control the choice?",
+            "back": "Choose the intervention that simultaneously fits the client’s developmental capacity, the family modality, the individual family’s cultural and population context, and the theory or case formulation guiding the active treatment goal.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-053",
+            "sort_order": 152,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "How should a counselor choose among summarizing, reframing, constructive confrontation, and here-and-now work?",
+            "back": "Match the skill to the immediate purpose: summarize to consolidate themes; reframe to offer a new perspective; confront to highlight a clinically meaningful discrepancy; use here-and-now work to explore what is occurring in the present counseling interaction.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D5-054",
+            "sort_order": 153,
+            "domain": "counseling-skills-interventions",
+            "domain_label": "Counseling Skills & Interventions",
+            "front": "What is the best way to choose a group-process intervention when several techniques seem reasonable?",
+            "back": "Match the intervention to the group’s developmental stage, the specific member behavior or interaction occurring, and the therapeutic task: structure early, protect safety when behavior is harmful, promote member-to-member process during working phases, and support integration and closure near ending.",
+            "meta": {
+                "domain_code": "D5",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D6-001",
+            "sort_order": 154,
+            "domain": "core-counseling-attributes",
+            "domain_label": "Core Counseling Attributes",
+            "front": "A counselor notices feeling unusually protective of a client and begins completing tasks the client can do independently. What is the most important clinical cue?",
+            "back": "The counselor’s own reaction may be shaping the work. Notice the pattern and assess whether it is reducing the client’s autonomy or changing treatment decisions before continuing in the same way.",
+            "meta": {
+                "domain_code": "D6",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D6-002",
+            "sort_order": 155,
+            "domain": "core-counseling-attributes",
+            "domain_label": "Core Counseling Attributes",
+            "front": "A counselor realizes irritation toward a frequently late client is showing up as a colder tone and shorter responses. What should the counselor do next?",
+            "back": "Acknowledge the counselor reaction internally, restore a respectful and clinically focused stance, and use supervision or consultation if needed so the reaction does not drive treatment.",
+            "meta": {
+                "domain_code": "D6",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D6-003",
+            "sort_order": 156,
+            "domain": "core-counseling-attributes",
+            "domain_label": "Core Counseling Attributes",
+            "front": "A counselor feels worried during a difficult session and considers saying, “This is really upsetting me too,” mainly to relieve the counselor’s own tension. Is that genuineness?",
+            "back": "No. Genuineness is authentic presence in service of the client; it is not impulsive self-expression or disclosure used primarily to meet the counselor’s emotional needs.",
+            "meta": {
+                "domain_code": "D6",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D6-004",
+            "sort_order": 157,
+            "domain": "core-counseling-attributes",
+            "domain_label": "Core Counseling Attributes",
+            "front": "A grieving client asks, “Do you actually think what I’m feeling makes sense?” Which response best reflects therapeutic genuineness?",
+            "back": "Respond honestly and directly while keeping the focus on the client—for example, acknowledge that the grief response is understandable and invite the client to say more about what feels hardest.",
+            "meta": {
+                "domain_code": "D6",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D6-005",
+            "sort_order": 158,
+            "domain": "core-counseling-attributes",
+            "domain_label": "Core Counseling Attributes",
+            "front": "A counselor says, “Take your time; I’m here with you,” while repeatedly checking the clock and shifting toward the door. What counseling attribute is most clearly weakened?",
+            "back": "Congruence. The counselor’s words communicate availability, but the nonverbal behavior communicates urgency, creating a mismatch that can undermine the message.",
+            "meta": {
+                "domain_code": "D6",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D6-006",
+            "sort_order": 159,
+            "domain": "core-counseling-attributes",
+            "domain_label": "Core Counseling Attributes",
+            "front": "A trauma survivor asks whether the session can slow down. The counselor says, “Of course,” but continues rapid questioning without changing pace. What should the counselor recognize?",
+            "back": "The counselor’s verbal reassurance and actual behavior are incongruent. The pace should be adjusted so the counselor’s behavior matches the stated commitment to safety and collaboration.",
+            "meta": {
+                "domain_code": "D6",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D6-007",
+            "sort_order": 160,
+            "domain": "core-counseling-attributes",
+            "domain_label": "Core Counseling Attributes",
+            "front": "A client exploring gender identity says family members keep using a name and role that no longer feel right. What counselor response best demonstrates gender sensitivity?",
+            "back": "Use the client’s own language, ask how the family responses are affecting the client, and explore the client’s goals and supports without assuming what identity, disclosure, or family decision is best.",
+            "meta": {
+                "domain_code": "D6",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D6-008",
+            "sort_order": 161,
+            "domain": "core-counseling-attributes",
+            "domain_label": "Core Counseling Attributes",
+            "front": "A client describes tension with a partner about household roles. Which counselor response is the clearest exam trap related to gender sensitivity?",
+            "back": "A response that treats traditional gender expectations as the default solution—for example, assuming the conflict would improve if one partner accepted a more conventional role—rather than exploring the couple’s own values and agreements.",
+            "meta": {
+                "domain_code": "D6",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D6-009",
+            "sort_order": 162,
+            "domain": "core-counseling-attributes",
+            "domain_label": "Core Counseling Attributes",
+            "front": "A client says, “My family and faith community expect me to put collective obligations before personal goals, and I’m worried therapy will treat that as unhealthy.” What response best demonstrates multicultural sensitivity?",
+            "back": "Acknowledge the concern and explore what those obligations mean to this client, how they relate to distress and strengths, and how counseling goals can respect the client’s cultural context without imposing the counselor’s assumptions about independence.",
+            "meta": {
+                "domain_code": "D6",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D6-010",
+            "sort_order": 163,
+            "domain": "core-counseling-attributes",
+            "domain_label": "Core Counseling Attributes",
+            "front": "A counselor has learned that a client comes from a culture often described as family-centered. What is the best use of that knowledge?",
+            "back": "Use it to guide respectful questions, not conclusions. Ask how family, community, identity, and decision-making actually function for this client rather than assuming the client fits a cultural generalization.",
+            "meta": {
+                "domain_code": "D6",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D6-011",
+            "sort_order": 164,
+            "domain": "core-counseling-attributes",
+            "domain_label": "Core Counseling Attributes",
+            "front": "A client says angrily, “You keep pushing me to talk about things I’m not ready for.” What counselor response best demonstrates conflict tolerance?",
+            "back": "Stay engaged without becoming defensive or withdrawing: acknowledge the client’s experience, invite clarification, and work collaboratively on pace and boundaries.",
+            "meta": {
+                "domain_code": "D6",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D6-012",
+            "sort_order": 165,
+            "domain": "core-counseling-attributes",
+            "domain_label": "Core Counseling Attributes",
+            "front": "During family counseling, two members begin blaming each other and speaking over one another. What response best supports conflict resolution?",
+            "back": "Slow the exchange, establish enough safety for each person to be heard, identify the interaction pattern, and help members communicate the underlying concern rather than escalating the blame cycle.",
+            "meta": {
+                "domain_code": "D6",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D6-013",
+            "sort_order": 166,
+            "domain": "core-counseling-attributes",
+            "domain_label": "Core Counseling Attributes",
+            "front": "A client says, “I’m fine,” but becomes quiet, looks down, and tears up immediately after discussing a recent loss. What does empathic attunement require first?",
+            "back": "Notice the emotional and nonverbal cues and respond tentatively to the possible mismatch—for example, acknowledge that the loss appears to carry more feeling than the words “I’m fine” suggest.",
+            "meta": {
+                "domain_code": "D6",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D6-014",
+            "sort_order": 167,
+            "domain": "core-counseling-attributes",
+            "domain_label": "Core Counseling Attributes",
+            "front": "A depressed client quietly says, “I feel like I’m failing everyone.” The counselor immediately replies, “But you’ve accomplished so much.” What is the main problem with the response?",
+            "back": "It misses the client’s immediate emotional experience. Reassurance may move away from the shame or hopelessness the client is expressing instead of first attuning to it.",
+            "meta": {
+                "domain_code": "D6",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D6-015",
+            "sort_order": 168,
+            "domain": "core-counseling-attributes",
+            "domain_label": "Core Counseling Attributes",
+            "front": "A client says, “Since the divorce, I wake up already feeling like I’ve ruined my children’s lives.” Which counselor response is most empathic?",
+            "back": "Reflect the client’s emotional experience and meaning, such as: “You’re carrying a lot of guilt and fear that the divorce has harmed the people you care about most.”",
+            "meta": {
+                "domain_code": "D6",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D6-016",
+            "sort_order": 169,
+            "domain": "core-counseling-attributes",
+            "domain_label": "Core Counseling Attributes",
+            "front": "A client says, “I’m terrified I’ll never feel normal again.” Which response best distinguishes empathy from reassurance or advice?",
+            "back": "Reflect the fear before trying to fix it—for example, “Right now it feels frightening to imagine this lasting indefinitely”—rather than promising the client will be fine or immediately giving coping instructions.",
+            "meta": {
+                "domain_code": "D6",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D6-017",
+            "sort_order": 170,
+            "domain": "core-counseling-attributes",
+            "domain_label": "Core Counseling Attributes",
+            "front": "In group counseling, one member says, “I thought I was the only person who felt this ashamed,” and several members visibly relate. What should the leader recognize?",
+            "back": "This moment can support group therapeutic factors such as shared experience, connection, and interpersonal learning. The leader can help members respond to one another rather than moving quickly to a new topic.",
+            "meta": {
+                "domain_code": "D6",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D6-018",
+            "sort_order": 171,
+            "domain": "core-counseling-attributes",
+            "domain_label": "Core Counseling Attributes",
+            "front": "A group member repeatedly looks only to the leader for reassurance after every disclosure. Which leader response best fosters therapeutic factors rather than dependence?",
+            "back": "Acknowledge the member’s concern and invite appropriate responses from other members, helping the group become a source of feedback, connection, and learning rather than routing all support through the leader.",
+            "meta": {
+                "domain_code": "D6",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D6-019",
+            "sort_order": 172,
+            "domain": "core-counseling-attributes",
+            "domain_label": "Core Counseling Attributes",
+            "front": "A client reports returning to gambling after previously deciding to stop and says, “You probably think I’m ridiculous.” What response best reflects a nonjudgmental stance?",
+            "back": "Respond with curiosity and respect: explore what happened before and after the gambling episode, its consequences, and what the client wants now rather than moralizing or shaming.",
+            "meta": {
+                "domain_code": "D6",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D6-020",
+            "sort_order": 173,
+            "domain": "core-counseling-attributes",
+            "domain_label": "Core Counseling Attributes",
+            "front": "Which counselor statement most clearly signals subtle judgment even though it sounds like a question: “Why would you keep doing that when you already know what it does to your family?”",
+            "back": "The wording presumes blame and can communicate condemnation. A more neutral inquiry would explore the behavior, its function, consequences, ambivalence, and the client’s goals without embedding a verdict in the question.",
+            "meta": {
+                "domain_code": "D6",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D6-021",
+            "sort_order": 174,
+            "domain": "core-counseling-attributes",
+            "domain_label": "Core Counseling Attributes",
+            "front": "A client admits yelling harshly at a child during a conflict. How can a counselor maintain positive regard without minimizing the behavior?",
+            "back": "Continue to treat the client as worthy of respect while directly assessing the behavior, its impact and safety implications, and the changes needed. Respect for the person does not require approval of harmful behavior.",
+            "meta": {
+                "domain_code": "D6",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D6-022",
+            "sort_order": 175,
+            "domain": "core-counseling-attributes",
+            "domain_label": "Core Counseling Attributes",
+            "front": "A counselor avoids discussing a client’s repeated harmful behavior because, “I want the client to feel accepted.” What is the conceptual error?",
+            "back": "Positive regard is not approval, reassurance, or avoidance of difficult material. A counselor can communicate respect and acceptance while still addressing risk, discrepancy, responsibility, and change.",
+            "meta": {
+                "domain_code": "D6",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D6-023",
+            "sort_order": 176,
+            "domain": "core-counseling-attributes",
+            "domain_label": "Core Counseling Attributes",
+            "front": "A client with a disability describes barriers that make a standard homework assignment difficult to complete. What response best demonstrates respect and acceptance for diversity?",
+            "back": "Ask about the client’s actual access needs and preferences, then adapt the task so it remains clinically meaningful without treating the barrier as lack of motivation or competence.",
+            "meta": {
+                "domain_code": "D6",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D6-024",
+            "sort_order": 177,
+            "domain": "core-counseling-attributes",
+            "domain_label": "Core Counseling Attributes",
+            "front": "A client describes repeated racial discrimination at work. The counselor responds, “Let’s not focus on labels; let’s concentrate only on what you can control.” What is the problem?",
+            "back": "The response sounds neutral but may erase a relevant part of the client’s context. Respect for diversity requires taking the client’s experience of discrimination seriously and assessing how it affects distress, meaning, and treatment.",
+            "meta": {
+                "domain_code": "D6",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D6-025",
+            "sort_order": 178,
+            "domain": "core-counseling-attributes",
+            "domain_label": "Core Counseling Attributes",
+            "front": "During intake, a client begins describing an emotionally significant event just as the counselor reaches the next checklist question. What response best demonstrates foundational listening and attending?",
+            "back": "Track the clinically important material first—attend, reflect, and clarify what the client is communicating—then return to structured questions when appropriate rather than mechanically redirecting away from the client’s process.",
+            "meta": {
+                "domain_code": "D6",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D6-026",
+            "sort_order": 179,
+            "domain": "core-counseling-attributes",
+            "domain_label": "Core Counseling Attributes",
+            "front": "A client says with tears, “My daughter moved across the country. The house is so quiet now.” Which reflection best goes beyond content to the likely feeling and meaning?",
+            "back": "A response such as, “The move has left you feeling alone, and home does not feel the same without that daily connection,” reflects both the event and the emotional meaning rather than merely repeating that the daughter moved.",
+            "meta": {
+                "domain_code": "D6",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        },
+        {
+            "id": "D6-027",
+            "sort_order": 180,
+            "domain": "core-counseling-attributes",
+            "domain_label": "Core Counseling Attributes",
+            "front": "A client from a marginalized community says, “I don’t think you understand me, and sometimes I feel judged here.” What is the strongest counselor response?",
+            "back": "Pause and take the concern seriously: acknowledge the possible impact, invite the client to describe what has felt missed or judgmental, listen without defensiveness, reflect the experience, and adjust the work collaboratively.",
+            "meta": {
+                "domain_code": "D6",
+                "visibility": "Learner",
+                "active": true,
+                "content_version": "1.0"
+            }
+        }
+    ]
 }

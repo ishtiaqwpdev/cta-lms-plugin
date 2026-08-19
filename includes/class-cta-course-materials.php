@@ -1084,6 +1084,8 @@ class CTA_Course_Materials {
 			'study-tools/_archived/',
 			'lmft-clinical-legacy-flashcards-v1.0-132.json',
 			'lmft-clinical/study-tools/flashcards.json',
+			'lpcc-ncmhce-legacy-flashcards-v1.0-132.json',
+			'lpcc-ncmhce/study-tools/flashcards.json',
 			'/chapter-tests-admin/',
 			'chapter-tests-admin/',
 			'lms_admin_only',
@@ -1766,6 +1768,11 @@ class CTA_Course_Materials {
 
 		if ( class_exists( 'CTA_Lmft_Clinical_Legacy_Flashcard_Archive' )
 			&& CTA_Lmft_Clinical_Legacy_Flashcard_Archive::is_archived_resource( $resource ) ) {
+			return true;
+		}
+
+		if ( class_exists( 'CTA_Lpcc_Ncmhce_Legacy_Flashcard_Archive' )
+			&& CTA_Lpcc_Ncmhce_Legacy_Flashcard_Archive::is_archived_resource( $resource ) ) {
 			return true;
 		}
 

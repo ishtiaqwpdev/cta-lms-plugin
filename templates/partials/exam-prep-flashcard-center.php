@@ -41,7 +41,24 @@ $deck_json = wp_json_encode(
 	array(
 		'title'       => $deck_title,
 		'count'       => $deck_count,
-		'cards'       => array_values( (array) ( $deck['cards'] ?? array() ) ),
+		'cards'       => array_values(
+			array_map(
+				static function ( $card ) {
+					$row = array(
+						'id'     => (string) ( $card['id'] ?? '' ),
+						'domain' => (string) ( $card['domain'] ?? '' ),
+						'front'  => (string) ( $card['front'] ?? '' ),
+						'back'   => (string) ( $card['back'] ?? '' ),
+					);
+					$cue = trim( (string) ( $card['memory_cue'] ?? '' ) );
+					if ( '' !== $cue ) {
+						$row['memory_cue'] = $cue;
+					}
+					return $row;
+				},
+				(array) ( $deck['cards'] ?? array() )
+			)
+		),
 		'domains'     => array_values( $deck_domains ),
 		'has_content' => $has_content,
 	),

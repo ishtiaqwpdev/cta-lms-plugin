@@ -318,6 +318,13 @@ class CTA_Lpcc_Ncmhce_Sync {
 				continue;
 			}
 
+			if ( class_exists( 'CTA_Lpcc_Ncmhce_Legacy_Flashcard_Archive' )
+				&& CTA_Lpcc_Ncmhce_Legacy_Flashcard_Archive::is_legacy_flashcards_archived( $course_id )
+				&& CTA_Lpcc_Ncmhce_Legacy_Flashcard_Archive::resource_path_is_legacy_flashcard( $rel . ' ' . $title ) ) {
+				++$order_index;
+				continue;
+			}
+
 			if ( ! empty( $item['workbook_num'] ) ) {
 				$wn        = (int) $item['workbook_num'];
 				$module_id = isset( $module_by_n[ $wn ] ) ? (int) $module_by_n[ $wn ] : 0;
