@@ -342,7 +342,7 @@ if ( $course ) {
 		var confirmField = document.getElementById('cta-confirm-ce-publish');
 		var examConfirmField = document.getElementById('cta-confirm-exam-prep-publish');
 		if (form && (confirmField || examConfirmField)) {
-			form.addEventListener('submit', function () {
+			form.addEventListener('submit', function (event) {
 				if (window.tinyMCE && typeof window.tinyMCE.triggerSave === 'function') {
 					window.tinyMCE.triggerSave();
 				}
@@ -350,12 +350,15 @@ if ( $course ) {
 				var exam = document.querySelector('input[name="product_type"][value="exam_prep"]');
 				var isExam = exam && exam.checked;
 				var published = document.querySelector('input[name="status"][value="published"]');
+				var draftRadio = document.querySelector('input[name="status"][value="draft"]');
+
 				if (confirmField) {
 					confirmField.value = '';
 				}
 				if (examConfirmField) {
 					examConfirmField.value = '';
 				}
+
 				if (!published || !published.checked) {
 					return;
 				}
@@ -365,6 +368,9 @@ if ( $course ) {
 				if (!confirmField) {
 					return;
 				}
+
+				event.preventDefault();
+
 				var ok = window.confirm(
 					'CAMFT CEPA compliance warning:\n\n' +
 					'This CE course will become publicly visible and purchasable.\n' +
@@ -373,13 +379,14 @@ if ( $course ) {
 				);
 				if (!ok) {
 					// Save other edits as Draft when publish is not confirmed (server enforces the same rule).
-					var draftRadio = document.querySelector('input[name="status"][value="draft"]');
 					if (draftRadio) {
 						draftRadio.checked = true;
 					}
+					form.submit();
 					return;
 				}
 				confirmField.value = '1';
+				form.submit();
 			});
 		}
 	})();
