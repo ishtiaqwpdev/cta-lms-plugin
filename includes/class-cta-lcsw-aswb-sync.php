@@ -29,6 +29,8 @@ class CTA_Lcsw_Aswb_Sync {
 	const PRICE         = 249.00;
 	const ACCESS_MONTHS = 6;
 	const MATERIALS_REL = 'assets/course-materials/lcsw-aswb/';
+	const WORKBOOK_BANK_COUNT     = 17;
+	const WORKBOOK_BANK_TIME_MINS = 40;
 
 	/**
 	 * Find the LCSW ASWB course by new/legacy slug or title.
@@ -415,9 +417,9 @@ class CTA_Lcsw_Aswb_Sync {
 				'quiz_type' => 'wb' . $n . '_bank',
 				'title'     => sprintf( 'Workbook %d — 17-Question Practice Bank', $n ),
 				'sort'      => $n,
-				'time'      => 40,
+				'time'      => self::WORKBOOK_BANK_TIME_MINS,
 				'file'      => 'lcsw-aswb-wb' . $n . '-bank.php',
-				'expect'    => 17,
+				'expect'    => self::WORKBOOK_BANK_COUNT,
 				'key'       => 'wb' . $n . '_bank',
 				'qkey'      => 'questions_wb' . $n . '_bank',
 			);
@@ -557,7 +559,88 @@ class CTA_Lcsw_Aswb_Sync {
 	}
 
 	/**
-	 * Re-sync Form A/B when live DB rows are missing or misconfigured.
+	 * @param int $workbook_num Workbook number 1-12.
+	 * @param int $course_id    Optional course ID.
+	 * @return array{ok:bool,course_id:int,quiz_id:int,question_count:int,time_limit_mins:int,status:string}
+	 */
+	public static function get_live_workbook_bank_health( $workbook_num, $course_id = 0 ) {
+		$workbook_num = absint( $workbook_num );
+		$quiz_type    = 'wb' . $workbook_num . '_bank';
+		$expected     = self::WORKBOOK_BANK_COUNT;
+		$empty        = array(
+			'ok'              => false,
+			'course_id'       => 0,
+			'quiz_id'         => 0,
+			'question_count'  => 0,
+			'time_limit_mins' => 0,
+			'status'          => '',
+		);
+
+		if ( $workbook_num < 1 || $workbook_num > 12 ) {
+			return $empty;
+		}
+
+		$course = null;
+		if ( $course_id > 0 && class_exists( 'CTA_Database' ) ) {
+			$course = CTA_Database::get_course( $course_id );
+		}
+		if ( ! $course ) {
+			$course = self::find_course();
+		}
+		if ( ! $course || empty( $course->id ) ) {
+			return $empty;
+		}
+
+		$course_id          = (int) $course->id;
+		$empty['course_id'] = $course_id;
+
+		if ( ! class_exists( 'CTA_Database' ) ) {
+			return $empty;
+		}
+
+		$row = null;
+		foreach ( (array) CTA_Database::get_quizzes_by_course( $course_id, true ) as $candidate ) {
+			if ( $quiz_type === sanitize_key( (string) ( $candidate->quiz_type ?? '' ) ) ) {
+				$row = $candidate;
+				break;
+			}
+		}
+
+		if ( ! $row || empty( $row->id ) ) {
+			return $empty;
+		}
+
+		$quiz_id         = (int) $row->id;
+		$question_count  = count( CTA_Database::get_quiz_questions( $quiz_id ) );
+		$time_limit_mins = (int) ( $row->time_limit_mins ?? 0 );
+
+		return array(
+			'ok'              => ( $expected === $question_count && $time_limit_mins >= 1 ),
+			'course_id'       => $course_id,
+			'quiz_id'         => $quiz_id,
+			'question_count'  => $question_count,
+			'time_limit_mins' => $time_limit_mins,
+			'status'          => (string) ( $row->status ?? '' ),
+		);
+	}
+
+	/**
+	 * @param int $course_id Course ID.
+	 * @return bool
+	 */
+	public static function workbook_banks_are_live( $course_id = 0 ) {
+		for ( $n = 1; $n <= 12; $n++ ) {
+			$health = self::get_live_workbook_bank_health( $n, $course_id );
+			if ( empty( $health['ok'] ) ) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Re-sync Form A/B and workbook practice banks when live DB rows are missing.
 	 *
 	 * @param int  $course_id Optional course ID.
 	 * @param bool $force     Re-run even if forms appear healthy.
@@ -586,7 +669,7 @@ class CTA_Lcsw_Aswb_Sync {
 		$form_a    = self::get_live_form_health( 'form_a', $course_id );
 		$form_b    = self::get_live_form_health( 'form_b', $course_id );
 
-		if ( ! $force && ! empty( $form_a['ok'] ) && ! empty( $form_b['ok'] ) ) {
+		if ( ! $force && ! empty( $form_a['ok'] ) && ! empty( $form_b['ok'] ) && self::workbook_banks_are_live( $course_id ) ) {
 			return array(
 				'ok'        => true,
 				'course_id' => $course_id,

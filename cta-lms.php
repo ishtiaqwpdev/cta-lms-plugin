@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.277' );
+	define( 'CTA_VERSION', '1.0.278' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -1578,6 +1578,11 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				if ( class_exists( 'CTA_Lpcc_Ncmhce_Form_B_Sync' ) ) {
 					CTA_Lpcc_Ncmhce_Form_B_Sync::sync( true );
 				}
+			}
+
+			// LCSW ASWB Clinical: seed 12 workbook online practice banks (17q each).
+			if ( version_compare( $installed, '1.0.278', '<' ) && class_exists( 'CTA_Lcsw_Aswb_Sync' ) ) {
+				CTA_Lcsw_Aswb_Sync::ensure_learner_forms( 0, true );
 			}
 
 			// Decouple supervision application pending from general account / CE access.
