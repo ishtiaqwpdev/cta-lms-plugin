@@ -73,6 +73,10 @@ if ( $course ) {
 		<div class="notice notice-error is-dismissible"><p><?php esc_html_e( 'Could not be saved. Check that only one CTA LMS plugin is installed, then deactivate and reactivate the plugin.', 'cta-lms' ); ?></p></div>
 	<?php elseif ( 'ce_publish_confirm_required' === $notice ) : ?>
 		<div class="notice notice-warning is-dismissible"><p><?php esc_html_e( 'Saved as Draft. To publish a CE course you must confirm the CAMFT CEPA warning when saving (or use the Publish button on the course list).', 'cta-lms' ); ?></p></div>
+	<?php elseif ( 'course_saved_as_draft_cepa' === $notice ) : ?>
+		<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Saved successfully as Draft. CE courses require CAMFT CEPA confirmation before publishing.', 'cta-lms' ); ?></p></div>
+	<?php elseif ( 'course_slug_conflict' === $notice ) : ?>
+		<div class="notice notice-error is-dismissible"><p><?php esc_html_e( 'Could not be saved: another course already uses this slug. Please choose a unique slug and try again.', 'cta-lms' ); ?></p></div>
 	<?php elseif ( 'resource_saved' === $notice || 'resource_deleted' === $notice ) : ?>
 		<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Downloadable resource updated.', 'cta-lms' ); ?></p></div>
 	<?php elseif ( 'resource_invalid_type' === $notice ) : ?>
@@ -91,6 +95,7 @@ if ( $course ) {
 		<?php wp_nonce_field( 'cta_save_course' ); ?>
 		<input type="hidden" name="action" value="cta_save_course">
 		<input type="hidden" name="course_id" value="<?php echo esc_attr( (string) $course_id ); ?>">
+		<input type="hidden" name="cta_publish_declined" id="cta-publish-declined" value="">
 
 		<div class="cta-admin-panel">
 			<table class="form-table">
@@ -255,7 +260,8 @@ if ( $course ) {
 				<tr>
 					<th><label for="cta-course-thumbnail"><?php esc_html_e( 'Thumbnail URL', 'cta-lms' ); ?></label></th>
 					<td>
-						<input type="url" class="regular-text" id="cta-course-thumbnail" name="thumbnail_url" value="<?php echo esc_url( $course->thumbnail_url ?? '' ); ?>">
+						<input type="text" class="regular-text" id="cta-course-thumbnail" name="thumbnail_url" value="<?php echo esc_attr( $course->thumbnail_url ?? '' ); ?>" inputmode="url" autocomplete="url">
+						<p class="description"><?php esc_html_e( 'Full URL to the course thumbnail image (https://…).', 'cta-lms' ); ?></p>
 						<?php if ( ! empty( $course->thumbnail_url ) ) : ?>
 							<p><img src="<?php echo esc_url( $course->thumbnail_url ); ?>" alt="" class="cta-thumb-preview"></p>
 						<?php endif; ?>
@@ -338,50 +344,6 @@ if ( $course ) {
 		});
 		syncProductType();
 
-		var form = document.getElementById('cta-course-save-form');
-		var confirmField = document.getElementById('cta-confirm-ce-publish');
-		var examConfirmField = document.getElementById('cta-confirm-exam-prep-publish');
-		if (form) {
-			form.addEventListener('submit', function (e) {
-				if (window.tinyMCE && typeof window.tinyMCE.triggerSave === 'function') {
-					window.tinyMCE.triggerSave();
-				}
-
-				var exam = document.querySelector('input[name="product_type"][value="exam_prep"]');
-				var isExam = exam && exam.checked;
-				var published = document.querySelector('input[name="status"][value="published"]');
-				if (confirmField) {
-					confirmField.value = '';
-				}
-				if (examConfirmField) {
-					examConfirmField.value = '';
-				}
-				if (!published || !published.checked) {
-					return;
-				}
-				if (isExam) {
-					return;
-				}
-				if (!confirmField) {
-					return;
-				}
-				var ok = window.confirm(
-					'CAMFT CEPA compliance warning:\n\n' +
-					'This CE course will become publicly visible and purchasable.\n' +
-					'Do NOT publish until CTA has CAMFT CEPA provider approval.\n\n' +
-					'Publish this CE course anyway?\n\n' +
-					'Click Cancel to save your changes as Draft instead.'
-				);
-				if (!ok) {
-					var draft = document.querySelector('input[name="status"][value="draft"]');
-					if (draft) {
-						draft.checked = true;
-					}
-					return;
-				}
-				confirmField.value = '1';
-			});
-		}
 	})();
 	</script>
 
@@ -483,7 +445,7 @@ if ( $course ) {
 					</tr>
 					<tr>
 						<th><label for="cta-course-eval-label"><?php esc_html_e( 'Question', 'cta-lms' ); ?></label></th>
-						<td><textarea class="large-text" rows="2" id="cta-course-eval-label" required></textarea></td>
+						<td><textarea class="large-text" rows="2" id="cta-course-eval-label"></textarea></td>
 					</tr>
 					<tr>
 						<th><label for="cta-course-eval-type"><?php esc_html_e( 'Type', 'cta-lms' ); ?></label></th>

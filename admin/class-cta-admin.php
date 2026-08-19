@@ -324,6 +324,7 @@ class CTA_Admin {
 					'assignSuccess'  => __( 'Plan assigned. If already Approved, supervision access is now active.', 'cta-lms' ),
 					'assignConfirm'  => __( 'Assign this agency-paid plan to the Associate?', 'cta-lms' ),
 					'actionFailed'   => __( 'Unable to update approval status. Please try again.', 'cta-lms' ),
+					'cepaPublishConfirm' => __( "CAMFT CEPA compliance warning:\n\nThis CE course will become publicly visible and purchasable.\nDo NOT publish until CTA has CAMFT CEPA provider approval.\n\nPublish this CE course anyway?\n\nClick Cancel to save your changes as Draft instead.", 'cta-lms' ),
 				),
 			)
 		);
@@ -1418,6 +1419,32 @@ class CTA_Admin {
 			$slug = sanitize_title( $title );
 		}
 
+		$table = $wpdb->prefix . 'cta_courses';
+
+		if ( '' !== $slug ) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$slug_owner = (int) $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT id FROM {$table} WHERE slug = %s AND id <> %d LIMIT 1",
+					$slug,
+					$course_id
+				)
+			);
+			if ( $slug_owner ) {
+				wp_safe_redirect(
+					add_query_arg(
+						array(
+							'page'       => 'cta-lms-course-edit',
+							'course_id'  => $course_id,
+							'cta_notice' => 'course_slug_conflict',
+						),
+						admin_url( 'admin.php' )
+					)
+				);
+				exit;
+			}
+		}
+
 		$data = array(
 			'title'                => $title,
 			'slug'                 => $slug,
@@ -1437,12 +1464,12 @@ class CTA_Admin {
 			'has_ce_certificate'   => $has_ce_certificate,
 		);
 
-		$table = $wpdb->prefix . 'cta_courses';
-		$saved = false;
+		$db_result = false;
 		$formats = array( '%s', '%s', '%s', '%f', '%f', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%d' );
 
 		if ( $course_id ) {
-			$saved = false !== $wpdb->update(
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$db_result = $wpdb->update(
 				$table,
 				$data,
 				array( 'id' => $course_id ),
@@ -1450,7 +1477,8 @@ class CTA_Admin {
 				array( '%d' )
 			);
 		} else {
-			$saved = false !== $wpdb->insert(
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$db_result = $wpdb->insert(
 				$table,
 				$data,
 				$formats
@@ -1458,13 +1486,25 @@ class CTA_Admin {
 			$course_id = (int) $wpdb->insert_id;
 		}
 
+		$saved = ( false !== $db_result );
+
 		if ( ! $saved || ! $course_id ) {
+			if ( $wpdb->last_error ) {
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+				error_log( 'CTA LMS save_course DB error: ' . $wpdb->last_error );
+			}
+
+			$fail_notice = 'course_save_failed';
+			if ( $wpdb->last_error && false !== stripos( $wpdb->last_error, 'Duplicate' ) ) {
+				$fail_notice = 'course_slug_conflict';
+			}
+
 			wp_safe_redirect(
 				add_query_arg(
 					array(
 						'page'       => 'cta-lms-course-edit',
 						'course_id'  => absint( wp_unslash( $_POST['course_id'] ?? 0 ) ),
-						'cta_notice' => 'course_save_failed',
+						'cta_notice' => $fail_notice,
 					),
 					admin_url( 'admin.php' )
 				)
@@ -1494,12 +1534,19 @@ class CTA_Admin {
 			}
 		}
 
+		$save_notice = 'course_saved';
+		if ( $publish_blocked ) {
+			$save_notice = 'ce_publish_confirm_required';
+		} elseif ( ! empty( $_POST['cta_publish_declined'] ) ) {
+			$save_notice = 'course_saved_as_draft_cepa';
+		}
+
 		wp_safe_redirect(
 			add_query_arg(
 				array(
 					'page'       => 'cta-lms-course-edit',
 					'course_id'  => $course_id,
-					'cta_notice' => $publish_blocked ? 'ce_publish_confirm_required' : 'course_saved',
+					'cta_notice' => $save_notice,
 				),
 				admin_url( 'admin.php' )
 			)

@@ -68,6 +68,69 @@
     });
   }
 
+  function initCourseSaveForm() {
+    var form = document.getElementById("cta-course-save-form");
+    if (!form) {
+      return;
+    }
+
+    form.addEventListener("submit", function () {
+      if (window.tinyMCE && typeof window.tinyMCE.triggerSave === "function") {
+        window.tinyMCE.triggerSave();
+      }
+
+      var confirmField = document.getElementById("cta-confirm-ce-publish");
+      var publishDeclined = document.getElementById("cta-publish-declined");
+      if (publishDeclined) {
+        publishDeclined.value = "";
+      }
+      if (confirmField) {
+        confirmField.value = "";
+      }
+
+      var exam = document.querySelector('input[name="product_type"][value="exam_prep"]');
+      var isExam = exam && exam.checked;
+      var published = document.querySelector('input[name="status"][value="published"]');
+      if (!published || !published.checked || isExam || !confirmField) {
+        return;
+      }
+
+      var msg =
+        ctaAdmin.i18n && ctaAdmin.i18n.cepaPublishConfirm
+          ? ctaAdmin.i18n.cepaPublishConfirm
+          : "Publish this CE course? Click Cancel to save as Draft instead.";
+
+      if (!window.confirm(msg)) {
+        var draft = document.querySelector('input[name="status"][value="draft"]');
+        if (draft) {
+          draft.checked = true;
+        }
+        if (publishDeclined) {
+          publishDeclined.value = "1";
+        }
+        return;
+      }
+
+      confirmField.value = "1";
+    });
+
+    form.addEventListener(
+      "invalid",
+      function (e) {
+        var target = e.target;
+        if (!target || typeof target.reportValidity !== "function") {
+          return;
+        }
+        e.preventDefault();
+        target.reportValidity();
+        if (typeof target.scrollIntoView === "function") {
+          target.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      },
+      true
+    );
+  }
+
   function initObjectivesRepeater() {
     $("#cta-add-objective").on("click", function () {
       $("#cta-objectives-repeater").append(
@@ -1630,6 +1693,7 @@
     try { initCopyButtons(); } catch (e) {}
     try { initDeleteConfirms(); } catch (e) {}
     try { initSlugGeneration(); } catch (e) {}
+    try { initCourseSaveForm(); } catch (e) {}
     try { initObjectivesRepeater(); } catch (e) {}
     try { initCourseVideoSource(); } catch (e) {}
     try { initModulesPanel(); } catch (e) {}
