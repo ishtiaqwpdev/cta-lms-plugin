@@ -87,7 +87,7 @@ if ( $course ) {
 		<div class="notice notice-error is-dismissible"><p><?php esc_html_e( 'Could not extend exam access.', 'cta-lms' ); ?></p></div>
 	<?php endif; ?>
 
-	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="cta-admin-form" id="cta-course-edit-form">
+	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="cta-admin-form cta-course-edit-form" id="cta-course-save-form">
 		<?php wp_nonce_field( 'cta_save_course' ); ?>
 		<input type="hidden" name="action" value="cta_save_course">
 		<input type="hidden" name="course_id" value="<?php echo esc_attr( (string) $course_id ); ?>">
@@ -338,11 +338,11 @@ if ( $course ) {
 		});
 		syncProductType();
 
-		var form = document.getElementById('cta-course-edit-form');
+		var form = document.getElementById('cta-course-save-form');
 		var confirmField = document.getElementById('cta-confirm-ce-publish');
 		var examConfirmField = document.getElementById('cta-confirm-exam-prep-publish');
-		if (form && (confirmField || examConfirmField)) {
-			form.addEventListener('submit', function () {
+		if (form) {
+			form.addEventListener('submit', function (e) {
 				if (window.tinyMCE && typeof window.tinyMCE.triggerSave === 'function') {
 					window.tinyMCE.triggerSave();
 				}
@@ -350,15 +350,12 @@ if ( $course ) {
 				var exam = document.querySelector('input[name="product_type"][value="exam_prep"]');
 				var isExam = exam && exam.checked;
 				var published = document.querySelector('input[name="status"][value="published"]');
-				var draftRadio = document.querySelector('input[name="status"][value="draft"]');
-
 				if (confirmField) {
 					confirmField.value = '';
 				}
 				if (examConfirmField) {
 					examConfirmField.value = '';
 				}
-
 				if (!published || !published.checked) {
 					return;
 				}
@@ -368,17 +365,17 @@ if ( $course ) {
 				if (!confirmField) {
 					return;
 				}
-
 				var ok = window.confirm(
 					'CAMFT CEPA compliance warning:\n\n' +
 					'This CE course will become publicly visible and purchasable.\n' +
 					'Do NOT publish until CTA has CAMFT CEPA provider approval.\n\n' +
-					'Publish this CE course anyway?'
+					'Publish this CE course anyway?\n\n' +
+					'Click Cancel to save your changes as Draft instead.'
 				);
 				if (!ok) {
-					// Save other edits as Draft when publish is not confirmed. Let the browser continue submitting.
-					if (draftRadio) {
-						draftRadio.checked = true;
+					var draft = document.querySelector('input[name="status"][value="draft"]');
+					if (draft) {
+						draft.checked = true;
 					}
 					return;
 				}
