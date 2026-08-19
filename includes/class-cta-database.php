@@ -978,9 +978,9 @@ class CTA_Database {
 		$table = $wpdb->prefix . 'cta_course_modules';
 
 		if ( $include_archived ) {
-			return $wpdb->get_results(
-				$wpdb->prepare(
-					"SELECT * FROM {$table} WHERE course_id = %d ORDER BY order_index ASC, id ASC",
+		return $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT * FROM {$table} WHERE course_id = %d ORDER BY order_index ASC, id ASC",
 					$course_id
 				)
 			);

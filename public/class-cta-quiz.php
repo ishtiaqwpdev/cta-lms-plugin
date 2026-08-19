@@ -331,11 +331,11 @@ class CTA_Quiz {
 	 */
 	public function ajax_start_quiz() {
 		try {
-			check_ajax_referer( 'cta_nonce', 'nonce' );
+		check_ajax_referer( 'cta_nonce', 'nonce' );
 
-			if ( ! is_user_logged_in() ) {
-				wp_send_json_error( array( 'message' => __( 'Please log in to continue.', 'cta-lms' ) ) );
-			}
+		if ( ! is_user_logged_in() ) {
+			wp_send_json_error( array( 'message' => __( 'Please log in to continue.', 'cta-lms' ) ) );
+		}
 
 			$course_id    = absint( wp_unslash( $_POST['course_id'] ?? 0 ) );
 			$quiz_id      = absint( wp_unslash( $_POST['quiz_id'] ?? 0 ) );
@@ -353,11 +353,11 @@ class CTA_Quiz {
 			// brand-new attempt is created.
 			$check = $this->validate_quiz_access( $user_id, $course_id, false, $quiz_id );
 
-			if ( is_wp_error( $check ) ) {
-				wp_send_json_error( array( 'message' => $check->get_error_message() ) );
-			}
+		if ( is_wp_error( $check ) ) {
+			wp_send_json_error( array( 'message' => $check->get_error_message() ) );
+		}
 
-			/** @var object $quiz */
+		/** @var object $quiz */
 			$quiz   = $check['quiz'];
 			$course = isset( $check['course'] ) ? $check['course'] : $course;
 			$active = CTA_Database::get_active_quiz_attempt( $user_id, (int) $quiz->id );
@@ -367,7 +367,7 @@ class CTA_Quiz {
 				$active = null;
 			}
 
-			if ( $active ) {
+		if ( $active ) {
 				$payload = $this->build_attempt_payload( $quiz, $active );
 				if ( empty( $payload['html'] ) || empty( $payload['question_count'] ) ) {
 					wp_send_json_error( array( 'message' => __( 'This assessment has no questions yet. Please contact support.', 'cta-lms' ) ) );
@@ -386,8 +386,8 @@ class CTA_Quiz {
 
 			// CE: block after a pass. Exam Prep assessments may be retaken independently.
 			if ( ! $is_exam_prep && $this->get_passed_attempt( $attempts ) ) {
-				wp_send_json_error( array( 'message' => __( 'You have already passed this quiz.', 'cta-lms' ) ) );
-			}
+			wp_send_json_error( array( 'message' => __( 'You have already passed this quiz.', 'cta-lms' ) ) );
+		}
 
 			$attempt = $this->create_quiz_attempt( $user_id, (int) $quiz->id, $course_id );
 
@@ -396,7 +396,7 @@ class CTA_Quiz {
 				if ( $active ) {
 					wp_send_json_success( $this->build_attempt_payload( $quiz, $active ) );
 				}
-				global $wpdb;
+		global $wpdb;
 				$message = __( 'Unable to start quiz. Please refresh the page and try again.', 'cta-lms' );
 				if ( ! empty( $wpdb->last_error ) ) {
 					$message .= ' [' . $wpdb->last_error . ']';
@@ -417,7 +417,7 @@ class CTA_Quiz {
 			wp_send_json_success( $payload );
 		} catch ( Throwable $e ) {
 			wp_send_json_error(
-				array(
+			array(
 					'message'      => __( 'Unable to start quiz. Please refresh the page and try again.', 'cta-lms' ) . ' [' . $e->getMessage() . ']',
 					'use_fallback' => true,
 				)
@@ -638,7 +638,7 @@ class CTA_Quiz {
 
 		if ( $is_formative_bank ) {
 			wp_send_json_success(
-				array(
+			array(
 					'passed'         => false,
 					'formative'      => true,
 					'score'          => $score,
@@ -1183,15 +1183,15 @@ class CTA_Quiz {
 					$allowed_keys = array( '1', '2', '3', '4', '5', 'na' );
 				}
 				if ( ! empty( $question['required'] ) && ( '' === $opt_val || ! in_array( $opt_val, $allowed_keys, true ) ) ) {
-					return new WP_Error(
-						'missing_field',
-						sprintf(
-							/* translators: %s: question label */
-							__( 'Please answer: %s', 'cta-lms' ),
-							$question['label']
-						)
-					);
-				}
+						return new WP_Error(
+							'missing_field',
+							sprintf(
+								/* translators: %s: question label */
+								__( 'Please answer: %s', 'cta-lms' ),
+								$question['label']
+							)
+						);
+					}
 				$clean[ $id ] = in_array( $opt_val, $allowed_keys, true ) ? $opt_val : '';
 			} elseif ( in_array( $type, array( 'radio', 'multiple_choice', 'yes_no', 'dropdown' ), true ) ) {
 				$answer  = sanitize_text_field( (string) ( is_array( $value ) ? '' : $value ) );

@@ -87,7 +87,7 @@ if ( $course ) {
 		<div class="notice notice-error is-dismissible"><p><?php esc_html_e( 'Could not extend exam access.', 'cta-lms' ); ?></p></div>
 	<?php endif; ?>
 
-	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="cta-admin-form">
+	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="cta-admin-form" id="cta-course-edit-form">
 		<?php wp_nonce_field( 'cta_save_course' ); ?>
 		<input type="hidden" name="action" value="cta_save_course">
 		<input type="hidden" name="course_id" value="<?php echo esc_attr( (string) $course_id ); ?>">
@@ -338,11 +338,15 @@ if ( $course ) {
 		});
 		syncProductType();
 
-		var form = document.querySelector('form[action*="cta_save_course"], form.cta-course-edit-form, form');
+		var form = document.getElementById('cta-course-edit-form');
 		var confirmField = document.getElementById('cta-confirm-ce-publish');
 		var examConfirmField = document.getElementById('cta-confirm-exam-prep-publish');
 		if (form && (confirmField || examConfirmField)) {
-			form.addEventListener('submit', function (e) {
+			form.addEventListener('submit', function () {
+				if (window.tinyMCE && typeof window.tinyMCE.triggerSave === 'function') {
+					window.tinyMCE.triggerSave();
+				}
+
 				var exam = document.querySelector('input[name="product_type"][value="exam_prep"]');
 				var isExam = exam && exam.checked;
 				var published = document.querySelector('input[name="status"][value="published"]');
@@ -368,7 +372,11 @@ if ( $course ) {
 					'Publish this CE course anyway?'
 				);
 				if (!ok) {
-					e.preventDefault();
+					// Save other edits as Draft when publish is not confirmed (server enforces the same rule).
+					var draftRadio = document.querySelector('input[name="status"][value="draft"]');
+					if (draftRadio) {
+						draftRadio.checked = true;
+					}
 					return;
 				}
 				confirmField.value = '1';
