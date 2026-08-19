@@ -3222,14 +3222,14 @@ button.pagination__item:disabled {
 .cta-plugin-wrapper .auth-page__brand-title {
   font-size: var(--font-size-4xl);
   font-weight: var(--font-weight-bold);
-  color: #d32f2f;
+  color: var(--color-white);
   margin-bottom: var(--space-lg);
   line-height: var(--line-height-tight);
 }
 
 .cta-plugin-wrapper .auth-page__brand-text {
   font-size: var(--font-size-lg);
-  color: #d32f2f;
+  color: var(--color-white);
   line-height: var(--line-height-relaxed);
 }
 
