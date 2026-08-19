@@ -116,5 +116,18 @@ assert_true(
 	'Material map no longer registers live July Form A printable'
 );
 
+assert_true(
+	false !== strpos( $lms, 'ensure_learner_final_forms' ),
+	'Upgrade can heal missing Final Form A via ensure_learner_final_forms'
+);
+assert_true(
+	method_exists( 'CTA_Lmft_Clinical_Form_A_Sync', 'get_live_quiz_health' ),
+	'Form A sync verifies live quiz health before skipping re-seed'
+);
+assert_true(
+	method_exists( 'CTA_Lmft_Clinical_Legacy_Forms_Archive', 'get_active_final_form_quiz' ),
+	'Legacy archive exposes active Final form lookup for Exam Center'
+);
+
 echo "\n=== Summary ===\nPASS: {$pass}\nFAIL: {$fail}\n";
 exit( $fail > 0 ? 1 : 0 );

@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.268' );
+	define( 'CTA_VERSION', '1.0.270' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -141,6 +141,7 @@ $cta_required_files = array(
 	'includes/class-cta-supervision-plans.php',
 	'includes/class-cta-emails.php',
 	'includes/class-cta-pages.php',
+	'includes/class-cta-academy-positioning.php',
 	'includes/class-cta-course-routes.php',
 	'includes/class-cta-loader.php',
 	'includes/class-cta-stripe.php',
@@ -204,6 +205,10 @@ if ( ! function_exists( 'cta_lms_init' ) ) {
 
 			if ( class_exists( 'CTA_Pages' ) ) {
 				CTA_Pages::init();
+			}
+
+			if ( class_exists( 'CTA_Academy_Positioning' ) ) {
+				CTA_Academy_Positioning::init();
 			}
 
 			if ( class_exists( 'CTA_Course_Routes' ) ) {
@@ -1507,6 +1512,19 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 				$wpdb->query(
 					"UPDATE {$courses_table} SET access_period_months = 6 WHERE product_type = 'ce' AND access_period_months < 1"
+				);
+			}
+
+			// Sitewide academy positioning: footer/top-bar/Elementor narrow CE+supervision copy.
+			if ( version_compare( $installed, '1.0.269', '<' ) && class_exists( 'CTA_Academy_Positioning' ) ) {
+				CTA_Academy_Positioning::sync_sitewide_copy( true );
+			}
+
+			// LMFT California Clinical: restore missing/inactive August 14 Final Form A for Practice Exams.
+			if ( version_compare( $installed, '1.0.270', '<' ) && class_exists( 'CTA_Lmft_Clinical_Legacy_Forms_Archive' ) ) {
+				CTA_Lmft_Clinical_Legacy_Forms_Archive::ensure_learner_final_forms(
+					CTA_Lmft_Clinical_Legacy_Forms_Archive::TARGET_COURSE_ID,
+					false
 				);
 			}
 

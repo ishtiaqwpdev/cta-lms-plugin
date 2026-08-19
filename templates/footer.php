@@ -118,7 +118,16 @@ $contact_email = 'support@clinicaltrainingacademy.com';
 		<div class="site-footer__column">
 			<span class="site-footer__logo-text"><?php echo esc_html( $site_name ); ?></span>
 			<p class="site-footer__about-text">
-				<?php echo esc_html__( "California's trusted platform for BBS-compliant continuing education and clinical supervision — built for working mental health professionals.", 'cta-lms' ); ?>
+				<?php
+				echo esc_html(
+					class_exists( 'CTA_Academy_Positioning' )
+						? CTA_Academy_Positioning::footer_tagline()
+						: __(
+							'Continuing education, clinical supervision, exam preparation, and professional resources for California mental health professionals.',
+							'cta-lms'
+						)
+				);
+				?>
 			</p>
 		</div>
 

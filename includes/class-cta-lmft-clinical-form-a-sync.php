@@ -88,21 +88,61 @@ class CTA_Lmft_Clinical_Form_A_Sync {
 	}
 
 	/**
+	 * Verify the active learner-facing Form A quiz is present and correctly configured.
+	 *
+	 * @return array{ok:bool,course_id:int,quiz_id:int,question_count:int,time_limit_mins:int}
+	 */
+	public static function get_live_quiz_health() {
+		$course = self::find_course();
+		if ( ! $course || empty( $course->id ) || ! class_exists( 'CTA_Lmft_Clinical_Legacy_Forms_Archive' ) ) {
+			return array(
+				'ok'              => false,
+				'course_id'       => 0,
+				'quiz_id'         => 0,
+				'question_count'  => 0,
+				'time_limit_mins' => 0,
+			);
+		}
+
+		$row = CTA_Lmft_Clinical_Legacy_Forms_Archive::get_active_final_form_quiz( (int) $course->id, self::QUIZ_TYPE );
+		if ( ! $row ) {
+			return array(
+				'ok'              => false,
+				'course_id'       => (int) $course->id,
+				'quiz_id'         => 0,
+				'question_count'  => 0,
+				'time_limit_mins' => 0,
+			);
+		}
+
+		return array(
+			'ok'              => true,
+			'course_id'       => (int) $course->id,
+			'quiz_id'         => (int) $row->id,
+			'question_count'  => self::TARGET_QUESTION_COUNT,
+			'time_limit_mins' => (int) ( $row->time_limit_mins ?? 0 ),
+		);
+	}
+
+	/**
 	 * @param bool $force Re-run even if seed option is set.
 	 * @return array{ok:bool,course_id:int,quiz_id:int,questions:int,imported:int,status:string,message:string}
 	 */
 	public static function sync( $force = false ) {
 		if ( ! $force && get_option( self::SEED_OPTION ) ) {
-			$stored = get_option( self::SEED_OPTION, array() );
-			return array(
-				'ok'        => true,
-				'course_id' => (int) ( $stored['course_id'] ?? 0 ),
-				'quiz_id'   => (int) ( $stored['quiz_id'] ?? 0 ),
-				'questions' => (int) ( $stored['questions'] ?? 0 ),
-				'imported'  => (int) ( $stored['imported'] ?? 0 ),
-				'status'    => (string) ( $stored['status'] ?? 'inactive' ),
-				'message'   => 'already_seeded',
-			);
+			$live = self::get_live_quiz_health();
+			if ( ! empty( $live['ok'] ) ) {
+				$stored = get_option( self::SEED_OPTION, array() );
+				return array(
+					'ok'        => true,
+					'course_id' => (int) ( $stored['course_id'] ?? $live['course_id'] ?? 0 ),
+					'quiz_id'   => (int) ( $live['quiz_id'] ?? $stored['quiz_id'] ?? 0 ),
+					'questions' => (int) ( $live['question_count'] ?? $stored['questions'] ?? 0 ),
+					'imported'  => (int) ( $stored['imported'] ?? 0 ),
+					'status'    => 'active',
+					'message'   => 'already_seeded',
+				);
+			}
 		}
 
 		if ( class_exists( 'CTA_Database' ) ) {

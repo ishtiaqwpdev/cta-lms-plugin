@@ -358,6 +358,131 @@ class CTA_Lmft_Clinical_Legacy_Forms_Archive {
 	}
 
 	/**
+	 * Locate the learner-facing Final Form A or Form B quiz row.
+	 *
+	 * @param int    $course_id  Course ID.
+	 * @param string $quiz_type  form_a|form_b.
+	 * @return object|null
+	 */
+	public static function get_active_final_form_quiz( $course_id, $quiz_type ) {
+		$course_id = self::resolve_course_id( $course_id );
+		$quiz_type = sanitize_key( (string) $quiz_type );
+
+		if ( ! $course_id || ! in_array( $quiz_type, array( 'form_a', 'form_b' ), true ) || ! class_exists( 'CTA_Database' ) ) {
+			return null;
+		}
+
+		foreach ( CTA_Database::get_quizzes_by_course( $course_id, false ) as $row ) {
+			if ( sanitize_key( (string) ( $row->quiz_type ?? '' ) ) !== $quiz_type ) {
+				continue;
+			}
+			if ( self::is_archived_quiz( $row ) ) {
+				continue;
+			}
+			if ( 'active' !== (string) ( $row->status ?? '' ) ) {
+				continue;
+			}
+
+			$quiz_id = (int) $row->id;
+			$expected_count = class_exists( 'CTA_Lmft_Clinical_Form_A_Sync' )
+				? (int) CTA_Lmft_Clinical_Form_A_Sync::TARGET_QUESTION_COUNT
+				: 150;
+			if ( $expected_count !== count( CTA_Database::get_quiz_questions( $quiz_id ) ) ) {
+				continue;
+			}
+
+			$timer = (int) ( $row->time_limit_mins ?? 0 );
+			if ( class_exists( 'CTA_Lmft_Clinical_Form_A_Sync' ) ) {
+				$expected = (int) CTA_Lmft_Clinical_Form_A_Sync::TIME_LIMIT_MINS;
+			} else {
+				$expected = 240;
+			}
+			if ( $timer !== $expected ) {
+				continue;
+			}
+
+			$q1 = self::get_quiz_question_one_text( $quiz_id );
+			if ( ! self::quiz_matches_final_form( $quiz_type, $q1 ) ) {
+				continue;
+			}
+
+			return $row;
+		}
+
+		return null;
+	}
+
+	/**
+	 * Whether the August 14 Final form is live for learners (active, 150 Q, 240 min, correct Q1).
+	 *
+	 * @param int    $course_id Course ID.
+	 * @param string $quiz_type form_a|form_b.
+	 * @return bool
+	 */
+	public static function is_live_final_form( $course_id, $quiz_type ) {
+		return null !== self::get_active_final_form_quiz( $course_id, $quiz_type );
+	}
+
+	/**
+	 * Restore missing/inactive Final Form A/B after legacy archive or stale seed flags.
+	 *
+	 * @param int  $course_id Optional course ID.
+	 * @param bool $force     Re-sync even when both forms appear healthy.
+	 * @return array{ok:bool,course_id:int,form_a_synced:bool,form_b_synced:bool,message:string}
+	 */
+	public static function ensure_learner_final_forms( $course_id = 0, $force = false ) {
+		$course_id = self::resolve_course_id( $course_id );
+
+		if ( ! $course_id ) {
+			return array(
+				'ok'            => false,
+				'course_id'     => 0,
+				'form_a_synced' => false,
+				'form_b_synced' => false,
+				'message'       => 'course_not_found',
+			);
+		}
+
+		if ( class_exists( 'CTA_Database' ) ) {
+			CTA_Database::ensure_tables();
+		}
+
+		$form_a_synced = false;
+		$form_b_synced = false;
+
+		if ( $force || ! self::is_live_final_form( $course_id, 'form_a' ) ) {
+			if ( class_exists( 'CTA_Lmft_Clinical_Form_A_Sync' ) ) {
+				CTA_Lmft_Clinical_Form_A_Sync::sync( true );
+				$form_a_synced = true;
+			}
+			if ( class_exists( 'CTA_Lmft_Clinical_Form_A_Answer_Sync' ) ) {
+				CTA_Lmft_Clinical_Form_A_Answer_Sync::sync_answer_keys( true );
+			}
+		}
+
+		if ( $force || ! self::is_live_final_form( $course_id, 'form_b' ) ) {
+			if ( class_exists( 'CTA_Lmft_Clinical_Form_B_Sync' ) ) {
+				CTA_Lmft_Clinical_Form_B_Sync::sync( true );
+				$form_b_synced = true;
+			}
+			if ( class_exists( 'CTA_Lmft_Clinical_Form_B_Answer_Sync' ) ) {
+				CTA_Lmft_Clinical_Form_B_Answer_Sync::sync_answer_keys( true );
+			}
+		}
+
+		$form_a_ok = self::is_live_final_form( $course_id, 'form_a' );
+		$form_b_ok = self::is_live_final_form( $course_id, 'form_b' );
+
+		return array(
+			'ok'            => $form_a_ok && $form_b_ok,
+			'course_id'     => $course_id,
+			'form_a_synced' => $form_a_synced,
+			'form_b_synced' => $form_b_synced,
+			'message'       => $form_a_ok && $form_b_ok ? 'final_forms_live' : 'final_forms_incomplete',
+		);
+	}
+
+	/**
 	 * Archive legacy Form A/B quizzes and related printable materials.
 	 *
 	 * @param int  $course_id Optional course ID.
