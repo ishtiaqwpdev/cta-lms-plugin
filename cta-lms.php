@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.270' );
+	define( 'CTA_VERSION', '1.0.272' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -99,6 +99,7 @@ $cta_required_files = array(
 	'includes/class-cta-course-attestation.php',
 	'includes/class-cta-telehealth-exam-sync.php',
 	'includes/class-cta-lcsw-aswb-sync.php',
+	'includes/class-cta-lcsw-aswb-form-quality.php',
 	'includes/class-cta-lmft-clinical-sync.php',
 	'includes/class-cta-lmft-clinical-legacy-forms-archive.php',
 	'includes/class-cta-lmft-clinical-legacy-flashcard-archive.php',
@@ -113,6 +114,7 @@ $cta_required_files = array(
 	'includes/class-cta-lpcc-ncmhce-sync.php',
 	'includes/class-cta-lpcc-ncmhce-legacy-forms-archive.php',
 	'includes/class-cta-lpcc-ncmhce-legacy-flashcard-archive.php',
+	'includes/class-cta-lcsw-aswb-legacy-flashcard-archive.php',
 	'includes/class-cta-lpcc-ncmhce-form-a-sync.php',
 	'includes/class-cta-lpcc-ncmhce-form-b-sync.php',
 	'includes/class-cta-lpcc-ncmhce-form-a-v2-sync.php',
@@ -1526,6 +1528,16 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 					CTA_Lmft_Clinical_Legacy_Forms_Archive::TARGET_COURSE_ID,
 					false
 				);
+			}
+
+			// LCSW ASWB Clinical: archive legacy 132-card deck once 180-card Study Center is live.
+			if ( version_compare( $installed, '1.0.271', '<' ) && class_exists( 'CTA_Lcsw_Aswb_Legacy_Flashcard_Archive' ) ) {
+				CTA_Lcsw_Aswb_Legacy_Flashcard_Archive::archive_legacy_flashcards( 0, false );
+			}
+
+			// LCSW ASWB Clinical: heal missing/inactive Form A/B DB rows (shell/timer config preserved).
+			if ( version_compare( $installed, '1.0.272', '<' ) && class_exists( 'CTA_Lcsw_Aswb_Sync' ) ) {
+				CTA_Lcsw_Aswb_Sync::ensure_learner_forms( 0, false );
 			}
 
 			// Decouple supervision application pending from general account / CE access.

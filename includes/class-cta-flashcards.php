@@ -61,6 +61,11 @@ class CTA_Flashcards {
 			return null;
 		}
 
+		if ( class_exists( 'CTA_Lcsw_Aswb_Legacy_Flashcard_Archive' )
+			&& CTA_Lcsw_Aswb_Legacy_Flashcard_Archive::blocks_learner_legacy_deck( $course ) ) {
+			return null;
+		}
+
 		$map  = self::get_deck_map();
 		$slug = sanitize_title( (string) $course->slug );
 		if ( ! isset( $map[ $slug ] ) ) {

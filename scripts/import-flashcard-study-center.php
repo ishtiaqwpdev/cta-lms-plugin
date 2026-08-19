@@ -60,6 +60,7 @@ $dry_run = isset( $options['dry-run'] );
 $targets = array(
 	'lmft-clinical' => $root . '/assets/course-materials/lmft-clinical/study-tools/flashcard-study-center.json',
 	'lpcc-ncmhce'   => $root . '/assets/course-materials/lpcc-ncmhce/study-tools/flashcard-study-center.json',
+	'lcsw-aswb'     => $root . '/assets/course-materials/lcsw-aswb/study-tools/flashcard-study-center.json',
 );
 
 if ( '' === $program || ! isset( $targets[ $program ] ) ) {

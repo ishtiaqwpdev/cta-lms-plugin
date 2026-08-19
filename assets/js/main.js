@@ -5536,8 +5536,8 @@
         // render undoes Shuffle; filters/start handlers rebuild order explicitly.
 
         var flipBtn = panel.querySelector("[data-cta-fsc-flip]");
-        var frontEl = panel.querySelector("[data-cta-fsc-front]");
-        var backEl = panel.querySelector("[data-cta-fsc-back]");
+        var frontEl = flipBtn ? flipBtn.querySelector("[data-cta-fsc-front]") : null;
+        var backEl = flipBtn ? flipBtn.querySelector("[data-cta-fsc-answer]") : null;
         var frontDomain = panel.querySelector("[data-cta-fsc-front-domain]");
         var backDomain = panel.querySelector("[data-cta-fsc-back-domain]");
         var cueWrap = panel.querySelector("[data-cta-fsc-memory-cue-wrap]");
@@ -5750,7 +5750,7 @@
         });
       });
 
-      root.querySelectorAll("[data-cta-fsc-back]").forEach(function (btn) {
+      root.querySelectorAll("[data-cta-fsc-nav-back]").forEach(function (btn) {
         btn.addEventListener("click", function () {
           setPanel("landing");
         });

@@ -61,12 +61,63 @@ class CTA_Exam_Prep_Flashcard_Center {
 			'lmft-amftrb-national-exam-preparation',
 		);
 
+		// When the approved Study Center deck is live, never fall back to legacy JSON.
+		if ( self::study_center_deck_is_live( 'lcsw-aswb' ) ) {
+			$slugs = array_values(
+				array_diff(
+					$slugs,
+					array(
+						'lcsw-aswb-clinical-exam-preparation',
+						'lcsw-california-clinical-exam-preparation',
+					)
+				)
+			);
+		}
+
+		if ( self::study_center_deck_is_live( 'lpcc-ncmhce' ) ) {
+			$slugs = array_values(
+				array_diff(
+					$slugs,
+					array(
+						'lpcc-ncmhce-exam-preparation',
+						'lpcc-california-clinical-exam-preparation',
+					)
+				)
+			);
+		}
+
 		/**
 		 * Filter slugs that may fall back to legacy flashcards.json decks.
 		 *
 		 * @param array<int,string> $slugs Course slugs.
 		 */
 		return apply_filters( 'cta_exam_prep_flashcard_study_center_legacy_fallback_slugs', $slugs );
+	}
+
+	/**
+	 * Whether a program's flashcard-study-center.json has the approved live deck.
+	 *
+	 * @param string $program_key Program materials folder key (e.g. lcsw-aswb).
+	 * @return bool
+	 */
+	public static function study_center_deck_is_live( $program_key ) {
+		$program_key = sanitize_key( (string) $program_key );
+		if ( '' === $program_key ) {
+			return false;
+		}
+
+		$path = CTA_PLUGIN_DIR . 'assets/course-materials/' . $program_key . '/study-tools/flashcard-study-center.json';
+		$data = self::read_deck_file( $path );
+		if ( ! is_array( $data ) || empty( $data['cards'] ) || ! is_array( $data['cards'] ) ) {
+			return false;
+		}
+
+		$expected = isset( $data['expected_total'] ) ? (int) $data['expected_total'] : 180;
+		if ( $expected < 1 ) {
+			$expected = 180;
+		}
+
+		return count( $data['cards'] ) >= $expected;
 	}
 
 	/**

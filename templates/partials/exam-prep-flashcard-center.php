@@ -145,7 +145,7 @@ $deck_json = wp_json_encode(
 	<!-- Study Mode -->
 	<div class="cta-fsc__panel cta-fsc__study" data-cta-fsc-panel="study" hidden>
 		<div class="cta-fsc__toolbar">
-			<button type="button" class="btn btn-outline btn--sm" data-cta-fsc-back><?php esc_html_e( '← Back', 'cta-lms' ); ?></button>
+			<button type="button" class="btn btn-outline btn--sm" data-cta-fsc-nav-back><?php esc_html_e( '← Back', 'cta-lms' ); ?></button>
 			<div class="cta-fsc__mode-tabs" role="tablist" aria-label="<?php esc_attr_e( 'Flashcard mode', 'cta-lms' ); ?>">
 				<button type="button" class="cta-fsc__mode-tab is-active" role="tab" aria-selected="true" data-cta-fsc-mode="study"><?php esc_html_e( 'Study Mode', 'cta-lms' ); ?></button>
 				<button type="button" class="cta-fsc__mode-tab" role="tab" aria-selected="false" data-cta-fsc-mode="browse"><?php esc_html_e( 'Browse / Review', 'cta-lms' ); ?></button>
@@ -184,7 +184,7 @@ $deck_json = wp_json_encode(
 					<div class="cta-fsc__flip-face cta-fsc__flip-face--back">
 						<span class="cta-fsc__flip-badge" data-cta-fsc-back-domain></span>
 						<span class="cta-fsc__flip-label"><?php esc_html_e( 'Answer', 'cta-lms' ); ?></span>
-						<span class="cta-fsc__flip-text" data-cta-fsc-back></span>
+						<span class="cta-fsc__flip-text" data-cta-fsc-answer></span>
 						<div class="cta-fsc__memory-cue" data-cta-fsc-memory-cue-wrap hidden>
 							<span class="cta-fsc__memory-cue-label"><?php esc_html_e( 'Memory Cue', 'cta-lms' ); ?></span>
 							<span class="cta-fsc__memory-cue-text" data-cta-fsc-memory-cue></span>
@@ -213,7 +213,7 @@ $deck_json = wp_json_encode(
 	<!-- Browse Mode -->
 	<div class="cta-fsc__panel cta-fsc__browse" data-cta-fsc-panel="browse" hidden>
 		<div class="cta-fsc__toolbar">
-			<button type="button" class="btn btn-outline btn--sm" data-cta-fsc-back><?php esc_html_e( '← Back', 'cta-lms' ); ?></button>
+			<button type="button" class="btn btn-outline btn--sm" data-cta-fsc-nav-back><?php esc_html_e( '← Back', 'cta-lms' ); ?></button>
 			<div class="cta-fsc__mode-tabs" role="tablist" aria-label="<?php esc_attr_e( 'Flashcard mode', 'cta-lms' ); ?>">
 				<button type="button" class="cta-fsc__mode-tab" role="tab" aria-selected="false" data-cta-fsc-mode="study"><?php esc_html_e( 'Study Mode', 'cta-lms' ); ?></button>
 				<button type="button" class="cta-fsc__mode-tab is-active" role="tab" aria-selected="true" data-cta-fsc-mode="browse"><?php esc_html_e( 'Browse / Review', 'cta-lms' ); ?></button>

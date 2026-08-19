@@ -490,6 +490,123 @@ class CTA_Lcsw_Aswb_Sync {
 	}
 
 	/**
+	 * Verify an active Form A/B quiz exists with the expected question count and timer.
+	 *
+	 * @param string $quiz_type form_a|form_b.
+	 * @param int    $course_id Optional course ID.
+	 * @return array{ok:bool,course_id:int,quiz_id:int,question_count:int,time_limit_mins:int,status:string}
+	 */
+	public static function get_live_form_health( $quiz_type, $course_id = 0 ) {
+		$quiz_type = sanitize_key( (string) $quiz_type );
+		$expected  = 122;
+		$empty     = array(
+			'ok'              => false,
+			'course_id'       => 0,
+			'quiz_id'         => 0,
+			'question_count'  => 0,
+			'time_limit_mins' => 0,
+			'status'          => '',
+		);
+
+		if ( ! in_array( $quiz_type, array( 'form_a', 'form_b' ), true ) ) {
+			return $empty;
+		}
+
+		$course = null;
+		if ( $course_id > 0 && class_exists( 'CTA_Database' ) ) {
+			$course = CTA_Database::get_course( $course_id );
+		}
+		if ( ! $course ) {
+			$course = self::find_course();
+		}
+		if ( ! $course || empty( $course->id ) ) {
+			return $empty;
+		}
+
+		$course_id = (int) $course->id;
+		$empty['course_id'] = $course_id;
+
+		if ( ! class_exists( 'CTA_Database' ) ) {
+			return $empty;
+		}
+
+		$row = null;
+		foreach ( (array) CTA_Database::get_quizzes_by_course( $course_id, true ) as $candidate ) {
+			if ( $quiz_type === sanitize_key( (string) ( $candidate->quiz_type ?? '' ) ) ) {
+				$row = $candidate;
+				break;
+			}
+		}
+
+		if ( ! $row || empty( $row->id ) ) {
+			return $empty;
+		}
+
+		$quiz_id         = (int) $row->id;
+		$question_count  = count( CTA_Database::get_quiz_questions( $quiz_id ) );
+		$time_limit_mins = (int) ( $row->time_limit_mins ?? 0 );
+
+		return array(
+			'ok'              => ( $expected === $question_count && $time_limit_mins >= 240 ),
+			'course_id'       => $course_id,
+			'quiz_id'         => $quiz_id,
+			'question_count'  => $question_count,
+			'time_limit_mins' => $time_limit_mins,
+			'status'          => (string) ( $row->status ?? '' ),
+		);
+	}
+
+	/**
+	 * Re-sync Form A/B when live DB rows are missing or misconfigured.
+	 *
+	 * @param int  $course_id Optional course ID.
+	 * @param bool $force     Re-run even if forms appear healthy.
+	 * @return array{ok:bool,course_id:int,form_a:int,form_b:int,message:string}
+	 */
+	public static function ensure_learner_forms( $course_id = 0, $force = false ) {
+		$course = null;
+		if ( $course_id > 0 && class_exists( 'CTA_Database' ) ) {
+			$course = CTA_Database::get_course( $course_id );
+		}
+		if ( ! $course ) {
+			$course = self::find_course();
+		}
+
+		if ( ! $course || empty( $course->id ) ) {
+			return array(
+				'ok'        => false,
+				'course_id' => 0,
+				'form_a'    => 0,
+				'form_b'    => 0,
+				'message'   => 'course_not_found',
+			);
+		}
+
+		$course_id = (int) $course->id;
+		$form_a    = self::get_live_form_health( 'form_a', $course_id );
+		$form_b    = self::get_live_form_health( 'form_b', $course_id );
+
+		if ( ! $force && ! empty( $form_a['ok'] ) && ! empty( $form_b['ok'] ) ) {
+			return array(
+				'ok'        => true,
+				'course_id' => $course_id,
+				'form_a'    => (int) ( $form_a['quiz_id'] ?? 0 ),
+				'form_b'    => (int) ( $form_b['quiz_id'] ?? 0 ),
+				'message'   => 'forms_healthy',
+			);
+		}
+
+		$result = self::sync_assessments( $course_id );
+		return array(
+			'ok'        => ! empty( $result['ok'] ),
+			'course_id' => $course_id,
+			'form_a'    => (int) ( $result['form_a'] ?? 0 ),
+			'form_b'    => (int) ( $result['form_b'] ?? 0 ),
+			'message'   => ! empty( $result['ok'] ) ? 'forms_resynced' : (string) ( $result['message'] ?? 'sync_failed' ),
+		);
+	}
+
+	/**
 	 * Orchestrate full program sync.
 	 *
 	 * @param bool $force Re-run even if already seeded at this version.
@@ -497,12 +614,16 @@ class CTA_Lcsw_Aswb_Sync {
 	 */
 	public static function sync( $force = false ) {
 		if ( ! $force && get_option( self::SEED_OPTION ) ) {
-			return array(
-				'ok'        => true,
-				'course_id' => 0,
-				'message'   => 'already_seeded',
-				'counts'    => array(),
-			);
+			$forms = self::ensure_learner_forms( 0, false );
+			if ( ! empty( $forms['ok'] ) ) {
+				$stored = get_option( self::SEED_OPTION, array() );
+				return array(
+					'ok'        => true,
+					'course_id' => (int) ( $stored['course_id'] ?? $forms['course_id'] ?? 0 ),
+					'message'   => 'already_seeded',
+					'counts'    => is_array( $stored['counts'] ?? null ) ? (array) $stored['counts'] : array(),
+				);
+			}
 		}
 
 		if ( class_exists( 'CTA_Database' ) ) {
