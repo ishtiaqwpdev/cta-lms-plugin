@@ -439,10 +439,8 @@ class CTA_Syllabus_Sync {
 		$slug  = self::unique_slug( $slug_source );
 		$ce    = isset( $syllabus['ce_hours'] ) ? (float) $syllabus['ce_hours'] : 0.0;
 		$access_period_months = 6;
-		if ( ! empty( $syllabus['access_period_pending'] ) ) {
-			$access_period_months = 0;
-		} elseif ( isset( $syllabus['access_period_months'] ) && is_numeric( $syllabus['access_period_months'] ) ) {
-			$access_period_months = max( 0, absint( $syllabus['access_period_months'] ) );
+		if ( isset( $syllabus['access_period_months'] ) && is_numeric( $syllabus['access_period_months'] ) ) {
+			$access_period_months = max( 1, absint( $syllabus['access_period_months'] ) );
 		}
 
 		$description = ! empty( $syllabus['description'] )
@@ -599,10 +597,8 @@ class CTA_Syllabus_Sync {
 			}
 		}
 
-		if ( ! empty( $syllabus['access_period_pending'] ) ) {
-			$data['access_period_months'] = 0;
-		} elseif ( isset( $syllabus['access_period_months'] ) && is_numeric( $syllabus['access_period_months'] ) ) {
-			$data['access_period_months'] = max( 0, absint( $syllabus['access_period_months'] ) );
+		if ( isset( $syllabus['access_period_months'] ) && is_numeric( $syllabus['access_period_months'] ) && empty( $syllabus['access_period_pending'] ) ) {
+			$data['access_period_months'] = max( 1, absint( $syllabus['access_period_months'] ) );
 		}
 
 		$formats = array();

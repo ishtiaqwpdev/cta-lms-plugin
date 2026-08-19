@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.267' );
+	define( 'CTA_VERSION', '1.0.268' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -1498,6 +1498,16 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				if ( class_exists( 'CTA_Suicide_Risk_Certificate_Sync' ) ) {
 					CTA_Suicide_Risk_Certificate_Sync::sync_thumbnail( true );
 				}
+			}
+
+			// CE courses: heal access_period_months=0 (breaks admin Save HTML5 validation when field is hidden).
+			if ( version_compare( $installed, '1.0.268', '<' ) ) {
+				global $wpdb;
+				$courses_table = $wpdb->prefix . 'cta_courses';
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$wpdb->query(
+					"UPDATE {$courses_table} SET access_period_months = 6 WHERE product_type = 'ce' AND access_period_months < 1"
+				);
 			}
 
 			// Decouple supervision application pending from general account / CE access.

@@ -152,7 +152,10 @@ if ( $course ) {
 				<tr class="cta-field-access-months" <?php echo $is_exam_prep ? '' : 'style="display:none;"'; ?>>
 					<th><label for="cta-access-period"><?php esc_html_e( 'Access Period (months)', 'cta-lms' ); ?></label></th>
 					<td>
-						<input type="number" min="1" max="36" id="cta-access-period" name="access_period_months" value="<?php echo esc_attr( (string) (int) ( $course->access_period_months ?? 6 ) ); ?>">
+						<?php
+						$access_period_display = max( 1, (int) ( $course->access_period_months ?? 6 ) );
+						?>
+						<input type="number" min="1" max="36" id="cta-access-period" name="access_period_months" value="<?php echo esc_attr( (string) $access_period_display ); ?>" <?php disabled( ! $is_exam_prep ); ?>>
 						<p class="description"><?php esc_html_e( 'Default is 6 months from purchase. Admins can manually extend access per learner.', 'cta-lms' ); ?></p>
 					</td>
 				</tr>
@@ -326,6 +329,7 @@ if ( $course ) {
 			var accessRow = document.querySelector('.cta-field-access-months');
 			var attestRow = document.querySelector('.cta-field-attestation');
 			var ceInput = document.getElementById('cta-course-ce-hours');
+			var accessInput = document.getElementById('cta-access-period');
 			var attestInput = document.querySelector('input[name="attestation_required"]');
 			if (ceRow) { ceRow.style.display = isExam ? 'none' : ''; }
 			if (accessRow) { accessRow.style.display = isExam ? '' : 'none'; }
@@ -333,6 +337,14 @@ if ( $course ) {
 			if (ceInput) {
 				ceInput.disabled = !!isExam;
 				if (isExam) { ceInput.value = '0'; }
+			}
+			if (accessInput) {
+				accessInput.disabled = !isExam;
+				if (!isExam) {
+					accessInput.removeAttribute('required');
+				} else if (parseInt(accessInput.value, 10) < 1) {
+					accessInput.value = '6';
+				}
 			}
 			if (attestInput) {
 				attestInput.disabled = !!isExam;
