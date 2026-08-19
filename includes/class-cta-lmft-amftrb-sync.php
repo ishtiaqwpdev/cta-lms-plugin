@@ -34,6 +34,8 @@ class CTA_Lmft_Amftrb_Sync {
 	const AUDIO_TRACK_COUNT      = 12;
 	const FORM_QUESTION_COUNT    = 180;
 	const FORM_TIME_LIMIT_MINS   = 240;
+	const WORKBOOK_BANK_COUNT    = 17;
+	const WORKBOOK_BANK_TIME_MINS = 40;
 	const MATERIALS_REL = 'assets/course-materials/lmft-amftrb/';
 	const TRANSCRIPT_TITLE = 'Authoritative Audio Transcript v1.1 (Tracks 1–12)';
 
@@ -442,6 +444,10 @@ class CTA_Lmft_Amftrb_Sync {
 			'questions_a'        => (int) ( $assessments['questions_a'] ?? 0 ),
 			'questions_b'        => (int) ( $assessments['questions_b'] ?? 0 ),
 		);
+		for ( $n = 1; $n <= 12; $n++ ) {
+			$counts[ 'wb' . $n . '_bank_quiz_id' ] = (int) ( $assessments[ 'wb' . $n . '_bank' ] ?? 0 );
+			$counts[ 'questions_wb' . $n . '_bank' ] = (int) ( $assessments[ 'questions_wb' . $n . '_bank' ] ?? 0 );
+		}
 
 		if ( $ok ) {
 			update_option(
@@ -464,7 +470,7 @@ class CTA_Lmft_Amftrb_Sync {
 	}
 
 	/**
-	 * Ensure Form A/B online simulations (180 questions / 240 minutes each).
+	 * Ensure Form A/B and 12 workbook online practice banks (17 questions each).
 	 *
 	 * @param int $course_id Course ID.
 	 * @return array{ok:bool,form_a:int,form_b:int,questions_a:int,questions_b:int,message:string}
@@ -479,32 +485,47 @@ class CTA_Lmft_Amftrb_Sync {
 			'questions_b' => 0,
 			'message'     => 'invalid_course',
 		);
+		for ( $n = 1; $n <= 12; $n++ ) {
+			$empty[ 'wb' . $n . '_bank' ]           = 0;
+			$empty[ 'questions_wb' . $n . '_bank' ] = 0;
+		}
 
 		if ( ! $course_id ) {
 			return $empty;
 		}
 
-		$defs = array(
-			array(
-				'quiz_type' => 'form_a',
-				'title'     => 'Form A — 180-Question Comprehensive Simulation',
-				'sort'      => 20,
-				'time'      => self::FORM_TIME_LIMIT_MINS,
-				'file'      => 'lmft-amftrb-form-a.php',
-				'expect'    => self::FORM_QUESTION_COUNT,
-				'key'       => 'form_a',
-				'qkey'      => 'questions_a',
-			),
-			array(
-				'quiz_type' => 'form_b',
-				'title'     => 'Form B — 180-Question Comprehensive Simulation',
-				'sort'      => 30,
-				'time'      => self::FORM_TIME_LIMIT_MINS,
-				'file'      => 'lmft-amftrb-form-b.php',
-				'expect'    => self::FORM_QUESTION_COUNT,
-				'key'       => 'form_b',
-				'qkey'      => 'questions_b',
-			),
+		$defs = array();
+		for ( $n = 1; $n <= 12; $n++ ) {
+			$defs[] = array(
+				'quiz_type' => 'wb' . $n . '_bank',
+				'title'     => sprintf( 'Workbook %d — 17-Question Practice Bank', $n ),
+				'sort'      => $n,
+				'time'      => self::WORKBOOK_BANK_TIME_MINS,
+				'file'      => 'lmft-amftrb-wb' . $n . '-bank.php',
+				'expect'    => self::WORKBOOK_BANK_COUNT,
+				'key'       => 'wb' . $n . '_bank',
+				'qkey'      => 'questions_wb' . $n . '_bank',
+			);
+		}
+		$defs[] = array(
+			'quiz_type' => 'form_a',
+			'title'     => 'Form A — 180-Question Comprehensive Simulation',
+			'sort'      => 20,
+			'time'      => self::FORM_TIME_LIMIT_MINS,
+			'file'      => 'lmft-amftrb-form-a.php',
+			'expect'    => self::FORM_QUESTION_COUNT,
+			'key'       => 'form_a',
+			'qkey'      => 'questions_a',
+		);
+		$defs[] = array(
+			'quiz_type' => 'form_b',
+			'title'     => 'Form B — 180-Question Comprehensive Simulation',
+			'sort'      => 30,
+			'time'      => self::FORM_TIME_LIMIT_MINS,
+			'file'      => 'lmft-amftrb-form-b.php',
+			'expect'    => self::FORM_QUESTION_COUNT,
+			'key'       => 'form_b',
+			'qkey'      => 'questions_b',
 		);
 
 		$result            = $empty;
@@ -619,6 +640,86 @@ class CTA_Lmft_Amftrb_Sync {
 	}
 
 	/**
+	 * @param int $workbook_num Workbook number 1-12.
+	 * @param int $course_id    Optional course ID.
+	 * @return array{ok:bool,course_id:int,quiz_id:int,question_count:int,time_limit_mins:int,status:string}
+	 */
+	public static function get_live_workbook_bank_health( $workbook_num, $course_id = 0 ) {
+		$workbook_num = absint( $workbook_num );
+		$quiz_type    = 'wb' . $workbook_num . '_bank';
+		$expected     = self::WORKBOOK_BANK_COUNT;
+		$empty        = array(
+			'ok'              => false,
+			'course_id'       => 0,
+			'quiz_id'         => 0,
+			'question_count'  => 0,
+			'time_limit_mins' => 0,
+			'status'          => '',
+		);
+
+		if ( $workbook_num < 1 || $workbook_num > 12 ) {
+			return $empty;
+		}
+
+		$course = null;
+		if ( $course_id > 0 && class_exists( 'CTA_Database' ) ) {
+			$course = CTA_Database::get_course( $course_id );
+		}
+		if ( ! $course ) {
+			$course = self::find_course();
+		}
+		if ( ! $course || empty( $course->id ) ) {
+			return $empty;
+		}
+
+		$course_id          = (int) $course->id;
+		$empty['course_id'] = $course_id;
+
+		if ( ! class_exists( 'CTA_Database' ) ) {
+			return $empty;
+		}
+
+		$row = null;
+		foreach ( (array) CTA_Database::get_quizzes_by_course( $course_id, true ) as $candidate ) {
+			if ( $quiz_type === sanitize_key( (string) ( $candidate->quiz_type ?? '' ) ) ) {
+				$row = $candidate;
+				break;
+			}
+		}
+
+		if ( ! $row || empty( $row->id ) ) {
+			return $empty;
+		}
+
+		$quiz_id         = (int) $row->id;
+		$question_count  = count( CTA_Database::get_quiz_questions( $quiz_id ) );
+		$time_limit_mins = (int) ( $row->time_limit_mins ?? 0 );
+
+		return array(
+			'ok'              => ( $expected === $question_count && $time_limit_mins >= 1 ),
+			'course_id'       => $course_id,
+			'quiz_id'         => $quiz_id,
+			'question_count'  => $question_count,
+			'time_limit_mins' => $time_limit_mins,
+			'status'          => (string) ( $row->status ?? '' ),
+		);
+	}
+
+	/**
+	 * @param int $course_id Course ID.
+	 * @return bool
+	 */
+	public static function workbook_banks_are_live( $course_id = 0 ) {
+		for ( $n = 1; $n <= 12; $n++ ) {
+			$health = self::get_live_workbook_bank_health( $n, $course_id );
+			if ( empty( $health['ok'] ) ) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
 	 * Re-sync Form A/B when live DB rows are missing or misconfigured.
 	 *
 	 * @param int  $course_id Optional course ID.
@@ -648,7 +749,7 @@ class CTA_Lmft_Amftrb_Sync {
 		$form_a    = self::get_live_form_health( 'form_a', $course_id );
 		$form_b    = self::get_live_form_health( 'form_b', $course_id );
 
-		if ( ! $force && ! empty( $form_a['ok'] ) && ! empty( $form_b['ok'] ) ) {
+		if ( ! $force && ! empty( $form_a['ok'] ) && ! empty( $form_b['ok'] ) && self::workbook_banks_are_live( $course_id ) ) {
 			return array(
 				'ok'        => true,
 				'course_id' => $course_id,
