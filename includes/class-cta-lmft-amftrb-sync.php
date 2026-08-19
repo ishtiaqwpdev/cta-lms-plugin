@@ -2,9 +2,8 @@
 /**
  * CTA LMFT AMFTRB National Exam Preparation — program, modules, and materials sync.
  *
- * Assessment delivery for v1 is printable candidate banks, checkpoints, and Form A/B
- * simulations under assets/course-materials/lmft-amftrb/. Online quiz seeding from
- * DOCX (quiz-seeds PHP) is intentionally not implemented here; banks can be added later.
+ * Assessment delivery: printable candidate banks plus online Form A/B simulations
+ * seeded from approved DOCX under assets/course-materials/lmft-amftrb/.
  *
  * Remains draft with launch_pending_testing until learner testing and Founder/CEO
  * release approval (checkout HOLD).
@@ -33,6 +32,8 @@ class CTA_Lmft_Amftrb_Sync {
 	/** Authoritative combined runtime from Audio LMS Staging handoff (12 tracks). */
 	const COMBINED_AUDIO_RUNTIME = '1:15:26.811';
 	const AUDIO_TRACK_COUNT      = 12;
+	const FORM_QUESTION_COUNT    = 180;
+	const FORM_TIME_LIMIT_MINS   = 240;
 	const MATERIALS_REL = 'assets/course-materials/lmft-amftrb/';
 	const TRANSCRIPT_TITLE = 'Authoritative Audio Transcript v1.1 (Tracks 1–12)';
 
@@ -387,19 +388,23 @@ class CTA_Lmft_Amftrb_Sync {
 	}
 
 	/**
-	 * Orchestrate program sync (program + modules + materials only; no online quiz seeds).
+	 * Orchestrate program sync (program + modules + materials + Form A/B online simulations).
 	 *
 	 * @param bool $force Re-run even if already seeded at this version.
 	 * @return array{ok:bool,course_id:int,message:string,counts:array}
 	 */
 	public static function sync( $force = false ) {
 		if ( ! $force && get_option( self::SEED_OPTION ) ) {
-			return array(
-				'ok'        => true,
-				'course_id' => 0,
-				'message'   => 'already_seeded',
-				'counts'    => array(),
-			);
+			$forms = self::ensure_learner_forms( 0, false );
+			if ( ! empty( $forms['ok'] ) ) {
+				$stored = get_option( self::SEED_OPTION, array() );
+				return array(
+					'ok'        => true,
+					'course_id' => (int) ( $stored['course_id'] ?? $forms['course_id'] ?? 0 ),
+					'message'   => 'already_seeded',
+					'counts'    => is_array( $stored['counts'] ?? null ) ? (array) $stored['counts'] : array(),
+				);
+			}
 		}
 
 		if ( class_exists( 'CTA_Database' ) ) {
@@ -418,10 +423,11 @@ class CTA_Lmft_Amftrb_Sync {
 			);
 		}
 
-		$modules   = self::sync_modules( $course_id );
-		$materials = self::sync_materials( $course_id );
+		$modules     = self::sync_modules( $course_id );
+		$materials   = self::sync_materials( $course_id );
+		$assessments = self::sync_assessments( $course_id );
 
-		$ok = true;
+		$ok = ! empty( $assessments['ok'] );
 
 		$counts = array(
 			'modules_created'    => (int) ( $modules['created'] ?? 0 ),
@@ -431,6 +437,10 @@ class CTA_Lmft_Amftrb_Sync {
 			'materials_skipped'  => (int) ( $materials['skipped'] ?? 0 ),
 			'materials_missing'  => count( $materials['missing'] ?? array() ),
 			'missing_paths'      => array_values( (array) ( $materials['missing'] ?? array() ) ),
+			'form_a_quiz_id'     => (int) ( $assessments['form_a'] ?? 0 ),
+			'form_b_quiz_id'     => (int) ( $assessments['form_b'] ?? 0 ),
+			'questions_a'        => (int) ( $assessments['questions_a'] ?? 0 ),
+			'questions_b'        => (int) ( $assessments['questions_b'] ?? 0 ),
 		);
 
 		if ( $ok ) {
@@ -448,9 +458,389 @@ class CTA_Lmft_Amftrb_Sync {
 		return array(
 			'ok'        => $ok,
 			'course_id' => $course_id,
-			'message'   => 'synced',
+			'message'   => $ok ? 'synced' : (string) ( $assessments['message'] ?? 'sync_failed' ),
 			'counts'    => $counts,
 		);
+	}
+
+	/**
+	 * Ensure Form A/B online simulations (180 questions / 240 minutes each).
+	 *
+	 * @param int $course_id Course ID.
+	 * @return array{ok:bool,form_a:int,form_b:int,questions_a:int,questions_b:int,message:string}
+	 */
+	public static function sync_assessments( $course_id ) {
+		$course_id = absint( $course_id );
+		$empty     = array(
+			'ok'          => false,
+			'form_a'      => 0,
+			'form_b'      => 0,
+			'questions_a' => 0,
+			'questions_b' => 0,
+			'message'     => 'invalid_course',
+		);
+
+		if ( ! $course_id ) {
+			return $empty;
+		}
+
+		$defs = array(
+			array(
+				'quiz_type' => 'form_a',
+				'title'     => 'Form A — 180-Question Comprehensive Simulation',
+				'sort'      => 20,
+				'time'      => self::FORM_TIME_LIMIT_MINS,
+				'file'      => 'lmft-amftrb-form-a.php',
+				'expect'    => self::FORM_QUESTION_COUNT,
+				'key'       => 'form_a',
+				'qkey'      => 'questions_a',
+			),
+			array(
+				'quiz_type' => 'form_b',
+				'title'     => 'Form B — 180-Question Comprehensive Simulation',
+				'sort'      => 30,
+				'time'      => self::FORM_TIME_LIMIT_MINS,
+				'file'      => 'lmft-amftrb-form-b.php',
+				'expect'    => self::FORM_QUESTION_COUNT,
+				'key'       => 'form_b',
+				'qkey'      => 'questions_b',
+			),
+		);
+
+		$result            = $empty;
+		$result['message'] = '';
+
+		foreach ( $defs as $def ) {
+			$questions              = self::load_seed_questions( $def['file'] );
+			$count                  = count( $questions );
+			$result[ $def['qkey'] ] = $count;
+
+			if ( (int) $def['expect'] !== $count ) {
+				$result['message'] = sprintf(
+					'invalid_question_bank_count:%s expected %d got %d',
+					$def['quiz_type'],
+					$def['expect'],
+					$count
+				);
+				return $result;
+			}
+		}
+
+		foreach ( $defs as $def ) {
+			$questions = self::load_seed_questions( $def['file'] );
+			$quiz_id   = self::replace_form_quiz(
+				$course_id,
+				$def['quiz_type'],
+				$def['title'],
+				$def['sort'],
+				$questions,
+				(int) $def['time']
+			);
+			$result[ $def['key'] ]  = $quiz_id;
+			$result[ $def['qkey'] ] = (int) $def['expect'];
+
+			if ( ! $quiz_id ) {
+				$result['message'] = 'quiz_write_failed:' . $def['quiz_type'];
+				return $result;
+			}
+		}
+
+		$result['ok']      = true;
+		$result['message'] = 'synced';
+
+		return $result;
+	}
+
+	/**
+	 * Verify an active Form A/B quiz exists with the expected question count and timer.
+	 *
+	 * @param string $quiz_type form_a|form_b.
+	 * @param int    $course_id Optional course ID.
+	 * @return array{ok:bool,course_id:int,quiz_id:int,question_count:int,time_limit_mins:int,status:string}
+	 */
+	public static function get_live_form_health( $quiz_type, $course_id = 0 ) {
+		$quiz_type = sanitize_key( (string) $quiz_type );
+		$expected  = self::FORM_QUESTION_COUNT;
+		$empty     = array(
+			'ok'              => false,
+			'course_id'       => 0,
+			'quiz_id'         => 0,
+			'question_count'  => 0,
+			'time_limit_mins' => 0,
+			'status'          => '',
+		);
+
+		if ( ! in_array( $quiz_type, array( 'form_a', 'form_b' ), true ) ) {
+			return $empty;
+		}
+
+		$course = null;
+		if ( $course_id > 0 && class_exists( 'CTA_Database' ) ) {
+			$course = CTA_Database::get_course( $course_id );
+		}
+		if ( ! $course ) {
+			$course = self::find_course();
+		}
+		if ( ! $course || empty( $course->id ) ) {
+			return $empty;
+		}
+
+		$course_id          = (int) $course->id;
+		$empty['course_id'] = $course_id;
+
+		if ( ! class_exists( 'CTA_Database' ) ) {
+			return $empty;
+		}
+
+		$row = null;
+		foreach ( (array) CTA_Database::get_quizzes_by_course( $course_id, true ) as $candidate ) {
+			if ( $quiz_type === sanitize_key( (string) ( $candidate->quiz_type ?? '' ) ) ) {
+				$row = $candidate;
+				break;
+			}
+		}
+
+		if ( ! $row || empty( $row->id ) ) {
+			return $empty;
+		}
+
+		$quiz_id         = (int) $row->id;
+		$question_count  = count( CTA_Database::get_quiz_questions( $quiz_id ) );
+		$time_limit_mins = (int) ( $row->time_limit_mins ?? 0 );
+
+		return array(
+			'ok'              => ( $expected === $question_count && $time_limit_mins >= self::FORM_TIME_LIMIT_MINS ),
+			'course_id'       => $course_id,
+			'quiz_id'         => $quiz_id,
+			'question_count'  => $question_count,
+			'time_limit_mins' => $time_limit_mins,
+			'status'          => (string) ( $row->status ?? '' ),
+		);
+	}
+
+	/**
+	 * Re-sync Form A/B when live DB rows are missing or misconfigured.
+	 *
+	 * @param int  $course_id Optional course ID.
+	 * @param bool $force     Re-run even if forms appear healthy.
+	 * @return array{ok:bool,course_id:int,form_a:int,form_b:int,message:string}
+	 */
+	public static function ensure_learner_forms( $course_id = 0, $force = false ) {
+		$course = null;
+		if ( $course_id > 0 && class_exists( 'CTA_Database' ) ) {
+			$course = CTA_Database::get_course( $course_id );
+		}
+		if ( ! $course ) {
+			$course = self::find_course();
+		}
+
+		if ( ! $course || empty( $course->id ) ) {
+			return array(
+				'ok'        => false,
+				'course_id' => 0,
+				'form_a'    => 0,
+				'form_b'    => 0,
+				'message'   => 'course_not_found',
+			);
+		}
+
+		$course_id = (int) $course->id;
+		$form_a    = self::get_live_form_health( 'form_a', $course_id );
+		$form_b    = self::get_live_form_health( 'form_b', $course_id );
+
+		if ( ! $force && ! empty( $form_a['ok'] ) && ! empty( $form_b['ok'] ) ) {
+			return array(
+				'ok'        => true,
+				'course_id' => $course_id,
+				'form_a'    => (int) ( $form_a['quiz_id'] ?? 0 ),
+				'form_b'    => (int) ( $form_b['quiz_id'] ?? 0 ),
+				'message'   => 'forms_healthy',
+			);
+		}
+
+		$result = self::sync_assessments( $course_id );
+		return array(
+			'ok'        => ! empty( $result['ok'] ),
+			'course_id' => $course_id,
+			'form_a'    => (int) ( $result['form_a'] ?? 0 ),
+			'form_b'    => (int) ( $result['form_b'] ?? 0 ),
+			'message'   => ! empty( $result['ok'] ) ? 'forms_resynced' : (string) ( $result['message'] ?? 'sync_failed' ),
+		);
+	}
+
+	/**
+	 * @param string $file Seed filename.
+	 * @return array[]
+	 */
+	private static function load_seed_questions( $file ) {
+		$file = basename( (string) $file );
+		$path = CTA_PLUGIN_DIR . 'includes/quiz-seeds/' . $file;
+
+		if ( ! is_readable( $path ) ) {
+			return array();
+		}
+
+		$questions = include $path;
+		return is_array( $questions ) ? $questions : array();
+	}
+
+	/**
+	 * Create/update a quiz and replace all questions.
+	 *
+	 * @param int    $course_id  Course ID.
+	 * @param string $quiz_type  Quiz type key.
+	 * @param string $title      Quiz title.
+	 * @param int    $sort       Sort order.
+	 * @param array  $questions  Question rows.
+	 * @param int    $time_limit Time limit in minutes.
+	 * @return int Quiz ID or 0.
+	 */
+	private static function replace_form_quiz( $course_id, $quiz_type, $title, $sort, array $questions, $time_limit = 240 ) {
+		global $wpdb;
+
+		$course_id  = absint( $course_id );
+		$quiz_type  = sanitize_text_field( $quiz_type );
+		$title      = sanitize_text_field( $title );
+		$sort       = (int) $sort;
+		$time_limit = (int) $time_limit;
+
+		if ( ! $course_id || '' === $quiz_type ) {
+			return 0;
+		}
+
+		$quiz_table = $wpdb->prefix . 'cta_quizzes';
+		$quiz       = null;
+
+		if ( class_exists( 'CTA_Database' ) ) {
+			$all = CTA_Database::get_quizzes_by_course( $course_id, false );
+			foreach ( (array) $all as $row ) {
+				$type = isset( $row->quiz_type ) ? (string) $row->quiz_type : '';
+				if ( $quiz_type === $type ) {
+					$quiz = $row;
+					break;
+				}
+			}
+		}
+
+		if ( $quiz ) {
+			$quiz_id = (int) $quiz->id;
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$wpdb->update(
+				$quiz_table,
+				array(
+					'title'           => $title,
+					'quiz_type'       => $quiz_type,
+					'passing_score'   => 70,
+					'time_limit_mins' => $time_limit,
+					'max_attempts'    => 0,
+					'status'          => 'active',
+					'sort_order'      => $sort,
+				),
+				array( 'id' => $quiz_id ),
+				array( '%s', '%s', '%d', '%d', '%d', '%s', '%d' ),
+				array( '%d' )
+			);
+		} else {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+			$inserted = $wpdb->insert(
+				$quiz_table,
+				array(
+					'course_id'       => $course_id,
+					'title'           => $title,
+					'quiz_type'       => $quiz_type,
+					'sort_order'      => $sort,
+					'passing_score'   => 70,
+					'time_limit_mins' => $time_limit,
+					'max_attempts'    => 0,
+					'status'          => 'active',
+				),
+				array( '%d', '%s', '%s', '%d', '%d', '%d', '%d', '%s' )
+			);
+			if ( ! $inserted ) {
+				return 0;
+			}
+			$quiz_id = (int) $wpdb->insert_id;
+		}
+
+		if ( ! $quiz_id ) {
+			return 0;
+		}
+
+		self::maybe_widen_option_columns();
+
+		$q_table = $wpdb->prefix . 'cta_quiz_questions';
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$wpdb->delete( $q_table, array( 'quiz_id' => $quiz_id ), array( '%d' ) );
+
+		$text = function_exists( 'cta_lms_sanitize_utf8_text' ) ? 'cta_lms_sanitize_utf8_text' : null;
+
+		foreach ( $questions as $index => $question ) {
+			$correct = isset( $question['correct_option'] ) ? strtolower( (string) $question['correct_option'] ) : 'a';
+			$correct = in_array( $correct, array( 'a', 'b', 'c', 'd' ), true ) ? $correct : 'a';
+
+			$qt = (string) ( $question['question_text'] ?? '' );
+			$oa = (string) ( $question['option_a'] ?? '' );
+			$ob = (string) ( $question['option_b'] ?? '' );
+			$oc = (string) ( $question['option_c'] ?? '' );
+			$od = (string) ( $question['option_d'] ?? '' );
+			$ex = (string) ( $question['explanation'] ?? '' );
+
+			if ( $text ) {
+				$qt = $text( $qt );
+				$oa = $text( $oa );
+				$ob = $text( $ob );
+				$oc = $text( $oc );
+				$od = $text( $od );
+				$ex = $text( $ex );
+			}
+
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+			$wpdb->insert(
+				$q_table,
+				array(
+					'quiz_id'        => $quiz_id,
+					'question_text'  => $qt,
+					'option_a'       => $oa,
+					'option_b'       => $ob,
+					'option_c'       => $oc,
+					'option_d'       => $od,
+					'correct_option' => $correct,
+					'explanation'    => $ex,
+					'order_index'    => (int) $index,
+				),
+				array( '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d' )
+			);
+		}
+
+		return $quiz_id;
+	}
+
+	/**
+	 * Widen option_* columns so long official stems are not truncated.
+	 */
+	private static function maybe_widen_option_columns() {
+		global $wpdb;
+
+		$table = $wpdb->prefix . 'cta_quiz_questions';
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) );
+		if ( $exists !== $table ) {
+			return;
+		}
+
+		foreach ( array( 'option_a', 'option_b', 'option_c', 'option_d' ) as $col ) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$row = $wpdb->get_row( $wpdb->prepare( "SHOW COLUMNS FROM {$table} LIKE %s", $col ), ARRAY_A );
+			if ( empty( $row['Type'] ) ) {
+				continue;
+			}
+			$type = strtolower( (string) $row['Type'] );
+			if ( false !== strpos( $type, 'text' ) ) {
+				continue;
+			}
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.NotPrepared
+			$wpdb->query( "ALTER TABLE {$table} MODIFY {$col} text NOT NULL" );
+		}
 	}
 
 	/**

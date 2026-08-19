@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.274' );
+	define( 'CTA_VERSION', '1.0.275' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -1554,6 +1554,11 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 			// LMFT AMFTRB: archive broken 120-card legacy deck (workbook tags as domains).
 			if ( version_compare( $installed, '1.0.274', '<' ) && class_exists( 'CTA_Lmft_Amftrb_Legacy_Flashcard_Archive' ) ) {
 				CTA_Lmft_Amftrb_Legacy_Flashcard_Archive::archive_legacy_flashcards( 0, false );
+			}
+
+			// LMFT AMFTRB: seed online Form A/B (180q / 240min) from approved quiz seeds.
+			if ( version_compare( $installed, '1.0.275', '<' ) && class_exists( 'CTA_Lmft_Amftrb_Sync' ) ) {
+				CTA_Lmft_Amftrb_Sync::ensure_learner_forms( 0, false );
 			}
 
 			// Decouple supervision application pending from general account / CE access.
