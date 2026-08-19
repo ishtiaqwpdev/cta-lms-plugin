@@ -3087,6 +3087,27 @@
     var saveInFlight = false;
     var saveQueued = false;
     var submissionInFlight = false;
+    var isNcmhceSimulation = app.getAttribute("data-ncmhce-simulation") === "1";
+    var ncmhceConfig = null;
+    var ncmhceMeta = null;
+    var ncmhceBreakInterval = null;
+    var ncmhceExamTimerPaused = false;
+
+    if (isNcmhceSimulation) {
+      try {
+        ncmhceConfig = JSON.parse(app.getAttribute("data-ncmhce-config") || "{}");
+      } catch (ncmhceParseErr) {
+        ncmhceConfig = {};
+      }
+      ncmhceMeta = (ncmhceConfig && ncmhceConfig.meta) ? Object.assign({}, ncmhceConfig.meta) : {
+        section_index: 0,
+        locked_through: -1,
+        break_state: "none",
+        break_started_at: "",
+        break_completed_at: "",
+        break_pause_seconds: 0
+      };
+    }
 
     (function initServerRemainingFromDom() {
       var attr = app.getAttribute("data-seconds-remaining");
@@ -3270,6 +3291,10 @@
       }
 
       function tick() {
+        if (ncmhceExamTimerPaused) {
+          return;
+        }
+
         if (secondsRemaining <= 0) {
           handleTimeExpired({ fromInit: false });
           return;
@@ -3286,11 +3311,23 @@
       timerInterval = window.setInterval(tick, 1000);
     }
 
-    function countAnswered() {
-      var total = app.querySelectorAll(".cta-quiz-question").length;
+    function countAnswered(scope) {
+      var root = app;
+      if (isNcmhceSimulation && scope === "current") {
+        var activeBreak = app.querySelector(".cta-ncmhce-break:not([hidden])");
+        if (activeBreak) {
+          return { answered: 0, total: 0 };
+        }
+        var activeSection = app.querySelector(".cta-ncmhce-section:not([hidden])");
+        if (activeSection) {
+          root = activeSection;
+        }
+      }
+
+      var total = root.querySelectorAll(".cta-quiz-question").length;
       var answered = 0;
 
-      app.querySelectorAll(".cta-quiz-question").forEach(function (questionEl) {
+      root.querySelectorAll(".cta-quiz-question").forEach(function (questionEl) {
         if (questionEl.querySelector('input[type="radio"]:checked')) {
           answered += 1;
         }
@@ -3299,7 +3336,213 @@
       return { answered: answered, total: total };
     }
 
+    function formatNcmhceBreakTime(totalSeconds) {
+      var mins = Math.floor(totalSeconds / 60);
+      var secs = totalSeconds % 60;
+      return String(mins) + ":" + (secs < 10 ? "0" : "") + String(secs);
+    }
+
+    function stopNcmhceBreakCountdown() {
+      if (ncmhceBreakInterval) {
+        clearInterval(ncmhceBreakInterval);
+        ncmhceBreakInterval = null;
+      }
+    }
+
+    function showNcmhceSection(sectionIndex) {
+      app.querySelectorAll(".cta-ncmhce-section").forEach(function (sectionEl) {
+        var idx = parseInt(sectionEl.getAttribute("data-ncmhce-section-index"), 10);
+        sectionEl.hidden = idx !== sectionIndex;
+      });
+
+      var breakPanel = app.querySelector("[data-ncmhce-break-panel]");
+      if (breakPanel) {
+        breakPanel.hidden = true;
+      }
+
+      var nav = document.getElementById("cta-ncmhce-nav");
+      var submitSection = app.querySelector(".cta-quiz-submit-section");
+      var totalSections = parseInt((ncmhceConfig && ncmhceConfig.total_sections) || "0", 10) || 0;
+      var isLast = totalSections > 0 && sectionIndex >= totalSections - 1;
+
+      if (nav) {
+        nav.hidden = !!isLast;
+      }
+      if (submitSection) {
+        submitSection.hidden = !isLast;
+      }
+    }
+
+    function showNcmhceBreak() {
+      app.querySelectorAll(".cta-ncmhce-section").forEach(function (sectionEl) {
+        sectionEl.hidden = true;
+      });
+
+      var breakPanel = app.querySelector("[data-ncmhce-break-panel]");
+      if (breakPanel) {
+        breakPanel.hidden = false;
+      }
+
+      var nav = document.getElementById("cta-ncmhce-nav");
+      if (nav) {
+        nav.hidden = true;
+      }
+
+      ncmhceExamTimerPaused = true;
+      stopTimer();
+
+      var breakMinutes = parseInt((ncmhceConfig && ncmhceConfig.break_minutes) || "15", 10) || 15;
+      var breakSeconds = breakMinutes * 60;
+      var breakTimerEl = app.querySelector("[data-ncmhce-break-timer]");
+
+      stopNcmhceBreakCountdown();
+      if (breakTimerEl) {
+        breakTimerEl.textContent = formatNcmhceBreakTime(breakSeconds);
+      }
+
+      ncmhceBreakInterval = window.setInterval(function () {
+        breakSeconds -= 1;
+        if (breakTimerEl) {
+          breakTimerEl.textContent = formatNcmhceBreakTime(Math.max(0, breakSeconds));
+        }
+        if (breakSeconds <= 0) {
+          stopNcmhceBreakCountdown();
+        }
+      }, 1000);
+    }
+
+    function updateNcmhceCounter() {
+      var sectionIndex = ncmhceMeta ? parseInt(ncmhceMeta.section_index, 10) || 0 : 0;
+      var sectionDef = ncmhceConfig && Array.isArray(ncmhceConfig.sections)
+        ? ncmhceConfig.sections[sectionIndex]
+        : null;
+      var currentCounts = countAnswered("current");
+      var allCounts = countAnswered("all");
+      var progressEl = document.getElementById("cta-quiz-progress");
+      var sectionProgressEl = document.getElementById("cta-ncmhce-section-progress");
+      var continueBtn = document.getElementById("cta-ncmhce-continue");
+      var submitBtn = document.getElementById("cta-submit-quiz");
+      var totalSections = parseInt((ncmhceConfig && ncmhceConfig.total_sections) || "0", 10) || 0;
+      var isLast = totalSections > 0 && sectionIndex >= totalSections - 1;
+
+      if (progressEl) {
+        progressEl.textContent =
+          "Questions answered: " + allCounts.answered + " of " + (questionCount || allCounts.total);
+      }
+
+      if (sectionProgressEl && sectionDef) {
+        sectionProgressEl.textContent =
+          "Case " +
+          String(sectionDef.case) +
+          ", Section " +
+          String(sectionDef.section) +
+          " — answered " +
+          String(currentCounts.answered) +
+          " of " +
+          String(currentCounts.total) +
+          " in this section";
+      }
+
+      if (continueBtn && !isLast && ncmhceMeta && ncmhceMeta.break_state !== "active") {
+        continueBtn.disabled = currentCounts.total === 0 || currentCounts.answered < currentCounts.total;
+      }
+
+      if (submitBtn && isLast) {
+        submitBtn.disabled = allCounts.total === 0 || allCounts.answered < allCounts.total;
+      }
+    }
+
+    function handleNcmhceContinue() {
+      if (!ncmhceMeta || !ncmhceConfig) {
+        return;
+      }
+
+      var current = parseInt(ncmhceMeta.section_index, 10) || 0;
+      var currentCounts = countAnswered("current");
+
+      if (currentCounts.total === 0 || currentCounts.answered < currentCounts.total) {
+        window.alert("Please answer every question in this section before continuing.");
+        return;
+      }
+
+      if (
+        !window.confirm(
+          "Continue to the next section? You will not be able to return to this section."
+        )
+      ) {
+        return;
+      }
+
+      var breakAfter = parseInt(ncmhceConfig.break_after_section, 10);
+      if (current === breakAfter && ncmhceMeta.break_state !== "done") {
+        ncmhceMeta.break_state = "active";
+        ncmhceMeta.break_started_at = new Date().toISOString().slice(0, 19).replace("T", " ");
+        ncmhceMeta.locked_through = current;
+        saveQuizProgress().always(function () {
+          showNcmhceBreak();
+        });
+        return;
+      }
+
+      ncmhceMeta.section_index = current + 1;
+      ncmhceMeta.locked_through = current;
+      saveQuizProgress().always(function () {
+        showNcmhceSection(ncmhceMeta.section_index);
+        updateAnswerCounter();
+      });
+    }
+
+    function resumeNcmhceBreak() {
+      if (!ncmhceMeta || !ncmhceConfig) {
+        return;
+      }
+
+      ncmhceMeta.break_state = "done";
+      ncmhceMeta.break_completed_at = new Date().toISOString().slice(0, 19).replace("T", " ");
+      ncmhceMeta.section_index = parseInt(ncmhceConfig.break_after_section, 10) + 1;
+      ncmhceMeta.locked_through = parseInt(ncmhceConfig.break_after_section, 10);
+      ncmhceExamTimerPaused = false;
+      stopNcmhceBreakCountdown();
+
+      saveQuizProgress().always(function () {
+        showNcmhceSection(ncmhceMeta.section_index);
+        updateAnswerCounter();
+        startTimer();
+      });
+    }
+
+    function initNcmhceSimulationUi() {
+      if (!isNcmhceSimulation || !ncmhceConfig) {
+        return;
+      }
+
+      if (ncmhceMeta && ncmhceMeta.break_state === "active") {
+        showNcmhceBreak();
+      } else {
+        showNcmhceSection(parseInt(ncmhceMeta.section_index, 10) || 0);
+      }
+
+      var continueBtn = document.getElementById("cta-ncmhce-continue");
+      if (continueBtn && !continueBtn.getAttribute("data-ncmhce-bound")) {
+        continueBtn.setAttribute("data-ncmhce-bound", "1");
+        continueBtn.addEventListener("click", handleNcmhceContinue);
+      }
+
+      var resumeBtn = app.querySelector("[data-ncmhce-break-resume]");
+      if (resumeBtn && !resumeBtn.getAttribute("data-ncmhce-bound")) {
+        resumeBtn.setAttribute("data-ncmhce-bound", "1");
+        resumeBtn.addEventListener("click", resumeNcmhceBreak);
+      }
+
+      updateAnswerCounter();
+    }
+
     function updateAnswerCounter() {
+      if (isNcmhceSimulation) {
+        updateNcmhceCounter();
+        return;
+      }
+
       var counts = countAnswered();
       var progressEl = document.getElementById("cta-quiz-progress");
       var submitBtn = document.getElementById("cta-submit-quiz");
@@ -3324,6 +3567,10 @@
           answers[qid] = checked.value;
         }
       });
+
+      if (isNcmhceSimulation && ncmhceMeta) {
+        answers._ncmhce = Object.assign({}, ncmhceMeta);
+      }
 
       return answers;
     }
@@ -3672,10 +3919,10 @@
       }
 
       var submitBtn = document.getElementById("cta-submit-quiz");
-      var counts = countAnswered();
+      var counts = isNcmhceSimulation ? countAnswered("all") : countAnswered();
 
       if (!autoSubmit) {
-        if (counts.answered < counts.total) {
+        if (counts.answered < (isNcmhceSimulation ? (questionCount || counts.total) : counts.total)) {
           window.alert("Please answer all questions before submitting.");
           return;
         }
@@ -3759,6 +4006,15 @@
       payload.append("attempt_id", String(attemptId));
       var answers = collectAnswers();
       Object.keys(answers).forEach(function (questionId) {
+        if (questionId === "_ncmhce") {
+          Object.keys(answers[questionId]).forEach(function (metaKey) {
+            payload.append(
+              "answers[_ncmhce][" + metaKey + "]",
+              String(answers[questionId][metaKey])
+            );
+          });
+          return;
+        }
         payload.append("answers[" + questionId + "]", answers[questionId]);
       });
       navigator.sendBeacon(ctaAjax.ajaxUrl, payload);
@@ -3855,8 +4111,15 @@
             }
 
             questionsEl.innerHTML = response.data.html;
+            if (response.data.ncmhce_simulation && response.data.ncmhce_config) {
+              isNcmhceSimulation = true;
+              ncmhceConfig = response.data.ncmhce_config;
+              ncmhceMeta = ncmhceConfig.meta ? Object.assign({}, ncmhceConfig.meta) : ncmhceMeta;
+              app.setAttribute("data-ncmhce-simulation", "1");
+            }
             answeredCount = 0;
             updateAnswerCounter();
+            initNcmhceSimulationUi();
             var submitSection = app.querySelector(".cta-quiz-submit-section");
             if (submitSection) {
               submitSection.hidden = false;
@@ -4170,6 +4433,7 @@
 
     if (panels.questions && !panels.questions.hidden) {
       updateAnswerCounter();
+      initNcmhceSimulationUi();
       startTimer();
     }
   }

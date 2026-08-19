@@ -317,6 +317,14 @@ class CTA_Quiz {
 		$exam_instructions = class_exists( 'CTA_Suicide_Risk_Exam_Sync' )
 			? CTA_Suicide_Risk_Exam_Sync::get_exam_instructions_for_course( $course )
 			: '';
+		if ( class_exists( 'CTA_Lpcc_Ncmhce_Simulation' ) && CTA_Lpcc_Ncmhce_Simulation::is_simulation_quiz( $quiz ) ) {
+			$exam_instructions = CTA_Lpcc_Ncmhce_Simulation::get_exam_instructions();
+		}
+		$is_ncmhce_simulation = class_exists( 'CTA_Lpcc_Ncmhce_Simulation' )
+			&& CTA_Lpcc_Ncmhce_Simulation::is_simulation_quiz( $quiz );
+		$ncmhce_client_config = $is_ncmhce_simulation
+			? CTA_Lpcc_Ncmhce_Simulation::get_client_config( $quiz, $active_attempt, $questions )
+			: array();
 		$ce_teaching_points = class_exists( 'CTA_Suicide_Risk_Exam_Sync' )
 			? CTA_Suicide_Risk_Exam_Sync::course_should_reveal_teaching_points( $course, $quiz )
 			: false;
@@ -462,7 +470,12 @@ class CTA_Quiz {
 			wp_send_json_error( array( 'message' => __( 'Assessment questions were not found.', 'cta-lms' ) ) );
 		}
 
-		$sanitized = $this->sanitize_quiz_answers( $answers_in, $questions, false );
+		$quiz = CTA_Database::get_quiz( (int) $attempt->quiz_id );
+		if ( ! $quiz ) {
+			wp_send_json_error( array( 'message' => __( 'Assessment was not found.', 'cta-lms' ) ) );
+		}
+
+		$sanitized = $this->prepare_attempt_answers_for_storage( $answers_in, $quiz, $questions, $attempt, false );
 		$updated   = $wpdb->query(
 			$wpdb->prepare(
 				"UPDATE {$wpdb->prefix}cta_quiz_attempts
@@ -481,7 +494,15 @@ class CTA_Quiz {
 
 		wp_send_json_success(
 			array(
-				'saved_count' => count( $sanitized ),
+				'saved_count' => max(
+					0,
+					count( $sanitized ) - (
+						class_exists( 'CTA_Lpcc_Ncmhce_Simulation' )
+						&& isset( $sanitized[ CTA_Lpcc_Ncmhce_Simulation::META_KEY ] )
+							? 1
+							: 0
+					)
+				),
 				'saved_at'    => current_time( 'mysql' ),
 			)
 		);
@@ -531,7 +552,10 @@ class CTA_Quiz {
 			wp_send_json_error( array( 'message' => __( 'Quiz not found.', 'cta-lms' ) ) );
 		}
 
-		$sanitized = $this->sanitize_quiz_answers( $answers_in, $questions, true );
+		$sanitized = $this->prepare_attempt_answers_for_storage( $answers_in, $quiz, $questions, $attempt, true );
+		$score_answers = class_exists( 'CTA_Lpcc_Ncmhce_Simulation' )
+			? CTA_Lpcc_Ncmhce_Simulation::strip_meta_from_answers( $sanitized )
+			: $sanitized;
 		$correct   = 0;
 		$total     = count( $questions );
 		$revealed  = array();
@@ -565,7 +589,7 @@ class CTA_Quiz {
 
 		foreach ( $questions as $question ) {
 			$qid    = (int) $question->id;
-			$answer = isset( $sanitized[ $qid ] ) ? $sanitized[ $qid ] : '';
+			$answer = isset( $score_answers[ $qid ] ) ? $score_answers[ $qid ] : '';
 
 			if ( $answer && $answer === $question->correct_option ) {
 				++$correct;
@@ -598,7 +622,7 @@ class CTA_Quiz {
 		if ( $uses_core_scoring ) {
 			$core_score = CTA_Lmft_Clinical_Comprehensive_Scoring::calculate_display_score(
 				$questions,
-				$sanitized,
+				$score_answers,
 				$quiz,
 				(int) $quiz->passing_score
 			);
@@ -610,7 +634,7 @@ class CTA_Quiz {
 		if ( $uses_lpcc_v2_scoring ) {
 			$lpcc_v2_score = CTA_Lpcc_Ncmhce_Form_V2_Scoring_Bridge::calculate_display_score(
 				$questions,
-				$sanitized,
+				$score_answers,
 				$quiz
 			);
 			$score  = (int) $lpcc_v2_score['score'];
@@ -1334,6 +1358,10 @@ class CTA_Quiz {
 	 * @return string
 	 */
 	public function render_quiz_questions( $quiz, $attempt, $questions, $review = false ) {
+		if ( class_exists( 'CTA_Lpcc_Ncmhce_Simulation' ) && CTA_Lpcc_Ncmhce_Simulation::is_simulation_quiz( $quiz ) ) {
+			return CTA_Lpcc_Ncmhce_Simulation::render_questions( $quiz, $attempt, $questions, $review );
+		}
+
 		$quiz_obj = $this;
 		$answers  = array();
 
@@ -1394,6 +1422,45 @@ class CTA_Quiz {
 		}
 
 		return $sanitized;
+	}
+
+	/**
+	 * Persist attempt answers, including NCMHCE simulation navigation meta when applicable.
+	 *
+	 * @param array       $answers_in    Raw submitted answers (may include _ncmhce).
+	 * @param object      $quiz          Quiz row.
+	 * @param array       $questions     Question rows.
+	 * @param object|null $attempt       Attempt row.
+	 * @param bool        $include_empty Include unanswered question IDs.
+	 * @return array<string,mixed>
+	 */
+	private function prepare_attempt_answers_for_storage( array $answers_in, $quiz, array $questions, $attempt, $include_empty = false ) {
+		$existing = array();
+		if ( $attempt && ! empty( $attempt->answers ) ) {
+			$decoded = json_decode( (string) $attempt->answers, true );
+			if ( is_array( $decoded ) ) {
+				$existing = $decoded;
+			}
+		}
+
+		$sanitized = $this->sanitize_quiz_answers( $answers_in, $questions, $include_empty );
+
+		if ( ! class_exists( 'CTA_Lpcc_Ncmhce_Simulation' ) || ! CTA_Lpcc_Ncmhce_Simulation::is_simulation_quiz( $quiz ) ) {
+			return $sanitized;
+		}
+
+		$incoming_meta = array();
+		if ( isset( $answers_in[ CTA_Lpcc_Ncmhce_Simulation::META_KEY ] ) && is_array( $answers_in[ CTA_Lpcc_Ncmhce_Simulation::META_KEY ] ) ) {
+			$incoming_meta = $answers_in[ CTA_Lpcc_Ncmhce_Simulation::META_KEY ];
+		}
+
+		return CTA_Lpcc_Ncmhce_Simulation::merge_attempt_answers(
+			$sanitized,
+			$incoming_meta,
+			$quiz,
+			$questions,
+			$existing
+		);
 	}
 
 	/**
@@ -1628,6 +1695,10 @@ class CTA_Quiz {
 			'max_attempts'       => 0,
 			'question_count'     => count( $questions ),
 			'html'               => $this->render_quiz_questions( $quiz, $attempt, $questions ),
+			'ncmhce_simulation'  => class_exists( 'CTA_Lpcc_Ncmhce_Simulation' ) && CTA_Lpcc_Ncmhce_Simulation::is_simulation_quiz( $quiz ),
+			'ncmhce_config'      => ( class_exists( 'CTA_Lpcc_Ncmhce_Simulation' ) && CTA_Lpcc_Ncmhce_Simulation::is_simulation_quiz( $quiz ) )
+				? CTA_Lpcc_Ncmhce_Simulation::get_client_config( $quiz, $attempt, $questions )
+				: null,
 		);
 	}
 
@@ -1658,8 +1729,13 @@ class CTA_Quiz {
 
 		$now     = function_exists( 'current_time' ) ? (int) current_time( 'timestamp' ) : time();
 		$elapsed = max( 0, $now - $started );
+		$remaining = max( 0, ( $limit_mins * 60 ) - $elapsed );
 
-		return max( 0, ( $limit_mins * 60 ) - $elapsed );
+		if ( class_exists( 'CTA_Lpcc_Ncmhce_Simulation' ) ) {
+			return CTA_Lpcc_Ncmhce_Simulation::adjust_seconds_remaining( $quiz, $attempt, $remaining );
+		}
+
+		return $remaining;
 	}
 
 	/**
@@ -1708,6 +1784,9 @@ class CTA_Quiz {
 			}
 		}
 		$sanitized = $this->sanitize_quiz_answers( $decoded, $questions, true );
+		if ( class_exists( 'CTA_Lpcc_Ncmhce_Simulation' ) && CTA_Lpcc_Ncmhce_Simulation::is_simulation_quiz( $quiz ) ) {
+			$sanitized = CTA_Lpcc_Ncmhce_Simulation::strip_meta_from_answers( $sanitized );
+		}
 
 		$correct = 0;
 		$total   = count( $questions );

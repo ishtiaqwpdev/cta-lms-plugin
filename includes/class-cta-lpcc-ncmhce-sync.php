@@ -483,7 +483,7 @@ class CTA_Lpcc_Ncmhce_Sync {
 			'quiz_type' => 'form_a',
 			'title'     => 'Form A — 143-Question Comprehensive Simulation (Candidate Exam)',
 			'sort'      => 20,
-			'time'      => 240,
+			'time'      => 225,
 			'file'      => 'lpcc-ncmhce-form-a.php',
 			'expect'    => 143,
 			'key'       => 'form_a',
@@ -493,7 +493,7 @@ class CTA_Lpcc_Ncmhce_Sync {
 			'quiz_type' => 'form_b',
 			'title'     => 'Form B — 143-Question Comprehensive Simulation (Candidate Exam)',
 			'sort'      => 30,
-			'time'      => 240,
+			'time'      => 225,
 			'file'      => 'lpcc-ncmhce-form-b.php',
 			'expect'    => 143,
 			'key'       => 'form_b',
@@ -1249,7 +1249,7 @@ class CTA_Lpcc_Ncmhce_Sync {
 	 * @param int    $time_limit Time limit in minutes (0 = none).
 	 * @return int Quiz ID or 0.
 	 */
-	private static function replace_form_quiz( $course_id, $quiz_type, $title, $sort, array $questions, $time_limit = 240 ) {
+	private static function replace_form_quiz( $course_id, $quiz_type, $title, $sort, array $questions, $time_limit = 225 ) {
 		global $wpdb;
 
 		$course_id  = absint( $course_id );

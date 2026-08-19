@@ -8,10 +8,15 @@
  * @var int    $question_number
  * @var string $user_answer
  * @var bool   $review
+ * @var bool   $is_locked Optional; disables inputs when section is locked.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
+}
+
+if ( ! isset( $is_locked ) ) {
+	$is_locked = false;
 }
 
 $options = array(
@@ -21,7 +26,7 @@ $options = array(
 	'd' => isset( $question->option_d ) ? (string) $question->option_d : '',
 );
 ?>
-<fieldset class="cta-quiz-question card" data-question-id="<?php echo esc_attr( $question->id ); ?>">
+<fieldset class="cta-quiz-question card" data-question-id="<?php echo esc_attr( $question->id ); ?>"<?php echo ! empty( $is_locked ) ? ' data-ncmhce-locked="1"' : ''; ?>>
 	<legend class="cta-quiz-question__legend">
 		<span class="cta-quiz-question__number"><?php echo esc_html( (string) $question_number ); ?>.</span>
 		<?php echo esc_html( $question->question_text ); ?>
@@ -37,6 +42,7 @@ $options = array(
 					name="answer_<?php echo esc_attr( $question->id ); ?>"
 					value="<?php echo esc_attr( $key ); ?>"
 					<?php checked( $user_answer, $key ); ?>
+					<?php disabled( ! empty( $is_locked ) || ! empty( $review ) ); ?>
 				>
 				<span class="cta-quiz-option__label"><?php echo esc_html( strtoupper( $key ) . '. ' . $label ); ?></span>
 			</label>

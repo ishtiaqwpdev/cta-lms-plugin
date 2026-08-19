@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.276' );
+	define( 'CTA_VERSION', '1.0.277' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -125,6 +125,7 @@ $cta_required_files = array(
 	'includes/class-cta-lpcc-ncmhce-form-b-v2-scoring.php',
 	'includes/class-cta-lpcc-ncmhce-form-b-v2-answer-sync.php',
 	'includes/class-cta-lpcc-ncmhce-form-v2-scoring-bridge.php',
+	'includes/class-cta-lpcc-ncmhce-simulation.php',
 	'includes/class-cta-lpcc-law-ethics-sync.php',
 	'includes/class-cta-lcsw-law-ethics-sync.php',
 	'includes/class-cta-lmft-law-ethics-copy.php',
@@ -1564,6 +1565,19 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 			// LMFT AMFTRB: seed 12 workbook online practice banks (17q each).
 			if ( version_compare( $installed, '1.0.276', '<' ) && class_exists( 'CTA_Lmft_Amftrb_Sync' ) ) {
 				CTA_Lmft_Amftrb_Sync::ensure_learner_forms( 0, true );
+			}
+
+			// LPCC NCMHCE: 225-minute timers + progressive case simulation player wiring.
+			if ( version_compare( $installed, '1.0.277', '<' ) ) {
+				if ( class_exists( 'CTA_Lpcc_Ncmhce_Simulation' ) ) {
+					CTA_Lpcc_Ncmhce_Simulation::sync_simulation_time_limits();
+				}
+				if ( class_exists( 'CTA_Lpcc_Ncmhce_Form_A_Sync' ) ) {
+					CTA_Lpcc_Ncmhce_Form_A_Sync::sync( true );
+				}
+				if ( class_exists( 'CTA_Lpcc_Ncmhce_Form_B_Sync' ) ) {
+					CTA_Lpcc_Ncmhce_Form_B_Sync::sync( true );
+				}
 			}
 
 			// Decouple supervision application pending from general account / CE access.

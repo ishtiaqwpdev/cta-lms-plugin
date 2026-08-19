@@ -10125,3 +10125,46 @@ button.pagination__item:disabled {
     justify-content: center;
   }
 }
+
+/* LPCC NCMHCE progressive case simulation */
+.cta-plugin-wrapper .cta-quiz-form--ncmhce .cta-ncmhce-section__header {
+  margin: 0 0 1.25rem;
+}
+
+.cta-plugin-wrapper .cta-quiz-form--ncmhce .cta-ncmhce-section__title {
+  font-size: 1.125rem;
+  margin: 0;
+}
+
+.cta-plugin-wrapper .cta-ncmhce-nav {
+  margin: 1.5rem 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--cta-border, #e2e8f0);
+}
+
+.cta-plugin-wrapper .cta-ncmhce-section-progress {
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+}
+
+.cta-plugin-wrapper .cta-ncmhce-lock-notice {
+  margin: 0 0 1rem;
+  color: var(--cta-muted, #64748b);
+  font-size: 0.9375rem;
+}
+
+.cta-plugin-wrapper .cta-ncmhce-break__card {
+  margin: 1.5rem 0;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.cta-plugin-wrapper .cta-ncmhce-break__timer {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 1rem 0 1.25rem;
+}
+
+.cta-plugin-wrapper .cta-quiz-question[data-ncmhce-locked="1"] {
+  opacity: 0.72;
+}

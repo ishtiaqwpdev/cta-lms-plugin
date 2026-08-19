@@ -56,6 +56,10 @@ $assessment_howto = ! empty( $quiz_syllabus_meta['assessment_instructions'] ) &&
 	data-view-state="<?php echo esc_attr( $view_state ); ?>"
 	data-exam-prep="<?php echo ! empty( $is_exam_prep ) ? '1' : '0'; ?>"
 	data-ce-teaching-points="<?php echo ! empty( $ce_teaching_points ) ? '1' : '0'; ?>"
+	<?php if ( ! empty( $is_ncmhce_simulation ) ) : ?>
+	data-ncmhce-simulation="1"
+	data-ncmhce-config="<?php echo esc_attr( wp_json_encode( $ncmhce_client_config ) ); ?>"
+	<?php endif; ?>
 	<?php if ( ! empty( $dashboard_url ) ) : ?>
 		data-dashboard-url="<?php echo esc_url( $dashboard_url ); ?>"
 	<?php endif; ?>
@@ -201,7 +205,7 @@ $assessment_howto = ! empty( $quiz_syllabus_meta['assessment_instructions'] ) &&
 		<p class="cta-quiz-save-status" id="cta-quiz-save-status" role="status" aria-live="polite">
 			<?php esc_html_e( 'Answers are saved automatically.', 'cta-lms' ); ?>
 		</p>
-		<form id="cta-quiz-form" class="cta-quiz-form">
+		<form id="cta-quiz-form" class="cta-quiz-form<?php echo ! empty( $is_ncmhce_simulation ) ? ' cta-quiz-form--ncmhce' : ''; ?>">
 			<div id="cta-quiz-questions">
 				<?php
 				if ( 'in_progress' === $view_state && $active_attempt ) {
@@ -209,7 +213,14 @@ $assessment_howto = ! empty( $quiz_syllabus_meta['assessment_instructions'] ) &&
 				}
 				?>
 			</div>
-			<div class="cta-quiz-submit-section">
+			<?php if ( ! empty( $is_ncmhce_simulation ) ) : ?>
+				<div class="cta-ncmhce-nav" id="cta-ncmhce-nav">
+					<p class="cta-ncmhce-section-progress" id="cta-ncmhce-section-progress" role="status"></p>
+					<p class="cta-ncmhce-lock-notice" role="note"><?php esc_html_e( 'Review your answers in this section before continuing. Prior sections lock after you select Continue.', 'cta-lms' ); ?></p>
+					<button type="button" class="btn btn-primary" id="cta-ncmhce-continue" disabled><?php esc_html_e( 'Continue to Next Section', 'cta-lms' ); ?></button>
+				</div>
+			<?php endif; ?>
+			<div class="cta-quiz-submit-section"<?php echo ! empty( $is_ncmhce_simulation ) ? ' hidden' : ''; ?>>
 				<p class="cta-quiz-submit-warning"><?php echo esc_html__( 'Are you sure? You cannot change answers after submitting.', 'cta-lms' ); ?></p>
 				<button type="button" class="btn btn-primary" id="cta-submit-quiz" disabled><?php echo esc_html__( 'Submit Quiz', 'cta-lms' ); ?></button>
 			</div>
