@@ -23,7 +23,7 @@ class CTA_Lmft_Clinical_Form_A_Answer_Sync {
 	const ANSWER_SEED_OPTION   = 'cta_lmft_clinical_form_a_answers_final_aug14_1_0_256';
 	const ADMIN_KEY_FILE       = 'includes/quiz-seeds/admin-only/lmft-clinical-form-a-answer-key.php';
 	const QUIZ_TYPE            = 'form_a';
-	const FORM_TITLE           = 'Comprehensive Simulation - Form A';
+	const FORM_TITLE           = 'Form A — Comprehensive Simulation';
 	const TARGET_QUESTION_COUNT = 150;
 	const IMPORTED_THROUGH     = 150;
 

@@ -22,7 +22,7 @@ class CTA_Lmft_Clinical_Form_A_Sync {
 	const SEED_OPTION            = 'cta_lmft_clinical_form_a_final_aug14_1_0_256';
 	const TARGET_COURSE_ID       = 10;
 	const QUIZ_TYPE                = 'form_a';
-	const FORM_TITLE               = 'Comprehensive Simulation - Form A';
+	const FORM_TITLE               = 'Form A — Comprehensive Simulation';
 	const TARGET_QUESTION_COUNT    = 150;
 	const IMPORTED_THROUGH         = 150;
 	const PASSING_SCORE            = 70;
@@ -115,12 +115,20 @@ class CTA_Lmft_Clinical_Form_A_Sync {
 			);
 		}
 
+		$quiz_id        = (int) $row->id;
+		$question_count = class_exists( 'CTA_Database' )
+			? count( CTA_Database::get_quiz_questions( $quiz_id ) )
+			: 0;
+		$time_limit     = (int) ( $row->time_limit_mins ?? 0 );
+
 		return array(
-			'ok'              => true,
+			'ok'              => self::TARGET_QUESTION_COUNT === $question_count
+				&& self::TIME_LIMIT_MINS === $time_limit
+				&& 'active' === (string) ( $row->status ?? '' ),
 			'course_id'       => (int) $course->id,
-			'quiz_id'         => (int) $row->id,
-			'question_count'  => self::TARGET_QUESTION_COUNT,
-			'time_limit_mins' => (int) ( $row->time_limit_mins ?? 0 ),
+			'quiz_id'         => $quiz_id,
+			'question_count'  => $question_count,
+			'time_limit_mins' => $time_limit,
 		);
 	}
 

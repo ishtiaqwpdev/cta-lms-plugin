@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.278' );
+	define( 'CTA_VERSION', '1.0.281' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -1585,6 +1585,36 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				CTA_Lcsw_Aswb_Sync::ensure_learner_forms( 0, true );
 			}
 
+			// LMFT California Clinical: populate Form A from Final seeds, purge archived duplicates.
+			if ( version_compare( $installed, '1.0.279', '<' ) ) {
+				if ( class_exists( 'CTA_Lmft_Clinical_Legacy_Forms_Archive' ) ) {
+					CTA_Lmft_Clinical_Legacy_Forms_Archive::archive_non_final_active_forms(
+						CTA_Lmft_Clinical_Legacy_Forms_Archive::TARGET_COURSE_ID,
+						true
+					);
+					CTA_Lmft_Clinical_Legacy_Forms_Archive::purge_archived_duplicate_form_quizzes(
+						CTA_Lmft_Clinical_Legacy_Forms_Archive::TARGET_COURSE_ID,
+						true
+					);
+				}
+				if ( class_exists( 'CTA_Lmft_Clinical_Form_A_Sync' ) ) {
+					CTA_Lmft_Clinical_Form_A_Sync::sync( true );
+				}
+				if ( class_exists( 'CTA_Lmft_Clinical_Form_A_Answer_Sync' ) ) {
+					CTA_Lmft_Clinical_Form_A_Answer_Sync::sync_answer_keys( true );
+				}
+			}
+
+			// LCSW ASWB Clinical: v2.1 Form A/B content + standard scroll player (not NCMHCE case-locking).
+			if ( version_compare( $installed, '1.0.280', '<' ) && class_exists( 'CTA_Lcsw_Aswb_Sync' ) ) {
+				CTA_Lcsw_Aswb_Sync::ensure_learner_forms( 0, true );
+			}
+
+			// LCSW ASWB Clinical: publish online workbook practice banks only (scoped — no Form A/B rewrite).
+			if ( version_compare( $installed, '1.0.281', '<' ) && class_exists( 'CTA_Lcsw_Aswb_Sync' ) ) {
+				CTA_Lcsw_Aswb_Sync::ensure_workbook_banks( 0, true );
+			}
+
 			// Decouple supervision application pending from general account / CE access.
 			if ( version_compare( $installed, '1.0.90', '<' ) && class_exists( 'CTA_Associate_Access' ) ) {
 				$query = new WP_User_Query(
@@ -1638,7 +1668,7 @@ if ( ! function_exists( 'cta_lms_unify_form_ab_simulation_titles' ) ) {
 
 		$title_map = array(
 			'lmft-california-clinical-exam-preparation' => array(
-				'form_a' => 'Form A — 150-Question Comprehensive Simulation',
+				'form_a' => 'Form A — Comprehensive Simulation',
 				'form_b' => 'Form B — 150-Question Comprehensive Simulation',
 			),
 			'lcsw-aswb-clinical-exam-preparation'       => array(
@@ -1821,6 +1851,21 @@ if ( ! function_exists( 'cta_maybe_heal_lcsw_aswb_identity' ) ) {
 
 if ( function_exists( 'cta_maybe_heal_lcsw_aswb_identity' ) && ! has_action( 'plugins_loaded', 'cta_maybe_heal_lcsw_aswb_identity' ) ) {
 	add_action( 'plugins_loaded', 'cta_maybe_heal_lcsw_aswb_identity', 10 );
+}
+
+if ( ! function_exists( 'cta_maybe_heal_lcsw_aswb_workbook_banks' ) ) {
+	/**
+	 * Publish missing LCSW ASWB workbook online practice banks without touching Form A/B.
+	 */
+	function cta_maybe_heal_lcsw_aswb_workbook_banks() {
+		if ( class_exists( 'CTA_Lcsw_Aswb_Sync' ) ) {
+			CTA_Lcsw_Aswb_Sync::maybe_heal_workbook_banks();
+		}
+	}
+}
+
+if ( function_exists( 'cta_maybe_heal_lcsw_aswb_workbook_banks' ) && ! has_action( 'plugins_loaded', 'cta_maybe_heal_lcsw_aswb_workbook_banks' ) ) {
+	add_action( 'plugins_loaded', 'cta_maybe_heal_lcsw_aswb_workbook_banks', 11 );
 }
 
 if ( function_exists( 'cta_maybe_sync_ce_prices_from_catalog' ) && ! has_action( 'plugins_loaded', 'cta_maybe_sync_ce_prices_from_catalog' ) ) {

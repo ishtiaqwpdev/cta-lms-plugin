@@ -32,13 +32,32 @@ class CTA_Lpcc_Ncmhce_Simulation {
 	private static $section_cache = null;
 
 	/**
+	 * Whether a quiz belongs to the LPCC NCMHCE exam-prep course.
+	 *
+	 * @param object|null $quiz Quiz row.
+	 * @return bool
+	 */
+	public static function is_ncmhce_course_quiz( $quiz ) {
+		if ( ! $quiz || empty( $quiz->course_id ) || ! class_exists( 'CTA_Lpcc_Ncmhce_Sync' ) ) {
+			return false;
+		}
+
+		$ncmhce = CTA_Lpcc_Ncmhce_Sync::find_course();
+		if ( ! $ncmhce || empty( $ncmhce->id ) ) {
+			return false;
+		}
+
+		return (int) $ncmhce->id === (int) $quiz->course_id;
+	}
+
+	/**
 	 * Whether a quiz uses the NCMHCE progressive simulation player.
 	 *
 	 * @param object|null $quiz Quiz row.
 	 * @return bool
 	 */
 	public static function is_simulation_quiz( $quiz ) {
-		if ( ! $quiz ) {
+		if ( ! $quiz || ! self::is_ncmhce_course_quiz( $quiz ) ) {
 			return false;
 		}
 

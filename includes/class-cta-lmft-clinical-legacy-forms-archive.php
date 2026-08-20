@@ -483,6 +483,167 @@ class CTA_Lmft_Clinical_Legacy_Forms_Archive {
 	}
 
 	/**
+	 * Remove archived duplicate Form A/B quiz rows when no learner attempts exist.
+	 *
+	 * Preserves rows that still have attempt history so admins can decide retention.
+	 *
+	 * @param int  $course_id Optional course ID.
+	 * @param bool $force     Re-run even if purge option is set.
+	 * @return array{ok:bool,course_id:int,deleted:int,deleted_ids:int[],blocked:array<int,array{quiz_id:int,title:string,attempt_count:int}>,message:string}
+	 */
+	public static function purge_archived_duplicate_form_quizzes( $course_id = 0, $force = false ) {
+		$course_id = self::resolve_course_id( $course_id );
+		$option    = 'cta_lmft_clinical_archived_form_quizzes_purged_1_0_279';
+
+		if ( ! $course_id ) {
+			return array(
+				'ok'         => false,
+				'course_id'  => 0,
+				'deleted'    => 0,
+				'deleted_ids' => array(),
+				'blocked'    => array(),
+				'message'    => 'course_not_found',
+			);
+		}
+
+		if ( ! $force && get_option( $option ) ) {
+			$stored = get_option( $option, array() );
+			return array(
+				'ok'          => true,
+				'course_id'   => $course_id,
+				'deleted'     => (int) ( $stored['deleted'] ?? 0 ),
+				'deleted_ids' => is_array( $stored['deleted_ids'] ?? null ) ? $stored['deleted_ids'] : array(),
+				'blocked'     => is_array( $stored['blocked'] ?? null ) ? $stored['blocked'] : array(),
+				'message'     => 'already_purged',
+			);
+		}
+
+		if ( class_exists( 'CTA_Database' ) ) {
+			CTA_Database::ensure_tables();
+		}
+
+		global $wpdb;
+
+		$keep_ids = array();
+		foreach ( array( 'form_a', 'form_b' ) as $type ) {
+			$row = self::get_active_final_form_quiz( $course_id, $type );
+			if ( $row ) {
+				$keep_ids[] = (int) $row->id;
+			}
+		}
+
+		$deleted     = 0;
+		$deleted_ids = array();
+		$blocked     = array();
+
+		foreach ( (array) CTA_Database::get_quizzes_by_course( $course_id, false ) as $row ) {
+			$quiz_id = (int) $row->id;
+			if ( ! $quiz_id || in_array( $quiz_id, $keep_ids, true ) ) {
+				continue;
+			}
+
+			$type = sanitize_key( (string) ( $row->quiz_type ?? '' ) );
+			if ( ! self::is_archived_quiz( $row )
+				&& ! in_array( $type, array( 'legacy_form_a', 'legacy_form_b' ), true ) ) {
+				continue;
+			}
+
+			$attempt_count = self::count_quiz_attempts( $quiz_id );
+			if ( $attempt_count > 0 ) {
+				$blocked[] = array(
+					'quiz_id'       => $quiz_id,
+					'title'         => (string) ( $row->title ?? '' ),
+					'attempt_count' => $attempt_count,
+				);
+				continue;
+			}
+
+			$q_table = $wpdb->prefix . 'cta_quiz_questions';
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$wpdb->delete( $q_table, array( 'quiz_id' => $quiz_id ), array( '%d' ) );
+
+			$quiz_table = $wpdb->prefix . 'cta_quizzes';
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$wpdb->delete( $quiz_table, array( 'id' => $quiz_id ), array( '%d' ) );
+
+			$deleted_ids[] = $quiz_id;
+			++$deleted;
+		}
+
+		update_option(
+			$option,
+			array(
+				'at'          => current_time( 'mysql' ),
+				'course_id'   => $course_id,
+				'deleted'     => $deleted,
+				'deleted_ids' => $deleted_ids,
+				'blocked'     => $blocked,
+			),
+			false
+		);
+
+		return array(
+			'ok'          => true,
+			'course_id'   => $course_id,
+			'deleted'     => $deleted,
+			'deleted_ids' => $deleted_ids,
+			'blocked'     => $blocked,
+			'message'     => $deleted > 0 ? 'purged' : ( ! empty( $blocked ) ? 'blocked_by_attempts' : 'nothing_to_purge' ),
+		);
+	}
+
+	/**
+	 * Count all quiz attempts tied to a quiz row.
+	 *
+	 * @param int $quiz_id Quiz ID.
+	 * @return int
+	 */
+	public static function count_quiz_attempts( $quiz_id ) {
+		global $wpdb;
+
+		$quiz_id = absint( $quiz_id );
+		if ( ! $quiz_id ) {
+			return 0;
+		}
+
+		$table = $wpdb->prefix . 'cta_quiz_attempts';
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		return (int) $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT COUNT(1) FROM {$table} WHERE quiz_id = %d",
+				$quiz_id
+			)
+		);
+	}
+
+	/**
+	 * Filter admin assessment dropdown rows to hide archived legacy duplicates.
+	 *
+	 * @param array  $quizzes   Quiz rows.
+	 * @param object $course    Course row.
+	 * @return array
+	 */
+	public static function filter_admin_assessment_quizzes( array $quizzes, $course ) {
+		if ( ! self::is_lmft_clinical_course( $course ) ) {
+			return $quizzes;
+		}
+
+		$filtered = array();
+		foreach ( $quizzes as $row ) {
+			if ( self::is_archived_quiz( $row ) ) {
+				continue;
+			}
+			$type = sanitize_key( (string) ( $row->quiz_type ?? '' ) );
+			if ( in_array( $type, array( 'legacy_form_a', 'legacy_form_b' ), true ) ) {
+				continue;
+			}
+			$filtered[] = $row;
+		}
+
+		return $filtered;
+	}
+
+	/**
 	 * Archive legacy Form A/B quizzes and related printable materials.
 	 *
 	 * @param int  $course_id Optional course ID.

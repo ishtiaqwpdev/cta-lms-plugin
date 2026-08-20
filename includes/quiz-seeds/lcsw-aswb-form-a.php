@@ -1,7 +1,8 @@
 <?php
 /**
  * CTA LCSW ASWB Clinical - Form A - 122-question comprehensive simulation.
- * Generated from official package v1.0. Do not hand-edit unless regenerating.
+ * Built from approved Candidate + Controlled Key v2.1 DOCX (August 2026).
+ * Standard two-section scroll format (61 + 61); not case-locking.
  */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -9,1931 +10,1833 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 return array(
 	array(
-		'question_text'  => 'A child\'s disruptive behavior occurs mainly during difficult schoolwork. What should the school social worker do NEXT?',
-		'option_a'       => 'Assess academic demands, learning needs, antecedents, consequences, and supports before selecting an intervention.',
-		'option_b'       => 'Refer for medication without assessment.',
-		'option_c'       => 'Use punishment as the first response.',
-		'option_d'       => 'Assume intentional defiance.',
+		'question_text'  => 'At a rural behavioral-health clinic, siblings are fighting after assuming new caregiving roles for an ill parent. Which assessment approach is BEST?',
+		'option_a'       => 'Assess interaction patterns, roles, alliances, communication, stressors, resources, safety, cultural meanings, and how symptoms function within the family system.',
+		'option_b'       => 'Identify which family member is primarily responsible for the problem before assessing the larger pattern and document the reasoning.',
+		'option_c'       => 'Complete individual diagnoses first and address family interaction only after treatment begins and document the reasoning.',
+		'option_d'       => 'Ask the family to select one person as the identified problem so planning remains focused.',
 		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. The behavior may function to escape tasks that exceed current skills or supports.
+		'explanation'    => 'A. Correct. Family assessment focuses on reciprocal patterns, roles, resources, meanings, and function rather than assigning blame
 
-B. Incorrect. Medication referral is premature.
+B. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
 
-C. Incorrect. Punishment may not address the function.
+C. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
 
-D. Incorrect. Intent is not established.
-
-CTA Exam Strategy: Ask what happens before and after the behavior.',
+D. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment',
 	),
 	array(
-		'question_text'  => 'A client needs therapy, transportation, food assistance, and medication follow-up. What is the BEST case-management response?',
-		'option_a'       => 'Give a long list of phone numbers and close the case.',
-		'option_b'       => 'Address only the therapy need.',
-		'option_c'       => 'Prioritize needs with the client, coordinate referrals, clarify roles, reduce barriers, and follow up on whether services were actually accessed.',
-		'option_d'       => '',
+		'question_text'  => 'At a community outreach program, a capable client chooses comfort-focused care while family members demand aggressive treatment. What should the social worker do?',
+		'option_a'       => 'Ask the family to vote because end-of-life decisions affect the entire family while maintaining appropriate follow-up while continuing to monitor the outcome.',
+		'option_b'       => 'Support communication of the client’s informed goals, address family distress, and help the team maintain continuity consistent with the client’s preferences.',
+		'option_c'       => 'Persuade the client to accept treatment until the family is ready for comfort care while continuing to monitor the outcome.',
+		'option_d'       => 'Withdraw because end-of-life treatment choices are strictly medical decisions before the next scheduled contact before changing the plan.',
+		'correct_option' => 'b',
+		'explanation'    => 'A. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+B. Correct. End-of-life practice centers informed client preferences while supporting family and team communication
+
+C. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+D. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response',
+	),
+	array(
+		'question_text'  => 'An adult client at a group practice does not want family involved in treatment. The family repeatedly contacts the clinician. What should the clinician do?',
+		'option_a'       => 'Include the family for one session because relatives may provide important information before the next scheduled contact.',
+		'option_b'       => 'Receive detailed family input secretly so the clinician can improve treatment without violating the client’s request.',
+		'option_c'       => 'Respect the client’s preference, clarify communication boundaries, and revisit involvement only with appropriate permission or changed circumstances.',
+		'option_d'       => 'Tell the client family participation is required whenever relatives are concerned about treatment.',
 		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. A list alone may not overcome barriers.
+		'explanation'    => 'A. Incorrect. Professional or family preference does not automatically override a capable client’s informed treatment choice
 
-B. Incorrect. Needs are interconnected.
+B. Incorrect. Family involvement or coercive pressure can undermine the client’s decision-making role when no controlling legal or safety exception applies
 
-C. Correct. Effective case management links services and supports client agency rather than merely referring.
+C. Correct. Family concern does not automatically override a capable client’s preference for privacy and participation
 
-CTA Exam Strategy: Referral is a process: connect, coordinate, and verify.',
+D. Incorrect. Ending services or ignoring risks are both less balanced than supporting informed choice with appropriate safety and continuity planning',
 	),
 	array(
-		'question_text'  => 'A child\'s aggression began after parental separation, repeated school changes, and loss of contact with extended family. What is the BEST formulation?',
-		'option_a'       => 'Focus only on parenting discipline.',
-		'option_b'       => 'Assume a fixed conduct disorder from aggression alone.',
-		'option_c'       => 'Assess developmental needs, attachment disruptions, family conflict, school context, trauma exposure, strengths, and the behavior\'s function across settings.',
-		'option_d'       => 'Ignore environmental changes because the child is the identified client.',
+		'question_text'  => 'Residents near an integrated-care program report repeated environmental health concerns and want change. What should the social worker do FIRST?',
+		'option_a'       => 'Draft a formal campaign plan before meeting residents so organizing begins efficiently.',
+		'option_b'       => 'Engage residents in defining priorities, mapping power and resources, identifying decision makers, and selecting resident-led strategies.',
+		'option_c'       => 'Ask the agency’s board to select the issue that is most politically feasible.',
+		'option_d'       => 'Speak publicly for residents before determining how they want to participate before the next scheduled contact.',
+		'correct_option' => 'b',
+		'explanation'    => 'A. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+B. Correct. Community organizing begins with participation, shared power, issue definition, resources, and strategy
+
+C. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+D. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response',
+	),
+	array(
+		'question_text'  => 'A program at a hospice and palliative-care program uses a policy that treats all missed appointments identically despite documented disability-related access barriers. What should a social worker do?',
+		'option_a'       => 'Apply the policy equally because fairness requires identical consequences for all clients before the next scheduled contact while continuing to monitor the situation.',
+		'option_b'       => 'Ignore missed visits for clients with disabilities so the policy cannot create inequity before changing the care plan.',
+		'option_c'       => 'Raise the equity concern, assess its impact, and advocate for a process that preserves accountability while allowing appropriate accommodation.',
+		'option_d'       => 'Ask affected clients to obtain outside advocacy rather than challenging the agency’s policy while maintaining the current plan.',
 		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. Parenting is only one part of the system.
+		'explanation'    => 'A. Incorrect. Personal beliefs, organizational convenience, or client waivers do not override the professional obligation to practice competently and with integrity
 
-B. Incorrect. One behavior does not establish a fixed diagnosis.
+B. Incorrect. Overly broad withdrawal can create unnecessary discontinuity when a more proportionate competence or ethics response is available
 
-C. Correct. The behavior may reflect multiple interacting developmental and environmental factors.
+C. Correct. Equality of procedure is not always equity of access; professional values include social justice and integrity
 
-D. Incorrect. Person-in-environment assessment remains essential.
-
-CTA Exam Strategy: Formulate across time, relationships, and settings before selecting a label.',
+D. Incorrect. Professional values require client-centered, evidence-based judgment rather than decisions driven by clinician interest or convenience',
 	),
 	array(
-		'question_text'  => 'A family requests communication training, but assessment reveals one member uses threats, surveillance, and financial control. What should the social worker do?',
-		'option_a'       => 'Proceed with standard conjoint communication exercises.',
-		'option_b'       => 'Treat the problem as mutual anger only.',
-		'option_c'       => 'Ask both parties to compromise equally.',
-		'option_d'       => 'Prioritize safety and coercive-control assessment, avoid interventions that assume equal power, and develop individual and resource-based safety options.',
+		'question_text'  => 'At a family-service agency, a client describes a partner as “the angry one” while repeatedly showing intense anger in sessions. Which assessment approach is BEST?',
+		'option_a'       => 'Label the behavior as resistance and confront it before continuing the assessment before finalizing the assessment before changing the plan before finalizing the assessment.',
+		'option_b'       => 'Treat the pattern as a tentative protective or defensive process whose function, context, costs, and relationship effects should be explored without forcing an interpretation.',
+		'option_c'       => 'Assume the defense is healthy because it reduces distress in the moment before changing the plan before finalizing the assessment.',
+		'option_d'       => 'State the defense mechanism as fact so the client can become more self-aware before drawing a diagnostic conclusion and document the reasoning.',
+		'correct_option' => 'b',
+		'explanation'    => 'A. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
+
+B. Correct. Defense mechanisms are hypotheses about protective function and should be assessed in context rather than imposed as facts
+
+C. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
+
+D. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment',
+	),
+	array(
+		'question_text'  => 'A capable client at a residential treatment program refuses a recommended higher level of care after accurately describing risks and alternatives. No emergency threshold is present. What should the social worker do?',
+		'option_a'       => 'Explore the client’s goals and concerns, confirm understanding, respect the informed choice, and create the safest feasible alternative plan.',
+		'option_b'       => 'Arrange the higher level of care because the clinician’s recommendation should override treatment refusal.',
+		'option_c'       => 'Ask the family to decide because they may evaluate the risks more objectively while continuing to monitor the situation.',
+		'option_d'       => 'Terminate services because declining the recommendation shows lack of treatment commitment while continuing to monitor the situation.',
+		'correct_option' => 'a',
+		'explanation'    => 'A. Correct. Capable informed clients may refuse recommended care; the clinician should preserve safety without substituting professional preference
+
+B. Incorrect. Professional or family preference does not automatically override a capable client’s informed treatment choice
+
+C. Incorrect. Family involvement or coercive pressure can undermine the client’s decision-making role when no controlling legal or safety exception applies
+
+D. Incorrect. Ending services or ignoring risks are both less balanced than supporting informed choice with appropriate safety and continuity planning',
+	),
+	array(
+		'question_text'  => 'At a hospital social-work service, an adolescent reports body dissatisfaction after repeated social-media comments. What should the social worker assess FIRST?',
+		'option_a'       => 'Determine whether an eating-disorder diagnosis applies before exploring culture, ability, or media influences while continuing to gather relevant information.',
+		'option_b'       => 'Recommend changing weight or appearance because symptom relief may follow physical change while continuing to gather relevant information during the current assessment.',
+		'option_c'       => 'Assess body-image beliefs, eating and activity patterns, development, culture, identity, ability, trauma, discrimination, media exposure, medical factors, functioning, and strengths without assuming pathology.',
+		'option_d'       => 'Ask family or medical staff whether the client’s body concerns are objectively justified before drawing a diagnostic conclusion while continuing to gather relevant information.',
+		'correct_option' => 'c',
+		'explanation'    => 'A. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
+
+B. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
+
+C. Correct. Body-image assessment is broad, identity-aware, nonstigmatizing, and grounded in the client’s meaning and functioning
+
+D. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment',
+	),
+	array(
+		'question_text'  => 'At a community outreach program, a client’s words say “I’m fine,” while posture and tone communicate distress. What should the social worker do?',
+		'option_a'       => 'Accept the verbal statement because spoken content is the most reliable information and document the reasoning.',
+		'option_b'       => 'Reflect the observed incongruence respectfully and invite the client to clarify the experience without assuming what it means.',
+		'option_c'       => 'Tell the client the body language proves hidden depression and document the reasoning before selecting a more intensive response.',
+		'option_d'       => 'Ignore nonverbal communication so the social worker does not overinterpret while continuing to monitor the outcome.',
+		'correct_option' => 'b',
+		'explanation'    => 'A. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+B. Correct. Communication work integrates verbal and nonverbal data while checking meaning with the client
+
+C. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+D. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response',
+	),
+	array(
+		'question_text'  => 'At a group practice, a child has repeated injuries with inconsistent explanations. Which assessment approach is BEST?',
+		'option_a'       => 'Confront the suspected perpetrator first to determine whether the allegations are true before finalizing the assessment before changing the plan.',
+		'option_b'       => 'Wait for independent proof before taking the possibility of abuse or neglect seriously and document the reasoning before drawing a diagnostic conclusion.',
+		'option_c'       => 'Assess immediate safety, coercion or neglect indicators, injury or health impact, vulnerability, access to help, client priorities, and applicable protective or reporting duties.',
+		'option_d'       => 'Require the client to leave the situation before completing a safety and context assessment before drawing a diagnostic conclusion and document the reasoning.',
+		'correct_option' => 'c',
+		'explanation'    => 'A. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
+
+B. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
+
+C. Correct. Abuse and neglect assessment prioritizes safety, coercion, vulnerability, impact, and applicable duties rather than confrontation or proof-gathering
+
+D. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment',
+	),
+	array(
+		'question_text'  => 'A clinician at a school-linked counseling program notices frequent self-disclosure is shifting sessions toward the clinician’s experiences. What should the clinician do NEXT?',
+		'option_a'       => 'Continue because mutual sharing can reduce the power difference between clinician and client before the next scheduled contact.',
+		'option_b'       => 'Tell the client the disclosures were a mistake and avoid any future relational discussion before changing the care plan.',
+		'option_c'       => 'Transfer the client so the prior disclosures do not affect the remainder of treatment.',
+		'option_d'       => 'Recenter the work on the client, examine the function and impact of disclosure, and use supervision to strengthen boundaries.',
 		'correct_option' => 'd',
-		'explanation'    => 'A. Incorrect. Joint exercises can increase risk or provide information to the abusive partner.
+		'explanation'    => 'A. Incorrect. Client consent does not erase the power difference or conflict of interest inherent in a significant dual or financial relationship
 
-B. Incorrect. The pattern is broader than ordinary conflict.
+B. Incorrect. Automatic termination or total silence can be disproportionate when the overlap can be assessed, managed, and monitored safely
 
-C. Incorrect. Equal-responsibility framing may blame the victim.
+C. Incorrect. Shifting the burden to the client or using another role does not necessarily resolve the underlying boundary conflict
 
-D. Correct. Coercive control changes the safety and appropriateness of conjoint intervention.
-
-CTA Exam Strategy: Do not use symmetry-based interventions in an asymmetric power system.',
+D. Correct. Self-disclosure should serve client goals; when it begins serving the clinician, boundaries need repair',
 	),
 	array(
-		'question_text'  => 'A manager tells staff to document services that were scheduled but not actually provided so a grant target is met. What should the social worker do?',
-		'option_a'       => 'Comply because the funding supports clients.',
-		'option_b'       => 'Ask clients to confirm attendance they did not have.',
-		'option_c'       => 'Decline to falsify records, preserve accurate documentation, and report the concern through appropriate channels.',
-		'option_d'       => 'Document the service and add a private note that it did not occur.',
-		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. Helpful outcomes do not make falsification ethical.
-
-B. Incorrect. Client involvement does not legitimize misrepresentation.
-
-C. Correct. Funding goals do not justify inaccurate records or fraud.
-
-D. Incorrect. A hidden correction does not cure the false official record.
-
-CTA Exam Strategy: Never solve a systems problem by making the record false.',
-	),
-	array(
-		'question_text'  => 'A social worker has substantial evidence for a disorder, but duration and a medical rule-out remain unresolved. How should the diagnostic impression be documented?',
-		'option_a'       => 'When the pattern strongly suggests a diagnosis but important confirmation, duration, or rule-out information is still pending.',
-		'option_b'       => 'To avoid documenting uncertainty.',
-		'option_c'       => 'When no clinically relevant symptoms are present.',
-		'option_d'       => '',
+		'question_text'  => 'A client at a telehealth practice is not ready to stop opioid use but wants to reduce overdose risk. What response is BEST?',
+		'option_a'       => 'Collaborate on overdose-prevention resources, safer-use planning, treatment options, and ongoing reassessment without requiring abstinence first.',
+		'option_b'       => 'Require an abstinence goal before discussing risk reduction while maintaining appropriate follow-up.',
+		'option_c'       => 'Focus only on motivation until the client commits to treatment before the next scheduled contact.',
+		'option_d'       => 'Tell the client exactly how much opioid use is safe.',
 		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. Provisional status communicates a reasoned working impression and its limits.
+		'explanation'    => 'A. Correct. Harm reduction addresses current risk while preserving autonomy, engagement, and treatment options
 
-B. Incorrect. Provisional wording expresses rather than hides uncertainty.
+B. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
 
-C. Incorrect. A diagnosis requires relevant evidence.
+C. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
 
-CTA Exam Strategy: Use provisional when the impression is plausible but material evidence remains incomplete.',
+D. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response',
 	),
 	array(
-		'question_text'  => 'A client sends a friend request to the social worker\'s personal social-media account. What is the BEST response?',
-		'option_a'       => 'Create a false account to monitor the client.',
-		'option_b'       => 'Accept to strengthen rapport.',
-		'option_c'       => 'Maintain the professional boundary, follow the stated social-media policy, and discuss the request in treatment if clinically useful.',
-		'option_d'       => '',
-		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. Covert monitoring is deceptive and intrusive.
-
-B. Incorrect. Rapport does not require a personal relationship.
-
-C. Correct. Personal online connections can expose private information and blur roles.
-
-CTA Exam Strategy: Apply the same boundary reasoning online that you would apply offline.',
-	),
-	array(
-		'question_text'  => 'Two group members dominate every discussion. What should the facilitator do?',
-		'option_a'       => 'Remove both members immediately.',
-		'option_b'       => 'Let the pattern continue.',
-		'option_c'       => 'Acknowledge their contributions, restate participation norms, and invite less-heard members in without shaming anyone.',
-		'option_d'       => '',
-		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. Removal may be disproportionate.
-
-B. Incorrect. Silence reinforces the imbalance.
-
-C. Correct. The facilitator protects equitable participation through structure and respectful redirection.
-
-CTA Exam Strategy: Manage the process, not the members\' character.',
-	),
-	array(
-		'question_text'  => 'A social worker is recruiting current clients for a study the social worker leads. What should be addressed FIRST?',
-		'option_a'       => 'The power imbalance, voluntariness, alternative services, confidentiality, and independent consent safeguards.',
-		'option_b'       => 'Collect data before explaining the study.',
-		'option_c'       => 'Tell clients participation will improve their treatment.',
-		'option_d'       => 'Require participation to remain in services.',
-		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. Clients may feel pressure because the researcher also controls or influences services.
-
-B. Incorrect. Consent must precede research participation.
-
-C. Incorrect. Benefit should not be overstated.
-
-D. Incorrect. Coercion undermines consent.
-
-CTA Exam Strategy: When care and research roles overlap, examine coercion and role conflict first.',
-	),
-	array(
-		'question_text'  => 'A trauma client becomes overwhelmed by a trigger but remains oriented and able to follow directions. What intervention is appropriate?',
-		'option_a'       => 'Tell the client to suppress all feelings.',
-		'option_b'       => 'End treatment because activation occurred.',
-		'option_c'       => 'Use present-focused grounding and paced regulation while reinforcing choice and control.',
-		'option_d'       => '',
-		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. Suppression is not a sustainable regulation strategy.
-
-B. Incorrect. Activation can often be managed within trauma-informed care.
-
-C. Correct. Grounding can reduce arousal and restore present-moment orientation.
-
-CTA Exam Strategy: Stabilize before processing.',
-	),
-	array(
-		'question_text'  => 'A client is denied an accommodation because an agency employee misunderstands the policy. What should the social worker do?',
-		'option_a'       => 'Threaten the employee immediately.',
-		'option_b'       => 'Speak for the client without consultation.',
-		'option_c'       => 'With the client\'s permission, clarify the policy, support self-advocacy, and use appropriate appeal or supervisory channels.',
-		'option_d'       => '',
-		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. Escalation before clarification may be counterproductive.
-
-B. Incorrect. Client participation and permission matter.
-
-C. Correct. Advocacy should be accurate, collaborative, and proportionate.
-
-CTA Exam Strategy: Advocate with, not automatically for, the client.',
-	),
-	array(
-		'question_text'  => 'A client wants intensive outpatient treatment, but transportation and childcare make attendance impossible. What should the social worker do NEXT?',
-		'option_a'       => 'Clarify the clinical need and collaboratively identify accessible alternatives, supports, transportation, childcare, or level-of-care options.',
-		'option_b'       => 'Conclude the client lacks motivation.',
-		'option_c'       => 'Offer no treatment until circumstances change.',
-		'option_d'       => 'Enroll the client without discussing barriers.',
-		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. Planning must address both clinical indication and practical feasibility.
-
-B. Incorrect. Barriers are not equivalent to unwillingness.
-
-C. Incorrect. Delay may worsen risk.
-
-D. Incorrect. An unusable plan is not collaborative care.
-
-CTA Exam Strategy: A clinically sound plan must also be reachable.',
-	),
-	array(
-		'question_text'  => 'A caregiver says, "Everyone depends on me," but appears exhausted and resentful. What should the social worker assess?',
-		'option_a'       => 'Whether the caregiver is selfish.',
-		'option_b'       => 'Whether the family can keep the arrangement secret.',
-		'option_c'       => 'Caregiving demands, role expectations, supports, health, cultural meaning, boundaries, and risk of burnout or neglect.',
-		'option_d'       => '',
-		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. Moral labels do not assess capacity or risk.
-
-B. Incorrect. Secrecy does not solve burden.
-
-C. Correct. Caregiving is shaped by roles, resources, health, and systems, not simply attitude.
-
-CTA Exam Strategy: Assess both the care recipient and the caregiving system.',
-	),
-	array(
-		'question_text'  => 'A supervisee becomes defensive when given feedback. What should the supervisor do?',
-		'option_a'       => 'Avoid all future feedback.',
-		'option_b'       => 'Clarify the specific behavior and impact, invite the supervisee\'s perspective, and develop a concrete improvement and monitoring plan.',
-		'option_c'       => 'Immediately end supervision without assessment.',
-		'option_d'       => '',
+		'question_text'  => 'A funding policy at a hospital social-work service limits session frequency for a client with ongoing need. What is the BEST response?',
+		'option_a'       => 'Continue the prior frequency without billing until the funding restriction changes before the next scheduled contact before changing the care plan.',
+		'option_b'       => 'Assess clinical need and risk, explain the coverage constraint accurately, pursue available review or alternatives, and plan continuity with the client.',
+		'option_c'       => 'Terminate immediately because policy limits determine the appropriate level of clinical care while continuing to monitor the situation.',
+		'option_d'       => 'Tell the client the payer is acting unethically and encourage a public complaint before using internal review processes.',
 		'correct_option' => 'b',
-		'explanation'    => 'A. Incorrect. Avoidance prevents development.
+		'explanation'    => 'A. Incorrect. Ignoring a policy or advising noncompliance can create additional legal and service risks before the governing rule is understood
 
-B. Correct. Effective feedback is behaviorally specific, collaborative, and accountable.
+B. Correct. Policy constraints should be addressed through accurate information, advocacy, alternatives, and continuity planning
 
-C. Incorrect. Termination may be disproportionate.
+C. Incorrect. Avoiding policy discussion or treating coverage limits as purely administrative can leave clients without accurate information or continuity planning
 
-CTA Exam Strategy: Describe behavior, impact, expectation, and follow-up.',
+D. Incorrect. Unsupported promises or accusations are less appropriate than verifying the rule, explaining it accurately, and using available advocacy channels',
 	),
 	array(
-		'question_text'  => 'A 9-year-old becomes clingy after a move and the birth of a sibling. What should the social worker assess?',
-		'option_a'       => 'Whether the child is manipulating the parents.',
-		'option_b'       => 'A personality disorder.',
-		'option_c'       => 'Timing, duration, developmental fit, family transitions, impairment, supports, and whether symptoms are improving or worsening.',
-		'option_d'       => '',
-		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. Intent should not be assumed.
+		'question_text'  => 'A client with panic at a rural behavioral-health clinic avoids elevators and feels immediate relief by taking stairs. Medical causes have been assessed. Which intervention is BEST?',
+		'option_a'       => 'Use a collaborative graded-exposure approach that targets avoidance, supports regulation, and tracks predictions and outcomes.',
+		'option_b'       => 'Provide reassurance that elevators are safe while maintaining appropriate follow-up while continuing to monitor the outcome.',
+		'option_c'       => 'Explore childhood causes before changing current avoidance before the next scheduled contact.',
+		'option_d'       => 'Recommend permanent stair use if functioning remains acceptable before selecting a more intensive response.',
+		'correct_option' => 'a',
+		'explanation'    => 'A. Correct. Evidence-based intervention selection should match the maintaining mechanism and client context
 
-B. Incorrect. A personality diagnosis is unsupported.
+B. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
 
-C. Correct. The behavior may be a developmental stress response but still requires contextual assessment.
+C. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
 
-CTA Exam Strategy: Compare child behavior with developmental expectations and recent transitions.',
+D. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response',
 	),
 	array(
-		'question_text'  => 'An older adult client wants an adult child involved in every decision, while staff insist that independence requires excluding family. What should the social worker do?',
-		'option_a'       => 'Assume the preference proves incapacity.',
-		'option_b'       => 'Exclude the family because autonomy always means acting alone.',
-		'option_c'       => 'Let the adult child make every decision without assessment.',
-		'option_d'       => 'Assess the client\'s voluntary preference, decision-making ability, family dynamics, and privacy wishes, then support the chosen level of involvement.',
+		'question_text'  => 'At a community outreach program, an adult reports anxiety and hypervigilance after release from incarceration. Which assessment approach is BEST?',
+		'option_a'       => 'Interpret current difficulties primarily as failure to learn enough skills during placement before finalizing the assessment before changing the plan.',
+		'option_b'       => 'Assess the placement experience, losses and attachments, trauma, role and routine changes, stigma, supports, health, reintegration demands, strengths, and current safety.',
+		'option_c'       => 'Focus only on compliance with current rules because reintegration stress is expected before changing the plan before finalizing the assessment.',
+		'option_d'       => 'Avoid asking about the placement experience so the client is not reminded of it before drawing a diagnostic conclusion and document the reasoning.',
+		'correct_option' => 'b',
+		'explanation'    => 'A. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
+
+B. Correct. Out-of-home placement can affect attachment, identity, trauma, functioning, relationships, and reintegration
+
+C. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
+
+D. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment',
+	),
+	array(
+		'question_text'  => 'A client at a nonprofit family-service agency has an unpaid balance and ongoing moderate symptoms. The clinician is considering termination. What is the BEST response?',
+		'option_a'       => 'Discuss the financial issue and options, reassess clinical risk, provide reasonable notice and referrals if ending, and document continuity efforts.',
+		'option_b'       => 'End treatment immediately because continued care would undermine the practice’s financial policy as part of routine follow-up before making a final decision.',
+		'option_c'       => 'Continue indefinitely without discussing fees because clinical need always overrides financial boundaries while continuing to monitor the situation.',
+		'option_d'       => 'Contact the client’s employer to seek payment before deciding whether treatment can continue while maintaining the current plan.',
+		'correct_option' => 'a',
+		'explanation'    => 'A. Correct. Termination can address financial boundaries while still protecting reasonable continuity of care
+
+B. Incorrect. Late or abrupt termination can create avoidable discontinuity and reduce the client’s opportunity to participate in transition planning
+
+C. Incorrect. Keeping a case open indefinitely or ending automatically can ignore current risk, access barriers, and organizational requirements
+
+D. Incorrect. Reasonable termination includes notice, barrier assessment, referrals or transfer options, and accurate documentation',
+	),
+	array(
+		'question_text'  => 'At a school-linked program, an adolescent’s symptoms worsen during intense parental conflict. What should the social worker assess FIRST?',
+		'option_a'       => 'Identify which family member is primarily responsible for the problem before assessing the larger pattern while continuing to gather relevant information.',
+		'option_b'       => 'Complete individual diagnoses first and address family interaction only after treatment begins while continuing to gather relevant information.',
+		'option_c'       => 'Ask the family to select one person as the identified problem so planning remains focused.',
+		'option_d'       => 'Assess interaction patterns, roles, alliances, communication, stressors, resources, safety, cultural meanings, and how symptoms function within the family system.',
 		'correct_option' => 'd',
-		'explanation'    => 'A. Incorrect. A relational preference is not evidence of incapacity.
+		'explanation'    => 'A. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
 
-B. Incorrect. Individualism is not the only form of self-determination.
+B. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
 
-C. Incorrect. Family involvement does not automatically create authority.
+C. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
 
-D. Correct. Autonomy includes the right to choose interdependence when the choice is informed and voluntary.
-
-CTA Exam Strategy: Do not confuse autonomy with isolation.',
+D. Correct. Family assessment focuses on reciprocal patterns, roles, resources, meanings, and function rather than assigning blame',
 	),
 	array(
-		'question_text'  => 'A supervisee notices that a supervisor is repeatedly confused, misses urgent consultations, and gives contradictory directions. What should the supervisee do FIRST?',
-		'option_a'       => 'Discuss suspicions with clients.',
-		'option_b'       => 'Diagnose the supervisor.',
-		'option_c'       => 'Ignore the concern until a complaint occurs.',
-		'option_d'       => 'Document specific observations, address immediate client risk, and use appropriate organizational or professional channels.',
+		'question_text'  => 'A client at a community mental-health program has several providers but no one owns a housing task. What should the social worker do NEXT?',
+		'option_a'       => 'Send another referral so there are more chances for someone to take responsibility before the next scheduled contact.',
+		'option_b'       => 'Ask the client to determine which agency failed while maintaining appropriate follow-up before the next scheduled contact.',
+		'option_c'       => 'Map responsibilities with the client, identify an owner for each next step, create active handoffs, and set a review point.',
+		'option_d'       => 'Focus on emotional support while providers sort out the task while continuing to monitor the outcome while maintaining appropriate follow-up.',
+		'correct_option' => 'c',
+		'explanation'    => 'A. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+B. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+C. Correct. Case management makes ownership, handoffs, and follow-up visible
+
+D. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response',
+	),
+	array(
+		'question_text'  => 'A research-informed treatment program at a school-linked counseling program changes its recording policy midcourse. What should the clinician do?',
+		'option_a'       => 'Rely on the original treatment consent because program procedures can change without renewed discussion as part of routine follow-up.',
+		'option_b'       => 'Begin recording and notify clients afterward so services are not interrupted as part of routine follow-up before making a final decision.',
+		'option_c'       => 'Require recording as a condition of continued treatment even when a nonrecorded alternative is feasible before making a final decision.',
+		'option_d'       => 'Explain the material change, risks, choices, and limits before recording under the new policy, and obtain updated informed agreement as required.',
 		'correct_option' => 'd',
-		'explanation'    => 'A. Incorrect. Client discussion may be unnecessary and harmful.
+		'explanation'    => 'A. Incorrect. A signature or earlier consent does not substitute for current understanding when material information or circumstances are unclear
 
-B. Incorrect. A diagnosis cannot be made from workplace observations alone.
+B. Incorrect. Using another person or delaying explanation unnecessarily can reduce the client’s own informed participation
 
-C. Incorrect. Waiting for harm is not responsible.
+C. Incorrect. Proceeding without meaningful comprehension or renewed discussion when circumstances change weakens voluntary informed consent
 
-D. Correct. The response should focus on observable functioning and client protection.
-
-CTA Exam Strategy: Describe conduct and risk; do not substitute rumor or diagnosis.',
+D. Correct. Material changes in risks or procedures can require renewed informed-consent discussion',
 	),
 	array(
-		'question_text'  => 'What is the primary purpose of outcome evaluation in clinical services?',
-		'option_a'       => 'To prove every client will improve.',
-		'option_b'       => 'To punish clients who do not meet goals.',
-		'option_c'       => 'To determine whether services are producing intended results and guide improvement.',
-		'option_d'       => '',
+		'question_text'  => 'At a group practice, a spouse caring for a partner with dementia reports exhaustion and guilt. What should the social worker assess FIRST?',
+		'option_a'       => 'Select respite or residential care immediately because caregiver strain is already present before finalizing the assessment before changing the plan.',
+		'option_b'       => 'Focus only on the care recipient because the caregiver is not the identified patient before changing the plan.',
+		'option_c'       => 'Assess caregiving demands, strain, health, safety, roles, beliefs, finances, sleep, supports, service coordination, coping, strengths, and willingness to use available help.',
+		'option_d'       => 'Interpret missed appointments as poor adherence before assessing caregiving burden and resource constraints during the current assessment while continuing to gather relevant information.',
 		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. No program can guarantee outcomes.
+		'explanation'    => 'A. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
 
-B. Incorrect. Client difficulty is not misconduct.
+B. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
 
-C. Correct. Evaluation supports accountability and learning while recognizing individual variation.
+C. Correct. Caregiving affects the whole family system and should be assessed before prescribing a resource or judging adherence
 
-CTA Exam Strategy: Evaluation asks whether the service works and how it can improve.',
+D. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment',
 	),
 	array(
-		'question_text'  => 'A hospital plans discharge to a shelter that cannot accommodate the client\'s wheelchair. What should the social worker do?',
-		'option_a'       => 'Present the accessibility and safety concerns, involve the client, and advocate for an appropriate discharge option and accommodations.',
-		'option_b'       => 'Delay without communicating the problem.',
-		'option_c'       => 'Accept the placement because a bed is available.',
-		'option_d'       => 'Tell the client to manage the stairs.',
-		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. Discharge planning must be clinically and physically usable.
-
-B. Incorrect. Silent delay does not create a solution.
-
-C. Incorrect. Availability alone does not establish safety.
-
-D. Incorrect. The plan ignores disability access.
-
-CTA Exam Strategy: A plan is not safe if the client cannot physically use it.',
-	),
-	array(
-		'question_text'  => 'A recently discharged client reports suicidal thoughts, heavy drinking, eviction, and no phone. What should the social worker do?',
-		'option_a'       => 'Complete an immediate suicide and substance-risk assessment, identify a safe level of care, involve supports with appropriate authority, and address communication and housing barriers in the safety plan.',
-		'option_b'       => 'Provide a standard hotline card only.',
-		'option_c'       => 'Focus first on a long-term employment goal.',
-		'option_d'       => 'Assume discharge means the client is stable.',
-		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. Risk, intoxication, access, and environmental barriers must be addressed together.
-
-B. Incorrect. A card may be unusable without a phone and is insufficient alone.
-
-C. Incorrect. Long-term goals do not outrank immediate safety.
-
-D. Incorrect. Recent discharge can be a vulnerable period.
-
-CTA Exam Strategy: A safety plan must work in the client\'s actual environment.',
-	),
-	array(
-		'question_text'  => 'A client identifies "feeling less overwhelmed" as a goal. What should the social worker do?',
-		'option_a'       => 'Translate the goal collaboratively into observable indicators, priorities, supports, and review points.',
-		'option_b'       => 'Keep it vague to avoid pressure.',
-		'option_c'       => 'Choose the same goal used for all clients.',
-		'option_d'       => '',
-		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. Specific indicators make planning and evaluation possible while preserving the client\'s language.
-
-B. Incorrect. Excessive vagueness limits monitoring.
-
-C. Incorrect. Goals should be individualized.
-
-CTA Exam Strategy: Operationalize the client\'s goal without taking ownership away.',
-	),
-	array(
-		'question_text'  => 'A client identifies a factual error in a progress note. What should the social worker do?',
-		'option_a'       => 'Ask the client to rewrite the clinical note.',
-		'option_b'       => 'Review the concern and make a transparent correction or addendum according to record policy without erasing the original entry improperly.',
-		'option_c'       => 'Refuse because records can never be corrected.',
-		'option_d'       => '',
+		'question_text'  => 'A social worker at a public behavioral-health agency notices persistent intrusive images from clients’ trauma stories and difficulty sleeping. What is the BEST response?',
+		'option_a'       => 'Stop seeing all clients with trauma histories permanently because symptoms indicate inability to practice trauma work.',
+		'option_b'       => 'Use supervision, consultation, and appropriate self-care and workload supports while monitoring effects on clinical judgment and functioning.',
+		'option_c'       => 'Increase emotional distance from clients so their experiences do not affect the social worker personally.',
+		'option_d'       => 'Keep the reactions private unless a client complains about the quality of care while continuing to monitor the situation.',
 		'correct_option' => 'b',
-		'explanation'    => 'A. Incorrect. The clinician remains responsible for the record.
+		'explanation'    => 'A. Incorrect. Simply pushing through significant burnout or secondary-trauma symptoms can increase the risk of impaired judgment and poorer care
 
-B. Correct. Records should be accurate while maintaining a clear audit trail.
+B. Correct. Secondary trauma is addressed through support, boundaries, monitoring, and workload adjustments rather than secrecy or detachment
 
-C. Incorrect. Errors may be corrected through proper procedures.
+C. Incorrect. Overly broad transfer or emotional distancing treats the clinician reaction as something to escape rather than manage responsibly
 
-CTA Exam Strategy: Correct transparently; do not rewrite history invisibly.',
+D. Incorrect. Keeping the problem private until harm occurs delays appropriate supervision, workload support, and prevention',
 	),
 	array(
-		'question_text'  => 'A caregiver reports exhaustion and occasional thoughts of abandoning responsibilities. What should the social worker do?',
-		'option_a'       => 'Assess immediate safety and neglect risk, validate burden, mobilize respite and support, and develop a realistic care plan.',
-		'option_b'       => 'Focus only on the care recipient.',
-		'option_c'       => 'Shame the caregiver.',
-		'option_d'       => 'Promise the burden will decrease soon.',
+		'question_text'  => 'At a rural behavioral-health clinic, a client jokes whenever grief becomes painful and then changes the subject. What should the social worker assess FIRST?',
+		'option_a'       => 'Treat the pattern as a tentative protective or defensive process whose function, context, costs, and relationship effects should be explored without forcing an interpretation.',
+		'option_b'       => 'Label the behavior as resistance and confront it before continuing the assessment while continuing to gather relevant information before drawing a diagnostic conclusion.',
+		'option_c'       => 'Assume the defense is healthy because it reduces distress in the moment before changing the plan before drawing a diagnostic conclusion and document the reasoning.',
+		'option_d'       => 'State the defense mechanism as fact so the client can become more self-aware before drawing a diagnostic conclusion and document the reasoning.',
 		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. Caregiver distress can affect both parties and requires safety and systems intervention.
+		'explanation'    => 'A. Correct. Defense mechanisms are hypotheses about protective function and should be assessed in context rather than imposed as facts
 
-B. Incorrect. The caregiving system includes the caregiver.
+B. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
 
-C. Incorrect. Shame reduces disclosure.
+C. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
 
-D. Incorrect. An unsupported promise is misleading.
-
-CTA Exam Strategy: Support the caregiver to protect the whole care system.',
+D. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment',
 	),
 	array(
-		'question_text'  => 'An agency supervisor asks a social worker to copy forward a risk assessment without updating it because the caseload is high. What should the social worker do?',
-		'option_a'       => 'Remove all risk documentation from the record.',
-		'option_b'       => 'Complete an accurate current assessment and raise the workload concern through appropriate channels.',
-		'option_c'       => 'Tell the client to complete the assessment alone.',
-		'option_d'       => '',
+		'question_text'  => 'A clinician at a nonprofit family-service agency is pressured to provide a service beyond current competence because the agency has no specialist available. What response is BEST?',
+		'option_a'       => 'Provide the service because organizational need and access concerns justify practice beyond competence before the next scheduled contact.',
+		'option_b'       => 'Protect client welfare by acknowledging the competence limit and arranging qualified support, training, consultation, or referral.',
+		'option_c'       => 'Refuse all involvement with the client because any competence gap makes continued care unethical.',
+		'option_d'       => 'Proceed only if the client signs a waiver acknowledging that the clinician lacks specialized training.',
 		'correct_option' => 'b',
-		'explanation'    => 'A. Incorrect. Omission undermines continuity and accountability.
+		'explanation'    => 'A. Incorrect. Personal beliefs, organizational convenience, or client waivers do not override the professional obligation to practice competently and with integrity
 
-B. Correct. Records must reflect current clinical work; administrative pressure does not justify false or stale documentation.
+B. Correct. Competence and dignity require honest scope limits plus continuity-oriented problem solving
 
-C. Incorrect. Assessment remains a professional responsibility.
+C. Incorrect. Overly broad withdrawal can create unnecessary discontinuity when a more proportionate competence or ethics response is available
 
-CTA Exam Strategy: When workload conflicts with record accuracy, protect the record and address the system problem separately.',
+D. Incorrect. Professional values require client-centered, evidence-based judgment rather than decisions driven by clinician interest or convenience',
 	),
 	array(
-		'question_text'  => 'A depression screening score is high, but several items were misunderstood because of literacy barriers. What should the social worker do?',
-		'option_a'       => 'Discard all client information.',
-		'option_b'       => 'Clarify the items using accessible methods and integrate the result with interview, observation, and functioning.',
-		'option_c'       => 'Diagnose solely from the total.',
-		'option_d'       => '',
-		'correct_option' => 'b',
-		'explanation'    => 'A. Incorrect. The problem affects the tool, not all information.
-
-B. Correct. A measure is one source of evidence and depends on valid administration.
-
-C. Incorrect. Diagnosis requires broader reasoning.
-
-CTA Exam Strategy: A score is evidence, not a verdict.',
-	),
-	array(
-		'question_text'  => 'A client with psychosis is stable on medication but repeatedly loses housing because of benefit interruptions and landlord discrimination. What should the plan include?',
-		'option_a'       => 'Only symptom-focused psychotherapy.',
-		'option_b'       => 'A conclusion that repeated loss proves treatment failure.',
-		'option_c'       => 'Relapse monitoring, medication coordination, benefits advocacy, housing-rights resources, crisis contingencies, and client-defined goals.',
-		'option_d'       => 'Only a housing referral.',
+		'question_text'  => 'A child in foster care seen at a community mental-health program has experienced several placement changes. What should guide permanency planning?',
+		'option_a'       => 'The placement with the greatest number of services regardless of relational continuity before changing the plan.',
+		'option_b'       => 'The preference of the current agency because it knows the case best and document the reasoning.',
+		'option_c'       => 'Safety, attachment and relational continuity, the child’s developmental needs and voice, family possibilities, culture, legal requirements, and stable long-term connection.',
+		'option_d'       => 'The fastest available placement even if the child has not been included in planning before selecting a more intensive response.',
 		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. Symptoms are only one part of the problem.
+		'explanation'    => 'A. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
 
-B. Incorrect. Housing loss does not necessarily reflect clinical nonresponse.
+B. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
 
-C. Correct. Sustainable planning must address clinical stability and systemic barriers.
+C. Correct. Permanency planning seeks safe, stable, enduring relationships while integrating development, family, culture, and the child’s voice
 
-D. Incorrect. A single referral may not address recurring system failures.
-
-CTA Exam Strategy: Integrated plans connect treatment, resources, rights, and prevention.',
+D. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response',
 	),
 	array(
-		'question_text'  => 'A school social worker is asked to provide therapy to a student and also decide whether the student should be expelled. What should the social worker do?',
-		'option_a'       => 'Accept both roles because the school employs the social worker.',
-		'option_b'       => 'End all support to the student.',
-		'option_c'       => 'Use therapy disclosures to strengthen the expulsion case.',
-		'option_d'       => 'Clarify the conflicting roles and seek separation of treatment and disciplinary decision-making when possible.',
+		'question_text'  => 'During a team meeting at a school-linked counseling program, a colleague begins discussing sensitive trauma details that are not relevant to the current discharge decision. What should the social worker do?',
+		'option_a'       => 'Allow the discussion because all team members signed organizational confidentiality agreements.',
+		'option_b'       => 'End the meeting immediately and report the colleague before any further care planning occurs.',
+		'option_c'       => 'Record the trauma details in the meeting minutes so the information is available if it later becomes relevant.',
+		'option_d'       => 'Redirect the discussion to information needed for the current decision and protect unnecessary confidential detail.',
 		'correct_option' => 'd',
-		'explanation'    => 'A. Incorrect. Employment does not eliminate role conflicts.
+		'explanation'    => 'A. Incorrect. Sharing or confirming information beyond established authority can violate confidentiality even when the information seems limited or clinically useful
 
-B. Incorrect. The student may still need appropriate support.
+B. Incorrect. An administrative step or different communication method does not itself create authority to disclose protected information
 
-C. Incorrect. Using confidential treatment information punitively is problematic.
+C. Incorrect. A blanket refusal or punitive response can be overly restrictive when information can be received or shared lawfully for a defined purpose
 
-D. Correct. Treatment trust and disciplinary authority can create incompatible duties and coercion.
-
-CTA Exam Strategy: Identify who benefits from each role and whether one role undermines the other.',
+D. Correct. Confidentiality includes limiting unnecessary disclosure even within legitimate care teams',
 	),
 	array(
-		'question_text'  => 'A clinic repeatedly closes cases when clients miss appointments, although many clients rely on unreliable public transportation. What should the social worker do?',
-		'option_a'       => 'Blame clients for noncompliance.',
-		'option_b'       => 'Promise every client unlimited appointments.',
-		'option_c'       => 'Ignore the pattern because the rule applies to everyone.',
-		'option_d'       => 'Bring the pattern forward, examine its disparate impact, and advocate for accessible scheduling or outreach alternatives.',
+		'question_text'  => 'Residents near a rural behavioral-health clinic report repeated environmental health concerns and want change. What should the social worker do FIRST?',
+		'option_a'       => 'Engage residents in defining priorities, mapping power and resources, identifying decision makers, and selecting resident-led strategies.',
+		'option_b'       => 'Draft a formal campaign plan before meeting residents so organizing begins efficiently.',
+		'option_c'       => 'Ask the agency’s board to select the issue that is most politically feasible.',
+		'option_d'       => 'Speak publicly for residents before determining how they want to participate before the next scheduled contact.',
+		'correct_option' => 'a',
+		'explanation'    => 'A. Correct. Community organizing begins with participation, shared power, issue definition, resources, and strategy
+
+B. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+C. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+D. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response',
+	),
+	array(
+		'question_text'  => 'A terminally ill client at a telehealth psychotherapy practice expresses fear of burdening family and asks about hospice. What is the BEST response?',
+		'option_a'       => 'Recommend hospice immediately because terminal illness makes it the least burdensome choice before the next scheduled contact.',
+		'option_b'       => 'Ask the family whether hospice is acceptable before discussing it further with the client.',
+		'option_c'       => 'Avoid discussing hospice until the medical team states that no curative treatment remains while continuing to monitor the situation.',
+		'option_d'       => 'Explore the client’s goals, understanding, fears, supports, and preferences and facilitate informed discussion of hospice and palliative options.',
 		'correct_option' => 'd',
-		'explanation'    => 'A. Incorrect. Blame overlooks environmental constraints.
+		'explanation'    => 'A. Incorrect. Family distress or preference does not automatically replace a capable client’s informed end-of-life choices
 
-B. Incorrect. Advocacy should remain feasible and accountable.
+B. Incorrect. Advance-care decisions require understanding and appropriate authority rather than rushed signatures or assumptions
 
-C. Incorrect. Formal uniformity does not prove equity.
+C. Incorrect. Confidentiality, continuity, and role responsibilities can continue in end-of-life and post-death contexts and should be clarified rather than treated as nonexistent
 
-D. Correct. Equal rules can create unequal effects when structural barriers are ignored.
-
-CTA Exam Strategy: Use person-in-environment reasoning at the policy level.',
+D. Correct. End-of-life planning should be informed, client-centered, and integrated with the care team',
 	),
 	array(
-		'question_text'  => 'A culturally adapted group is losing key therapeutic components. What should the program social worker do?',
-		'option_a'       => 'Identify the intervention\'s essential elements, collaborate with the community on acceptable adaptations, and monitor outcomes.',
-		'option_b'       => 'Return to the original format without community input.',
-		'option_c'       => 'Stop evaluation to avoid criticism.',
-		'option_d'       => 'Keep every adaptation regardless of effectiveness.',
+		'question_text'  => 'At an outpatient clinic, a 16-year-old has withdrawn, lost interest, sleeps excessively, and reports hopelessness. What should the social worker assess FIRST?',
+		'option_a'       => 'Assess duration, severity, change from baseline, functional impairment, safety, developmental context, medical and substance factors, medications, stressors, and protective supports.',
+		'option_b'       => 'Assign the most obvious psychiatric diagnosis before reviewing medical, substance, and functional information while continuing to gather relevant information.',
+		'option_c'       => 'Rely on family interpretation of whether the behavior is normal before assessing the client directly during the current assessment.',
+		'option_d'       => 'Select treatment based on the symptom cluster before clarifying episode pattern and differential contributors during the current assessment before finalizing the assessment.',
 		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. Good adaptation balances cultural fit with preservation of active ingredients and outcome monitoring.
+		'explanation'    => 'A. Correct. Mental-illness indicators require assessment of time course, impairment, safety, development, and differential contributors
 
-B. Incorrect. Rigid return may reduce relevance.
+B. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
 
-C. Incorrect. Evaluation is needed to learn.
+C. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
 
-D. Incorrect. Not every change preserves effectiveness.
-
-CTA Exam Strategy: Adapt form thoughtfully while protecting function.',
+D. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment',
 	),
 	array(
-		'question_text'  => 'At the first group meeting, a member asks whether the social worker can guarantee that other members will keep everything private. What should the social worker say?',
-		'option_a'       => 'Guarantee complete confidentiality.',
-		'option_b'       => 'Explain the group confidentiality expectations and limits while acknowledging that the social worker cannot guarantee every member\'s behavior.',
-		'option_c'       => 'Tell members they have no privacy interests in a group.',
-		'option_d'       => '',
-		'correct_option' => 'b',
-		'explanation'    => 'A. Incorrect. A guarantee would be misleading.
-
-B. Correct. Accurate informed consent requires both expectations and realistic limits.
-
-C. Incorrect. Group participation does not erase privacy concerns.
-
-CTA Exam Strategy: Do not promise control over people you cannot control.',
-	),
-	array(
-		'question_text'  => 'A client denies anger problems, but a partner reports frequent property destruction. What should the social worker do?',
-		'option_a'       => 'Accept the partner\'s account automatically.',
-		'option_b'       => 'Explore specific incidents, context, frequency, consequences, safety, and differences in perspective without assuming either account is complete.',
-		'option_c'       => 'Accept the client\'s denial automatically.',
-		'option_d'       => '',
-		'correct_option' => 'b',
-		'explanation'    => 'A. Incorrect. Collateral information is not automatically superior.
-
-B. Correct. Discrepancy is clinically useful information that calls for focused assessment.
-
-C. Incorrect. Self-report may be incomplete.
-
-CTA Exam Strategy: Treat disagreement as data, not as a reason to choose sides immediately.',
-	),
-	array(
-		'question_text'  => 'A medical provider and social worker disagree about discharge readiness. What should the social worker do?',
-		'option_a'       => 'Defer automatically to the physician.',
-		'option_b'       => 'Present specific functional and environmental concerns, clarify each discipline\'s evidence, and collaborate on a safe plan with the client.',
-		'option_c'       => 'Refuse further communication.',
-		'option_d'       => '',
-		'correct_option' => 'b',
-		'explanation'    => 'A. Incorrect. Hierarchy does not erase social-work assessment.
-
-B. Correct. Interdisciplinary practice requires respectful advocacy and integration of different expertise.
-
-C. Incorrect. Noncommunication increases fragmentation.
-
-CTA Exam Strategy: Bring concrete evidence and the client\'s context to the team.',
-	),
-	array(
-		'question_text'  => 'A client has slept two hours nightly for a week, speaks rapidly, spends impulsively, and feels unusually powerful. What should the social worker do FIRST?',
-		'option_a'       => 'Begin long-term insight therapy without safety assessment.',
-		'option_b'       => 'Praise the increased energy.',
-		'option_c'       => 'Assess mood episode severity, psychosis, substance or medication causes, safety, functioning, and need for urgent psychiatric evaluation.',
-		'option_d'       => 'Diagnose anxiety from rapid speech alone.',
-		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. Acuity and medical factors require priority.
-
-B. Incorrect. The behavior may be dangerous rather than adaptive.
-
-C. Correct. The cluster suggests a possible manic syndrome with significant risk and differential considerations.
-
-D. Incorrect. The full pattern is broader than anxiety.
-
-CTA Exam Strategy: Reduced need for sleep plus expansive behavior is an urgency cue.',
-	),
-	array(
-		'question_text'  => 'An agency policy appears to conflict with professional ethics and may harm clients. What should the social worker do FIRST?',
-		'option_a'       => 'Follow it automatically because employment overrides ethics.',
-		'option_b'       => 'Clarify the policy and ethical conflict, consult appropriate standards and leadership, and pursue corrective action while protecting current clients.',
-		'option_c'       => 'Publicly identify clients affected by the policy.',
-		'option_d'       => '',
-		'correct_option' => 'b',
-		'explanation'    => 'A. Incorrect. Employment does not erase ethical responsibility.
-
-B. Correct. The social worker should analyze, consult, and address the systems issue without abandoning immediate duties.
-
-C. Incorrect. Public disclosure may violate privacy.
-
-CTA Exam Strategy: Address both the immediate client impact and the organizational source of the problem.',
-	),
-	array(
-		'question_text'  => 'A client describes drinking as "social," despite work absences and a recent impaired-driving charge. What should the social worker ask?',
-		'option_a'       => 'Whether the client wants a diagnosis today.',
-		'option_b'       => 'Whether the client considers the drinking immoral.',
-		'option_c'       => 'Behaviorally specific questions about amount, frequency, consequences, tolerance, withdrawal, control, and readiness for change.',
-		'option_d'       => '',
-		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. Diagnosis should follow adequate assessment.
-
-B. Incorrect. Moral judgment does not assess severity.
-
-C. Correct. Specific pattern and consequence questions are more informative than labels.
-
-CTA Exam Strategy: Translate vague labels into observable behavior and impact.',
-	),
-	array(
-		'question_text'  => 'A client begins bringing expensive gifts and asking the social worker to attend family events. What should the social worker do FIRST?',
-		'option_a'       => 'Accept the gifts to avoid rejection.',
-		'option_b'       => 'Explore the pattern and meaning, restate professional boundaries, and assess whether treatment expectations are changing.',
-		'option_c'       => 'Attend one event and decide afterward.',
-		'option_d'       => '',
-		'correct_option' => 'b',
-		'explanation'    => 'A. Incorrect. Acceptance may intensify role confusion.
-
-B. Correct. The pattern suggests boundary pressure that should be addressed directly and clinically.
-
-C. Incorrect. Experimenting with a dual role increases risk.
-
-CTA Exam Strategy: Look for patterns, expectations, and power-not just a single invitation.',
-	),
-	array(
-		'question_text'  => 'An older adult with a recent medication change becomes abruptly disoriented, attempts to leave home at night, and cannot recognize a caregiver. What should the social worker do?',
-		'option_a'       => 'Begin memory training and reassess next month.',
-		'option_b'       => 'Assume a gradual dementia progression.',
-		'option_c'       => 'Ask the caregiver to keep the episode private.',
-		'option_d'       => 'Treat the change as a possible medical emergency, arrange urgent evaluation and immediate supervision, and communicate relevant history to medical providers.',
+		'question_text'  => 'A clinician at a telehealth psychotherapy practice is competent in current duties but has not completed any professional learning for several years. Why is ongoing development still important?',
+		'option_a'       => 'Professional development is primarily a licensing formality once a clinician has substantial experience.',
+		'option_b'       => 'Only clinicians who receive complaints need structured continuing education or consultation as part of routine follow-up.',
+		'option_c'       => 'Experienced clinicians can rely on established methods unless an employer requires retraining.',
+		'option_d'       => 'Practice standards, evidence, technology, populations, and ethical expectations change, so competence requires continued updating.',
 		'correct_option' => 'd',
-		'explanation'    => 'A. Incorrect. Routine intervention is insufficient.
+		'explanation'    => 'A. Incorrect. Past training or unstructured experience is not enough when practice demands have moved beyond current competence
 
-B. Incorrect. Sudden onset is not typical evidence of gradual progression.
+B. Incorrect. Client waivers or informal co-treatment do not create competence where adequate training and supervision are lacking
 
-C. Incorrect. Privacy does not justify concealing urgent clinical information from authorized care providers.
+C. Incorrect. Professional development should be proactive and tied to demonstrated learning needs rather than delayed until a complaint occurs
 
-D. Correct. Abrupt cognitive change plus unsafe behavior requires medical and safety action.
-
-CTA Exam Strategy: Integrated assessment asks what is acute, dangerous, and potentially reversible.',
+D. Correct. Competence is dynamic and requires ongoing learning even without a current performance problem',
 	),
 	array(
-		'question_text'  => 'During a telehealth session, the client appears to be in a public place and whispers responses. What should the social worker do FIRST?',
-		'option_a'       => 'Ask the client to disclose sensitive details quickly.',
-		'option_b'       => 'Confirm location and privacy, assess whether the client can speak safely, and decide whether to continue, modify, or reschedule.',
-		'option_c'       => 'Record the session without discussion.',
-		'option_d'       => 'Continue because the client joined voluntarily.',
-		'correct_option' => 'b',
-		'explanation'    => 'A. Incorrect. Pressure increases privacy risk.
-
-B. Correct. Privacy and safety conditions must be assessed before proceeding with sensitive care.
-
-C. Incorrect. Recording creates additional consent and security issues.
-
-D. Incorrect. Attendance does not establish a private environment.
-
-CTA Exam Strategy: Telehealth begins with location, privacy, and emergency capacity.',
-	),
-	array(
-		'question_text'  => 'A court-referred client says, "Since I have to be here, I have no choices." What should the social worker explain?',
-		'option_a'       => 'Clarify what is required, what may be reported, the limits of confidentiality, and the choices the client still controls.',
-		'option_b'       => 'Threaten additional penalties for asking questions.',
-		'option_c'       => 'Promise that nothing will be reported.',
-		'option_d'       => '',
+		'question_text'  => 'A new funding rule at an outpatient clinic limits access to a needed service. What should the social worker do FIRST?',
+		'option_a'       => 'Clarify how the rule applies, explain it accurately, identify review or alternative options, assess impact, and advocate through appropriate channels.',
+		'option_b'       => 'Ignore the rule when it conflicts with client welfare while maintaining appropriate follow-up while continuing to monitor the outcome.',
+		'option_c'       => 'Tell clients the policy is unethical before confirming its actual requirements while continuing to monitor the outcome.',
+		'option_d'       => 'End the service immediately because funding rules determine clinical appropriateness while continuing to monitor the outcome while maintaining appropriate follow-up.',
 		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. Mandated participation changes voluntariness but does not erase accurate information or remaining choice.
+		'explanation'    => 'A. Correct. Policy practice requires accurate interpretation, attention to client impact, alternatives, and proportionate advocacy
 
-B. Incorrect. Threats are coercive and may exceed the social worker\'s role.
+B. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
 
-C. Incorrect. Reporting expectations may exist.
+C. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
 
-CTA Exam Strategy: Separate what is required from what remains negotiable.',
+D. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response',
 	),
 	array(
-		'question_text'  => 'Which mental-status function is assessed by asking a client to identify the date, location, and situation?',
-		'option_a'       => 'Orientation.',
-		'option_b'       => 'Impulse control.',
-		'option_c'       => 'Insight.',
-		'option_d'       => '',
-		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. Orientation concerns awareness of person, place, time, and situation.
-
-B. Incorrect. Impulse control concerns regulation of action.
-
-C. Incorrect. Insight concerns understanding of one\'s condition.
-
-CTA Exam Strategy: Match the question to the specific MSE domain.',
-	),
-	array(
-		'question_text'  => 'A strongly supported treatment conflicts with a client\'s cultural values and prior harmful experiences in institutions. What should the social worker do?',
-		'option_a'       => 'Avoid discussing the conflict.',
-		'option_b'       => 'Explain the evidence and options, explore the client\'s concerns and values, adapt when clinically sound, and collaboratively select an acceptable plan.',
-		'option_c'       => 'Reject the evidence entirely.',
-		'option_d'       => 'Insist on the treatment because evidence overrides preference.',
-		'correct_option' => 'b',
-		'explanation'    => 'A. Incorrect. Avoidance prevents informed collaboration.
-
-B. Correct. Evidence-informed practice integrates research, clinical expertise, context, and client preferences.
-
-C. Incorrect. Evidence remains relevant even when adaptation is needed.
-
-D. Incorrect. Research does not erase consent or cultural fit.
-
-CTA Exam Strategy: Evidence informs the conversation; it does not end it.',
-	),
-	array(
-		'question_text'  => 'A long-term client offers the social worker a small handmade item that has important cultural meaning. What should the social worker do?',
-		'option_a'       => 'Explore the meaning, value, timing, cultural context, and possible impact before deciding whether accepting is clinically appropriate.',
-		'option_b'       => 'Reject every gift immediately without discussion.',
-		'option_c'       => 'Sell the item and donate the proceeds.',
-		'option_d'       => '',
-		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. Gift decisions require contextual boundary analysis rather than a universal rule.
-
-B. Incorrect. Automatic rejection may damage the relationship or communicate disrespect.
-
-C. Incorrect. Selling the gift changes its meaning and is not a standard response.
-
-CTA Exam Strategy: Assess function and impact, not just the object.',
-	),
-	array(
-		'question_text'  => 'A client reports severe restriction, fainting, and rapid weight change. What should the social worker do NEXT?',
-		'option_a'       => 'Begin only body-image journaling.',
-		'option_b'       => 'Wait for the next routine appointment.',
-		'option_c'       => 'Assess immediate medical risk and arrange urgent medical evaluation while continuing a broader eating-disorder and safety assessment.',
-		'option_d'       => 'Assume the client is exaggerating.',
-		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. Psychotherapeutic work does not replace medical assessment.
-
-B. Incorrect. Routine delay may be unsafe.
-
-C. Correct. Fainting and rapid change may indicate medical instability.
-
-D. Incorrect. Dismissal can delay needed care.
-
-CTA Exam Strategy: Medical instability outranks a complete outpatient formulation.',
-	),
-	array(
-		'question_text'  => 'A client is surprised by a missed-appointment charge that was never discussed. What should the social worker do?',
-		'option_a'       => 'Insist the client should have known the policy.',
-		'option_b'       => 'Terminate for questioning the bill.',
-		'option_c'       => 'Review the policy, acknowledge the lack of prior disclosure, resolve the charge fairly, and clarify future expectations.',
-		'option_d'       => '',
-		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. Undisclosed terms should not be treated as obvious.
-
-B. Incorrect. Billing questions do not justify abandonment.
-
-C. Correct. Financial expectations should be disclosed and handled transparently.
-
-CTA Exam Strategy: In fee disputes, return to informed expectations and fairness.',
-	),
-	array(
-		'question_text'  => 'A family reports severe conflict but reliably cooperates during medical emergencies. How should the social worker use this information?',
-		'option_a'       => 'Explore what supports cooperation and how those resources might be transferred to recurring conflict.',
-		'option_b'       => 'Ignore it because strengths are not part of assessment.',
-		'option_c'       => 'Conclude the family has no problem.',
-		'option_d'       => '',
-		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. Exceptions can reveal capacities, roles, and conditions that support change.
-
-B. Incorrect. Strengths are essential assessment data.
-
-C. Incorrect. A strength does not erase the presenting concern.
-
-CTA Exam Strategy: Look for successful sequences, not only deficits.',
-	),
-	array(
-		'question_text'  => 'An agitated client is pacing, shouting, and moving closer to staff. What should the social worker do FIRST?',
-		'option_a'       => 'Use calm, simple communication, increase physical space, reduce stimulation, assess immediate danger, and preserve an exit route.',
-		'option_b'       => 'Block the doorway.',
-		'option_c'       => 'Argue about the client\'s behavior.',
-		'option_d'       => '',
-		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. De-escalation prioritizes safety, space, and reduced arousal.
-
-B. Incorrect. Blocking exit can increase threat.
-
-C. Incorrect. Argument may escalate.
-
-CTA Exam Strategy: Lower arousal before seeking insight.',
-	),
-	array(
-		'question_text'  => 'A client wants to begin exposure work but has frequent dissociation and no reliable stabilization skills. What should the social worker do?',
-		'option_a'       => 'Begin intensive exposure immediately.',
-		'option_b'       => 'Strengthen safety, grounding, and regulation first, then reassess readiness for paced trauma processing.',
-		'option_c'       => 'Tell the client dissociation is voluntary.',
-		'option_d'       => 'Avoid trauma forever.',
-		'correct_option' => 'b',
-		'explanation'    => 'A. Incorrect. Premature exposure may worsen dysregulation.
-
-B. Correct. Trauma processing requires adequate stability and collaborative pacing.
-
-C. Incorrect. Dissociation should not be moralized.
-
-D. Incorrect. Permanent avoidance may maintain symptoms.
-
-CTA Exam Strategy: Readiness is not desire alone; assess capacity to remain present and recover.',
-	),
-	array(
-		'question_text'  => 'A pregnant client says a partner controls money, transportation, and contact with friends. What should the social worker do NEXT?',
-		'option_a'       => 'Assess coercive control, immediate danger, safe communication, children or other dependents, and the client\'s priorities for safety planning.',
-		'option_b'       => 'Recommend couples therapy immediately.',
-		'option_c'       => 'Focus only on prenatal appointments.',
-		'option_d'       => '',
-		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. The pattern may indicate intimate-partner violence and requires private, autonomy-supportive safety assessment.
-
-B. Incorrect. Conjoint work may be unsafe in coercive control.
-
-C. Incorrect. Medical needs matter but do not replace violence assessment.
-
-CTA Exam Strategy: Control over movement, money, and relationships is a safety clue.',
-	),
-	array(
-		'question_text'  => 'What is the central purpose of client self-determination in social work practice?',
-		'option_a'       => 'To require clients to follow the social worker\'s preferred plan.',
-		'option_b'       => 'To support clients in making informed choices about their own goals and services within relevant safety and legal limits.',
-		'option_c'       => 'To avoid offering professional recommendations.',
-		'option_d'       => '',
-		'correct_option' => 'b',
-		'explanation'    => 'A. Incorrect. Professional authority does not replace client choice.
-
-B. Correct. Self-determination combines meaningful choice, accurate information, and respect for the client\'s role in decisions.
-
-C. Incorrect. The social worker may still assess, recommend, and explain.
-
-CTA Exam Strategy: Choose the answer that preserves informed choice without erasing professional responsibility.',
-	),
-	array(
-		'question_text'  => 'Which statement MOST accurately distinguishes confidentiality from privilege?',
-		'option_a'       => 'Confidentiality is the professional duty to protect information; privilege concerns control of disclosure in certain legal proceedings.',
-		'option_b'       => 'They are identical terms in every setting.',
-		'option_c'       => 'Confidentiality applies only after treatment ends.',
-		'option_d'       => '',
-		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. The concepts overlap but arise in different professional and legal contexts.
-
-B. Incorrect. They should not be treated as interchangeable.
-
-C. Incorrect. Confidentiality applies throughout and often after services.
-
-CTA Exam Strategy: Identify whether the question concerns ordinary information protection or compelled legal testimony.',
-	),
-	array(
-		'question_text'  => 'A client has intent, a specific plan, access to means, and cannot commit to immediate safety. What should the social worker do?',
-		'option_a'       => 'Rely only on a no-harm promise.',
-		'option_b'       => 'Leave the client alone to preserve autonomy.',
-		'option_c'       => 'Initiate emergency safety procedures and arrange the level of care needed while remaining engaged and using available supports.',
-		'option_d'       => '',
-		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. Promises do not replace assessment and intervention.
-
-B. Incorrect. Autonomy does not require abandoning a person in imminent danger.
-
-C. Correct. The combination indicates acute risk requiring immediate protective action.
-
-CTA Exam Strategy: High intent, plan, means, and inability to stay safe point to emergency action.',
-	),
-	array(
-		'question_text'  => 'A client understands conversational English but struggles with complex consent language. What should the social worker do?',
-		'option_a'       => 'Obtain a signature and document that English is the client\'s second language.',
-		'option_b'       => 'Use qualified language assistance or accessible communication, explain the material plainly, and check understanding.',
-		'option_c'       => 'Skip the consent topics that are difficult to translate.',
-		'option_d'       => '',
-		'correct_option' => 'b',
-		'explanation'    => 'A. Incorrect. A signature does not cure lack of understanding.
-
-B. Correct. Meaningful consent requires accurate, accessible communication and confirmation of comprehension.
-
-C. Incorrect. Required information should not be omitted.
-
-CTA Exam Strategy: When the barrier is comprehension, improve communication rather than merely documenting the barrier.',
-	),
-	array(
-		'question_text'  => 'A team recommends residential care, but a capable client prefers intensive community treatment. What should the social worker do?',
-		'option_a'       => 'Ensure the client understands risks and options, present environmental and support data to the team, and collaborate on the safest feasible plan that respects the client\'s decision.',
-		'option_b'       => 'Override the client because the team agrees.',
-		'option_c'       => 'Withdraw from the case.',
-		'option_d'       => 'Support the client without discussing risk.',
-		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. The social worker must integrate autonomy, informed risk, team expertise, and real-world supports.
-
-B. Incorrect. Consensus does not automatically replace a capable client\'s choice.
-
-C. Incorrect. Withdrawal abandons collaborative planning.
-
-D. Incorrect. Respect requires accurate risk discussion.
-
-CTA Exam Strategy: The best plan is both informed and feasible, not simply the most restrictive.',
-	),
-	array(
-		'question_text'  => 'A client seeks help improving sleep, but the social worker believes the client should focus first on family conflict. What should the social worker do?',
-		'option_a'       => 'Replace the client\'s goal with the family-conflict goal.',
-		'option_b'       => 'Avoid discussing family conflict because the client did not name it.',
-		'option_c'       => 'Explore the relationship between the concerns, explain clinical observations, and collaborate on goals that reflect the client\'s priorities.',
-		'option_d'       => '',
-		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. Imposing a goal undermines self-determination.
-
-B. Incorrect. Relevant clinical information may still be explored respectfully.
-
-C. Correct. Collaboration permits professional input while preserving the client\'s voice and readiness.
-
-CTA Exam Strategy: The strongest answer integrates client priorities with professional assessment.',
-	),
-	array(
-		'question_text'  => 'A parent privately emails a family social worker with allegations about another family member and demands secrecy. What should the social worker do NEXT?',
-		'option_a'       => 'Forward the email to everyone immediately.',
-		'option_b'       => 'Review the established information policy, assess any immediate safety issue, and avoid promising secrecy that conflicts with the service structure.',
-		'option_c'       => 'Delete the email without reading it.',
-		'option_d'       => '',
-		'correct_option' => 'b',
-		'explanation'    => 'A. Incorrect. Immediate broad disclosure may cause harm and exceed the policy.
-
-B. Correct. Multi-person services require consistent role and information-management boundaries.
-
-C. Incorrect. The message may contain safety-relevant information.
-
-CTA Exam Strategy: Do not invent a new secrecy rule under pressure.',
-	),
-	array(
-		'question_text'  => 'A child describes being locked in a closet for long periods as punishment. What should the social worker do?',
-		'option_a'       => 'Wait for physical injury.',
-		'option_b'       => 'Promise the child that no one will be told.',
-		'option_c'       => 'Assess immediate safety and follow applicable mandated-reporting procedures without conducting an exhaustive investigative interview.',
-		'option_d'       => '',
-		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. Abuse concerns are not limited to visible injury.
-
-B. Incorrect. An absolute secrecy promise is misleading.
-
-C. Correct. The disclosure raises a serious safety and reporting concern; the social worker should gather enough information to act, not investigate beyond role.
-
-CTA Exam Strategy: Protect and report as required; do not turn the clinical interview into a forensic interrogation.',
-	),
-	array(
-		'question_text'  => 'An agency adopts an automated clinical-summary tool. What should the social worker do before relying on it?',
-		'option_a'       => 'Allow the tool to make final clinical decisions.',
-		'option_b'       => 'Understand its limits, privacy risks, error patterns, agency safeguards, and the need for professional review of every output.',
-		'option_c'       => 'Enter any client information without checking vendor practices.',
-		'option_d'       => '',
-		'correct_option' => 'b',
-		'explanation'    => 'A. Incorrect. Accountability remains with qualified professionals.
-
-B. Correct. Technology may assist practice but does not replace competence, privacy analysis, or professional judgment.
-
-C. Incorrect. Data handling must be evaluated.
-
-CTA Exam Strategy: Treat automated output as a draft requiring verification, not an authority.',
-	),
-	array(
-		'question_text'  => 'A high-risk client stops attending and does not respond to routine messages. What should the social worker do?',
-		'option_a'       => 'Use the established outreach and risk protocol, consider available supports or welfare procedures when justified, document efforts, and provide reentry or referral information.',
-		'option_b'       => 'Close the case immediately without review.',
-		'option_c'       => 'Contact everyone in the client\'s life.',
-		'option_d'       => 'Send a threatening message.',
-		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. Response should reflect known risk, consent, policy, and proportionate continuity efforts.
-
-B. Incorrect. Immediate closure may ignore risk.
-
-C. Incorrect. Broad disclosure may exceed necessity.
-
-D. Incorrect. Threats undermine care and may escalate distress.
-
-CTA Exam Strategy: Dropout does not erase prior risk information or continuity duties.',
-	),
-	array(
-		'question_text'  => 'A client is not ready for abstinence but wants fewer overdoses. What should the social worker do?',
-		'option_a'       => 'Assure the client that reduced use is risk-free.',
-		'option_b'       => 'Collaborate on overdose-risk reduction, safer-use strategies, emergency resources, and ongoing motivation for change.',
-		'option_c'       => 'Refuse services until abstinent.',
-		'option_d'       => 'Ignore substance use.',
-		'correct_option' => 'b',
-		'explanation'    => 'A. Incorrect. Risk can be reduced but not eliminated.
-
-B. Correct. Harm reduction addresses immediate safety while preserving engagement and future change.
-
-C. Incorrect. Exclusion may increase risk.
-
-D. Incorrect. Avoidance misses a central concern.
-
-CTA Exam Strategy: Meet the client at the current change goal while keeping safety explicit.',
-	),
-	array(
-		'question_text'  => 'A client reports escalating fantasies of harming a coworker and recently purchased a weapon. What should the social worker do NEXT?',
-		'option_a'       => 'Conduct a focused violence-risk assessment, clarify target, intent, planning, access, triggers, and protective controls, and take necessary protective action.',
-		'option_b'       => 'Assume fantasy is harmless.',
-		'option_c'       => 'Wait until the client acts.',
-		'option_d'       => '',
-		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. Specific target-related ideation and weapon access require immediate structured assessment.
-
-B. Incorrect. The pattern contains significant escalation cues.
-
-C. Incorrect. Protection cannot wait for harm.
-
-CTA Exam Strategy: Assess specificity, capability, intent, and immediacy.',
-	),
-	array(
-		'question_text'  => 'An agency finds repeated documentation delays across many staff, linked to an electronic system that crashes daily. What should leadership do?',
-		'option_a'       => 'Ignore the delays because technology is responsible.',
-		'option_b'       => 'Discipline every staff member without examining the system.',
-		'option_c'       => 'Protect current client safety, address individual overdue records, repair the system and workflow, provide support and accountability, and monitor improvement.',
-		'option_d'       => 'Disable documentation requirements.',
-		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. System failure does not erase record responsibilities.
-
-B. Incorrect. Punishment alone misses the system driver.
-
-C. Correct. Quality improvement must address both individual duties and organizational causes.
-
-D. Incorrect. Removing documentation creates new safety and accountability problems.
-
-CTA Exam Strategy: Integrated administration questions require action at person and system levels.',
-	),
-	array(
-		'question_text'  => 'A colleague suggests billing a longer service code than the session provided because the client needs continued care. What should the social worker do?',
-		'option_a'       => 'Use the longer code because the intent is helpful.',
-		'option_b'       => 'Ask the client to confirm the false duration.',
-		'option_c'       => 'Use accurate billing and pursue legitimate authorization, appeal, or resource options.',
-		'option_d'       => '',
-		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. Beneficent motives do not make misrepresentation acceptable.
-
-B. Incorrect. Client participation does not legalize a false claim.
-
-C. Correct. Advocacy does not justify false claims or inaccurate records.
-
-CTA Exam Strategy: Protect care through lawful advocacy, not distortion.',
-	),
-	array(
-		'question_text'  => 'An older adult has abrupt confusion and fluctuating attention after an infection. What should the social worker prioritize?',
-		'option_a'       => 'Urgent medical evaluation for a possible acute medical condition while maintaining safety.',
-		'option_b'       => 'Wait for the confusion to become permanent.',
-		'option_c'       => 'Assume a chronic dementia.',
-		'option_d'       => '',
-		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. Abrupt onset and fluctuation suggest a potentially urgent medical process.
-
-B. Incorrect. Delay may worsen harm.
-
-C. Incorrect. Dementia is generally not inferred from sudden fluctuation alone.
-
-CTA Exam Strategy: Sudden cognitive change is a medical cue before a chronic psychiatric conclusion.',
-	),
-	array(
-		'question_text'  => 'A social worker has a well-managed health condition and consistently performs duties safely. Which conclusion is MOST accurate?',
-		'option_a'       => 'Competence is determined solely by the employer\'s opinion.',
-		'option_b'       => 'The condition alone does not establish professional impairment when functioning remains effective.',
-		'option_c'       => 'Any diagnosis requires immediate resignation.',
-		'option_d'       => '',
-		'correct_option' => 'b',
-		'explanation'    => 'A. Incorrect. Employers may assess performance, but professional functioning is the central concern.
-
-B. Correct. Impairment is evaluated by functional impact, risk, and ability to meet responsibilities.
-
-C. Incorrect. Diagnosis and impairment are not identical.
-
-CTA Exam Strategy: Focus on observable functioning, not stigma or labels.',
-	),
-	array(
-		'question_text'  => 'A client makes a credible threat toward an identifiable person and then revokes all releases. What should the social worker do?',
-		'option_a'       => 'Honor the revocation and take no action.',
-		'option_b'       => 'Complete a focused threat assessment, take protective action required by applicable law and policy, limit disclosure to the safety purpose, and document the reasoning.',
-		'option_c'       => 'Disclose the entire record to everyone who might know the person.',
-		'option_d'       => 'Terminate and leave all decisions to the client.',
-		'correct_option' => 'b',
-		'explanation'    => 'A. Incorrect. Authorization is not always the only basis for protective action.
-
-B. Correct. A serious safety duty may override ordinary confidentiality, but disclosure should remain purpose-limited.
-
-C. Incorrect. Broad disclosure exceeds what safety may require.
-
-D. Incorrect. Termination does not resolve an immediate threat.
-
-CTA Exam Strategy: Integrated ethics questions often require both action and restraint: protect, but disclose no more than necessary.',
-	),
-	array(
-		'question_text'  => 'A client experiencing persecutory beliefs refuses medication and distrusts the clinic. What should the social worker do FIRST?',
-		'option_a'       => 'Engage around the client\'s distress and goals, assess safety and functioning, avoid arguing about the belief, and coordinate options.',
-		'option_b'       => 'End services.',
-		'option_c'       => 'Insist the belief is false.',
-		'option_d'       => '',
-		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. Engagement and safety assessment are more effective than direct confrontation of fixed beliefs.
-
-B. Incorrect. Withdrawal removes support.
-
-C. Incorrect. Argument may increase mistrust.
-
-CTA Exam Strategy: Join with the distress and practical goals without validating the delusion as fact.',
-	),
-	array(
-		'question_text'  => 'An older client says a nephew now controls all banking and becomes angry when the client asks questions. What should the social worker do?',
-		'option_a'       => 'Assess capacity, coercion, financial exploitation, immediate safety, and applicable protective-reporting or resource options.',
-		'option_b'       => 'Tell the client to confront the nephew alone.',
-		'option_c'       => 'Ignore finances because they are not clinical.',
-		'option_d'       => 'Assume family management is appropriate.',
-		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. The pattern may indicate exploitation and loss of autonomy.
-
-B. Incorrect. Solo confrontation may increase danger.
-
-C. Incorrect. Financial control can directly affect safety and functioning.
-
-D. Incorrect. Family status does not eliminate abuse risk.
-
-CTA Exam Strategy: When control, fear, and money appear together, assess exploitation.',
-	),
-	array(
-		'question_text'  => 'A client experiencing partner violence is not ready to leave. What should the social worker do?',
-		'option_a'       => 'Validate the disclosure, assess danger, support autonomy, and develop a personalized safety and resource plan.',
-		'option_b'       => 'Explain that better communication will stop the violence.',
-		'option_c'       => 'Begin conjoint therapy.',
-		'option_d'       => '',
-		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. Safety planning should be collaborative and account for coercive control and leaving-related risk.
-
-B. Incorrect. Abuse is not caused by ordinary communication problems.
-
-C. Incorrect. Conjoint treatment may be unsafe.
-
-CTA Exam Strategy: Do not confuse safety support with taking over the client\'s decision.',
-	),
-	array(
-		'question_text'  => 'A recently separated client says, "There is no reason for me to wake up tomorrow," and looks away. What should the social worker ask about FIRST?',
-		'option_a'       => 'Change the subject to avoid increasing risk.',
-		'option_b'       => 'Schedule a routine follow-up without further assessment.',
-		'option_c'       => 'Ask directly about suicidal thoughts, intent, plan, access to means, timing, and protective factors.',
-		'option_d'       => '',
-		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. Direct questions do not create suicidal intent and are necessary.
-
-B. Incorrect. Delay may miss imminent danger.
-
-C. Correct. The statement is a cue for direct, structured suicide assessment.
-
-CTA Exam Strategy: When the client hints at death, assess directly rather than infer.',
-	),
-	array(
-		'question_text'  => 'A client says the social worker made a culturally insensitive assumption. What should the social worker do FIRST?',
-		'option_a'       => 'End services to avoid further conflict.',
-		'option_b'       => 'Listen without defensiveness, clarify the impact, acknowledge responsibility where appropriate, and consider repair and consultation.',
-		'option_c'       => 'Explain that good intentions eliminate harm.',
-		'option_d'       => 'Tell the client the assumption was clinically necessary.',
-		'correct_option' => 'b',
-		'explanation'    => 'A. Incorrect. Termination may compound harm and is premature.
-
-B. Correct. Repair begins with openness to the client\'s experience and examination of power and impact.
-
-C. Incorrect. Intent does not erase impact.
-
-D. Incorrect. Defensiveness blocks learning and repair.
-
-CTA Exam Strategy: The first task is to understand impact, not defend intent.',
-	),
-	array(
-		'question_text'  => 'A client says, "I know drinking is hurting my work, but it is the only way I relax." What response is BEST?',
-		'option_a'       => '"Part of you is worried about the cost, and another part is afraid of losing your main way to cope."',
-		'option_b'       => '"Why are you making bad choices?"',
-		'option_c'       => '"Drinking is not really helping you."',
-		'option_d'       => '',
-		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. The response reflects both sides of ambivalence without judgment.
-
-B. Incorrect. Moral judgment undermines collaboration.
-
-C. Incorrect. Contradicting the client misses the perceived benefit.
-
-CTA Exam Strategy: A strong reflection captures both change talk and sustain talk.',
-	),
-	array(
-		'question_text'  => 'A client reports new agitation and insomnia shortly after a medication dose increase. What should the social worker do?',
-		'option_a'       => 'Assume the symptoms are purely psychological.',
-		'option_b'       => 'Wait several months before mentioning the change.',
-		'option_c'       => 'Clarify timing, severity, safety impact, and prescriber instructions, and coordinate prompt medical follow-up within scope.',
-		'option_d'       => '',
-		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. Medical contributors should not be dismissed.
-
-B. Incorrect. Delay may increase risk.
-
-C. Correct. The temporal relationship may indicate a medication effect requiring assessment and prescriber coordination.
-
-CTA Exam Strategy: New symptoms after a medication change require chronology and urgency assessment.',
-	),
-	array(
-		'question_text'  => 'What does cultural humility require from a clinical social worker?',
-		'option_a'       => 'Memorizing a fixed list of traits for every culture.',
-		'option_b'       => 'Ongoing self-reflection, attention to power, and curiosity about the client\'s meanings rather than presumed expertise about a group.',
-		'option_c'       => 'Avoiding discussion of identity to remain neutral.',
-		'option_d'       => '',
-		'correct_option' => 'b',
-		'explanation'    => 'A. Incorrect. Group facts cannot substitute for individualized assessment.
-
-B. Correct. Cultural humility is a continuing stance rather than mastery of stereotypes.
-
-C. Incorrect. Avoidance can make important context invisible.
-
-CTA Exam Strategy: Look for openness, reflection, and collaborative meaning-making.',
-	),
-	array(
-		'question_text'  => 'An adult with mild cognitive impairment wants to give a large sum to a new acquaintance, while family members demand control of all finances. What should the social worker do?',
-		'option_a'       => 'Follow the family\'s demand automatically.',
-		'option_b'       => 'Ignore the concern because the client is an adult.',
-		'option_c'       => 'Assess decision-specific capacity, coercion or exploitation, the client\'s values, available supports, and the least restrictive protection needed.',
-		'option_d'       => 'Assume any cognitive diagnosis eliminates capacity.',
-		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. Family concern may be important but not dispositive.
-
-B. Incorrect. Adult status does not eliminate exploitation risk.
-
-C. Correct. Capacity is decision-specific, and protection should not exceed the assessed need.
-
-D. Incorrect. Diagnosis alone does not determine capacity.
-
-CTA Exam Strategy: Balance protection with the least restrictive support for autonomy.',
-	),
-	array(
-		'question_text'  => 'A former client asks the social worker to become a business partner and offers access to valuable community contacts. What should the social worker do?',
-		'option_a'       => 'Accept if the former client signs a waiver.',
-		'option_b'       => 'Evaluate the enduring power imbalance, risk of exploitation, prior treatment issues, and professional standards, and decline when the dual role could harm or exploit.',
-		'option_c'       => 'Accept because treatment has ended.',
-		'option_d'       => 'Ask current clients to vote on the proposal.',
-		'correct_option' => 'b',
-		'explanation'    => 'A. Incorrect. A waiver does not remove ethical risk.
-
-B. Correct. Termination does not automatically erase influence, vulnerability, or conflict of interest.
-
-C. Incorrect. Past professional power can remain relevant.
-
-D. Incorrect. Other clients have no role in the decision.
-
-CTA Exam Strategy: Time alone does not neutralize a power imbalance.',
-	),
-	array(
-		'question_text'  => 'A client says spiritual experiences are central to coping, but a prior clinician called them symptoms. What should the social worker do?',
-		'option_a'       => 'Avoid the topic.',
-		'option_b'       => 'Assume spirituality is always healthy.',
-		'option_c'       => 'Explore the experiences\' cultural meaning, voluntariness, distress, functioning, shared context, and any other symptoms before interpreting them.',
-		'option_d'       => '',
-		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. Avoidance prevents accurate assessment.
-
-B. Incorrect. Spiritual practices can also coexist with distress.
-
-C. Correct. Cultural formulation distinguishes meaningful practices from experiences associated with impairment or loss of reality testing.
-
-CTA Exam Strategy: Assess meaning and function before pathologizing difference.',
-	),
-	array(
-		'question_text'  => 'A social worker faces a conflict among client wishes, agency policy, safety concerns, and uncertain law. What should the social worker do?',
-		'option_a'       => 'Clarify the facts and stakeholders, identify competing duties, consult current standards and qualified resources, consider options and consequences, act proportionately, and document.',
-		'option_b'       => 'Follow personal values without consultation.',
-		'option_c'       => 'Delay indefinitely until every uncertainty disappears.',
-		'option_d'       => 'Choose the agency policy automatically.',
-		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. A structured process improves defensibility and reduces impulsive or authority-based decisions.
-
-B. Incorrect. Personal values require examination rather than substitution.
-
-C. Incorrect. Some decisions must be made under uncertainty.
-
-D. Incorrect. Policies do not automatically resolve professional duties.
-
-CTA Exam Strategy: Strong ethics answers show a reasoned process, not a slogan.',
-	),
-	array(
-		'question_text'  => 'A client signs intake forms but cannot explain the proposed service, risks, or alternatives. Which conclusion is MOST accurate?',
-		'option_a'       => 'It permits any future intervention once the first service begins.',
-		'option_b'       => 'It is an ongoing process of understandable disclosure, comprehension, voluntariness, and agreement.',
-		'option_c'       => 'It is a signature obtained only at intake.',
-		'option_d'       => '',
-		'correct_option' => 'b',
-		'explanation'    => 'A. Incorrect. Material changes may require renewed discussion.
-
-B. Correct. Consent must remain meaningful as services, risks, roles, or circumstances change.
-
-C. Incorrect. A form may document consent but does not replace the process.
-
-CTA Exam Strategy: When paperwork is contrasted with a process, select the process.',
-	),
-	array(
-		'question_text'  => 'A depressed client has stopped all pleasurable and routine activity. What is an appropriate first behavioral-activation step?',
-		'option_a'       => 'Interpret inactivity only as resistance.',
-		'option_b'       => 'Collaboratively schedule one small, specific, feasible activity and review its effect.',
-		'option_c'       => 'Assign a full week of demanding tasks.',
-		'option_d'       => '',
-		'correct_option' => 'b',
-		'explanation'    => 'A. Incorrect. Inactivity is a symptom and behavior pattern, not simply resistance.
-
-B. Correct. Small planned action can precede and build motivation.
-
-C. Incorrect. An overwhelming plan may increase failure and shame.
-
-CTA Exam Strategy: Choose a task small enough to complete and specific enough to measure.',
-	),
-	array(
-		'question_text'  => 'When is ethical consultation MOST useful?',
-		'option_a'       => 'When the social worker has identified competing duties or uncertainty and seeks focused input without transferring responsibility.',
-		'option_b'       => 'Only after a complaint is filed.',
-		'option_c'       => 'Only when the client agrees with the proposed action.',
-		'option_d'       => '',
-		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. Consultation improves analysis while the social worker remains accountable for the decision.
-
-B. Incorrect. Early consultation can prevent problems.
-
-C. Incorrect. Client agreement does not determine whether consultation is needed.
-
-CTA Exam Strategy: Use consultation to improve reasoning, not to outsource judgment.',
-	),
-	array(
-		'question_text'  => 'What is the BEST indicator that a social worker is competent to provide a specialized service?',
-		'option_a'       => 'Possession of a license alone.',
-		'option_b'       => 'Relevant education, supervised training or consultation, demonstrated skill, and practice within current standards.',
-		'option_c'       => 'One brief introductory webinar.',
-		'option_d'       => '',
-		'correct_option' => 'b',
-		'explanation'    => 'A. Incorrect. Licensure establishes a broad threshold, not every specialty.
-
-B. Correct. Competence is task-specific and must be supported by preparation and current ability.
-
-C. Incorrect. Introductory exposure may not prepare the worker for complex practice.
-
-CTA Exam Strategy: Ask what evidence shows actual preparation for the specific service.',
-	),
-	array(
-		'question_text'  => 'A supervisee repeatedly misses suicide-risk cues despite prior instruction. What should the supervisor do?',
-		'option_a'       => 'Assign more high-risk cases for practice.',
-		'option_b'       => 'Continue the same supervision plan.',
-		'option_c'       => 'Document concern but take no action.',
-		'option_d'       => 'Increase direct oversight, review affected cases, provide targeted training, limit independent high-risk work, and evaluate competence progress.',
+		'question_text'  => 'At a residential program, a client in consensual polyamorous relationships seeks help with jealousy. Which assessment approach is BEST?',
+		'option_a'       => 'Determine who started the problem first so responsibility can be assigned accurately while continuing to gather relevant information during the current assessment.',
+		'option_b'       => 'Assume the relationship structure itself explains the conflict and should be changed before further assessment during the current assessment.',
+		'option_c'       => 'Complete individual diagnostic assessment before exploring the current relational pattern and document the reasoning during the current assessment.',
+		'option_d'       => 'Assess the interaction cycle, agreements and expectations, communication, power, safety, relational needs, meaning, and each person’s goals within the actual relationship structure.',
 		'correct_option' => 'd',
-		'explanation'    => 'A. Incorrect. More independent exposure may increase harm.
+		'explanation'    => 'A. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
 
-B. Incorrect. Unchanged supervision has not corrected the issue.
+B. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
 
-C. Incorrect. Documentation alone does not protect clients.
+C. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
 
-D. Correct. Repeated safety errors require a proportionate competence and client-protection response.
-
-CTA Exam Strategy: Supervision must change when risk performance does not improve.',
+D. Correct. Relationship dynamics are assessed through reciprocal patterns, meaning, power, safety, and goals without pathologizing structure',
 	),
 	array(
-		'question_text'  => 'A supervisor asks a supervisee to provide a service the supervisee has not been trained to deliver. What should the supervisee do?',
-		'option_a'       => 'Proceed because supervision removes individual responsibility.',
-		'option_b'       => 'Hide the concern to appear capable.',
-		'option_c'       => 'Identify the competence concern, seek appropriate training or direct support, and protect clients while the issue is resolved.',
-		'option_d'       => '',
+		'question_text'  => 'A client at a telehealth practice understands breathing skills but forgets to use them during panic. What should the social worker do NEXT?',
+		'option_a'       => 'Rehearse the skill under mild activation, identify cues for use, simplify the steps, and create a practice and review plan.',
+		'option_b'       => 'Provide another handout explaining the physiology of breathing while maintaining appropriate follow-up while continuing to monitor the outcome.',
+		'option_c'       => 'Wait until the client feels more confident before practicing outside sessions before the next scheduled contact before changing the plan.',
+		'option_d'       => 'Teach several new coping skills so the client has more options before selecting a more intensive response.',
+		'correct_option' => 'a',
+		'explanation'    => 'A. Correct. Coping skills are learned through rehearsal, cues, manageable practice, and review—not information alone
+
+B. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+C. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+D. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response',
+	),
+	array(
+		'question_text'  => 'At a community outreach program, a partner controls money, isolates the client, and threatens consequences for seeking help. What should the social worker assess FIRST?',
+		'option_a'       => 'Confront the suspected perpetrator first to determine whether the allegations are true before finalizing the assessment before changing the plan.',
+		'option_b'       => 'Assess immediate safety, coercion or neglect indicators, injury or health impact, vulnerability, access to help, client priorities, and applicable protective or reporting duties.',
+		'option_c'       => 'Wait for independent proof before taking the possibility of abuse or neglect seriously before changing the plan before finalizing the assessment.',
+		'option_d'       => 'Require the client to leave the situation before completing a safety and context assessment before drawing a diagnostic conclusion and document the reasoning.',
+		'correct_option' => 'b',
+		'explanation'    => 'A. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
+
+B. Correct. Abuse and neglect assessment prioritizes safety, coercion, vulnerability, impact, and applicable duties rather than confrontation or proof-gathering
+
+C. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
+
+D. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment',
+	),
+	array(
+		'question_text'  => 'An involuntary client at an outpatient clinic says, “You’re just here to report on me.” What should the social worker do FIRST?',
+		'option_a'       => 'Clarify role, limits of confidentiality, required versus voluntary elements, choices the client retains, and invite the client’s concerns.',
+		'option_b'       => 'Explain consequences of nonparticipation so expectations are clear while maintaining appropriate follow-up while continuing to monitor the outcome.',
+		'option_c'       => 'Begin assessment questions quickly so the process feels routine before the next scheduled contact.',
+		'option_d'       => 'Ask the referral source to restate the mandate before further engagement before selecting a more intensive response.',
+		'correct_option' => 'a',
+		'explanation'    => 'A. Correct. Engagement with involuntary clients uses transparency, choice, role clarity, and respect rather than coercion
+
+B. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+C. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+D. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response',
+	),
+	array(
+		'question_text'  => 'At an integrated primary-care clinic, a client accused of partner violence minimizes incidents and blames the partner. What should the social worker assess FIRST?',
+		'option_a'       => 'Use a typical perpetrator personality profile to determine whether the allegation is credible while continuing to gather relevant information.',
+		'option_b'       => 'Give substantial weight to apparent remorse or politeness when estimating future risk while continuing to gather relevant information during the current assessment.',
+		'option_c'       => 'Assess behavior patterns, control, entitlement, accountability, escalation, access or opportunity, threats, dependency, substance factors, relationship dynamics, and safety rather than relying on stereotypes.',
+		'option_d'       => 'Treat the victim’s behavior as a primary explanation for the alleged perpetrator’s actions before drawing a diagnostic conclusion while continuing to gather relevant information.',
 		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. Both supervisor and supervisee retain responsibilities.
+		'explanation'    => 'A. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
 
-B. Incorrect. Concealment increases risk.
+B. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
 
-C. Correct. Supervision supports competence but does not make an unprepared task safe.
+C. Correct. Perpetrator assessment focuses on behavior, control, accountability, opportunity, and risk rather than stereotypes or provocation
 
-CTA Exam Strategy: Raise competence gaps before they become client harm.',
+D. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment',
 	),
 	array(
-		'question_text'  => 'A trauma survivor becomes detached and stops responding during detailed questioning. What should the social worker do FIRST?',
-		'option_a'       => 'Confront the client for avoiding.',
-		'option_b'       => 'Pause the detail, orient the client to the present, assess dissociation and safety, and restore choice and regulation.',
-		'option_c'       => 'End treatment permanently.',
-		'option_d'       => 'Continue because complete details are required.',
+		'question_text'  => 'A care coordinator at a hospital social-work service requests the client’s complete psychotherapy record to arrange transportation and medication follow-up. What response is BEST?',
+		'option_a'       => 'Provide the full record because the coordinator is involved in the client’s care.',
+		'option_b'       => 'Clarify the coordination purpose and disclosure authority, then share only information relevant to that purpose.',
+		'option_c'       => 'Refuse all disclosure because psychotherapy information should never be shared with another provider.',
+		'option_d'       => 'Ask the coordinator to decide which sections of the record are necessary and follow that request.',
 		'correct_option' => 'b',
-		'explanation'    => 'A. Incorrect. Intent should not be assumed.
+		'explanation'    => 'A. Incorrect. Sharing or confirming information beyond established authority can violate confidentiality even when the information seems limited or clinically useful
 
-B. Correct. The presentation may reflect dissociation; stabilization and control take priority over detail gathering.
+B. Correct. Match disclosure to authority, purpose, and relevance rather than treating collaboration as unlimited access
 
-C. Incorrect. A manageable episode does not require permanent termination.
+C. Incorrect. An administrative step or different communication method does not itself create authority to disclose protected information
 
-D. Incorrect. Pressing may intensify dysregulation.
-
-CTA Exam Strategy: When arousal or detachment rises, slow down before collecting more history.',
+D. Incorrect. A blanket refusal or punitive response can be overly restrictive when information can be received or shared lawfully for a defined purpose',
 	),
 	array(
-		'question_text'  => 'A client says, "Nothing ever goes right," but later mentions one evening when conflict was less intense. What should the social worker do?',
-		'option_a'       => 'Explore what was different, what the client did, and whether any part can be repeated.',
-		'option_b'       => 'Correct the client for exaggerating.',
-		'option_c'       => 'Conclude the problem is solved.',
-		'option_d'       => '',
-		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. Exceptions can reveal practical strengths and change conditions.
-
-B. Incorrect. Correction may create defensiveness.
-
-C. Incorrect. One exception does not eliminate the problem.
-
-CTA Exam Strategy: Ask how the exception happened, not merely whether it happened.',
-	),
-	array(
-		'question_text'  => 'A family is confused about why a relative with psychosis may need ongoing treatment after symptoms improve. What should the social worker do?',
-		'option_a'       => 'Avoid education because it is not therapy.',
-		'option_b'       => 'Provide understandable information about relapse risk, early warning signs, treatment roles, and how the family can support the client\'s choices.',
-		'option_c'       => 'Promise symptoms will never return if the plan is followed.',
-		'option_d'       => '',
-		'correct_option' => 'b',
-		'explanation'    => 'A. Incorrect. Education is a legitimate intervention.
-
-B. Correct. Psychoeducation supports informed collaboration without shifting control to family members.
-
-C. Incorrect. No plan guarantees prevention.
-
-CTA Exam Strategy: Teach risk and support roles without making promises or creating family policing.',
-	),
-	array(
-		'question_text'  => 'A competent adult understands a recommended service and declines it. What should the social worker do NEXT?',
-		'option_a'       => 'Explore the client\'s reasons, confirm understanding, discuss alternatives and risks, and respect the informed decision unless a specific safety or legal limit applies.',
-		'option_b'       => 'Begin the service anyway because it is clinically indicated.',
-		'option_c'       => 'Close the case immediately.',
-		'option_d'       => '',
-		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. Respectful exploration and documentation preserve autonomy and care options.
-
-B. Incorrect. Clinical benefit does not authorize imposed treatment.
-
-C. Incorrect. Refusal of one service does not automatically require termination.
-
-CTA Exam Strategy: Before reacting to refusal, verify understanding and identify what choices remain.',
-	),
-	array(
-		'question_text'  => 'A program\'s average outcomes improve, but clients who need interpreters have much higher dropout. What should the social worker do?',
-		'option_a'       => 'Conclude interpreter users are less motivated.',
-		'option_b'       => 'Report only the overall average.',
-		'option_c'       => 'End interpreter services because dropout is high.',
-		'option_d'       => 'Disaggregate outcomes, investigate language-access and service barriers, involve affected clients, and modify the program while monitoring results.',
+		'question_text'  => 'A client at a telehealth practice repeatedly sends nonurgent messages late at night and expects immediate replies. What should the social worker do NEXT?',
+		'option_a'       => 'Stop responding to all messages without discussing the change before changing the plan and document the reasoning.',
+		'option_b'       => 'Answer late-night messages temporarily so the client feels secure enough to respect limits later while continuing to monitor the outcome.',
+		'option_c'       => 'Transfer the client because repeated boundary testing makes treatment unsafe before the next scheduled contact.',
+		'option_d'       => 'Clarify communication boundaries, emergency options, response times, and the clinical purpose of messaging, and apply the boundary consistently.',
 		'correct_option' => 'd',
-		'explanation'    => 'A. Incorrect. Motivation should not be assumed.
+		'explanation'    => 'A. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
 
-B. Incorrect. Averages can conceal disparities.
+B. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
 
-C. Incorrect. Removing access support would likely worsen inequity.
+C. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
 
-D. Correct. Equity review requires examining subgroup outcomes and structural barriers.
-
-CTA Exam Strategy: Always ask who benefited and who did not.',
+D. Correct. Effective limit setting is clear, predictable, clinically explained, and consistent',
 	),
 	array(
-		'question_text'  => 'A client repeatedly misses medical appointments because the bus route requires three transfers and the client has mobility limitations. What belongs in the assessment?',
-		'option_a'       => 'Only the medical diagnosis.',
-		'option_b'       => 'Only the client\'s motivation.',
-		'option_c'       => 'Transportation accessibility, disability accommodations, finances, scheduling, support, and the effect of these barriers on health.',
-		'option_d'       => '',
-		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. Diagnosis alone does not explain access.
-
-B. Incorrect. Motivation is only one possible factor.
-
-C. Correct. Person-in-environment assessment includes structural and practical barriers.
-
-CTA Exam Strategy: Before labeling behavior, assess whether the system is usable.',
-	),
-	array(
-		'question_text'  => 'A client has repeated self-harm, unstable housing, and cannot use an outpatient safety plan. What should the social worker consider?',
-		'option_a'       => 'A higher level of care or additional supports, discussed collaboratively and coordinated without abandonment.',
-		'option_b'       => 'A guarantee that outpatient care will prevent self-harm.',
-		'option_c'       => 'Weekly outpatient therapy only because it is the client\'s preference.',
-		'option_d'       => '',
+		'question_text'  => 'At an outpatient clinic, a parent misses visits because of rotating work, childcare problems, and food insecurity. What should the social worker assess FIRST?',
+		'option_a'       => 'Assess how income, employment, food, childcare, housing, transportation, neighborhood resources, health, and other social determinants affect symptoms, functioning, and service access.',
+		'option_b'       => 'Interpret missed care or nonadherence primarily as low motivation before assessing structural barriers and document the reasoning before drawing a diagnostic conclusion.',
+		'option_c'       => 'Increase treatment intensity because inconsistent participation means outpatient care is insufficient and document the reasoning before drawing a diagnostic conclusion.',
+		'option_d'       => 'Focus only on education because knowledge is the main determinant of health behavior before drawing a diagnostic conclusion.',
 		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. Client preference matters, but the plan must address acuity and ability to remain safe.
+		'explanation'    => 'A. Correct. Poverty and social determinants can shape symptoms and access and should be assessed before motivation or adherence is judged
 
-B. Incorrect. No service can guarantee prevention.
+B. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
 
-C. Incorrect. Preference does not eliminate professional safety judgment.
+C. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
 
-CTA Exam Strategy: Choose the least restrictive plan that can realistically meet the assessed need.',
+D. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment',
 	),
 	array(
-		'question_text'  => 'An agency has one emergency housing slot and two equally eligible clients. What is the BEST ethical approach?',
-		'option_a'       => 'Use transparent, consistently applied criteria, document the decision, communicate honestly, and seek alternatives for the client not selected.',
-		'option_b'       => 'Give the slot to the client the social worker likes more.',
-		'option_c'       => 'Promise both clients the placement.',
-		'option_d'       => 'Hide the criteria to avoid complaints.',
-		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. Scarce-resource decisions require fairness, transparency, and continued advocacy.
-
-B. Incorrect. Personal preference creates inequity.
-
-C. Incorrect. A false promise harms both clients.
-
-D. Incorrect. Secrecy undermines accountability.
-
-CTA Exam Strategy: When resources are scarce, fairness concerns the process as well as the outcome.',
-	),
-	array(
-		'question_text'  => 'A client\'s criticism strongly reminds the social worker of a painful family relationship. What should the social worker do?',
-		'option_a'       => 'Monitor the reaction, use supervision or consultation, and keep the client\'s needs central in the session.',
-		'option_b'       => 'Refer every critical client automatically.',
-		'option_c'       => 'Disclose the family history in detail.',
-		'option_d'       => '',
-		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. Self-awareness and consultation help prevent personal reactions from shaping care.
-
-B. Incorrect. Referral is not automatically required when the reaction can be managed competently.
-
-C. Incorrect. Extensive disclosure may burden the client.
-
-CTA Exam Strategy: Use your reaction as information to manage, not as the client\'s responsibility.',
-	),
-	array(
-		'question_text'  => 'A symptom measure improves, but the client says daily functioning has worsened. What should the social worker do?',
-		'option_a'       => 'Discard all measures permanently.',
-		'option_b'       => 'Treat the score as proof of improvement.',
-		'option_c'       => 'Explore the discrepancy and integrate the measure with functioning, goals, context, and clinical observation.',
-		'option_d'       => '',
-		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. Measures can still be useful.
-
-B. Incorrect. Scores can miss important domains.
-
-C. Correct. Outcome data must be interpreted in context and against client-defined functioning.
-
-CTA Exam Strategy: When numbers and lived experience differ, investigate rather than choose one automatically.',
-	),
-	array(
-		'question_text'  => 'A parent wants help with a child\'s tantrums. What initial intervention is MOST useful?',
-		'option_a'       => 'Clarify triggers and patterns, teach consistent developmentally appropriate responses, and reinforce desired behavior.',
-		'option_b'       => 'Recommend harsh punishment.',
-		'option_c'       => 'Tell the parent to ignore every behavior.',
-		'option_d'       => '',
-		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. Behavioral assessment and consistent parenting strategies are practical first steps.
-
-B. Incorrect. Harsh punishment can increase harm.
-
-C. Incorrect. Some behaviors require attention, safety, or skill teaching.
-
-CTA Exam Strategy: Start with antecedents, responses, and reinforcement.',
-	),
-	array(
-		'question_text'  => 'A client\'s paranoia worsens after repeated shelter assaults and sleep deprivation. What should the social worker assess?',
-		'option_a'       => 'Only a psychiatric diagnosis.',
-		'option_b'       => 'Whether the client is choosing to be paranoid.',
-		'option_c'       => 'Psychotic symptoms, trauma, substance or medical factors, environmental danger, sleep, and housing needs as interacting concerns.',
-		'option_d'       => 'Only housing eligibility.',
-		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. Diagnosis alone misses environmental drivers.
-
-B. Incorrect. Symptoms should not be framed as a moral choice.
-
-C. Correct. The presentation requires integrated person-in-environment and differential assessment.
-
-D. Incorrect. Housing alone does not explain all symptoms.
-
-CTA Exam Strategy: Do not force either/or thinking when environment and mental health interact.',
-	),
-	array(
-		'question_text'  => 'Which finding is a protective factor in a suicide assessment?',
-		'option_a'       => 'Escalating intoxication.',
-		'option_b'       => 'A reliable support person who can participate in a safety plan.',
-		'option_c'       => 'Increasing isolation.',
-		'option_d'       => '',
+		'question_text'  => 'At an integrated-care program, a client asks the social worker to decide whether to leave a job. What is the social worker’s BEST role?',
+		'option_a'       => 'Recommend the option the clinician believes will produce the least stress before changing the plan before the next scheduled contact.',
+		'option_b'       => 'Help the client define the problem, identify priorities and options, consider consequences and resources, and make the client’s own informed decision.',
+		'option_c'       => 'Avoid discussing the decision because employment choices are outside clinical practice before the next scheduled contact before changing the plan.',
+		'option_d'       => 'Ask family members to choose because they know the client’s circumstances best before selecting a more intensive response and document the reasoning.',
 		'correct_option' => 'b',
-		'explanation'    => 'A. Incorrect. Intoxication may worsen judgment and impulsivity.
+		'explanation'    => 'A. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
 
-B. Correct. Reliable support may increase connection, monitoring, and access to help.
+B. Correct. The social worker facilitates structured problem solving without taking over the client’s decision
 
-C. Incorrect. Isolation reduces support.
+C. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
 
-CTA Exam Strategy: Protective factors reduce vulnerability but do not erase risk.',
+D. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response',
 	),
 	array(
-		'question_text'  => 'A social worker learns that a colleague has been sharing identifiable client stories at social events. What should the social worker do?',
-		'option_a'       => 'Ignore it because the clients are not on the social worker\'s caseload.',
-		'option_b'       => 'Clarify the information, protect clients, and follow applicable supervisory, organizational, and professional reporting processes.',
-		'option_c'       => 'Join the conversation to learn more.',
-		'option_d'       => 'Post a public accusation online.',
-		'correct_option' => 'b',
-		'explanation'    => 'A. Incorrect. Client protection is not limited to one\'s own caseload.
-
-B. Correct. Professional responsibility may require proportionate action when confidentiality is at risk.
-
-C. Incorrect. Participation increases the breach.
-
-D. Incorrect. Public accusation may be inaccurate and create more disclosure.
-
-CTA Exam Strategy: Use verified facts and proper channels, not gossip or public escalation.',
-	),
-	array(
-		'question_text'  => 'Which response is MOST consistent with motivational interviewing?',
-		'option_a'       => 'Avoiding discussion of change.',
-		'option_b'       => 'Eliciting the client\'s own reasons for change while reflecting ambivalence without argument.',
-		'option_c'       => 'Giving a long lecture about consequences.',
-		'option_d'       => '',
-		'correct_option' => 'b',
-		'explanation'    => 'A. Incorrect. Ambivalence should be explored, not ignored.
-
-B. Correct. Motivational interviewing emphasizes collaboration, evocation, and autonomy.
-
-C. Incorrect. Information may help but does not replace eliciting motivation.
-
-CTA Exam Strategy: Listen for answers that evoke rather than impose motivation.',
-	),
-	array(
-		'question_text'  => 'A social worker lacks competence in a specialized treatment the client needs. What should the social worker do?',
-		'option_a'       => 'Tell the client the specialty is unnecessary.',
-		'option_b'       => 'Give the client a generic directory and end contact.',
-		'option_c'       => 'Explain the limitation, identify qualified options, support a warm referral, and maintain appropriate care during transition.',
-		'option_d'       => '',
-		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. Minimizing need avoids the competence issue.
-
-B. Incorrect. A cold referral may fail and create abandonment risk.
-
-C. Correct. Competence and continuity both matter.
-
-CTA Exam Strategy: A strong referral protects both fit and continuity.',
-	),
-	array(
-		'question_text'  => 'An adolescent asks what information will be shared with caregivers before disclosing a sensitive concern. What should the social worker do?',
-		'option_a'       => 'Ask for the disclosure first and explain later.',
-		'option_b'       => 'Explain the service\'s confidentiality rules and limits in developmentally understandable language before inviting disclosure.',
-		'option_c'       => 'Tell the adolescent caregivers receive everything.',
-		'option_d'       => 'Promise total secrecy.',
-		'correct_option' => 'b',
-		'explanation'    => 'A. Incorrect. Consent information should precede sensitive disclosure.
-
-B. Correct. Accurate expectations support informed participation and trust.
-
-C. Incorrect. Disclosure practices vary and should not be overstated.
-
-D. Incorrect. Absolute secrecy may be false.
-
-CTA Exam Strategy: Clarify the privacy container before asking the client to fill it.',
-	),
-	array(
-		'question_text'  => 'A coordinated-care partner requests the client\'s entire psychotherapy record, but only current housing needs are relevant. What should the social worker do?',
-		'option_a'       => 'Confirm authority and share only information reasonably necessary for the stated coordination purpose.',
-		'option_b'       => 'Refuse all coordination regardless of consent.',
-		'option_c'       => 'Send the entire record because the requester is another professional.',
-		'option_d'       => '',
+		'question_text'  => 'A clinician at a residential treatment program has become emotionally numb, increasingly cynical, and less attentive after months of high trauma exposure. What should the clinician do FIRST?',
+		'option_a'       => 'Recognize the impairment risk, assess its effect on practice, use supervision and organizational supports, and adjust workload or duties as needed.',
+		'option_b'       => 'Push through the workload until the next scheduled vacation because emotional fatigue is expected in trauma work while continuing to monitor the situation.',
+		'option_c'       => 'Transfer every trauma client immediately so no client is exposed to the clinician’s reactions while continuing to monitor the situation.',
+		'option_d'       => 'Avoid discussing the problem with supervisors because doing so may affect professional evaluations while continuing to monitor the situation.',
 		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. Interprofessional status does not eliminate purpose, authorization, and minimum-necessary analysis.
+		'explanation'    => 'A. Correct. Burnout and secondary trauma require early assessment and support before client care is compromised
 
-B. Incorrect. Appropriate coordination may benefit the client.
+B. Incorrect. Simply pushing through significant burnout or secondary-trauma symptoms can increase the risk of impaired judgment and poorer care
 
-C. Incorrect. Professional role alone is not blanket access.
+C. Incorrect. Overly broad transfer or emotional distancing treats the clinician reaction as something to escape rather than manage responsibly
 
-CTA Exam Strategy: Match the scope of disclosure to the legitimate purpose.',
+D. Incorrect. Keeping the problem private until harm occurs delays appropriate supervision, workload support, and prevention',
 	),
 	array(
-		'question_text'  => 'A social worker evaluating housing eligibility learns that the applicant is a close friend\'s sibling. What should the social worker do?',
-		'option_a'       => 'Ask the friend how the evaluation should be handled.',
-		'option_b'       => 'Disclose the potential conflict through agency procedures and arrange an impartial evaluator when feasible.',
-		'option_c'       => 'Proceed secretly because the applicant is not the social worker\'s own friend.',
-		'option_d'       => '',
-		'correct_option' => 'b',
-		'explanation'    => 'A. Incorrect. The friend is not an appropriate decision-maker and disclosure may violate privacy.
-
-B. Correct. A personal connection may affect or appear to affect impartial decision-making.
-
-C. Incorrect. Indirect relationships can still create conflicts.
-
-CTA Exam Strategy: Protect fairness and public trust, not just actual intent.',
-	),
-	array(
-		'question_text'  => 'Six weeks after a death, a client has intense yearning, waves of sadness, and preserved reality testing but significant sleep disruption. What should the social worker do NEXT?',
-		'option_a'       => 'Tell the client the reaction is always normal and needs no assessment.',
-		'option_b'       => 'Diagnose a chronic grief disorder solely from six weeks of symptoms.',
-		'option_c'       => 'Assess the grief process, cultural context, functioning, risk, prior history, and differential possibilities without assuming either normality or disorder.',
-		'option_d'       => 'Treat vivid memories as psychosis.',
+		'question_text'  => 'At an integrated primary-care clinic, a client presents with insomnia and irritability. What should the social worker assess FIRST?',
+		'option_a'       => 'Identify a psychiatric diagnosis first and add social information only after treatment begins while continuing to gather relevant information.',
+		'option_b'       => 'Focus on the single most obvious stressor so the assessment remains efficient while continuing to gather relevant information during the current assessment.',
+		'option_c'       => 'Assess biological, psychological, social, cultural, developmental, environmental, medical, substance, strength, and safety factors and how they interact in the current presentation.',
+		'option_d'       => 'Separate medical and psychosocial assessment into unrelated problems to avoid confusing the formulation before drawing a diagnostic conclusion.',
 		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. Grief can still involve serious impairment or risk.
+		'explanation'    => 'A. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
 
-B. Incorrect. Duration and criteria require more information.
+B. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
 
-C. Correct. The social worker needs a careful longitudinal and functional assessment before a fixed conclusion.
+C. Correct. Biopsychosocial assessment integrates interacting domains before causal or diagnostic conclusions are finalized
 
-D. Incorrect. Memories of the deceased do not automatically indicate psychosis.
-
-CTA Exam Strategy: Avoid both premature diagnosis and premature reassurance.',
+D. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment',
 	),
 	array(
-		'question_text'  => 'A client requests a copy of the record, which includes sensitive information supplied by another person. What should the social worker do NEXT?',
-		'option_a'       => 'Deny the entire request automatically.',
-		'option_b'       => 'Destroy the third-party information.',
-		'option_c'       => 'Follow applicable access procedures, review the record for lawful limitations or third-party concerns, and respond transparently.',
-		'option_d'       => 'Give the client another person\'s separate record.',
-		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. A blanket denial may be unsupported.
-
-B. Incorrect. Destruction compromises record integrity.
-
-C. Correct. Access requests require a structured review rather than automatic release or denial.
-
-D. Incorrect. Another person\'s record should not be disclosed.
-
-CTA Exam Strategy: Distinguish the client\'s access interest from information that may require special handling.',
-	),
-	array(
-		'question_text'  => 'During case formulation, why should a social worker examine housing, discrimination, family roles, and community supports together with symptoms?',
-		'option_a'       => 'To replace the client\'s account with agency records.',
-		'option_b'       => 'To focus only on community conditions.',
-		'option_c'       => 'To understand how individual functioning and social, cultural, economic, and physical environments interact.',
-		'option_d'       => '',
-		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. Collateral data supplement rather than erase the client\'s perspective.
-
-B. Incorrect. Both person and environment are considered.
-
-C. Correct. PIE links personal experience with systems, resources, barriers, and roles.
-
-CTA Exam Strategy: Look for reciprocal influence between people and systems.',
-	),
-	array(
-		'question_text'  => 'A client gives brief answers and appears unsure why the agency asked so many questions. What should the social worker do?',
-		'option_a'       => 'Explain the assessment purpose, use a broad invitation, and then follow with focused clarification.',
-		'option_b'       => 'Label the client resistant.',
-		'option_c'       => 'Continue a rapid checklist without explanation.',
-		'option_d'       => '',
+		'question_text'  => 'A supervisor at a residential treatment program is assigned to evaluate a close personal friend who is also a supervisee. What should the supervisor do FIRST?',
+		'option_a'       => 'Identify the conflict, disclose it through appropriate organizational channels, and arrange an evaluation structure that protects fairness and accountability.',
+		'option_b'       => 'Continue the evaluation because the supervisor can remain objective despite the friendship as part of routine follow-up.',
+		'option_c'       => 'Give the supervisee a stronger rating to avoid damaging the personal relationship while continuing to monitor the situation.',
+		'option_d'       => 'Ask the supervisee to keep the friendship private so other employees are not concerned while maintaining the current plan.',
 		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. Transparency and open-ended engagement improve trust and the quality of information.
+		'explanation'    => 'A. Correct. Supervisory conflicts of interest should be managed structurally rather than trusted to personal objectivity
 
-B. Incorrect. Brief responses can reflect anxiety, culture, mistrust, or confusion.
+B. Incorrect. Supervisory authority or personal confidence does not eliminate conflicts of interest or competence limits
 
-C. Incorrect. A checklist alone may intensify uncertainty.
+C. Incorrect. Favoritism, retaliation, concealment, or private workarounds undermine fairness and accountability in supervision
 
-CTA Exam Strategy: Explain why you are asking before interpreting how the client answers.',
+D. Incorrect. Ethical supervision addresses client safety, accurate performance information, and development through transparent structures',
 	),
 	array(
-		'question_text'  => 'A social worker receives a subpoena requesting a full record. What should the social worker do FIRST?',
-		'option_a'       => 'Review the document, preserve confidentiality, and obtain appropriate legal or agency consultation before disclosing.',
-		'option_b'       => 'Ignore the subpoena.',
-		'option_c'       => 'Send the record immediately because a subpoena always compels disclosure.',
-		'option_d'       => '',
-		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. Legal demands require careful review; not every request authorizes immediate broad disclosure.
+		'question_text'  => 'During an intake at a community mental-health program, an adolescent says, “People here never listen to me.” What should the social worker do FIRST?',
+		'option_a'       => 'Explain the agency’s procedures so the client understands why previous staff may have seemed rushed.',
+		'option_b'       => 'Begin the required assessment questions to show that the process is structured and fair.',
+		'option_c'       => 'Acknowledge the concern, invite the client’s perspective, clarify the social worker’s role, and respond with empathy and curiosity.',
+		'option_d'       => 'Ask whether the client has difficulty trusting professionals before responding to the complaint before the next scheduled contact.',
+		'correct_option' => 'c',
+		'explanation'    => 'A. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
 
-B. Incorrect. Ignoring a legal document may create serious consequences.
+B. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
 
-C. Incorrect. Automatic disclosure may violate privacy.
+C. Correct. Helping relationships are built through acceptance, empathy, transparency, and responsiveness to the client’s experience
 
-CTA Exam Strategy: Legal paper is a cue to pause, verify, and consult-not to disclose reflexively.',
+D. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response',
 	),
 	array(
-		'question_text'  => 'A bereaved client wants space to talk about the deceased but friends keep changing the subject. What should the social worker do?',
-		'option_a'       => 'Redirect away from grief to prevent sadness.',
-		'option_b'       => 'Provide a tolerable space for remembrance, validate varied grief responses, and support connection and coping chosen by the client.',
-		'option_c'       => 'Set a deadline for moving on.',
-		'option_d'       => '',
-		'correct_option' => 'b',
-		'explanation'    => 'A. Incorrect. Avoidance can increase isolation.
-
-B. Correct. Grief support permits meaning-making and individualized coping.
-
-C. Incorrect. Grief does not follow a fixed timetable.
-
-CTA Exam Strategy: Follow the client\'s meaning and pace rather than imposing a grief schedule.',
-	),
-	array(
-		'question_text'  => 'A social worker is leaving an agency with little notice. Several clients have high needs. What should the social worker do NEXT?',
-		'option_a'       => 'Transfer every client to the same provider without assessment.',
-		'option_b'       => 'Give clients the social worker\'s personal phone number indefinitely.',
-		'option_c'       => 'Leave without contact to avoid upsetting clients.',
-		'option_d'       => 'Coordinate prioritized transition plans, communicate appropriately, arrange coverage or referrals, and document continuity efforts.',
+		'question_text'  => 'A social worker at a telehealth psychotherapy practice makes a clinical error that could affect a client’s care. What action best reflects professional integrity?',
+		'option_a'       => 'Remove the incorrect entry before anyone sees it so the client record remains clean before the next scheduled contact.',
+		'option_b'       => 'Wait to disclose the error until the social worker knows whether actual harm occurred.',
+		'option_c'       => 'Ask a colleague to correct the problem so the social worker’s relationship with the client is not affected.',
+		'option_d'       => 'Address immediate risk, disclose and correct the error through appropriate processes, document accurately, and take steps to prevent recurrence.',
 		'correct_option' => 'd',
-		'explanation'    => 'A. Incorrect. Transitions should be matched to client needs and capacity.
+		'explanation'    => 'A. Incorrect. Personal beliefs, organizational convenience, or client waivers do not override the professional obligation to practice competently and with integrity
 
-B. Incorrect. Unlimited personal access blurs roles.
+B. Incorrect. Overly broad withdrawal can create unnecessary discontinuity when a more proportionate competence or ethics response is available
 
-C. Incorrect. Silence can create abandonment.
+C. Incorrect. Professional values require client-centered, evidence-based judgment rather than decisions driven by clinician interest or convenience
 
-D. Correct. Termination should protect continuity, boundaries, and individual needs.
-
-CTA Exam Strategy: When time is short, triage continuity rather than abandoning structure.',
+D. Correct. Integrity includes accurate accountability, correction, and learning from error',
 	),
 	array(
-		'question_text'  => 'A client with depression develops tremor, sweating, confusion, and agitation after several medication changes. What should the social worker do?',
-		'option_a'       => 'Recommend an additional medication.',
-		'option_b'       => 'Interpret the symptoms as resistance to therapy.',
-		'option_c'       => 'Wait for a routine psychiatric appointment.',
-		'option_d'       => 'Arrange urgent medical assessment, identify all prescribed and nonprescribed substances, and coordinate with prescribers while maintaining safety.',
-		'correct_option' => 'd',
-		'explanation'    => 'A. Incorrect. Medication recommendations exceed role.
-
-B. Incorrect. Psychological interpretation is premature.
-
-C. Incorrect. Urgent symptoms should not be delayed.
-
-D. Correct. The combination may reflect a serious medication or medical reaction outside the social worker\'s prescribing scope.
-
-CTA Exam Strategy: When new physical and mental-status changes cluster after medication changes, prioritize medical safety.',
-	),
-	array(
-		'question_text'  => 'Two group members begin threatening each other. What should the facilitator do FIRST?',
-		'option_a'       => 'Let the group resolve it alone.',
-		'option_b'       => 'Interpret childhood causes.',
-		'option_c'       => 'Ask other members to vote on who is right.',
-		'option_d'       => 'Interrupt the exchange, establish immediate safety and limits, separate members if needed, and assess whether the group can continue.',
-		'correct_option' => 'd',
-		'explanation'    => 'A. Incorrect. Nonintervention may allow escalation.
-
-B. Incorrect. Interpretation is premature.
-
-C. Incorrect. A vote can intensify polarization and does not manage safety.
-
-D. Correct. Threats require active safety management before processing.
-
-CTA Exam Strategy: Safety and structure precede insight in a group crisis.',
-	),
-	array(
-		'question_text'  => 'A client acknowledges substance-related consequences but is uncertain about changing. What planning approach is BEST?',
-		'option_a'       => 'Avoid discussing consequences.',
-		'option_b'       => 'Conclude the client is unmotivated.',
-		'option_c'       => 'Explore ambivalence, elicit the client\'s own reasons for and against change, and identify a manageable next step.',
-		'option_d'       => '',
+		'question_text'  => 'A rural program at an integrated-care program lacks local specialty care. What should the social worker do to establish a usable service network?',
+		'option_a'       => 'Create a list of distant specialists and distribute it to clients and document the reasoning.',
+		'option_b'       => 'Choose one preferred provider for all referrals while maintaining appropriate follow-up while continuing to monitor the outcome.',
+		'option_c'       => 'Map regional and telehealth options, eligibility, access needs, referral pathways, contacts, handoff expectations, and follow-up procedures.',
+		'option_d'       => 'Keep cases local until clients can travel while continuing to monitor the outcome.',
 		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. Avoidance misses an important planning issue.
+		'explanation'    => 'A. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
 
-B. Incorrect. Readiness is variable and specific.
+B. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
 
-C. Correct. Ambivalence is a target for collaborative assessment rather than proof of refusal.
+C. Correct. A service network is a functioning pathway with fit, access, handoff, and follow-up
 
-CTA Exam Strategy: Match the plan to readiness while keeping risk visible.',
+D. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response',
 	),
 	array(
-		'question_text'  => 'A study reports a treatment was effective but had a small nonrepresentative sample and high dropout. How should the social worker use the finding?',
-		'option_a'       => 'Reject all research with limitations.',
-		'option_b'       => 'View it as preliminary evidence and consider design quality, population fit, harms, and stronger research before changing practice.',
-		'option_c'       => 'Adopt the treatment as proven.',
-		'option_d'       => '',
+		'question_text'  => 'At a family-service agency, an adolescent wants greater control over treatment decisions. Which assessment approach is BEST?',
+		'option_a'       => 'Determine competence globally from diagnosis, age, or disability before finalizing the assessment and document the reasoning before drawing a diagnostic conclusion and document the reasoning.',
+		'option_b'       => 'Assess the specific decision and the client’s understanding, appreciation, reasoning, communication, developmental and legal context, fluctuation, supports, preferences, and whether capacity can be enhanced.',
+		'option_c'       => 'Treat agreement with the clinician or family as evidence of competence before changing the plan before finalizing the assessment before changing the plan.',
+		'option_d'       => 'Use a single standardized capacity measure before considering communication supports or the specific decision before finalizing the assessment before changing the plan.',
 		'correct_option' => 'b',
-		'explanation'    => 'A. Incorrect. All studies have limitations; quality varies.
+		'explanation'    => 'A. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
 
-B. Correct. Evidence should be appraised rather than accepted or dismissed categorically.
+B. Correct. Competence and self-determination are decision-specific and should be supported to the greatest appropriate extent
 
-C. Incorrect. One limited study is not definitive.
+C. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
 
-CTA Exam Strategy: Ask how strong, relevant, and complete the evidence is.',
+D. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment',
 	),
 	array(
-		'question_text'  => 'A client says "I am fine" while speaking slowly and appearing tearful. How should the social worker document this?',
-		'option_a'       => 'The client reports a fine mood; observed affect appears sad and constricted.',
-		'option_b'       => 'The client is lying.',
-		'option_c'       => 'Mood and affect are normal.',
-		'option_d'       => '',
+		'question_text'  => 'A client at a community mental-health program asks the social worker to email detailed session notes to a personal account shared with family members. What should the social worker do NEXT?',
+		'option_a'       => 'Send the notes immediately because the client owns the information and requested the disclosure as part of routine follow-up.',
+		'option_b'       => 'Refuse the request permanently because electronic disclosure of records is never appropriate as part of routine follow-up before making a final decision.',
+		'option_c'       => 'Discuss privacy risks and alternatives, verify the client’s informed preference and authorization, and use the most appropriate secure process available.',
+		'option_d'       => 'Mail the records instead without discussing risks because postal delivery is automatically more confidential while maintaining the current plan.',
+		'correct_option' => 'c',
+		'explanation'    => 'A. Incorrect. Sharing or confirming information beyond established authority can violate confidentiality even when the information seems limited or clinically useful
+
+B. Incorrect. An administrative step or different communication method does not itself create authority to disclose protected information
+
+C. Correct. Client-directed disclosure still requires informed discussion of privacy, authorization, and a suitable delivery method
+
+D. Incorrect. A blanket refusal or punitive response can be overly restrictive when information can be received or shared lawfully for a defined purpose',
+	),
+	array(
+		'question_text'  => 'At a family-service agency, a client remains distressed after a crisis but maintains routines and seeks support. What should the social worker assess FIRST?',
+		'option_a'       => 'Define resilience only by continued performance or absence of symptoms before finalizing the assessment before changing the plan.',
+		'option_b'       => 'Assess coping strategies, relationships, meaning, flexibility, resources, cultural and community supports, strengths, stress load, and areas where functioning remains strained.',
+		'option_c'       => 'Focus only on distress because discussing strengths may minimize the problem during the current assessment.',
+		'option_d'       => 'Use one resilience score as the sole indicator of adaptation during the current assessment while continuing to gather relevant information.',
+		'correct_option' => 'b',
+		'explanation'    => 'A. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision
+
+B. Correct. Resilience is multidimensional and can coexist with significant distress and vulnerability
+
+C. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision
+
+D. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision',
+	),
+	array(
+		'question_text'  => 'At a community outreach program, a caregiver understands a limit-setting plan but freezes when a child begins yelling. What should the social worker do NEXT?',
+		'option_a'       => 'Provide another written explanation of the parenting principle before any role-play while maintaining appropriate follow-up before the next scheduled contact before selecting a more intensive response.',
+		'option_b'       => 'Ask the child to promise not to yell so the caregiver can implement the plan before selecting a more intensive response.',
+		'option_c'       => 'Model and rehearse a brief response with the caregiver, troubleshoot barriers, and plan how the skill will be practiced and reviewed at home.',
+		'option_d'       => 'Delay home practice until the caregiver reports feeling confident before the next scheduled contact before selecting a more intensive response.',
+		'correct_option' => 'c',
+		'explanation'    => 'A. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+B. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+C. Correct. Parenting skill building uses modeling, rehearsal, feedback, and follow-up when knowledge has not yet become performance
+
+D. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response',
+	),
+	array(
+		'question_text'  => 'A clinician at a hospital social-work service feels guilty taking planned leave because several clients are distressed. What approach is BEST?',
+		'option_a'       => 'Cancel the leave because client need should always take priority over clinician recovery before the next scheduled contact.',
+		'option_b'       => 'Plan coverage and continuity, communicate appropriately, and use reasonable leave rather than treating constant availability as a professional duty.',
+		'option_c'       => 'Take leave without arranging coverage so clients learn not to depend on the clinician while continuing to monitor the situation.',
+		'option_d'       => 'Ask clients whether the clinician is allowed to take leave and follow the majority preference.',
+		'correct_option' => 'b',
+		'explanation'    => 'A. Incorrect. Working longer or minimizing documentation can worsen the underlying fatigue and introduce additional practice risk
+
+B. Correct. Responsible self-care includes planned recovery and continuity rather than overavailability or abandonment
+
+C. Incorrect. Waiting for formal impairment ignores early signs that concentration, accuracy, or boundaries are already being affected
+
+D. Incorrect. Self-care should support competence and continuity rather than become either overavailability or abrupt disengagement',
+	),
+	array(
+		'question_text'  => 'At a community mental-health program, a client in acute distress can identify supports, has no current plan or means, and is willing to collaborate on safety. What is the BEST response?',
+		'option_a'       => 'Arrange involuntary hospitalization because any suicidal thinking requires maximum protection before changing the plan and document the reasoning.',
+		'option_b'       => 'Ask the client to sign a no-harm contract and continue routine treatment and document the reasoning.',
+		'option_c'       => 'Use a collaborative safety-focused plan with supports, means review, follow-up, and clear escalation criteria while continuing reassessment.',
+		'option_d'       => 'End the session early and tell the client to call emergency services if distress worsens.',
+		'correct_option' => 'c',
+		'explanation'    => 'A. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+B. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+C. Correct. Crisis intervention should match assessed acuity and use the least restrictive safe response
+
+D. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response',
+	),
+	array(
+		'question_text'  => 'At a community mental-health program, a client relies on online communities as the main source of social support. Which assessment approach is BEST?',
+		'option_a'       => 'Assume online relationships are less meaningful than in-person relationships before finalizing the assessment before changing the plan before drawing a diagnostic conclusion.',
+		'option_b'       => 'Assess the function and impact of technology, including safety, privacy, identity, relationships, misinformation or harassment, functioning, supports, and how online and offline contexts interact.',
+		'option_c'       => 'Recommend removing technology before determining whether it is helpful, harmful, or both before changing the plan before finalizing the assessment before changing the plan.',
+		'option_d'       => 'Exclude online behavior from assessment because it occurs outside the clinical setting before drawing a diagnostic conclusion before changing the plan.',
+		'correct_option' => 'b',
+		'explanation'    => 'A. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
+
+B. Correct. Technology can create both support and risk; assessment should examine its actual function and impact
+
+C. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
+
+D. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment',
+	),
+	array(
+		'question_text'  => 'An agency at a community mental-health program interprets a new regulation more restrictively than required, reducing access for a marginalized group. What should a social worker do?',
+		'option_a'       => 'Apply the agency interpretation because employees should not question regulatory compliance decisions as part of routine follow-up.',
+		'option_b'       => 'Ignore the rule for affected clients so they are not harmed by the restrictive interpretation while continuing to monitor the situation.',
+		'option_c'       => 'Clarify the actual rule, examine the interpretation’s impact, and advocate for an accurate, equitable implementation through appropriate channels.',
+		'option_d'       => 'Tell clients the regulation is invalid before verifying the governing requirements while continuing to monitor the situation.',
+		'correct_option' => 'c',
+		'explanation'    => 'A. Incorrect. Ignoring a policy or advising noncompliance can create additional legal and service risks before the governing rule is understood
+
+B. Incorrect. Avoiding policy discussion or treating coverage limits as purely administrative can leave clients without accurate information or continuity planning
+
+C. Correct. Governmental policy impact includes how organizations interpret and implement rules; accuracy and equity matter
+
+D. Incorrect. Unsupported promises or accusations are less appropriate than verifying the rule, explaining it accurately, and using available advocacy channels',
+	),
+	array(
+		'question_text'  => 'At a telehealth practice, a child has headaches, school avoidance, family conflict, and bullying. Which assessment focus is MOST appropriate?',
+		'option_a'       => 'Assess biological, psychological, social, cultural, developmental, environmental, medical, substance, strength, and safety factors and how they interact in the current presentation.',
+		'option_b'       => 'Identify a psychiatric diagnosis first and add social information only after treatment begins and document the reasoning.',
+		'option_c'       => 'Focus on the single most obvious stressor so the assessment remains efficient and document the reasoning before drawing a diagnostic conclusion.',
+		'option_d'       => 'Separate medical and psychosocial assessment into unrelated problems to avoid confusing the formulation before drawing a diagnostic conclusion.',
 		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. The note distinguishes reported internal state from observed expression.
+		'explanation'    => 'A. Correct. Biopsychosocial assessment integrates interacting domains before causal or diagnostic conclusions are finalized
 
-B. Incorrect. The discrepancy does not establish deception.
+B. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
 
-C. Incorrect. Observed behavior is not fully consistent with the report.
+C. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
 
-CTA Exam Strategy: Document report and observation separately.',
+D. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment',
 	),
 	array(
-		'question_text'  => 'A client repeatedly fails to connect with a specialty clinic because the intake process is confusing. What should the social worker do?',
-		'option_a'       => 'Complete the intake while pretending to be the client.',
-		'option_b'       => 'Close the case for noncompliance.',
-		'option_c'       => 'With permission, help clarify steps, coordinate a warm handoff, troubleshoot barriers, and confirm connection.',
-		'option_d'       => 'Keep giving the same phone number.',
-		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. Impersonation is deceptive.
+		'question_text'  => 'A client at a hospital social-work service agrees to telehealth but appears unaware that others in the home can hear the session. What should the social worker do NEXT?',
+		'option_a'       => 'Continue because the client previously signed a telehealth consent form before the next scheduled contact.',
+		'option_b'       => 'Review privacy risks and alternatives, confirm the client’s understanding and preferences, and develop a feasible privacy plan.',
+		'option_c'       => 'End telehealth permanently because privacy can never be adequately protected in a shared home.',
+		'option_d'       => 'Ask other household members to sign confidentiality agreements before the next session before making a final decision.',
+		'correct_option' => 'b',
+		'explanation'    => 'A. Incorrect. A signature or earlier consent does not substitute for current understanding when material information or circumstances are unclear
 
-B. Incorrect. Barriers should be assessed before labeling.
+B. Correct. Consent is an ongoing process when material risks or circumstances change
 
-C. Correct. Referral effectiveness includes navigation and follow-through while respecting role and client participation.
+C. Incorrect. Using another person or delaying explanation unnecessarily can reduce the client’s own informed participation
 
-D. Incorrect. Repetition without problem-solving is unlikely to help.
-
-CTA Exam Strategy: A referral is successful only when the client can actually reach the service.',
+D. Incorrect. Proceeding without meaningful comprehension or renewed discussion when circumstances change weakens voluntary informed consent',
 	),
 	array(
-		'question_text'  => 'A supervisee discloses having omitted risk information from several notes because a supervisor discouraged "negative details." What should the supervising social worker do?',
-		'option_a'       => 'Delete the affected records.',
-		'option_b'       => 'Focus only on disciplining the supervisee.',
-		'option_c'       => 'Address current client safety, correct records transparently, assess the supervision failure, and establish accurate documentation expectations and monitoring.',
-		'option_d'       => 'Tell the supervisee to continue for consistency.',
-		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. Deletion can compound record-integrity problems.
-
-B. Incorrect. Discipline alone does not correct current risk or supervision practices.
-
-C. Correct. The response must protect clients, repair records, and correct the supervisory system.
-
-D. Incorrect. Consistency does not justify ongoing inaccuracy.
-
-CTA Exam Strategy: Integrated supervision questions require repair at client, record, and system levels.',
-	),
-	array(
-		'question_text'  => 'An agency plans to require app-only communication, although many clients lack smartphones or private data plans. What should the social worker recommend?',
-		'option_a'       => 'Adopt the app because one method is administratively efficient.',
-		'option_b'       => 'Have clients share devices and passwords.',
-		'option_c'       => 'Close cases for clients who cannot use the app.',
-		'option_d'       => 'Assess privacy, accessibility, disability, language, and digital-equity impacts and preserve workable alternatives.',
+		'question_text'  => 'At a school-linked program, a client with a physical disability reports shame about appearance after a new medical procedure. Which assessment approach is BEST?',
+		'option_a'       => 'Determine whether an eating-disorder diagnosis applies before exploring culture, ability, or media influences while continuing to gather relevant information.',
+		'option_b'       => 'Recommend changing weight or appearance because symptom relief may follow physical change while continuing to gather relevant information before drawing a diagnostic conclusion.',
+		'option_c'       => 'Ask family or medical staff whether the client’s body concerns are objectively justified during the current assessment before drawing a diagnostic conclusion.',
+		'option_d'       => 'Assess body-image beliefs, eating and activity patterns, development, culture, identity, ability, trauma, discrimination, media exposure, medical factors, functioning, and strengths without assuming pathology.',
 		'correct_option' => 'd',
-		'explanation'    => 'A. Incorrect. Efficiency does not override access and privacy.
+		'explanation'    => 'A. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
 
-B. Incorrect. Shared credentials create security and autonomy risks.
+B. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
 
-C. Incorrect. Exclusion may deepen inequity.
+C. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
 
-D. Correct. Technology policy must be evaluated for confidentiality and disparate access effects.
-
-CTA Exam Strategy: Evaluate technology as both a clinical tool and a structural barrier.',
+D. Correct. Body-image assessment is broad, identity-aware, nonstigmatizing, and grounded in the client’s meaning and functioning',
 	),
 	array(
-		'question_text'  => 'A family requests joint sessions, but one member privately reports fear of retaliation after speaking. What should the social worker do NEXT?',
-		'option_a'       => 'Ignore the report because the family requested joint care.',
-		'option_b'       => 'Proceed with joint disclosure to promote honesty.',
-		'option_c'       => 'Assess coercion and safety privately, reconsider whether conjoint work is appropriate, and establish a safer service plan.',
-		'option_d'       => 'Tell the fearful member to be more assertive.',
-		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. The treatment format must remain clinically appropriate.
+		'question_text'  => 'A trauma survivor at an outpatient clinic becomes visibly tense and says they cannot discuss details today. What should the social worker do NEXT?',
+		'option_a'       => 'Require a complete narrative because trauma treatment depends on detailed exposure and document the reasoning.',
+		'option_b'       => 'Avoid trauma topics permanently so the client is not retraumatized and document the reasoning before selecting a more intensive response.',
+		'option_c'       => 'Ask a family member for the details instead and document the reasoning before selecting a more intensive response.',
+		'option_d'       => 'Acknowledge the response, explain choice and purpose, assess immediate safety, and adjust pacing so the client retains control over disclosure.',
+		'correct_option' => 'd',
+		'explanation'    => 'A. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
 
-B. Incorrect. Disclosure can increase danger.
+B. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
 
-C. Correct. Fear of retaliation may make conjoint treatment unsafe or ineffective.
+C. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
 
-D. Incorrect. Assertiveness is not a substitute for safety.
-
-CTA Exam Strategy: Before encouraging openness, assess what happens after the session.',
+D. Correct. Trauma-informed care emphasizes safety, transparency, choice, collaboration, and appropriate pacing',
 	),
 	array(
-		'question_text'  => 'A client has met goals and wants to end. What should the social worker do?',
-		'option_a'       => 'Continue indefinitely to preserve the relationship.',
-		'option_b'       => 'Create new goals the client did not request.',
-		'option_c'       => 'Review gains, warning signs, supports, relapse-prevention steps, future access, and the meaning of ending.',
-		'option_d'       => '',
-		'correct_option' => 'c',
-		'explanation'    => 'A. Incorrect. Dependency is not a reason for unnecessary care.
-
-B. Incorrect. Goals should remain collaborative.
-
-C. Correct. Planned termination consolidates learning and supports future self-management.
-
-CTA Exam Strategy: Use termination to transfer ownership of progress to the client.',
-	),
-	array(
-		'question_text'  => 'A newly arrived refugee reports hearing the voice of a deceased relative during a culturally recognized mourning ritual. What should the social worker do NEXT?',
-		'option_a'       => 'Tell the client the culture is causing symptoms.',
-		'option_b'       => 'Explore cultural meaning, shared expectations, distress, control, functioning, trauma, and other psychotic symptoms before diagnosing.',
-		'option_c'       => 'Diagnose psychosis immediately.',
-		'option_d'       => 'Assume the experience is harmless and ask no more questions.',
-		'correct_option' => 'b',
-		'explanation'    => 'A. Incorrect. Blaming culture is stigmatizing and inaccurate.
-
-B. Correct. The meaning and clinical significance depend on cultural context and functional impact.
-
-C. Incorrect. Unfamiliar experience is not sufficient for diagnosis.
-
-D. Incorrect. Cultural congruence does not eliminate the need to assess distress and safety.
-
-CTA Exam Strategy: Cultural context modifies interpretation, not the need for careful assessment.',
-	),
-	array(
-		'question_text'  => 'A bereaved client reports sadness and vivid dreams of the deceased but continues working and connecting with supports. What should the social worker do?',
-		'option_a'       => 'Assess duration, cultural meaning, functioning, risk, and the client\'s own view without automatically pathologizing grief.',
-		'option_b'       => 'Assume no support is needed because the client works.',
-		'option_c'       => 'Tell the client there is a fixed timetable for grief.',
-		'option_d'       => '',
+		'question_text'  => 'At an outpatient clinic, an adult reports hypervigilance, sleep disruption, and avoidance after repeated interpersonal violence. What should the social worker assess FIRST?',
+		'option_a'       => 'Assess exposure pattern, current safety, functional impact, coping, supports, contextual and historical factors, and whether responses are acute, chronic, or complex.',
+		'option_b'       => 'Require a full chronological trauma narrative before assessing other domains while continuing to gather relevant information before drawing a diagnostic conclusion.',
+		'option_c'       => 'Determine the trauma diagnosis before exploring current safety and environmental context before changing the plan before drawing a diagnostic conclusion.',
+		'option_d'       => 'Assume people exposed to the same event should show a similar pattern of symptoms before drawing a diagnostic conclusion.',
 		'correct_option' => 'a',
-		'explanation'    => 'A. Correct. Grief varies in expression and should be assessed in cultural and functional context.
+		'explanation'    => 'A. Correct. Trauma assessment integrates exposure, safety, impact, coping, context, and time course without forced detail or premature diagnosis
 
-B. Incorrect. Preserved functioning does not eliminate distress.
+B. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
 
-C. Incorrect. There is no universal schedule for grief.
+C. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
 
-CTA Exam Strategy: Assess impairment and context rather than treating grief intensity as diagnosis.',
+D. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment',
 	),
 	array(
-		'question_text'  => 'A client in crisis is medically stable but cannot return to an unsafe encampment and has no phone or transportation. What should the social worker do?',
-		'option_a'       => 'Discharge because medical stability is sufficient.',
-		'option_b'       => 'Coordinate immediate safe placement options, transportation, communication access, follow-up care, and a contingency plan with the client and team.',
-		'option_c'       => 'Provide a clinic phone number only.',
-		'option_d'       => 'Promise permanent housing before discharge.',
+		'question_text'  => 'A clinician at a community outreach program reports compassion fatigue but says current judgment and client care are not yet impaired. What should be done?',
+		'option_a'       => 'Continue unchanged until a measurable clinical error occurs because fatigue alone does not justify schedule changes.',
+		'option_b'       => 'Disclose the fatigue to clients so they can decide whether to remain in treatment.',
+		'option_c'       => 'Take an indefinite leave immediately because any compassion fatigue indicates unfitness to practice.',
+		'option_d'       => 'Act early with supervision, recovery practices, workload review, and monitoring rather than waiting for clear impairment.',
+		'correct_option' => 'd',
+		'explanation'    => 'A. Incorrect. Simply pushing through significant burnout or secondary-trauma symptoms can increase the risk of impaired judgment and poorer care
+
+B. Incorrect. Overly broad transfer or emotional distancing treats the clinician reaction as something to escape rather than manage responsibly
+
+C. Incorrect. Keeping the problem private until harm occurs delays appropriate supervision, workload support, and prevention
+
+D. Correct. Early intervention can prevent compassion fatigue from progressing to impairment',
+	),
+	array(
+		'question_text'  => 'A client at a telehealth practice is denied a needed transportation benefit because paperwork was processed incorrectly. What is the BEST advocacy response?',
+		'option_a'       => 'Submit a completely new application without reviewing appeal rights before changing the plan before the next scheduled contact before changing the plan.',
+		'option_b'       => 'Pay for transportation temporarily and avoid challenging the denial and document the reasoning before selecting a more intensive response.',
+		'option_c'       => 'Demand approval from a director before clarifying the denial basis while continuing to monitor the outcome while maintaining appropriate follow-up.',
+		'option_d'       => 'Clarify the error and deadline, gather relevant documentation with the client, pursue the proper review or appeal, and protect service continuity.',
+		'correct_option' => 'd',
+		'explanation'    => 'A. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+B. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+C. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+D. Correct. Effective advocacy is targeted, collaborative, time-sensitive, and linked to continuity',
+	),
+	array(
+		'question_text'  => 'A client at a community outreach program requests an action that would benefit the client but may create a significant risk to another person. What should the social worker do FIRST?',
+		'option_a'       => 'Honor the request because self-determination should control whenever the client is capable before the next scheduled contact.',
+		'option_b'       => 'Refuse the request immediately because protecting third parties always overrides client choice.',
+		'option_c'       => 'Tell the third party about the request before assessing the seriousness or applicability of any duty.',
+		'option_d'       => 'Clarify the facts, applicable duties, level of risk, client preferences, and least harmful lawful options before acting.',
+		'correct_option' => 'd',
+		'explanation'    => 'A. Incorrect. Selecting one value automatically ignores the competing duty that makes the situation an ethical dilemma
+
+B. Incorrect. Waiting for complete certainty can itself harm the client and is not a realistic ethical decision standard
+
+C. Incorrect. Transferring the decision entirely to another person does not remove the social worker’s responsibility to reason through the dilemma
+
+D. Correct. Ethical dilemmas require proportional analysis of rights, risks, duties, and alternatives',
+	),
+	array(
+		'question_text'  => 'At a community mental-health program, a school counselor reports bruising on a child and says the caregiver gave two different explanations. The social worker is uncertain whether the information meets the applicable reporting threshold. What should the social worker do NEXT?',
+		'option_a'       => 'Interview the child repeatedly until the explanation is consistent enough to establish that abuse occurred before changing the plan while continuing appropriate follow-up before changing the plan.',
+		'option_b'       => 'Contact the caregiver first and promise no report will be made if the caregiver provides a credible explanation while continuing appropriate follow-up before changing the plan.',
+		'option_c'       => 'Clarify the facts relevant to the applicable reporting threshold promptly, seek consultation when needed, and complete any required report without attempting to prove who caused the injury.',
+		'option_d'       => 'Wait for medical confirmation that the bruising was intentionally caused before deciding whether a reporting duty applies before selecting a more restrictive response.',
+		'correct_option' => 'c',
+		'explanation'    => 'A. Incorrect. Repeated or leading questioning can exceed the social worker’s role and may distort information; mandated-report decisions do not generally require proving the allegation
+
+B. Incorrect. Promising not to report before the legal threshold is clarified can be inaccurate and may interfere with required protective action
+
+C. Correct. The social worker should clarify only decision-relevant facts and the applicable threshold, consult as needed, and avoid conducting an unnecessary investigation
+
+D. Incorrect. Waiting for proof can delay a required report when the controlling standard is lower than certainty or medical confirmation',
+	),
+	array(
+		'question_text'  => 'At a community outreach program, medication information is repeatedly missing from discharge summaries. What should administrators do?',
+		'option_a'       => 'Discipline the most recent employee with an incomplete note while maintaining appropriate follow-up.',
+		'option_b'       => 'Analyze workflow, responsibility, record design, training, handoffs, and system contributors; implement safeguards and monitor results.',
+		'option_c'       => 'Ask each unit to fix its own records without changing the system.',
+		'option_d'       => 'Stop auditing until staff morale improves before the next scheduled contact before selecting a more intensive response.',
 		'correct_option' => 'b',
-		'explanation'    => 'A. Incorrect. Medical stability does not make the environment safe.
+		'explanation'    => 'A. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
 
-B. Correct. A workable crisis plan must address environmental barriers and continuity, not only symptoms.
+B. Correct. Risk-reduction policies should address recurring system contributors and verify improvement
 
-C. Incorrect. The client may be unable to use the number.
+C. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
 
-D. Incorrect. A promise beyond available resources is misleading.
+D. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response',
+	),
+	array(
+		'question_text'  => 'At a group practice, a client becomes silent after a sensitive question. Which assessment approach is BEST?',
+		'option_a'       => 'Use a rigid symptom checklist before establishing the client’s priorities and meaning before finalizing the assessment before changing the plan before drawing a diagnostic conclusion.',
+		'option_b'       => 'Confront reluctance or vagueness so the client understands that complete answers are required and document the reasoning before drawing a diagnostic conclusion and document the reasoning.',
+		'option_c'       => 'Use interviewing methods that match the moment: begin open then clarify, acknowledge hesitation and pace sensitive topics, and arrange qualified communication access when language differences affect accuracy.',
+		'option_d'       => 'Rely on family interpretation or yes/no questions instead of qualified access for complex discussion before drawing a diagnostic conclusion before changing the plan before drawing a diagnostic conclusion.',
+		'correct_option' => 'c',
+		'explanation'    => 'A. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision
 
-CTA Exam Strategy: Ask whether the plan can actually be carried out after the client leaves.',
+B. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision
+
+C. Correct. Effective interviewing combines open exploration, clarification, validation, pacing, and appropriate language access
+
+D. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision',
+	),
+	array(
+		'question_text'  => 'A community served by a residential treatment program has high asthma rates near an industrial site and limited access to healthcare. What approach is MOST consistent with environmental justice?',
+		'option_a'       => 'Partner with residents to identify priorities, support access to care and credible environmental data, and advocate for structural remedies with community participation.',
+		'option_b'       => 'Focus only on individual health education because environmental regulation is outside social-work practice as part of routine follow-up before making a final decision.',
+		'option_c'       => 'Speak for the community publicly before residents define their priorities so action begins quickly while continuing to monitor the situation.',
+		'option_d'       => 'Refer affected residents to clinics in other neighborhoods rather than address the environmental source while maintaining the current plan.',
+		'correct_option' => 'a',
+		'explanation'    => 'A. Correct. Environmental justice links individual harm with structural conditions and community participation
+
+B. Incorrect. Equal distribution or first-come procedures can produce inequitable effects when need, safety, and access differ
+
+C. Incorrect. Moving affected people elsewhere can leave the environmental or economic source of harm intact
+
+D. Incorrect. Justice-oriented practice combines transparent criteria, affected-community participation, and structural attention rather than relying only on individual coping',
+	),
+	array(
+		'question_text'  => 'Staff at an integrated-care program report bullying and fear of retaliation when raising concerns. What should administrators do FIRST?',
+		'option_a'       => 'Send a general professionalism reminder without investigating the workplace conditions while maintaining appropriate follow-up while continuing to monitor the outcome.',
+		'option_b'       => 'Ask employees to resolve interpersonal problems privately before management becomes involved before the next scheduled contact.',
+		'option_c'       => 'Assess the pattern and safety, create accessible reporting and anti-retaliation processes, involve staff, clarify expectations, and monitor implementation.',
+		'option_d'       => 'Transfer staff who report concerns so conflict decreases before the next scheduled contact before changing the plan.',
+		'correct_option' => 'c',
+		'explanation'    => 'A. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+B. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+C. Correct. Healthy-workplace policies require safety, inclusion, reporting pathways, accountability, and evaluation
+
+D. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response',
+	),
+	array(
+		'question_text'  => 'A supervisor at a community outreach program learns a supervisee has made a serious clinical error. What should the supervisor do FIRST?',
+		'option_a'       => 'Remove the supervisee from all client contact before determining the nature or impact of the error.',
+		'option_b'       => 'Correct the record without involving the supervisee so the client is protected from further mistakes as part of routine follow-up.',
+		'option_c'       => 'Wait for the next supervision session so the discussion can occur in the usual structure.',
+		'option_d'       => 'Address immediate client risk, clarify what occurred, guide corrective action, and use the event for accountable supervision and systems learning.',
+		'correct_option' => 'd',
+		'explanation'    => 'A. Incorrect. Supervisory authority or personal confidence does not eliminate conflicts of interest or competence limits
+
+B. Incorrect. Favoritism, retaliation, concealment, or private workarounds undermine fairness and accountability in supervision
+
+C. Incorrect. Ethical supervision addresses client safety, accurate performance information, and development through transparent structures
+
+D. Correct. Supervisory ethics prioritize client safety, accurate fact-finding, correction, and learning',
+	),
+	array(
+		'question_text'  => 'At an integrated primary-care clinic, an older adult who was previously independent becomes suddenly confused and unsteady. What should the social worker assess FIRST?',
+		'option_a'       => 'Assume cognitive or social changes are normal aging before assessing the pattern and functional impact and document the reasoning before drawing a diagnostic conclusion.',
+		'option_b'       => 'Begin long-term dementia or placement planning before evaluating an acute change while continuing to gather relevant information during the current assessment.',
+		'option_c'       => 'Compare with baseline and assess health, cognition, role changes, relationships, loss, finances, culture, activity, strengths, supports, and acute medical or medication factors when indicated.',
+		'option_d'       => 'Focus mainly on physical health because psychosocial transitions are secondary in later life during the current assessment while continuing to gather relevant information.',
+		'correct_option' => 'c',
+		'explanation'    => 'A. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
+
+B. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
+
+C. Correct. Aging assessment distinguishes expected transitions from acute changes and includes roles, identity, health, relationships, loss, and strengths
+
+D. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment',
+	),
+	array(
+		'question_text'  => 'A rural area served by a community outreach program has no local behavioral-health crisis service. Which response BEST reflects justice-oriented planning?',
+		'option_a'       => 'Wait for a private provider to enter the market because community agencies cannot solve regional shortages before changing the care plan.',
+		'option_b'       => 'Direct all crises to law enforcement because it is the only 24-hour service available before changing the care plan.',
+		'option_c'       => 'Create a referral directory without addressing transportation, hours, or handoff gaps before changing the care plan.',
+		'option_d'       => 'Engage community members and partners, map needs and barriers, build feasible crisis pathways, and evaluate whether high-risk populations gain access.',
+		'correct_option' => 'd',
+		'explanation'    => 'A. Incorrect. Equal distribution or first-come procedures can produce inequitable effects when need, safety, and access differ
+
+B. Incorrect. Moving affected people elsewhere can leave the environmental or economic source of harm intact
+
+C. Incorrect. Justice-oriented practice combines transparent criteria, affected-community participation, and structural attention rather than relying only on individual coping
+
+D. Correct. Justice-oriented service planning addresses geographic and structural access through community-informed systems development',
+	),
+	array(
+		'question_text'  => 'At a group practice, an evidence-based group fits the diagnosis but the client cannot access the schedule and is overwhelmed by large groups. What should the social worker assess FIRST?',
+		'option_a'       => 'Use the treatment linked most strongly to the diagnosis even when access or developmental fit is poor and document the reasoning.',
+		'option_b'       => 'Use supportive care indefinitely because structured treatments are difficult to access while continuing to gather relevant information.',
+		'option_c'       => 'Select modality using evidence plus developmental level, abilities, culture, life stage, readiness, access, client-system context, preferences, and capacity to engage.',
+		'option_d'       => 'Delay all treatment until the client can tolerate or access the originally recommended modality during the current assessment.',
+		'correct_option' => 'c',
+		'explanation'    => 'A. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision
+
+B. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision
+
+C. Correct. Modality selection combines evidence with developmental, cultural, functional, access, and preference fit
+
+D. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision',
+	),
+	array(
+		'question_text'  => 'A client at a community outreach program is not ready to stop opioid use but wants to reduce overdose risk. What response is BEST?',
+		'option_a'       => 'Require an abstinence goal before discussing risk reduction before changing the plan.',
+		'option_b'       => 'Collaborate on overdose-prevention resources, safer-use planning, treatment options, and ongoing reassessment without requiring abstinence first.',
+		'option_c'       => 'Focus only on motivation until the client commits to treatment before the next scheduled contact.',
+		'option_d'       => 'Tell the client exactly how much opioid use is safe.',
+		'correct_option' => 'b',
+		'explanation'    => 'A. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+B. Correct. Harm reduction addresses current risk while preserving autonomy, engagement, and treatment options
+
+C. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+D. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response',
+	),
+	array(
+		'question_text'  => 'At a rural behavioral-health clinic, a client says part of them wants to change and part does not. Which assessment approach is BEST?',
+		'option_a'       => 'Assess practical barriers, trust, values, reasons for and against change, confidence, importance, prior attempts, supports, and readiness before labeling motivation.',
+		'option_b'       => 'Treat missed visits or ambivalence as evidence of resistance before assessing barriers and readiness and document the reasoning before drawing a diagnostic conclusion.',
+		'option_c'       => 'Require commitment to the clinician’s preferred goal before continuing assessment and document the reasoning during the current assessment.',
+		'option_d'       => 'Use family pressure or stronger consequences to create motivation before understanding the client’s perspective before finalizing the assessment.',
+		'correct_option' => 'a',
+		'explanation'    => 'A. Correct. Motivation and readiness are assessed through ambivalence, confidence, values, barriers, and access—not inferred from attendance alone
+
+B. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision
+
+C. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision
+
+D. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision',
+	),
+	array(
+		'question_text'  => 'A client at a telehealth practice reports chronic work stress, muscle tension, and poor sleep. What intervention is BEST?',
+		'option_a'       => 'Advise the client to leave the job before trying stress-management skills while maintaining appropriate follow-up.',
+		'option_b'       => 'Focus only on insight into why the client accepts stressful work before the next scheduled contact.',
+		'option_c'       => 'Teach one relaxation exercise and assume regular practice will follow and document the reasoning before selecting a more intensive response.',
+		'option_d'       => 'Collaboratively identify stressors and controllable factors, teach relaxation or pacing strategies, improve recovery routines, and monitor functional impact.',
+		'correct_option' => 'd',
+		'explanation'    => 'A. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+B. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+C. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+D. Correct. Stress management combines stressor analysis, concrete skills, realistic behavior change, and monitoring',
+	),
+	array(
+		'question_text'  => 'At a telehealth practice, an adolescent reports nonsuicidal cutting. Which assessment focus is MOST appropriate?',
+		'option_a'       => 'Assess current risk directly, including ideation or threat content, intent, plan, means, recent behavior, history, triggers, protective factors, substance factors, supports, and ability to maintain safety.',
+		'option_b'       => 'Move immediately to safety planning or warning before clarifying the current level and nature of risk before changing the plan before finalizing the assessment.',
+		'option_c'       => 'Rely on family or collateral opinions before asking the client directly and document the reasoning before changing the plan before finalizing the assessment.',
+		'option_d'       => 'Assume the client’s stated label for the behavior is sufficient to rule in or rule out serious risk before finalizing the assessment before changing the plan.',
+		'correct_option' => 'a',
+		'explanation'    => 'A. Correct. Risk assessment is direct, structured, and precedes later intervention or protective decisions
+
+B. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision
+
+C. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision
+
+D. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision',
+	),
+	array(
+		'question_text'  => 'A client at a community mental-health program feels stuck between two housing options. Which problem-solving approach is BEST?',
+		'option_a'       => 'Tell the client which option the clinician would choose while maintaining appropriate follow-up while continuing to monitor the outcome.',
+		'option_b'       => 'Define the decision, identify criteria and constraints, generate realistic options, weigh consequences, choose a step, and review the outcome.',
+		'option_c'       => 'Delay the decision until anxiety decreases and document the reasoning while continuing to monitor the outcome.',
+		'option_d'       => 'Ask family members to decide because they know the client well before changing the plan.',
+		'correct_option' => 'b',
+		'explanation'    => 'A. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+B. Correct. Problem-solving models support structured client decision-making rather than clinician takeover
+
+C. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+D. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response',
+	),
+	array(
+		'question_text'  => 'A manager at a group practice pressures a supervisor to lower a supervisee’s evaluation because the supervisee challenged an unsafe policy. What should the supervisor do?',
+		'option_a'       => 'Lower the rating because organizational loyalty is part of professional performance as part of routine follow-up while continuing to monitor the situation.',
+		'option_b'       => 'Give the supervisee the highest rating to compensate for the manager’s pressure while continuing to monitor the situation.',
+		'option_c'       => 'Base the evaluation on documented performance criteria, address retaliatory pressure through appropriate channels, and protect the integrity of the process.',
+		'option_d'       => 'Delay the evaluation indefinitely until the conflict with management resolves while continuing to monitor the situation.',
+		'correct_option' => 'c',
+		'explanation'    => 'A. Incorrect. Supervisory authority or personal confidence does not eliminate conflicts of interest or competence limits
+
+B. Incorrect. Favoritism, retaliation, concealment, or private workarounds undermine fairness and accountability in supervision
+
+C. Correct. Ethical supervision requires fair, evidence-based evaluation rather than retaliation or favoritism
+
+D. Incorrect. Ethical supervision addresses client safety, accurate performance information, and development through transparent structures',
+	),
+	array(
+		'question_text'  => 'At a public behavioral-health agency, a client needs an interpreter for complex discussion. Which assessment focus is MOST appropriate?',
+		'option_a'       => 'Use a rigid symptom checklist before establishing the client’s priorities and meaning before finalizing the assessment before changing the plan before finalizing the assessment and document the reasoning.',
+		'option_b'       => 'Confront reluctance or vagueness so the client understands that complete answers are required and document the reasoning before drawing a diagnostic conclusion and document the reasoning.',
+		'option_c'       => 'Rely on family interpretation or yes/no questions instead of qualified access for complex discussion during the current assessment while continuing to gather relevant information.',
+		'option_d'       => 'Use interviewing methods that match the moment: begin open then clarify, acknowledge hesitation and pace sensitive topics, and arrange qualified communication access when language differences affect accuracy.',
+		'correct_option' => 'd',
+		'explanation'    => 'A. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision
+
+B. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision
+
+C. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision
+
+D. Correct. Effective interviewing combines open exploration, clarification, validation, pacing, and appropriate language access',
+	),
+	array(
+		'question_text'  => 'An older adult at a rural integrated-care clinic says a relative has begun managing money, and unexplained withdrawals appear. What should the clinician do FIRST?',
+		'option_a'       => 'Privately assess understanding, consent, financial changes, vulnerability, safety, decision-making ability, and applicable reporting duties.',
+		'option_b'       => 'Contact the relative first to ask for an explanation of the withdrawals.',
+		'option_c'       => 'Tell the client to close all accounts immediately before gathering more information.',
+		'option_d'       => 'Wait for the bank to prove theft before considering protective action while continuing to monitor the situation.',
+		'correct_option' => 'a',
+		'explanation'    => 'A. Correct. Possible exploitation calls for private assessment of consent, vulnerability, safety, and duties before confrontation
+
+B. Incorrect. Confronting the suspected exploiter or directing the client immediately can increase danger before consent, coercion, and vulnerability are assessed
+
+C. Incorrect. Waiting for proof can delay protection when the relevant threshold may be lower than certainty
+
+D. Incorrect. Legal, trafficking, or immigration conclusions should be handled with qualified resources rather than unsupported assumptions or advice',
+	),
+	array(
+		'question_text'  => 'A client at an integrated-care program is denied a needed transportation benefit because paperwork was processed incorrectly. What is the BEST advocacy response?',
+		'option_a'       => 'Submit a completely new application without reviewing appeal rights before changing the plan before the next scheduled contact before changing the plan.',
+		'option_b'       => 'Pay for transportation temporarily and avoid challenging the denial and document the reasoning before selecting a more intensive response.',
+		'option_c'       => 'Clarify the error and deadline, gather relevant documentation with the client, pursue the proper review or appeal, and protect service continuity.',
+		'option_d'       => 'Demand approval from a director before clarifying the denial basis before selecting a more intensive response and document the reasoning.',
+		'correct_option' => 'c',
+		'explanation'    => 'A. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+B. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+C. Correct. Effective advocacy is targeted, collaborative, time-sensitive, and linked to continuity
+
+D. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response',
+	),
+	array(
+		'question_text'  => 'At an outpatient clinic, a client’s preferred healing practices differ from the clinician’s usual plan. What should the social worker assess FIRST?',
+		'option_a'       => 'Explore client meaning and goals, clarify authority and privacy, assess safety and evidence, and integrate culturally meaningful participation or practices where feasible and consistent with client wishes.',
+		'option_b'       => 'Exclude cultural or nonclinical practices so treatment remains objective and evidence-based and document the reasoning before drawing a diagnostic conclusion and document the reasoning.',
+		'option_c'       => 'Defer all planning decisions to family or cultural expectations and document the reasoning before drawing a diagnostic conclusion and document the reasoning before drawing a diagnostic conclusion.',
+		'option_d'       => 'Avoid culture in planning so the clinician does not stereotype the client before drawing a diagnostic conclusion and document the reasoning before drawing a diagnostic conclusion.',
+		'correct_option' => 'a',
+		'explanation'    => 'A. Correct. Culturally responsive planning integrates meaning, client choice, safety, evidence, and appropriate participation
+
+B. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision
+
+C. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision
+
+D. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision',
+	),
+	array(
+		'question_text'  => 'A clinician at a community outreach program wants to know whether a new intervention is helping one client. Which approach is BEST?',
+		'option_a'       => 'Rely on the clinician’s impression because individualized practice cannot be measured objectively before the next scheduled contact before changing the plan.',
+		'option_b'       => 'Use only a posttreatment satisfaction rating while maintaining appropriate follow-up before the next scheduled contact before changing the plan.',
+		'option_c'       => 'Define the target outcome, establish a baseline or comparison where feasible, use appropriate repeated measures and client feedback, and review change over time.',
+		'option_d'       => 'Wait until treatment ends before collecting outcome information while continuing to monitor the outcome while maintaining appropriate follow-up while continuing to monitor the outcome.',
+		'correct_option' => 'c',
+		'explanation'    => 'A. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+B. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+C. Correct. Practice evaluation uses defined outcomes, appropriate measures, repeated data, and client feedback
+
+D. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response',
+	),
+	array(
+		'question_text'  => 'At a community mental-health program, family members disagree about the primary problem. Which assessment approach is BEST?',
+		'option_a'       => 'Keep the clinician-defined problem because professional assessment should guide treatment priorities while continuing to gather relevant information during the current assessment.',
+		'option_b'       => 'Elicit the client system’s perspectives, priorities, strengths, safety concerns, and competing goals, then define problems and plans collaboratively within appropriate role and authority.',
+		'option_c'       => 'Wait until everyone agrees completely before developing any plan and document the reasoning during the current assessment while continuing to gather relevant information.',
+		'option_d'       => 'Let the most vocal family member define the problem so planning can move forward before finalizing the assessment.',
+		'correct_option' => 'b',
+		'explanation'    => 'A. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision
+
+B. Correct. Client-system involvement means meaningful participation in problem definition, priorities, and planning—not mere consent to a clinician-selected plan
+
+C. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision
+
+D. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision',
+	),
+	array(
+		'question_text'  => 'A community served by an integrated-care program identifies a recurring transportation barrier. What is the BEST social-planning approach?',
+		'option_a'       => 'Ask the agency to design a transportation program before consulting residents before changing the plan before the next scheduled contact.',
+		'option_b'       => 'Focus on helping individuals cope with the barrier rather than changing systems and document the reasoning before selecting a more intensive response.',
+		'option_c'       => 'Use community participation and data to define the problem, map stakeholders and power, develop feasible policy or service alternatives, implement, and evaluate change.',
+		'option_d'       => 'Launch a public campaign before defining the decision makers and desired policy change before selecting a more intensive response and document the reasoning.',
+		'correct_option' => 'c',
+		'explanation'    => 'A. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+B. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+C. Correct. Social planning links community-defined problems with data, stakeholders, implementation, and evaluation
+
+D. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response',
+	),
+	array(
+		'question_text'  => 'A team at a group practice repeatedly treats dominant-culture communication styles as more professional than other styles. What should a supervisor do?',
+		'option_a'       => 'Examine how power and racial privilege shape the standard, use specific behavior-based criteria, involve staff, and revise biased expectations.',
+		'option_b'       => 'Apply the existing standard consistently because equal enforcement prevents discrimination as part of routine follow-up before making a final decision.',
+		'option_c'       => 'Remove all communication expectations so cultural differences cannot affect performance evaluation while continuing to monitor the situation.',
+		'option_d'       => 'Allow each supervisor to define professionalism individually based on team needs while maintaining the current plan.',
+		'correct_option' => 'a',
+		'explanation'    => 'A. Correct. Power and privilege can hide inside supposedly neutral norms; fair standards should be specific and examined for bias
+
+B. Incorrect. Explaining intent or professional expertise can reinforce the power difference rather than address the client’s experience
+
+C. Incorrect. Complete avoidance or transfer does not by itself repair the power dynamic and can reduce continuity
+
+D. Incorrect. Fair practice requires transparent attention to how power and privilege influence norms, decisions, and participation',
+	),
+	array(
+		'question_text'  => 'A rural program at a telehealth practice lacks local specialty care. What should the social worker do to establish a usable service network?',
+		'option_a'       => 'Create a list of distant specialists and distribute it to clients and document the reasoning.',
+		'option_b'       => 'Choose one preferred provider for all referrals while maintaining appropriate follow-up while continuing to monitor the outcome.',
+		'option_c'       => 'Keep cases local until clients can travel before the next scheduled contact.',
+		'option_d'       => 'Map regional and telehealth options, eligibility, access needs, referral pathways, contacts, handoff expectations, and follow-up procedures.',
+		'correct_option' => 'd',
+		'explanation'    => 'A. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+B. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+C. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+D. Correct. A service network is a functioning pathway with fit, access, handoff, and follow-up',
+	),
+	array(
+		'question_text'  => 'A clinician at an outpatient behavioral health clinic realizes a claim was submitted for a 60-minute session that lasted 30 minutes. What should happen NEXT?',
+		'option_a'       => 'Correct the billing through the appropriate process, document accurately, and address any repayment or compliance requirement.',
+		'option_b'       => 'Leave the claim because the client received a clinically appropriate service.',
+		'option_c'       => 'Change the progress note to reflect 60 minutes so the record matches the claim.',
+		'option_d'       => 'Wait until the payer identifies the discrepancy before taking action while continuing to monitor the situation.',
+		'correct_option' => 'a',
+		'explanation'    => 'A. Correct. Billing must accurately reflect the service delivered, and known errors should be corrected proactively
+
+B. Incorrect. Billing must reflect the actual service; managerial direction, client preference, or administrative convenience does not justify inaccurate coding
+
+C. Incorrect. Changing clinical documentation to match an incorrect claim compounds the integrity problem rather than correcting it
+
+D. Incorrect. Known billing errors should be addressed proactively through appropriate billing or compliance channels rather than waiting for discovery',
+	),
+	array(
+		'question_text'  => 'A supervisee at an outpatient clinic needs skill practice for interviewing but also exposure to varied cases. Which supervision approach is BEST?',
+		'option_a'       => 'Use only administrative chart review because skills should develop in direct practice while maintaining appropriate follow-up while continuing to monitor the outcome.',
+		'option_b'       => 'Use only peer supervision so the supervisee learns from colleagues at the same level before the next scheduled contact.',
+		'option_c'       => 'Change supervision models randomly so the supervisee gains broad experience and document the reasoning before selecting a more intensive response.',
+		'option_d'       => 'Use a planned mix of case review, direct skill rehearsal, feedback, and appropriate individual or group consultation matched to the learning need.',
+		'correct_option' => 'd',
+		'explanation'    => 'A. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+B. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+C. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+D. Correct. Supervision methods should match learning needs and combine review, practice, feedback, and consultation',
+	),
+	array(
+		'question_text'  => 'At a rural behavioral-health clinic, a client has met treatment goals and maintained gains for several months. What should the social worker assess FIRST?',
+		'option_a'       => 'Assess goals, functioning, stability, coping, remaining risks, supports, client confidence and preference, follow-up needs, and response to reduced treatment intensity when available.',
+		'option_b'       => 'Terminate automatically because the original goals were met while continuing to gather relevant information during the current assessment.',
+		'option_c'       => 'Continue treatment until every goal is fully completed regardless of client preference during the current assessment while continuing to gather relevant information.',
+		'option_d'       => 'Let payer authorization or family preference determine readiness for termination during the current assessment while continuing to gather relevant information.',
+		'correct_option' => 'a',
+		'explanation'    => 'A. Correct. Termination readiness is collaborative and based on gains, stability, risks, supports, preference, and continuity
+
+B. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision
+
+C. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision
+
+D. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision',
+	),
+	array(
+		'question_text'  => 'A clinician at a telehealth psychotherapy practice realizes that diagnostic language in the program may reproduce racialized stereotypes. What is the BEST next step?',
+		'option_a'       => 'Keep the terms because consistency with older records is more important than current wording before changing the care plan.',
+		'option_b'       => 'Remove all behavioral descriptions from notes so bias cannot appear in documentation as part of routine follow-up before making a final decision.',
+		'option_c'       => 'Use the terms only when clients are not likely to access their records while continuing to monitor the situation.',
+		'option_d'       => 'Review how terms are used, replace loaded labels with specific behavioral evidence, examine bias in formulation, and improve team standards.',
+		'correct_option' => 'd',
+		'explanation'    => 'A. Incorrect. Removing demographic data or applying identical procedures can hide or perpetuate inequity rather than address it
+
+B. Incorrect. Placing the burden of adaptation on marginalized clients leaves the oppressive system unchanged
+
+C. Incorrect. Symbolic or individual-level fixes are less effective when the identified problem is embedded in organizational decision processes
+
+D. Correct. Anti-oppressive documentation uses precise evidence and actively examines how bias shapes interpretation',
+	),
+	array(
+		'question_text'  => 'At a hospital social-work service, a community has repeated wildfire evacuations and smoke exposure. What should the social worker assess FIRST?',
+		'option_a'       => 'Focus only on individual coping because environmental conditions are outside clinical assessment while continuing to gather relevant information.',
+		'option_b'       => 'Treat missed visits as adherence problems because services remain technically open while continuing to gather relevant information.',
+		'option_c'       => 'Assess physical and mental health effects, displacement, housing, finances, transportation, service access, vulnerable populations, community resources, resilience, and adaptive capacity.',
+		'option_d'       => 'Wait for public-health agencies to solve the environmental issue before changing the assessment or service plan before drawing a diagnostic conclusion.',
+		'correct_option' => 'c',
+		'explanation'    => 'A. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
+
+B. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
+
+C. Correct. Environmental hazards and climate conditions can affect health, displacement, access, resources, and community functioning
+
+D. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment',
+	),
+	array(
+		'question_text'  => 'A clinician at a rural integrated-care clinic plans to leave the agency in six weeks. What should the clinician do FIRST?',
+		'option_a'       => 'Wait until replacement clinicians are confirmed so clients are not distressed by uncertainty before the next scheduled contact.',
+		'option_b'       => 'Transfer all clients to the same colleague because uniform transitions are easier to manage.',
+		'option_c'       => 'Tell clients at the final session so treatment can remain focused until departure.',
+		'option_d'       => 'Begin timely transition planning with clients, assess risk and barriers, provide appropriate options, and coordinate continuity.',
+		'correct_option' => 'd',
+		'explanation'    => 'A. Incorrect. Late or abrupt termination can create avoidable discontinuity and reduce the client’s opportunity to participate in transition planning
+
+B. Incorrect. Keeping a case open indefinitely or ending automatically can ignore current risk, access barriers, and organizational requirements
+
+C. Incorrect. Reasonable termination includes notice, barrier assessment, referrals or transfer options, and accurate documentation
+
+D. Correct. Termination should be planned early enough to preserve choice, safety, and continuity',
+	),
+	array(
+		'question_text'  => 'A client at an outpatient clinic has angry outbursts preceded by physical tension and rapid thoughts. Which intervention is BEST?',
+		'option_a'       => 'Identify early cues, teach pause and regulation skills, examine interpretations, rehearse alternative responses, and track outcomes.',
+		'option_b'       => 'Ask the client to suppress anger so escalation stops and document the reasoning.',
+		'option_c'       => 'Focus only on the past causes of anger before practicing new behavior.',
+		'option_d'       => 'Recommend avoiding all conflict situations before the next scheduled contact before selecting a more intensive response.',
+		'correct_option' => 'a',
+		'explanation'    => 'A. Correct. Anger management targets cues, regulation, thinking, behavior, and rehearsal rather than suppression or avoidance
+
+B. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+C. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+D. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response',
+	),
+	array(
+		'question_text'  => 'At a school-linked program, clients are missing care during extreme heat and transportation disruptions. Which assessment approach is BEST?',
+		'option_a'       => 'Focus only on individual coping because environmental conditions are outside clinical assessment while continuing to gather relevant information.',
+		'option_b'       => 'Treat missed visits as adherence problems because services remain technically open while continuing to gather relevant information.',
+		'option_c'       => 'Wait for public-health agencies to solve the environmental issue before changing the assessment or service plan during the current assessment.',
+		'option_d'       => 'Assess physical and mental health effects, displacement, housing, finances, transportation, service access, vulnerable populations, community resources, resilience, and adaptive capacity.',
+		'correct_option' => 'd',
+		'explanation'    => 'A. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
+
+B. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
+
+C. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
+
+D. Correct. Environmental hazards and climate conditions can affect health, displacement, access, resources, and community functioning',
+	),
+	array(
+		'question_text'  => 'Program data at a rural integrated-care clinic show one racial group is referred to restrictive services more often than peers with similar documented needs. What should the program do FIRST?',
+		'option_a'       => 'Examine disaggregated data, referral criteria, assessment language, decision points, and affected stakeholders’ experiences before selecting corrective changes.',
+		'option_b'       => 'Remove race from future data so clinicians focus only on behavior while continuing to monitor the situation.',
+		'option_c'       => 'Require identical referral rates across groups regardless of clinical differences before changing the care plan.',
+		'option_d'       => 'Assign clients to clinicians of the same race whenever possible before making a final decision.',
+		'correct_option' => 'a',
+		'explanation'    => 'A. Correct. Anti-oppressive practice investigates how systems and decision processes produce inequity rather than hiding disparity data
+
+B. Incorrect. Removing demographic data or applying identical procedures can hide or perpetuate inequity rather than address it
+
+C. Incorrect. Placing the burden of adaptation on marginalized clients leaves the oppressive system unchanged
+
+D. Incorrect. Symbolic or individual-level fixes are less effective when the identified problem is embedded in organizational decision processes',
+	),
+	array(
+		'question_text'  => 'At a community outreach program, a client appears uncomfortable when substance use is discussed. What should the social worker assess FIRST?',
+		'option_a'       => 'Increase pressure or repeat detailed questions until the account is complete before finalizing the assessment before changing the plan before finalizing the assessment and document the reasoning.',
+		'option_b'       => 'Explain why the questions matter and confidentiality limits, use neutral nonleading language, protect privacy, allow pacing and choice, assess safety, and gather only information needed for current decisions.',
+		'option_c'       => 'Ask a family member privately because collateral is likely to be more reliable during the current assessment while continuing to gather relevant information before drawing a diagnostic conclusion.',
+		'option_d'       => 'Treat silence or reluctance as confirmation that the suspected event occurred during the current assessment while continuing to gather relevant information during the current assessment.',
+		'correct_option' => 'b',
+		'explanation'    => 'A. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision
+
+B. Correct. Sensitive information is best obtained through transparency, privacy, neutral language, pacing, and noncoercive assessment
+
+C. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision
+
+D. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision',
+	),
+	array(
+		'question_text'  => 'A client at an outpatient behavioral health clinic describes conflict between personal goals and family cultural expectations. What should the clinician do FIRST?',
+		'option_a'       => 'Explore the client’s own meanings, identity, family expectations, power, and desired balance before applying a developmental or cultural interpretation.',
+		'option_b'       => 'Assume independence is the healthier goal because treatment should support individual autonomy as part of routine follow-up.',
+		'option_c'       => 'Defer to family expectations because culturally responsive practice requires honoring collective values while continuing to monitor the situation.',
+		'option_d'       => 'Avoid culture and focus only on symptoms so the clinician does not stereotype the client while maintaining the current plan.',
+		'correct_option' => 'a',
+		'explanation'    => 'A. Correct. Cultural responsiveness begins with client-defined meaning rather than imposing individualistic or collectivist assumptions
+
+B. Incorrect. Applying a preset developmental, cultural, or diagnostic meaning can stereotype the client before the client’s own meaning is understood
+
+C. Incorrect. Deference to either individual autonomy or family/cultural expectations alone can erase competing identities and values
+
+D. Incorrect. Avoiding culture entirely can also distort assessment because culture and identity may be directly relevant to the presenting concern',
+	),
+	array(
+		'question_text'  => 'At a residential program, an older adult reports retirement-related isolation despite good physical health. Which assessment approach is BEST?',
+		'option_a'       => 'Assume cognitive or social changes are normal aging before assessing the pattern and functional impact and document the reasoning before drawing a diagnostic conclusion.',
+		'option_b'       => 'Begin long-term dementia or placement planning before evaluating an acute change while continuing to gather relevant information during the current assessment.',
+		'option_c'       => 'Focus mainly on physical health because psychosocial transitions are secondary in later life before changing the plan before finalizing the assessment.',
+		'option_d'       => 'Compare with baseline and assess health, cognition, role changes, relationships, loss, finances, culture, activity, strengths, supports, and acute medical or medication factors when indicated.',
+		'correct_option' => 'd',
+		'explanation'    => 'A. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
+
+B. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
+
+C. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
+
+D. Correct. Aging assessment distinguishes expected transitions from acute changes and includes roles, identity, health, relationships, loss, and strengths',
+	),
+	array(
+		'question_text'  => 'A group at a public behavioral-health agency experiences harm after a discriminatory comment by a facilitator. What should the program do NEXT?',
+		'option_a'       => 'Acknowledge the harm, center affected members’ safety and voice, establish accountability, and develop repair steps with follow-up.',
+		'option_b'       => 'Explain the facilitator’s intention so members understand the comment was not meant to harm.',
+		'option_c'       => 'Replace the facilitator without discussing the incident so the group can move forward.',
+		'option_d'       => 'Ask members to vote on whether discrimination occurred before taking any action while continuing to monitor the situation.',
+		'correct_option' => 'a',
+		'explanation'    => 'A. Correct. Restorative response combines acknowledgment, affected-party voice, accountability, repair, and follow-up
+
+B. Incorrect. Leadership-designed apologies or training can be symbolic if affected people have not helped define the harm and repair
+
+C. Incorrect. Moving forward without acknowledging prior harm does not address accountability or trust
+
+D. Incorrect. Restorative practice requires affected-party voice, shared power, accountability, and follow-up rather than one-time institutional action',
+	),
+	array(
+		'question_text'  => 'At a school-linked program, a client is disoriented, inattentive, and unable to follow simple directions. What should the social worker assess FIRST?',
+		'option_a'       => 'Use the MSE as a stand-alone final diagnosis without additional history or collateral and document the reasoning before drawing a diagnostic conclusion.',
+		'option_b'       => 'Treat one nonverbal behavior as proof of a specific diagnosis or motive and document the reasoning before drawing a diagnostic conclusion and document the reasoning.',
+		'option_c'       => 'Omit culturally variable observations entirely rather than describing and contextualizing them and document the reasoning before drawing a diagnostic conclusion and document the reasoning.',
+		'option_d'       => 'Use the MSE to describe current observable mental functioning, compare with baseline, identify urgent abnormalities, and interpret observations within culture, context, and the broader assessment.',
+		'correct_option' => 'd',
+		'explanation'    => 'A. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision
+
+B. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision
+
+C. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision
+
+D. Correct. The MSE is a structured snapshot of current mental functioning, not a stand-alone diagnosis',
+	),
+	array(
+		'question_text'  => 'A supervisee at a rural behavioral-health clinic notices uncertainty and avoidance in high-risk cases. What should the supervisee do FIRST?',
+		'option_a'       => 'Identify the learning need, bring it promptly to supervision with relevant cases and questions, and participate in a plan to build competence.',
+		'option_b'       => 'Avoid high-risk cases permanently so mistakes cannot occur while maintaining appropriate follow-up while continuing to monitor the outcome.',
+		'option_c'       => 'Wait for the supervisor to notice the pattern before the next scheduled contact before changing the plan while maintaining appropriate follow-up.',
+		'option_d'       => 'Study independently and mention the concern only if another problem occurs before selecting a more intensive response before the next scheduled contact.',
+		'correct_option' => 'a',
+		'explanation'    => 'A. Correct. Supervisees are responsible for self-assessment, identifying learning needs, and using supervision proactively
+
+B. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+C. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+D. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response',
+	),
+	array(
+		'question_text'  => 'A clinician at a community mental-health program is unfamiliar with a client’s spiritual practice. What should the clinician do?',
+		'option_a'       => 'Explain the clinician’s own beliefs so the client can compare perspectives as part of routine follow-up.',
+		'option_b'       => 'Avoid spirituality entirely because it is outside clinical practice as part of routine follow-up while continuing to monitor the situation.',
+		'option_c'       => 'Ask respectful, client-centered questions about meaning and relevance, avoid assumptions, and seek appropriate cultural consultation if needed.',
+		'option_d'       => 'Use a general cultural description of the client’s faith group to interpret the practice.',
+		'correct_option' => 'c',
+		'explanation'    => 'A. Incorrect. Applying a preset developmental, cultural, or diagnostic meaning can stereotype the client before the client’s own meaning is understood
+
+B. Incorrect. Deference to either individual autonomy or family/cultural expectations alone can erase competing identities and values
+
+C. Correct. Culture and spirituality should be understood through the client’s lived meaning, not stereotypes or clinician beliefs
+
+D. Incorrect. Avoiding culture entirely can also distort assessment because culture and identity may be directly relevant to the presenting concern',
+	),
+	array(
+		'question_text'  => 'A client at a community outreach program wants to reduce cocaine use but is not ready for abstinence. Which intervention approach is BEST?',
+		'option_a'       => 'Require abstinence before providing structured addiction treatment before changing the plan and document the reasoning while continuing to monitor the outcome.',
+		'option_b'       => 'Use motivational and harm-reduction strategies, identify triggers and consequences, build supports, discuss treatment options, and monitor risk and goals.',
+		'option_c'       => 'Focus on insight into childhood causes before discussing current use before the next scheduled contact.',
+		'option_d'       => 'Ask family to control access to money until the client agrees to stop before changing the plan.',
+		'correct_option' => 'b',
+		'explanation'    => 'A. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+B. Correct. Addiction intervention can combine motivation, harm reduction, coping, supports, and treatment options matched to readiness
+
+C. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+D. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response',
+	),
+	array(
+		'question_text'  => 'A supervisor at a residential treatment program tells a clinician to backdate a treatment plan so the record appears timely. What should the clinician do?',
+		'option_a'       => 'Refuse to falsify the record, make an accurate current entry or permitted amendment, and use appropriate supervisory or compliance channels.',
+		'option_b'       => 'Backdate it because the supervisor is responsible for administrative compliance as part of routine follow-up before making a final decision.',
+		'option_c'       => 'Backdate it but keep a private note explaining who gave the instruction while continuing to monitor the situation.',
+		'option_d'       => 'Leave the treatment plan undocumented so the record contains no inaccurate date while maintaining the current plan.',
+		'correct_option' => 'a',
+		'explanation'    => 'A. Correct. Accurate records should reflect what occurred and when; supervisory pressure does not justify falsification
+
+B. Incorrect. Changing, deleting, or backdating records to create a preferred appearance undermines documentation integrity
+
+C. Incorrect. Accurate documentation should not be withheld merely because correcting or discussing it is uncomfortable
+
+D. Incorrect. Ethical records should be specific, relevant, and transparent rather than stigmatizing, concealed, or rewritten for convenience',
+	),
+	array(
+		'question_text'  => 'At a public behavioral-health agency, a client frequently interrupts others and reports repeated interpersonal conflict. What should the social worker assess FIRST?',
+		'option_a'       => 'Infer disrespect or manipulation before assessing the specific communication behavior before finalizing the assessment and document the reasoning before drawing a diagnostic conclusion.',
+		'option_b'       => 'Select a communication-skills intervention before completing assessment of the pattern and context and document the reasoning before drawing a diagnostic conclusion.',
+		'option_c'       => 'Assign responsibility to the person who speaks more, interrupts more, or sends more messages before drawing a diagnostic conclusion.',
+		'option_d'       => 'Assess listening, turn-taking, expression of needs, verbal and nonverbal cues, feedback, cultural norms, digital context when relevant, conflict patterns, and relational impact.',
+		'correct_option' => 'd',
+		'explanation'    => 'A. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision
+
+B. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision
+
+C. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision
+
+D. Correct. Communication assessment describes specific skills and patterns in context rather than assigning motive prematurely',
+	),
+	array(
+		'question_text'  => 'A client at a residential treatment program sends a friend request to the clinician’s personal social-media account. What should the clinician do NEXT?',
+		'option_a'       => 'Accept the request but avoid discussing treatment online before making a final decision.',
+		'option_b'       => 'Ignore the request permanently and never address it in treatment.',
+		'option_c'       => 'Maintain the professional boundary, follow the electronic-communication policy, and discuss the request clinically if relevant.',
+		'option_d'       => 'Move the connection to a professional networking account so the relationship remains separate from personal social media.',
+		'correct_option' => 'c',
+		'explanation'    => 'A. Incorrect. Convenience or popularity does not establish that an electronic platform or online relationship is clinically and ethically appropriate
+
+B. Incorrect. Ignoring electronic boundaries or relying only on informal practices can create privacy, recordkeeping, and dual-relationship risks
+
+C. Correct. Electronic boundaries should preserve the professional relationship rather than create personal online connections
+
+D. Incorrect. Technology failures require a backup and emergency plan; simply waiting or involving third parties without consent can compromise safety or privacy',
+	),
+	array(
+		'question_text'  => 'At a community outreach program, an adult reports feeling “between cultures” after migration. Which assessment approach is BEST?',
+		'option_a'       => 'Choose one cultural or faith identity as the healthiest anchor for treatment while continuing to gather relevant information.',
+		'option_b'       => 'Explore identity, belonging, language, family expectations, culture, spirituality, discrimination, developmental meaning, strengths, conflict, and supports without pathologizing exploration.',
+		'option_c'       => 'Treat identity conflict as evidence of psychopathology before exploring context and meaning.',
+		'option_d'       => 'Avoid cultural and spiritual material so the assessment remains objective before changing the plan.',
+		'correct_option' => 'b',
+		'explanation'    => 'A. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
+
+B. Correct. Cultural and spiritual development can be fluid and intersectional and should be assessed through client-defined meaning
+
+C. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment
+
+D. Incorrect. This response narrows the formulation too early, overstates one explanation, or overlooks developmental, contextual, functional, safety, or person-in-environment information needed for assessment',
+	),
+	array(
+		'question_text'  => 'A program at an outpatient clinic wants to know where referrals are dropping out after a new workflow begins. What evaluation is MOST appropriate?',
+		'option_a'       => 'A process or formative evaluation examining workflow, fidelity, wait times, barriers, and points of drop-off.',
+		'option_b'       => 'A long-term outcome study of client functioning before the next scheduled contact before selecting a more intensive response.',
+		'option_c'       => 'A cost-benefit analysis only and document the reasoning before selecting a more intensive response.',
+		'option_d'       => 'A satisfaction survey without workflow data while continuing to monitor the outcome.',
+		'correct_option' => 'a',
+		'explanation'    => 'A. Correct. Process evaluation asks how implementation is functioning and where it needs repair
+
+B. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+C. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+D. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response',
+	),
+	array(
+		'question_text'  => 'A White clinician at a residential treatment program notices a Black client becomes guarded after the clinician questions whether discrimination occurred. What should the clinician do NEXT?',
+		'option_a'       => 'Explain that the question was clinically neutral so the client understands there was no discriminatory intent before changing the care plan.',
+		'option_b'       => 'Avoid discussing race again because the topic has already damaged rapport as part of routine follow-up.',
+		'option_c'       => 'Acknowledge the impact and power dynamic, invite the client’s experience, examine assumptions, and repair the interaction without demanding proof.',
+		'option_d'       => 'Ask another Black clinician to validate whether the client’s interpretation is reasonable before making a final decision.',
+		'correct_option' => 'c',
+		'explanation'    => 'A. Incorrect. Explaining intent or professional expertise can reinforce the power difference rather than address the client’s experience
+
+B. Incorrect. Complete avoidance or transfer does not by itself repair the power dynamic and can reduce continuity
+
+C. Correct. Power and racial privilege can shape clinical interactions; repair centers impact, humility, and accountability
+
+D. Incorrect. Fair practice requires transparent attention to how power and privilege influence norms, decisions, and participation',
+	),
+	array(
+		'question_text'  => 'At an outpatient clinic, a couple reports that arguments escalate by text but not in person. Which assessment approach is BEST?',
+		'option_a'       => 'Assess listening, turn-taking, expression of needs, verbal and nonverbal cues, feedback, cultural norms, digital context when relevant, conflict patterns, and relational impact.',
+		'option_b'       => 'Infer disrespect or manipulation before assessing the specific communication behavior while continuing to gather relevant information during the current assessment.',
+		'option_c'       => 'Select a communication-skills intervention before completing assessment of the pattern and context before changing the plan before finalizing the assessment.',
+		'option_d'       => 'Assign responsibility to the person who speaks more, interrupts more, or sends more messages before drawing a diagnostic conclusion and document the reasoning.',
+		'correct_option' => 'a',
+		'explanation'    => 'A. Correct. Communication assessment describes specific skills and patterns in context rather than assigning motive prematurely
+
+B. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision
+
+C. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision
+
+D. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision',
+	),
+	array(
+		'question_text'  => 'A clinician at a nonprofit family-service agency learns a client made a specific threat toward an identifiable person. The clinician is unsure of the governing duty. What should the clinician do FIRST?',
+		'option_a'       => 'Warn the possible target immediately before gathering any more information before the next scheduled contact while continuing to monitor the situation.',
+		'option_b'       => 'Assess the immediacy and specificity of the threat while promptly clarifying the applicable legal and ethical duty and obtaining consultation as needed.',
+		'option_c'       => 'Maintain confidentiality until the client acts because threats are protected clinical information while continuing to monitor the situation and document the reasoning.',
+		'option_d'       => 'Ask the client to sign a promise not to act and continue routine treatment while maintaining the current plan.',
+		'correct_option' => 'b',
+		'explanation'    => 'A. Incorrect. Mandated-reporting duties generally turn on the applicable threshold and facts, not independent investigation or proof beyond the required standard
+
+B. Correct. Potential protective duties require direct risk assessment and prompt clarification of the governing standard
+
+C. Incorrect. Promises of secrecy or delay can be inaccurate when a reporting or protective duty may apply
+
+D. Incorrect. Automatic reporting or warning in every uncertain situation can also be overbroad; the social worker should clarify the governing duty promptly',
+	),
+	array(
+		'question_text'  => 'At a public behavioral-health agency, a child is referred for a treatment designed for adults. Which assessment approach is BEST?',
+		'option_a'       => 'Use the treatment linked most strongly to the diagnosis even when access or developmental fit is poor and document the reasoning.',
+		'option_b'       => 'Use supportive care indefinitely because structured treatments are difficult to access while continuing to gather relevant information.',
+		'option_c'       => 'Delay all treatment until the client can tolerate or access the originally recommended modality before changing the plan.',
+		'option_d'       => 'Select modality using evidence plus developmental level, abilities, culture, life stage, readiness, access, client-system context, preferences, and capacity to engage.',
+		'correct_option' => 'd',
+		'explanation'    => 'A. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision
+
+B. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision
+
+C. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision
+
+D. Correct. Modality selection combines evidence with developmental, cultural, functional, access, and preference fit',
+	),
+	array(
+		'question_text'  => 'A social worker at a hospice and palliative-care program suspects a colleague may be practicing while impaired. What is the BEST initial response?',
+		'option_a'       => 'Confront the colleague in front of staff so witnesses can observe the response as part of routine follow-up.',
+		'option_b'       => 'Ignore the concern unless a client has already been harmed as part of routine follow-up.',
+		'option_c'       => 'Clarify observable facts and immediate client risk, follow applicable professional and organizational reporting duties, and use appropriate consultation.',
+		'option_d'       => 'Tell the colleague to take leave and promise not to report if the colleague agrees.',
+		'correct_option' => 'c',
+		'explanation'    => 'A. Incorrect. Mandated-reporting duties generally turn on the applicable threshold and facts, not independent investigation or proof beyond the required standard
+
+B. Incorrect. Promises of secrecy or delay can be inaccurate when a reporting or protective duty may apply
+
+C. Correct. Impairment concerns require fact-based risk assessment and adherence to applicable duties, not secrecy or public accusation
+
+D. Incorrect. Automatic reporting or warning in every uncertain situation can also be overbroad; the social worker should clarify the governing duty promptly',
+	),
+	array(
+		'question_text'  => 'A program at a community mental-health program wants to know where referrals are dropping out after a new workflow begins. What evaluation is MOST appropriate?',
+		'option_a'       => 'A long-term outcome study of client functioning and document the reasoning while continuing to monitor the outcome.',
+		'option_b'       => 'A process or formative evaluation examining workflow, fidelity, wait times, barriers, and points of drop-off.',
+		'option_c'       => 'A cost-benefit analysis only and document the reasoning before selecting a more intensive response.',
+		'option_d'       => 'A satisfaction survey without workflow data while continuing to monitor the outcome.',
+		'correct_option' => 'b',
+		'explanation'    => 'A. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+B. Correct. Process evaluation asks how implementation is functioning and where it needs repair
+
+C. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+D. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response',
+	),
+	array(
+		'question_text'  => 'A clinic at an outpatient behavioral health clinic offers a scarce service benefit only to clients who enroll in a research study. What is the PRIMARY ethical concern?',
+		'option_a'       => 'The benefit may increase the study’s operating costs before the next scheduled contact.',
+		'option_b'       => 'The arrangement may create undue influence and weaken the voluntariness of informed consent.',
+		'option_c'       => 'Participants may attend more appointments and complicate data analysis.',
+		'option_d'       => 'Staff may prefer research participants because they receive additional services.',
+		'correct_option' => 'b',
+		'explanation'    => 'A. Incorrect. Administrative cost or analytic complexity is secondary to participants’ rights, voluntariness, privacy, and appropriate review
+
+B. Correct. Needed benefits can create pressure that compromises voluntary research participation
+
+C. Incorrect. Using existing records or supervisory authority does not remove research-consent and human-participant protections
+
+D. Incorrect. Power differences can make participation feel compulsory, so evaluation or employment consequences must be separated from research choice',
+	),
+	array(
+		'question_text'  => 'A client at an outpatient clinic nods during psychoeducation but later cannot explain the plan. What should the social worker do NEXT?',
+		'option_a'       => 'Provide a longer handout with more detail before changing the plan before the next scheduled contact.',
+		'option_b'       => 'Ask family members to explain the material later before the next scheduled contact.',
+		'option_c'       => 'Continue because the information was already presented before the next scheduled contact.',
+		'option_d'       => 'Re-explain in accessible language, use relevant examples, and use teach-back to confirm understanding before moving on.',
+		'correct_option' => 'd',
+		'explanation'    => 'A. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+B. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+C. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+D. Correct. Psychoeducation is incomplete until comprehension is checked and repaired',
+	),
+	array(
+		'question_text'  => 'A transgender client at a hospital social-work service reports anxiety in medical settings after repeated misgendering. What is the BEST assessment approach?',
+		'option_a'       => 'Treat the anxiety as a specific phobia without discussing gender-related experiences before the next scheduled contact.',
+		'option_b'       => 'Assess the anxiety and prior discriminatory experiences, clarify identity-affirming needs, and distinguish environmental threat from internal pathology.',
+		'option_c'       => 'Focus on whether the client’s gender identity is contributing to emotional instability before making a final decision.',
+		'option_d'       => 'Recommend avoiding medical care until anxiety decreases enough for exposure work before making a final decision.',
+		'correct_option' => 'b',
+		'explanation'    => 'A. Incorrect. Applying a preset developmental, cultural, or diagnostic meaning can stereotype the client before the client’s own meaning is understood
+
+B. Correct. Identity and systemic experiences can shape symptoms and must be included in formulation without pathologizing identity
+
+C. Incorrect. Deference to either individual autonomy or family/cultural expectations alone can erase competing identities and values
+
+D. Incorrect. Avoiding culture entirely can also distort assessment because culture and identity may be directly relevant to the presenting concern',
+	),
+	array(
+		'question_text'  => 'A client at an outpatient clinic says, “I want to feel better.” Which goal-setting response is BEST?',
+		'option_a'       => 'Keep the goal broad so the client does not feel pressured and document the reasoning.',
+		'option_b'       => 'Choose a standard symptom-reduction goal used with similar clients while maintaining appropriate follow-up while continuing to monitor the outcome.',
+		'option_c'       => 'Wait until the client feels more motivated before defining objectives before the next scheduled contact.',
+		'option_d'       => 'Translate the broad goal into a client-chosen observable target with specific steps, timeframe, responsibility, and review criteria.',
+		'correct_option' => 'd',
+		'explanation'    => 'A. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+B. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+C. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+D. Correct. Contracting and goal setting create shared clarity about tasks, responsibility, and measurable progress',
+	),
+	array(
+		'question_text'  => 'A migrant worker at a nonprofit family-service agency reports an employer is holding identification documents and threatening immigration consequences if the worker leaves. What is the BEST response?',
+		'option_a'       => 'Tell the client to leave the workplace immediately and report the employer to immigration authorities as part of routine follow-up before making a final decision.',
+		'option_b'       => 'Assess immediate safety, coercion, needs and client goals, clarify the social worker’s role, and connect to qualified legal and trafficking resources without making legal promises.',
+		'option_c'       => 'Ask for detailed immigration history before discussing safety so the social worker can determine legal status before making a final decision.',
+		'option_d'       => 'Avoid the issue because employment and immigration matters are outside clinical social work while continuing to monitor the situation and document the reasoning.',
+		'correct_option' => 'b',
+		'explanation'    => 'A. Incorrect. Confronting the suspected exploiter or directing the client immediately can increase danger before consent, coercion, and vulnerability are assessed
+
+B. Correct. Exploitation across marginalized communities requires safety assessment, client choice, and qualified resources without unsupported legal advice
+
+C. Incorrect. Waiting for proof can delay protection when the relevant threshold may be lower than certainty
+
+D. Incorrect. Legal, trafficking, or immigration conclusions should be handled with qualified resources rather than unsupported assumptions or advice',
+	),
+	array(
+		'question_text'  => 'At a community outreach program, a client has five broad goals and feels overwhelmed. Which assessment approach is BEST?',
+		'option_a'       => 'Treat all goals as equally urgent so client choice is not constrained while continuing to gather relevant information before drawing a diagnostic conclusion while continuing to gather relevant information.',
+		'option_b'       => 'Prioritize urgent safety or medical needs, collaborate on the client’s goals, partialize broad goals into feasible steps, identify barriers and resources, and set measurable review points.',
+		'option_c'       => 'Select the clinician’s preferred goal before discussing feasibility and priorities and document the reasoning before drawing a diagnostic conclusion and document the reasoning.',
+		'option_d'       => 'Wait until symptoms improve before creating a structured treatment or service plan before drawing a diagnostic conclusion while continuing to gather relevant information.',
+		'correct_option' => 'b',
+		'explanation'    => 'A. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision
+
+B. Correct. Planning integrates triage, client priorities, feasibility, measurable objectives, resources, and review
+
+C. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision
+
+D. Incorrect. This is a plausible consideration, but it is premature, incomplete, or gives insufficient weight to the information needed for the current assessment or planning decision',
+	),
+	array(
+		'question_text'  => 'An involuntary client at a community mental-health program says, “You’re just here to report on me.” What should the social worker do FIRST?',
+		'option_a'       => 'Explain consequences of nonparticipation so expectations are clear before changing the plan before the next scheduled contact.',
+		'option_b'       => 'Clarify role, limits of confidentiality, required versus voluntary elements, choices the client retains, and invite the client’s concerns.',
+		'option_c'       => 'Begin assessment questions quickly so the process feels routine before the next scheduled contact before changing the plan.',
+		'option_d'       => 'Ask the referral source to restate the mandate before further engagement before selecting a more intensive response.',
+		'correct_option' => 'b',
+		'explanation'    => 'A. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+B. Correct. Engagement with involuntary clients uses transparency, choice, role clarity, and respect rather than coercion
+
+C. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+D. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response',
+	),
+	array(
+		'question_text'  => 'A supervisee at an integrated-care program notices uncertainty and avoidance in high-risk cases. What should the supervisee do FIRST?',
+		'option_a'       => 'Avoid high-risk cases permanently so mistakes cannot occur before changing the plan before the next scheduled contact before selecting a more intensive response.',
+		'option_b'       => 'Identify the learning need, bring it promptly to supervision with relevant cases and questions, and participate in a plan to build competence.',
+		'option_c'       => 'Wait for the supervisor to notice the pattern before the next scheduled contact before changing the plan.',
+		'option_d'       => 'Study independently and mention the concern only if another problem occurs before selecting a more intensive response.',
+		'correct_option' => 'b',
+		'explanation'    => 'A. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+B. Correct. Supervisees are responsible for self-assessment, identifying learning needs, and using supervision proactively
+
+C. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+D. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response',
+	),
+	array(
+		'question_text'  => 'A client with panic at an integrated-care program avoids elevators and feels immediate relief by taking stairs. Medical causes have been assessed. Which intervention is BEST?',
+		'option_a'       => 'Provide reassurance that elevators are safe before changing the plan before the next scheduled contact.',
+		'option_b'       => 'Use a collaborative graded-exposure approach that targets avoidance, supports regulation, and tracks predictions and outcomes.',
+		'option_c'       => 'Explore childhood causes before changing current avoidance before the next scheduled contact.',
+		'option_d'       => 'Recommend permanent stair use if functioning remains acceptable before selecting a more intensive response.',
+		'correct_option' => 'b',
+		'explanation'    => 'A. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+B. Correct. Evidence-based intervention selection should match the maintaining mechanism and client context
+
+C. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response
+
+D. Incorrect. This is a plausible action in some circumstances, but it is premature, incomplete, overly restrictive, or less well matched to the current practice stage than the keyed response',
 	),
 );

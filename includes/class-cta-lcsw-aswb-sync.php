@@ -386,6 +386,159 @@ class CTA_Lcsw_Aswb_Sync {
 	}
 
 	/**
+	 * Workbook practice bank quiz definitions (wb1_bank … wb12_bank).
+	 *
+	 * @return array<int,array<string,mixed>>
+	 */
+	private static function get_workbook_bank_defs() {
+		$defs = array();
+		for ( $n = 1; $n <= 12; $n++ ) {
+			$defs[] = array(
+				'quiz_type' => 'wb' . $n . '_bank',
+				'title'     => sprintf( 'Workbook %d — 17-Question Practice Bank', $n ),
+				'sort'      => $n,
+				'time'      => self::WORKBOOK_BANK_TIME_MINS,
+				'file'      => 'lcsw-aswb-wb' . $n . '-bank.php',
+				'expect'    => self::WORKBOOK_BANK_COUNT,
+				'key'       => 'wb' . $n . '_bank',
+				'qkey'      => 'questions_wb' . $n . '_bank',
+			);
+		}
+
+		return $defs;
+	}
+
+	/**
+	 * Sync only the 12 workbook online practice banks (does not touch Form A/B).
+	 *
+	 * @param int $course_id Course ID.
+	 * @return array<string,mixed>
+	 */
+	public static function sync_workbook_banks( $course_id ) {
+		$course_id = absint( $course_id );
+		$result    = array(
+			'ok'        => false,
+			'course_id' => $course_id,
+			'message'   => 'invalid_course',
+		);
+		for ( $n = 1; $n <= 12; $n++ ) {
+			$result[ 'wb' . $n . '_bank' ]           = 0;
+			$result[ 'questions_wb' . $n . '_bank' ] = 0;
+		}
+
+		if ( ! $course_id ) {
+			return $result;
+		}
+
+		$defs = self::get_workbook_bank_defs();
+
+		foreach ( $defs as $def ) {
+			$questions              = self::load_seed_questions( $def['file'] );
+			$count                  = count( $questions );
+			$result[ $def['qkey'] ] = $count;
+
+			if ( (int) $def['expect'] !== $count ) {
+				$result['message'] = sprintf(
+					'invalid_question_bank_count:%s expected %d got %d',
+					$def['quiz_type'],
+					$def['expect'],
+					$count
+				);
+				return $result;
+			}
+		}
+
+		foreach ( $defs as $def ) {
+			$questions = self::load_seed_questions( $def['file'] );
+			$quiz_id   = self::replace_form_quiz(
+				$course_id,
+				$def['quiz_type'],
+				$def['title'],
+				$def['sort'],
+				$questions,
+				(int) $def['time']
+			);
+			$result[ $def['key'] ]  = $quiz_id;
+			$result[ $def['qkey'] ] = (int) $def['expect'];
+
+			if ( ! $quiz_id ) {
+				$result['message'] = 'quiz_write_failed:' . $def['quiz_type'];
+				return $result;
+			}
+		}
+
+		$result['ok']      = true;
+		$result['message'] = 'workbook_banks_synced';
+
+		return $result;
+	}
+
+	/**
+	 * Ensure all 12 workbook practice banks are live in the DB (scoped — no Form A/B writes).
+	 *
+	 * @param int  $course_id Optional course ID.
+	 * @param bool $force     Re-run even if banks appear healthy.
+	 * @return array{ok:bool,course_id:int,message:string}
+	 */
+	public static function ensure_workbook_banks( $course_id = 0, $force = false ) {
+		$course = null;
+		if ( $course_id > 0 && class_exists( 'CTA_Database' ) ) {
+			$course = CTA_Database::get_course( $course_id );
+		}
+		if ( ! $course ) {
+			$course = self::find_course();
+		}
+
+		if ( ! $course || empty( $course->id ) ) {
+			return array(
+				'ok'        => false,
+				'course_id' => 0,
+				'message'   => 'course_not_found',
+			);
+		}
+
+		$course_id = (int) $course->id;
+
+		if ( ! $force && self::workbook_banks_are_live( $course_id ) ) {
+			return array(
+				'ok'        => true,
+				'course_id' => $course_id,
+				'message'   => 'workbook_banks_healthy',
+			);
+		}
+
+		$sync = self::sync_workbook_banks( $course_id );
+
+		return array(
+			'ok'        => ! empty( $sync['ok'] ),
+			'course_id' => $course_id,
+			'message'   => (string) ( $sync['message'] ?? 'workbook_bank_sync_failed' ),
+		);
+	}
+
+	/**
+	 * Self-heal missing workbook practice banks on page loads (transient-guarded).
+	 *
+	 * @return void
+	 */
+	public static function maybe_heal_workbook_banks() {
+		if ( get_transient( 'cta_lcsw_aswb_wb_bank_heal_lock' ) ) {
+			return;
+		}
+
+		if ( ! get_option( self::SEED_OPTION ) ) {
+			return;
+		}
+
+		if ( self::workbook_banks_are_live() ) {
+			return;
+		}
+
+		set_transient( 'cta_lcsw_aswb_wb_bank_heal_lock', 1, 10 * MINUTE_IN_SECONDS );
+		self::ensure_workbook_banks( 0, true );
+	}
+
+	/**
 	 * Ensure 12 workbook practice banks (17q each) plus Form A/B (122q each).
 	 *
 	 * @param int $course_id Course ID.
@@ -411,19 +564,7 @@ class CTA_Lcsw_Aswb_Sync {
 			return $empty;
 		}
 
-		$defs = array();
-		for ( $n = 1; $n <= 12; $n++ ) {
-			$defs[] = array(
-				'quiz_type' => 'wb' . $n . '_bank',
-				'title'     => sprintf( 'Workbook %d — 17-Question Practice Bank', $n ),
-				'sort'      => $n,
-				'time'      => self::WORKBOOK_BANK_TIME_MINS,
-				'file'      => 'lcsw-aswb-wb' . $n . '-bank.php',
-				'expect'    => self::WORKBOOK_BANK_COUNT,
-				'key'       => 'wb' . $n . '_bank',
-				'qkey'      => 'questions_wb' . $n . '_bank',
-			);
-		}
+		$defs = self::get_workbook_bank_defs();
 		$defs[] = array(
 			'quiz_type' => 'form_a',
 			'title'     => 'Form A — 122-Question Comprehensive Simulation',
@@ -676,6 +817,18 @@ class CTA_Lcsw_Aswb_Sync {
 				'form_a'    => (int) ( $form_a['quiz_id'] ?? 0 ),
 				'form_b'    => (int) ( $form_b['quiz_id'] ?? 0 ),
 				'message'   => 'forms_healthy',
+			);
+		}
+
+		// Forms already healthy — publish only the missing workbook banks (leave Form A/B untouched).
+		if ( ! $force && ! empty( $form_a['ok'] ) && ! empty( $form_b['ok'] ) && ! self::workbook_banks_are_live( $course_id ) ) {
+			$banks = self::sync_workbook_banks( $course_id );
+			return array(
+				'ok'        => ! empty( $banks['ok'] ),
+				'course_id' => $course_id,
+				'form_a'    => (int) ( $form_a['quiz_id'] ?? 0 ),
+				'form_b'    => (int) ( $form_b['quiz_id'] ?? 0 ),
+				'message'   => ! empty( $banks['ok'] ) ? 'workbook_banks_resynced' : (string) ( $banks['message'] ?? 'workbook_bank_sync_failed' ),
 			);
 		}
 

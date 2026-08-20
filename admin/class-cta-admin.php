@@ -443,6 +443,9 @@ class CTA_Admin {
 		$quiz      = $course_id ? $this->get_course_quiz( $course_id ) : null;
 		$quiz_questions = ( $quiz ) ? CTA_Database::get_quiz_questions( (int) $quiz->id ) : array();
 		$quizzes   = $course_id ? CTA_Database::get_quizzes_by_course( $course_id, false ) : array();
+		if ( $course && class_exists( 'CTA_Lmft_Clinical_Legacy_Forms_Archive' ) ) {
+			$quizzes = CTA_Lmft_Clinical_Legacy_Forms_Archive::filter_admin_assessment_quizzes( $quizzes, $course );
+		}
 		$resources = $course_id ? CTA_Database::get_downloadable_resources( $course_id ) : array();
 		$objectives = array();
 

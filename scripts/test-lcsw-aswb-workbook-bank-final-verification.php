@@ -95,7 +95,24 @@ assert_true(
 	'NOT STARTED status tracking wired in shared template'
 );
 
+assert_true(
+	method_exists( 'CTA_Lcsw_Aswb_Sync', 'ensure_workbook_banks' ),
+	'ensure_workbook_banks() implemented (scoped publish — no Form A/B touch)'
+);
+assert_true(
+	method_exists( 'CTA_Lcsw_Aswb_Sync', 'sync_workbook_banks' ),
+	'sync_workbook_banks() implemented'
+);
+assert_true(
+	false !== strpos( $sync_src, 'maybe_heal_workbook_banks' ),
+	'Runtime self-heal for missing workbook banks'
+);
+
 $lms = (string) file_get_contents( CTA_PLUGIN_DIR . 'cta-lms.php' );
+assert_true(
+	false !== strpos( $lms, "1.0.281" ) && false !== strpos( $lms, 'CTA_Lcsw_Aswb_Sync::ensure_workbook_banks( 0, true )' ),
+	'Upgrade hook v1.0.281 force-syncs LCSW workbook banks on deploy'
+);
 assert_true(
 	false !== strpos( $lms, "1.0.278" ) && false !== strpos( $lms, 'CTA_Lcsw_Aswb_Sync::ensure_learner_forms( 0, true )' ),
 	'Upgrade hook v1.0.278 force-syncs LCSW workbook banks on deploy'
@@ -106,6 +123,6 @@ assert_true( 17 === count( load_seed( 'lmft-amftrb-wb1-bank.php' ) ), 'LMFT AMFT
 assert_true( 17 === count( load_seed( 'lpcc-ncmhce-wb1-bank.php' ) ), 'LPCC NCMHCE WB1 seed unchanged' );
 
 echo "\n=== SUMMARY: {$pass} passed, {$fail} failed ===\n";
-echo "NOTE: Live DB sync for all 12 wb{N}_bank quizzes runs on plugin upgrade to v1.0.278.\n";
+echo "NOTE: Live DB sync for all 12 wb{N}_bank quizzes runs on plugin upgrade to v1.0.281 (scoped) or v1.0.278.\n";
 
 exit( $fail > 0 ? 1 : 0 );

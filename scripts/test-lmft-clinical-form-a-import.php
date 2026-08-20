@@ -58,7 +58,7 @@ assert_true(
 );
 
 assert_true(
-	'Comprehensive Simulation - Form A' === CTA_Lmft_Clinical_Form_A_Sync::FORM_TITLE,
+	'Form A — Comprehensive Simulation' === CTA_Lmft_Clinical_Form_A_Sync::FORM_TITLE,
 	'Assessment title matches requested label'
 );
 assert_true(

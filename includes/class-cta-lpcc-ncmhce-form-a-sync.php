@@ -92,6 +92,11 @@ class CTA_Lpcc_Ncmhce_Form_A_Sync {
 			return false;
 		}
 
+		if ( class_exists( 'CTA_Lpcc_Ncmhce_Simulation' )
+			&& ! CTA_Lpcc_Ncmhce_Simulation::is_ncmhce_course_quiz( $quiz ) ) {
+			return false;
+		}
+
 		return 'active' === (string) ( $quiz->status ?? '' );
 	}
 

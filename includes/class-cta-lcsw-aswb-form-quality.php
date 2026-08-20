@@ -23,8 +23,8 @@ class CTA_Lcsw_Aswb_Form_Quality {
 	/**
 	 * When final rebuilt seeds land, set these Q1 needles for live DB fingerprint checks.
 	 */
-	const FINAL_FORM_A_Q1_NEEDLE = '';
-	const FINAL_FORM_B_Q1_NEEDLE = '';
+	const FINAL_FORM_A_Q1_NEEDLE = 'At a rural behavioral-health clinic, siblings are fighting after assuming new caregiving roles';
+	const FINAL_FORM_B_Q1_NEEDLE = 'A manager at a hospital social-work service asks clinicians to code every intake';
 
 	/**
 	 * @param string $seed_rel Relative seed path under plugin dir.
