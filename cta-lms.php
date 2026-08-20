@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.281' );
+	define( 'CTA_VERSION', '1.0.282' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -98,6 +98,7 @@ $cta_required_files = array(
 	'includes/class-cta-evaluation-questions.php',
 	'includes/class-cta-course-attestation.php',
 	'includes/class-cta-telehealth-exam-sync.php',
+	'includes/class-cta-lms-deferred-upgrades.php',
 	'includes/class-cta-lcsw-aswb-sync.php',
 	'includes/class-cta-lcsw-aswb-form-quality.php',
 	'includes/class-cta-lmft-clinical-sync.php',
@@ -164,6 +165,24 @@ $cta_required_files = array(
 foreach ( $cta_required_files as $cta_file ) {
 	if ( ! cta_lms_require( $cta_file ) ) {
 		return;
+	}
+}
+
+if ( class_exists( 'CTA_Lms_Deferred_Upgrades' ) ) {
+	CTA_Lms_Deferred_Upgrades::init();
+}
+
+if ( ! function_exists( 'cta_lms_queue_deferred_upgrade' ) ) {
+	/**
+	 * Queue a heavy upgrade task for background processing (prevents 504 timeouts).
+	 *
+	 * @param string $task Task key.
+	 * @return void
+	 */
+	function cta_lms_queue_deferred_upgrade( $task ) {
+		if ( class_exists( 'CTA_Lms_Deferred_Upgrades' ) ) {
+			CTA_Lms_Deferred_Upgrades::queue( $task );
+		}
 	}
 }
 
@@ -1563,8 +1582,8 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 			}
 
 			// LMFT AMFTRB: seed 12 workbook online practice banks (17q each).
-			if ( version_compare( $installed, '1.0.276', '<' ) && class_exists( 'CTA_Lmft_Amftrb_Sync' ) ) {
-				CTA_Lmft_Amftrb_Sync::ensure_learner_forms( 0, true );
+			if ( version_compare( $installed, '1.0.276', '<' ) ) {
+				cta_lms_queue_deferred_upgrade( 'lmft_amftrb_workbook_banks' );
 			}
 
 			// LPCC NCMHCE: 225-minute timers + progressive case simulation player wiring.
@@ -1572,47 +1591,34 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 				if ( class_exists( 'CTA_Lpcc_Ncmhce_Simulation' ) ) {
 					CTA_Lpcc_Ncmhce_Simulation::sync_simulation_time_limits();
 				}
-				if ( class_exists( 'CTA_Lpcc_Ncmhce_Form_A_Sync' ) ) {
-					CTA_Lpcc_Ncmhce_Form_A_Sync::sync( true );
-				}
-				if ( class_exists( 'CTA_Lpcc_Ncmhce_Form_B_Sync' ) ) {
-					CTA_Lpcc_Ncmhce_Form_B_Sync::sync( true );
-				}
+				cta_lms_queue_deferred_upgrade( 'lpcc_ncmhce_forms_ab' );
 			}
 
 			// LCSW ASWB Clinical: seed 12 workbook online practice banks (17q each).
-			if ( version_compare( $installed, '1.0.278', '<' ) && class_exists( 'CTA_Lcsw_Aswb_Sync' ) ) {
-				CTA_Lcsw_Aswb_Sync::ensure_learner_forms( 0, true );
+			if ( version_compare( $installed, '1.0.278', '<' ) ) {
+				cta_lms_queue_deferred_upgrade( 'lcsw_workbook_banks' );
 			}
 
 			// LMFT California Clinical: populate Form A from Final seeds, purge archived duplicates.
 			if ( version_compare( $installed, '1.0.279', '<' ) ) {
-				if ( class_exists( 'CTA_Lmft_Clinical_Legacy_Forms_Archive' ) ) {
-					CTA_Lmft_Clinical_Legacy_Forms_Archive::archive_non_final_active_forms(
-						CTA_Lmft_Clinical_Legacy_Forms_Archive::TARGET_COURSE_ID,
-						true
-					);
-					CTA_Lmft_Clinical_Legacy_Forms_Archive::purge_archived_duplicate_form_quizzes(
-						CTA_Lmft_Clinical_Legacy_Forms_Archive::TARGET_COURSE_ID,
-						true
-					);
-				}
-				if ( class_exists( 'CTA_Lmft_Clinical_Form_A_Sync' ) ) {
-					CTA_Lmft_Clinical_Form_A_Sync::sync( true );
-				}
-				if ( class_exists( 'CTA_Lmft_Clinical_Form_A_Answer_Sync' ) ) {
-					CTA_Lmft_Clinical_Form_A_Answer_Sync::sync_answer_keys( true );
-				}
+				cta_lms_queue_deferred_upgrade( 'lmft_clinical_form_a' );
 			}
 
 			// LCSW ASWB Clinical: v2.1 Form A/B content + standard scroll player (not NCMHCE case-locking).
-			if ( version_compare( $installed, '1.0.280', '<' ) && class_exists( 'CTA_Lcsw_Aswb_Sync' ) ) {
-				CTA_Lcsw_Aswb_Sync::ensure_learner_forms( 0, true );
+			if ( version_compare( $installed, '1.0.280', '<' ) ) {
+				cta_lms_queue_deferred_upgrade( 'lcsw_forms_ab' );
 			}
 
 			// LCSW ASWB Clinical: publish online workbook practice banks only (scoped — no Form A/B rewrite).
-			if ( version_compare( $installed, '1.0.281', '<' ) && class_exists( 'CTA_Lcsw_Aswb_Sync' ) ) {
-				CTA_Lcsw_Aswb_Sync::ensure_workbook_banks( 0, true );
+			if ( version_compare( $installed, '1.0.281', '<' ) ) {
+				cta_lms_queue_deferred_upgrade( 'lcsw_workbook_banks' );
+			}
+
+			// Defer heavy quiz/content sync on upgrade so plugin updates do not 504 nginx.
+			if ( version_compare( $installed, '1.0.282', '<' ) ) {
+				if ( class_exists( 'CTA_Lcsw_Aswb_Sync' ) && ! CTA_Lcsw_Aswb_Sync::workbook_banks_are_live() ) {
+					cta_lms_queue_deferred_upgrade( 'lcsw_workbook_banks' );
+				}
 			}
 
 			// Decouple supervision application pending from general account / CE access.

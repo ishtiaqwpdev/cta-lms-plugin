@@ -409,6 +409,194 @@ class CTA_Lcsw_Aswb_Sync {
 	}
 
 	/**
+	 * Sync only Form A/B (122q each) — does not rewrite workbook practice banks.
+	 *
+	 * @param int $course_id Course ID.
+	 * @return array<string,mixed>
+	 */
+	public static function sync_forms_only( $course_id = 0 ) {
+		$course = null;
+		if ( $course_id > 0 && class_exists( 'CTA_Database' ) ) {
+			$course = CTA_Database::get_course( $course_id );
+		}
+		if ( ! $course ) {
+			$course = self::find_course();
+		}
+
+		if ( ! $course || empty( $course->id ) ) {
+			return array(
+				'ok'        => false,
+				'course_id' => 0,
+				'message'   => 'course_not_found',
+			);
+		}
+
+		$course_id = (int) $course->id;
+		$defs      = array(
+			array(
+				'quiz_type' => 'form_a',
+				'title'     => 'Form A — 122-Question Comprehensive Simulation',
+				'sort'      => 20,
+				'time'      => 240,
+				'file'      => 'lcsw-aswb-form-a.php',
+				'expect'    => 122,
+				'key'       => 'form_a',
+			),
+			array(
+				'quiz_type' => 'form_b',
+				'title'     => 'Form B — 122-Question Comprehensive Simulation',
+				'sort'      => 30,
+				'time'      => 240,
+				'file'      => 'lcsw-aswb-form-b.php',
+				'expect'    => 122,
+				'key'       => 'form_b',
+			),
+		);
+
+		foreach ( $defs as $def ) {
+			$questions = self::load_seed_questions( $def['file'] );
+			if ( (int) $def['expect'] !== count( $questions ) ) {
+				return array(
+					'ok'        => false,
+					'course_id' => $course_id,
+					'message'   => 'invalid_form_seed:' . $def['quiz_type'],
+				);
+			}
+		}
+
+		foreach ( $defs as $def ) {
+			$questions = self::load_seed_questions( $def['file'] );
+			$quiz_id   = self::replace_form_quiz(
+				$course_id,
+				$def['quiz_type'],
+				$def['title'],
+				(int) $def['sort'],
+				$questions,
+				(int) $def['time']
+			);
+			if ( ! $quiz_id ) {
+				return array(
+					'ok'        => false,
+					'course_id' => $course_id,
+					'message'   => 'quiz_write_failed:' . $def['quiz_type'],
+				);
+			}
+		}
+
+		return array(
+			'ok'        => true,
+			'course_id' => $course_id,
+			'message'   => 'forms_synced',
+		);
+	}
+
+	/**
+	 * Sync up to N missing workbook practice banks (avoids long single requests).
+	 *
+	 * @param int $course_id Optional course ID.
+	 * @param int $max_banks Max workbooks to write this request.
+	 * @return array{ok:bool,course_id:int,synced:int,remaining:int,message:string}
+	 */
+	public static function sync_workbook_banks_missing( $course_id = 0, $max_banks = 2 ) {
+		$max_banks = max( 1, min( 4, absint( $max_banks ) ) );
+
+		$course = null;
+		if ( $course_id > 0 && class_exists( 'CTA_Database' ) ) {
+			$course = CTA_Database::get_course( $course_id );
+		}
+		if ( ! $course ) {
+			$course = self::find_course();
+		}
+
+		if ( ! $course || empty( $course->id ) ) {
+			return array(
+				'ok'        => false,
+				'course_id' => 0,
+				'synced'    => 0,
+				'remaining' => 12,
+				'message'   => 'course_not_found',
+			);
+		}
+
+		$course_id = (int) $course->id;
+		$synced    = 0;
+		$defs      = self::get_workbook_bank_defs();
+
+		foreach ( $defs as $def ) {
+			if ( $synced >= $max_banks ) {
+				break;
+			}
+
+			if ( ! preg_match( '/^wb(\d+)_bank$/', (string) ( $def['quiz_type'] ?? '' ), $m ) ) {
+				continue;
+			}
+
+			$wb_num = absint( $m[1] );
+			$health = self::get_live_workbook_bank_health( $wb_num, $course_id );
+			if ( ! empty( $health['ok'] ) ) {
+				continue;
+			}
+
+			$questions = self::load_seed_questions( $def['file'] );
+			if ( (int) $def['expect'] !== count( $questions ) ) {
+				return array(
+					'ok'        => false,
+					'course_id' => $course_id,
+					'synced'    => $synced,
+					'remaining' => self::count_missing_workbook_banks( $course_id ),
+					'message'   => 'invalid_question_bank_count:' . $def['quiz_type'],
+				);
+			}
+
+			$quiz_id = self::replace_form_quiz(
+				$course_id,
+				$def['quiz_type'],
+				$def['title'],
+				(int) $def['sort'],
+				$questions,
+				(int) $def['time']
+			);
+
+			if ( ! $quiz_id ) {
+				return array(
+					'ok'        => false,
+					'course_id' => $course_id,
+					'synced'    => $synced,
+					'remaining' => self::count_missing_workbook_banks( $course_id ),
+					'message'   => 'quiz_write_failed:' . $def['quiz_type'],
+				);
+			}
+
+			++$synced;
+		}
+
+		$remaining = self::count_missing_workbook_banks( $course_id );
+
+		return array(
+			'ok'        => ( 0 === $remaining ),
+			'course_id' => $course_id,
+			'synced'    => $synced,
+			'remaining' => $remaining,
+			'message'   => 0 === $remaining ? 'workbook_banks_synced' : 'workbook_banks_partial',
+		);
+	}
+
+	/**
+	 * @param int $course_id Course ID.
+	 * @return int
+	 */
+	private static function count_missing_workbook_banks( $course_id ) {
+		$missing = 0;
+		for ( $n = 1; $n <= 12; $n++ ) {
+			$health = self::get_live_workbook_bank_health( $n, $course_id );
+			if ( empty( $health['ok'] ) ) {
+				++$missing;
+			}
+		}
+		return $missing;
+	}
+
+	/**
 	 * Sync only the 12 workbook online practice banks (does not touch Form A/B).
 	 *
 	 * @param int $course_id Course ID.
@@ -507,7 +695,16 @@ class CTA_Lcsw_Aswb_Sync {
 			);
 		}
 
-		$sync = self::sync_workbook_banks( $course_id );
+		if ( $force && class_exists( 'CTA_Lms_Deferred_Upgrades' ) ) {
+			CTA_Lms_Deferred_Upgrades::queue( 'lcsw_workbook_banks' );
+			return array(
+				'ok'        => true,
+				'course_id' => $course_id,
+				'message'   => 'workbook_banks_queued',
+			);
+		}
+
+		$sync = self::sync_workbook_banks_missing( $course_id, 2 );
 
 		return array(
 			'ok'        => ! empty( $sync['ok'] ),
@@ -526,6 +723,10 @@ class CTA_Lcsw_Aswb_Sync {
 			return;
 		}
 
+		if ( get_transient( 'cta_lms_upgrading' ) ) {
+			return;
+		}
+
 		if ( ! get_option( self::SEED_OPTION ) ) {
 			return;
 		}
@@ -534,8 +735,12 @@ class CTA_Lcsw_Aswb_Sync {
 			return;
 		}
 
-		set_transient( 'cta_lcsw_aswb_wb_bank_heal_lock', 1, 10 * MINUTE_IN_SECONDS );
-		self::ensure_workbook_banks( 0, true );
+		set_transient( 'cta_lcsw_aswb_wb_bank_heal_lock', 1, MINUTE_IN_SECONDS );
+
+		$result = self::sync_workbook_banks_missing( 0, 1 );
+		if ( empty( $result['ok'] ) && ! empty( $result['remaining'] ) && class_exists( 'CTA_Lms_Deferred_Upgrades' ) ) {
+			CTA_Lms_Deferred_Upgrades::queue( 'lcsw_workbook_banks' );
+		}
 	}
 
 	/**
