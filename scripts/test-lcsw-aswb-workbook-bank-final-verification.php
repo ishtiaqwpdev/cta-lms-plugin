@@ -110,8 +110,12 @@ assert_true(
 
 $lms = (string) file_get_contents( CTA_PLUGIN_DIR . 'cta-lms.php' );
 assert_true(
-	false !== strpos( $lms, "1.0.282" ) && false !== strpos( $lms, 'cta_lms_queue_deferred_upgrade' ),
-	'Upgrade defers heavy sync to background queue (v1.0.282 — prevents 504)'
+	false !== strpos( $lms, "1.0.283" ) && false !== strpos( $lms, 'cta_lms_queue_heavy_upgrades_for_version' ),
+	'Upgrade stamps version early + queues heavy sync (v1.0.283 — prevents 504 loop)'
+);
+assert_true(
+	false !== strpos( $lms, 'cta_lms_queue_heavy_upgrades_for_version' ) && false !== strpos( $lms, '1.0.270' ),
+	'Recent installs skip legacy migration chain on upgrade'
 );
 assert_true(
 	false !== strpos( $lms, 'lcsw_workbook_banks' ) && false !== strpos( $lms, 'CTA_Lms_Deferred_Upgrades' ),

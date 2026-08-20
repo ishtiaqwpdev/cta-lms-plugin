@@ -24,7 +24,7 @@ class CTA_Lms_Deferred_Upgrades {
 	 */
 	public static function init() {
 		add_action( self::CRON_HOOK, array( __CLASS__, 'process_one' ) );
-		add_action( 'plugins_loaded', array( __CLASS__, 'maybe_process_on_load' ), 25 );
+		add_action( 'shutdown', array( __CLASS__, 'maybe_process_on_shutdown' ), 9999 );
 	}
 
 	/**
@@ -88,12 +88,12 @@ class CTA_Lms_Deferred_Upgrades {
 	}
 
 	/**
-	 * Fallback processor when WP-Cron is disabled (admin loads only).
+	 * Process one queued task after the HTTP response (avoids admin/update 504s).
 	 *
 	 * @return void
 	 */
-	public static function maybe_process_on_load() {
-		if ( get_transient( 'cta_lms_upgrading' ) ) {
+	public static function maybe_process_on_shutdown() {
+		if ( get_transient( self::LOCK_KEY ) || get_transient( 'cta_lms_upgrading' ) ) {
 			return;
 		}
 
@@ -102,11 +102,27 @@ class CTA_Lms_Deferred_Upgrades {
 			return;
 		}
 
-		if ( ! is_admin() && ! wp_doing_cron() ) {
+		if ( ! wp_doing_cron() && ! is_admin() ) {
 			return;
 		}
 
+		// Never run during plugin install/update HTTP actions.
+		if ( wp_doing_ajax() && ! empty( $_REQUEST['action'] ) ) {
+			$action = sanitize_key( (string) wp_unslash( $_REQUEST['action'] ) );
+			if ( in_array( $action, array( 'update-plugin', 'install-plugin', 'activate-plugin', 'wppusher-pull' ), true ) ) {
+				return;
+			}
+		}
+
 		self::process_one();
+	}
+
+	/**
+	 * @deprecated 1.0.283 Use maybe_process_on_shutdown().
+	 * @return void
+	 */
+	public static function maybe_process_on_load() {
+		self::maybe_process_on_shutdown();
 	}
 
 	/**
@@ -155,13 +171,21 @@ class CTA_Lms_Deferred_Upgrades {
 				}
 				break;
 
-			case 'lpcc_ncmhce_forms_ab':
+			case 'lpcc_ncmhce_form_a':
 				if ( class_exists( 'CTA_Lpcc_Ncmhce_Form_A_Sync' ) ) {
 					CTA_Lpcc_Ncmhce_Form_A_Sync::sync( true );
 				}
+				break;
+
+			case 'lpcc_ncmhce_form_b':
 				if ( class_exists( 'CTA_Lpcc_Ncmhce_Form_B_Sync' ) ) {
 					CTA_Lpcc_Ncmhce_Form_B_Sync::sync( true );
 				}
+				break;
+
+			case 'lpcc_ncmhce_forms_ab':
+				self::queue( 'lpcc_ncmhce_form_a' );
+				self::queue( 'lpcc_ncmhce_form_b' );
 				break;
 
 			default:

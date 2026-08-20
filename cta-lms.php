@@ -20,7 +20,7 @@ if ( ! defined( 'CTA_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'CTA_VERSION' ) ) {
-	define( 'CTA_VERSION', '1.0.282' );
+	define( 'CTA_VERSION', '1.0.283' );
 }
 
 if ( ! defined( 'CTA_PLUGIN_DIR' ) ) {
@@ -186,6 +186,67 @@ if ( ! function_exists( 'cta_lms_queue_deferred_upgrade' ) ) {
 	}
 }
 
+if ( ! function_exists( 'cta_lms_queue_heavy_upgrades_for_version' ) ) {
+	/**
+	 * Queue batched content sync tasks for a version jump (never run inline on upgrade).
+	 *
+	 * @param string $installed Previously installed plugin version.
+	 * @return void
+	 */
+	function cta_lms_queue_heavy_upgrades_for_version( $installed ) {
+		$installed = (string) $installed;
+
+		if ( version_compare( $installed, '1.0.272', '<' ) ) {
+			cta_lms_queue_deferred_upgrade( 'lcsw_forms_ab' );
+			cta_lms_queue_deferred_upgrade( 'lcsw_workbook_banks' );
+		}
+
+		if ( version_compare( $installed, '1.0.275', '<' ) ) {
+			cta_lms_queue_deferred_upgrade( 'lmft_amftrb_workbook_banks' );
+		}
+
+		if ( version_compare( $installed, '1.0.276', '<' ) ) {
+			cta_lms_queue_deferred_upgrade( 'lmft_amftrb_workbook_banks' );
+		}
+
+		if ( version_compare( $installed, '1.0.277', '<' ) ) {
+			if ( class_exists( 'CTA_Lpcc_Ncmhce_Simulation' ) ) {
+				CTA_Lpcc_Ncmhce_Simulation::sync_simulation_time_limits();
+			}
+			cta_lms_queue_deferred_upgrade( 'lpcc_ncmhce_form_a' );
+			cta_lms_queue_deferred_upgrade( 'lpcc_ncmhce_form_b' );
+		}
+
+		if ( version_compare( $installed, '1.0.278', '<' ) ) {
+			cta_lms_queue_deferred_upgrade( 'lcsw_workbook_banks' );
+		}
+
+		if ( version_compare( $installed, '1.0.279', '<' ) ) {
+			cta_lms_queue_deferred_upgrade( 'lmft_clinical_form_a' );
+		}
+
+		if ( version_compare( $installed, '1.0.280', '<' ) ) {
+			cta_lms_queue_deferred_upgrade( 'lcsw_forms_ab' );
+		}
+
+		if ( version_compare( $installed, '1.0.281', '<' ) ) {
+			cta_lms_queue_deferred_upgrade( 'lcsw_workbook_banks' );
+		}
+
+		if ( version_compare( $installed, '1.0.282', '<' ) ) {
+			if ( class_exists( 'CTA_Lcsw_Aswb_Sync' ) && ! CTA_Lcsw_Aswb_Sync::workbook_banks_are_live() ) {
+				cta_lms_queue_deferred_upgrade( 'lcsw_workbook_banks' );
+			}
+		}
+
+		if ( version_compare( $installed, '1.0.283', '<' ) ) {
+			if ( class_exists( 'CTA_Lcsw_Aswb_Sync' ) && ! CTA_Lcsw_Aswb_Sync::workbook_banks_are_live() ) {
+				cta_lms_queue_deferred_upgrade( 'lcsw_workbook_banks' );
+			}
+		}
+	}
+}
+
 if ( ! function_exists( 'cta_get_stripe' ) ) {
 	/**
 	 * Get shared Stripe handler instance.
@@ -330,12 +391,28 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 		if ( get_transient( 'cta_lms_upgrading' ) ) {
 			return;
 		}
-		set_transient( 'cta_lms_upgrading', 1, 120 );
+		set_transient( 'cta_lms_upgrading', 1, 60 );
+
+		$prior_version = (string) $installed;
 
 		try {
 			if ( class_exists( 'CTA_Database' ) ) {
 				CTA_Database::create_tables();
 			}
+
+			// Stamp version immediately so a 504 cannot re-run the full migration chain.
+			update_option( 'cta_lms_version', CTA_VERSION );
+
+			cta_lms_queue_heavy_upgrades_for_version( $prior_version );
+
+			// Recent installs: skip the 1,000+ line legacy migration chain (queue handles content sync).
+			if ( version_compare( $prior_version, '1.0.270', '>=' ) ) {
+				delete_transient( 'cta_lms_upgrading' );
+				return;
+			}
+
+			// Legacy installs below 1.0.270 continue through historical lightweight migrations.
+			$installed = $prior_version;
 
 			// Quizzes are untimed with unlimited retakes by product policy.
 			if ( version_compare( $installed, '1.0.39', '<' ) && class_exists( 'CTA_Database' ) ) {
@@ -1642,7 +1719,7 @@ if ( ! function_exists( 'cta_maybe_upgrade_db' ) ) {
 			}
 		}
 
-		// Always stamp the version so a failed one-shot migration cannot boot-loop the site.
+		// Version stamped above (early) for recent installs; re-stamp for legacy path idempotency.
 		update_option( 'cta_lms_version', CTA_VERSION );
 		delete_transient( 'cta_lms_upgrading' );
 	}

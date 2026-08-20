@@ -735,10 +735,9 @@ class CTA_Lcsw_Aswb_Sync {
 			return;
 		}
 
-		set_transient( 'cta_lcsw_aswb_wb_bank_heal_lock', 1, MINUTE_IN_SECONDS );
+		set_transient( 'cta_lcsw_aswb_wb_bank_heal_lock', 1, 5 * MINUTE_IN_SECONDS );
 
-		$result = self::sync_workbook_banks_missing( 0, 1 );
-		if ( empty( $result['ok'] ) && ! empty( $result['remaining'] ) && class_exists( 'CTA_Lms_Deferred_Upgrades' ) ) {
+		if ( class_exists( 'CTA_Lms_Deferred_Upgrades' ) ) {
 			CTA_Lms_Deferred_Upgrades::queue( 'lcsw_workbook_banks' );
 		}
 	}
